@@ -1,67 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Givors (69, Rhône) — sud lyonnais, vallée du Rhône, verrerie historique, industrie et logistique au confluent Rhône-Gier.
 
 import type { VilleCopy } from "./types";
 
 export const GIVORS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Givors, au cœur de la région Auvergne-Rhône-Alpes, en optimisant les processus pour les entreprises locales comme Carrefour et TotalEnergies.",
+    "À Givors, dans le sud lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique, de la construction et du commerce. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "Axion-IA intervient à Givors, au cœur de la région Auvergne-Rhône-Alpes, en optimisant les processus pour les entreprises locales comme Carrefour et TotalEnergies.",
+    "À Givors, dans le sud lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique, de la construction et du commerce. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "Axion-IA se déplace à Givors pour offrir des services d'IA opérationnelle. Avec des entreprises comme Carrefour et TotalEnergies présentes dans la région, nous aidons à automatiser les processus administratifs et de relance. Notre intervention commence, et nous proposons également des audits.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Givors pour accompagner les TPE et PME locales. Au confluent du Rhône et du Gier, marquée par sa tradition verrière et son tissu industriel, la ville constitue une porte d'entrée logistique du sud lyonnais. Auprès des PME industrielles, des prestataires logistiques, des artisans et des commerces, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
   directAnswerEn:
-    "Axion-IA se déplace à Givors pour offrir des services d'IA opérationnelle. Avec des entreprises comme Carrefour et TotalEnergies présentes dans la région, nous aidons à automatiser les processus administratifs et de relance. Notre intervention commence, et nous proposons également des audits.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Givors pour accompagner les TPE et PME locales. Au confluent du Rhône et du Gier, marquée par sa tradition verrière et son tissu industriel, la ville constitue une porte d'entrée logistique du sud lyonnais. Auprès des PME industrielles, des prestataires logistiques, des artisans et des commerces, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+  seoHook: "industrie, verre & logistique",
   ecosystemFr:
-    "Givors bénéficie de la proximité de grands groupes tels que Carrefour et TotalEnergies, renforçant ainsi son tissu économique. La ZI de la Vallée du Gier est un centre d'activité important.",
+    "Givors occupe une position stratégique au sud de Lyon, au confluent du Rhône et du Gier, à la charnière entre la métropole lyonnaise et la vallée de la chimie. La ville porte un héritage industriel fort, marqué par sa tradition verrière historique, et conserve un tissu de PME manufacturières, de prestataires logistiques et d'entreprises du bâtiment. Son positionnement sur les axes de la vallée du Rhône en fait un point de passage logistique important. Ce réseau de TPE et PME, souvent peu équipé en outils numériques avancés, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses opérations et gagner en compétitivité.",
   ecosystemEn:
-    "Givors bénéficie de la proximité de grands groupes tels que Carrefour et TotalEnergies, renforçant ainsi son tissu économique. La ZI de la Vallée du Gier est un centre d'activité important.",
+    "Givors occupe une position stratégique au sud de Lyon, au confluent du Rhône et du Gier, à la charnière entre la métropole lyonnaise et la vallée de la chimie. La ville porte un héritage industriel fort, marqué par sa tradition verrière historique, et conserve un tissu de PME manufacturières, de prestataires logistiques et d'entreprises du bâtiment. Son positionnement sur les axes de la vallée du Rhône en fait un point de passage logistique important. Ce réseau de TPE et PME, souvent peu équipé en outils numériques avancés, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses opérations et gagner en compétitivité.",
   distancesFr:
-    "Givors est situé à 25 km de la Gare TGV Lyon-Part-Dieu et à 35 km de l'Aéroport Lyon-Saint Exupéry.",
+    "Givors est reliée au centre de Lyon en environ 25 minutes par le train depuis la gare de Givors-Ville, et l'autoroute A47 dessert directement la commune vers Lyon et Saint-Étienne. La gare TGV Lyon Part-Dieu est accessible en une trentaine de minutes, et l'aéroport Lyon-Saint-Exupéry à environ 40 minutes par la Rocade Est. Cette desserte sur l'axe rhodanien facilite les déplacements de nos consultants vers les zones d'activités de Givors, Grigny et de la vallée du Gier.",
   distancesEn:
-    "Givors est situé à 25 km de la Gare TGV Lyon-Part-Dieu et à 35 km de l'Aéroport Lyon-Saint Exupéry.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Givors est reliée au centre de Lyon en environ 25 minutes par le train depuis la gare de Givors-Ville, et l'autoroute A47 dessert directement la commune vers Lyon et Saint-Étienne. La gare TGV Lyon Part-Dieu est accessible en une trentaine de minutes, et l'aéroport Lyon-Saint-Exupéry à environ 40 minutes par la Rocade Est. Cette desserte sur l'axe rhodanien facilite les déplacements de nos consultants vers les zones d'activités de Givors, Grigny et de la vallée du Gier.",
+  topSectorsNaf: [
+    "Industrie manufacturière et travail du verre",
+    "Entreposage et services logistiques",
+    "Construction et travaux spécialisés",
+    "Commerce de gros et de détail",
+    "Transport routier de marchandises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Givors avec un focus sur les commerces de détail comme Carrefour — identifier les axes d'automatisation.",
-      en: "Réaliser un audit à Givors avec un focus sur les commerces de détail comme Carrefour — identifier les axes d'automatisation.",
+      fr: "Un audit IA à Givors analyse vos processus sur site, en tenant compte des contraintes industrielles et logistiques du sud lyonnais, pour identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
+      en: "Un audit IA à Givors analyse vos processus sur site, en tenant compte des contraintes industrielles et logistiques du sud lyonnais, pour identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
     },
     interventions: {
-      fr: "Intervenir à Givors pour optimiser les transports terrestres — réduire les coûts opérationnels.",
-      en: "Intervenir à Givors pour optimiser les transports terrestres — réduire les coûts opérationnels.",
+      fr: "Nos interventions à Givors automatisent les tâches répétitives des PME industrielles et logistiques : suivi de production, gestion des stocks, relances fournisseurs et traitement administratif, sans bouleverser vos outils existants.",
+      en: "Nos interventions à Givors automatisent les tâches répétitives des PME industrielles et logistiques : suivi de production, gestion des stocks, relances fournisseurs et traitement administratif, sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Givors dans le secteur de la construction — améliorer l'efficacité des chantiers.",
-      en: "Implémenter des solutions IA à Givors dans le secteur de la construction — améliorer l'efficacité des chantiers.",
+      fr: "L'implémentation à Givors déploie des solutions IA durables pour l'industrie, la logistique et la construction, avec une attention forte à la traçabilité, à la fiabilité opérationnelle et à la conformité RGPD.",
+      en: "L'implémentation à Givors déploie des solutions IA durables pour l'industrie, la logistique et la construction, avec une attention forte à la traçabilité, à la fiabilité opérationnelle et à la conformité RGPD.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Givors les dirigeants de PME — maximiser l'usage de l'IA pour les tâches administratives.",
-      en: "Accompagner en un-à-un à Givors les dirigeants de PME — maximiser l'usage de l'IA pour les tâches administratives.",
+      fr: "Nos sessions un-à-un à Givors forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la logistique ou du bâtiment local.",
+      en: "Nos sessions un-à-un à Givors forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la logistique ou du bâtiment local.",
+    },
+    sitesWeb: {
+      fr: "Pour les entreprises de Givors, nous concevons des sites web et plateformes augmentés par l'IA : portails de commande pour clients professionnels, devis logistiques automatisés et assistants qualifiant les demandes B2B entrantes.",
+      en: "Pour les entreprises de Givors, nous concevons des sites web et plateformes augmentés par l'IA : portails de commande pour clients professionnels, devis logistiques automatisés et assistants qualifiant les demandes B2B entrantes.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Givors ?",
-      a: "Les interventions à Givors débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA se déplace-t-il à Givors ?",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Givors et dans le sud lyonnais. La première rencontre se fait sur site afin de comprendre vos processus industriels ou logistiques avant toute recommandation.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Givors ?",
-      a: "Notre équipe nationale se déplace directement sur site à Givors, garantissant une proximité avec vos opérations.",
+      q: "Quels types d'entreprises accompagnez-vous à Givors ?",
+      a: "Nous accompagnons en priorité les TPE et PME : industrie manufacturière, logistique, transport, construction et commerce. Les ETI restent un cas marginal. Notre approche est calibrée pour des structures aux ressources limitées qui veulent un retour rapide.",
     },
     {
-      q: "Quelle est la durée d'un audit IA à Givors ?",
-      a: "Un audit Flash de 4 heures est proposé à partir de 490 € HT, permettant une évaluation rapide de vos besoins.",
+      q: "Par quoi commence une mission IA à Givors ?",
+      a: "Chaque mission débute par un audit terrain qui cartographie vos processus et hiérarchise les automatisations selon leur retour sur investissement. Vous repartez avec un plan d'action priorisé, lisible par un dirigeant non technicien.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Givors ?",
-      a: "Oui, Axion-IA s'engage à respecter le RGPD lors de toutes ses interventions, garantissant la confidentialité et la sécurité des données.",
+      q: "Faut-il changer mes logiciels pour travailler avec Axion-IA ?",
+      a: "Non. Nous nous greffons sur vos outils existants chaque fois que possible et évitons toute dépendance technologique imposée. L'objectif est d'augmenter votre productivité sans vous enfermer dans une solution propriétaire.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Givors ?",
-      a: "Oui, nous proposons des sessions un-à-un à partir de 990 € HT, adaptées aux besoins des dirigeants de Givors.",
+      q: "Comment garantissez-vous la conformité RGPD à Givors ?",
+      a: "La conformité RGPD est intégrée dès l'audit puis tout au long de l'implémentation. Nous documentons les traitements, limitons les données collectées et privilégions un hébergement conforme à la réglementation européenne.",
     },
   ],
 };

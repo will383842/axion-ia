@@ -1,70 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Bagneux (92, Hauts-de-Seine) — sud parisien Grand Paris, ligne 4 prolongée, tertiaire & PME urbaines.
 
 import type { VilleCopy } from "./types";
 
 export const BAGNEUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bagneux, où le tissu économique côtoie des pôles comme Cap Digital et Inria, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Bagneux, où le tissu économique côtoie des pôles comme Cap Digital et Inria, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Bagneux, avec ses 3 000 établissements actifs, est un environnement propice pour les interventions d'Axion-IA. Proche de pôles tels que Station F et Inria, nous offrons des solutions IA adaptées aux besoins locaux. Notre approche sur site garantit une mise en œuvre efficace, répondant aux exigences spécifiques de chaque entreprise.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Bagneux, avec ses 3 000 établissements actifs, est un environnement propice pour les interventions d'Axion-IA. Proche de pôles tels que Station F et Inria, nous offrons des solutions IA adaptées aux besoins locaux. Notre approche sur site garantit une mise en œuvre efficace, répondant aux exigences spécifiques de chaque entreprise.",
-  seoHook: "programmation informatique & activités des",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+  seoHook: "tertiaire & BTP Grand Paris",
   ecosystemFr:
-    "Le tissu économique de Bagneux inclut des acteurs comme LVMH et BNP Paribas, offrant un cadre riche pour nos interventions IA.",
+    "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de TPE et PME de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",
   ecosystemEn:
-    "Le tissu économique de Bagneux inclut des acteurs comme LVMH et BNP Paribas, offrant un cadre riche pour nos interventions IA.",
-  distancesFr: "Bagneux est à 8 km de la Gare Montparnasse et à 12 km de l'Aéroport de Paris-Orly.",
-  distancesEn: "Bagneux est à 8 km de la Gare Montparnasse et à 12 km de l'Aéroport de Paris-Orly.",
+    "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de TPE et PME de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",
+  distancesFr:
+    "Bagneux est desservie par la ligne 4 du métro (prolongée) et le RER B voisin. La gare Montparnasse est à environ 8 km et Paris-Orly à environ 12 km, avec accès direct au périphérique.",
+  distancesEn:
+    "Bagneux est desservie par la ligne 4 du métro (prolongée) et le RER B voisin. La gare Montparnasse est à environ 8 km et Paris-Orly à environ 12 km, avec accès direct au périphérique.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Activités des sièges sociaux",
-    "Travaux de construction spécialisés",
-    "Commerce de détail",
+    "Services aux entreprises et conseil",
+    "BTP et travaux de construction spécialisés",
+    "Commerce de détail et de proximité",
+    "Artisanat et réparation",
+    "Édition de logiciels et activités informatiques",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bagneux permet d'identifier les processus optimisables, avec des tarifs à partir de 490 € HT.",
-      en: "Réaliser un audit à Bagneux permet d'identifier les processus optimisables, avec des tarifs à partir de 490 € HT.",
+      fr: "Audit IA à Bagneux pour artisans BTP, services aux entreprises et commerces : nous cartographions vos process (devis, planning, support, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Bagneux pour artisans BTP, services aux entreprises et commerces : nous cartographions vos process (devis, planning, support, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Bagneux pour automatiser les tâches administratives et améliorer l'efficacité des équipes locales.",
-      en: "Intervenir à Bagneux pour automatiser les tâches administratives et améliorer l'efficacité des équipes locales.",
+      fr: "Interventions IA sur site à Bagneux : formats adaptés à l'entreprise de BTP, au bureau tertiaire ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Bagneux : formats adaptés à l'entreprise de BTP, au bureau tertiaire ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bagneux pour intégrer de nouvelles technologies dans les processus métiers.",
-      en: "Implémenter des solutions IA à Bagneux pour intégrer de nouvelles technologies dans les processus métiers.",
+      fr: "Implémentation IA à Bagneux : chiffrage automatisé de devis, optimisation de planning de chantier, copilotes administratifs et commerciaux, agents conversationnels de support et automatisation des workflows des TPE et PME urbaines.",
+      en: "Implémentation IA à Bagneux : chiffrage automatisé de devis, optimisation de planning de chantier, copilotes administratifs et commerciaux, agents conversationnels de support et automatisation des workflows des TPE et PME urbaines.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants de Bagneux pour une adoption réussie de l'IA, dès 990 € HT.",
-      en: "Accompagner en 1-to-1 les dirigeants de Bagneux pour une adoption réussie de l'IA, dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Bagneux pour dirigeants de TPE et PME du BTP, des services ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Bagneux pour dirigeants de TPE et PME du BTP, des services ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Bagneux : portails de devis, espaces clients et outils IA sur mesure pour le BTP, les services aux entreprises et le commerce du Grand Paris sud.",
+      en: "Sites web augmentés à Bagneux : portails de devis, espaces clients et outils IA sur mesure pour le BTP, les services aux entreprises et le commerce du Grand Paris sud.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Bagneux ?",
-      a: "Les interventions à Bagneux débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Bagneux ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagneux et du sud des Hauts-de-Seine. Desservis par la ligne 4 prolongée et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Bagneux ?",
-      a: "Notre équipe se déplace sur site à Bagneux, avec une intervention possible dans les 5 jours ouvrés suivant la demande.",
+      q: "Quels gains IA pour un artisan BTP ou un commerce balnéolais ?",
+      a: "Chiffrage automatisé de devis, optimisation de planning de chantier, automatisation administrative et agents de support client. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
     },
     {
-      q: "Quels sont les délais pour un audit à Bagneux ?",
-      a: "Un audit Flash de 4 heures peut être réalisé rapidement, avec des tarifs à partir de 490 € HT.",
+      q: "Quel est le tarif d'un audit IA à Bagneux ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Bagneux ?",
-      a: "Nous veillons à ce que toutes nos solutions IA respectent les normes RGPD, garantissant la protection des données de nos clients à Bagneux.",
+      q: "Intervenez-vous aussi à Montrouge, Châtillon ou Fontenay-aux-Roses ?",
+      a: "Oui, nous couvrons le sud des Hauts-de-Seine : Montrouge, Châtillon, Fontenay-aux-Roses, Malakoff, Arcueil et Paris intra-muros, depuis Bagneux. Déplacement rapide grâce au métro et au périphérique.",
     },
     {
-      q: "Proposez-vous des formations IA à Bagneux ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants à Bagneux, permettant une adoption optimale de l'IA dès 990 € HT.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui, chaque solution déployée à Bagneux respecte le RGPD et l'AI Act. Vos données clients et métiers restent maîtrisées, sans verrou technologique ni dépendance à un prestataire unique.",
     },
   ],
 };

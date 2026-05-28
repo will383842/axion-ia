@@ -1,70 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Épernay (51, Marne) — capitale du Champagne, avenue de Champagne, maisons Moët & Chandon / Mercier / De Castellane, œnotourisme.
 
 import type { VilleCopy } from "./types";
 
 export const EPERNAY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Épernay, ville connue pour ses maisons de champagne comme Moët & Chandon et Perrier-Jouët, pour optimiser vos processus métiers grâce à l'IA.",
+    "À Épernay, capitale du Champagne, Axion-IA accompagne les TPE et PME de la viticulture, de l'œnotourisme, du négoce et des services. Notre cabinet d'architectes IA seniors aide les maisons familiales et les vignerons à automatiser leur administratif et à structurer leur relation client, sans jargon technique.",
   pitchEn:
-    "Axion-IA intervient à Épernay, ville connue pour ses maisons de champagne comme Moët & Chandon et Perrier-Jouët, pour optimiser vos processus métiers grâce à l'IA.",
+    "À Épernay, capitale du Champagne, Axion-IA accompagne les TPE et PME de la viticulture, de l'œnotourisme, du négoce et des services. Notre cabinet d'architectes IA seniors aide les maisons familiales et les vignerons à automatiser leur administratif et à structurer leur relation client, sans jargon technique.",
   directAnswerFr:
-    "À Épernay, Axion-IA propose des solutions IA adaptées aux entreprises locales, notamment dans la production de boissons et le commerce de détail. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos prestations incluent des audits, interventions et implémentations, avec des tarifs publics consultables pour un audit Flash 4h.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Épernay pour accompagner les TPE et PME locales. Le long de l'avenue de Champagne, où se concentrent les grandes maisons comme Moët & Chandon, Mercier et De Castellane, mais surtout auprès des nombreux vignerons et négociants indépendants, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
   directAnswerEn:
-    "À Épernay, Axion-IA propose des solutions IA adaptées aux entreprises locales, notamment dans la production de boissons et le commerce de détail. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos prestations incluent des audits, interventions et implémentations, avec des tarifs publics consultables pour un audit Flash 4h.",
-  seoHook: "production boissons & commerce détail",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Épernay pour accompagner les TPE et PME locales. Le long de l'avenue de Champagne, où se concentrent les grandes maisons comme Moët & Chandon, Mercier et De Castellane, mais surtout auprès des nombreux vignerons et négociants indépendants, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+  seoHook: "champagne, viticulture & œnotourisme",
   ecosystemFr:
-    "Épernay abrite des leaders comme Moët & Chandon et Mercier, contribuant à un écosystème économique centré sur la production de boissons et le commerce.",
+    "Épernay est le cœur économique du vignoble champenois, organisée autour de l'avenue de Champagne et de ses caves prestigieuses. Au-delà des grandes maisons emblématiques comme Moët & Chandon, Mercier ou De Castellane, le territoire vit surtout d'une multitude de vignerons indépendants, coopératives, négociants et acteurs de l'œnotourisme. À cela s'ajoutent les services, le commerce et l'artisanat qui gravitent autour de la filière. Ce tissu dense de TPE et PME familiales, attaché à la qualité et à la tradition, trouve dans Axion-IA un partenaire pour moderniser sa gestion sans dénaturer son savoir-faire.",
   ecosystemEn:
-    "Épernay abrite des leaders comme Moët & Chandon et Mercier, contribuant à un écosystème économique centré sur la production de boissons et le commerce.",
-  distancesFr: "La gare TGV de Champagne-Ardenne se situe à 35 km d'Épernay.",
-  distancesEn: "La gare TGV de Champagne-Ardenne se situe à 35 km d'Épernay.",
+    "Épernay est le cœur économique du vignoble champenois, organisée autour de l'avenue de Champagne et de ses caves prestigieuses. Au-delà des grandes maisons emblématiques comme Moët & Chandon, Mercier ou De Castellane, le territoire vit surtout d'une multitude de vignerons indépendants, coopératives, négociants et acteurs de l'œnotourisme. À cela s'ajoutent les services, le commerce et l'artisanat qui gravitent autour de la filière. Ce tissu dense de TPE et PME familiales, attaché à la qualité et à la tradition, trouve dans Axion-IA un partenaire pour moderniser sa gestion sans dénaturer son savoir-faire.",
+  distancesFr:
+    "Épernay se trouve à environ 30 km de Reims, accessible en une trentaine de minutes par la route ou le train. Paris est à environ 1h15 en train direct depuis la gare d'Épernay, ce qui place la ville à portée immédiate de la capitale pour les marchés et les visiteurs. L'aéroport Paris-Charles-de-Gaulle est à environ 1h30 de route. Cette accessibilité facilite à la fois l'œnotourisme international et les déplacements de nos consultants dans la vallée de la Marne.",
+  distancesEn:
+    "Épernay se trouve à environ 30 km de Reims, accessible en une trentaine de minutes par la route ou le train. Paris est à environ 1h15 en train direct depuis la gare d'Épernay, ce qui place la ville à portée immédiate de la capitale pour les marchés et les visiteurs. L'aéroport Paris-Charles-de-Gaulle est à environ 1h30 de route. Cette accessibilité facilite à la fois l'œnotourisme international et les déplacements de nos consultants dans la vallée de la Marne.",
   topSectorsNaf: [
-    "Production de boissons",
-    "Commerce de détail",
-    "Restauration",
-    "Transport terrestre",
+    "Viticulture et production de champagne",
+    "Négoce de vins et de spiritueux",
+    "Hébergement et activités œnotouristiques",
+    "Commerce de détail spécialisé",
+    "Services aux entreprises et artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Épernay pour identifier les opportunités IA dans des secteurs comme la production de boissons.",
-      en: "Réaliser un audit à Épernay pour identifier les opportunités IA dans des secteurs comme la production de boissons.",
+      fr: "Un audit IA à Épernay analyse sur site les processus d'une maison de champagne, d'un vigneron ou d'un négociant, pour repérer les automatisations à plus fort ROI : suivi des commandes, expéditions, relation client et gestion des visites de cave.",
+      en: "Un audit IA à Épernay analyse sur site les processus d'une maison de champagne, d'un vigneron ou d'un négociant, pour repérer les automatisations à plus fort ROI : suivi des commandes, expéditions, relation client et gestion des visites de cave.",
     },
     interventions: {
-      fr: "Intervenir à Épernay pour automatiser les processus administratifs chez les producteurs locaux.",
-      en: "Intervenir à Épernay pour automatiser les processus administratifs chez les producteurs locaux.",
+      fr: "Nos interventions à Épernay automatisent les tâches répétitives des TPE et PME viticoles : prise de commande, relances, gestion des réservations œnotouristiques et traitement administratif, sans bouleverser vos outils existants.",
+      en: "Nos interventions à Épernay automatisent les tâches répétitives des TPE et PME viticoles : prise de commande, relances, gestion des réservations œnotouristiques et traitement administratif, sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Épernay, intégrant les systèmes existants des commerces de détail.",
-      en: "Implémenter des solutions IA à Épernay, intégrant les systèmes existants des commerces de détail.",
+      fr: "L'implémentation à Épernay déploie des solutions IA durables pour la filière champagne et ses services, avec une attention forte à la traçabilité, à la confidentialité des données commerciales et à la conformité RGPD.",
+      en: "L'implémentation à Épernay déploie des solutions IA durables pour la filière champagne et ses services, avec une attention forte à la traçabilité, à la confidentialité des données commerciales et à la conformité RGPD.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants d'Épernay pour une adoption stratégique de l'IA.",
-      en: "Accompagner en 1-to-1 les dirigeants d'Épernay pour une adoption stratégique de l'IA.",
+      fr: "Nos sessions un-à-un à Épernay forment les vignerons et dirigeants de maisons familiales à intégrer l'IA dans leur quotidien, avec des cas concrets issus de la vente directe, de l'export et de l'œnotourisme.",
+      en: "Nos sessions un-à-un à Épernay forment les vignerons et dirigeants de maisons familiales à intégrer l'IA dans leur quotidien, avec des cas concrets issus de la vente directe, de l'export et de l'œnotourisme.",
+    },
+    sitesWeb: {
+      fr: "Pour les acteurs d'Épernay, nous concevons des sites web et plateformes augmentés par l'IA : réservation de visites de cave, vente en ligne de champagne et assistants qui qualifient les demandes des clients particuliers et professionnels.",
+      en: "Pour les acteurs d'Épernay, nous concevons des sites web et plateformes augmentés par l'IA : réservation de visites de cave, vente en ligne de champagne et assistants qui qualifient les demandes des clients particuliers et professionnels.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Épernay ?",
-      a: "Nos audits IA à Épernay commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont disponibles sur notre site.",
+      q: "Axion-IA se déplace-t-il à Épernay ?",
+      a: "Oui, nos consultants se rendent directement dans vos caves, bureaux ou domaines à Épernay et dans la vallée de la Marne. La première rencontre se fait sur site, afin de comprendre votre activité viticole avant toute recommandation.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Épernay ?",
-      a: "Nous nous déplaçons sur site à Épernay pour réaliser des interventions sur mesure, adaptées aux besoins spécifiques de votre entreprise.",
+      q: "Quels types d'entreprises accompagnez-vous à Épernay ?",
+      a: "Nous accompagnons en priorité les TPE et PME : vignerons indépendants, maisons familiales, négociants, acteurs de l'œnotourisme, commerce et services. Les ETI restent un cas marginal. Notre approche respecte le rythme et la tradition de la filière.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Épernay ?",
-      a: "Les secteurs de la production de boissons et du commerce de détail à Épernay sont particulièrement propices à l'optimisation par l'IA.",
+      q: "L'IA est-elle compatible avec le savoir-faire artisanal du champagne ?",
+      a: "Oui. Nous n'intervenons jamais sur le cœur du métier viticole, mais sur l'administratif, la relation client et la logistique. L'IA libère du temps pour que vos équipes se concentrent sur la vigne, la vinification et l'accueil des visiteurs.",
     },
     {
-      q: "Axion-IA respecte-t-elle le RGPD lors de ses interventions à Épernay ?",
-      a: "Oui, Axion-IA garantit la conformité RGPD lors de toutes ses interventions à Épernay, assurant la protection des données personnelles.",
+      q: "Faut-il changer mes logiciels pour travailler avec Axion-IA ?",
+      a: "Non. Nous nous appuyons sur vos outils existants quand c'est possible et évitons toute dépendance technologique imposée. L'objectif est d'augmenter votre efficacité sans vous enfermer dans une solution propriétaire.",
     },
     {
-      q: "Quels délais pour une intervention IA à Épernay ?",
-      a: "Williams se déplace sur site à Épernay dans les 5 jours ouvrés suivant la confirmation de l'intervention.",
+      q: "Comment garantissez-vous la conformité RGPD à Épernay ?",
+      a: "La conformité RGPD est intégrée dès l'audit puis à chaque étape de l'implémentation. Nous documentons les traitements, protégeons vos données commerciales sensibles et privilégions un hébergement conforme à la réglementation européenne.",
     },
   ],
 };

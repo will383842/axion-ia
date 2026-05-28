@@ -1,66 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Décines-Charpieu (69, Rhône) — banlieue est de Lyon, Groupama Stadium (OL), tissu industriel et événementiel.
 
 import type { VilleCopy } from "./types";
 
 export const DECINES_CHARPIEU_COPY: VilleCopy = {
   pitchFr:
-    "À Décines-Charpieu, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Le Parc d'activités de la Soie et des groupes comme Adecco forment un écosystème propice à l'innovation.",
+    "À Décines-Charpieu, dans l'est lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique et de l'événementiel. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leurs tâches administratives et à fiabiliser leurs processus, du devis à la facturation, sans complexité technique.",
   pitchEn:
-    "À Décines-Charpieu, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Le Parc d'activités de la Soie et des groupes comme Adecco forment un écosystème propice à l'innovation.",
+    "À Décines-Charpieu, dans l'est lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique et de l'événementiel. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leurs tâches administratives et à fiabiliser leurs processus, du devis à la facturation, sans complexité technique.",
   directAnswerFr:
-    "Axion-IA se déplace à Décines-Charpieu pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme GL Events et le pôle Lyonbiopôle, nous proposons des audits et des interventions 590 automatiser et optimiser vos opérations administratives.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Décines-Charpieu pour accompagner les TPE et PME locales. Autour du Groupama Stadium, du Parc d'activités de la Soie et des entreprises de l'événementiel et de la logistique, nous réalisons des audits opérationnels, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent un cas marginal. Chaque mission part d'un diagnostic terrain, sans jargon ni dépendance technologique imposée.",
   directAnswerEn:
-    "Axion-IA se déplace à Décines-Charpieu pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme GL Events et le pôle Lyonbiopôle, nous proposons des audits et des interventions 590 automatiser et optimiser vos opérations administratives.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Décines-Charpieu pour accompagner les TPE et PME locales. Autour du Groupama Stadium, du Parc d'activités de la Soie et des entreprises de l'événementiel et de la logistique, nous réalisons des audits opérationnels, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent un cas marginal. Chaque mission part d'un diagnostic terrain, sans jargon ni dépendance technologique imposée.",
+  seoHook: "événementiel, logistique & industrie",
   ecosystemFr:
-    "Décines-Charpieu bénéficie de la proximité de Lyonbiopôle et du Parc d'activités de la Soie, facilitant ainsi l'accès à des ressources technologiques et industrielles pour les entreprises.",
+    "Décines-Charpieu s'inscrit dans la dynamique de l'est lyonnais, marquée par le Groupama Stadium et l'écosystème événementiel qui l'entoure, le Parc d'activités de la Soie et la proximité du quartier d'affaires de la Part-Dieu. La commune mêle PME industrielles, prestataires logistiques, artisans et commerces de proximité. Ce tissu de TPE et PME, souvent en croissance mais peu outillé en IA, trouve dans Axion-IA un partenaire pragmatique pour automatiser les tâches répétitives, structurer la relation client et gagner du temps sur l'administratif quotidien.",
   ecosystemEn:
-    "Décines-Charpieu bénéficie de la proximité de Lyonbiopôle et du Parc d'activités de la Soie, facilitant ainsi l'accès à des ressources technologiques et industrielles pour les entreprises.",
-  distancesFr: "La gare TGV Lyon Part-Dieu est à 12 km; l'aéroport Lyon-Saint Exupéry à 15 km.",
-  distancesEn: "La gare TGV Lyon Part-Dieu est à 12 km; l'aéroport Lyon-Saint Exupéry à 15 km.",
+    "Décines-Charpieu s'inscrit dans la dynamique de l'est lyonnais, marquée par le Groupama Stadium et l'écosystème événementiel qui l'entoure, le Parc d'activités de la Soie et la proximité du quartier d'affaires de la Part-Dieu. La commune mêle PME industrielles, prestataires logistiques, artisans et commerces de proximité. Ce tissu de TPE et PME, souvent en croissance mais peu outillé en IA, trouve dans Axion-IA un partenaire pragmatique pour automatiser les tâches répétitives, structurer la relation client et gagner du temps sur l'administratif quotidien.",
+  distancesFr:
+    "La gare TGV Lyon Part-Dieu est à environ 12 km, soit 20 minutes par le tramway T3 qui relie directement Décines au centre lyonnais. L'aéroport Lyon-Saint-Exupéry se situe à 15 km par la Rocade Est, ce qui place la commune à moins de 25 minutes des liaisons nationales et internationales. La proximité de l'A43 et de l'A46 facilite les déplacements de nos consultants vers les zones d'activités voisines de Meyzieu, Chassieu et Vaulx-en-Velin.",
+  distancesEn:
+    "La gare TGV Lyon Part-Dieu est à environ 12 km, soit 20 minutes par le tramway T3 qui relie directement Décines au centre lyonnais. L'aéroport Lyon-Saint-Exupéry se situe à 15 km par la Rocade Est, ce qui place la commune à moins de 25 minutes des liaisons nationales et internationales. La proximité de l'A43 et de l'A46 facilite les déplacements de nos consultants vers les zones d'activités voisines de Meyzieu, Chassieu et Vaulx-en-Velin.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Transports terrestres",
-    "Commerce de gros",
+    "Organisation d'événements et activités sportives",
+    "Entreposage et services logistiques",
+    "Industrie manufacturière et métallurgie",
+    "Commerce de gros et de détail",
+    "Construction et travaux spécialisés",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Décines-Charpieu avec Axion-IA permet d'identifier vos besoins en IA pour améliorer l'efficacité.",
-      en: "Réaliser un audit à Décines-Charpieu avec Axion-IA permet d'identifier vos besoins en IA pour améliorer l'efficacité.",
+      fr: "Un audit IA à Décines-Charpieu commence par une journée sur site, dans vos locaux du Parc de la Soie ou des zones d'activités voisines, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
+      en: "Un audit IA à Décines-Charpieu commence par une journée sur site, dans vos locaux du Parc de la Soie ou des zones d'activités voisines, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
     },
     interventions: {
-      fr: "Intervenir à Décines-Charpieu auprès des entreprises du Parc de la Soie pour automatiser les tâches répétitives.",
-      en: "Intervenir à Décines-Charpieu auprès des entreprises du Parc de la Soie pour automatiser les tâches répétitives.",
+      fr: "Nos interventions à Décines-Charpieu ciblent les tâches chronophages des PME locales : relances clients, planification logistique, gestion des plannings événementiels et traitement des documents administratifs, automatisés sans bouleverser vos outils existants.",
+      en: "Nos interventions à Décines-Charpieu ciblent les tâches chronophages des PME locales : relances clients, planification logistique, gestion des plannings événementiels et traitement des documents administratifs, automatisés sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Décines-Charpieu, en tenant compte des spécificités de secteurs comme le commerce de gros.",
-      en: "Implémenter des solutions IA à Décines-Charpieu, en tenant compte des spécificités de secteurs comme le commerce de gros.",
+      fr: "L'implémentation à Décines-Charpieu déploie des solutions IA durables pour les entreprises industrielles et logistiques de l'est lyonnais, avec une attention particulière à la traçabilité et à la conformité RGPD des données traitées.",
+      en: "L'implémentation à Décines-Charpieu déploie des solutions IA durables pour les entreprises industrielles et logistiques de l'est lyonnais, avec une attention particulière à la traçabilité et à la conformité RGPD des données traitées.",
     },
     unAUn: {
-      fr: "Proposer des sessions un-à-un à Décines-Charpieu pour former les dirigeants à l'utilisation de l'IA.",
-      en: "Proposer des sessions un-à-un à Décines-Charpieu pour former les dirigeants à l'utilisation de l'IA.",
+      fr: "Nos sessions un-à-un à Décines-Charpieu forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets tirés de leur propre activité plutôt que des démonstrations génériques.",
+      en: "Nos sessions un-à-un à Décines-Charpieu forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets tirés de leur propre activité plutôt que des démonstrations génériques.",
+    },
+    sitesWeb: {
+      fr: "Pour les entreprises de Décines-Charpieu, nous concevons des sites web et plateformes augmentés par l'IA : prise de rendez-vous événementiels, devis logistiques en ligne et assistants qualifiant les demandes entrantes.",
+      en: "Pour les entreprises de Décines-Charpieu, nous concevons des sites web et plateformes augmentés par l'IA : prise de rendez-vous événementiels, devis logistiques en ligne et assistants qualifiant les demandes entrantes.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Décines-Charpieu ?",
-      a: "Nos audits débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA se déplace-t-il à Décines-Charpieu ?",
+      a: "Oui, nos consultants se déplacent directement dans vos locaux à Décines-Charpieu et dans tout l'est lyonnais. La première rencontre se fait sur site afin de comprendre votre activité réelle avant toute recommandation.",
     },
     {
-      q: "Comment se déroule une intervention IA à Décines-Charpieu ?",
-      a: "Nous nous déplaçons sur site pour analyser vos besoins spécifiques et proposer des solutions adaptées, avec des interventions à partir de 590 € HT.",
+      q: "Quels types d'entreprises accompagnez-vous à Décines-Charpieu ?",
+      a: "Nous accompagnons en priorité les TPE et PME : industrie, logistique, événementiel, commerce et artisanat. Les ETI restent un cas marginal. Notre approche est calibrée pour des structures aux ressources limitées qui veulent un retour rapide.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Décines-Charpieu ?",
-      a: "Les délais varient selon le projet, mais nous nous engageons à intervenir rapidement, généralement sous 5 jours ouvrés après la validation du projet.",
+      q: "Par quoi commence une mission IA à Décines-Charpieu ?",
+      a: "Chaque mission débute par un audit terrain qui cartographie vos processus et hiérarchise les automatisations selon leur retour sur investissement. Vous repartez avec un plan d'action priorisé, lisible par un dirigeant non technicien.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Décines-Charpieu ?",
-      a: "Nous intégrons les exigences RGPD dès la phase d'audit et tout au long de l'implémentation pour assurer la conformité de vos données.",
+      q: "Faut-il changer mes logiciels pour travailler avec Axion-IA ?",
+      a: "Non. Nous nous greffons sur vos outils existants chaque fois que possible et évitons toute dépendance technologique imposée. L'objectif est d'augmenter votre productivité sans vous enfermer dans une solution propriétaire.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Décines-Charpieu ?",
+      a: "La conformité RGPD est intégrée dès l'audit puis à chaque étape de l'implémentation. Nous documentons les traitements, limitons les données collectées et privilégions des solutions hébergées de façon conforme à la réglementation européenne.",
     },
   ],
 };

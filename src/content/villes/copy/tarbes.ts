@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Tarbes (65, Hautes-Pyrénées) — Alstom ferroviaire, arsenal, haras et cheval, agroalimentaire (haricot tarbais), aéronautique Tarmac Aerosave.
 
 import type { VilleCopy } from "./types";
 
 export const TARBES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Tarbes pour optimiser vos processus grâce à l'IA. Avec des acteurs comme Alstom et Safran, la ville est un pôle industriel clé.",
+    "Tarbes (65), préfecture des Hautes-Pyrénées, conjugue un riche héritage industriel avec le site ferroviaire Alstom, l'ancien arsenal et un savoir-faire reconnu autour du cheval et du haras national. La ville cultive aussi une identité agroalimentaire forte avec le haricot tarbais, et accueille une filière aéronautique singulière via le démantèlement et la maintenance d'avions à Tarmac Aerosave. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de ce territoire pyrénéen dans une adoption pragmatique de l'IA.",
   pitchEn:
-    "Axion-IA intervient à Tarbes pour optimiser vos processus grâce à l'IA. Avec des acteurs comme Alstom et Safran, la ville est un pôle industriel clé.",
+    "Tarbes (65), préfecture des Hautes-Pyrénées, conjugue un riche héritage industriel avec le site ferroviaire Alstom, l'ancien arsenal et un savoir-faire reconnu autour du cheval et du haras national. La ville cultive aussi une identité agroalimentaire forte avec le haricot tarbais, et accueille une filière aéronautique singulière via le démantèlement et la maintenance d'avions à Tarmac Aerosave. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de ce territoire pyrénéen dans une adoption pragmatique de l'IA.",
   directAnswerFr:
-    "À Tarbes, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec des secteurs dominants comme la construction aéronautique et la recherche scientifique, et des entreprises telles qu'Alstom et Safran, nous intervenons pour améliorer l'efficacité opérationnelle. Nos solutions incluent des audits, des interventions et des implémentations sur site.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarbes et dans les Hautes-Pyrénées. Nous accompagnons en priorité les TPE puis les PME : sous-traitants ferroviaires gravitant autour d'Alstom, filière aéronautique de maintenance et de recyclage d'avions, producteurs et transformateurs agroalimentaires dont la filière du haricot tarbais, artisans, commerces et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
   directAnswerEn:
-    "À Tarbes, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec des secteurs dominants comme la construction aéronautique et la recherche scientifique, et des entreprises telles qu'Alstom et Safran, nous intervenons pour améliorer l'efficacité opérationnelle. Nos solutions incluent des audits, des interventions et des implémentations sur site.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarbes et dans les Hautes-Pyrénées. Nous accompagnons en priorité les TPE puis les PME : sous-traitants ferroviaires gravitant autour d'Alstom, filière aéronautique de maintenance et de recyclage d'avions, producteurs et transformateurs agroalimentaires dont la filière du haricot tarbais, artisans, commerces et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
+  seoHook: "ferroviaire, aéronautique & agro",
   ecosystemFr:
-    "Tarbes est animé par des secteurs tels que la construction aéronautique et la recherche scientifique. Des entreprises comme Alstom et Safran renforcent ce tissu économique dynamique.",
+    "Tarbes s'appuie sur un héritage industriel marqué par le site ferroviaire Alstom et l'ancien arsenal, qui ont façonné un savoir-faire mécanique durable. La filière aéronautique s'illustre par les activités de maintenance et de recyclage d'avions de Tarmac Aerosave sur l'aéroport voisin. L'agroalimentaire occupe une place de choix avec le haricot tarbais et les productions locales, tandis que la tradition équestre du haras national perdure. Un dense tissu de TPE artisanales, commerces et services complète cette économie pyrénéenne où l'IA peut soulager la gestion et fluidifier la relation client.",
   ecosystemEn:
-    "Tarbes est animé par des secteurs tels que la construction aéronautique et la recherche scientifique. Des entreprises comme Alstom et Safran renforcent ce tissu économique dynamique.",
+    "Tarbes s'appuie sur un héritage industriel marqué par le site ferroviaire Alstom et l'ancien arsenal, qui ont façonné un savoir-faire mécanique durable. La filière aéronautique s'illustre par les activités de maintenance et de recyclage d'avions de Tarmac Aerosave sur l'aéroport voisin. L'agroalimentaire occupe une place de choix avec le haricot tarbais et les productions locales, tandis que la tradition équestre du haras national perdure. Un dense tissu de TPE artisanales, commerces et services complète cette économie pyrénéenne où l'IA peut soulager la gestion et fluidifier la relation client.",
   distancesFr:
-    "La gare TGV de Tarbes est à 0 km du centre, et l'aéroport de Tarbes-Lourdes-Pyrénées à 10 km.",
+    "Aéroport de Tarbes-Lourdes-Pyrénées à 15 min, gare de Tarbes à 5 min, Pau à 45 min, Toulouse à 1h45 et Bordeaux à 2h30. Nos consultants se déplacent depuis Toulouse et Bordeaux.",
   distancesEn:
-    "La gare TGV de Tarbes est à 0 km du centre, et l'aéroport de Tarbes-Lourdes-Pyrénées à 10 km.",
+    "Aéroport de Tarbes-Lourdes-Pyrénées à 15 min, gare de Tarbes à 5 min, Pau à 45 min, Toulouse à 1h45 et Bordeaux à 2h30. Nos consultants se déplacent depuis Toulouse et Bordeaux.",
   topSectorsNaf: [
-    "Produits informatiques",
-    "Construction aéronautique",
-    "Recherche scientifique",
-    "Commerce de détail",
+    "Construction et maintenance ferroviaire",
+    "Aéronautique et recyclage d'avions",
+    "Agroalimentaire (haricot tarbais)",
+    "Mécanique et métallurgie",
+    "Artisanat et commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Tarbes avec Axion-IA — identifier des opportunités d'amélioration immédiates.",
-      en: "Réaliser un audit à Tarbes avec Axion-IA — identifier des opportunités d'amélioration immédiates.",
+      fr: "Audit IA à Tarbes : diagnostic du potentiel d'automatisation pour les sous-traitants ferroviaires et aéronautiques, l'agroalimentaire et les artisans. Feuille de route priorisée et ROI documenté.",
+      en: "Audit IA à Tarbes : diagnostic du potentiel d'automatisation pour les sous-traitants ferroviaires et aéronautiques, l'agroalimentaire et les artisans. Feuille de route priorisée et ROI documenté.",
     },
     interventions: {
-      fr: "Intervenir à Tarbes dans la Zone Industrielle de Bastillac — optimiser vos opérations.",
-      en: "Intervenir à Tarbes dans la Zone Industrielle de Bastillac — optimiser vos opérations.",
+      fr: "Interventions IA sur site à Tarbes : ateliers pratiques pour la production industrielle, l'agroalimentaire et l'administratif. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Tarbes : ateliers pratiques pour la production industrielle, l'agroalimentaire et l'administratif. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Tarbes — intégrer efficacement vos systèmes existants.",
-      en: "Implémenter des solutions IA à Tarbes — intégrer efficacement vos systèmes existants.",
+      fr: "Implémentation IA à Tarbes : automatisation des devis et de la planification de production, traçabilité agroalimentaire assistée, classification documentaire et agents conversationnels.",
+      en: "Implémentation IA à Tarbes : automatisation des devis et de la planification de production, traçabilité agroalimentaire assistée, classification documentaire et agents conversationnels.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 à Tarbes — développer vos compétences IA de manière ciblée.",
-      en: "Accompagner en 1-to-1 à Tarbes — développer vos compétences IA de manière ciblée.",
+      fr: "Coaching 1-to-1 à Tarbes : sessions sur site ou en visio pour dirigeants de TPE/PME, producteurs, artisans et gérants souhaitant piloter l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Tarbes : sessions sur site ou en visio pour dirigeants de TPE/PME, producteurs, artisans et gérants souhaitant piloter l'IA dans leur activité.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Tarbes : plateformes pour PME industrielles, producteurs agroalimentaires et commerces, avec recherche IA, devis automatisés et formulaires intelligents.",
+      en: "Sites web augmentés à Tarbes : plateformes pour PME industrielles, producteurs agroalimentaires et commerces, avec recherche IA, devis automatisés et formulaires intelligents.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Tarbes ?",
-      a: "Nos audits à Tarbes débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Tarbes et dans les Hautes-Pyrénées ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Tarbes, Lourdes, Bagnères-de-Bigorre et tout le département. Nos consultants se déplacent depuis Toulouse et Bordeaux pour les missions sur site.",
     },
     {
-      q: "Comment se déroule une intervention à Tarbes ?",
-      a: "Nous nous déplaçons sur site à Tarbes pour réaliser nos interventions. Nous travaillons directement avec vos équipes pour une mise en œuvre rapide et efficace.",
+      q: "Travaillez-vous avec les sous-traitants ferroviaires et aéronautiques ?",
+      a: "Oui, nous accompagnons les PME gravitant autour d'Alstom et de la filière aéronautique sur la planification, la gestion documentaire et l'automatisation des processus techniques.",
     },
     {
-      q: "Quels délais pour une implémentation à Tarbes ?",
-      a: "Les délais pour une implémentation à Tarbes varient selon le projet, mais nous nous engageons à intervenir rapidement pour minimiser les interruptions.",
+      q: "Accompagnez-vous la filière agroalimentaire locale ?",
+      a: "Oui, des producteurs et transformateurs jusqu'aux acteurs du haricot tarbais : traçabilité assistée, automatisation des commandes et agents conversationnels pour la relation client.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Tarbes ?",
-      a: "Axion-IA veille à respecter toutes les normes RGPD lors de ses interventions à Tarbes, assurant la protection des données personnelles.",
+      q: "Quels services proposez-vous aux TPE et artisans tarbais ?",
+      a: "Audit Flash pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
     },
     {
-      q: "Proposez-vous des formations IA à Tarbes ?",
-      a: "Oui, nous offrons des sessions de formation en 1-to-1 à Tarbes, à partir de 990 € HT, pour développer les compétences IA de vos équipes.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Tarbes ?",
+      a: "Chaque mission respecte le RGPD et l'AI Act européen : minimisation des données, hébergement maîtrisé et absence de dépendance technologique imposée à vos équipes.",
     },
   ],
 };

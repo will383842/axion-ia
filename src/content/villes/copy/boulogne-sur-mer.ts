@@ -1,61 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Boulogne-sur-Mer (62, Pas-de-Calais) — 1er port de pêche de France, agroalimentaire mer, Capécure, Nausicaá.
 
 import type { VilleCopy } from "./types";
 
 export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Boulogne-sur-Mer, au cœur de l'industrie agroalimentaire avec Findus et la zone industrielle de Capécure, pour automatiser vos processus métier.",
+    "Boulogne-sur-Mer (62), premier port de pêche de France, est le cœur de la filière des produits de la mer : marée, transformation et logistique du froid sur la zone de Capécure, tourisme autour de Nausicaá. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME boulonnaises, les ETI en complément.",
   pitchEn:
-    "Axion-IA intervient à Boulogne-sur-Mer, au cœur de l'industrie agroalimentaire avec Findus et la zone industrielle de Capécure, pour automatiser vos processus métier.",
+    "Boulogne-sur-Mer (62), premier port de pêche de France, est le cœur de la filière des produits de la mer : marée, transformation et logistique du froid sur la zone de Capécure, tourisme autour de Nausicaá. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME boulonnaises, les ETI en complément.",
   directAnswerFr:
-    "À Boulogne-sur-Mer, Axion-IA propose des solutions d'IA adaptées aux secteurs de l'industrie agroalimentaire et de la pêche. Avec des acteurs tels que Findus et Capécure, nous optimisons les processus de production et de logistique. Nos services incluent des audits pour identifier les leviers d'amélioration et des interventions sur site pour une mise en œuvre rapide.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Boulogne-sur-Mer et sur toute la Côte d'Opale. Nous accompagnons en priorité les TPE et PME locales — mareyeurs et transformateurs de produits de la mer de Capécure, logistique du froid, tourisme et restauration, commerces — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "À Boulogne-sur-Mer, Axion-IA propose des solutions d'IA adaptées aux secteurs de l'industrie agroalimentaire et de la pêche. Avec des acteurs tels que Findus et Capécure, nous optimisons les processus de production et de logistique. Nos services incluent des audits pour identifier les leviers d'amélioration et des interventions sur site pour une mise en œuvre rapide.",
-  seoHook: "industrie agroalimentaire & pêche",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Boulogne-sur-Mer et sur toute la Côte d'Opale. Nous accompagnons en priorité les TPE et PME locales — mareyeurs et transformateurs de produits de la mer de Capécure, logistique du froid, tourisme et restauration, commerces — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+  seoHook: "port de pêche & produits de la mer",
   ecosystemFr:
-    "Le tissu économique de Boulogne-sur-Mer s'articule autour de l'industrie agroalimentaire et de la pêche, avec des entreprises comme Findus et la zone industrielle de Capécure.",
+    "Boulogne-sur-Mer structure la première filière française des produits de la mer : pêche, mareyage et transformation agroalimentaire sur la zone de Capécure, logistique du froid, complétés par le tourisme (Nausicaá) et le commerce. Un tissu de TPE/PME spécialisées, avec quelques ETI agroalimentaires.",
   ecosystemEn:
-    "Le tissu économique de Boulogne-sur-Mer s'articule autour de l'industrie agroalimentaire et de la pêche, avec des entreprises comme Findus et la zone industrielle de Capécure.",
-  distancesFr: "La gare TGV de Calais-Fréthun est située à 35 km de Boulogne-sur-Mer.",
-  distancesEn: "La gare TGV de Calais-Fréthun est située à 35 km de Boulogne-sur-Mer.",
-  topSectorsNaf: ["Industrie agroalimentaire", "Pêche", "Entreposage", "Commerce de détail"],
+    "Boulogne-sur-Mer structure la première filière française des produits de la mer : pêche, mareyage et transformation agroalimentaire sur la zone de Capécure, logistique du froid, complétés par le tourisme (Nausicaá) et le commerce. Un tissu de TPE/PME spécialisées, avec quelques ETI agroalimentaires.",
+  distancesFr:
+    "Gare de Boulogne-Ville sur la ligne Paris-Calais. Gare TGV de Calais-Fréthun à 35 km. Calais à 35 min, Lille à 1h30, tunnel sous la Manche à 40 min.",
+  distancesEn:
+    "Gare de Boulogne-Ville sur la ligne Paris-Calais. Gare TGV de Calais-Fréthun à 35 km. Calais à 35 min, Lille à 1h30, tunnel sous la Manche à 40 min.",
+  topSectorsNaf: [
+    "Pêche et mareyage (port de Boulogne)",
+    "Transformation agroalimentaire des produits de la mer (Capécure)",
+    "Logistique et entreposage frigorifique",
+    "Tourisme et restauration (Nausicaá, Côte d'Opale)",
+    "Commerce de gros et de détail",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Boulogne-sur-Mer pour identifier les processus automatisables — à partir de 490 € HT.",
-      en: "Réaliser un audit à Boulogne-sur-Mer pour identifier les processus automatisables — à partir de 490 € HT.",
+      fr: "Audit IA à Boulogne-sur-Mer : diagnostic des automatisations chez les mareyeurs, transformateurs de Capécure, logisticiens du froid et acteurs du tourisme. Gisements de ROI quantifiés, à tarif public.",
+      en: "Audit IA à Boulogne-sur-Mer : diagnostic des automatisations chez les mareyeurs, transformateurs de Capécure, logisticiens du froid et acteurs du tourisme. Gisements de ROI quantifiés, à tarif public.",
     },
     interventions: {
-      fr: "Intervenir à Boulogne-sur-Mer sur site pour optimiser vos opérations — intervention dès 590 € HT.",
-      en: "Intervenir à Boulogne-sur-Mer sur site pour optimiser vos opérations — intervention dès 590 € HT.",
+      fr: "Interventions IA sur site à Boulogne-sur-Mer : nous venons à l'atelier de marée, dans l'usine de transformation, l'entrepôt frigorifique ou la boutique pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Boulogne-sur-Mer : nous venons à l'atelier de marée, dans l'usine de transformation, l'entrepôt frigorifique ou la boutique pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Boulogne-sur-Mer, notamment dans l'industrie agroalimentaire — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Boulogne-sur-Mer, notamment dans l'industrie agroalimentaire — dès 990 € HT.",
+      fr: "Implémentation IA à Boulogne-sur-Mer : traçabilité et contrôle qualité dans la transformation des produits de la mer, prévision de la demande et des stocks, optimisation de la logistique du froid, automatisation administrative du mareyage.",
+      en: "Implémentation IA à Boulogne-sur-Mer : traçabilité et contrôle qualité dans la transformation des produits de la mer, prévision de la demande et des stocks, optimisation de la logistique du froid, automatisation administrative du mareyage.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Boulogne-sur-Mer pour diriger efficacement l'intégration IA — à partir de 990 € HT.",
-      en: "Accompagner en un-à-un à Boulogne-sur-Mer pour diriger efficacement l'intégration IA — à partir de 990 € HT.",
+      fr: "Coaching un-à-un à Boulogne-sur-Mer : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — mareyeurs, transformateurs, logisticiens, restaurateurs et commerçants de la Côte d'Opale.",
+      en: "Coaching un-à-un à Boulogne-sur-Mer : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — mareyeurs, transformateurs, logisticiens, restaurateurs et commerçants de la Côte d'Opale.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Boulogne-sur-Mer : portails B2B et boutiques en ligne avec IA intégrée pour mareyeurs et transformateurs — catalogue marée, suivi de commandes, traçabilité et espace client.",
+      en: "Sites web augmentés à Boulogne-sur-Mer : portails B2B et boutiques en ligne avec IA intégrée pour mareyeurs et transformateurs — catalogue marée, suivi de commandes, traçabilité et espace client.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Boulogne-sur-Mer ?",
-      a: "Nos audits IA à Boulogne-sur-Mer démarrent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Boulogne-sur-Mer et sur la Côte d'Opale ?",
+      a: "Oui, Axion-IA se déplace sur site à Boulogne-sur-Mer, Calais et sur toute la Côte d'Opale. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
-      q: "Comment se déroule l'intervention sur site à Boulogne-sur-Mer ?",
-      a: "Williams se déplace à Boulogne-sur-Mer pour une intervention sur site, généralement dans les 5 jours ouvrés après la demande, pour optimiser vos processus.",
+      q: "Travaillez-vous avec les mareyeurs et transformateurs de Capécure ?",
+      a: "Oui, c'est notre cœur de cible. Traçabilité et contrôle qualité assistés, prévision des stocks et de la demande, automatisation de la saisie documentaire, adaptés à la filière des produits de la mer.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD pour ses interventions à Boulogne-sur-Mer ?",
-      a: "Oui, Axion-IA garantit la conformité au RGPD lors de ses interventions à Boulogne-sur-Mer, assurant la protection des données personnelles.",
+      q: "Aidez-vous la logistique du froid et l'entreposage ?",
+      a: "Oui. Pour la logistique frigorifique, nous optimisons la préparation de commandes, la planification des flux et le suivi des expéditions, sans bouleverser vos outils existants.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Boulogne-sur-Mer ?",
-      a: "Les secteurs de l'industrie agroalimentaire et de la pêche à Boulogne-sur-Mer bénéficient particulièrement de l'IA pour améliorer l'efficacité de leurs opérations.",
+      q: "Accompagnez-vous le tourisme et la restauration boulonnais ?",
+      a: "Oui. Agents de réservation, réponses automatiques multilingues, gestion des avis et optimisation du remplissage, autour de Nausicaá et de la vieille ville.",
+    },
+    {
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Boulogne-sur-Mer ?",
+      a: "Non. Notre priorité, ce sont les TPE et PME de la filière mer et du commerce. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+    },
+    {
+      q: "Comment se déroule une mission IA à Boulogne-sur-Mer ?",
+      a: "Nos consultants se déplacent dans vos locaux de la Côte d'Opale après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
     },
   ],
 };

@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Alès (30, Gard) — ancien bassin minier reconverti, porte des Cévennes, industrie & PME.
 
 import type { VilleCopy } from "./types";
 
 export const ALES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Alès pour optimiser vos processus avec l'IA. Le Parc Scientifique et Technologique de l'Arche est un atout local pour l'innovation.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Alès pour optimiser vos processus avec l'IA. Le Parc Scientifique et Technologique de l'Arche est un atout local pour l'innovation.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "À Alès, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des groupes tels que BRL et IMERYS présents dans la région, notre expertise en IA s'adapte aux besoins spécifiques des secteurs dominants comme la construction et le commerce de détail. Nos services incluent des audits et implémentations.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "À Alès, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des groupes tels que BRL et IMERYS présents dans la région, notre expertise en IA s'adapte aux besoins spécifiques des secteurs dominants comme la construction et le commerce de détail. Nos services incluent des audits et implémentations.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+  seoHook: "industrie & Cévennes",
   ecosystemFr:
-    "Alès bénéficie de la proximité du Parc Scientifique et Technologique de l'Arche et de l'Institut des Sciences de l'Ingénieur de Montpellier. Ces institutions soutiennent l'innovation locale.",
+    "Alès, ancien coeur du bassin houiller cévenol, s'est reconvertie en pôle industriel et technologique appuyé par l'École des Mines d'Alès (IMT Mines Alès) et le parc scientifique de l'Arche. Le tissu mêle PME industrielles et de sous-traitance, BTP, mécanique, plasturgie, commerce et tourisme vert au pied des Cévennes, avec un fort besoin de modernisation des process.",
   ecosystemEn:
-    "Alès bénéficie de la proximité du Parc Scientifique et Technologique de l'Arche et de l'Institut des Sciences de l'Ingénieur de Montpellier. Ces institutions soutiennent l'innovation locale.",
+    "Alès, ancien coeur du bassin houiller cévenol, s'est reconvertie en pôle industriel et technologique appuyé par l'École des Mines d'Alès (IMT Mines Alès) et le parc scientifique de l'Arche. Le tissu mêle PME industrielles et de sous-traitance, BTP, mécanique, plasturgie, commerce et tourisme vert au pied des Cévennes, avec un fort besoin de modernisation des process.",
   distancesFr:
-    "La gare TGV de Nîmes est à 45 km d'Alès, facilitant l'accès à nos interventions sur site.",
+    "Alès est reliée à Nîmes (gare TGV) en environ 45 km par la N106. L'aéroport de Nîmes-Garons et l'A9 sont accessibles via Nîmes ; Montpellier est à environ 1h.",
   distancesEn:
-    "La gare TGV de Nîmes est à 45 km d'Alès, facilitant l'accès à nos interventions sur site.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transports terrestres"],
+    "Alès est reliée à Nîmes (gare TGV) en environ 45 km par la N106. L'aéroport de Nîmes-Garons et l'A9 sont accessibles via Nîmes ; Montpellier est à environ 1h.",
+  topSectorsNaf: [
+    "Industrie et sous-traitance mécanique",
+    "Plasturgie et matériaux",
+    "BTP et travaux spécialisés",
+    "Commerce de détail et de gros",
+    "Tourisme vert et activités de plein air (Cévennes)",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Alès permet de cibler les axes d'amélioration IA dans vos processus. Départ à 490 € HT.",
-      en: "Réaliser un audit à Alès permet de cibler les axes d'amélioration IA dans vos processus. Départ à 490 € HT.",
+      fr: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Alès auprès des entreprises locales pour automatiser les tâches administratives et optimiser l'efficacité.",
-      en: "Intervenir à Alès auprès des entreprises locales pour automatiser les tâches administratives et optimiser l'efficacité.",
+      fr: "Interventions IA sur site à Alès : formats adaptés à l'atelier industriel, au chantier ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Alès : formats adaptés à l'atelier industriel, au chantier ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Alès, en tenant compte des spécificités des secteurs comme la construction.",
-      en: "Implémenter des solutions IA à Alès, en tenant compte des spécificités des secteurs comme la construction.",
+      fr: "Implémentation IA à Alès : maintenance prédictive, contrôle qualité visuel, optimisation de production et de planning, chiffrage automatisé de devis et agents conversationnels B2B pour les PME industrielles.",
+      en: "Implémentation IA à Alès : maintenance prédictive, contrôle qualité visuel, optimisation de production et de planning, chiffrage automatisé de devis et agents conversationnels B2B pour les PME industrielles.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Alès pour intégrer l'IA dans sa stratégie d'entreprise, avec des sessions à partir de 990 € HT.",
-      en: "Accompagner un dirigeant à Alès pour intégrer l'IA dans sa stratégie d'entreprise, avec des sessions à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Alès pour dirigeants de TPE et PME industrielles, BTP ou commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Alès pour dirigeants de TPE et PME industrielles, BTP ou commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Alès : portails B2B, configurateurs et outils IA sur mesure pour l'industrie, la sous-traitance et le tourisme vert cévenol.",
+      en: "Sites web augmentés à Alès : portails B2B, configurateurs et outils IA sur mesure pour l'industrie, la sous-traitance et le tourisme vert cévenol.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Alès ?",
-      a: "Nos interventions à Alès commencent à partir de 590 € HT pour une Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA accompagne-t-il les PME industrielles d'Alès ?",
+      a: "Oui, l'industrie et la sous-traitance issues de la reconversion du bassin minier sont au coeur de notre cible alésienne, ainsi que le BTP et le commerce. Nous travaillons en priorité avec les TPE et PME, l'accompagnement des ETI restant marginal.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Alès ?",
-      a: "Nos experts se déplacent sur site à Alès dans un délai de 5 jours ouvrés, en tenant compte des infrastructures de transport comme la gare TGV de Nîmes.",
+      q: "Quels gains IA pour un sous-traitant ou industriel alésien ?",
+      a: "Maintenance prédictive des machines, contrôle qualité visuel, optimisation de planning et chiffrage automatisé des devis. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Alès ?",
-      a: "Les délais d'implémentation à Alès varient selon le projet, mais nos services débutent généralement sous 4 semaines après l'audit initial.",
+      q: "Quel est le tarif d'une intervention IA à Alès ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tous nos tarifs sont publics et sans devis opaque ; chaque chantier d'implémentation est ensuite chiffré selon le ROI.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors des interventions à Alès ?",
-      a: "Oui, toutes nos interventions à Alès sont conformes au RGPD. Nous garantissons la protection des données personnelles de nos clients.",
+      q: "Intervenez-vous dans les Cévennes autour d'Alès ?",
+      a: "Oui, nous couvrons le bassin alésien et les Cévennes : Saint-Christol-lès-Alès, Saint-Privat-des-Vieux, La Grand-Combe et les communes du Gard nord. Frais de déplacement facturés à part, tarifs publics.",
+    },
+    {
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui, chaque solution déployée à Alès respecte le RGPD et l'AI Act. Vos données de production et données clients restent maîtrisées, sans verrou technologique ni dépendance à un prestataire unique.",
     },
   ],
 };

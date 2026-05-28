@@ -1,67 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Vichy (03, Allier) — reine des villes d'eaux, thermalisme et bien-être, cosmétique (marque Vichy / L'Oréal), eau minérale, pôle sportif CREPS.
 
 import type { VilleCopy } from "./types";
 
 export const VICHY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Vichy, où le commerce de détail et les activités pour la santé humaine dominent. Nous accompagnons les entreprises locales dans l'optimisation de leurs processus grâce à l'IA.",
+    "À Vichy (03), reine des villes d'eaux, Axion-IA accompagne les TPE et PME du thermalisme, du bien-être et du tourisme santé. Établissements thermaux et spas, hôtellerie et résidences de cure, instituts de cosmétique et de soins dans le sillage de la marque Vichy, restauration, commerces et professions libérales : nous concevons des usages IA concrets qui allègent la gestion sans rien retirer à la qualité d'accueil.",
   pitchEn:
-    "Axion-IA intervient à Vichy, où le commerce de détail et les activités pour la santé humaine dominent. Nous accompagnons les entreprises locales dans l'optimisation de leurs processus grâce à l'IA.",
+    "À Vichy (03), reine des villes d'eaux, Axion-IA accompagne les TPE et PME du thermalisme, du bien-être et du tourisme santé. Établissements thermaux et spas, hôtellerie et résidences de cure, instituts de cosmétique et de soins dans le sillage de la marque Vichy, restauration, commerces et professions libérales : nous concevons des usages IA concrets qui allègent la gestion sans rien retirer à la qualité d'accueil.",
   directAnswerFr:
-    "À Vichy, Axion-IA propose des audits et interventions pour les entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Avec des entités comme L'Oréal et Danone présentes, notre équipe nationale se déplace sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vichy (Allier) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les établissements thermaux et spas, l'hôtellerie de cure, les instituts de cosmétique et de bien-être, la restauration et les commerces de cette destination thermale de renom. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "À Vichy, Axion-IA propose des audits et interventions pour les entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Avec des entités comme L'Oréal et Danone présentes, notre équipe nationale se déplace sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
-  seoHook: "commerce détail & santé humaine",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vichy (Allier) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les établissements thermaux et spas, l'hôtellerie de cure, les instituts de cosmétique et de bien-être, la restauration et les commerces de cette destination thermale de renom. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+  seoHook: "thermalisme & bien-être",
   ecosystemFr:
-    "Vichy accueille des entreprises comme L'Oréal et Danone, renforçant ainsi son tissu économique. Le parc d'activités de Vichy-Rhue constitue un pôle d'attraction pour les entreprises cherchant à innover.",
+    "Vichy bâtit son économie sur le thermalisme et le bien-être, héritage de la reine des villes d'eaux : établissements thermaux, spas et résidences de cure rythment l'activité saisonnière. La notoriété mondiale de l'eau minérale et de la cosmétique de marque Vichy irrigue un tissu d'instituts de soins et d'esthétique. Le pôle sportif du CREPS, l'hôtellerie et un tourisme santé en croissance complètent un écosystème de TPE et PME de services où l'IA optimise réservations, accueil et fidélisation.",
   ecosystemEn:
-    "Vichy accueille des entreprises comme L'Oréal et Danone, renforçant ainsi son tissu économique. Le parc d'activités de Vichy-Rhue constitue un pôle d'attraction pour les entreprises cherchant à innover.",
+    "Vichy bâtit son économie sur le thermalisme et le bien-être, héritage de la reine des villes d'eaux : établissements thermaux, spas et résidences de cure rythment l'activité saisonnière. La notoriété mondiale de l'eau minérale et de la cosmétique de marque Vichy irrigue un tissu d'instituts de soins et d'esthétique. Le pôle sportif du CREPS, l'hôtellerie et un tourisme santé en croissance complètent un écosystème de TPE et PME de services où l'IA optimise réservations, accueil et fidélisation.",
   distancesFr:
-    "La Gare TGV de Moulins-sur-Allier est située à 60 km de Vichy, facilitant l'accès aux grandes métropoles.",
+    "Vichy est reliée à Paris en 3 heures par train direct (gare de Vichy) et à Clermont-Ferrand en 35 minutes. L'aéroport de Clermont-Ferrand Auvergne est à 60 km, l'autoroute A719 connecte la ville à l'A71 vers Paris et Montluçon.",
   distancesEn:
-    "La Gare TGV de Moulins-sur-Allier est située à 60 km de Vichy, facilitant l'accès aux grandes métropoles.",
-  topSectorsNaf: ["Commerce de détail", "Santé humaine", "Hébergement", "Restauration"],
+    "Vichy est reliée à Paris en 3 heures par train direct (gare de Vichy) et à Clermont-Ferrand en 35 minutes. L'aéroport de Clermont-Ferrand Auvergne est à 60 km, l'autoroute A719 connecte la ville à l'A71 vers Paris et Montluçon.",
+  topSectorsNaf: [
+    "Activités thermales et de bien-être",
+    "Hôtellerie et hébergement de cure",
+    "Instituts de cosmétique et de soins",
+    "Restauration",
+    "Activités sportives et de loisirs",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vichy pour identifier les opportunités IA locales — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Vichy pour identifier les opportunités IA locales — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Vichy : diagnostic adapté aux établissements thermaux, spas, hôtels de cure, instituts de soins et restaurants. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
+      en: "Audit IA à Vichy : diagnostic adapté aux établissements thermaux, spas, hôtels de cure, instituts de soins et restaurants. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
     },
     interventions: {
-      fr: "Intervenir à Vichy pour automatiser les processus dans les commerces de détail — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Vichy pour automatiser les processus dans les commerces de détail — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Vichy : sessions adaptées aux équipes d'accueil thermal, d'hôtellerie et d'institut. Vos collaborateurs deviennent autonomes sur la réservation, la relation curiste et le suivi qualité.",
+      en: "Interventions IA sur site à Vichy : sessions adaptées aux équipes d'accueil thermal, d'hôtellerie et d'institut. Vos collaborateurs deviennent autonomes sur la réservation, la relation curiste et le suivi qualité.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Vichy avec le soutien de notre équipe nationale — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Vichy avec le soutien de notre équipe nationale — à partir de 990 € HT.",
+      fr: "Implémentation IA à Vichy : automatisation des réservations de cures et de soins, gestion des plannings thermaux, relances et fidélisation des curistes, reporting d'occupation pour l'hôtellerie de cure.",
+      en: "Implémentation IA à Vichy : automatisation des réservations de cures et de soins, gestion des plannings thermaux, relances et fidélisation des curistes, reporting d'occupation pour l'hôtellerie de cure.",
     },
     unAUn: {
-      fr: "Accompagner individuellement les dirigeants de Vichy — sessions 1-to-1 dès 990 € HT.",
-      en: "Accompagner individuellement les dirigeants de Vichy — sessions 1-to-1 dès 990 € HT.",
+      fr: "Accompagnement un-à-un à Vichy : sessions individuelles pour dirigeants de TPE et PME du thermalisme et du bien-être, dans vos locaux ou en visio, pour adopter l'IA à votre rythme saisonnier.",
+      en: "Accompagnement un-à-un à Vichy : sessions individuelles pour dirigeants de TPE et PME du thermalisme et du bien-être, dans vos locaux ou en visio, pour adopter l'IA à votre rythme saisonnier.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Vichy : plateformes de réservation pour établissements thermaux, spas et hôtels de cure, avec devis de cure intelligent, contenu multilingue et fidélisation des curistes.",
+      en: "Sites web augmentés à Vichy : plateformes de réservation pour établissements thermaux, spas et hôtels de cure, avec devis de cure intelligent, contenu multilingue et fidélisation des curistes.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Vichy ?",
-      a: "Nos audits IA à Vichy commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont disponibles sur notre site.",
+      q: "Axion-IA intervient-il à Vichy et dans l'Allier ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Vichy et de son agglomération thermale. Nos consultants se déplacent sur site ou interviennent en visio, avec Clermont-Ferrand à 35 minutes et Paris à 3 heures de train.",
     },
     {
-      q: "Comment se déroule une intervention IA à Vichy ?",
-      a: "Nous nous déplaçons sur site à Vichy pour réaliser des interventions IA, avec un tarif de départ de 590 € HT pour une Intervention Essentielle.",
+      q: "Travaillez-vous avec les établissements thermaux et de bien-être ?",
+      a: "Oui, le thermalisme et le bien-être sont au cœur de notre approche vichyssoise. Nous automatisons la réservation de cures et de soins, la gestion des plannings, les relances et la fidélisation des curistes, sans alourdir l'accueil.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Vichy ?",
-      a: "Les délais d'implémentation dépendent de la complexité du projet, mais notre équipe s'engage à intervenir rapidement une fois le projet validé.",
+      q: "Accompagnez-vous les instituts de cosmétique et de soins ?",
+      a: "Oui, dans le sillage de la notoriété cosmétique de Vichy. Pour les instituts et spas, nous mettons en place prise de rendez-vous IA, suivi client personnalisé et campagnes de fidélisation adaptées à une clientèle exigeante.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors des interventions à Vichy ?",
-      a: "Oui, toutes nos interventions à Vichy respectent scrupuleusement le RGPD, garantissant la protection des données personnelles.",
+      q: "Quels usages IA pour l'hôtellerie de cure vichyssoise ?",
+      a: "Gestion des réservations multicanal, réponses automatiques multilingues, optimisation de l'occupation selon la saison thermale et reporting clair pour piloter le chiffre d'affaires. Le tout calibré pour des structures à taille humaine.",
     },
     {
-      q: "Comment Axion-IA assure-t-il le suivi post-intervention à Vichy ?",
-      a: "Nous offrons un suivi personnalisé post-intervention à Vichy pour garantir la pérennité des solutions mises en place.",
+      q: "Comment se déroule une mission depuis l'extérieur de Vichy ?",
+      a: "Vichy est à 35 minutes de Clermont-Ferrand, 3 heures de Paris en train direct et reliée à l'A71 par l'A719. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
     },
   ],
 };

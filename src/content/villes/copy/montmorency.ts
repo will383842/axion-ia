@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Montmorency (95, Val-d'Oise) — collégiale Saint-Martin, mémoire de Jean-Jacques Rousseau, forêt de Montmorency, banlieue résidentielle.
 
 import type { VilleCopy } from "./types";
 
 export const MONTMORENCY_COPY: VilleCopy = {
   pitchFr:
-    "À Montmorency, Axion-IA intervient pour optimiser les processus des entreprises locales. Proche de Paris, ce bassin économique dynamique inclut des acteurs comme LVMH et Cap Digital.",
+    "Montmorency, dans le Val-d'Oise, est une ville résidentielle de caractère, dominée par sa collégiale Saint-Martin et marquée par le souvenir de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency. Au nord de Paris, son économie repose sur le commerce de proximité, les professions de santé, l'artisanat et les services aux particuliers et aux entreprises. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME locales pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   pitchEn:
-    "À Montmorency, Axion-IA intervient pour optimiser les processus des entreprises locales. Proche de Paris, ce bassin économique dynamique inclut des acteurs comme LVMH et Cap Digital.",
+    "Montmorency, dans le Val-d'Oise, est une ville résidentielle de caractère, dominée par sa collégiale Saint-Martin et marquée par le souvenir de Jean-Jacques Rousseau, en lisière de la forêt de Montmorency. Au nord de Paris, son économie repose sur le commerce de proximité, les professions de santé, l'artisanat et les services aux particuliers et aux entreprises. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME locales pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits et des implémentations, adaptés aux besoins des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmorency (95, Val-d'Oise). Nous accompagnons en priorité les TPE puis les PME de cette ville résidentielle du nord parisien : commerces de proximité, professions de santé, artisans, professions libérales et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits et des implémentations, adaptés aux besoins des entreprises locales.",
-  seoHook: "commerce détail & santé humaine",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmorency (95, Val-d'Oise). Nous accompagnons en priorité les TPE puis les PME de cette ville résidentielle du nord parisien : commerces de proximité, professions de santé, artisans, professions libérales et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+  seoHook: "commerce proximité & santé",
   ecosystemFr:
-    "Montmorency est entourée de pôles économiques comme Enghien-les-Bains et Sannois. L'influence de LVMH et Cap Digital à Paris soutient les initiatives IA dans cette région.",
+    "Montmorency cultive un cadre résidentiel et patrimonial, entre sa collégiale Saint-Martin, la maison de Jean-Jacques Rousseau et la vaste forêt de Montmorency qui structure le territoire. Son économie de proximité s'appuie sur les commerces du centre, les professions de santé, les cabinets libéraux et l'artisanat, dans un bassin résidentiel aisé du Val-d'Oise relié à Paris et à Enghien-les-Bains. Ces TPE et PME de services, riches en rendez-vous et relances, sont idéales pour l'automatisation IA et les agents conversationnels.",
   ecosystemEn:
-    "Montmorency est entourée de pôles économiques comme Enghien-les-Bains et Sannois. L'influence de LVMH et Cap Digital à Paris soutient les initiatives IA dans cette région.",
+    "Montmorency cultive un cadre résidentiel et patrimonial, entre sa collégiale Saint-Martin, la maison de Jean-Jacques Rousseau et la vaste forêt de Montmorency qui structure le territoire. Son économie de proximité s'appuie sur les commerces du centre, les professions de santé, les cabinets libéraux et l'artisanat, dans un bassin résidentiel aisé du Val-d'Oise relié à Paris et à Enghien-les-Bains. Ces TPE et PME de services, riches en rendez-vous et relances, sont idéales pour l'automatisation IA et les agents conversationnels.",
   distancesFr:
-    "Montmorency est à 15 km de la Gare de Paris-Nord et à 25 km de l'aéroport Paris-Charles-de-Gaulle.",
+    "Montmorency est reliée à Paris en une vingtaine de minutes via la gare d'Enghien-les-Bains, voisine, qui dessert la gare Paris-Nord par le Transilien. Le centre de Paris est à environ 15 km, l'aéroport Paris-Charles-de-Gaulle à 25 km. La forêt de Montmorency, Sannois et Saint-Leu-la-Forêt sont aux portes de la ville. Cette position dans le nord du Val-d'Oise facilite nos interventions sur tout le bassin résidentiel local.",
   distancesEn:
-    "Montmorency est à 15 km de la Gare de Paris-Nord et à 25 km de l'aéroport Paris-Charles-de-Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Santé humaine", "Construction", "Restauration"],
+    "Montmorency est reliée à Paris en une vingtaine de minutes via la gare d'Enghien-les-Bains, voisine, qui dessert la gare Paris-Nord par le Transilien. Le centre de Paris est à environ 15 km, l'aéroport Paris-Charles-de-Gaulle à 25 km. La forêt de Montmorency, Sannois et Saint-Leu-la-Forêt sont aux portes de la ville. Cette position dans le nord du Val-d'Oise facilite nos interventions sur tout le bassin résidentiel local.",
+  topSectorsNaf: [
+    "Commerce de détail de proximité",
+    "Activités de santé humaine",
+    "Professions libérales et juridiques",
+    "Artisanat et travaux de construction",
+    "Restauration et services aux particuliers",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Montmorency pour identifier les processus améliorables — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Montmorency pour identifier les processus améliorables — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Montmorency : diagnostic des processus pour commerces, cabinets de santé et professions libérales. Nous identifions les automatisations utiles pour la gestion des rendez-vous et relances.",
+      en: "Audit IA à Montmorency : diagnostic des processus pour commerces, cabinets de santé et professions libérales. Nous identifions les automatisations utiles pour la gestion des rendez-vous et relances.",
     },
     interventions: {
-      fr: "Intervenir à Montmorency pour automatiser les devis et relances — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Montmorency pour automatiser les devis et relances — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Montmorency : automatisation des devis, rappels de rendez-vous et relances pour les TPE et PME de services, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Montmorency : automatisation des devis, rappels de rendez-vous et relances pour les TPE et PME de services, avec montée en autonomie des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Montmorency pour des gains opérationnels — Déploiement dès 990 € HT.",
-      en: "Implémenter des solutions IA à Montmorency pour des gains opérationnels — Déploiement dès 990 € HT.",
+      fr: "Implémentation IA à Montmorency : agents conversationnels pour l'accueil et la prise de rendez-vous, classification de documents et automatisation des flux des cabinets et commerces.",
+      en: "Implémentation IA à Montmorency : agents conversationnels pour l'accueil et la prise de rendez-vous, classification de documents et automatisation des flux des cabinets et commerces.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Montmorency — Sessions à partir de 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants de Montmorency — Sessions à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Montmorency : sessions dans votre commerce, cabinet ou en visio pour les dirigeants de TPE et PME du nord du Val-d'Oise.",
+      en: "Coaching 1-to-1 à Montmorency : sessions dans votre commerce, cabinet ou en visio pour les dirigeants de TPE et PME du nord du Val-d'Oise.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Montmorency : plateformes sur mesure avec IA intégrée pour commerces, cabinets de santé et libéraux souhaitant gérer rendez-vous et demandes en ligne.",
+      en: "Sites web augmentés à Montmorency : plateformes sur mesure avec IA intégrée pour commerces, cabinets de santé et libéraux souhaitant gérer rendez-vous et demandes en ligne.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Montmorency ?",
-      a: "Les interventions IA à Montmorency commencent à 590 € HT pour l'Intervention Essentielle. Consultez nos tarifs publics sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il sur site à Montmorency ?",
+      a: "Oui. Nos architectes IA se déplacent à Montmorency et dans le nord du Val-d'Oise pour réaliser audits, interventions et implémentations dans vos locaux, généralement sous cinq jours ouvrés après validation.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention sur site à Montmorency ?",
-      a: "Axion-IA se déplace à Montmorency dans les 5 jours ouvrés suivant la commande, selon nos disponibilités et votre planning.",
+      q: "Accompagnez-vous les professions de santé de Montmorency ?",
+      a: "Oui. Cabinets médicaux, paramédicaux et dentaires sont un public clé dans cette ville résidentielle. Nous automatisons la prise et le rappel de rendez-vous, les relances et la gestion documentaire, dans le respect du RGPD.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Montmorency ?",
-      a: "Nous intégrons systématiquement les normes RGPD lors de nos interventions à Montmorency, assurant la protection des données personnelles tout au long de nos projets.",
+      q: "Travaillez-vous avec les commerces de proximité de Montmorency ?",
+      a: "Oui. Les commerces du centre et les artisans sont au cœur de notre cible. Nous déployons des agents conversationnels pour répondre aux demandes clients et automatisons devis et relances, avec montée en autonomie des équipes.",
     },
     {
-      q: "Proposez-vous des formations spécifiques pour les entreprises de Montmorency ?",
-      a: "Oui, Axion-IA offre des sessions de formation personnalisées pour les dirigeants et équipes à Montmorency, adaptées aux besoins spécifiques de chaque entreprise.",
+      q: "Accompagnez-vous les TPE et PME de Montmorency en priorité ?",
+      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Montmorency. Nous adaptons les formats aux petites structures de services et commerces. Les ETI restent un public marginal de notre activité.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ou Enghien-les-Bains ?",
+      a: "Montmorency est à environ 15 km de Paris et voisine d'Enghien-les-Bains, à une vingtaine de minutes du centre par le Transilien. Nous couvrons tout le nord du Val-d'Oise. Les frais de mission éventuels suivent une grille tarifaire publique.",
     },
   ],
 };

@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Sotteville-lès-Rouen (76, Seine-Maritime) — technicentre SNCF, banlieue industrielle de Rouen.
 
 import type { VilleCopy } from "./types";
 
 export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sotteville-lès-Rouen, optimisant les processus pour les entreprises locales. Profitez de notre expertise pour intégrer l'IA dans vos opérations, à l'instar des grands groupes comme SNCF.",
+    "Sotteville-lès-Rouen (76), deuxième ville de l'agglomération rouennaise, est historiquement liée au chemin de fer : son technicentre SNCF, l'un des plus anciens et importants de France, y entretient et rénove le matériel ferroviaire depuis le XIXe siècle. Autour de ce pôle gravitent un tissu industriel, logistique, des sous-traitants et de nombreuses TPE/PME de services. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les très petites entreprises puis les PME dans l'adoption concrète de l'intelligence artificielle.",
   pitchEn:
-    "Axion-IA intervient à Sotteville-lès-Rouen, optimisant les processus pour les entreprises locales. Profitez de notre expertise pour intégrer l'IA dans vos opérations, à l'instar des grands groupes comme SNCF.",
+    "Sotteville-lès-Rouen (76), deuxième ville de l'agglomération rouennaise, est historiquement liée au chemin de fer : son technicentre SNCF, l'un des plus anciens et importants de France, y entretient et rénove le matériel ferroviaire depuis le XIXe siècle. Autour de ce pôle gravitent un tissu industriel, logistique, des sous-traitants et de nombreuses TPE/PME de services. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les très petites entreprises puis les PME dans l'adoption concrète de l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA propose des services sur site à Sotteville-lès-Rouen, où le secteur du transport terrestre domine avec la présence notable de la SNCF. Nous offrons des audits et des interventions, permettant aux entreprises locales de bénéficier de solutions IA adaptées à leurs besoins spécifiques.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sotteville-lès-Rouen, au cœur de la métropole rouennaise. Nous accompagnons en priorité les TPE puis les PME : sous-traitants ferroviaires gravitant autour du technicentre SNCF, acteurs de la maintenance industrielle, logistique fluviale et routière, artisans du bâtiment et services aux entreprises. Nos missions vont de l'audit du potentiel IA à l'automatisation des tâches administratives et à l'accompagnement individuel des dirigeants, avec des livrables actionnables et des tarifs publics.",
   directAnswerEn:
-    "Axion-IA propose des services sur site à Sotteville-lès-Rouen, où le secteur du transport terrestre domine avec la présence notable de la SNCF. Nous offrons des audits et des interventions, permettant aux entreprises locales de bénéficier de solutions IA adaptées à leurs besoins spécifiques.",
-  seoHook: "transport terrestre & entreposage",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sotteville-lès-Rouen, au cœur de la métropole rouennaise. Nous accompagnons en priorité les TPE puis les PME : sous-traitants ferroviaires gravitant autour du technicentre SNCF, acteurs de la maintenance industrielle, logistique fluviale et routière, artisans du bâtiment et services aux entreprises. Nos missions vont de l'audit du potentiel IA à l'automatisation des tâches administratives et à l'accompagnement individuel des dirigeants, avec des livrables actionnables et des tarifs publics.",
+  seoHook: "ferroviaire SNCF & industrie",
   ecosystemFr:
-    "Sotteville-lès-Rouen est un pôle économique avec la SNCF et des infrastructures comme la Gare de Rouen Rive Droite. Le commerce de gros et de détail y est également bien implanté.",
+    "Sotteville-lès-Rouen est marquée par son technicentre SNCF, atelier ferroviaire historique qui structure toujours l'emploi et le savoir-faire industriel local. Autour gravitent des sous-traitants de la maintenance, des PME de mécanique et de métallurgie, ainsi qu'une activité logistique adossée au port et aux axes routiers de la métropole rouennaise. Le commerce de proximité et les TPE artisanales complètent ce tissu de banlieue industrielle dense, où l'IA peut fluidifier la gestion administrative, la planification et la relation client.",
   ecosystemEn:
-    "Sotteville-lès-Rouen est un pôle économique avec la SNCF et des infrastructures comme la Gare de Rouen Rive Droite. Le commerce de gros et de détail y est également bien implanté.",
+    "Sotteville-lès-Rouen est marquée par son technicentre SNCF, atelier ferroviaire historique qui structure toujours l'emploi et le savoir-faire industriel local. Autour gravitent des sous-traitants de la maintenance, des PME de mécanique et de métallurgie, ainsi qu'une activité logistique adossée au port et aux axes routiers de la métropole rouennaise. Le commerce de proximité et les TPE artisanales complètent ce tissu de banlieue industrielle dense, où l'IA peut fluidifier la gestion administrative, la planification et la relation client.",
   distancesFr:
-    "La Gare de Rouen Rive Droite est à 5 km de Sotteville-lès-Rouen, facilitant l'accès aux services d'Axion-IA.",
+    "Rouen centre à 10 min, gare de Rouen Rive Droite à 10 min, Paris à 1h15 en train, aéroport de Rouen-Vallée de Seine à 15 min et Paris-Orly à 1h30. Nos consultants se déplacent depuis Rouen et Paris.",
   distancesEn:
-    "La Gare de Rouen Rive Droite est à 5 km de Sotteville-lès-Rouen, facilitant l'accès aux services d'Axion-IA.",
-  topSectorsNaf: ["Transport terrestre", "Entreposage", "Commerce de gros", "Commerce de détail"],
+    "Rouen centre à 10 min, gare de Rouen Rive Droite à 10 min, Paris à 1h15 en train, aéroport de Rouen-Vallée de Seine à 15 min et Paris-Orly à 1h30. Nos consultants se déplacent depuis Rouen et Paris.",
+  topSectorsNaf: [
+    "Maintenance ferroviaire et sous-traitance SNCF",
+    "Mécanique et métallurgie",
+    "Logistique et transport",
+    "Artisanat du bâtiment",
+    "Commerce de proximité",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Sotteville-lès-Rouen pour identifier les opportunités IA dans le transport terrestre et le commerce.",
-      en: "Réaliser un audit à Sotteville-lès-Rouen pour identifier les opportunités IA dans le transport terrestre et le commerce.",
+      fr: "Audit IA à Sotteville-lès-Rouen : diagnostic du potentiel d'automatisation pour les sous-traitants ferroviaires, PME industrielles et acteurs logistiques. Feuille de route priorisée et chiffrée.",
+      en: "Audit IA à Sotteville-lès-Rouen : diagnostic du potentiel d'automatisation pour les sous-traitants ferroviaires, PME industrielles et acteurs logistiques. Feuille de route priorisée et chiffrée.",
     },
     interventions: {
-      fr: "Intervenir à Sotteville-lès-Rouen pour automatiser les tâches administratives des entreprises locales.",
-      en: "Intervenir à Sotteville-lès-Rouen pour automatiser les tâches administratives des entreprises locales.",
+      fr: "Interventions IA sur site à Sotteville-lès-Rouen : ateliers pratiques pour la maintenance industrielle, la logistique et l'administratif. Vos équipes deviennent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Sotteville-lès-Rouen : ateliers pratiques pour la maintenance industrielle, la logistique et l'administratif. Vos équipes deviennent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Mettre en œuvre des solutions IA à Sotteville-lès-Rouen, améliorant l'efficacité des processus logistiques.",
-      en: "Mettre en œuvre des solutions IA à Sotteville-lès-Rouen, améliorant l'efficacité des processus logistiques.",
+      fr: "Implémentation IA à Sotteville-lès-Rouen : automatisation des flux logistiques, planification de maintenance assistée, classification documentaire et agents conversationnels B2B.",
+      en: "Implémentation IA à Sotteville-lès-Rouen : automatisation des flux logistiques, planification de maintenance assistée, classification documentaire et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Accompagner individuellement les dirigeants à Sotteville-lès-Rouen pour une adoption optimale de l'IA.",
-      en: "Accompagner individuellement les dirigeants à Sotteville-lès-Rouen pour une adoption optimale de l'IA.",
+      fr: "Coaching 1-to-1 à Sotteville-lès-Rouen : sessions sur site ou en visio pour dirigeants de TPE/PME, responsables d'atelier et gérants souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Sotteville-lès-Rouen : sessions sur site ou en visio pour dirigeants de TPE/PME, responsables d'atelier et gérants souhaitant maîtriser l'IA au quotidien.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Sotteville-lès-Rouen : plateformes pour PME industrielles et artisans, avec devis automatisés, prise de rendez-vous intelligente et recherche IA intégrée.",
+      en: "Sites web augmentés à Sotteville-lès-Rouen : plateformes pour PME industrielles et artisans, avec devis automatisés, prise de rendez-vous intelligente et recherche IA intégrée.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont vos tarifs pour une intervention à Sotteville-lès-Rouen ?",
-      a: "Nos interventions à Sotteville-lès-Rouen débutent à 590 € HT. Consultez nos tarifs publics pour plus de détails sur nos services.",
+      q: "Axion-IA intervient-il à Sotteville-lès-Rouen et dans la métropole rouennaise ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Sotteville-lès-Rouen, Rouen, Saint-Étienne-du-Rouvray et toute la métropole. Nos consultants se déplacent depuis Rouen et Paris.",
     },
     {
-      q: "Combien de temps faut-il pour organiser une intervention sur site ?",
-      a: "Nous intervenons généralement sur site à Sotteville-lès-Rouen dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Travaillez-vous avec les sous-traitants ferroviaires et industriels ?",
+      a: "Oui, nous accompagnons les PME gravitant autour du technicentre SNCF et de la maintenance industrielle sur la planification, la gestion documentaire et l'automatisation administrative.",
     },
     {
-      q: "Proposez-vous des formations sur l'IA à Sotteville-lès-Rouen ?",
-      a: "Oui, nous proposons des formations personnalisées pour les dirigeants et équipes à Sotteville-lès-Rouen, à partir de 990 € HT.",
+      q: "Accompagnez-vous les acteurs de la logistique locale ?",
+      a: "Oui, nous déployons des automatisations de flux, du suivi de commandes et des agents conversationnels pour les PME logistiques adossées au port et aux axes routiers rouennais.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD lors de vos interventions ?",
-      a: "Axion-IA intègre des pratiques conformes au RGPD dans toutes ses interventions à Sotteville-lès-Rouen, garantissant la protection des données.",
+      q: "Quels services proposez-vous aux TPE et artisans ?",
+      a: "Audit Flash pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et sans devis opaque.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Sotteville-lès-Rouen ?",
+      a: "Chaque mission respecte le RGPD et l'AI Act européen : minimisation des données, hébergement maîtrisé et absence de dépendance technologique imposée à vos équipes.",
     },
   ],
 };

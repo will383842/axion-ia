@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Avignon (84, Vaucluse) — Palais des Papes, Festival d'Avignon & le Off, agro provençal, tourisme.
 
 import type { VilleCopy } from "./types";
 
 export const AVIGNON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Avignon, une ville dynamique avec des entreprises comme Panzani et Ricard. Nous proposons des solutions IA adaptées aux besoins des TPE, PME et ETI locales, en optimisant les processus métiers et en garantissant un retour sur investissement rapide.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Avignon, une ville dynamique avec des entreprises comme Panzani et Ricard. Nous proposons des solutions IA adaptées aux besoins des TPE, PME et ETI locales, en optimisant les processus métiers et en garantissant un retour sur investissement rapide.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "À Avignon, Axion-IA propose des interventions sur site pour les entreprises, en tenant compte de l'écosystème local comprenant des entités comme Panzani et l'Université d'Avignon. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs, pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "À Avignon, Axion-IA propose des interventions sur site pour les entreprises, en tenant compte de l'écosystème local comprenant des entités comme Panzani et l'Université d'Avignon. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs, pour répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "tourisme culturel & agro provençal",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+  seoHook: "festival & agro provençal",
   ecosystemFr:
-    "Avignon abrite des entreprises comme Panzani et Ricard, et bénéficie de la proximité du technopôle Agroparc. L'Université d'Avignon contribue également à l'écosystème éducatif et professionnel de la région.",
+    "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de TPE et PME couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",
   ecosystemEn:
-    "Avignon abrite des entreprises comme Panzani et Ricard, et bénéficie de la proximité du technopôle Agroparc. L'Université d'Avignon contribue également à l'écosystème éducatif et professionnel de la région.",
+    "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de TPE et PME couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",
   distancesFr:
-    "La Gare d'Avignon TGV est à 5 km du centre-ville, facilitant l'accès aux interventions sur site.",
+    "La gare d'Avignon TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min). L'aéroport d'Avignon-Provence et l'A7 / A9 desservent l'agglomération.",
   distancesEn:
-    "La Gare d'Avignon TGV est à 5 km du centre-ville, facilitant l'accès aux interventions sur site.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Hébergement", "Activités créatives"],
+    "La gare d'Avignon TGV est à environ 5 km du centre (Paris en 2h40, Marseille en 35 min). L'aéroport d'Avignon-Provence et l'A7 / A9 desservent l'agglomération.",
+  topSectorsNaf: [
+    "Tourisme culturel et patrimonial",
+    "Hôtellerie et restauration",
+    "Spectacle vivant et événementiel (Festival, Off)",
+    "Agroalimentaire provençal (Agroparc)",
+    "Commerce de détail et de proximité",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Avignon avec PEPITE PACA Ouest — identifier les opportunités IA.",
-      en: "Réaliser un audit à Avignon avec PEPITE PACA Ouest — identifier les opportunités IA.",
+      fr: "Audit IA à Avignon pour hôtels, compagnies du Festival, acteurs agroalimentaires et commerces : nous identifions les leviers (réservations, billetterie, pics du Off, traçabilité, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Avignon pour hôtels, compagnies du Festival, acteurs agroalimentaires et commerces : nous identifions les leviers (réservations, billetterie, pics du Off, traçabilité, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Avignon chez Panzani — automatiser les tâches administratives.",
-      en: "Intervenir à Avignon chez Panzani — automatiser les tâches administratives.",
+      fr: "Interventions IA sur site à Avignon : formats adaptés à l'hôtel, à la compagnie de spectacle, à l'agroalimentaire ou au commerce. Vos collaborateurs gèrent ensuite les outils en autonomie.",
+      en: "Interventions IA sur site à Avignon : formats adaptés à l'hôtel, à la compagnie de spectacle, à l'agroalimentaire ou au commerce. Vos collaborateurs gèrent ensuite les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Avignon avec l'Université d'Avignon — optimiser les processus.",
-      en: "Implémenter des solutions IA à Avignon avec l'Université d'Avignon — optimiser les processus.",
+      fr: "Implémentation IA à Avignon : gestion des réservations et de la billetterie, agents conversationnels multilingues pour le tourisme, gestion des pics du Festival et du Off, traçabilité agroalimentaire et automatisation administrative.",
+      en: "Implémentation IA à Avignon : gestion des réservations et de la billetterie, agents conversationnels multilingues pour le tourisme, gestion des pics du Festival et du Off, traçabilité agroalimentaire et automatisation administrative.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Avignon — formation dirigeant sur l'IA.",
-      en: "Accompagner en un-à-un à Avignon — formation dirigeant sur l'IA.",
+      fr: "Coaching 1-to-1 à Avignon pour dirigeants de TPE et PME du tourisme, du spectacle, de l'agroalimentaire ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      en: "Coaching 1-to-1 à Avignon pour dirigeants de TPE et PME du tourisme, du spectacle, de l'agroalimentaire ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Avignon : plateformes de réservation et de billetterie, vitrines multilingues pour le tourisme culturel, et outils IA pour l'agroalimentaire provençal et le commerce.",
+      en: "Sites web augmentés à Avignon : plateformes de réservation et de billetterie, vitrines multilingues pour le tourisme culturel, et outils IA pour l'agroalimentaire provençal et le commerce.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Avignon ?",
-      a: "Les audits à Avignon commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Nos tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Avignon et dans le Vaucluse ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Avignon et de l'agglomération vauclusienne. Nous nous déplaçons sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
     },
     {
-      q: "Comment se déroule une intervention IA à Avignon ?",
-      a: "Nos interventions à Avignon sont réalisées sur site, avec un déplacement dans les 5 jours ouvrés. Nous adaptons nos solutions aux besoins spécifiques de chaque entreprise.",
+      q: "Comment l'IA aide pendant le Festival d'Avignon et le Off ?",
+      a: "Gestion des pics de réservation, agents conversationnels multilingues, billetterie automatisée et yield hôtelier pendant l'été. Chaque piste est chiffrée en ROI dans l'Audit Flash pour absorber l'afflux du Festival.",
     },
     {
-      q: "Proposez-vous des formations IA à Avignon ?",
-      a: "Oui, nous proposons des formations IA à Avignon, notamment pour les dirigeants, à partir de 990 € HT. Ces formations sont personnalisées selon les besoins de votre entreprise.",
+      q: "Quel est le tarif d'un audit IA à Avignon ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Avignon ?",
-      a: "Axion-IA garantit la conformité RGPD lors de ses interventions à Avignon, en respectant les réglementations en vigueur et en assurant la protection des données de nos clients.",
+      q: "Accompagnez-vous l'agroalimentaire provençal d'Agroparc ?",
+      a: "Oui, traçabilité, contrôle qualité, prévision de la demande et automatisation administrative pour les PME agroalimentaires d'Avignon et du technopole Agroparc. Cible prioritaire TPE et PME.",
+    },
+    {
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui, chaque solution déployée à Avignon respecte le RGPD et l'AI Act. Vos données clients, de billetterie et de production restent maîtrisées, sans verrou technologique ni dépendance à un prestataire unique.",
     },
   ],
 };

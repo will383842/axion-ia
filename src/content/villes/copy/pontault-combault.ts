@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Pontault-Combault (77, Seine-et-Marne) — banlieue est francilienne, zones commerciales et logistiques, axe RER E / A4.
 
 import type { VilleCopy } from "./types";
 
 export const PONTAULT_COMBAULT_COPY: VilleCopy = {
   pitchFr:
-    "À Pontault-Combault, Axion-IA intervient pour optimiser les processus des entreprises locales, en s'appuyant sur l'écosystème francilien riche de Cap Digital et Station F.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "À Pontault-Combault, Axion-IA intervient pour optimiser les processus des entreprises locales, en s'appuyant sur l'écosystème francilien riche de Cap Digital et Station F.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Pontault-Combault : commerces et négoces des zones d'activités, prestataires logistiques de l'est francilien, artisans du bâtiment. On livre des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA se déplace à Pontault-Combault pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte des spécificités locales. L'écosystème francilien, avec des acteurs comme LVMH et BNP Paribas, offre un contexte favorable à l'innovation. Nos services incluent l'audit, l'intervention et l'implémentation, adaptés aux besoins des structures locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA se déplace à Pontault-Combault pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte des spécificités locales. L'écosystème francilien, avec des acteurs comme LVMH et BNP Paribas, offre un contexte favorable à l'innovation. Nos services incluent l'audit, l'intervention et l'implémentation, adaptés aux besoins des structures locales.",
-  seoHook: "commerce détail & transports",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Pontault-Combault, en Seine-et-Marne, pour les TPE et PME de la banlieue est de Paris : enseignes et négoces des zones commerciales locales, prestataires logistiques et de transport profitant de l'axe A4, artisans du bâtiment et PME de services. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, planning, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+  seoHook: "commerce & logistique de l'est francilien",
   ecosystemFr:
-    "Pontault-Combault bénéficie de la proximité de l'écosystème parisien, incluant Cap Digital et Station F, favorisant l'innovation technologique.",
+    "Pontault-Combault, l'une des communes les plus peuplées de Seine-et-Marne, ancre son économie dans le commerce et la logistique de l'est francilien. Ses zones d'activités concentrent enseignes de la grande distribution, négoces, plateformes logistiques et entrepôts qui profitent de la proximité de l'A4 et de Paris. Autour gravite un tissu dense de TPE artisanales, de garages et de PME de services. Ce profil de petites structures à forte composante administrative et logistique offre un terrain idéal pour des automatisations IA à effet rapide et mesurable.",
   ecosystemEn:
-    "Pontault-Combault bénéficie de la proximité de l'écosystème parisien, incluant Cap Digital et Station F, favorisant l'innovation technologique.",
+    "Pontault-Combault, l'une des communes les plus peuplées de Seine-et-Marne, ancre son économie dans le commerce et la logistique de l'est francilien. Ses zones d'activités concentrent enseignes de la grande distribution, négoces, plateformes logistiques et entrepôts qui profitent de la proximité de l'A4 et de Paris. Autour gravite un tissu dense de TPE artisanales, de garages et de PME de services. Ce profil de petites structures à forte composante administrative et logistique offre un terrain idéal pour des automatisations IA à effet rapide et mesurable.",
   distancesFr:
-    "Pontault-Combault est à 20 km de la Gare de Marne-la-Vallée - Chessy et à 25 km de l'Aéroport de Paris-Orly.",
+    "Pontault-Combault est desservie par le RER E (gare d'Émerainville-Pontault-Combault), qui relie le centre de Paris en une trentaine de minutes. L'A4 passe à proximité immédiate et place Marne-la-Vallée et Disneyland Paris à un quart d'heure. L'aéroport de Paris-Orly se trouve à environ 30 km, Roissy-Charles-de-Gaulle à environ 35 km. Cette desserte routière et ferroviaire facilite nos déplacements sur site, partout dans l'est francilien.",
   distancesEn:
-    "Pontault-Combault est à 20 km de la Gare de Marne-la-Vallée - Chessy et à 25 km de l'Aéroport de Paris-Orly.",
-  topSectorsNaf: ["Commerce de détail", "Transports", "Travaux de construction", "Restauration"],
+    "Pontault-Combault est desservie par le RER E (gare d'Émerainville-Pontault-Combault), qui relie le centre de Paris en une trentaine de minutes. L'A4 passe à proximité immédiate et place Marne-la-Vallée et Disneyland Paris à un quart d'heure. L'aéroport de Paris-Orly se trouve à environ 30 km, Roissy-Charles-de-Gaulle à environ 35 km. Cette desserte routière et ferroviaire facilite nos déplacements sur site, partout dans l'est francilien.",
+  topSectorsNaf: [
+    "Commerce de détail et grande distribution",
+    "Logistique, transport et entreposage",
+    "Construction et travaux du bâtiment",
+    "Restauration et services de proximité",
+    "Services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Pontault-Combault pour identifier les opportunités IA dans le commerce et la construction.",
-      en: "Réaliser un audit à Pontault-Combault pour identifier les opportunités IA dans le commerce et la construction.",
+      fr: "À Pontault-Combault, l'audit IA cartographie les flux d'un négoce, d'un prestataire logistique ou d'un artisan, repère les saisies et plannings chronophages, puis priorise 3 à 5 automatisations à fort ROI.",
+      en: "À Pontault-Combault, l'audit IA cartographie les flux d'un négoce, d'un prestataire logistique ou d'un artisan, repère les saisies et plannings chronophages, puis priorise 3 à 5 automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Pontault-Combault pour automatiser les tâches administratives dans les secteurs du transport et de la restauration.",
-      en: "Intervenir à Pontault-Combault pour automatiser les tâches administratives dans les secteurs du transport et de la restauration.",
+      fr: "Nos interventions à Pontault-Combault automatisent devis, relances, planning de tournées et facturation chez les commerces, logisticiens et artisans, directement sur les outils déjà utilisés.",
+      en: "Nos interventions à Pontault-Combault automatisent devis, relances, planning de tournées et facturation chez les commerces, logisticiens et artisans, directement sur les outils déjà utilisés.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Pontault-Combault pour optimiser les processus métiers des entreprises locales.",
-      en: "Implémenter des solutions IA à Pontault-Combault pour optimiser les processus métiers des entreprises locales.",
+      fr: "L'implémentation déploie à Pontault-Combault des assistants IA et workflows sur mesure pour les PME de commerce et de logistique, avec formation des équipes et conformité RGPD intégrée dès la conception.",
+      en: "L'implémentation déploie à Pontault-Combault des assistants IA et workflows sur mesure pour les PME de commerce et de logistique, avec formation des équipes et conformité RGPD intégrée dès la conception.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 à Pontault-Combault pour former les dirigeants aux enjeux de l'IA.",
-      en: "Accompagner en 1-to-1 à Pontault-Combault pour former les dirigeants aux enjeux de l'IA.",
+      fr: "L'accompagnement un-à-un à Pontault-Combault forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : choix d'outils, prompts métier, cadrage des cas d'usage, gouvernance des données.",
+      en: "L'accompagnement un-à-un à Pontault-Combault forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : choix d'outils, prompts métier, cadrage des cas d'usage, gouvernance des données.",
+    },
+    sitesWeb: {
+      fr: "Nos sites web augmentés dotent les commerces et PME de Pontault-Combault d'une plateforme rapide avec chatbot, prise de commande en ligne et contenu généré par IA, optimisée pour la recherche locale.",
+      en: "Nos sites web augmentés dotent les commerces et PME de Pontault-Combault d'une plateforme rapide avec chatbot, prise de commande en ligne et contenu généré par IA, optimisée pour la recherche locale.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Pontault-Combault ?",
-      a: "Nos audits débutent à 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA se déplace-t-il sur site à Pontault-Combault ?",
+      a: "Oui. Nos architectes IA interviennent dans vos locaux à Pontault-Combault, des zones commerciales aux entrepôts logistiques en passant par les ateliers d'artisans. L'audit terrain reste le meilleur moyen de cibler des automatisations utiles.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention IA à Pontault-Combault ?",
-      a: "Williams se déplace sur site à Pontault-Combault dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Quelles entreprises accompagnez-vous à Pontault-Combault ?",
+      a: "En priorité les TPE puis les PME de Seine-et-Marne : commerces, négoces, prestataires logistiques, artisans du bâtiment et PME de services. Les ETI sont accompagnées en complément, avec une mission toujours adaptée à la taille de la structure.",
     },
     {
-      q: "Comment Axion-IA gère-t-il la conformité RGPD à Pontault-Combault ?",
-      a: "Axion-IA intègre la conformité RGPD dans toutes ses interventions, garantissant la protection des données personnelles conformément aux normes européennes.",
+      q: "Aidez-vous les acteurs de la logistique à Pontault-Combault ?",
+      a: "Oui. Les prestataires logistiques et de transport de l'est francilien font partie de nos cibles. Nous automatisons leurs flux administratifs, plannings de tournées et reporting, sans perturber leurs opérations d'entrepôt.",
     },
     {
-      q: "Proposez-vous des formations IA pour les dirigeants à Pontault-Combault ?",
-      a: "Oui, nous proposons des sessions 1-to-1 à partir de 990 € HT pour former les dirigeants aux enjeux de l'IA.",
+      q: "Quel délai pour une première intervention à Pontault-Combault ?",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte par le RER E et l'A4 nous permet d'être réactifs sur tout l'est francilien.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Pontault-Combault ?",
+      a: "La conformité RGPD est intégrée dès l'audit : cartographie des données, hébergement maîtrisé, minimisation et traçabilité. Chaque automatisation déployée à Pontault-Combault respecte le cadre européen et l'AI Act.",
     },
   ],
 };

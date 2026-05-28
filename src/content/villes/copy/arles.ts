@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Arles (13, Bouches-du-Rhône) — patrimoine romain UNESCO, Rencontres de la photographie, Camargue.
 
 import type { VilleCopy } from "./types";
 
 export const ARLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Arles, une ville au carrefour de la culture et de l'innovation, avec des entreprises comme SNCF et EDF, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Arles, cité romaine classée UNESCO, capitale de la photographie et porte de la Camargue. Tourisme culturel, hôtellerie, événementiel photo, riziculture et agriculture camarguaise, commerce et artisanat : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Arles, une ville au carrefour de la culture et de l'innovation, avec des entreprises comme SNCF et EDF, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Arles, cité romaine classée UNESCO, capitale de la photographie et porte de la Camargue. Tourisme culturel, hôtellerie, événementiel photo, riziculture et agriculture camarguaise, commerce et artisanat : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA se déplace à Arles pour accompagner les entreprises dans leur transformation IA. Avec des acteurs tels que SNCF et EDF présents dans la région, nous offrons des services d'audit, d'intervention et d'implémentation adaptés aux besoins locaux. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA se déplace à Arles pour accompagner les entreprises dans leur transformation IA. Avec des acteurs tels que SNCF et EDF présents dans la région, nous offrons des services d'audit, d'intervention et d'implémentation adaptés aux besoins locaux. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
-  seoHook: "commerce détail & hébergement",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+  seoHook: "patrimoine romain & photographie",
   ecosystemFr:
-    "Le tissu économique d'Arles inclut des entreprises comme SNCF et EDF, enrichi par le Parc des Ateliers. Ce cadre favorise l'innovation et la collaboration.",
+    "Arles, plus vaste commune de France métropolitaine, conjugue un patrimoine romain classé UNESCO (arènes, théâtre antique), un rayonnement culturel mondial via les Rencontres de la photographie et la fondation LUMA, et une économie agricole camarguaise (riziculture, élevage taurin, sel). Le tissu de TPE et PME couvre le tourisme, l'hôtellerie, l'artisanat d'art, l'agroalimentaire et le commerce.",
   ecosystemEn:
-    "Le tissu économique d'Arles inclut des entreprises comme SNCF et EDF, enrichi par le Parc des Ateliers. Ce cadre favorise l'innovation et la collaboration.",
+    "Arles, plus vaste commune de France métropolitaine, conjugue un patrimoine romain classé UNESCO (arènes, théâtre antique), un rayonnement culturel mondial via les Rencontres de la photographie et la fondation LUMA, et une économie agricole camarguaise (riziculture, élevage taurin, sel). Le tissu de TPE et PME couvre le tourisme, l'hôtellerie, l'artisanat d'art, l'agroalimentaire et le commerce.",
   distancesFr:
-    "La gare TGV Gare d'Avignon TGV est à 35 km d'Arles, facilitant l'accès aux grandes villes.",
+    "La gare d'Avignon TGV est à environ 35 km et Nîmes à environ 30 km. L'aéroport de Nîmes-Garons est proche, et l'A54 relie Arles à Marseille (environ 1h) et Montpellier.",
   distancesEn:
-    "La gare TGV Gare d'Avignon TGV est à 35 km d'Arles, facilitant l'accès aux grandes villes.",
+    "La gare d'Avignon TGV est à environ 35 km et Nîmes à environ 30 km. L'aéroport de Nîmes-Garons est proche, et l'A54 relie Arles à Marseille (environ 1h) et Montpellier.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Hébergement",
-    "Activités sportives",
-    "Culture et production animale",
+    "Tourisme culturel et patrimonial",
+    "Hôtellerie et restauration",
+    "Événementiel, photographie et industries créatives",
+    "Agriculture camarguaise (riz, élevage, sel)",
+    "Artisanat d'art et commerce de détail",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Arles avec des entreprises comme EDF — identifier des opportunités d'IA.",
-      en: "Réaliser un audit à Arles avec des entreprises comme EDF — identifier des opportunités d'IA.",
+      fr: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Arles dans le secteur du commerce de détail — optimiser les processus.",
-      en: "Intervenir à Arles dans le secteur du commerce de détail — optimiser les processus.",
+      fr: "Interventions IA sur site à Arles : formats adaptés à l'hôtel, à la structure culturelle, à l'exploitation agricole ou au commerce. Vos collaborateurs gèrent ensuite les outils en autonomie.",
+      en: "Interventions IA sur site à Arles : formats adaptés à l'hôtel, à la structure culturelle, à l'exploitation agricole ou au commerce. Vos collaborateurs gèrent ensuite les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Arles, en lien avec le Parc des Ateliers — améliorer l'efficacité.",
-      en: "Implémenter des solutions IA à Arles, en lien avec le Parc des Ateliers — améliorer l'efficacité.",
+      fr: "Implémentation IA à Arles : gestion des réservations et de la billetterie, agents conversationnels multilingues pour le tourisme, classification d'images pour l'événementiel photo, traçabilité agricole camarguaise et automatisation administrative.",
+      en: "Implémentation IA à Arles : gestion des réservations et de la billetterie, agents conversationnels multilingues pour le tourisme, classification d'images pour l'événementiel photo, traçabilité agricole camarguaise et automatisation administrative.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants d'Arles avec des sessions 1-to-1 — renforcer la stratégie IA.",
-      en: "Accompagner les dirigeants d'Arles avec des sessions 1-to-1 — renforcer la stratégie IA.",
+      fr: "Coaching 1-to-1 à Arles pour dirigeants de TPE et PME du tourisme, de la culture, de l'agriculture ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      en: "Coaching 1-to-1 à Arles pour dirigeants de TPE et PME du tourisme, de la culture, de l'agriculture ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Arles : plateformes de réservation et de billetterie, portfolios et catalogues photo IA, vitrines multilingues pour le tourisme culturel et l'artisanat d'art.",
+      en: "Sites web augmentés à Arles : plateformes de réservation et de billetterie, portfolios et catalogues photo IA, vitrines multilingues pour le tourisme culturel et l'artisanat d'art.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Arles ?",
-      a: "Nos audits à Arles débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Arles et en Camargue ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Arles et de son vaste territoire camarguais. Nous nous déplaçons sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Arles sans bureau local ?",
-      a: "Notre équipe nationale se déplace directement chez vous à Arles pour réaliser nos prestations sur site, assurant un accompagnement personnalisé.",
+      q: "Quels gains IA pour un hôtel ou un acteur culturel arlésien ?",
+      a: "Optimisation des réservations et de la billetterie, agents conversationnels multilingues pour la clientèle internationale, classification d'images pour l'événementiel photo et automatisation administrative. Chaque piste est chiffrée en ROI dans l'Audit Flash.",
     },
     {
-      q: "Quel est le délai d'intervention à Arles ?",
-      a: "Nous nous engageons à intervenir à Arles dans un délai de 5 jours ouvrés après la prise de contact, pour répondre à vos besoins rapidement.",
+      q: "Quel est le tarif d'un audit IA à Arles ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Arles ?",
-      a: "Nous intégrons systématiquement les exigences du RGPD dans nos solutions IA, assurant la protection des données personnelles à chaque étape de notre intervention.",
+      q: "Accompagnez-vous les exploitations agricoles camarguaises ?",
+      a: "Oui, riziculture, élevage taurin et production de sel : nous travaillons la traçabilité, la prévision de récolte, la classification de photos de cultures et la vente directe pour les TPE et PME agricoles de Camargue.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises d'Arles ?",
-      a: "Oui, nous offrons des sessions 1-to-1 pour dirigeants à partir de 990 € HT, adaptées aux besoins spécifiques des entreprises arlésiennes.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui, chaque solution déployée à Arles respecte le RGPD et l'AI Act. Vos données clients, de billetterie et de production restent maîtrisées, sans verrou technologique ni dépendance à un prestataire unique.",
     },
   ],
 };

@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Dax (40, Landes) — 1re ville thermale de France, thermalisme et tourisme, rugby (US Dax), Adour.
 
 import type { VilleCopy } from "./types";
 
 export const DAX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Dax, optimisant les processus pour les entreprises locales. Avec des références comme Cap Digital et Inria, nous apportons notre expertise IA aux secteurs dominants de la région.",
+    "Dax (40), sur les rives de l'Adour dans les Landes, est la première ville thermale de France : son économie est portée par le thermalisme, l'hôtellerie, le tourisme et un fort esprit rugby (US Dax). Son tissu mêle établissements thermaux, hébergement, santé, commerces et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME dacquoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Axion-IA intervient à Dax, optimisant les processus pour les entreprises locales. Avec des références comme Cap Digital et Inria, nous apportons notre expertise IA aux secteurs dominants de la région.",
+    "Dax (40), sur les rives de l'Adour dans les Landes, est la première ville thermale de France : son économie est portée par le thermalisme, l'hôtellerie, le tourisme et un fort esprit rugby (US Dax). Son tissu mêle établissements thermaux, hébergement, santé, commerces et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME dacquoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "À Dax, Axion-IA propose des interventions ciblées pour les entreprises locales, en s'inspirant des écosystèmes tels que Cap Digital et Station F. Nous aidons à automatiser les processus administratifs et à améliorer l'efficacité opérationnelle, en nous déplaçant directement sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dax (40, Landes). Nous accompagnons en priorité les TPE, puis les PME du bassin de l'Adour : établissements thermaux et acteurs de la santé, hôtellerie et hébergement touristique, restauration, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
   directAnswerEn:
-    "À Dax, Axion-IA propose des interventions ciblées pour les entreprises locales, en s'inspirant des écosystèmes tels que Cap Digital et Station F. Nous aidons à automatiser les processus administratifs et à améliorer l'efficacité opérationnelle, en nous déplaçant directement sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
-  seoHook: "commerce détail & santé humaine",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dax (40, Landes). Nous accompagnons en priorité les TPE, puis les PME du bassin de l'Adour : établissements thermaux et acteurs de la santé, hôtellerie et hébergement touristique, restauration, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+  seoHook: "thermalisme, tourisme & santé",
   ecosystemFr:
-    "Dax bénéficie d'un tissu économique diversifié avec des secteurs comme le commerce de détail et la santé humaine. Les entreprises locales peuvent s'inspirer des innovations de Cap Digital et Station F pour évoluer.",
+    "Dax est la première destination thermale de France, accueillant chaque année des dizaines de milliers de curistes. Son économie repose sur les établissements thermaux, un dense parc hôtelier et de résidences, la restauration et un secteur santé important lié aux soins. Autour gravitent des TPE et PME de services, des commerces de centre-ville dynamisés par la fréquentation touristique et un artisanat actif. Ce tissu, marqué par une forte saisonnalité, cherche à optimiser l'accueil, la réservation et la gestion de la relation client.",
   ecosystemEn:
-    "Dax bénéficie d'un tissu économique diversifié avec des secteurs comme le commerce de détail et la santé humaine. Les entreprises locales peuvent s'inspirer des innovations de Cap Digital et Station F pour évoluer.",
+    "Dax est la première destination thermale de France, accueillant chaque année des dizaines de milliers de curistes. Son économie repose sur les établissements thermaux, un dense parc hôtelier et de résidences, la restauration et un secteur santé important lié aux soins. Autour gravitent des TPE et PME de services, des commerces de centre-ville dynamisés par la fréquentation touristique et un artisanat actif. Ce tissu, marqué par une forte saisonnalité, cherche à optimiser l'accueil, la réservation et la gestion de la relation client.",
   distancesFr:
-    "La gare TGV de Dax se trouve à 0 km du centre-ville, facilitant l'accès aux entreprises locales.",
+    "Gare TGV de Dax en centre-ville, Bordeaux en environ 1h, Paris en 4h. Aéroport de Biarritz à 45 min. Mont-de-Marsan à 50 min, Bayonne à 40 min, océan à 30 min par l'A63.",
   distancesEn:
-    "La gare TGV de Dax se trouve à 0 km du centre-ville, facilitant l'accès aux entreprises locales.",
-  topSectorsNaf: ["Commerce de détail", "Santé humaine", "Hébergement", "Restauration"],
+    "Gare TGV de Dax en centre-ville, Bordeaux en environ 1h, Paris en 4h. Aéroport de Biarritz à 45 min. Mont-de-Marsan à 50 min, Bayonne à 40 min, océan à 30 min par l'A63.",
+  topSectorsNaf: [
+    "Thermalisme et activités pour la santé humaine",
+    "Hébergement touristique et hôtellerie",
+    "Restauration",
+    "Commerce de détail et tourisme",
+    "Services aux entreprises et artisanat",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Dax pour identifier les opportunités d'automatisation dans les commerces de détail.",
-      en: "Réaliser un audit à Dax pour identifier les opportunités d'automatisation dans les commerces de détail.",
+      fr: "Audit IA à Dax : diagnostic adapté aux TPE et PME landaises — thermes, hôtellerie, restauration, commerces et services. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      en: "Audit IA à Dax : diagnostic adapté aux TPE et PME landaises — thermes, hôtellerie, restauration, commerces et services. Nous ciblons les automatisations à fort ROI, sans jargon.",
     },
     interventions: {
-      fr: "Intervenir à Dax pour optimiser les processus dans le secteur de la santé humaine.",
-      en: "Intervenir à Dax pour optimiser les processus dans le secteur de la santé humaine.",
+      fr: "Interventions IA sur site à Dax : formats courts pour automatiser réservations, accueil curistes, devis et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
+      en: "Interventions IA sur site à Dax : formats courts pour automatiser réservations, accueil curistes, devis et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Dax pour améliorer l'efficacité des hébergements.",
-      en: "Implémenter des solutions IA à Dax pour améliorer l'efficacité des hébergements.",
+      fr: "Implémentation IA à Dax : agents conversationnels multilingues, automatisation de la réservation et de la relation client, classification documentaire pour thermes et hôtellerie. Déploiement conforme RGPD.",
+      en: "Implémentation IA à Dax : agents conversationnels multilingues, automatisation de la réservation et de la relation client, classification documentaire pour thermes et hôtellerie. Déploiement conforme RGPD.",
     },
     unAUn: {
-      fr: "Accompagner individuellement les dirigeants à Dax pour maximiser l'impact de l'IA dans la restauration.",
-      en: "Accompagner individuellement les dirigeants à Dax pour maximiser l'impact de l'IA dans la restauration.",
+      fr: "Coaching un-à-un à Dax : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du thermalisme, de l'hôtellerie, de la restauration et du commerce dacquoises.",
+      en: "Coaching un-à-un à Dax : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du thermalisme, de l'hôtellerie, de la restauration et du commerce dacquoises.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés par l'IA à Dax : plateformes de réservation et outils sur mesure pour thermes, hôtels, restaurants et commerces landais, avec automatisations et SEO local intégrés.",
+      en: "Sites web augmentés par l'IA à Dax : plateformes de réservation et outils sur mesure pour thermes, hôtels, restaurants et commerces landais, avec automatisations et SEO local intégrés.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Dax ?",
-      a: "Les interventions à Dax démarrent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Dax et dans les Landes ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Dax et des communes voisines : Saint-Paul-lès-Dax, Saint-Pandelon, Narrosse, Tercis-les-Bains. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Dax ?",
-      a: "Nos experts se déplacent directement sur site à Dax, en utilisant principalement la gare TGV de Dax pour un accès rapide.",
+      q: "Travaillez-vous avec les thermes et l'hôtellerie ?",
+      a: "Oui. Dax est la première ville thermale de France. Nous automatisons la réservation, l'accueil des curistes, la relation client multilingue et la gestion documentaire des thermes, hôtels et résidences, dans le respect du RGPD.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Dax ?",
-      a: "Les délais varient selon l'ampleur du projet, mais nous nous engageons à intervenir rapidement pour répondre aux besoins des entreprises de Dax.",
+      q: "Accompagnez-vous les commerces, la restauration et les artisans ?",
+      a: "Absolument — c'est notre priorité. Réservations, devis, relances et relation client : nous adaptons les automatisations aux petites équipes de la restauration, du commerce et de l'artisanat dacquoises, en tenant compte de la saisonnalité.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Dax ?",
-      a: "Nous intégrons les meilleures pratiques RGPD dans chaque projet à Dax, garantissant la protection des données personnelles.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui. Toutes nos implémentations à Dax respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données, notamment celles, sensibles, des curistes.",
+    },
+    {
+      q: "Comment se passe une mission depuis Bordeaux ou Bayonne ?",
+      a: "Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons sur site ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+    },
+    {
+      q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",
+      a: "Oui, via le coaching un-à-un. Nous partons de vos cas réels pour rendre vos équipes autonomes sur l'IA, sans dépendance durable à un prestataire externe.",
     },
   ],
 };

@@ -1,71 +1,75 @@
-﻿// AUTO-GENERATED 2026-05-27 — T4 batch #20 Claude Code (Will).
-// Ablon-sur-Seine (94, Val-de-Marne) — bords de Seine, commune résidentielle.
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Ablon-sur-Seine (94, Val-de-Marne) — petite commune résidentielle des bords de Seine, à proximité immédiate de l'aéroport d'Orly.
 
 import type { VilleCopy } from "./types";
 
 export const ABLON_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine entre Villeneuve-le-Roi et Athis-Mons, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "À Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine du Val-de-Marne, entre Villeneuve-le-Roi et Athis-Mons et à deux pas d'Orly, Axion-IA accompagne les TPE et PME de proximité. Artisans et prestataires de services, commerces de centre-bourg, professions libérales, petites PME tertiaires et restauration : nous concevons des usages IA concrets pour alléger la gestion et faire gagner du temps aux dirigeants.",
   pitchEn:
-    "Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine entre Villeneuve-le-Roi et Athis-Mons, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "À Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine du Val-de-Marne, entre Villeneuve-le-Roi et Athis-Mons et à deux pas d'Orly, Axion-IA accompagne les TPE et PME de proximité. Artisans et prestataires de services, commerces de centre-bourg, professions libérales, petites PME tertiaires et restauration : nous concevons des usages IA concrets pour alléger la gestion et faire gagner du temps aux dirigeants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (94). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (Val-de-Marne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les artisans et prestataires de services, les commerces de centre-bourg, les professions libérales, les petites PME tertiaires et la restauration de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (94). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (Val-de-Marne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les artisans et prestataires de services, les commerces de centre-bourg, les professions libérales, les petites PME tertiaires et la restauration de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
-    "Ablon-sur-Seine est une petite commune résidentielle des bords de Seine, entre Villeneuve-le-Roi et Athis-Mons, à proximité d'Orly. Tissu TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration.",
+    "Ablon-sur-Seine est une petite commune résidentielle des bords de Seine du Val-de-Marne, nichée entre Villeneuve-le-Roi et Athis-Mons, à proximité immédiate de l'aéroport d'Orly. Son économie repose sur un tissu de proximité : TPE artisanales et de services, commerces de centre-bourg, professions libérales, petites PME tertiaires et restauration. Bien desservie par le RER C qui relie Paris-Austerlitz en 25 minutes, la commune offre aux petites structures un cadre propice à des usages IA simples qui font gagner du temps sur les devis, la prise de rendez-vous et la relation client.",
   ecosystemEn:
-    "Ablon-sur-Seine est une petite commune résidentielle des bords de Seine, entre Villeneuve-le-Roi et Athis-Mons, à proximité d'Orly. Tissu TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration.",
+    "Ablon-sur-Seine est une petite commune résidentielle des bords de Seine du Val-de-Marne, nichée entre Villeneuve-le-Roi et Athis-Mons, à proximité immédiate de l'aéroport d'Orly. Son économie repose sur un tissu de proximité : TPE artisanales et de services, commerces de centre-bourg, professions libérales, petites PME tertiaires et restauration. Bien desservie par le RER C qui relie Paris-Austerlitz en 25 minutes, la commune offre aux petites structures un cadre propice à des usages IA simples qui font gagner du temps sur les devis, la prise de rendez-vous et la relation client.",
   distancesFr:
-    "Ablon (RER C) gare sur place. Villeneuve-le-Roi à 5 min. Orly à 10 min. Paris-Austerlitz à 25 min via RER C.",
+    "Ablon-sur-Seine dispose de sa gare RER C sur place, reliant Paris-Austerlitz en 25 minutes. Villeneuve-le-Roi est à 5 minutes, l'aéroport de Paris-Orly à 10 minutes et Athis-Mons est limitrophe.",
   distancesEn:
-    "Ablon (RER C) gare sur place. Villeneuve-le-Roi à 5 min. Orly à 10 min. Paris-Austerlitz à 25 min via RER C.",
+    "Ablon-sur-Seine dispose de sa gare RER C sur place, reliant Paris-Austerlitz en 25 minutes. Villeneuve-le-Roi est à 5 minutes, l'aéroport de Paris-Orly à 10 minutes et Athis-Mons est limitrophe.",
   topSectorsNaf: [
-    "TPE artisanat et services",
-    "Commerce de centre-bourg",
-    "Professions libérales",
-    "PME tertiaires",
+    "Artisanat et services de proximité",
+    "Commerce de détail de centre-bourg",
+    "Activités des professions libérales",
+    "Petites PME tertiaires",
     "Restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ablon-sur-Seine : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ablon-sur-Seine : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ablon-sur-Seine : diagnostic adapté aux artisans, aux commerces de centre-bourg, aux professions libérales et aux petites PME tertiaires. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
+      en: "Audit IA à Ablon-sur-Seine : diagnostic adapté aux artisans, aux commerces de centre-bourg, aux professions libérales et aux petites PME tertiaires. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ablon-sur-Seine : formats adaptés commerce, cabinet, bureau, restaurant. Vos collaborateurs sont autonomes ensuite.",
-      en: "Interventions IA sur site à Ablon-sur-Seine : formats adaptés commerce, cabinet, bureau, restaurant. Vos collaborateurs sont autonomes ensuite.",
+      fr: "Interventions IA sur site à Ablon-sur-Seine : sessions en boutique, au cabinet, au bureau ou au restaurant. Vos collaborateurs deviennent autonomes sur les devis, la relation client et la gestion administrative.",
+      en: "Interventions IA sur site à Ablon-sur-Seine : sessions en boutique, au cabinet, au bureau ou au restaurant. Vos collaborateurs deviennent autonomes sur les devis, la relation client et la gestion administrative.",
     },
     implementation: {
-      fr: "Implémentation IA à Ablon-sur-Seine : automatisation gestion clients PME, CRM augmenté commerces, prise de rendez-vous IA professions libérales, commandes et réservations restauration.",
-      en: "Implémentation IA à Ablon-sur-Seine : automatisation gestion clients PME, CRM augmenté commerces, prise de rendez-vous IA professions libérales, commandes et réservations restauration.",
+      fr: "Implémentation IA à Ablon-sur-Seine : automatisation de la gestion clients des PME, CRM augmenté des commerces, prise de rendez-vous IA des professions libérales et gestion des commandes et réservations en restauration.",
+      en: "Implémentation IA à Ablon-sur-Seine : automatisation de la gestion clients des PME, CRM augmenté des commerces, prise de rendez-vous IA des professions libérales et gestion des commandes et réservations en restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ablon-sur-Seine : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants TPE/PME ablonais, artisans, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 à Ablon-sur-Seine : sessions dans votre commerce, cabinet, bureau ou en visio. Dirigeants TPE/PME ablonais, artisans, commerçants, professions libérales.",
+      fr: "Accompagnement un-à-un à Ablon-sur-Seine : sessions individuelles pour dirigeants de TPE et PME, en boutique, au cabinet, au bureau ou en visio, pour adopter l'IA à votre rythme.",
+      en: "Accompagnement un-à-un à Ablon-sur-Seine : sessions individuelles pour dirigeants de TPE et PME, en boutique, au cabinet, au bureau ou en visio, pour adopter l'IA à votre rythme.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Ablon-sur-Seine : plateformes pour artisans, commerces, professions libérales et restaurants, avec demande de devis intelligente, prise de rendez-vous et réservation automatisée.",
+      en: "Sites web augmentés à Ablon-sur-Seine : plateformes pour artisans, commerces, professions libérales et restaurants, avec demande de devis intelligente, prise de rendez-vous et réservation automatisée.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Ablon-sur-Seine et bords de Seine ?",
-      a: "Oui, Axion-IA intervient à Ablon-sur-Seine et tout le secteur bords de Seine sud (Villeneuve-le-Roi à 5 min, Orly à 10 min, Paris-Austerlitz à 25 min via RER C).",
+      q: "Axion-IA intervient-il à Ablon-sur-Seine et dans le Val-de-Marne ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Ablon-sur-Seine et du secteur des bords de Seine sud. Nos consultants se déplacent sur site, à 25 minutes de Paris-Austerlitz par le RER C (gare sur place), ou interviennent en visio.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Ablon-sur-Seine ?",
-      a: "Oui, audit Flash 490 € HT, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
+      a: "Oui, c'est notre priorité. Pour les artisans et prestataires, nous automatisons les devis, la gestion de planning, la facturation et les relances clients, sur des outils simples à prendre en main au quotidien.",
     },
     {
       q: "Accompagnez-vous les commerces et restaurateurs ?",
-      a: "Oui, CRM augmenté, gestion commandes et réservations IA, fidélisation clients automatisée, optimisation stocks, reporting intelligent.",
+      a: "Oui, pour les commerces de centre-bourg et la restauration, nous mettons en place CRM augmenté, gestion des commandes et réservations, fidélisation client automatisée et reporting clair adaptés aux petites structures.",
     },
     {
-      q: "Quels services pour les professions libérales et PME ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      q: "Quels services pour les professions libérales et petites PME tertiaires ?",
+      a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit Flash qui identifie les usages les plus rentables pour votre activité.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Austerlitz (25 min RER C, gare Ablon sur place). Aéroport Orly à 10 min. Déplacements facturés séparément, tarifs publics.",
+      q: "Comment se déroule une mission depuis Paris ou Orly ?",
+      a: "Ablon-sur-Seine est à 25 minutes de Paris-Austerlitz par le RER C, avec sa gare sur place, et à 10 minutes d'Orly. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
     },
   ],
 };

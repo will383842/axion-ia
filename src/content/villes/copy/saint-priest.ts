@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Saint-Priest (69, Rhône) — est lyonnais, industrie et logistique, Parc Technologique de Lyon, proximité Bosch / Volvo (Renault Trucks).
 
 import type { VilleCopy } from "./types";
 
 export const SAINT_PRIEST_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Saint-Priest, au cœur d'un écosystème industriel dynamique comprenant Renault Trucks et Bosch, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Saint-Priest : sous-traitants industriels de l'est lyonnais, PME du Parc Technologique de Lyon, prestataires logistiques. On structure des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "Axion-IA intervient à Saint-Priest, au cœur d'un écosystème industriel dynamique comprenant Renault Trucks et Bosch, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Saint-Priest : sous-traitants industriels de l'est lyonnais, PME du Parc Technologique de Lyon, prestataires logistiques. On structure des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Saint-Priest, une ville stratégique avec des entreprises comme Renault Trucks et Schneider Electric. Notre offre inclut des audits et des implémentations. Nous nous déplaçons sur site pour vous accompagner dans l'optimisation de vos processus métiers grâce à l'IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Saint-Priest, dans le Rhône, pour les TPE et PME de l'est lyonnais : sous-traitants industriels et de la mécanique, PME tech et de services du Parc Technologique de Lyon, prestataires logistiques et d'entreposage, dans un bassin marqué par la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, plannings, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Saint-Priest, une ville stratégique avec des entreprises comme Renault Trucks et Schneider Electric. Notre offre inclut des audits et des implémentations. Nous nous déplaçons sur site pour vous accompagner dans l'optimisation de vos processus métiers grâce à l'IA.",
-  seoHook: "construction véhicules & commerce gros",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Saint-Priest, dans le Rhône, pour les TPE et PME de l'est lyonnais : sous-traitants industriels et de la mécanique, PME tech et de services du Parc Technologique de Lyon, prestataires logistiques et d'entreposage, dans un bassin marqué par la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de service, plannings, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+  seoHook: "industrie & logistique est lyonnais",
   ecosystemFr:
-    "Saint-Priest bénéficie de la proximité du Parc Technologique et de l'implantation de grands groupes comme Bosch et Schneider Electric, renforçant ainsi son attractivité industrielle.",
+    "Saint-Priest, au cœur de l'est de la métropole de Lyon, est un pôle industriel et logistique majeur. Son Parc Technologique de Lyon réunit PME tech, bureaux d'études et entreprises de services, tandis que ses zones d'activités concentrent sous-traitance mécanique, travail des métaux et plateformes logistiques. Le bassin profite de la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Ce maillage dense de petites structures, soumises à la pression de cadence de la filière industrielle, constitue une cible naturelle pour des automatisations IA à effet rapide.",
   ecosystemEn:
-    "Saint-Priest bénéficie de la proximité du Parc Technologique et de l'implantation de grands groupes comme Bosch et Schneider Electric, renforçant ainsi son attractivité industrielle.",
+    "Saint-Priest, au cœur de l'est de la métropole de Lyon, est un pôle industriel et logistique majeur. Son Parc Technologique de Lyon réunit PME tech, bureaux d'études et entreprises de services, tandis que ses zones d'activités concentrent sous-traitance mécanique, travail des métaux et plateformes logistiques. Le bassin profite de la proximité de grands industriels comme Bosch et Volvo (Renault Trucks). Ce maillage dense de petites structures, soumises à la pression de cadence de la filière industrielle, constitue une cible naturelle pour des automatisations IA à effet rapide.",
   distancesFr:
-    "Saint-Priest est à 15 km de la Gare de Lyon Part-Dieu et à 20 km de l'Aéroport Lyon-Saint Exupéry.",
+    "Saint-Priest est reliée au centre de Lyon par le tramway T2, qui rejoint la Part-Dieu en une vingtaine de minutes. La rocade est et l'A43 desservent directement la commune, plaçant l'aéroport de Lyon-Saint-Exupéry à environ 15 km et la gare de Lyon-Part-Dieu, hub TGV, à une dizaine de kilomètres. Cette situation au carrefour de l'est lyonnais facilite nos déplacements sur site, des zones industrielles au Parc Technologique.",
   distancesEn:
-    "Saint-Priest est à 15 km de la Gare de Lyon Part-Dieu et à 20 km de l'Aéroport Lyon-Saint Exupéry.",
+    "Saint-Priest est reliée au centre de Lyon par le tramway T2, qui rejoint la Part-Dieu en une vingtaine de minutes. La rocade est et l'A43 desservent directement la commune, plaçant l'aéroport de Lyon-Saint-Exupéry à environ 15 km et la gare de Lyon-Part-Dieu, hub TGV, à une dizaine de kilomètres. Cette situation au carrefour de l'est lyonnais facilite nos déplacements sur site, des zones industrielles au Parc Technologique.",
   topSectorsNaf: [
-    "Construction véhicules",
-    "Commerce de gros",
-    "Entreposage",
-    "Réparation machines",
+    "Industrie et sous-traitance mécanique",
+    "Logistique, transport et entreposage",
+    "PME tech et bureaux d'études (Parc Technologique de Lyon)",
+    "Travail des métaux et réparation de machines",
+    "Commerce de gros et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Saint-Priest avec Axion-IA — identifiez les opportunités d'optimisation au sein de votre entreprise.",
-      en: "Réaliser un audit à Saint-Priest avec Axion-IA — identifiez les opportunités d'optimisation au sein de votre entreprise.",
+      fr: "À Saint-Priest, l'audit IA cartographie les flux d'un sous-traitant industriel, d'une PME tech du Parc Technologique ou d'un logisticien, repère les ressaisies chronophages, puis priorise 3 à 5 automatisations à fort ROI.",
+      en: "À Saint-Priest, l'audit IA cartographie les flux d'un sous-traitant industriel, d'une PME tech du Parc Technologique ou d'un logisticien, repère les ressaisies chronophages, puis priorise 3 à 5 automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Saint-Priest pour automatiser les processus — améliorez l'efficacité opérationnelle avec Renault Trucks.",
-      en: "Intervenir à Saint-Priest pour automatiser les processus — améliorez l'efficacité opérationnelle avec Renault Trucks.",
+      fr: "Nos interventions à Saint-Priest automatisent devis, ordres de service, plannings et relances chez les sous-traitants industriels, PME tech et logisticiens, directement sur leurs outils déjà en place.",
+      en: "Nos interventions à Saint-Priest automatisent devis, ordres de service, plannings et relances chez les sous-traitants industriels, PME tech et logisticiens, directement sur leurs outils déjà en place.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Saint-Priest — bénéficiez d'une intégration fluide avec l'écosystème local, incluant Bosch.",
-      en: "Implémenter des solutions IA à Saint-Priest — bénéficiez d'une intégration fluide avec l'écosystème local, incluant Bosch.",
+      fr: "L'implémentation déploie à Saint-Priest des assistants IA et workflows sur mesure pour l'industrie, la logistique et les PME du Parc Technologique, avec formation des équipes et conformité RGPD dès la conception.",
+      en: "L'implémentation déploie à Saint-Priest des assistants IA et workflows sur mesure pour l'industrie, la logistique et les PME du Parc Technologique, avec formation des équipes et conformité RGPD dès la conception.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Saint-Priest — développez vos compétences IA avec un suivi personnalisé sur site.",
-      en: "Accompagner en un-à-un à Saint-Priest — développez vos compétences IA avec un suivi personnalisé sur site.",
+      fr: "L'accompagnement un-à-un à Saint-Priest forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données techniques.",
+      en: "L'accompagnement un-à-un à Saint-Priest forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données techniques.",
+    },
+    sitesWeb: {
+      fr: "Nos sites web augmentés équipent les PME industrielles, tech et logistiques de Saint-Priest d'une plateforme rapide avec chatbot, demande de devis et contenu IA, pensée pour la recherche B2B locale.",
+      en: "Nos sites web augmentés équipent les PME industrielles, tech et logistiques de Saint-Priest d'une plateforme rapide avec chatbot, demande de devis et contenu IA, pensée pour la recherche B2B locale.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Saint-Priest ?",
-      a: "Les interventions à Saint-Priest commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Travaillez-vous avec les industriels de l'est lyonnais ?",
+      a: "Oui. Les sous-traitants industriels et PME mécaniques de Saint-Priest et de l'est lyonnais figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et leur reporting, sans intervenir sur leurs lignes de production.",
     },
     {
-      q: "Comment Axion-IA gère-t-elle les déplacements à Saint-Priest ?",
-      a: "Nos experts se déplacent directement sur site à Saint-Priest, garantissant une intervention rapide et efficace dans vos locaux.",
+      q: "Axion-IA se déplace-t-il sur site à Saint-Priest ?",
+      a: "Oui, nos architectes IA interviennent dans vos locaux, des zones industrielles au Parc Technologique de Lyon. L'audit terrain reste le meilleur moyen de cibler des automatisations réellement utiles à votre métier.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Saint-Priest ?",
-      a: "Les délais varient selon le projet, mais nos équipes s'engagent à intervenir dans les 5 jours ouvrés suivant la demande.",
+      q: "Accompagnez-vous les PME tech du Parc Technologique de Lyon ?",
+      a: "Oui. Les PME tech, bureaux d'études et entreprises de services du Parc Technologique font partie de nos cibles. Nous les aidons à industrialiser leurs processus avec l'IA et à former leurs équipes pour gagner en autonomie.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Saint-Priest ?",
-      a: "Nous intégrons les exigences RGPD dès la phase de conception des solutions IA, assurant ainsi une conformité totale pour nos clients à Saint-Priest.",
+      q: "Quel délai pour une première intervention à Saint-Priest ?",
+      a: "Nous visons un démarrage sous cinq jours ouvrés après validation, selon nos disponibilités. La desserte par le tramway T2 et la rocade est nous permettent d'être réactifs sur tout l'est de la métropole lyonnaise.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Saint-Priest ?",
+      a: "La conformité RGPD est cadrée dès l'audit : cartographie des données, hébergement maîtrisé, minimisation et traçabilité. Pour les industriels manipulant des données techniques sensibles, nous appliquons une gouvernance renforcée, conforme à l'AI Act.",
     },
   ],
 };

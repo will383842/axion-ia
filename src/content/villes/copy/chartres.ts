@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Chartres (28, Eure-et-Loir) — cathédrale UNESCO, Cosmetic Valley (parfum/cosmétique), agriculture de la Beauce.
 
 import type { VilleCopy } from "./types";
 
 export const CHARTRES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Chartres, où le Groupe L'Oréal et Sanofi sont implantés, pour automatiser vos processus administratifs et améliorer l'efficacité opérationnelle.",
+    "Chartres (28), préfecture d'Eure-et-Loir et ville de la cathédrale classée UNESCO, est la capitale de la Cosmetic Valley, premier pôle mondial de la parfumerie et de la cosmétique (Guerlain, Paco Rabanne, sous-traitants). Au cœur de la Beauce agricole, son tissu mêle PME industrielles, agroalimentaire et TPE de services. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME chartraines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Axion-IA intervient à Chartres, où le Groupe L'Oréal et Sanofi sont implantés, pour automatiser vos processus administratifs et améliorer l'efficacité opérationnelle.",
+    "Chartres (28), préfecture d'Eure-et-Loir et ville de la cathédrale classée UNESCO, est la capitale de la Cosmetic Valley, premier pôle mondial de la parfumerie et de la cosmétique (Guerlain, Paco Rabanne, sous-traitants). Au cœur de la Beauce agricole, son tissu mêle PME industrielles, agroalimentaire et TPE de services. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME chartraines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "À Chartres, Axion-IA propose des services d'IA adaptés aux secteurs dominants tels que l'industrie agroalimentaire et chimique. Notre équipe se déplace pour réaliser des audits, des interventions et des implémentations, offrant une expertise nationale aux entreprises locales. Nos tarifs sont transparents: audit, intervention. Consultez nos services pour plus de détails.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chartres (28, Eure-et-Loir). Nous accompagnons en priorité les TPE, puis les PME du territoire : sous-traitants et façonniers de la Cosmetic Valley (parfum, cosmétique, packaging), agroalimentaire de la Beauce, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
   directAnswerEn:
-    "À Chartres, Axion-IA propose des services d'IA adaptés aux secteurs dominants tels que l'industrie agroalimentaire et chimique. Notre équipe se déplace pour réaliser des audits, des interventions et des implémentations, offrant une expertise nationale aux entreprises locales. Nos tarifs sont transparents: audit, intervention. Consultez nos services pour plus de détails.",
-  seoHook: "commerce détail & industrie agroalimentaire",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chartres (28, Eure-et-Loir). Nous accompagnons en priorité les TPE, puis les PME du territoire : sous-traitants et façonniers de la Cosmetic Valley (parfum, cosmétique, packaging), agroalimentaire de la Beauce, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+  seoHook: "Cosmetic Valley & agro Beauce",
   ecosystemFr:
-    "Le tissu économique de Chartres inclut des entreprises comme le Groupe L'Oréal et Sanofi, reflétant une forte présence dans l'industrie chimique et agroalimentaire.",
+    "Chartres est le berceau de la Cosmetic Valley, premier cluster mondial de la parfumerie et de la cosmétique, qui fédère grands noms, façonniers, sous-traitants de packaging et laboratoires. Au cœur de la Beauce, la ville s'appuie aussi sur un puissant secteur agricole et agroalimentaire (céréales, transformation), un commerce de centre patrimonial dopé par le tourisme cathédrale, et un réseau dense de TPE et PME de services. La proximité parisienne renforce l'attractivité économique du bassin chartrain.",
   ecosystemEn:
-    "Le tissu économique de Chartres inclut des entreprises comme le Groupe L'Oréal et Sanofi, reflétant une forte présence dans l'industrie chimique et agroalimentaire.",
+    "Chartres est le berceau de la Cosmetic Valley, premier cluster mondial de la parfumerie et de la cosmétique, qui fédère grands noms, façonniers, sous-traitants de packaging et laboratoires. Au cœur de la Beauce, la ville s'appuie aussi sur un puissant secteur agricole et agroalimentaire (céréales, transformation), un commerce de centre patrimonial dopé par le tourisme cathédrale, et un réseau dense de TPE et PME de services. La proximité parisienne renforce l'attractivité économique du bassin chartrain.",
   distancesFr:
-    "Chartres est située à 80 km de la Gare de Massy TGV et à 90 km de l'Aéroport de Paris-Orly.",
+    "Paris-Montparnasse à environ 1h en TER direct. Aéroport de Paris-Orly à 1h par l'A10/A11. Le Mans à 1h, Orléans à 1h, Dreux à 35 min. Gare de Chartres en centre-ville.",
   distancesEn:
-    "Chartres est située à 80 km de la Gare de Massy TGV et à 90 km de l'Aéroport de Paris-Orly.",
+    "Paris-Montparnasse à environ 1h en TER direct. Aéroport de Paris-Orly à 1h par l'A10/A11. Le Mans à 1h, Orléans à 1h, Dreux à 35 min. Gare de Chartres en centre-ville.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Industrie agroalimentaire",
-    "Industrie chimique",
-    "Activités pour la santé humaine",
+    "Parfumerie et cosmétique (Cosmetic Valley)",
+    "Packaging et conditionnement",
+    "Agriculture et agroalimentaire de la Beauce",
+    "Commerce de détail et tourisme",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Chartres avec Axion-IA permet d'identifier des leviers d'amélioration grâce à notre analyse approfondie.",
-      en: "Réaliser un audit à Chartres avec Axion-IA permet d'identifier des leviers d'amélioration grâce à notre analyse approfondie.",
+      fr: "Audit IA à Chartres : diagnostic adapté aux TPE et PME — façonniers de la Cosmetic Valley, agroalimentaire de la Beauce, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      en: "Audit IA à Chartres : diagnostic adapté aux TPE et PME — façonniers de la Cosmetic Valley, agroalimentaire de la Beauce, commerces et services. Nous ciblons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Chartres pour optimiser vos processus avec des solutions IA adaptées aux besoins spécifiques des entreprises locales.",
-      en: "Intervenir à Chartres pour optimiser vos processus avec des solutions IA adaptées aux besoins spécifiques des entreprises locales.",
+      fr: "Interventions IA sur site à Chartres : formats courts pour automatiser devis, relances et tâches administratives. Vos collaborateurs prennent ensuite la main en autonomie.",
+      en: "Interventions IA sur site à Chartres : formats courts pour automatiser devis, relances et tâches administratives. Vos collaborateurs prennent ensuite la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Chartres pour intégrer efficacement les nouvelles technologies dans vos systèmes existants.",
-      en: "Implémenter des solutions IA à Chartres pour intégrer efficacement les nouvelles technologies dans vos systèmes existants.",
+      fr: "Implémentation IA à Chartres : agents conversationnels, automatisation des flux qualité et classification documentaire pour la cosmétique et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
+      en: "Implémentation IA à Chartres : agents conversationnels, automatisation des flux qualité et classification documentaire pour la cosmétique et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Chartres avec des sessions 1-to-1 pour maximiser l'impact de l'IA sur leur organisation.",
-      en: "Accompagner les dirigeants à Chartres avec des sessions 1-to-1 pour maximiser l'impact de l'IA sur leur organisation.",
+      fr: "Coaching un-à-un à Chartres : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de la Cosmetic Valley, de la Beauce et du commerce chartrain.",
+      en: "Coaching un-à-un à Chartres : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de la Cosmetic Valley, de la Beauce et du commerce chartrain.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés par l'IA à Chartres : plateformes et outils sur mesure pour façonniers cosmétique, acteurs agroalimentaires et commerces, avec automatisations et SEO local intégrés.",
+      en: "Sites web augmentés par l'IA à Chartres : plateformes et outils sur mesure pour façonniers cosmétique, acteurs agroalimentaires et commerces, avec automatisations et SEO local intégrés.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Chartres ?",
-      a: "Les audits IA à Chartres commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez notre site pour les tarifs détaillés.",
+      q: "Axion-IA intervient-il à Chartres et en Eure-et-Loir ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Chartres et des communes voisines : Lucé, Mainvilliers, Lèves, Le Coudray. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Chartres ?",
-      a: "Notre équipe se déplace directement sur site à Chartres pour réaliser des interventions, garantissant une mise en œuvre rapide et efficace.",
+      q: "Travaillez-vous avec les acteurs de la Cosmetic Valley ?",
+      a: "Oui. De nombreuses TPE et PME chartraines sont façonniers, sous-traitants packaging ou prestataires de la filière parfum-cosmétique. Nous automatisons leurs flux qualité, devis et classification documentaire dans le respect des exigences du secteur.",
     },
     {
-      q: "Quels délais pour une intervention IA à Chartres ?",
-      a: "Williams se déplace sur site dans les 5 jours ouvrés pour débuter les interventions à Chartres, assurant une réactivité optimale.",
+      q: "Accompagnez-vous l'agroalimentaire et l'agriculture de la Beauce ?",
+      a: "Oui. Nous adaptons les automatisations IA aux PME agroalimentaires et aux acteurs de la transformation céréalière : suivi des stocks, traçabilité, relation fournisseurs et tâches administratives.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Chartres ?",
-      a: "Axion-IA veille à ce que toutes les solutions IA déployées à Chartres respectent strictement les normes RGPD, assurant la protection des données.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui. Toutes nos implémentations à Chartres respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ?",
+      a: "Chartres est à environ 1h de Paris-Montparnasse en TER direct. Nous nous déplaçons sur site ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+    },
+    {
+      q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",
+      a: "Oui, via le coaching un-à-un. Nous partons de vos cas réels pour rendre vos équipes autonomes sur l'IA, sans dépendance durable à un prestataire externe.",
     },
   ],
 };

@@ -1,69 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// L'Isle-sur-la-Sorgue (84, Vaucluse) — capitale des antiquités-brocante (3e d'Europe), tourisme de Provence, marché flottant.
 
 import type { VilleCopy } from "./types";
 
 export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à L'Isle-sur-la-Sorgue, une ville dynamique de la région Provence-Alpes-Côte d'Azur, pour accompagner les entreprises locales dans l'automatisation de leurs processus grâce à l'IA. Nous nous déplaçons sur site pour offrir des solutions concrètes et adaptées.",
+    "Axion-IA accompagne les TPE et PME de L'Isle-sur-la-Sorgue, capitale des antiquités et de la brocante, troisième place européenne du genre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser gestion de catalogue, devis et relation client au service des antiquaires, hébergeurs et commerçants de Provence.",
   pitchEn:
-    "Axion-IA intervient à L'Isle-sur-la-Sorgue, une ville dynamique de la région Provence-Alpes-Côte d'Azur, pour accompagner les entreprises locales dans l'automatisation de leurs processus grâce à l'IA. Nous nous déplaçons sur site pour offrir des solutions concrètes et adaptées.",
+    "Axion-IA accompagne les TPE et PME de L'Isle-sur-la-Sorgue, capitale des antiquités et de la brocante, troisième place européenne du genre, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser gestion de catalogue, devis et relation client au service des antiquaires, hébergeurs et commerçants de Provence.",
   directAnswerFr:
-    "À L'Isle-sur-la-Sorgue, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des secteurs comme le commerce de détail et la restauration, notre expertise en IA permet d'automatiser des tâches administratives et de relance. Nous nous déplaçons dans les communes voisines telles qu'Avignon et Cavaillon pour offrir des services personnalisés.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de L'Isle-sur-la-Sorgue à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire vauclusien célèbre pour ses antiquaires, sa brocante de rang européen, son marché flottant sur la Sorgue et son tourisme provençal, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce tissu d'artisans et de commerçants.",
   directAnswerEn:
-    "À L'Isle-sur-la-Sorgue, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des secteurs comme le commerce de détail et la restauration, notre expertise en IA permet d'automatiser des tâches administratives et de relance. Nous nous déplaçons dans les communes voisines telles qu'Avignon et Cavaillon pour offrir des services personnalisés.",
-  seoHook: "commerce détail & hébergement",
+    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de L'Isle-sur-la-Sorgue à intégrer l'intelligence artificielle dans leurs opérations. Sur ce territoire vauclusien célèbre pour ses antiquaires, sa brocante de rang européen, son marché flottant sur la Sorgue et son tourisme provençal, nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils mesurables. Tarifs publics, démarrage rapide, priorité aux TPE puis aux PME, les ETI restant marginales sur ce tissu d'artisans et de commerçants.",
+  seoHook: "antiquités-brocante & tourisme",
   ecosystemFr:
-    "L'Isle-sur-la-Sorgue bénéficie d'une proximité avec des pôles économiques tels qu'Avignon et Carpentras. Le tissu économique local est principalement orienté vers le commerce de détail et l'hébergement, offrant un terrain fertile pour nos interventions en IA.",
+    "L'Isle-sur-la-Sorgue est l'une des trois plus grandes places d'antiquités et de brocante d'Europe, avec ses villages d'antiquaires, son marché flottant et ses foires internationales. Cette spécialité s'accompagne d'un tourisme provençal soutenu, d'un hébergement de charme, d'une restauration et d'un commerce de détail dynamiques. Ce tissu de TPE de marchands d'art, de galeristes et de commerçants gagne à automatiser la gestion de catalogue, l'estimation, la relation client multilingue et la vente en ligne. Axion-IA cible en priorité ces TPE d'antiquaires et de tourisme, puis les PME hôtelières et commerçantes.",
   ecosystemEn:
-    "L'Isle-sur-la-Sorgue bénéficie d'une proximité avec des pôles économiques tels qu'Avignon et Carpentras. Le tissu économique local est principalement orienté vers le commerce de détail et l'hébergement, offrant un terrain fertile pour nos interventions en IA.",
+    "L'Isle-sur-la-Sorgue est l'une des trois plus grandes places d'antiquités et de brocante d'Europe, avec ses villages d'antiquaires, son marché flottant et ses foires internationales. Cette spécialité s'accompagne d'un tourisme provençal soutenu, d'un hébergement de charme, d'une restauration et d'un commerce de détail dynamiques. Ce tissu de TPE de marchands d'art, de galeristes et de commerçants gagne à automatiser la gestion de catalogue, l'estimation, la relation client multilingue et la vente en ligne. Axion-IA cible en priorité ces TPE d'antiquaires et de tourisme, puis les PME hôtelières et commerçantes.",
   distancesFr:
-    "La gare TGV d'Avignon est à 20 km, facilitant l'accès à L'Isle-sur-la-Sorgue pour nos interventions.",
+    "L'Isle-sur-la-Sorgue est à environ 20 km d'Avignon, dont la gare TGV relie Paris en moins de trois heures, et à 30 km de Carpentras et Cavaillon. L'aéroport d'Avignon-Provence est à 18 km et celui de Marseille-Provence à 70 km, ce qui facilite nos déplacements sur site dans tout le Comtat Venaissin.",
   distancesEn:
-    "La gare TGV d'Avignon est à 20 km, facilitant l'accès à L'Isle-sur-la-Sorgue pour nos interventions.",
+    "L'Isle-sur-la-Sorgue est à environ 20 km d'Avignon, dont la gare TGV relie Paris en moins de trois heures, et à 30 km de Carpentras et Cavaillon. L'aéroport d'Avignon-Provence est à 18 km et celui de Marseille-Provence à 70 km, ce qui facilite nos déplacements sur site dans tout le Comtat Venaissin.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Hébergement",
+    "Commerce d'antiquités et brocante",
+    "Hébergement touristique de charme",
     "Restauration",
-    "Activités sportives",
-    "Activités récréatives",
+    "Commerce de détail",
+    "Activités touristiques et artisanales",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à L'Isle-sur-la-Sorgue pour identifier les opportunités d'automatisation dans le commerce de détail. Audit Flash à partir de 490 € HT.",
-      en: "Réaliser un audit à L'Isle-sur-la-Sorgue pour identifier les opportunités d'automatisation dans le commerce de détail. Audit Flash à partir de 490 € HT.",
+      fr: "Auditer un antiquaire ou un hébergeur de L'Isle-sur-la-Sorgue pour repérer les automatisations à fort impact : gestion de catalogue, estimation, relation client multilingue.",
+      en: "Auditer un antiquaire ou un hébergeur de L'Isle-sur-la-Sorgue pour repérer les automatisations à fort impact : gestion de catalogue, estimation, relation client multilingue.",
     },
     interventions: {
-      fr: "Intervenir à L'Isle-sur-la-Sorgue pour automatiser les tâches administratives et de relance dans le secteur de l'hébergement.",
-      en: "Intervenir à L'Isle-sur-la-Sorgue pour automatiser les tâches administratives et de relance dans le secteur de l'hébergement.",
+      fr: "Intervenir sur site à L'Isle-sur-la-Sorgue pour automatiser devis, relances et fiches produits des antiquaires et commerçants, sans bouleverser vos habitudes.",
+      en: "Intervenir sur site à L'Isle-sur-la-Sorgue pour automatiser devis, relances et fiches produits des antiquaires et commerçants, sans bouleverser vos habitudes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à L'Isle-sur-la-Sorgue pour optimiser les processus de restauration. À partir de 990 € HT.",
-      en: "Implémenter des solutions IA à L'Isle-sur-la-Sorgue pour optimiser les processus de restauration. À partir de 990 € HT.",
+      fr: "Implémenter des solutions IA durables pour les PME touristiques et marchandes de L'Isle-sur-la-Sorgue : catalogue intelligent, suivi client, vente en ligne.",
+      en: "Implémenter des solutions IA durables pour les PME touristiques et marchandes de L'Isle-sur-la-Sorgue : catalogue intelligent, suivi client, vente en ligne.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de L'Isle-sur-la-Sorgue pour une intégration réussie de l'IA. À partir de 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants de L'Isle-sur-la-Sorgue pour une intégration réussie de l'IA. À partir de 990 € HT.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de L'Isle-sur-la-Sorgue pour piloter sereinement leur transition vers l'IA, au rythme des foires et des saisons.",
+      en: "Accompagner en un-à-un les dirigeants de TPE et PME de L'Isle-sur-la-Sorgue pour piloter sereinement leur transition vers l'IA, au rythme des foires et des saisons.",
+    },
+    sitesWeb: {
+      fr: "Concevoir des sites web augmentés par l'IA pour les antiquaires et hébergeurs de L'Isle-sur-la-Sorgue : galerie en ligne, fiches produits enrichies, assistant client multilingue.",
+      en: "Concevoir des sites web augmentés par l'IA pour les antiquaires et hébergeurs de L'Isle-sur-la-Sorgue : galerie en ligne, fiches produits enrichies, assistant client multilingue.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à L'Isle-sur-la-Sorgue ?",
-      a: "Les tarifs pour une intervention IA à L'Isle-sur-la-Sorgue commencent à partir de 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA se déplace-t-il sur site à L'Isle-sur-la-Sorgue ?",
+      a: "Oui. Notre cabinet d'architectes IA se déplace directement dans vos galeries, hôtels ou commerces de L'Isle-sur-la-Sorgue pour observer vos processus réels, généralement sous cinq jours ouvrés.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à L'Isle-sur-la-Sorgue ?",
-      a: "Williams se déplace sur site à L'Isle-sur-la-Sorgue dans les 5 jours ouvrés suivant la confirmation de votre demande, assurant une intervention rapide et efficace.",
+      q: "Quels gains l'IA apporte-t-elle à un antiquaire de L'Isle-sur-la-Sorgue ?",
+      a: "L'IA automatise la création de fiches produits, l'estimation, la relation client multilingue et la vente en ligne. Un antiquaire gagne du temps et touche une clientèle internationale plus large.",
     },
     {
-      q: "Proposez-vous des audits spécifiques pour le secteur de la restauration à L'Isle-sur-la-Sorgue ?",
-      a: "Oui, nous proposons des audits spécifiques pour le secteur de la restauration à L'Isle-sur-la-Sorgue, permettant d'identifier les opportunités d'automatisation et d'amélioration des processus.",
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous accompagnons en priorité les TPE puis les PME du Vaucluse. Les antiquaires, hôtels et commerces de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD lors de ses interventions à L'Isle-sur-la-Sorgue ?",
-      a: "Axion-IA respecte strictement les réglementations RGPD lors de ses interventions à L'Isle-sur-la-Sorgue, garantissant la protection des données personnelles de nos clients.",
+      q: "Axion-IA intervient-il dans les communes autour de L'Isle-sur-la-Sorgue ?",
+      a: "Oui. Nous nous déplaçons également à Avignon, Cavaillon, Carpentras et dans le reste du Comtat Venaissin pour des prestations sur site, sans surcoût caché.",
+    },
+    {
+      q: "Vos solutions respectent-elles le RGPD à L'Isle-sur-la-Sorgue ?",
+      a: "Oui. Chaque solution déployée à L'Isle-sur-la-Sorgue intègre la conformité RGPD dès la conception, avec hébergement maîtrisé des données et traçabilité complète des traitements clients.",
     },
   ],
 };

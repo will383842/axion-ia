@@ -1,72 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Caluire-et-Cuire (69, Rhône) — banlieue nord de Lyon, résidentiel aisé, services, santé, commerces.
 
 import type { VilleCopy } from "./types";
 
 export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Caluire-et-Cuire, au cœur de la région Auvergne-Rhône-Alpes, pour automatiser les processus administratifs des entreprises locales. Avec un accès rapide à Lyon et à ses pôles technologiques comme Cap Digital, nous offrons des solutions IA adaptées.",
+    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
   pitchEn:
-    "Axion-IA intervient à Caluire-et-Cuire, au cœur de la région Auvergne-Rhône-Alpes, pour automatiser les processus administratifs des entreprises locales. Avec un accès rapide à Lyon et à ses pôles technologiques comme Cap Digital, nous offrons des solutions IA adaptées.",
+    "Caluire-et-Cuire (69), commune résidentielle aisée de la banlieue nord de Lyon dans la Métropole, mêle services aux entreprises, santé, professions libérales, numérique et commerces de proximité. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME caluirardes, les ETI en complément.",
   directAnswerFr:
-    "Caluire-et-Cuire, située près de Lyon, bénéficie d'un écosystème économique diversifié avec des secteurs comme le commerce de détail et la programmation informatique. Axion-IA propose des interventions sur site pour optimiser les opérations des entreprises locales. Notre approche inclut des audits précis et des implémentations IA sur mesure, en tenant compte des infrastructures existantes comme celles de l'Inria et de Station F.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Caluire-et-Cuire, située près de Lyon, bénéficie d'un écosystème économique diversifié avec des secteurs comme le commerce de détail et la programmation informatique. Axion-IA propose des interventions sur site pour optimiser les opérations des entreprises locales. Notre approche inclut des audits précis et des implémentations IA sur mesure, en tenant compte des infrastructures existantes comme celles de l'Inria et de Station F.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Caluire-et-Cuire et dans la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services, professions de santé et libérales, agences numériques, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+  seoHook: "services, santé & numérique nord Lyon",
   ecosystemFr:
-    "Caluire-et-Cuire est proche de Lyon, un centre économique dynamique abritant des entreprises comme LVMH et BNP Paribas. Les entreprises locales bénéficient de cet environnement propice à l'innovation.",
+    "Caluire-et-Cuire est une commune résidentielle aisée adossée à l'économie lyonnaise : services aux entreprises, santé et professions libérales, numérique et commerces de proximité. Le tissu est dominé par les TPE/PME de services et les indépendants.",
   ecosystemEn:
-    "Caluire-et-Cuire est proche de Lyon, un centre économique dynamique abritant des entreprises comme LVMH et BNP Paribas. Les entreprises locales bénéficient de cet environnement propice à l'innovation.",
+    "Caluire-et-Cuire est une commune résidentielle aisée adossée à l'économie lyonnaise : services aux entreprises, santé et professions libérales, numérique et commerces de proximité. Le tissu est dominé par les TPE/PME de services et les indépendants.",
   distancesFr:
-    "Caluire-et-Cuire est à 5 km de la Gare de Lyon Part-Dieu et à 25 km de l'Aéroport Lyon-Saint-Exupéry.",
+    "Lyon Part-Dieu à 5 km (10 min), aéroport Lyon-Saint-Exupéry à 25 km. Croix-Rousse limitrophe, Rillieux-la-Pape à 5 min, métro et bus TCL desservent la commune.",
   distancesEn:
-    "Caluire-et-Cuire est à 5 km de la Gare de Lyon Part-Dieu et à 25 km de l'Aéroport Lyon-Saint-Exupéry.",
+    "Lyon Part-Dieu à 5 km (10 min), aéroport Lyon-Saint-Exupéry à 25 km. Croix-Rousse limitrophe, Rillieux-la-Pape à 5 min, métro et bus TCL desservent la commune.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Santé humaine",
-    "Restauration",
+    "Conseil et services aux entreprises",
+    "Santé humaine et professions médicales",
+    "Professions libérales (droit, expertise, conseil)",
+    "Numérique et programmation informatique",
+    "Commerce et artisanat de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Caluire-et-Cuire permet d'identifier les processus automatisables — réduction des coûts opérationnels mesurés.",
-      en: "Réaliser un audit à Caluire-et-Cuire permet d'identifier les processus automatisables — réduction des coûts opérationnels mesurés.",
+      fr: "Audit IA à Caluire-et-Cuire : diagnostic des automatisations chez les cabinets de conseil, professions de santé et libérales, agences numériques et commerces de la Métropole de Lyon. Gisements de ROI quantifiés, à tarif public.",
+      en: "Audit IA à Caluire-et-Cuire : diagnostic des automatisations chez les cabinets de conseil, professions de santé et libérales, agences numériques et commerces de la Métropole de Lyon. Gisements de ROI quantifiés, à tarif public.",
     },
     interventions: {
-      fr: "Intervenir à Caluire-et-Cuire pour automatiser devis et relances — gain de temps pour les équipes.",
-      en: "Intervenir à Caluire-et-Cuire pour automatiser devis et relances — gain de temps pour les équipes.",
+      fr: "Interventions IA sur site à Caluire-et-Cuire : nous venons dans votre cabinet, vos bureaux ou votre commerce pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Caluire-et-Cuire : nous venons dans votre cabinet, vos bureaux ou votre commerce pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Caluire-et-Cuire pour optimiser les systèmes existants — intégration fluide.",
-      en: "Implémenter des solutions IA à Caluire-et-Cuire pour optimiser les systèmes existants — intégration fluide.",
+      fr: "Implémentation IA à Caluire-et-Cuire : prise de RDV et relation patient automatisées pour la santé, agents de support et production documentaire pour les services, automatisation administrative pour les commerces.",
+      en: "Implémentation IA à Caluire-et-Cuire : prise de RDV et relation patient automatisées pour la santé, agents de support et production documentaire pour les services, automatisation administrative pour les commerces.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Caluire-et-Cuire en sessions 1-to-1 — prise de décision éclairée sur l'IA.",
-      en: "Accompagner les dirigeants de Caluire-et-Cuire en sessions 1-to-1 — prise de décision éclairée sur l'IA.",
+      fr: "Coaching un-à-un à Caluire-et-Cuire : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — consultants, professionnels de santé, libéraux, commerçants et artisans du nord lyonnais.",
+      en: "Coaching un-à-un à Caluire-et-Cuire : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — consultants, professionnels de santé, libéraux, commerçants et artisans du nord lyonnais.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Caluire-et-Cuire : sites vitrines, prise de RDV en ligne et espaces clients avec IA intégrée pour professions de santé, libéraux et commerces — qualification, FAQ intelligente, multilingue FR/EN.",
+      en: "Sites web augmentés à Caluire-et-Cuire : sites vitrines, prise de RDV en ligne et espaces clients avec IA intégrée pour professions de santé, libéraux et commerces — qualification, FAQ intelligente, multilingue FR/EN.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Caluire-et-Cuire ?",
-      a: "Les tarifs pour une intervention IA à Caluire-et-Cuire commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Caluire-et-Cuire et dans la Métropole de Lyon ?",
+      a: "Oui, Axion-IA se déplace sur site à Caluire-et-Cuire et dans toute la Métropole (Lyon Part-Dieu à 10 min). Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
-      q: "Combien de temps faut-il pour organiser une intervention sur site à Caluire-et-Cuire ?",
-      a: "Williams se déplace sur site à Caluire-et-Cuire généralement dans les 5 jours ouvrés suivant la demande.",
+      q: "Travaillez-vous avec les professions de santé et libérales ?",
+      a: "Oui, c'est un secteur prioritaire à Caluire-et-Cuire. Prise de RDV automatisée, relation patient/client, classification de dossiers, avec confidentialité et RGPD strictement respectés.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD lors des interventions à Caluire-et-Cuire ?",
-      a: "Axion-IA respecte strictement le RGPD, en garantissant la sécurité et la confidentialité des données lors de nos interventions à Caluire-et-Cuire.",
+      q: "Accompagnez-vous les cabinets de conseil et agences numériques ?",
+      a: "Oui. Pour les services, nous mettons en place l'automatisation des reportings, la production documentaire assistée et des agents de qualification, dans un cadre RGPD strict.",
     },
     {
-      q: "Proposez-vous des audits spécifiques pour le secteur de la santé à Caluire-et-Cuire ?",
-      a: "Oui, nous proposons des audits adaptés aux activités pour la santé humaine à Caluire-et-Cuire, en tenant compte des régulations spécifiques du secteur.",
+      q: "Aidez-vous les commerces et artisans caluirards ?",
+      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe et automatisation de la relation client et des tâches administratives.",
     },
     {
-      q: "Est-il possible d'intégrer des solutions IA avec notre ERP existant à Caluire-et-Cuire ?",
-      a: "Nos implémentations à Caluire-et-Cuire sont conçues pour s'intégrer avec les systèmes ERP existants, assurant une transition fluide et efficace.",
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Caluire-et-Cuire ?",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME locales. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+    },
+    {
+      q: "Comment se déroule une mission IA à Caluire-et-Cuire ?",
+      a: "Nos consultants viennent de Lyon (10 min) et se déplacent dans vos locaux après un premier échange. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

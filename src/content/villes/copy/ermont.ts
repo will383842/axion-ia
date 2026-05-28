@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Ermont (95, Val-d'Oise) — banlieue résidentielle du nord-ouest parisien, nœud ferroviaire, commerce et services de proximité.
 
 import type { VilleCopy } from "./types";
 
 export const ERMONT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Ermont, optimisant les processus des entreprises locales. Paris abrite des pôles comme Cap Digital et Inria, renforçant l'écosystème technologique environnant.",
+    "À Ermont, dans le Val-d'Oise, Axion-IA accompagne les TPE et PME du commerce, des services de proximité, de l'artisanat et du BTP. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "Axion-IA intervient à Ermont, optimisant les processus des entreprises locales. Paris abrite des pôles comme Cap Digital et Inria, renforçant l'écosystème technologique environnant.",
+    "À Ermont, dans le Val-d'Oise, Axion-IA accompagne les TPE et PME du commerce, des services de proximité, de l'artisanat et du BTP. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "Ermont, avec ses 29 489 habitants, est proche de Paris, où se trouvent des pôles technologiques tels que Cap Digital et Inria. Axion-IA offre des services d'IA sur site pour les entreprises d'Ermont. Nos interventions couvrent l'audit, l'implémentation et l'accompagnement personnalisé, garantissant une optimisation efficace des processus métiers locaux.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Ermont pour accompagner les TPE et PME locales. Dans cette commune résidentielle bien connectée du nord-ouest francilien, nous travaillons surtout avec les commerces, les artisans, les professions libérales et les sociétés de services qui irriguent le quotidien des habitants. Nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
   directAnswerEn:
-    "Ermont, avec ses 29 489 habitants, est proche de Paris, où se trouvent des pôles technologiques tels que Cap Digital et Inria. Axion-IA offre des services d'IA sur site pour les entreprises d'Ermont. Nos interventions couvrent l'audit, l'implémentation et l'accompagnement personnalisé, garantissant une optimisation efficace des processus métiers locaux.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Ermont pour accompagner les TPE et PME locales. Dans cette commune résidentielle bien connectée du nord-ouest francilien, nous travaillons surtout avec les commerces, les artisans, les professions libérales et les sociétés de services qui irriguent le quotidien des habitants. Nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+  seoHook: "commerce, services & artisanat",
   ecosystemFr:
-    "Le tissu économique d'Ermont est enrichi par la proximité de Paris, qui abrite LVMH et BNP Paribas. Ces entités influencent l'environnement économique régional.",
+    "Ermont est une commune résidentielle du Val-d'Oise, bien reliée à Paris par un nœud ferroviaire important qui en fait un pôle de vie quotidienne pour le nord-ouest francilien. Son économie repose surtout sur le commerce de proximité, les services aux particuliers et aux entreprises, l'artisanat et le BTP, ainsi que sur les professions libérales et de santé. Ce tissu dense de TPE et de petites PME, ancré dans le quotidien des habitants, dispose rarement de ressources internes dédiées au numérique : Axion-IA leur apporte une expertise IA pragmatique pour gagner du temps et fidéliser leur clientèle.",
   ecosystemEn:
-    "Le tissu économique d'Ermont est enrichi par la proximité de Paris, qui abrite LVMH et BNP Paribas. Ces entités influencent l'environnement économique régional.",
+    "Ermont est une commune résidentielle du Val-d'Oise, bien reliée à Paris par un nœud ferroviaire important qui en fait un pôle de vie quotidienne pour le nord-ouest francilien. Son économie repose surtout sur le commerce de proximité, les services aux particuliers et aux entreprises, l'artisanat et le BTP, ainsi que sur les professions libérales et de santé. Ce tissu dense de TPE et de petites PME, ancré dans le quotidien des habitants, dispose rarement de ressources internes dédiées au numérique : Axion-IA leur apporte une expertise IA pragmatique pour gagner du temps et fidéliser leur clientèle.",
   distancesFr:
-    "Ermont est à 20 km de la Gare de Paris-Nord et à 30 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Ermont bénéficie d'un nœud ferroviaire majeur : la gare Ermont-Eaubonne relie le centre de Paris en moins de 30 minutes via les lignes Transilien et RER C. Le quartier d'affaires de La Défense est accessible en une trentaine de minutes, et l'aéroport Paris-Charles-de-Gaulle se situe à environ 30 km par la route. Cette excellente desserte permet à nos consultants d'intervenir rapidement sur place et facilite les échanges entre les entreprises d'Ermont et l'ensemble du bassin parisien.",
   distancesEn:
-    "Ermont est à 20 km de la Gare de Paris-Nord et à 30 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Ermont bénéficie d'un nœud ferroviaire majeur : la gare Ermont-Eaubonne relie le centre de Paris en moins de 30 minutes via les lignes Transilien et RER C. Le quartier d'affaires de La Défense est accessible en une trentaine de minutes, et l'aéroport Paris-Charles-de-Gaulle se situe à environ 30 km par la route. Cette excellente desserte permet à nos consultants d'intervenir rapidement sur place et facilite les échanges entre les entreprises d'Ermont et l'ensemble du bassin parisien.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
-    "Action sociale sans hébergement",
+    "Commerce de détail de proximité",
+    "Services aux particuliers et aux entreprises",
+    "Artisanat du bâtiment et BTP",
+    "Professions libérales et de santé",
+    "Restauration et hébergement",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Ermont pour identifier les processus à automatiser — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Ermont pour identifier les processus à automatiser — Audit Flash dès 490 € HT.",
+      fr: "Un audit IA à Ermont commence par une rencontre sur site, dans votre commerce ou votre bureau, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une petite PME francilienne.",
+      en: "Un audit IA à Ermont commence par une rencontre sur site, dans votre commerce ou votre bureau, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une petite PME francilienne.",
     },
     interventions: {
-      fr: "Intervenir à Ermont pour optimiser les tâches administratives — Intervention Essentielle à partir de 590 € HT.",
-      en: "Intervenir à Ermont pour optimiser les tâches administratives — Intervention Essentielle à partir de 590 € HT.",
+      fr: "Nos interventions à Ermont automatisent les tâches répétitives des commerces et services locaux : prise de rendez-vous, relances clients, devis et traitement administratif, sans bouleverser vos outils existants.",
+      en: "Nos interventions à Ermont automatisent les tâches répétitives des commerces et services locaux : prise de rendez-vous, relances clients, devis et traitement administratif, sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Ermont pour améliorer l'efficacité opérationnelle — Tarifs dès 990 € HT.",
-      en: "Implémenter des solutions IA à Ermont pour améliorer l'efficacité opérationnelle — Tarifs dès 990 € HT.",
+      fr: "L'implémentation à Ermont déploie des solutions IA durables pour les TPE et PME de proximité, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
+      en: "L'implémentation à Ermont déploie des solutions IA durables pour les TPE et PME de proximité, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Ermont avec des sessions 1-to-1 — Coaching personnalisé à partir de 990 € HT.",
-      en: "Accompagner les dirigeants à Ermont avec des sessions 1-to-1 — Coaching personnalisé à partir de 990 € HT.",
+      fr: "Nos sessions un-à-un à Ermont forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets issus du commerce, de l'artisanat ou des professions libérales locales.",
+      en: "Nos sessions un-à-un à Ermont forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets issus du commerce, de l'artisanat ou des professions libérales locales.",
+    },
+    sitesWeb: {
+      fr: "Pour les entreprises d'Ermont, nous concevons des sites web et plateformes augmentés par l'IA : prise de rendez-vous en ligne, devis automatisés et assistants qui qualifient et orientent les demandes des clients locaux.",
+      en: "Pour les entreprises d'Ermont, nous concevons des sites web et plateformes augmentés par l'IA : prise de rendez-vous en ligne, devis automatisés et assistants qui qualifient et orientent les demandes des clients locaux.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Ermont ?",
-      a: "Les tarifs pour une intervention IA à Ermont commencent à partir de 590 € HT pour l'Intervention Essentielle. Les prix sont publics et consultables sur notre site.",
+      q: "Axion-IA se déplace-t-il à Ermont ?",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Ermont et dans le Val-d'Oise. Grâce à la gare Ermont-Eaubonne, l'accès est rapide, et la première rencontre se fait toujours sur site pour bien comprendre votre activité.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Ermont ?",
-      a: "Notre équipe nationale se déplace sur site à Ermont dans les 5 jours ouvrés suivant la prise de contact, garantissant une intervention rapide et efficace.",
+      q: "Quels types d'entreprises accompagnez-vous à Ermont ?",
+      a: "Nous accompagnons en priorité les TPE et PME : commerces de proximité, artisans, professions libérales, sociétés de services et BTP. Les ETI restent un cas marginal. Notre approche est calibrée pour des structures aux ressources limitées.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services d'Axion-IA à Ermont ?",
-      a: "Les secteurs comme le commerce de détail et la programmation informatique à Ermont tirent parti de nos services pour automatiser et optimiser leurs processus.",
+      q: "Par quoi commence une mission IA à Ermont ?",
+      a: "Chaque mission débute par un audit terrain qui cartographie vos processus et hiérarchise les automatisations selon leur retour sur investissement. Vous repartez avec un plan d'action priorisé, lisible par un dirigeant non technicien.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Ermont ?",
-      a: "Oui, Axion-IA respecte strictement le RGPD lors de toutes ses interventions à Ermont, assurant la conformité et la sécurité des données traitées.",
+      q: "Faut-il changer mes logiciels pour travailler avec Axion-IA ?",
+      a: "Non. Nous nous greffons sur vos outils existants chaque fois que possible et évitons toute dépendance technologique imposée. L'objectif est d'augmenter votre productivité sans vous enfermer dans une solution propriétaire.",
     },
     {
-      q: "Quels délais pour un audit IA à Ermont ?",
-      a: "Un audit IA à Ermont peut être réalisé sous 4 semaines, avec des résultats exploitables rapidement. L'Audit Flash est disponible à partir de 490 € HT.",
+      q: "Comment garantissez-vous la conformité RGPD à Ermont ?",
+      a: "La conformité RGPD est intégrée dès l'audit puis tout au long de l'implémentation. Nous documentons les traitements, limitons les données collectées et privilégions un hébergement conforme à la réglementation européenne.",
     },
   ],
 };

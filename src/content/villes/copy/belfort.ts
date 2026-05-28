@@ -1,72 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Belfort (90, Territoire de Belfort) — Lion de Belfort, turbines Alstom/GE, technopôle Techn'Hom, bassin industriel.
 
 import type { VilleCopy } from "./types";
 
 export const BELFORT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA propose ses interventions à Belfort, où se trouvent General Electric et Alstom, pour optimiser vos processus grâce à l'IA.",
+    "Belfort (90), ville-symbole du Lion de Bartholdi et capitale industrielle du nord Franche-Comté, vit au rythme des grandes turbines (Alstom, General Electric), de la sous-traitance mécanique et du technopôle Techn'Hom. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME du bassin, les ETI en complément.",
   pitchEn:
-    "Axion-IA propose ses interventions à Belfort, où se trouvent General Electric et Alstom, pour optimiser vos processus grâce à l'IA.",
+    "Belfort (90), ville-symbole du Lion de Bartholdi et capitale industrielle du nord Franche-Comté, vit au rythme des grandes turbines (Alstom, General Electric), de la sous-traitance mécanique et du technopôle Techn'Hom. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME du bassin, les ETI en complément.",
   directAnswerFr:
-    "À Belfort, Axion-IA intervient auprès des acteurs des secteurs de la fabrication de machines et de la programmation informatique. Nous proposons des audits et des implémentations, adaptés aux besoins des entreprises locales. Nos services incluent des déplacements sur site, garantissant une approche personnalisée pour chaque client.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Belfort et dans tout le nord Franche-Comté. Nous accompagnons en priorité les TPE et PME industrielles du bassin — sous-traitants mécaniques et métalliers, bureaux d'études, fournisseurs de la filière énergie/transport, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "À Belfort, Axion-IA intervient auprès des acteurs des secteurs de la fabrication de machines et de la programmation informatique. Nous proposons des audits et des implémentations, adaptés aux besoins des entreprises locales. Nos services incluent des déplacements sur site, garantissant une approche personnalisée pour chaque client.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Belfort et dans tout le nord Franche-Comté. Nous accompagnons en priorité les TPE et PME industrielles du bassin — sous-traitants mécaniques et métalliers, bureaux d'études, fournisseurs de la filière énergie/transport, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+  seoHook: "turbines, mécanique & Techn'Hom",
   ecosystemFr:
-    "Belfort accueille des groupes comme General Electric et Alstom, ainsi que le technopôle Techn'Hom, renforçant son secteur industriel.",
+    "Belfort est un bassin industriel historique structuré autour des grandes turbines (Alstom, General Electric), de la mécanique de précision et du technopôle Techn'Hom. Autour des donneurs d'ordre gravite un réseau dense de TPE et PME sous-traitantes, complété par le commerce et les services.",
   ecosystemEn:
-    "Belfort accueille des groupes comme General Electric et Alstom, ainsi que le technopôle Techn'Hom, renforçant son secteur industriel.",
+    "Belfort est un bassin industriel historique structuré autour des grandes turbines (Alstom, General Electric), de la mécanique de précision et du technopôle Techn'Hom. Autour des donneurs d'ordre gravite un réseau dense de TPE et PME sous-traitantes, complété par le commerce et les services.",
   distancesFr:
-    "La gare TGV Belfort - Montbéliard est à 10 km, facilitant l'accès à nos interventions.",
+    "Gare de Belfort en centre-ville ; gare TGV Belfort-Montbéliard à 10 km (Paris en 2h15). Montbéliard à 20 min, Mulhouse à 40 min, frontière suisse (Bâle) à 1h.",
   distancesEn:
-    "La gare TGV Belfort - Montbéliard est à 10 km, facilitant l'accès à nos interventions.",
+    "Gare de Belfort en centre-ville ; gare TGV Belfort-Montbéliard à 10 km (Paris en 2h15). Montbéliard à 20 min, Mulhouse à 40 min, frontière suisse (Bâle) à 1h.",
   topSectorsNaf: [
-    "Fabrication de machines",
-    "Production d'électricité",
-    "Programmation informatique",
-    "Recherche-développement scientifique",
+    "Fabrication de turbines et machines (énergie)",
+    "Mécanique de précision et métallurgie",
+    "Sous-traitance industrielle (PME du bassin)",
+    "Ingénierie et bureaux d'études (Techn'Hom)",
+    "Commerce et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Belfort avec Axion-IA pour identifier les opportunités IA chez General Electric.",
-      en: "Réaliser un audit à Belfort avec Axion-IA pour identifier les opportunités IA chez General Electric.",
+      fr: "Audit IA à Belfort : diagnostic des gisements d'automatisation chez les sous-traitants mécaniques, métalliers et bureaux d'études du bassin. Priorisation des cas d'usage à ROI rapide, à tarif public.",
+      en: "Audit IA à Belfort : diagnostic des gisements d'automatisation chez les sous-traitants mécaniques, métalliers et bureaux d'études du bassin. Priorisation des cas d'usage à ROI rapide, à tarif public.",
     },
     interventions: {
-      fr: "Intervenir à Belfort pour automatiser les processus chez Alstom, augmentant l'efficacité opérationnelle.",
-      en: "Intervenir à Belfort pour automatiser les processus chez Alstom, augmentant l'efficacité opérationnelle.",
+      fr: "Interventions IA sur site à Belfort : nous venons dans l'atelier, le bureau d'études ou les bureaux administratifs pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Belfort : nous venons dans l'atelier, le bureau d'études ou les bureaux administratifs pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Belfort, notamment au sein de Techn'Hom, pour optimiser la production.",
-      en: "Implémenter des solutions IA à Belfort, notamment au sein de Techn'Hom, pour optimiser la production.",
+      fr: "Implémentation IA à Belfort : maintenance prédictive et contrôle qualité en atelier, automatisation des devis et de la documentation technique, agents de support pour les PME industrielles du Techn'Hom.",
+      en: "Implémentation IA à Belfort : maintenance prédictive et contrôle qualité en atelier, automatisation des devis et de la documentation technique, agents de support pour les PME industrielles du Techn'Hom.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Belfort dans l'adoption de l'IA, avec des sessions 1-to-1 personnalisées.",
-      en: "Accompagner les dirigeants de Belfort dans l'adoption de l'IA, avec des sessions 1-to-1 personnalisées.",
+      fr: "Coaching un-à-un à Belfort : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME industrielles — gérants d'atelier, responsables BE, patrons de sous-traitance du nord Franche-Comté.",
+      en: "Coaching un-à-un à Belfort : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME industrielles — gérants d'atelier, responsables BE, patrons de sous-traitance du nord Franche-Comté.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Belfort : portails techniques et configurateurs avec IA intégrée pour les sous-traitants mécaniques et bureaux d'études — devis assisté, base documentaire interrogeable, espace client.",
+      en: "Sites web augmentés à Belfort : portails techniques et configurateurs avec IA intégrée pour les sous-traitants mécaniques et bureaux d'études — devis assisté, base documentaire interrogeable, espace client.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Belfort ?",
-      a: "Nos audits IA à Belfort commencent à partir de 490 € HT pour un audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Belfort et dans le nord Franche-Comté ?",
+      a: "Oui, Axion-IA se déplace sur site à Belfort, Montbéliard et dans tout le bassin industriel. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
-      q: "Axion-IA se déplace-t-il à Belfort pour les interventions ?",
-      a: "Oui, Axion-IA se déplace à Belfort pour réaliser des interventions sur site, garantissant une approche adaptée à vos besoins spécifiques.",
+      q: "Travaillez-vous avec les sous-traitants mécaniques du bassin ?",
+      a: "Oui, c'est notre cœur de cible à Belfort. Automatisation des devis et de la documentation technique, contrôle qualité assisté et maintenance prédictive, adaptés aux ateliers de PME.",
     },
     {
-      q: "Combien de temps faut-il pour une implémentation IA à Belfort ?",
-      a: "Les délais d'implémentation varient selon le projet, mais nous assurons une mise en place rapide et efficace pour optimiser vos processus.",
+      q: "Aidez-vous les bureaux d'études et l'ingénierie de Techn'Hom ?",
+      a: "Oui. Pour les BE et l'ingénierie, nous mettons en place la recherche dans la documentation technique, l'assistance à la rédaction et l'automatisation des tâches répétitives, dans un cadre RGPD strict.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Belfort ?",
-      a: "Axion-IA veille à ce que toutes ses solutions respectent les normes RGPD, en intégrant la protection des données dès la conception des projets.",
+      q: "Faut-il être un grand groupe pour travailler avec Axion-IA à Belfort ?",
+      a: "Non. Notre priorité, ce sont les TPE et PME sous-traitantes du bassin. Un Audit Flash permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services IA à Belfort ?",
-      a: "Les secteurs de la fabrication de machines et de la programmation informatique à Belfort bénéficient particulièrement de nos services IA pour améliorer l'efficacité et l'innovation.",
+      q: "Comment garantissez-vous la confidentialité des plans et données techniques ?",
+      a: "Toutes nos implémentations à Belfort respectent strictement le RGPD et la confidentialité industrielle. Données hébergées en Europe, pas d'entraînement de modèles tiers sur vos plans.",
+    },
+    {
+      q: "Comment se déroule une mission IA à Belfort ?",
+      a: "Nos consultants se déplacent dans vos locaux après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
     },
   ],
 };

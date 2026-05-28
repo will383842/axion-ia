@@ -1,71 +1,75 @@
-// AUTO-GENERATED 2026-05-27 — T4 batch #18 Claude Code (Will).
-// Aurec-sur-Loire (43, Haute-Loire) — nord Haute-Loire, gorges de la Loire, industrie + agriculture.
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Aurec-sur-Loire (43, Haute-Loire) — nord Haute-Loire, gorges de la Loire, PME industrielles & agriculture montagne.
 
 import type { VilleCopy } from "./types";
 
 export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Aurec-sur-Loire (43), commune du nord de la Haute-Loire, est positionnée dans les gorges de la Loire. Tissu PME industrielles, agriculture montagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Aurec-sur-Loire, commune du nord de la Haute-Loire nichée dans les gorges de la Loire, aux portes du bassin stéphanois. PME industrielles, sous-traitance mécanique, agriculture de montagne, artisans BTP et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Aurec-sur-Loire (43), commune du nord de la Haute-Loire, est positionnée dans les gorges de la Loire. Tissu PME industrielles, agriculture montagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Aurec-sur-Loire, commune du nord de la Haute-Loire nichée dans les gorges de la Loire, aux portes du bassin stéphanois. PME industrielles, sous-traitance mécanique, agriculture de montagne, artisans BTP et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire (43). Nous accompagnons tous types d'activités : PME industrielles nord Haute-Loire, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons les PME industrielles et sous-traitants du nord Haute-Loire, les agriculteurs de montagne, les artisans du BTP et les commerces. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire (43). Nous accompagnons tous types d'activités : PME industrielles nord Haute-Loire, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
-  seoHook: "industrielles nord & agriculture montagne",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons les PME industrielles et sous-traitants du nord Haute-Loire, les agriculteurs de montagne, les artisans du BTP et les commerces. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+  seoHook: "industrie & agriculture montagne",
   ecosystemFr:
-    "Aurec-sur-Loire est dans le nord Haute-Loire, gorges de la Loire. PME industrielles, agriculture montagne, TPE artisanat BTP, commerces.",
+    "Aurec-sur-Loire, dans le nord de la Haute-Loire au creux des gorges de la Loire, profite de la proximité immédiate du bassin industriel stéphanois (Firminy, Saint-Étienne). Son tissu mêle PME industrielles et de sous-traitance mécanique, agriculture de montagne, artisans du BTP et commerces de proximité, sur un territoire rural attractif tourné vers la vallée de la Loire.",
   ecosystemEn:
-    "Aurec-sur-Loire est dans le nord Haute-Loire, gorges de la Loire. PME industrielles, agriculture montagne, TPE artisanat BTP, commerces.",
+    "Aurec-sur-Loire, dans le nord de la Haute-Loire au creux des gorges de la Loire, profite de la proximité immédiate du bassin industriel stéphanois (Firminy, Saint-Étienne). Son tissu mêle PME industrielles et de sous-traitance mécanique, agriculture de montagne, artisans du BTP et commerces de proximité, sur un territoire rural attractif tourné vers la vallée de la Loire.",
   distancesFr:
-    "Saint-Étienne à 25 min. Firminy à 10 min. Le Puy-en-Velay à 50 min. Lyon à 1h15. Monistrol-sur-Loire à 15 min.",
+    "Firminy est à environ 10 min, Saint-Étienne (gare et accès TGV via Lyon) à environ 25 min, Monistrol-sur-Loire à 15 min, Le Puy-en-Velay à 50 min et Lyon à environ 1h15.",
   distancesEn:
-    "Saint-Étienne à 25 min. Firminy à 10 min. Le Puy-en-Velay à 50 min. Lyon à 1h15. Monistrol-sur-Loire à 15 min.",
+    "Firminy est à environ 10 min, Saint-Étienne (gare et accès TGV via Lyon) à environ 25 min, Monistrol-sur-Loire à 15 min, Le Puy-en-Velay à 50 min et Lyon à environ 1h15.",
   topSectorsNaf: [
-    "PME industrielles nord Haute-Loire",
-    "Agriculture montagne",
-    "TPE artisanat BTP",
+    "PME industrielles et sous-traitance mécanique",
+    "Agriculture et élevage de montagne",
+    "Artisanat et BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aurec-sur-Loire : diagnostic adapté aux PME industrielles, agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aurec-sur-Loire : diagnostic adapté aux PME industrielles, agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aurec-sur-Loire pour PME industrielles, agriculteurs de montagne et artisans : nous cartographions vos process (maintenance, qualité, planification, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Aurec-sur-Loire pour PME industrielles, agriculteurs de montagne et artisans : nous cartographions vos process (maintenance, qualité, planification, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, exploitation, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
-      en: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, exploitation, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      fr: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, à l'exploitation agricole ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, à l'exploitation agricole ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Aurec-sur-Loire : prédiction maintenance industrielle, classification photos cultures, agents conversationnels B2B, automatisation workflow.",
-      en: "Implémentation IA à Aurec-sur-Loire : prédiction maintenance industrielle, classification photos cultures, agents conversationnels B2B, automatisation workflow.",
+      fr: "Implémentation IA à Aurec-sur-Loire : maintenance prédictive industrielle, contrôle qualité visuel, classification de photos de cultures et d'animaux, agents conversationnels B2B et automatisation des workflows administratifs.",
+      en: "Implémentation IA à Aurec-sur-Loire : maintenance prédictive industrielle, contrôle qualité visuel, classification de photos de cultures et d'animaux, agents conversationnels B2B et automatisation des workflows administratifs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aurec-sur-Loire : sessions dans votre atelier, exploitation, commerce ou en visio. Industriels, agriculteurs, artisans, gérants TPE/PME aurécois.",
-      en: "Coaching 1-to-1 à Aurec-sur-Loire : sessions dans votre atelier, exploitation, commerce ou en visio. Industriels, agriculteurs, artisans, gérants TPE/PME aurécois.",
+      fr: "Coaching 1-to-1 à Aurec-sur-Loire pour dirigeants de TPE et PME industrielles, agricoles ou artisanales : sessions dans votre atelier, exploitation, commerce ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Aurec-sur-Loire pour dirigeants de TPE et PME industrielles, agricoles ou artisanales : sessions dans votre atelier, exploitation, commerce ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Aurec-sur-Loire : portails B2B, vente directe agricole et outils IA sur mesure pour l'industrie, l'agriculture de montagne et l'artisanat du nord Haute-Loire.",
+      en: "Sites web augmentés à Aurec-sur-Loire : portails B2B, vente directe agricole et outils IA sur mesure pour l'industrie, l'agriculture de montagne et l'artisanat du nord Haute-Loire.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aurec-sur-Loire ?",
-      a: "Oui, Axion-IA intervient à Aurec-sur-Loire et nord Haute-Loire (Firminy à 10 min, Monistrol à 15 min, Bas-en-Basset). Consultants depuis Saint-Étienne (25 min).",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Aurec-sur-Loire et du nord Haute-Loire (Firminy à 10 min, Monistrol à 15 min, Bas-en-Basset). Nous intervenons depuis le bassin stéphanois. Frais de déplacement facturés à part, tarifs publics.",
     },
     {
-      q: "Travaillez-vous avec les PME industrielles ?",
-      a: "Oui, prédiction maintenance, contrôle qualité, optimisation production, classification documents.",
+      q: "Travaillez-vous avec les PME industrielles aurécoises ?",
+      a: "Oui, c'est notre cible prioritaire : maintenance prédictive, contrôle qualité visuel, optimisation de production et classification de documents pour les PME industrielles et sous-traitants du nord Haute-Loire.",
     },
     {
-      q: "Accompagnez-vous les agriculteurs montagne ?",
-      a: "Oui, prédiction récoltes, classification photos cultures/animaux, traçabilité, vente directe.",
+      q: "Accompagnez-vous les agriculteurs de montagne ?",
+      a: "Oui, prévision de récolte, classification de photos de cultures et d'animaux, traçabilité et vente directe pour les exploitations de montagne. Chaque piste est chiffrée en ROI dans l'Audit Flash.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quel est le tarif d'un audit IA à Aurec-sur-Loire ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",
-      a: "Saint-Étienne (25 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nous intervenons depuis le bassin stéphanois, à environ 25 min d'Aurec-sur-Loire. Déplacement sur site ou sessions en visio possibles. Frais de déplacement facturés à part, tarifs publics.",
     },
   ],
 };

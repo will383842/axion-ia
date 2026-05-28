@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Valence (26, Drôme) — carrefour de la vallée du Rhône, agroalimentaire, électronique (Crouzet), porte de la Provence.
 
 import type { VilleCopy } from "./types";
 
 export const VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Valence, une ville dynamique avec des entreprises comme Sanofi et Thales. Nos services incluent audits, interventions et implémentations pour optimiser vos processus grâce à l'IA.",
+    "Valence (26), préfecture de la Drôme, est un carrefour stratégique de la vallée du Rhône, à mi-chemin entre Lyon et la Provence, desservi par la gare TGV et l'autoroute A7. Surnommée la porte du Midi, elle conjugue une économie agroalimentaire et viticole nourrie par le terroir drômois, une tradition électronique et industrielle avec des acteurs comme Crouzet, et un tertiaire dynamique. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de la Drôme dans une adoption pragmatique de l'intelligence artificielle.",
   pitchEn:
-    "Axion-IA intervient à Valence, une ville dynamique avec des entreprises comme Sanofi et Thales. Nos services incluent audits, interventions et implémentations pour optimiser vos processus grâce à l'IA.",
+    "Valence (26), préfecture de la Drôme, est un carrefour stratégique de la vallée du Rhône, à mi-chemin entre Lyon et la Provence, desservi par la gare TGV et l'autoroute A7. Surnommée la porte du Midi, elle conjugue une économie agroalimentaire et viticole nourrie par le terroir drômois, une tradition électronique et industrielle avec des acteurs comme Crouzet, et un tertiaire dynamique. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de la Drôme dans une adoption pragmatique de l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA se déplace à Valence pour accompagner les entreprises locales dans leur transformation IA. La ville abrite des grands groupes tels que Sanofi et Thales, ainsi que des pôles de compétitivité comme Techtera et Minalogic. Nous proposons des audits et des interventions pour répondre aux besoins spécifiques des entreprises valentinoises.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valence et dans la Drôme. Nous accompagnons en priorité les TPE puis les PME : transformateurs agroalimentaires et acteurs du terroir et du vignoble drômois, PME d'électronique et d'industrie dans la lignée de Crouzet, logistique de la vallée du Rhône, commerces, artisans et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
   directAnswerEn:
-    "Axion-IA se déplace à Valence pour accompagner les entreprises locales dans leur transformation IA. La ville abrite des grands groupes tels que Sanofi et Thales, ainsi que des pôles de compétitivité comme Techtera et Minalogic. Nous proposons des audits et des interventions pour répondre aux besoins spécifiques des entreprises valentinoises.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valence et dans la Drôme. Nous accompagnons en priorité les TPE puis les PME : transformateurs agroalimentaires et acteurs du terroir et du vignoble drômois, PME d'électronique et d'industrie dans la lignée de Crouzet, logistique de la vallée du Rhône, commerces, artisans et services. Nos missions couvrent l'audit du potentiel IA, l'automatisation des tâches administratives et de production, et l'accompagnement individuel des dirigeants, avec des livrables concrets et une totale transparence tarifaire.",
+  seoHook: "vallée du Rhône, agro & électronique",
   ecosystemFr:
-    "Le tissu économique de Valence est marqué par la présence de Sanofi et Thales, ainsi que par des pôles de compétitivité comme Techtera et Minalogic.",
+    "Valence tire parti de sa position de carrefour de la vallée du Rhône, axe majeur entre Lyon et la Méditerranée, pour développer une économie diversifiée. L'agroalimentaire et la viticulture s'appuient sur un terroir drômois réputé, tandis qu'une tradition d'électronique et de mécanique de précision, illustrée par des acteurs comme Crouzet, ancre un savoir-faire industriel durable. La logistique, le commerce et un tertiaire en croissance complètent ce tissu de TPE et PME, pour lesquelles l'IA peut optimiser la production, la traçabilité, la gestion administrative et la relation client.",
   ecosystemEn:
-    "Le tissu économique de Valence est marqué par la présence de Sanofi et Thales, ainsi que par des pôles de compétitivité comme Techtera et Minalogic.",
+    "Valence tire parti de sa position de carrefour de la vallée du Rhône, axe majeur entre Lyon et la Méditerranée, pour développer une économie diversifiée. L'agroalimentaire et la viticulture s'appuient sur un terroir drômois réputé, tandis qu'une tradition d'électronique et de mécanique de précision, illustrée par des acteurs comme Crouzet, ancre un savoir-faire industriel durable. La logistique, le commerce et un tertiaire en croissance complètent ce tissu de TPE et PME, pour lesquelles l'IA peut optimiser la production, la traçabilité, la gestion administrative et la relation client.",
   distancesFr:
-    "La gare TGV de Valence est à 10 km, facilitant l'accès rapide à nos interventions sur site.",
+    "Lyon à 1h en TGV, gare de Valence TGV à 15 min, Grenoble à 1h, Marseille à 1h30 et Avignon à 1h. Nos consultants se déplacent depuis Lyon et Grenoble.",
   distancesEn:
-    "La gare TGV de Valence est à 10 km, facilitant l'accès rapide à nos interventions sur site.",
+    "Lyon à 1h en TGV, gare de Valence TGV à 15 min, Grenoble à 1h, Marseille à 1h30 et Avignon à 1h. Nos consultants se déplacent depuis Lyon et Grenoble.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Transports terrestres",
-    "Recherche-développement",
-    "Restauration",
+    "Agroalimentaire et viticulture drômoise",
+    "Électronique et mécanique de précision",
+    "Logistique vallée du Rhône",
+    "Commerce et tertiaire",
+    "Artisanat et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Valence permet d'identifier des opportunités d'optimisation, notamment pour les entreprises de la ZAC des Couleures.",
-      en: "Réaliser un audit à Valence permet d'identifier des opportunités d'optimisation, notamment pour les entreprises de la ZAC des Couleures.",
+      fr: "Audit IA à Valence : diagnostic du potentiel d'automatisation pour l'agroalimentaire, l'électronique, la logistique et les commerces. Feuille de route priorisée et chiffrée.",
+      en: "Audit IA à Valence : diagnostic du potentiel d'automatisation pour l'agroalimentaire, l'électronique, la logistique et les commerces. Feuille de route priorisée et chiffrée.",
     },
     interventions: {
-      fr: "Intervenir à Valence pour automatiser les processus administratifs, avec un focus sur le secteur du commerce de détail.",
-      en: "Intervenir à Valence pour automatiser les processus administratifs, avec un focus sur le secteur du commerce de détail.",
+      fr: "Interventions IA sur site à Valence : ateliers pour la production, la traçabilité et l'administratif. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Valence : ateliers pour la production, la traçabilité et l'administratif. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Valence, en tenant compte des spécificités des entreprises du Parc d'activités Rovaltain.",
-      en: "Implémenter des solutions IA à Valence, en tenant compte des spécificités des entreprises du Parc d'activités Rovaltain.",
+      fr: "Implémentation IA à Valence : automatisation de la planification de production, traçabilité agroalimentaire assistée, classification documentaire et agents conversationnels B2B.",
+      en: "Implémentation IA à Valence : automatisation de la planification de production, traçabilité agroalimentaire assistée, classification documentaire et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Valence pour des dirigeants souhaitant intégrer l'IA dans leur stratégie, dès 990 € HT.",
-      en: "Accompagner en un-à-un à Valence pour des dirigeants souhaitant intégrer l'IA dans leur stratégie, dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Valence : sessions sur site ou en visio pour dirigeants de TPE/PME, producteurs, industriels, commerçants et artisans souhaitant piloter l'IA.",
+      en: "Coaching 1-to-1 à Valence : sessions sur site ou en visio pour dirigeants de TPE/PME, producteurs, industriels, commerçants et artisans souhaitant piloter l'IA.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Valence : plateformes pour producteurs agroalimentaires, PME industrielles et commerces, avec recherche IA, devis automatisés et fiches produits assistées.",
+      en: "Sites web augmentés à Valence : plateformes pour producteurs agroalimentaires, PME industrielles et commerces, avec recherche IA, devis automatisés et fiches produits assistées.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont vos tarifs pour une intervention à Valence ?",
-      a: "Nos interventions à Valence commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Valence et dans la Drôme ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Valence, Romans-sur-Isère, Montélimar et tout le département. Nos consultants se déplacent depuis Lyon et Grenoble pour les missions sur site.",
     },
     {
-      q: "Comment se déroule une implémentation IA à Valence ?",
-      a: "Nous nous déplaçons sur site pour une analyse détaillée, suivie d'une mise en œuvre personnalisée, en tenant compte des infrastructures locales.",
+      q: "Travaillez-vous avec l'agroalimentaire et la viticulture drômoise ?",
+      a: "Oui, nous accompagnons producteurs, transformateurs et négociants sur la traçabilité assistée, l'automatisation des commandes et la relation client.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors des interventions à Valence ?",
-      a: "Oui, toutes nos interventions à Valence sont conformes au RGPD, assurant la sécurité et la confidentialité des données.",
+      q: "Accompagnez-vous les PME d'électronique et d'industrie ?",
+      a: "Oui, dans la lignée de Crouzet et du savoir-faire local : planification de production, contrôle qualité assisté, gestion documentaire et automatisation administrative.",
     },
     {
-      q: "Quel est le délai pour un audit à Valence ?",
-      a: "Williams se déplace à Valence dans les 5 jours ouvrés pour réaliser un audit, avec des résultats disponibles rapidement.",
+      q: "Quels services proposez-vous aux TPE et commerces valentinois ?",
+      a: "Audit Flash pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Valence ?",
-      a: "Oui, nous offrons des sessions de formation personnalisées pour les entreprises valentinoises, adaptées à leurs besoins spécifiques.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Valence ?",
+      a: "Chaque mission respecte le RGPD et l'AI Act européen : minimisation des données, hébergement maîtrisé et absence de dépendance technologique imposée à vos équipes.",
     },
   ],
 };

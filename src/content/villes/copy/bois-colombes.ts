@@ -1,67 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Bois-Colombes (92, Hauts-de-Seine) — tertiaire ouest francilien, sièges & services, résidentiel proche La Défense.
 
 import type { VilleCopy } from "./types";
 
 export const BOIS_COLOMBES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bois-Colombes, où l'écosystème économique inclut Aviva France et Colgate-Palmolive, pour optimiser vos processus grâce à l'IA.",
+    "Bois-Colombes (92), commune résidentielle et tertiaire des Hauts-de-Seine, abrite sièges sociaux, services financiers et numériques, professions libérales et commerces de proximité, à deux pas de La Défense. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME locales, les ETI en complément.",
   pitchEn:
-    "Axion-IA intervient à Bois-Colombes, où l'écosystème économique inclut Aviva France et Colgate-Palmolive, pour optimiser vos processus grâce à l'IA.",
+    "Bois-Colombes (92), commune résidentielle et tertiaire des Hauts-de-Seine, abrite sièges sociaux, services financiers et numériques, professions libérales et commerces de proximité, à deux pas de La Défense. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME locales, les ETI en complément.",
   directAnswerFr:
-    "Axion-IA se déplace à Bois-Colombes pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme Aviva France et Colgate-Palmolive dans la région, nous proposons des audits et des interventions. Notre approche garantit une mise en œuvre efficace adaptée au contexte économique local.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Bois-Colombes et dans tout l'ouest francilien. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services financiers, agences numériques, professions libérales, commerces et services de proximité — puis les ETI et sièges en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA se déplace à Bois-Colombes pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme Aviva France et Colgate-Palmolive dans la région, nous proposons des audits et des interventions. Notre approche garantit une mise en œuvre efficace adaptée au contexte économique local.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Bois-Colombes et dans tout l'ouest francilien. Nous accompagnons en priorité les TPE et PME locales — cabinets de conseil et services financiers, agences numériques, professions libérales, commerces et services de proximité — puis les ETI et sièges en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+  seoHook: "tertiaire, services & proximité 92",
   ecosystemFr:
-    "Bois-Colombes accueille des entreprises comme Aviva France et Colgate-Palmolive. Le secteur des services financiers et la programmation informatique y sont particulièrement présents.",
+    "Bois-Colombes combine fonctions tertiaires (sièges, services financiers, numérique) et économie résidentielle de proximité, portée par la proximité de La Défense et de Paris. Le tissu est dominé par les TPE/PME de services et les professions libérales.",
   ecosystemEn:
-    "Bois-Colombes accueille des entreprises comme Aviva France et Colgate-Palmolive. Le secteur des services financiers et la programmation informatique y sont particulièrement présents.",
+    "Bois-Colombes combine fonctions tertiaires (sièges, services financiers, numérique) et économie résidentielle de proximité, portée par la proximité de La Défense et de Paris. Le tissu est dominé par les TPE/PME de services et les professions libérales.",
   distancesFr:
-    "Bois-Colombes est situé à 7 km de la Gare de Paris-Saint-Lazare et à 27 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Gare de Bois-Colombes (Transilien J) à 12 min de Paris-Saint-Lazare. La Défense à 10 min, Paris à 7 km, aéroport Paris-Charles-de-Gaulle à 27 km. Courbevoie et Asnières à 5 min.",
   distancesEn:
-    "Bois-Colombes est situé à 7 km de la Gare de Paris-Saint-Lazare et à 27 km de l'Aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Services financiers", "Programmation informatique", "Commerce de détail"],
+    "Gare de Bois-Colombes (Transilien J) à 12 min de Paris-Saint-Lazare. La Défense à 10 min, Paris à 7 km, aéroport Paris-Charles-de-Gaulle à 27 km. Courbevoie et Asnières à 5 min.",
+  topSectorsNaf: [
+    "Conseil et services aux entreprises",
+    "Services financiers et assurance",
+    "Numérique et programmation informatique",
+    "Professions libérales (santé, droit, expertise)",
+    "Commerce et services de proximité",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bois-Colombes, où Aviva France opère, pour identifier les opportunités d'automatisation.",
-      en: "Réaliser un audit à Bois-Colombes, où Aviva France opère, pour identifier les opportunités d'automatisation.",
+      fr: "Audit IA à Bois-Colombes : diagnostic des automatisations chez les cabinets de conseil, services financiers, agences numériques et professions libérales de l'ouest francilien. Gisements de ROI quantifiés, à tarif public.",
+      en: "Audit IA à Bois-Colombes : diagnostic des automatisations chez les cabinets de conseil, services financiers, agences numériques et professions libérales de l'ouest francilien. Gisements de ROI quantifiés, à tarif public.",
     },
     interventions: {
-      fr: "Intervenir à Bois-Colombes pour optimiser les processus des entreprises, en tenant compte de l'écosystème local.",
-      en: "Intervenir à Bois-Colombes pour optimiser les processus des entreprises, en tenant compte de l'écosystème local.",
+      fr: "Interventions IA sur site à Bois-Colombes : nous venons dans vos bureaux ou votre cabinet pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Bois-Colombes : nous venons dans vos bureaux ou votre cabinet pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bois-Colombes, en s'appuyant sur notre expertise nationale pour des résultats concrets.",
-      en: "Implémenter des solutions IA à Bois-Colombes, en s'appuyant sur notre expertise nationale pour des résultats concrets.",
+      fr: "Implémentation IA à Bois-Colombes : automatisation des reportings et de la production documentaire, agents de support et de qualification, traitement des e-mails et des dossiers pour les services tertiaires.",
+      en: "Implémentation IA à Bois-Colombes : automatisation des reportings et de la production documentaire, agents de support et de qualification, traitement des e-mails et des dossiers pour les services tertiaires.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants à Bois-Colombes, pour une adoption efficace de l'IA dans leurs opérations.",
-      en: "Accompagner en un-à-un les dirigeants à Bois-Colombes, pour une adoption efficace de l'IA dans leurs opérations.",
+      fr: "Coaching un-à-un à Bois-Colombes : sessions dans vos bureaux ou en visio pour les dirigeants de TPE/PME — consultants, gérants de cabinet, professions libérales et commerçants de l'ouest francilien.",
+      en: "Coaching un-à-un à Bois-Colombes : sessions dans vos bureaux ou en visio pour les dirigeants de TPE/PME — consultants, gérants de cabinet, professions libérales et commerçants de l'ouest francilien.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Bois-Colombes : sites vitrines, espaces clients et portails avec IA intégrée pour cabinets de conseil, services financiers et professions libérales — prise de RDV, qualification, base documentaire interrogeable.",
+      en: "Sites web augmentés à Bois-Colombes : sites vitrines, espaces clients et portails avec IA intégrée pour cabinets de conseil, services financiers et professions libérales — prise de RDV, qualification, base documentaire interrogeable.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Bois-Colombes ?",
-      a: "Nos audits à Bois-Colombes débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Bois-Colombes et dans le 92 ?",
+      a: "Oui, Axion-IA se déplace sur site à Bois-Colombes, Courbevoie, Asnières, La Défense et dans tout l'ouest francilien. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
-      q: "Axion-IA se déplace-t-il directement à Bois-Colombes ?",
-      a: "Oui, notre équipe nationale se déplace sur site à Bois-Colombes pour effectuer les prestations directement chez vous.",
+      q: "Travaillez-vous avec les cabinets de conseil et services financiers ?",
+      a: "Oui, c'est notre cœur de cible à Bois-Colombes. Automatisation des reportings, production documentaire assistée et agents de qualification, dans un cadre RGPD strict.",
     },
     {
-      q: "Quel est le délai pour une intervention à Bois-Colombes ?",
-      a: "Notre équipe peut intervenir à Bois-Colombes généralement dans un délai de 5 jours ouvrés après la validation de la mission.",
+      q: "Accompagnez-vous les professions libérales (santé, droit, expertise) ?",
+      a: "Oui. Pour les libéraux, nous mettons en place la prise de RDV automatisée, des agents de relation client et la classification de dossiers, avec confidentialité et RGPD garantis.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Bois-Colombes ?",
-      a: "Nous intégrons les exigences RGPD dans toutes nos prestations à Bois-Colombes, garantissant la protection des données tout au long du processus.",
+      q: "Aidez-vous les agences numériques et les commerces de proximité ?",
+      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe et automatisation des tâches administratives et de la relation client.",
     },
     {
-      q: "Quelles sont les options de formation pour les dirigeants à Bois-Colombes ?",
-      a: "Nous proposons des sessions de formation en un-à-un pour les dirigeants à Bois-Colombes, à partir de 990 € HT, pour une maîtrise optimale de l'IA.",
+      q: "Faut-il être un grand siège pour travailler avec Axion-IA à Bois-Colombes ?",
+      a: "Non. Notre priorité, ce sont les TPE et PME locales. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+    },
+    {
+      q: "Comment se déroule une mission IA à Bois-Colombes ?",
+      a: "Nos consultants se déplacent dans vos bureaux après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
     },
   ],
 };

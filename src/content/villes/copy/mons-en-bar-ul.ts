@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Mons-en-Barœul (59, Nord) — banlieue est de Lille reconvertie, tertiaire et services, métropole européenne de Lille.
 
 import type { VilleCopy } from "./types";
 
 export const MONS_EN_BAR_UL_COPY: VilleCopy = {
   pitchFr:
-    "À Mons-en-Barœul, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des secteurs comme la programmation informatique et le commerce de détail, nous apportons des solutions IA adaptées aux besoins spécifiques de chaque entreprise.",
+    "Mons-en-Barœul, dans le Nord, est une commune de la métropole européenne de Lille qui a réussi sa reconversion d'ancienne cité ouvrière en pôle tertiaire et résidentiel dynamique, aux portes immédiates de Lille. Son tissu mêle services aux entreprises, commerces, artisanat et professions libérales, dans l'orbite de l'un des plus grands bassins économiques du nord de l'Europe. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME locales pour automatiser leurs processus avec un ROI mesurable.",
   pitchEn:
-    "À Mons-en-Barœul, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des secteurs comme la programmation informatique et le commerce de détail, nous apportons des solutions IA adaptées aux besoins spécifiques de chaque entreprise.",
+    "Mons-en-Barœul, dans le Nord, est une commune de la métropole européenne de Lille qui a réussi sa reconversion d'ancienne cité ouvrière en pôle tertiaire et résidentiel dynamique, aux portes immédiates de Lille. Son tissu mêle services aux entreprises, commerces, artisanat et professions libérales, dans l'orbite de l'un des plus grands bassins économiques du nord de l'Europe. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME locales pour automatiser leurs processus avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA se déplace à Mons-en-Barœul pour accompagner les entreprises dans l'automatisation de leurs tâches administratives et commerciales. Avec un tissu économique comprenant la programmation informatique et le commerce de détail, nous proposons des audits et des interventions, pour un retour sur investissement rapide et mesurable.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mons-en-Barœul (59, Nord). Nous accompagnons en priorité les TPE puis les PME de cette commune de la métropole lilloise : services aux entreprises, professions libérales, commerces, artisanat et ESN. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA se déplace à Mons-en-Barœul pour accompagner les entreprises dans l'automatisation de leurs tâches administratives et commerciales. Avec un tissu économique comprenant la programmation informatique et le commerce de détail, nous proposons des audits et des interventions, pour un retour sur investissement rapide et mesurable.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mons-en-Barœul (59, Nord). Nous accompagnons en priorité les TPE puis les PME de cette commune de la métropole lilloise : services aux entreprises, professions libérales, commerces, artisanat et ESN. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+  seoHook: "tertiaire & services métropole Lille",
   ecosystemFr:
-    "Mons-en-Barœul bénéficie de la proximité de Lille, un pôle économique majeur abritant des entreprises comme LVMH et BNP Paribas. Ce contexte offre des opportunités uniques pour l'implémentation de solutions IA.",
+    "Mons-en-Barœul a transformé son ancien passé industriel et ses grands ensembles en un pôle tertiaire et résidentiel intégré à la métropole européenne de Lille, l'un des plus vastes bassins économiques du nord de l'Europe. La proximité immédiate de Lille, de son écosystème numérique EuraTechnologies et de ses sièges sociaux irrigue un tissu local de services aux entreprises, professions libérales, commerces et artisans. Ces TPE et PME, riches en tâches administratives répétitives, sont idéales pour l'automatisation IA.",
   ecosystemEn:
-    "Mons-en-Barœul bénéficie de la proximité de Lille, un pôle économique majeur abritant des entreprises comme LVMH et BNP Paribas. Ce contexte offre des opportunités uniques pour l'implémentation de solutions IA.",
+    "Mons-en-Barœul a transformé son ancien passé industriel et ses grands ensembles en un pôle tertiaire et résidentiel intégré à la métropole européenne de Lille, l'un des plus vastes bassins économiques du nord de l'Europe. La proximité immédiate de Lille, de son écosystème numérique EuraTechnologies et de ses sièges sociaux irrigue un tissu local de services aux entreprises, professions libérales, commerces et artisans. Ces TPE et PME, riches en tâches administratives répétitives, sont idéales pour l'automatisation IA.",
   distancesFr:
-    "Mons-en-Barœul est à 5 km de la Gare de Lille-Europe et à 15 km de l'Aéroport de Lille-Lesquin.",
+    "Mons-en-Barœul est limitrophe de Lille et desservie par la ligne 2 du métro lillois, qui rejoint le centre en quelques minutes. La gare de Lille-Europe, hub TGV et Eurostar, est à 5 km, plaçant Paris à une heure et Bruxelles à 35 minutes. L'aéroport de Lille-Lesquin est à environ 15 km. Cette intégration au cœur de la métropole facilite nos interventions sur tout l'est lillois.",
   distancesEn:
-    "Mons-en-Barœul est à 5 km de la Gare de Lille-Europe et à 15 km de l'Aéroport de Lille-Lesquin.",
+    "Mons-en-Barœul est limitrophe de Lille et desservie par la ligne 2 du métro lillois, qui rejoint le centre en quelques minutes. La gare de Lille-Europe, hub TGV et Eurostar, est à 5 km, plaçant Paris à une heure et Bruxelles à 35 minutes. L'aéroport de Lille-Lesquin est à environ 15 km. Cette intégration au cœur de la métropole facilite nos interventions sur tout l'est lillois.",
   topSectorsNaf: [
-    "Commerce de détail",
+    "Conseil et services aux entreprises",
+    "Professions libérales et juridiques",
+    "Commerce de détail et restauration",
+    "Artisanat et travaux de construction",
     "Programmation informatique",
-    "Restauration",
-    "Travaux de construction",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Mons-en-Barœul pour identifier les processus automatisables — réduction des coûts opérationnels mesurés.",
-      en: "Réaliser un audit à Mons-en-Barœul pour identifier les processus automatisables — réduction des coûts opérationnels mesurés.",
+      fr: "Audit IA à Mons-en-Barœul : diagnostic des processus pour professions libérales, services aux entreprises et commerces de la métropole lilloise. Nous priorisons les automatisations à fort ROI.",
+      en: "Audit IA à Mons-en-Barœul : diagnostic des processus pour professions libérales, services aux entreprises et commerces de la métropole lilloise. Nous priorisons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Mons-en-Barœul pour automatiser les devis et relances — efficacité accrue.",
-      en: "Intervenir à Mons-en-Barœul pour automatiser les devis et relances — efficacité accrue.",
+      fr: "Interventions IA sur site à Mons-en-Barœul : automatisation des devis, relances et tâches administratives pour les TPE et PME locales, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Mons-en-Barœul : automatisation des devis, relances et tâches administratives pour les TPE et PME locales, avec montée en autonomie des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Mons-en-Barœul, en tenant compte du secteur informatique — intégration fluide.",
-      en: "Implémenter des solutions IA à Mons-en-Barœul, en tenant compte du secteur informatique — intégration fluide.",
+      fr: "Implémentation IA à Mons-en-Barœul : agents conversationnels, classification de documents et automatisation des flux entre CRM et outils métier des entreprises de services.",
+      en: "Implémentation IA à Mons-en-Barœul : agents conversationnels, classification de documents et automatisation des flux entre CRM et outils métier des entreprises de services.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Mons-en-Barœul en 1-to-1 — conseils personnalisés pour une adoption réussie.",
-      en: "Accompagner les dirigeants de Mons-en-Barœul en 1-to-1 — conseils personnalisés pour une adoption réussie.",
+      fr: "Coaching 1-to-1 à Mons-en-Barœul : sessions dans vos locaux ou en visio pour les dirigeants de TPE et PME souhaitant piloter l'IA en autonomie au sein de la métropole lilloise.",
+      en: "Coaching 1-to-1 à Mons-en-Barœul : sessions dans vos locaux ou en visio pour les dirigeants de TPE et PME souhaitant piloter l'IA en autonomie au sein de la métropole lilloise.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Mons-en-Barœul : plateformes sur mesure avec IA intégrée pour professions libérales, commerces et services souhaitant capter une clientèle de toute la métropole lilloise.",
+      en: "Sites web augmentés à Mons-en-Barœul : plateformes sur mesure avec IA intégrée pour professions libérales, commerces et services souhaitant capter une clientèle de toute la métropole lilloise.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Mons-en-Barœul ?",
-      a: "Les audits IA à Mons-en-Barœul commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il sur site à Mons-en-Barœul ?",
+      a: "Oui. Nos architectes IA se déplacent à Mons-en-Barœul et dans toute la métropole européenne de Lille pour réaliser audits, interventions et implémentations dans vos locaux, généralement sous cinq jours ouvrés après validation.",
     },
     {
-      q: "Comment se déroule une intervention IA à Mons-en-Barœul ?",
-      a: "Nos interventions à Mons-en-Barœul incluent une analyse sur site et la mise en œuvre de solutions adaptées. Williams se déplace dans les 5 jours ouvrés.",
+      q: "Accompagnez-vous les professions libérales de Mons-en-Barœul ?",
+      a: "Oui. Avocats, experts-comptables, cabinets et autres libéraux sont un public clé. Nous automatisons devis, relances, gestion documentaire et réponses aux demandes pour leur faire gagner un temps administratif considérable.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Mons-en-Barœul ?",
-      a: "Les délais d'implémentation à Mons-en-Barœul varient selon le projet, mais nous garantissons une mise en œuvre rapide pour un retour sur investissement trimestriel.",
+      q: "Travaillez-vous avec les TPE et PME locales en priorité ?",
+      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Mons-en-Barœul. Nous adaptons les formats aux petites structures de services et commerces. Les ETI restent un public marginal de notre activité.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Mons-en-Barœul ?",
-      a: "Axion-IA veille à la conformité RGPD en intégrant des protocoles de sécurité et de gestion des données lors de chaque intervention à Mons-en-Barœul.",
+      q: "Quels services pour les commerces et artisans de Mons-en-Barœul ?",
+      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la prise de rendez-vous.",
     },
     {
-      q: "Proposez-vous des formations IA à Mons-en-Barœul ?",
-      a: "Oui, nous offrons des sessions de formation IA pour dirigeants à partir de 990 € HT, adaptées aux besoins spécifiques des entreprises de Mons-en-Barœul.",
+      q: "Comment se passe une mission depuis Lille centre ?",
+      a: "Mons-en-Barœul est limitrophe de Lille et reliée par la ligne 2 du métro en quelques minutes. Nous couvrons tout l'est de la métropole. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
     },
   ],
 };

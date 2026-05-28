@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Joinville-le-Pont (94, Val-de-Marne) — bords de Marne, studios de cinéma historiques, guinguettes.
 
 import type { VilleCopy } from "./types";
 
 export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   pitchFr:
-    "Joinville-le-Pont, proche de Paris et de ses pôles comme Cap Digital, accueille Axion-IA pour des interventions IA sur mesure. Nous accompagnons les entreprises locales dans leur transformation numérique.",
+    "Axion-IA accompagne les TPE et PME de Joinville-le-Pont, ville des bords de Marne et berceau historique des studios de cinéma français, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, agences créatives et services de proximité.",
   pitchEn:
-    "Joinville-le-Pont, proche de Paris et de ses pôles comme Cap Digital, accueille Axion-IA pour des interventions IA sur mesure. Nous accompagnons les entreprises locales dans leur transformation numérique.",
+    "Axion-IA accompagne les TPE et PME de Joinville-le-Pont, ville des bords de Marne et berceau historique des studios de cinéma français, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, agences créatives et services de proximité.",
   directAnswerFr:
-    "Axion-IA intervient à Joinville-le-Pont pour optimiser les processus métiers des entreprises locales. Avec des acteurs économiques comme LVMH et BNP Paribas à Paris, notre cabinet propose des audits et implémentations IA adaptés aux besoins spécifiques des TPE, PME et ETI de la région, garantissant des résultats concrets et mesurables.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de Joinville-le-Pont à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune du Val-de-Marne marquée par les bords de Marne, ses studios de cinéma historiques et ses guinguettes, le tissu économique se compose surtout de services, de commerces et d'activités créatives. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
   directAnswerEn:
-    "Axion-IA intervient à Joinville-le-Pont pour optimiser les processus métiers des entreprises locales. Avec des acteurs économiques comme LVMH et BNP Paribas à Paris, notre cabinet propose des audits et implémentations IA adaptés aux besoins spécifiques des TPE, PME et ETI de la région, garantissant des résultats concrets et mesurables.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de Joinville-le-Pont à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune du Val-de-Marne marquée par les bords de Marne, ses studios de cinéma historiques et ses guinguettes, le tissu économique se compose surtout de services, de commerces et d'activités créatives. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+  seoHook: "studios cinéma & bords de Marne",
   ecosystemFr:
-    "Joinville-le-Pont bénéficie de la proximité de Paris, abritant des institutions comme Station F et Inria. Cet environnement dynamique favorise l'innovation et l'adoption de l'IA par les entreprises locales.",
+    "Joinville-le-Pont conjugue un héritage cinématographique fort, héritier de ses célèbres studios, une vie de bord de Marne animée par guinguettes et loisirs, et un tissu de proximité dense en commerces, services et professions libérales. Sa position aux portes de Paris attire agences créatives, audiovisuel et activités numériques. Ces TPE et PME, très orientées relation client et gestion de projet, profitent de l'IA pour automatiser devis, plannings et relances. Axion-IA cible en priorité ces TPE de services et créatives, puis les PME du commerce et de l'audiovisuel local.",
   ecosystemEn:
-    "Joinville-le-Pont bénéficie de la proximité de Paris, abritant des institutions comme Station F et Inria. Cet environnement dynamique favorise l'innovation et l'adoption de l'IA par les entreprises locales.",
+    "Joinville-le-Pont conjugue un héritage cinématographique fort, héritier de ses célèbres studios, une vie de bord de Marne animée par guinguettes et loisirs, et un tissu de proximité dense en commerces, services et professions libérales. Sa position aux portes de Paris attire agences créatives, audiovisuel et activités numériques. Ces TPE et PME, très orientées relation client et gestion de projet, profitent de l'IA pour automatiser devis, plannings et relances. Axion-IA cible en priorité ces TPE de services et créatives, puis les PME du commerce et de l'audiovisuel local.",
   distancesFr:
-    "Joinville-le-Pont est à 10 km de la Gare de Lyon et à 16 km de l'aéroport de Paris-Orly.",
+    "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km, ce qui rend nos déplacements sur site très rapides dans l'est parisien.",
   distancesEn:
-    "Joinville-le-Pont est à 10 km de la Gare de Lyon et à 16 km de l'aéroport de Paris-Orly.",
+    "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km, ce qui rend nos déplacements sur site très rapides dans l'est parisien.",
   topSectorsNaf: [
+    "Production audiovisuelle et créative",
+    "Services aux entreprises",
     "Commerce de détail",
-    "Programmation informatique",
-    "Restauration",
-    "Construction de bâtiments",
+    "Restauration et loisirs de bord de Marne",
+    "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Joinville-le-Pont permet d'identifier les processus automatisables, avec des tarifs à partir de 490 € HT.",
-      en: "Réaliser un audit à Joinville-le-Pont permet d'identifier les processus automatisables, avec des tarifs à partir de 490 € HT.",
+      fr: "Auditer une TPE de services ou une agence créative de Joinville-le-Pont pour repérer les automatisations utiles : devis, plannings de production, relances client.",
+      en: "Auditer une TPE de services ou une agence créative de Joinville-le-Pont pour repérer les automatisations utiles : devis, plannings de production, relances client.",
     },
     interventions: {
-      fr: "Intervenir à Joinville-le-Pont pour automatiser les tâches administratives des entreprises, réduisant les coûts opérationnels.",
-      en: "Intervenir à Joinville-le-Pont pour automatiser les tâches administratives des entreprises, réduisant les coûts opérationnels.",
+      fr: "Intervenir sur site à Joinville-le-Pont pour automatiser les tâches administratives des commerces et professions libérales, sans bouleverser vos outils existants.",
+      en: "Intervenir sur site à Joinville-le-Pont pour automatiser les tâches administratives des commerces et professions libérales, sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Joinville-le-Pont pour optimiser les systèmes existants, dès 990 € HT.",
-      en: "Implémenter des solutions IA à Joinville-le-Pont pour optimiser les systèmes existants, dès 990 € HT.",
+      fr: "Implémenter des solutions IA durables pour les PME créatives et de services de Joinville-le-Pont : suivi client, reporting, intégration à vos logiciels métiers.",
+      en: "Implémenter des solutions IA durables pour les PME créatives et de services de Joinville-le-Pont : suivi client, reporting, intégration à vos logiciels métiers.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Joinville-le-Pont pour les dirigeants souhaitant intégrer l'IA dans leur stratégie.",
-      en: "Proposer des sessions 1-to-1 à Joinville-le-Pont pour les dirigeants souhaitant intégrer l'IA dans leur stratégie.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Joinville-le-Pont pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Joinville-le-Pont pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+    },
+    sitesWeb: {
+      fr: "Concevoir des sites web augmentés par l'IA pour les agences et commerces de Joinville-le-Pont : prise de contact intelligente, portfolio dynamique, assistant client.",
+      en: "Concevoir des sites web augmentés par l'IA pour les agences et commerces de Joinville-le-Pont : prise de contact intelligente, portfolio dynamique, assistant client.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Joinville-le-Pont ?",
-      a: "Les tarifs pour une intervention IA à Joinville-le-Pont commencent à partir de 590 € HT. Nos tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA se déplace-t-il sur site à Joinville-le-Pont ?",
+      a: "Oui. Notre cabinet d'architectes IA se déplace directement dans vos locaux à Joinville-le-Pont et dans l'est parisien, généralement sous cinq jours ouvrés après validation de la mission.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Joinville-le-Pont ?",
-      a: "Williams se déplace sur site à Joinville-le-Pont dans les 5 jours ouvrés pour assurer un service de proximité et répondre aux besoins spécifiques des entreprises locales.",
+      q: "Quels gains l'IA apporte-t-elle à une agence créative de Joinville-le-Pont ?",
+      a: "L'IA automatise les devis, les plannings de production, les relances et la gestion de projet. Une agence ou un studio y gagne du temps pour se concentrer sur la création de valeur.",
     },
     {
-      q: "Quels délais pour un audit IA à Joinville-le-Pont ?",
-      a: "Un audit IA à Joinville-le-Pont peut être réalisé rapidement, avec un Audit Flash de 4 heures disponible à partir de 490 € HT.",
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous accompagnons en priorité les TPE puis les PME de Joinville-le-Pont. Les commerces et agences de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Joinville-le-Pont ?",
-      a: "Axion-IA garantit la conformité RGPD en intégrant des pratiques de protection des données dès la phase d'audit et tout au long de l'implémentation des solutions IA.",
+      q: "Comment se déroule un audit IA à Joinville-le-Pont ?",
+      a: "Nous analysons sur site vos flux de travail, identifions les tâches automatisables et livrons une feuille de route priorisée avec des gains chiffrés, adaptée à votre activité de services ou créative.",
+    },
+    {
+      q: "Vos solutions respectent-elles le RGPD à Joinville-le-Pont ?",
+      a: "Oui. Chaque solution déployée à Joinville-le-Pont intègre la conformité RGPD dès la conception, avec hébergement maîtrisé des données et traçabilité complète des traitements.",
     },
   ],
 };

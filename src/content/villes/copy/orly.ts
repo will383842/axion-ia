@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Orly (94, Val-de-Marne) — aéroport Paris-Orly, logistique et aéronautique, territoire Grand Paris Sud-Est.
 
 import type { VilleCopy } from "./types";
 
 export const ORLY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Orly, un hub de transport avec Air France et ADP. Nous accompagnons les entreprises locales dans l'automatisation de leurs processus grâce à notre expertise en IA.",
+    "Orly, dans le Val-de-Marne, est indissociable de l'aéroport Paris-Orly, deuxième plateforme aéroportuaire de France, qui structure une vaste économie de logistique, de transport, de maintenance aéronautique et de services. Intégrée au Grand Paris, la ville concentre entrepôts, transitaires, sous-traitants aéroportuaires, commerces et TPE de services. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs processus avec un ROI mesurable.",
   pitchEn:
-    "Axion-IA intervient à Orly, un hub de transport avec Air France et ADP. Nous accompagnons les entreprises locales dans l'automatisation de leurs processus grâce à notre expertise en IA.",
+    "Orly, dans le Val-de-Marne, est indissociable de l'aéroport Paris-Orly, deuxième plateforme aéroportuaire de France, qui structure une vaste économie de logistique, de transport, de maintenance aéronautique et de services. Intégrée au Grand Paris, la ville concentre entrepôts, transitaires, sous-traitants aéroportuaires, commerces et TPE de services. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs processus avec un ROI mesurable.",
   directAnswerFr:
-    "À Orly, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des groupes comme Air France et ADP, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre audit Flash commence à permettant une évaluation rapide des besoins en IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orly (94, Val-de-Marne). Nous accompagnons en priorité les TPE puis les PME de la plateforme aéroportuaire Paris-Orly : transitaires, logisticiens, sous-traitants de maintenance aéronautique, commerces et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "À Orly, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des groupes comme Air France et ADP, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre audit Flash commence à permettant une évaluation rapide des besoins en IA.",
-  seoHook: "entreposage & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orly (94, Val-de-Marne). Nous accompagnons en priorité les TPE puis les PME de la plateforme aéroportuaire Paris-Orly : transitaires, logisticiens, sous-traitants de maintenance aéronautique, commerces et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+  seoHook: "logistique & aéroport Paris-Orly",
   ecosystemFr:
-    "Orly est un centre de transport clé, abritant des géants comme Air France et ADP. Le Parc d'Activités des Saules contribue à l'activité économique locale.",
+    "Orly tire toute sa dynamique économique de l'aéroport Paris-Orly, deuxième de France, autour duquel gravitent maintenance aéronautique, fret, transitaires et une dense filière logistique. Les zones d'activités et entrepôts du Grand Paris Sud-Est, le futur essor lié à la ligne 14 prolongée et au Grand Paris Express renforcent ce tissu. Entre TPE de services, commerces et PME logistiques soumises à de fortes contraintes de délais et de traçabilité, l'automatisation IA constitue un levier direct de productivité et de fiabilité.",
   ecosystemEn:
-    "Orly est un centre de transport clé, abritant des géants comme Air France et ADP. Le Parc d'Activités des Saules contribue à l'activité économique locale.",
+    "Orly tire toute sa dynamique économique de l'aéroport Paris-Orly, deuxième de France, autour duquel gravitent maintenance aéronautique, fret, transitaires et une dense filière logistique. Les zones d'activités et entrepôts du Grand Paris Sud-Est, le futur essor lié à la ligne 14 prolongée et au Grand Paris Express renforcent ce tissu. Entre TPE de services, commerces et PME logistiques soumises à de fortes contraintes de délais et de traçabilité, l'automatisation IA constitue un levier direct de productivité et de fiabilité.",
   distancesFr:
-    "Orly est directement reliée à l'Aéroport de Paris-Orly et à 15 km de la Gare de Lyon.",
+    "Orly est directement reliée à l'aéroport Paris-Orly, désormais desservi par la ligne 14 du métro qui rejoint le centre de Paris en une vingtaine de minutes. La gare de Lyon est à 15 km, la gare Massy TGV à une quinzaine de minutes, et les A6 et A86 placent la ville au cœur des grands flux logistiques du sud francilien. Cette position de carrefour facilite nos interventions sur tout le Grand Paris Sud-Est.",
   distancesEn:
-    "Orly est directement reliée à l'Aéroport de Paris-Orly et à 15 km de la Gare de Lyon.",
-  topSectorsNaf: ["Entreposage", "Transports terrestres", "Commerce de détail", "Restauration"],
+    "Orly est directement reliée à l'aéroport Paris-Orly, désormais desservi par la ligne 14 du métro qui rejoint le centre de Paris en une vingtaine de minutes. La gare de Lyon est à 15 km, la gare Massy TGV à une quinzaine de minutes, et les A6 et A86 placent la ville au cœur des grands flux logistiques du sud francilien. Cette position de carrefour facilite nos interventions sur tout le Grand Paris Sud-Est.",
+  topSectorsNaf: [
+    "Logistique, fret et entreposage",
+    "Maintenance et services aéronautiques",
+    "Transports terrestres et messagerie",
+    "Commerce de gros et de détail",
+    "Services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Orly permet d'identifier les opportunités IA dans des secteurs comme le transport avec Air France.",
-      en: "Réaliser un audit à Orly permet d'identifier les opportunités IA dans des secteurs comme le transport avec Air France.",
+      fr: "Audit IA à Orly : diagnostic des processus pour transitaires, logisticiens et sous-traitants aéroportuaires. Nous repérons les automatisations à fort ROI dans des flux à forte contrainte de délais.",
+      en: "Audit IA à Orly : diagnostic des processus pour transitaires, logisticiens et sous-traitants aéroportuaires. Nous repérons les automatisations à fort ROI dans des flux à forte contrainte de délais.",
     },
     interventions: {
-      fr: "Intervenir à Orly pour automatiser les processus dans le commerce de détail et la restauration.",
-      en: "Intervenir à Orly pour automatiser les processus dans le commerce de détail et la restauration.",
+      fr: "Interventions IA sur site à Orly : automatisation des devis, bordereaux et relances pour les TPE et PME logistiques et de services, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Orly : automatisation des devis, bordereaux et relances pour les TPE et PME logistiques et de services, avec montée en autonomie des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Orly, notamment dans les services de transport, pour optimiser les opérations.",
-      en: "Implémenter des solutions IA à Orly, notamment dans les services de transport, pour optimiser les opérations.",
+      fr: "Implémentation IA à Orly : agents conversationnels, classification de documents de transport et automatisation des flux entre WMS, transitaires et donneurs d'ordres aéroportuaires.",
+      en: "Implémentation IA à Orly : agents conversationnels, classification de documents de transport et automatisation des flux entre WMS, transitaires et donneurs d'ordres aéroportuaires.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Orly dans la compréhension des bénéfices IA pour son entreprise.",
-      en: "Accompagner un dirigeant à Orly dans la compréhension des bénéfices IA pour son entreprise.",
+      fr: "Coaching 1-to-1 à Orly : sessions dans vos entrepôts ou bureaux, ou en visio, pour les dirigeants de TPE et PME de la plateforme aéroportuaire et du Grand Paris Sud-Est.",
+      en: "Coaching 1-to-1 à Orly : sessions dans vos entrepôts ou bureaux, ou en visio, pour les dirigeants de TPE et PME de la plateforme aéroportuaire et du Grand Paris Sud-Est.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Orly : plateformes sur mesure avec IA intégrée pour transitaires, logisticiens et commerces souhaitant capter et qualifier leurs clients B2B.",
+      en: "Sites web augmentés à Orly : plateformes sur mesure avec IA intégrée pour transitaires, logisticiens et commerces souhaitant capter et qualifier leurs clients B2B.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Orly ?",
-      a: "Nos interventions à Orly débutent à partir de 590 € HT. Consultez les tarifs publics sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il sur site à Orly ?",
+      a: "Oui. Nos architectes IA se déplacent à Orly et sur toute la plateforme aéroportuaire pour réaliser audits, interventions et implémentations dans vos locaux, généralement sous cinq jours ouvrés après validation.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il pour une mission à Orly ?",
-      a: "Notre équipe nationale se déplace sur site à Orly dans les 5 jours ouvrés pour assurer une intervention rapide et efficace.",
+      q: "Travaillez-vous avec les transitaires et logisticiens d'Orly ?",
+      a: "Oui. La filière logistique et de fret autour de l'aéroport Paris-Orly est notre cœur de cible. Nous automatisons devis, bordereaux, relances et flux de documents de transport, dans des environnements à forte contrainte de délais.",
     },
     {
-      q: "Combien de temps dure un audit IA à Orly ?",
-      a: "L'audit Flash d'Axion-IA à Orly dure 4 heures et commence à 490 € HT, permettant une évaluation rapide et précise.",
+      q: "Accompagnez-vous les TPE et PME d'Orly en priorité ?",
+      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Orly. Nous adaptons les formats aux entrepôts, ateliers et commerces. Les ETI restent un public marginal de notre activité.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors des interventions à Orly ?",
-      a: "Oui, toutes nos interventions à Orly respectent strictement le RGPD, assurant la confidentialité et la sécurité des données traitées.",
+      q: "Quels services pour les commerces et services d'Orly ?",
+      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et fournisseurs.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ou la gare Massy TGV ?",
+      a: "Orly est reliée à Paris par la ligne 14 en une vingtaine de minutes et à la gare Massy TGV en un quart d'heure. Nous couvrons tout le Grand Paris Sud-Est. Les frais de mission éventuels suivent une grille tarifaire publique.",
     },
   ],
 };

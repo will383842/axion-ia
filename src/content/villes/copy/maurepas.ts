@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Maurepas (78, Yvelines) — agglomération Saint-Quentin-en-Yvelines, ZA Pariwest, sous-traitance automobile et tertiaire.
 
 import type { VilleCopy } from "./types";
 
 export const MAUREPAS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Maurepas, ville dynamique avec Renault et Thales, pour optimiser vos processus grâce à l'IA. Découvrez nos services adaptés aux besoins des entreprises locales.",
+    "Maurepas, dans les Yvelines, fait partie de l'agglomération de Saint-Quentin-en-Yvelines, l'un des grands pôles industriels et tertiaires de l'ouest francilien. La zone d'activités Pariwest concentre commerces, sous-traitants de la filière automobile et entreprises de services, dans un bassin marqué par la présence historique des constructeurs. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   pitchEn:
-    "Axion-IA intervient à Maurepas, ville dynamique avec Renault et Thales, pour optimiser vos processus grâce à l'IA. Découvrez nos services adaptés aux besoins des entreprises locales.",
+    "Maurepas, dans les Yvelines, fait partie de l'agglomération de Saint-Quentin-en-Yvelines, l'un des grands pôles industriels et tertiaires de l'ouest francilien. La zone d'activités Pariwest concentre commerces, sous-traitants de la filière automobile et entreprises de services, dans un bassin marqué par la présence historique des constructeurs. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME de ce territoire pour automatiser leurs tâches répétitives avec un ROI mesurable.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Maurepas pour automatiser vos tâches administratives et optimiser vos processus métier. Avec des entreprises comme Renault et Thales dans la région, nous comprenons l'importance d'une approche personnalisée. Nos audits commencent à pour identifier vos priorités IA, avec une implémentation.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maurepas (78, Yvelines). Nous accompagnons en priorité les TPE puis les PME de l'agglomération Saint-Quentin-en-Yvelines : sous-traitants de la filière automobile, ateliers, entreprises de services et commerces de la ZA Pariwest. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Maurepas pour automatiser vos tâches administratives et optimiser vos processus métier. Avec des entreprises comme Renault et Thales dans la région, nous comprenons l'importance d'une approche personnalisée. Nos audits commencent à pour identifier vos priorités IA, avec une implémentation.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maurepas (78, Yvelines). Nous accompagnons en priorité les TPE puis les PME de l'agglomération Saint-Quentin-en-Yvelines : sous-traitants de la filière automobile, ateliers, entreprises de services et commerces de la ZA Pariwest. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+  seoHook: "sous-traitance auto & tertiaire SQY",
   ecosystemFr:
-    "Maurepas accueille des entreprises telles que Renault et Thales, formant un écosystème propice à l'innovation. La ZA Pariwest contribue également à la dynamique économique locale.",
+    "Maurepas s'inscrit dans l'agglomération de Saint-Quentin-en-Yvelines, bassin industriel structuré autour de la filière automobile et de ses nombreux sous-traitants. La zone d'activités Pariwest, l'une des plus vastes de l'ouest parisien, mêle commerces, ateliers, logistique et entreprises de services. Ce maillage de TPE et PME, souvent dépendantes de donneurs d'ordres exigeants en délais et en traçabilité, trouve dans l'automatisation IA un levier direct de productivité et de fiabilité administrative.",
   ecosystemEn:
-    "Maurepas accueille des entreprises telles que Renault et Thales, formant un écosystème propice à l'innovation. La ZA Pariwest contribue également à la dynamique économique locale.",
+    "Maurepas s'inscrit dans l'agglomération de Saint-Quentin-en-Yvelines, bassin industriel structuré autour de la filière automobile et de ses nombreux sous-traitants. La zone d'activités Pariwest, l'une des plus vastes de l'ouest parisien, mêle commerces, ateliers, logistique et entreprises de services. Ce maillage de TPE et PME, souvent dépendantes de donneurs d'ordres exigeants en délais et en traçabilité, trouve dans l'automatisation IA un levier direct de productivité et de fiabilité administrative.",
   distancesFr:
-    "Maurepas est située à 50 km de l'aéroport de Paris-Orly et à 40 km de la gare TGV de Massy.",
+    "Maurepas est reliée à Paris en une quarantaine de minutes via l'A12 et la N10, et la gare de La Verrière dessert le réseau Transilien vers Montparnasse. Saint-Quentin-en-Yvelines et son pôle gare sont à dix minutes, Versailles à 20 km. L'aéroport Paris-Orly est à environ 45 minutes et la gare TGV de Massy à une trentaine de kilomètres, ouvrant l'ensemble du sud et de l'ouest francilien.",
   distancesEn:
-    "Maurepas est située à 50 km de l'aéroport de Paris-Orly et à 40 km de la gare TGV de Massy.",
+    "Maurepas est reliée à Paris en une quarantaine de minutes via l'A12 et la N10, et la gare de La Verrière dessert le réseau Transilien vers Montparnasse. Saint-Quentin-en-Yvelines et son pôle gare sont à dix minutes, Versailles à 20 km. L'aéroport Paris-Orly est à environ 45 minutes et la gare TGV de Massy à une trentaine de kilomètres, ouvrant l'ensemble du sud et de l'ouest francilien.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Sièges sociaux",
-    "Transports terrestres",
+    "Sous-traitance et équipementiers automobile",
+    "Mécanique et travail des métaux",
+    "Commerce de gros et de détail",
+    "Logistique et entreposage",
+    "Services techniques aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Maurepas, incluant des entreprises comme Renault, pour identifier les opportunités IA dès 490 € HT.",
-      en: "Réaliser un audit à Maurepas, incluant des entreprises comme Renault, pour identifier les opportunités IA dès 490 € HT.",
+      fr: "Audit IA à Maurepas : diagnostic des processus pour sous-traitants automobile, ateliers et PME de services de la ZA Pariwest. Nous repérons les automatisations à fort ROI.",
+      en: "Audit IA à Maurepas : diagnostic des processus pour sous-traitants automobile, ateliers et PME de services de la ZA Pariwest. Nous repérons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Maurepas pour automatiser les processus métiers dans des secteurs variés. Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Maurepas pour automatiser les processus métiers dans des secteurs variés. Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Maurepas : automatisation des devis, bons de commande et relances pour les TPE et PME industrielles, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Maurepas : automatisation des devis, bons de commande et relances pour les TPE et PME industrielles, avec montée en autonomie des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Maurepas, en tenant compte des infrastructures existantes. Début à 990 € HT.",
-      en: "Implémenter des solutions IA à Maurepas, en tenant compte des infrastructures existantes. Début à 990 € HT.",
+      fr: "Implémentation IA à Maurepas : agents conversationnels, classification documentaire et automatisation des flux entre ERP et donneurs d'ordres de la filière automobile.",
+      en: "Implémentation IA à Maurepas : agents conversationnels, classification documentaire et automatisation des flux entre ERP et donneurs d'ordres de la filière automobile.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Maurepas avec des sessions 1-to-1 pour maximiser l'impact de l'IA. À partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Maurepas avec des sessions 1-to-1 pour maximiser l'impact de l'IA. À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Maurepas : sessions dans votre atelier ou bureau, ou en visio, pour les dirigeants de TPE et PME de Saint-Quentin-en-Yvelines.",
+      en: "Coaching 1-to-1 à Maurepas : sessions dans votre atelier ou bureau, ou en visio, pour les dirigeants de TPE et PME de Saint-Quentin-en-Yvelines.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Maurepas : plateformes sur mesure avec IA intégrée pour sous-traitants, commerces et services souhaitant capter et qualifier leurs prospects B2B.",
+      en: "Sites web augmentés à Maurepas : plateformes sur mesure avec IA intégrée pour sous-traitants, commerces et services souhaitant capter et qualifier leurs prospects B2B.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Maurepas ?",
-      a: "Nos interventions à Maurepas commencent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il sur site à Maurepas ?",
+      a: "Oui. Nos architectes IA se déplacent à Maurepas et dans toute l'agglomération de Saint-Quentin-en-Yvelines pour réaliser audits, interventions et implémentations dans vos locaux, généralement sous cinq jours ouvrés après validation.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Maurepas ?",
-      a: "Nous nous déplaçons directement sur site à Maurepas, garantissant une intervention rapide et efficace dans vos locaux.",
+      q: "Travaillez-vous avec les sous-traitants automobile de Maurepas ?",
+      a: "Oui. La filière automobile et ses sous-traitants sont un public clé à Maurepas. Nous automatisons devis, bons de commande, relances et flux documentaires avec vos donneurs d'ordres pour gagner en délais et en fiabilité.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Maurepas ?",
-      a: "Nous nous engageons à intervenir dans les 5 jours ouvrés après validation, assurant une mise en œuvre rapide de vos solutions IA.",
+      q: "Accompagnez-vous les TPE et PME de Maurepas en priorité ?",
+      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Maurepas. Nous adaptons les formats aux ateliers et structures de services. Les ETI restent un public marginal de notre activité.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Maurepas ?",
-      a: "Nous intégrons les exigences RGPD dès la phase d'audit, garantissant que toutes les solutions IA respectent les réglementations en vigueur.",
+      q: "Quels services pour les commerces de la ZA Pariwest ?",
+      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et fournisseurs.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Maurepas ?",
-      a: "Oui, nous offrons des formations adaptées pour les managers et opérateurs, afin de maximiser l'efficacité des solutions IA implantées.",
+      q: "Comment se passe une mission depuis Versailles ou Paris ?",
+      a: "Maurepas est à 20 km de Versailles et à une quarantaine de minutes de Paris. Nous couvrons tout l'ouest des Yvelines. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
     },
   ],
 };

@@ -1,67 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Bayonne (64, Pyrénées-Atlantiques) — port de l'Adour, gastronomie (jambon, chocolat), aéronautique Pays basque.
 
 import type { VilleCopy } from "./types";
 
 export const BAYONNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bayonne, au cœur d'un écosystème comprenant Euralis et l'Université de Pau et des Pays de l'Adour, pour optimiser vos processus grâce à l'IA.",
+    "Bayonne (64), capitale économique du Pays basque à la confluence de la Nive et de l'Adour, conjugue port, agroalimentaire de terroir (jambon, chocolat), commerce, tourisme et sous-traitance aéronautique du bassin Pau-Bayonne. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME bayonnaises, les ETI en complément.",
   pitchEn:
-    "Axion-IA intervient à Bayonne, au cœur d'un écosystème comprenant Euralis et l'Université de Pau et des Pays de l'Adour, pour optimiser vos processus grâce à l'IA.",
+    "Bayonne (64), capitale économique du Pays basque à la confluence de la Nive et de l'Adour, conjugue port, agroalimentaire de terroir (jambon, chocolat), commerce, tourisme et sous-traitance aéronautique du bassin Pau-Bayonne. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME bayonnaises, les ETI en complément.",
   directAnswerFr:
-    "Axion-IA se déplace à Bayonne pour accompagner les entreprises dans leur transformation IA. Avec des acteurs comme Euralis et la Technocité, le tissu économique local est propice à l'innovation. Nos services incluent audits, interventions et implémentations, adaptés aux besoins spécifiques des secteurs comme le commerce de détail et la restauration.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Bayonne et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — artisans de bouche et chocolatiers, négoce du port de l'Adour, commerces du Petit Bayonne, hôtellerie-restauration et sous-traitants aéronautiques — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA se déplace à Bayonne pour accompagner les entreprises dans leur transformation IA. Avec des acteurs comme Euralis et la Technocité, le tissu économique local est propice à l'innovation. Nos services incluent audits, interventions et implémentations, adaptés aux besoins spécifiques des secteurs comme le commerce de détail et la restauration.",
-  seoHook: "frontalier, gastronomie & tourisme",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Bayonne et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — artisans de bouche et chocolatiers, négoce du port de l'Adour, commerces du Petit Bayonne, hôtellerie-restauration et sous-traitants aéronautiques — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+  seoHook: "port, agroalimentaire & aéronautique",
   ecosystemFr:
-    "Bayonne abrite des entreprises comme Lindt & Sprüngli et des infrastructures telles que la Technocité, favorisant un environnement propice à l'innovation.",
+    "Le tissu bayonnais mêle agroalimentaire de terroir (jambon de Bayonne, chocolat), port de commerce et de pêche sur l'Adour, commerce et tourisme, et sous-traitance aéronautique du bassin Pau-Bayonne. Une majorité de TPE et PME familiales, quelques ETI industrielles.",
   ecosystemEn:
-    "Bayonne abrite des entreprises comme Lindt & Sprüngli et des infrastructures telles que la Technocité, favorisant un environnement propice à l'innovation.",
+    "Le tissu bayonnais mêle agroalimentaire de terroir (jambon de Bayonne, chocolat), port de commerce et de pêche sur l'Adour, commerce et tourisme, et sous-traitance aéronautique du bassin Pau-Bayonne. Une majorité de TPE et PME familiales, quelques ETI industrielles.",
   distancesFr:
-    "La Gare de Bayonne est centrale, avec l'Aéroport de Biarritz Pays Basque à seulement 8 km.",
+    "Gare de Bayonne en centre-ville sur la ligne Paris-Hendaye. Aéroport de Biarritz-Pays basque à 8 km. Anglet et Biarritz à 10 min, Saint-Jean-de-Luz à 25 min, frontière espagnole à 30 min.",
   distancesEn:
-    "La Gare de Bayonne est centrale, avec l'Aéroport de Biarritz Pays Basque à seulement 8 km.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Construction", "Transports terrestres"],
+    "Gare de Bayonne en centre-ville sur la ligne Paris-Hendaye. Aéroport de Biarritz-Pays basque à 8 km. Anglet et Biarritz à 10 min, Saint-Jean-de-Luz à 25 min, frontière espagnole à 30 min.",
+  topSectorsNaf: [
+    "Agroalimentaire de terroir (jambon, chocolat)",
+    "Port de commerce et de pêche (Adour)",
+    "Commerce et tourisme Pays basque",
+    "Hôtellerie-restauration",
+    "Sous-traitance aéronautique (bassin Pau-Bayonne)",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bayonne avec Axion-IA permet d'identifier des opportunités d'optimisation dans des secteurs comme la construction.",
-      en: "Réaliser un audit à Bayonne avec Axion-IA permet d'identifier des opportunités d'optimisation dans des secteurs comme la construction.",
+      fr: "Audit IA à Bayonne : diagnostic des automatisations possibles chez les artisans de bouche, le négoce portuaire, les commerces et hôteliers du BAB. Cartographie des gisements de ROI à tarif public.",
+      en: "Audit IA à Bayonne : diagnostic des automatisations possibles chez les artisans de bouche, le négoce portuaire, les commerces et hôteliers du BAB. Cartographie des gisements de ROI à tarif public.",
     },
     interventions: {
-      fr: "Intervenir à Bayonne pour automatiser les tâches administratives des entreprises du commerce de détail, augmentant l'efficacité.",
-      en: "Intervenir à Bayonne pour automatiser les tâches administratives des entreprises du commerce de détail, augmentant l'efficacité.",
+      fr: "Interventions IA sur site à Bayonne : nous venons dans l'atelier, la boutique, l'hôtel ou les bureaux du port pour outiller vos équipes, qui pilotent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Bayonne : nous venons dans l'atelier, la boutique, l'hôtel ou les bureaux du port pour outiller vos équipes, qui pilotent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bayonne pour les restaurateurs, facilitant la gestion des réservations et des stocks.",
-      en: "Implémenter des solutions IA à Bayonne pour les restaurateurs, facilitant la gestion des réservations et des stocks.",
+      fr: "Implémentation IA à Bayonne : agents de réservation et de relation client pour l'hôtellerie-restauration, prévision des stocks pour l'agroalimentaire, automatisation administrative du négoce portuaire.",
+      en: "Implémentation IA à Bayonne : agents de réservation et de relation client pour l'hôtellerie-restauration, prévision des stocks pour l'agroalimentaire, automatisation administrative du négoce portuaire.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Bayonne, comme ceux de la Technocité, pour une maîtrise rapide des outils IA.",
-      en: "Accompagner en un-à-un les dirigeants de Bayonne, comme ceux de la Technocité, pour une maîtrise rapide des outils IA.",
+      fr: "Coaching un-à-un à Bayonne : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME bayonnaises — artisans, négociants, hôteliers, gérants de commerce du Pays basque.",
+      en: "Coaching un-à-un à Bayonne : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME bayonnaises — artisans, négociants, hôteliers, gérants de commerce du Pays basque.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Bayonne : plateformes et boutiques en ligne avec IA intégrée pour les chocolatiers, conserveries, hôtels et commerces du BAB — réservation, recommandation, multilingue FR/ES/basque.",
+      en: "Sites web augmentés à Bayonne : plateformes et boutiques en ligne avec IA intégrée pour les chocolatiers, conserveries, hôtels et commerces du BAB — réservation, recommandation, multilingue FR/ES/basque.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Bayonne ?",
-      a: "Nos audits IA à Bayonne commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont disponibles sur notre site.",
+      q: "Axion-IA intervient-il à Bayonne et dans le BAB ?",
+      a: "Oui, Axion-IA se déplace sur site à Bayonne, Anglet, Biarritz et dans tout le Pays basque. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
-      q: "Comment se déroule une intervention IA sur site à Bayonne ?",
-      a: "Axion-IA se déplace directement dans vos locaux à Bayonne pour réaliser des interventions sur mesure, adaptées à votre secteur d'activité.",
+      q: "Travaillez-vous avec les artisans de bouche et chocolatiers bayonnais ?",
+      a: "Oui. Pour les métiers de bouche et chocolatiers, nous mettons en place la prévision de stocks, l'automatisation des commandes et des agents de relation client, sans alourdir le quotidien de l'atelier.",
     },
     {
-      q: "Quel est le délai pour une implémentation IA à Bayonne ?",
-      a: "Nous nous engageons à démarrer les implémentations IA à Bayonne dans un délai rapide, généralement sous cinq jours ouvrés après validation du projet.",
+      q: "Accompagnez-vous l'hôtellerie et la restauration du Pays basque ?",
+      a: "Oui, c'est un secteur prioritaire à Bayonne. Agents de réservation, réponses automatiques multilingues FR/ES, optimisation du remplissage et gestion des avis clients.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Bayonne ?",
-      a: "Axion-IA intègre les principes du RGPD dans toutes ses interventions à Bayonne, garantissant la protection des données personnelles de vos clients.",
+      q: "Pouvez-vous aider les entreprises du port de l'Adour ?",
+      a: "Oui. Pour le négoce et la logistique portuaire, nous automatisons la saisie documentaire, le suivi des expéditions et le traitement des e-mails, avec un cadre RGPD strict.",
     },
     {
-      q: "Proposez-vous des formations IA pour les dirigeants à Bayonne ?",
-      a: "Oui, nous offrons des sessions un-à-un pour les dirigeants à Bayonne, à partir de 990 € HT, pour une compréhension approfondie des technologies IA.",
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Bayonne ?",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME bayonnaises. Un Audit Flash permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
+    },
+    {
+      q: "Comment se déroule une mission IA à Bayonne ?",
+      a: "Nos consultants se déplacent dans vos locaux du BAB après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
     },
   ],
 };

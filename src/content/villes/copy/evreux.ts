@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Évreux (27, Eure) — préfecture de l'Eure, pôle pharmaceutique et cosmétique, agroalimentaire, aéronautique et base aérienne.
 
 import type { VilleCopy } from "./types";
 
 export const EVREUX_COPY: VilleCopy = {
   pitchFr:
-    "À Évreux, Axion-IA intervient auprès des entreprises locales pour optimiser leurs processus grâce à l'IA. Avec des références comme Sanofi et Safran, nous offrons des solutions adaptées aux besoins des PME et ETI.",
+    "À Évreux, préfecture de l'Eure, Axion-IA accompagne les TPE et PME de la pharmacie, de l'agroalimentaire, de l'aéronautique et des services. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "À Évreux, Axion-IA intervient auprès des entreprises locales pour optimiser leurs processus grâce à l'IA. Avec des références comme Sanofi et Safran, nous offrons des solutions adaptées aux besoins des PME et ETI.",
+    "À Évreux, préfecture de l'Eure, Axion-IA accompagne les TPE et PME de la pharmacie, de l'agroalimentaire, de l'aéronautique et des services. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à fiabiliser leurs processus, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "Axion-IA se déplace à Évreux pour répondre aux besoins des entreprises locales, notamment dans les secteurs du commerce de gros et de détail. Nous proposons des audits et des interventions. Avec l'IUT d'Évreux et la Zone d'Activités de Nétreville, le tissu économique local est propice à l'innovation.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Évreux pour accompagner les TPE et PME locales. Préfecture de l'Eure, la ville s'appuie sur un pôle pharmaceutique et cosmétique reconnu, un solide tissu agroalimentaire et des activités aéronautiques. Auprès des sous-traitants, fournisseurs et prestataires de services qui gravitent autour, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales.",
   directAnswerEn:
-    "Axion-IA se déplace à Évreux pour répondre aux besoins des entreprises locales, notamment dans les secteurs du commerce de gros et de détail. Nous proposons des audits et des interventions. Avec l'IUT d'Évreux et la Zone d'Activités de Nétreville, le tissu économique local est propice à l'innovation.",
-  seoHook: "commerce gros & commerce détail",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Évreux pour accompagner les TPE et PME locales. Préfecture de l'Eure, la ville s'appuie sur un pôle pharmaceutique et cosmétique reconnu, un solide tissu agroalimentaire et des activités aéronautiques. Auprès des sous-traitants, fournisseurs et prestataires de services qui gravitent autour, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales.",
+  seoHook: "pharma, agroalimentaire & aéro",
   ecosystemFr:
-    "Évreux accueille des entreprises comme Sanofi et Safran, renforçant son secteur industriel. La Zone d'Activités de Nétreville et l'IUT d'Évreux contribuent à la vitalité économique locale.",
+    "Évreux, préfecture de l'Eure, dispose d'une économie industrielle diversifiée. Le territoire est reconnu pour son pôle pharmaceutique et cosmétique, soutenu par la présence de grands groupes du secteur dans la région, ainsi que pour son tissu agroalimentaire et ses activités aéronautiques, renforcées par la base aérienne locale. Autour de ces filières gravitent de nombreux sous-traitants, fournisseurs, artisans et sociétés de services. Ce dense réseau de TPE et PME, exigeant en qualité et en traçabilité, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses processus administratifs et industriels sans rupture.",
   ecosystemEn:
-    "Évreux accueille des entreprises comme Sanofi et Safran, renforçant son secteur industriel. La Zone d'Activités de Nétreville et l'IUT d'Évreux contribuent à la vitalité économique locale.",
+    "Évreux, préfecture de l'Eure, dispose d'une économie industrielle diversifiée. Le territoire est reconnu pour son pôle pharmaceutique et cosmétique, soutenu par la présence de grands groupes du secteur dans la région, ainsi que pour son tissu agroalimentaire et ses activités aéronautiques, renforcées par la base aérienne locale. Autour de ces filières gravitent de nombreux sous-traitants, fournisseurs, artisans et sociétés de services. Ce dense réseau de TPE et PME, exigeant en qualité et en traçabilité, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses processus administratifs et industriels sans rupture.",
   distancesFr:
-    "La gare TGV de Val-de-Reuil est à 35 km d'Évreux, facilitant l'accès aux entreprises locales.",
+    "Évreux est reliée à Paris en environ 1 heure par le train depuis la gare d'Évreux-Normandie, et en environ 1h15 par l'autoroute A13. Rouen, capitale régionale de Normandie, est accessible en une cinquantaine de minutes. L'aéroport Paris-Charles-de-Gaulle se situe à environ 1h30 de route. Cette position centrale entre Paris, Rouen et la vallée de la Seine facilite les déplacements de nos consultants vers les entreprises de l'Eure et leurs donneurs d'ordre.",
   distancesEn:
-    "La gare TGV de Val-de-Reuil est à 35 km d'Évreux, facilitant l'accès aux entreprises locales.",
+    "Évreux est reliée à Paris en environ 1 heure par le train depuis la gare d'Évreux-Normandie, et en environ 1h15 par l'autoroute A13. Rouen, capitale régionale de Normandie, est accessible en une cinquantaine de minutes. L'aéroport Paris-Charles-de-Gaulle se situe à environ 1h30 de route. Cette position centrale entre Paris, Rouen et la vallée de la Seine facilite les déplacements de nos consultants vers les entreprises de l'Eure et leurs donneurs d'ordre.",
   topSectorsNaf: [
-    "Commerce de gros",
-    "Commerce de détail",
-    "Santé humaine",
-    "Transports terrestres",
+    "Industrie pharmaceutique et cosmétique",
+    "Industrie agroalimentaire",
+    "Fabrication aéronautique et sous-traitance",
+    "Commerce de gros et logistique",
+    "Services administratifs aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Évreux pour identifier les opportunités IA dans des secteurs comme la santé humaine.",
-      en: "Réaliser un audit à Évreux pour identifier les opportunités IA dans des secteurs comme la santé humaine.",
+      fr: "Un audit IA à Évreux analyse vos processus sur site, en tenant compte des exigences de qualité et de traçabilité des secteurs pharmaceutique, agroalimentaire et aéronautique, pour identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
+      en: "Un audit IA à Évreux analyse vos processus sur site, en tenant compte des exigences de qualité et de traçabilité des secteurs pharmaceutique, agroalimentaire et aéronautique, pour identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
     },
     interventions: {
-      fr: "Intervenir à Évreux pour automatiser les processus administratifs, avec l'expérience de Sanofi.",
-      en: "Intervenir à Évreux pour automatiser les processus administratifs, avec l'expérience de Sanofi.",
+      fr: "Nos interventions à Évreux automatisent les tâches répétitives des PME locales : gestion documentaire, suivi qualité, relances fournisseurs et traitement administratif, sans bouleverser vos outils existants.",
+      en: "Nos interventions à Évreux automatisent les tâches répétitives des PME locales : gestion documentaire, suivi qualité, relances fournisseurs et traitement administratif, sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Évreux, en s'appuyant sur les infrastructures de la Zone d'Activités de Nétreville.",
-      en: "Implémenter des solutions IA à Évreux, en s'appuyant sur les infrastructures de la Zone d'Activités de Nétreville.",
+      fr: "L'implémentation à Évreux déploie des solutions IA durables pour les industriels et leurs sous-traitants, avec une attention forte à la traçabilité, à la confidentialité et à la conformité RGPD des données traitées.",
+      en: "L'implémentation à Évreux déploie des solutions IA durables pour les industriels et leurs sous-traitants, avec une attention forte à la traçabilité, à la confidentialité et à la conformité RGPD des données traitées.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants d'Évreux pour une adoption rapide de l'IA dans leurs entreprises.",
-      en: "Accompagner en un-à-un les dirigeants d'Évreux pour une adoption rapide de l'IA dans leurs entreprises.",
+      fr: "Nos sessions un-à-un à Évreux forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la sous-traitance et des services locaux.",
+      en: "Nos sessions un-à-un à Évreux forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas concrets issus de l'industrie, de la sous-traitance et des services locaux.",
+    },
+    sitesWeb: {
+      fr: "Pour les entreprises d'Évreux, nous concevons des sites web et plateformes augmentés par l'IA : portails de commande pour les fournisseurs industriels, devis automatisés et assistants qualifiant les demandes B2B entrantes.",
+      en: "Pour les entreprises d'Évreux, nous concevons des sites web et plateformes augmentés par l'IA : portails de commande pour les fournisseurs industriels, devis automatisés et assistants qualifiant les demandes B2B entrantes.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Évreux ?",
-      a: "Nous proposons un Audit Flash à partir de 490 € HT. Les tarifs sont publics et consultables sur notre site.",
+      q: "Axion-IA se déplace-t-il à Évreux ?",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Évreux et dans l'Eure. La première rencontre se fait sur site afin de comprendre vos processus industriels ou de services avant toute recommandation.",
     },
     {
-      q: "Intervenez-vous directement sur site à Évreux ?",
-      a: "Oui, notre équipe nationale se déplace à Évreux pour réaliser des interventions sur site, adaptées aux besoins spécifiques de chaque entreprise.",
+      q: "Quels types d'entreprises accompagnez-vous à Évreux ?",
+      a: "Nous accompagnons en priorité les TPE et PME : pharmacie, cosmétique, agroalimentaire, aéronautique, sous-traitance et services. Les ETI restent un cas marginal. Notre approche convient aux structures qui veulent un résultat concret et rapide.",
     },
     {
-      q: "Quels délais pour une intervention à Évreux ?",
-      a: "Nous intervenons généralement dans un délai de 5 jours ouvrés après la prise de contact, selon la disponibilité de nos experts.",
+      q: "L'IA est-elle compatible avec les exigences qualité de l'industrie d'Évreux ?",
+      a: "Oui. Nous concevons des automatisations qui renforcent la traçabilité et le suivi qualité plutôt que de les fragiliser. Les processus sensibles restent sous contrôle humain, l'IA prenant en charge le travail répétitif et documentaire.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Évreux ?",
-      a: "Nos interventions respectent scrupuleusement le RGPD, garantissant la sécurité et la confidentialité des données traitées lors de nos prestations à Évreux.",
+      q: "Faut-il changer mes logiciels pour travailler avec Axion-IA ?",
+      a: "Non. Nous nous appuyons sur vos outils existants quand c'est possible et évitons toute dépendance technologique imposée. L'objectif est d'augmenter votre efficacité sans vous enfermer dans une solution propriétaire.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Évreux ?",
+      a: "La conformité RGPD est intégrée dès l'audit puis à chaque étape de l'implémentation. Nous documentons les traitements, protégeons les données sensibles et privilégions un hébergement conforme à la réglementation européenne.",
     },
   ],
 };

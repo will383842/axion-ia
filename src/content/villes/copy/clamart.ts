@@ -1,66 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Clamart (92, Hauts-de-Seine) — banlieue sud résidentielle de Paris, proximité CEA, santé et tertiaire.
 
 import type { VilleCopy } from "./types";
 
 export const CLAMART_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Clamart, proche de Paris, pour optimiser vos processus grâce à l'IA. L'écosystème inclut EDF et Thales, facilitant l'innovation.",
+    "Clamart (92), commune résidentielle du sud des Hauts-de-Seine aux portes de Paris, conjugue cadre de vie soigné et tissu économique tertiaire dense, dopé par la proximité du CEA et un pôle santé important (hôpitaux, cliniques, professions médicales). Son tissu mêle PME de services, TPE et commerces de proximité. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME clamartoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Axion-IA intervient à Clamart, proche de Paris, pour optimiser vos processus grâce à l'IA. L'écosystème inclut EDF et Thales, facilitant l'innovation.",
+    "Clamart (92), commune résidentielle du sud des Hauts-de-Seine aux portes de Paris, conjugue cadre de vie soigné et tissu économique tertiaire dense, dopé par la proximité du CEA et un pôle santé important (hôpitaux, cliniques, professions médicales). Son tissu mêle PME de services, TPE et commerces de proximité. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME clamartoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "À Clamart, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme EDF et Thales présents dans la région, nous aidons à intégrer des solutions IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics transparents pour chaque prestation.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clamart (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME du sud parisien : professions de santé et acteurs médicaux, PME tertiaires et de conseil, prestataires de services, artisans et commerces de proximité. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
   directAnswerEn:
-    "À Clamart, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme EDF et Thales présents dans la région, nous aidons à intégrer des solutions IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics transparents pour chaque prestation.",
-  seoHook: "proche paris",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clamart (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME du sud parisien : professions de santé et acteurs médicaux, PME tertiaires et de conseil, prestataires de services, artisans et commerces de proximité. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+  seoHook: "santé & tertiaire sud Paris",
   ecosystemFr:
-    "Clamart héberge des acteurs industriels tels qu'EDF et Thales, soutenant une économie axée sur la recherche et la programmation informatique.",
+    "Clamart est une commune résidentielle prisée du sud des Hauts-de-Seine, dont l'économie s'appuie sur un solide pôle santé (hôpital, cliniques, cabinets médicaux et paramédicaux) et un tertiaire de services renforcé par la proximité du CEA et des grands centres de recherche du plateau de Saclay. Le tissu local rassemble PME de conseil et de services, TPE indépendantes, professions libérales et commerces de proximité, dans un bassin sud-parisien dense, très bien relié au cœur de la capitale.",
   ecosystemEn:
-    "Clamart héberge des acteurs industriels tels qu'EDF et Thales, soutenant une économie axée sur la recherche et la programmation informatique.",
-  distancesFr: "Clamart est à 10 km de la Gare Montparnasse et 15 km de l'Aéroport de Paris-Orly.",
-  distancesEn: "Clamart est à 10 km de la Gare Montparnasse et 15 km de l'Aéroport de Paris-Orly.",
+    "Clamart est une commune résidentielle prisée du sud des Hauts-de-Seine, dont l'économie s'appuie sur un solide pôle santé (hôpital, cliniques, cabinets médicaux et paramédicaux) et un tertiaire de services renforcé par la proximité du CEA et des grands centres de recherche du plateau de Saclay. Le tissu local rassemble PME de conseil et de services, TPE indépendantes, professions libérales et commerces de proximité, dans un bassin sud-parisien dense, très bien relié au cœur de la capitale.",
+  distancesFr:
+    "Paris-Montparnasse à environ 15 min par le Transilien. Aéroport de Paris-Orly à 20 min. La Défense à 25 min, Issy-les-Moulineaux et Meudon à proximité immédiate, plateau de Saclay à 20 min.",
+  distancesEn:
+    "Paris-Montparnasse à environ 15 min par le Transilien. Aéroport de Paris-Orly à 20 min. La Défense à 25 min, Issy-les-Moulineaux et Meudon à proximité immédiate, plateau de Saclay à 20 min.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Recherche scientifique",
-    "Commerce de détail",
-    "Services financiers",
+    "Activités pour la santé humaine",
+    "Conseil et services aux entreprises",
+    "Recherche et programmation informatique",
+    "Commerce de détail de proximité",
+    "Professions libérales et artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Clamart avec Axion-IA pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Clamart avec Axion-IA pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Clamart : diagnostic adapté aux TPE et PME — professions de santé, cabinets de conseil, services et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      en: "Audit IA à Clamart : diagnostic adapté aux TPE et PME — professions de santé, cabinets de conseil, services et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
     },
     interventions: {
-      fr: "Intervenir à Clamart pour automatiser devis et relances — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Clamart pour automatiser devis et relances — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Clamart : formats courts pour automatiser prise de rendez-vous, devis, relances et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
+      en: "Interventions IA sur site à Clamart : formats courts pour automatiser prise de rendez-vous, devis, relances et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Clamart, facilitant l'intégration avec EDF — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Clamart, facilitant l'intégration avec EDF — dès 990 € HT.",
+      fr: "Implémentation IA à Clamart : agents conversationnels, automatisation de la relation patient/client et classification documentaire pour la santé et le tertiaire. Déploiement souverain et conforme RGPD.",
+      en: "Implémentation IA à Clamart : agents conversationnels, automatisation de la relation patient/client et classification documentaire pour la santé et le tertiaire. Déploiement souverain et conforme RGPD.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants à Clamart pour une stratégie IA personnalisée — dès 990 € HT.",
-      en: "Accompagner en 1-to-1 les dirigeants à Clamart pour une stratégie IA personnalisée — dès 990 € HT.",
+      fr: "Coaching un-à-un à Clamart : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de santé, de conseil et de commerce clamartoises.",
+      en: "Coaching un-à-un à Clamart : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de santé, de conseil et de commerce clamartoises.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés par l'IA à Clamart : plateformes et outils sur mesure pour professionnels de santé, cabinets de conseil et commerces du sud parisien, avec automatisations et SEO local.",
+      en: "Sites web augmentés par l'IA à Clamart : plateformes et outils sur mesure pour professionnels de santé, cabinets de conseil et commerces du sud parisien, avec automatisations et SEO local.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Clamart ?",
-      a: "Les interventions IA à Clamart commencent à partir de 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Clamart et dans les Hauts-de-Seine ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Clamart et des communes voisines : Issy-les-Moulineaux, Meudon, Châtillon, Fontenay-aux-Roses. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
-      q: "Axion-IA se déplace-t-il directement à Clamart ?",
-      a: "Oui, notre équipe nationale se déplace sur site à Clamart pour réaliser nos prestations IA, assurant une proximité opérationnelle avec nos clients.",
+      q: "Travaillez-vous avec les professions de santé et les cabinets médicaux ?",
+      a: "Oui. Clamart dispose d'un fort pôle santé. Nous automatisons la prise de rendez-vous, la relation patient et la gestion documentaire des cabinets médicaux et paramédicaux, dans le strict respect du RGPD et du secret médical.",
     },
     {
-      q: "Quels délais pour un audit IA à Clamart ?",
-      a: "Les audits IA, comme l'Audit Flash, peuvent être réalisés rapidement, souvent dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Accompagnez-vous les TPE de services et les commerces ?",
+      a: "Absolument — c'est notre priorité. Devis, relances, relation client et planning : nous adaptons les automatisations aux petites équipes de conseil, de services et aux commerces de proximité clamartois.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Clamart ?",
-      a: "Axion-IA intègre les exigences RGPD dans toutes ses interventions à Clamart, assurant une gestion des données conforme aux réglementations en vigueur.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui. Toutes nos implémentations à Clamart respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ?",
+      a: "Clamart est à environ 15 min de Paris-Montparnasse par le Transilien. Nous nous déplaçons sur site ; les frais de déplacement, réduits en proche couronne, sont facturés à part selon nos tarifs publics.",
+    },
+    {
+      q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",
+      a: "Oui, via le coaching un-à-un. Nous partons de vos cas réels pour rendre vos équipes autonomes sur l'IA, sans dépendance durable à un prestataire externe.",
     },
   ],
 };

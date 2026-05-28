@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Châteauroux (36, Indre) — ex-base OTAN, plateforme logistique et aéroport de fret, agroalimentaire du Berry.
 
 import type { VilleCopy } from "./types";
 
 export const CHATEAUROUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Châteauroux pour optimiser vos opérations grâce à l'IA. Le tissu économique local, comprenant Michelin et Legrand, offre un cadre propice à l'innovation technologique.",
+    "Châteauroux (36), préfecture de l'Indre au cœur du Berry, valorise son ancienne base de l'OTAN devenue un pôle logistique et un aéroport de fret reconnu (Châteauroux-Centre). Son tissu mêle logistique, agroalimentaire, industrie et un réseau dense de TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME castelroussines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Axion-IA intervient à Châteauroux pour optimiser vos opérations grâce à l'IA. Le tissu économique local, comprenant Michelin et Legrand, offre un cadre propice à l'innovation technologique.",
+    "Châteauroux (36), préfecture de l'Indre au cœur du Berry, valorise son ancienne base de l'OTAN devenue un pôle logistique et un aéroport de fret reconnu (Châteauroux-Centre). Son tissu mêle logistique, agroalimentaire, industrie et un réseau dense de TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME castelroussines pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "À Châteauroux, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec des acteurs comme Michelin et Legrand, la région bénéficie d'une dynamique industrielle solide. Nos interventions incluent des audits, des implémentations et des formations personnalisées, garantissant une intégration fluide de l'IA dans vos processus métier.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauroux (36, Indre). Nous accompagnons en priorité les TPE, puis les PME du Berry : acteurs de la logistique et du fret aérien autour de l'aéroport Châteauroux-Centre, agroalimentaire, sous-traitants industriels, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
   directAnswerEn:
-    "À Châteauroux, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec des acteurs comme Michelin et Legrand, la région bénéficie d'une dynamique industrielle solide. Nos interventions incluent des audits, des implémentations et des formations personnalisées, garantissant une intégration fluide de l'IA dans vos processus métier.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauroux (36, Indre). Nous accompagnons en priorité les TPE, puis les PME du Berry : acteurs de la logistique et du fret aérien autour de l'aéroport Châteauroux-Centre, agroalimentaire, sous-traitants industriels, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+  seoHook: "logistique, fret & agroalimentaire",
   ecosystemFr:
-    "Le bassin industriel de Châteauroux inclut des entreprises comme Michelin et Legrand, renforçant son potentiel économique. La ZAC de la Martinerie est un pôle clé pour le développement local.",
+    "Châteauroux a transformé son ancienne base militaire de l'OTAN en un atout économique majeur : l'aéroport Châteauroux-Centre, dédié au fret, à la maintenance aéronautique et au stationnement long-courrier, structure une plateforme logistique de premier plan. Autour gravitent entrepôts, transport et messagerie, un agroalimentaire ancré dans le Berry, des sous-traitants industriels et un commerce de proximité. Ce tissu de TPE et PME cherche à fluidifier ses flux logistiques et administratifs pour gagner en compétitivité.",
   ecosystemEn:
-    "Le bassin industriel de Châteauroux inclut des entreprises comme Michelin et Legrand, renforçant son potentiel économique. La ZAC de la Martinerie est un pôle clé pour le développement local.",
+    "Châteauroux a transformé son ancienne base militaire de l'OTAN en un atout économique majeur : l'aéroport Châteauroux-Centre, dédié au fret, à la maintenance aéronautique et au stationnement long-courrier, structure une plateforme logistique de premier plan. Autour gravitent entrepôts, transport et messagerie, un agroalimentaire ancré dans le Berry, des sous-traitants industriels et un commerce de proximité. Ce tissu de TPE et PME cherche à fluidifier ses flux logistiques et administratifs pour gagner en compétitivité.",
   distancesFr:
-    "L'aéroport de Châteauroux-Centre est situé à 6 km du centre-ville, facilitant l'accès aux déplacements professionnels.",
+    "Aéroport Châteauroux-Centre à 6 km du centre. Gare de Châteauroux avec liaisons vers Paris-Austerlitz en environ 2h. Limoges à 1h30, Tours à 1h30, Bourges à 1h par l'A20 et la N151.",
   distancesEn:
-    "L'aéroport de Châteauroux-Centre est situé à 6 km du centre-ville, facilitant l'accès aux déplacements professionnels.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Hébergement", "Restauration"],
+    "Aéroport Châteauroux-Centre à 6 km du centre. Gare de Châteauroux avec liaisons vers Paris-Austerlitz en environ 2h. Limoges à 1h30, Tours à 1h30, Bourges à 1h par l'A20 et la N151.",
+  topSectorsNaf: [
+    "Logistique et entreposage",
+    "Fret aérien et maintenance aéronautique",
+    "Agroalimentaire du Berry",
+    "Transports terrestres et messagerie",
+    "Commerce de détail et services",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Châteauroux avec Axion-IA permet d'identifier des opportunités d'automatisation chez Michelin et Legrand.",
-      en: "Réaliser un audit à Châteauroux avec Axion-IA permet d'identifier des opportunités d'automatisation chez Michelin et Legrand.",
+      fr: "Audit IA à Châteauroux : diagnostic adapté aux TPE et PME du Berry — logistique, fret, agroalimentaire, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      en: "Audit IA à Châteauroux : diagnostic adapté aux TPE et PME du Berry — logistique, fret, agroalimentaire, commerces et services. Nous ciblons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Châteauroux pour automatiser les tâches administratives dans les secteurs du commerce et des transports.",
-      en: "Intervenir à Châteauroux pour automatiser les tâches administratives dans les secteurs du commerce et des transports.",
+      fr: "Interventions IA sur site à Châteauroux : formats courts pour automatiser planning, suivi de flux et tâches administratives logistiques. Vos équipes reprennent la main en autonomie.",
+      en: "Interventions IA sur site à Châteauroux : formats courts pour automatiser planning, suivi de flux et tâches administratives logistiques. Vos équipes reprennent la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Châteauroux, en s'appuyant sur l'écosystème industriel de la ZAC de la Martinerie.",
-      en: "Implémenter des solutions IA à Châteauroux, en s'appuyant sur l'écosystème industriel de la ZAC de la Martinerie.",
+      fr: "Implémentation IA à Châteauroux : agents conversationnels, optimisation des flux d'entrepôt et classification documentaire pour la logistique et l'agroalimentaire. Déploiement conforme RGPD.",
+      en: "Implémentation IA à Châteauroux : agents conversationnels, optimisation des flux d'entrepôt et classification documentaire pour la logistique et l'agroalimentaire. Déploiement conforme RGPD.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Châteauroux avec des sessions 1-to-1 pour intégrer l'IA dans leurs stratégies.",
-      en: "Accompagner les dirigeants de Châteauroux avec des sessions 1-to-1 pour intégrer l'IA dans leurs stratégies.",
+      fr: "Coaching un-à-un à Châteauroux : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME logistiques, agroalimentaires et commerçantes castelroussines.",
+      en: "Coaching un-à-un à Châteauroux : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME logistiques, agroalimentaires et commerçantes castelroussines.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés par l'IA à Châteauroux : plateformes et outils sur mesure pour acteurs logistiques, agroalimentaires et commerces du Berry, avec automatisations et SEO local intégrés.",
+      en: "Sites web augmentés par l'IA à Châteauroux : plateformes et outils sur mesure pour acteurs logistiques, agroalimentaires et commerces du Berry, avec automatisations et SEO local intégrés.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Châteauroux ?",
-      a: "Les tarifs pour une intervention à Châteauroux commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Châteauroux et dans l'Indre ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Châteauroux et des communes voisines : Déols, Le Poinçonnet, Saint-Maur, Issoudun. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Châteauroux ?",
-      a: "Williams se déplace à Châteauroux pour réaliser des interventions sur site, assurant une prise en charge directe et personnalisée.",
+      q: "Travaillez-vous avec les acteurs de la logistique et du fret ?",
+      a: "Oui. La plateforme de l'aéroport Châteauroux-Centre concentre logistique et fret. Nous automatisons les flux d'entrepôt, le planning, le suivi des expéditions et les tâches administratives des PME du secteur.",
     },
     {
-      q: "Quels délais pour une intervention à Châteauroux ?",
-      a: "Nous intervenons à Châteauroux dans un délai de 5 jours ouvrés après validation de votre demande, selon la disponibilité.",
+      q: "Accompagnez-vous l'agroalimentaire et les commerces locaux ?",
+      a: "Absolument — c'est notre priorité. Traçabilité, relation fournisseurs, devis et relances : nous adaptons les automatisations aux TPE et PME agroalimentaires et aux commerces de proximité du Berry.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Châteauroux ?",
-      a: "Axion-IA respecte les normes RGPD en vigueur, assurant la protection des données lors de nos interventions à Châteauroux.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui. Toutes nos implémentations à Châteauroux respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ou Limoges ?",
+      a: "Châteauroux est à environ 2h de Paris-Austerlitz en train et à 1h30 de Limoges par l'A20. Nous nous déplaçons sur site ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+    },
+    {
+      q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",
+      a: "Oui, via le coaching un-à-un. Nous partons de vos cas réels pour rendre vos équipes autonomes sur l'IA, sans dépendance durable à un prestataire externe.",
     },
   ],
 };

@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Dieppe (76, Seine-Maritime) — port de pêche et de plaisance, ferry Newhaven, usine Alpine-Renault, tourisme côte d'Albâtre.
 
 import type { VilleCopy } from "./types";
 
 export const DIEPPE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Dieppe, une ville dynamique avec Renault et un secteur industriel alimentaire florissant, pour accompagner les entreprises locales dans leur transition vers l'IA.",
+    "À Dieppe, sur la côte d'Albâtre, Axion-IA accompagne les TPE et PME du tourisme, de la pêche, de l'industrie et du commerce. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à mieux gérer leur saisonnalité, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "Axion-IA intervient à Dieppe, une ville dynamique avec Renault et un secteur industriel alimentaire florissant, pour accompagner les entreprises locales dans leur transition vers l'IA.",
+    "À Dieppe, sur la côte d'Albâtre, Axion-IA accompagne les TPE et PME du tourisme, de la pêche, de l'industrie et du commerce. Notre cabinet d'architectes IA seniors aide les dirigeants à automatiser leur administratif et à mieux gérer leur saisonnalité, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "À Dieppe, Axion-IA propose des audits et des interventions. Nous nous déplaçons sur site pour aider les entreprises locales à automatiser leurs processus. Avec Renault présent dans la région et un secteur industriel en pleine croissance, Dieppe offre un cadre propice à l'innovation.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Dieppe pour accompagner les TPE et PME locales. Entre le port de pêche et de plaisance, la liaison ferry vers Newhaven, l'usine Alpine-Renault et l'activité touristique de la côte d'Albâtre, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic sur site, sans dépendance technologique imposée.",
   directAnswerEn:
-    "À Dieppe, Axion-IA propose des audits et des interventions. Nous nous déplaçons sur site pour aider les entreprises locales à automatiser leurs processus. Avec Renault présent dans la région et un secteur industriel en pleine croissance, Dieppe offre un cadre propice à l'innovation.",
-  seoHook: "industrie alimentaire & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Dieppe pour accompagner les TPE et PME locales. Entre le port de pêche et de plaisance, la liaison ferry vers Newhaven, l'usine Alpine-Renault et l'activité touristique de la côte d'Albâtre, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic sur site, sans dépendance technologique imposée.",
+  seoHook: "tourisme, port & industrie auto",
   ecosystemFr:
-    "Dieppe bénéficie de la présence de Renault et d'un secteur de l'industrie alimentaire dynamique. Les entreprises locales peuvent compter sur un écosystème propice à l'innovation et à l'adoption de solutions IA.",
+    "Dieppe combine une économie maritime ancienne — port de pêche, de commerce et de plaisance, liaison transmanche vers Newhaven — et un tissu industriel marqué par l'usine Alpine-Renault qui assemble les voitures de sport de la marque. Le tourisme balnéaire de la côte d'Albâtre rythme l'activité de l'hôtellerie, de la restauration et du commerce, avec une forte saisonnalité. Ce mélange de TPE et PME, souvent confrontées aux pics estivaux et à une gestion administrative lourde, trouve dans Axion-IA un partenaire concret pour automatiser et fluidifier ses opérations.",
   ecosystemEn:
-    "Dieppe bénéficie de la présence de Renault et d'un secteur de l'industrie alimentaire dynamique. Les entreprises locales peuvent compter sur un écosystème propice à l'innovation et à l'adoption de solutions IA.",
+    "Dieppe combine une économie maritime ancienne — port de pêche, de commerce et de plaisance, liaison transmanche vers Newhaven — et un tissu industriel marqué par l'usine Alpine-Renault qui assemble les voitures de sport de la marque. Le tourisme balnéaire de la côte d'Albâtre rythme l'activité de l'hôtellerie, de la restauration et du commerce, avec une forte saisonnalité. Ce mélange de TPE et PME, souvent confrontées aux pics estivaux et à une gestion administrative lourde, trouve dans Axion-IA un partenaire concret pour automatiser et fluidifier ses opérations.",
   distancesFr:
-    "Dieppe est à 60 km de la gare TGV de Rouen et à 95 km de l'aéroport de Beauvais-Tillé.",
+    "Dieppe est reliée à Rouen, préfecture de la Seine-Maritime, en environ 1 heure par la route et par le train. Paris se situe à environ 2 heures via Rouen, et l'aéroport de Rouen-Vallée de Seine est à une heure de route. Le port assure la liaison ferry transmanche vers Newhaven, en Angleterre, en environ 4 heures. Cette position côtière facilite les déplacements de nos consultants vers les entreprises du littoral et de l'arrière-pays cauchois.",
   distancesEn:
-    "Dieppe est à 60 km de la gare TGV de Rouen et à 95 km de l'aéroport de Beauvais-Tillé.",
+    "Dieppe est reliée à Rouen, préfecture de la Seine-Maritime, en environ 1 heure par la route et par le train. Paris se situe à environ 2 heures via Rouen, et l'aéroport de Rouen-Vallée de Seine est à une heure de route. Le port assure la liaison ferry transmanche vers Newhaven, en Angleterre, en environ 4 heures. Cette position côtière facilite les déplacements de nos consultants vers les entreprises du littoral et de l'arrière-pays cauchois.",
   topSectorsNaf: [
-    "Industrie alimentaire",
-    "Transports terrestres",
+    "Hébergement et restauration touristique",
+    "Pêche et activités portuaires",
+    "Construction et réparation automobile",
     "Commerce de détail",
-    "Hébergement",
+    "Transport maritime et services au port",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Dieppe avec Axion-IA — identifier les opportunités d'automatisation pour améliorer l'efficacité opérationnelle.",
-      en: "Réaliser un audit à Dieppe avec Axion-IA — identifier les opportunités d'automatisation pour améliorer l'efficacité opérationnelle.",
+      fr: "Un audit IA à Dieppe analyse vos processus sur site, en tenant compte de la saisonnalité touristique et des contraintes propres aux activités portuaires et commerciales, pour repérer les automatisations à plus fort ROI pour une TPE ou une PME.",
+      en: "Un audit IA à Dieppe analyse vos processus sur site, en tenant compte de la saisonnalité touristique et des contraintes propres aux activités portuaires et commerciales, pour repérer les automatisations à plus fort ROI pour une TPE ou une PME.",
     },
     interventions: {
-      fr: "Intervenir à Dieppe pour optimiser les processus métiers — simplifier la gestion des tâches administratives et des relances.",
-      en: "Intervenir à Dieppe pour optimiser les processus métiers — simplifier la gestion des tâches administratives et des relances.",
+      fr: "Nos interventions à Dieppe automatisent les tâches répétitives des PME locales : gestion des réservations saisonnières, relances clients, suivi des commandes et traitement administratif, sans bouleverser vos outils actuels.",
+      en: "Nos interventions à Dieppe automatisent les tâches répétitives des PME locales : gestion des réservations saisonnières, relances clients, suivi des commandes et traitement administratif, sans bouleverser vos outils actuels.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Dieppe — intégrer des outils performants pour automatiser les devis et le reporting.",
-      en: "Implémenter des solutions IA à Dieppe — intégrer des outils performants pour automatiser les devis et le reporting.",
+      fr: "L'implémentation à Dieppe déploie des solutions IA durables pour le tourisme, le commerce et l'industrie locale, avec une attention forte à la conformité RGPD et à la fiabilité en période de pic d'activité.",
+      en: "L'implémentation à Dieppe déploie des solutions IA durables pour le tourisme, le commerce et l'industrie locale, avec une attention forte à la conformité RGPD et à la fiabilité en période de pic d'activité.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Dieppe — former les dirigeants à l'utilisation stratégique de l'IA pour une gestion optimisée.",
-      en: "Accompagner en un-à-un à Dieppe — former les dirigeants à l'utilisation stratégique de l'IA pour une gestion optimisée.",
+      fr: "Nos sessions un-à-un à Dieppe forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas pratiques issus du tourisme, du commerce ou de l'artisanat local.",
+      en: "Nos sessions un-à-un à Dieppe forment les dirigeants de TPE et PME à intégrer l'IA dans leur quotidien, avec des cas pratiques issus du tourisme, du commerce ou de l'artisanat local.",
+    },
+    sitesWeb: {
+      fr: "Pour les entreprises de Dieppe, nous concevons des sites web et plateformes augmentés par l'IA : réservation en ligne pour l'hôtellerie, devis automatisés et assistants qui qualifient les demandes des visiteurs et clients.",
+      en: "Pour les entreprises de Dieppe, nous concevons des sites web et plateformes augmentés par l'IA : réservation en ligne pour l'hôtellerie, devis automatisés et assistants qui qualifient les demandes des visiteurs et clients.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Dieppe ?",
-      a: "Les audits à Dieppe commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA se déplace-t-il à Dieppe ?",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Dieppe et sur la côte d'Albâtre. La première rencontre se déroule sur site, afin de bien saisir votre activité et sa saisonnalité avant toute recommandation.",
     },
     {
-      q: "Pouvez-vous vous déplacer dans les communes autour de Dieppe ?",
-      a: "Oui, Axion-IA se déplace dans les communes du bassin dieppois, telles que Saint-Aubin-sur-Scie et Offranville, pour des interventions sur site.",
+      q: "Quels types d'entreprises accompagnez-vous à Dieppe ?",
+      a: "Nous accompagnons en priorité les TPE et PME : tourisme, hôtellerie, commerce, pêche, industrie et artisanat. Les ETI restent un cas marginal. Notre approche convient aux structures qui veulent un résultat concret et rapide.",
     },
     {
-      q: "Quels délais pour une intervention à Dieppe ?",
-      a: "Après la prise de contact, nous nous engageons à intervenir sur site à Dieppe dans un délai de cinq jours ouvrés.",
+      q: "Comment l'IA aide-t-elle face à la saisonnalité touristique de Dieppe ?",
+      a: "Nous automatisons la gestion des réservations, les relances et le traitement administratif pour absorber les pics estivaux sans surcharger vos équipes. Vous gardez le contrôle pendant la saison et libérez du temps hors saison.",
+    },
+    {
+      q: "Faut-il changer mes logiciels pour travailler avec Axion-IA ?",
+      a: "Non. Nous nous appuyons sur vos outils existants quand c'est possible et évitons toute dépendance technologique imposée. L'objectif est d'augmenter votre efficacité sans vous enfermer dans une solution propriétaire.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Dieppe ?",
-      a: "Axion-IA assure la conformité RGPD de toutes ses solutions déployées à Dieppe, en respectant les normes européennes de protection des données.",
-    },
-    {
-      q: "Proposez-vous des formations IA pour les dirigeants à Dieppe ?",
-      a: "Oui, nous proposons des sessions un-à-un à partir de 990 € HT pour former les dirigeants dieppois à l'utilisation stratégique de l'IA.",
+      a: "La conformité RGPD est intégrée dès l'audit puis tout au long de l'implémentation. Nous documentons les traitements, limitons les données collectées et privilégions un hébergement conforme à la réglementation européenne.",
     },
   ],
 };

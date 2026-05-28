@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Bagnolet (93, Seine-Saint-Denis) — porte de Paris est, ligne 3, tertiaire & PME urbaines créatives.
 
 import type { VilleCopy } from "./types";
 
 export const BAGNOLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bagnolet, une ville dynamique proche de Paris, pour optimiser les processus des entreprises locales. Avec des acteurs comme Fnac Darty et Carrefour, le commerce de détail et la programmation informatique y sont prédominants.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Bagnolet, commune de Seine-Saint-Denis aux portes est de Paris, reliée par la ligne 3 et le périphérique (porte de Bagnolet). Services aux entreprises, industries créatives, commerce, BTP et logistique urbaine : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Bagnolet, une ville dynamique proche de Paris, pour optimiser les processus des entreprises locales. Avec des acteurs comme Fnac Darty et Carrefour, le commerce de détail et la programmation informatique y sont prédominants.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Bagnolet, commune de Seine-Saint-Denis aux portes est de Paris, reliée par la ligne 3 et le périphérique (porte de Bagnolet). Services aux entreprises, industries créatives, commerce, BTP et logistique urbaine : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA propose à Bagnolet des solutions IA adaptées aux besoins des entreprises, qu'elles soient dans le commerce de détail ou la programmation informatique. Avec des voisins comme Montreuil et Pantin, et la proximité de la Gare de Lyon et de l'aéroport de Paris-Charles de Gaulle, Bagnolet offre un accès facile aux ressources technologiques et économiques.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagnolet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain de l'est parisien : services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA propose à Bagnolet des solutions IA adaptées aux besoins des entreprises, qu'elles soient dans le commerce de détail ou la programmation informatique. Avec des voisins comme Montreuil et Pantin, et la proximité de la Gare de Lyon et de l'aéroport de Paris-Charles de Gaulle, Bagnolet offre un accès facile aux ressources technologiques et économiques.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagnolet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain de l'est parisien : services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+  seoHook: "créatif & tertiaire est parisien",
   ecosystemFr:
-    "Bagnolet, avec ses 4 000 établissements actifs, profite de la proximité de grands groupes comme Fnac Darty et Carrefour. Ce tissu économique diversifié est propice à l'innovation et à l'optimisation des processus métiers.",
+    "Bagnolet, en Seine-Saint-Denis aux portes est de Paris, est une commune urbaine dense raccordée par la ligne 3 (Gallieni) et la porte de Bagnolet. Autour du pôle d'échanges et des zones d'activités, le tissu de TPE et PME mêle services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine, dans un secteur en pleine recomposition aux côtés de Montreuil et Pantin.",
   ecosystemEn:
-    "Bagnolet, avec ses 4 000 établissements actifs, profite de la proximité de grands groupes comme Fnac Darty et Carrefour. Ce tissu économique diversifié est propice à l'innovation et à l'optimisation des processus métiers.",
+    "Bagnolet, en Seine-Saint-Denis aux portes est de Paris, est une commune urbaine dense raccordée par la ligne 3 (Gallieni) et la porte de Bagnolet. Autour du pôle d'échanges et des zones d'activités, le tissu de TPE et PME mêle services aux entreprises, industries créatives et audiovisuel, commerce, BTP et logistique urbaine, dans un secteur en pleine recomposition aux côtés de Montreuil et Pantin.",
   distancesFr:
-    "Bagnolet est à 5 km de la Gare de Lyon et à 20 km de l'aéroport Paris-Charles de Gaulle.",
+    "Bagnolet est desservie par la ligne 3 (Gallieni) et la porte de Bagnolet sur le périphérique. La gare de Lyon est à environ 5 km et l'aéroport Paris-Charles de Gaulle à environ 20 km.",
   distancesEn:
-    "Bagnolet est à 5 km de la Gare de Lyon et à 20 km de l'aéroport Paris-Charles de Gaulle.",
+    "Bagnolet est desservie par la ligne 3 (Gallieni) et la porte de Bagnolet sur le périphérique. La gare de Lyon est à environ 5 km et l'aéroport Paris-Charles de Gaulle à environ 20 km.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Restauration",
-    "Construction",
-    "Programmation informatique",
+    "Services aux entreprises et conseil",
+    "Industries créatives et audiovisuel",
+    "Commerce de détail et de proximité",
+    "BTP et travaux spécialisés",
+    "Logistique urbaine et transport",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bagnolet pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Bagnolet pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Bagnolet pour studios créatifs, agences, commerces et acteurs de la logistique urbaine : nous cartographions vos process (production, support, livraison, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Bagnolet pour studios créatifs, agences, commerces et acteurs de la logistique urbaine : nous cartographions vos process (production, support, livraison, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Bagnolet pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Bagnolet pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Bagnolet : formats adaptés au studio créatif, à l'agence, au commerce ou à l'entrepôt urbain. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Bagnolet : formats adaptés au studio créatif, à l'agence, au commerce ou à l'entrepôt urbain. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bagnolet, intégrant les systèmes existants — À partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Bagnolet, intégrant les systèmes existants — À partir de 990 € HT.",
+      fr: "Implémentation IA à Bagnolet : génération et traitement de contenu créatif, copilotes métiers, optimisation des tournées de logistique urbaine, agents conversationnels de support et automatisation administrative des TPE et PME.",
+      en: "Implémentation IA à Bagnolet : génération et traitement de contenu créatif, copilotes métiers, optimisation des tournées de logistique urbaine, agents conversationnels de support et automatisation administrative des TPE et PME.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Bagnolet avec des sessions 1-to-1 — À partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Bagnolet avec des sessions 1-to-1 — À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Bagnolet pour dirigeants de TPE et PME créatives, de services, de commerce ou de logistique : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Bagnolet pour dirigeants de TPE et PME créatives, de services, de commerce ou de logistique : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Bagnolet : portfolios et plateformes créatives, espaces clients et outils IA sur mesure pour les industries créatives, les services et le commerce de l'est parisien.",
+      en: "Sites web augmentés à Bagnolet : portfolios et plateformes créatives, espaces clients et outils IA sur mesure pour les industries créatives, les services et le commerce de l'est parisien.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Bagnolet ?",
-      a: "Les tarifs pour une intervention IA à Bagnolet commencent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Bagnolet ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Desservis par la ligne 3 (Gallieni) et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Bagnolet ?",
-      a: "Nos consultants se déplacent directement sur site à Bagnolet, assurant une intervention rapide et efficace, en général sous 5 jours ouvrés.",
+      q: "Quels gains IA pour un studio créatif ou une agence bagnoletaise ?",
+      a: "Génération et traitement de contenu, copilotes métiers, automatisation administrative et qualification commerciale. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
     },
     {
-      q: "Quelles sont les garanties de conformité RGPD pour les entreprises de Bagnolet ?",
-      a: "Axion-IA s'assure que toutes les solutions IA déployées à Bagnolet respectent les exigences du RGPD, garantissant la protection des données personnelles.",
+      q: "Quel est le tarif d'un audit IA à Bagnolet ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
-      q: "Proposez-vous des formations IA pour les équipes à Bagnolet ?",
-      a: "Oui, nous proposons des formations adaptées aux besoins des équipes de Bagnolet, avec des sessions 1-to-1 à partir de 990 € HT.",
+      q: "Intervenez-vous aussi à Montreuil, Pantin ou Les Lilas ?",
+      a: "Oui, nous couvrons l'est parisien : Montreuil, Pantin, Les Lilas, Romainville et Paris intra-muros, depuis Bagnolet. Déplacement rapide grâce au métro et au périphérique.",
     },
     {
-      q: "Combien de temps faut-il pour un audit IA à Bagnolet ?",
-      a: "Un Audit Flash à Bagnolet peut être réalisé en 4 heures, permettant d'identifier rapidement les opportunités IA, dès 490 € HT.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui, chaque solution déployée à Bagnolet respecte le RGPD et l'AI Act. Vos données clients, créatives et métiers restent maîtrisées, sans verrou technologique ni dépendance à un prestataire unique.",
     },
   ],
 };

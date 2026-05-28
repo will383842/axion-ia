@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Blois (41, Loir-et-Cher) — châteaux de la Loire, héritage chocolatier Poulain, cosmétique/parfumerie, tourisme.
 
 import type { VilleCopy } from "./types";
 
 export const BLOIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Blois, une ville où le commerce de détail et l'hébergement sont des secteurs clés. Nous proposons des solutions IA adaptées pour optimiser les processus des entreprises locales.",
+    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
   pitchEn:
-    "Axion-IA intervient à Blois, une ville où le commerce de détail et l'hébergement sont des secteurs clés. Nous proposons des solutions IA adaptées pour optimiser les processus des entreprises locales.",
+    "Blois (41), ville royale au cœur des châteaux de la Loire, conjugue tourisme patrimonial, industrie cosmétique et parfumerie, héritage chocolatier (Poulain) et tissu de PME en Val de Loire. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE et PME blésoises, les ETI en complément.",
   directAnswerFr:
-    "À Blois, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé humaine. Avec des entreprises comme les Laboratoires Servier et Valeo présentes dans la région, nous offrons des audits et des implémentations sur site pour améliorer l'efficacité opérationnelle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "À Blois, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé humaine. Avec des entreprises comme les Laboratoires Servier et Valeo présentes dans la région, nous offrons des audits et des implémentations sur site pour améliorer l'efficacité opérationnelle.",
-  seoHook: "commerce détail & hébergement",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient sur site à Blois et dans tout le Val de Loire. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine, industrie cosmétique et parfumerie, agroalimentaire, commerces et services — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+  seoHook: "tourisme Loire, cosmétique & PME",
   ecosystemFr:
-    "Blois abrite des entreprises comme les Laboratoires Servier et Valeo, renforçant son tissu économique. Le parc d'activités de la Boissière est un lieu clé pour les affaires dans la région.",
+    "Blois mêle économie touristique des châteaux de la Loire, industrie cosmétique et parfumerie, héritage agroalimentaire (chocolaterie Poulain) et un tissu dense de TPE/PME. Le commerce, les services et l'artisanat structurent le quotidien économique blésois.",
   ecosystemEn:
-    "Blois abrite des entreprises comme les Laboratoires Servier et Valeo, renforçant son tissu économique. Le parc d'activités de la Boissière est un lieu clé pour les affaires dans la région.",
+    "Blois mêle économie touristique des châteaux de la Loire, industrie cosmétique et parfumerie, héritage agroalimentaire (chocolaterie Poulain) et un tissu dense de TPE/PME. Le commerce, les services et l'artisanat structurent le quotidien économique blésois.",
   distancesFr:
-    "La gare TGV de Vendôme est à 30 km de Blois, facilitant l'accès aux déplacements professionnels.",
+    "Gare de Blois-Chambord sur la ligne Paris-Tours. Gare TGV de Vendôme à 30 km (Paris en 1h). Tours à 45 min, Orléans à 45 min, Chambord à 20 min.",
   distancesEn:
-    "La gare TGV de Vendôme est à 30 km de Blois, facilitant l'accès aux déplacements professionnels.",
-  topSectorsNaf: ["Commerce de détail", "Hébergement", "Restauration", "Santé humaine"],
+    "Gare de Blois-Chambord sur la ligne Paris-Tours. Gare TGV de Vendôme à 30 km (Paris en 1h). Tours à 45 min, Orléans à 45 min, Chambord à 20 min.",
+  topSectorsNaf: [
+    "Tourisme et patrimoine (châteaux de la Loire)",
+    "Industrie cosmétique et parfumerie",
+    "Agroalimentaire (héritage chocolatier)",
+    "Commerce et artisanat",
+    "Services aux entreprises et aux particuliers",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Blois permet d'identifier les opportunités IA dans les secteurs du commerce et de la santé.",
-      en: "Réaliser un audit à Blois permet d'identifier les opportunités IA dans les secteurs du commerce et de la santé.",
+      fr: "Audit IA à Blois : diagnostic des automatisations chez les acteurs du tourisme, les industriels de la cosmétique, l'agroalimentaire et les commerces du Val de Loire. Gisements de ROI quantifiés, à tarif public.",
+      en: "Audit IA à Blois : diagnostic des automatisations chez les acteurs du tourisme, les industriels de la cosmétique, l'agroalimentaire et les commerces du Val de Loire. Gisements de ROI quantifiés, à tarif public.",
     },
     interventions: {
-      fr: "Intervenir à Blois pour automatiser les processus administratifs et réduire les coûts.",
-      en: "Intervenir à Blois pour automatiser les processus administratifs et réduire les coûts.",
+      fr: "Interventions IA sur site à Blois : nous venons dans l'hôtel, l'usine cosmétique, l'atelier ou la boutique pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Blois : nous venons dans l'hôtel, l'usine cosmétique, l'atelier ou la boutique pour former vos équipes, qui pilotent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Blois pour optimiser les opérations des entreprises locales.",
-      en: "Implémenter des solutions IA à Blois pour optimiser les opérations des entreprises locales.",
+      fr: "Implémentation IA à Blois : agents de réservation pour le tourisme patrimonial, contrôle qualité et prévision en industrie cosmétique, automatisation administrative et relation client pour les commerces.",
+      en: "Implémentation IA à Blois : agents de réservation pour le tourisme patrimonial, contrôle qualité et prévision en industrie cosmétique, automatisation administrative et relation client pour les commerces.",
     },
     unAUn: {
-      fr: "Accompagner individuellement à Blois pour une adoption efficace de l'IA dans les PME.",
-      en: "Accompagner individuellement à Blois pour une adoption efficace de l'IA dans les PME.",
+      fr: "Coaching un-à-un à Blois : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME blésoises — hôteliers, industriels cosmétique, commerçants et artisans du Val de Loire.",
+      en: "Coaching un-à-un à Blois : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME blésoises — hôteliers, industriels cosmétique, commerçants et artisans du Val de Loire.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Blois : sites de réservation et boutiques en ligne avec IA intégrée pour le tourisme, la cosmétique et le commerce — réservation, recommandation produit, multilingue FR/EN.",
+      en: "Sites web augmentés à Blois : sites de réservation et boutiques en ligne avec IA intégrée pour le tourisme, la cosmétique et le commerce — réservation, recommandation produit, multilingue FR/EN.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Blois ?",
-      a: "Nos interventions à Blois commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Blois et dans le Val de Loire ?",
+      a: "Oui, Axion-IA se déplace sur site à Blois, Vendôme, Chambord et dans tout le Loir-et-Cher. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Blois ?",
-      a: "Williams se déplace sur site à Blois, assurant un service personnalisé et réactif pour chaque intervention.",
+      q: "Travaillez-vous avec les acteurs du tourisme et des châteaux de la Loire ?",
+      a: "Oui, c'est un secteur prioritaire. Agents de réservation, réponses automatiques multilingues FR/EN, gestion des avis et optimisation du remplissage pour hôtels, gîtes et sites patrimoniaux.",
     },
     {
-      q: "Quel est le délai pour une intervention à Blois ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Blois, selon la disponibilité et la complexité du projet.",
+      q: "Accompagnez-vous l'industrie cosmétique et la parfumerie blésoise ?",
+      a: "Oui. Pour la cosmétique, nous mettons en place le contrôle qualité assisté, la prévision de production et l'automatisation documentaire, dans un cadre RGPD et confidentialité industrielle strict.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Blois ?",
-      a: "Nous intégrons les normes RGPD dans toutes nos interventions à Blois, garantissant la protection des données personnelles.",
+      q: "Aidez-vous les commerces et artisans de Blois ?",
+      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe, automatisation de la relation client et des tâches administratives répétitives.",
+    },
+    {
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Blois ?",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME blésoises. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+    },
+    {
+      q: "Comment se déroule une mission IA à Blois ?",
+      a: "Nos consultants se déplacent dans vos locaux du Val de Loire après un premier échange. Frais de mission en sus, grille tarifaire publique et démarrage rapide après validation.",
     },
   ],
 };

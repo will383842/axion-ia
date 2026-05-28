@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Vigneux-sur-Seine (91, Essonne) — banlieue résidentielle au bord de la Seine, plateau logistique et zones d'activité, proximité Orly.
 
 import type { VilleCopy } from "./types";
 
 export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "À Vigneux-sur-Seine, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Paris, avec ses pôles comme Cap Digital et Station F, influence l'écosystème local.",
+    "À Vigneux-sur-Seine (91), commune des bords de Seine de l'Essonne, proche d'Orly et dotée de zones d'activité logistiques, Axion-IA accompagne les TPE et PME locales. Entrepôts et prestataires logistiques, PME de transport, artisans du bâtiment, commerces de proximité, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, tournées et reporting et libérer du temps aux dirigeants.",
   pitchEn:
-    "À Vigneux-sur-Seine, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Paris, avec ses pôles comme Cap Digital et Station F, influence l'écosystème local.",
+    "À Vigneux-sur-Seine (91), commune des bords de Seine de l'Essonne, proche d'Orly et dotée de zones d'activité logistiques, Axion-IA accompagne les TPE et PME locales. Entrepôts et prestataires logistiques, PME de transport, artisans du bâtiment, commerces de proximité, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, tournées et reporting et libérer du temps aux dirigeants.",
   directAnswerFr:
-    "Axion-IA intervient à Vigneux-sur-Seine pour optimiser vos processus grâce à l'IA. Avec des références comme LVMH et BNP Paribas à Paris, nous comprenons les enjeux des entreprises locales. Nos services incluent audit, intervention sur site et implémentation. Nos tarifs débutent à pour un audit Flash 4h. Consultez notre site pour plus d'informations.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vigneux-sur-Seine (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les prestataires logistiques et de transport des zones d'activité, les artisans du bâtiment, les commerces de proximité et les professions libérales de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA intervient à Vigneux-sur-Seine pour optimiser vos processus grâce à l'IA. Avec des références comme LVMH et BNP Paribas à Paris, nous comprenons les enjeux des entreprises locales. Nos services incluent audit, intervention sur site et implémentation. Nos tarifs débutent à pour un audit Flash 4h. Consultez notre site pour plus d'informations.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vigneux-sur-Seine (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les prestataires logistiques et de transport des zones d'activité, les artisans du bâtiment, les commerces de proximité et les professions libérales de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+  seoHook: "logistique & commerce de proximité",
   ecosystemFr:
-    "Le tissu économique de Vigneux-sur-Seine est influencé par la proximité de Paris, abritant Cap Digital et Inria. Les entreprises locales bénéficient de cet environnement innovant.",
+    "Vigneux-sur-Seine est une commune résidentielle de l'Essonne installée sur les bords de Seine, à quelques minutes d'Orly. Son économie s'appuie sur des zones d'activité logistiques et un tissu de TPE et PME de proximité : prestataires logistiques, transporteurs, artisans du bâtiment, commerces et professions libérales. La desserte par le RER D et la proximité immédiate de l'aéroport favorisent les flux de marchandises. Ce maillage de petites structures trouve dans l'IA un levier concret pour optimiser tournées, devis et gestion administrative au quotidien.",
   ecosystemEn:
-    "Le tissu économique de Vigneux-sur-Seine est influencé par la proximité de Paris, abritant Cap Digital et Inria. Les entreprises locales bénéficient de cet environnement innovant.",
+    "Vigneux-sur-Seine est une commune résidentielle de l'Essonne installée sur les bords de Seine, à quelques minutes d'Orly. Son économie s'appuie sur des zones d'activité logistiques et un tissu de TPE et PME de proximité : prestataires logistiques, transporteurs, artisans du bâtiment, commerces et professions libérales. La desserte par le RER D et la proximité immédiate de l'aéroport favorisent les flux de marchandises. Ce maillage de petites structures trouve dans l'IA un levier concret pour optimiser tournées, devis et gestion administrative au quotidien.",
   distancesFr:
-    "Vigneux-sur-Seine est à 10 km de l'aéroport de Paris-Orly et à 20 km de la gare TGV Gare de Lyon.",
+    "Vigneux-sur-Seine est reliée à Paris-Gare de Lyon en 25 minutes par le RER D (gare de Vigneux-sur-Seine). L'aéroport de Paris-Orly est à 10 minutes, Évry-Courcouronnes à 15 minutes et l'autoroute A6 est accessible à proximité.",
   distancesEn:
-    "Vigneux-sur-Seine est à 10 km de l'aéroport de Paris-Orly et à 20 km de la gare TGV Gare de Lyon.",
+    "Vigneux-sur-Seine est reliée à Paris-Gare de Lyon en 25 minutes par le RER D (gare de Vigneux-sur-Seine). L'aéroport de Paris-Orly est à 10 minutes, Évry-Courcouronnes à 15 minutes et l'autoroute A6 est accessible à proximité.",
   topSectorsNaf: [
-    "Commerce de détail",
+    "Logistique et entreposage",
     "Transports terrestres",
-    "Travaux de construction",
+    "Artisanat et travaux du bâtiment",
+    "Commerce de détail de proximité",
     "Restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vigneux-sur-Seine pour identifier des opportunités d'IA — amélioration des processus administratifs.",
-      en: "Réaliser un audit à Vigneux-sur-Seine pour identifier des opportunités d'IA — amélioration des processus administratifs.",
+      fr: "Audit IA à Vigneux-sur-Seine : diagnostic adapté aux prestataires logistiques, aux transporteurs, aux artisans et aux commerces de proximité. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
+      en: "Audit IA à Vigneux-sur-Seine : diagnostic adapté aux prestataires logistiques, aux transporteurs, aux artisans et aux commerces de proximité. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
     },
     interventions: {
-      fr: "Intervenir à Vigneux-sur-Seine pour automatiser les devis et relances — gain de temps pour les dirigeants.",
-      en: "Intervenir à Vigneux-sur-Seine pour automatiser les devis et relances — gain de temps pour les dirigeants.",
+      fr: "Interventions IA sur site à Vigneux-sur-Seine : sessions en entrepôt, sur chantier ou au bureau. Vos équipes deviennent autonomes sur les devis, le suivi des tournées et la gestion administrative.",
+      en: "Interventions IA sur site à Vigneux-sur-Seine : sessions en entrepôt, sur chantier ou au bureau. Vos équipes deviennent autonomes sur les devis, le suivi des tournées et la gestion administrative.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Vigneux-sur-Seine pour optimiser les chaînes logistiques — réduction des coûts opérationnels.",
-      en: "Implémenter des solutions IA à Vigneux-sur-Seine pour optimiser les chaînes logistiques — réduction des coûts opérationnels.",
+      fr: "Implémentation IA à Vigneux-sur-Seine : optimisation des tournées logistiques, automatisation des devis et factures, suivi des expéditions et reporting pour PME de transport et artisans.",
+      en: "Implémentation IA à Vigneux-sur-Seine : optimisation des tournées logistiques, automatisation des devis et factures, suivi des expéditions et reporting pour PME de transport et artisans.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Vigneux-sur-Seine — compréhension rapide des bénéfices de l'IA.",
-      en: "Accompagner en un-à-un les dirigeants de Vigneux-sur-Seine — compréhension rapide des bénéfices de l'IA.",
+      fr: "Accompagnement un-à-un à Vigneux-sur-Seine : sessions individuelles pour dirigeants de TPE et PME, en entrepôt, en boutique ou en visio, pour adopter l'IA dans la gestion quotidienne.",
+      en: "Accompagnement un-à-un à Vigneux-sur-Seine : sessions individuelles pour dirigeants de TPE et PME, en entrepôt, en boutique ou en visio, pour adopter l'IA dans la gestion quotidienne.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Vigneux-sur-Seine : plateformes pour PME logistiques, transporteurs, artisans et commerces, avec demande de devis intelligente, suivi de commande et prise de rendez-vous automatisée.",
+      en: "Sites web augmentés à Vigneux-sur-Seine : plateformes pour PME logistiques, transporteurs, artisans et commerces, avec demande de devis intelligente, suivi de commande et prise de rendez-vous automatisée.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Vigneux-sur-Seine ?",
-      a: "Nos interventions à Vigneux-sur-Seine commencent à partir de 590 € HT. Pour des détails complets sur nos tarifs, veuillez consulter notre site.",
+      q: "Axion-IA intervient-il à Vigneux-sur-Seine et en Essonne ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Vigneux-sur-Seine et du nord de l'Essonne. Nos consultants se déplacent sur site, à 25 minutes de Paris par le RER D, ou interviennent en visio selon vos besoins.",
     },
     {
-      q: "Comment Axion-IA opère-t-il à Vigneux-sur-Seine ?",
-      a: "Nous nous déplaçons à Vigneux-sur-Seine pour réaliser des audits, interventions et implémentations directement sur site, garantissant une approche personnalisée.",
+      q: "Travaillez-vous avec les prestataires logistiques et transporteurs de Vigneux ?",
+      a: "Oui, c'est un de nos terrains privilégiés vu les zones d'activité et la proximité d'Orly. Nous optimisons les tournées, automatisons le suivi des expéditions et structurons le reporting pour piloter l'activité au quotidien.",
     },
     {
-      q: "Quels délais pour une intervention IA à Vigneux-sur-Seine ?",
-      a: "Williams se déplace sur site à Vigneux-sur-Seine dans les 5 jours ouvrés suivant votre demande pour débuter l'intervention.",
+      q: "Accompagnez-vous les artisans et PME du bâtiment ?",
+      a: "Oui, pour les artisans et PME de construction, nous automatisons devis, factures, gestion de planning et relances clients, sur des outils simples à prendre en main, après un audit qui chiffre le retour attendu.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Vigneux-sur-Seine ?",
-      a: "Oui, toutes nos interventions à Vigneux-sur-Seine respectent strictement le RGPD, assurant la protection des données de nos clients.",
+      q: "Travaillez-vous avec les commerces et restaurants de proximité ?",
+      a: "Oui, les TPE sont notre priorité. Pour commerces et restauration, nous déployons fidélisation client automatisée, gestion des réservations, optimisation des stocks et reporting clair adaptés aux petites structures.",
+    },
+    {
+      q: "Comment se déroule une mission depuis Paris ou Orly ?",
+      a: "Vigneux-sur-Seine est à 25 minutes de Paris-Gare de Lyon par le RER D et 10 minutes d'Orly. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
     },
   ],
 };

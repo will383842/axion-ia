@@ -1,66 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Agen (47, Lot-et-Garonne) — capitale du pruneau, agroalimentaire, rugby (SU Agen).
 
 import type { VilleCopy } from "./types";
 
 export const AGEN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Agen, notamment pour les entreprises du secteur agroalimentaire et du commerce de détail, en s'appuyant sur notre expertise nationale.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Agen, notamment pour les entreprises du secteur agroalimentaire et du commerce de détail, en s'appuyant sur notre expertise nationale.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "À Agen, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, comme celles du Groupe GIFI et Fonroche Énergie. Notre approche inclut des audits et des implémentations. Nous nous déplaçons auprès de nos clients dans des délais rapides pour garantir une intégration fluide de l'IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
   directAnswerEn:
-    "À Agen, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, comme celles du Groupe GIFI et Fonroche Énergie. Notre approche inclut des audits et des implémentations. Nous nous déplaçons auprès de nos clients dans des délais rapides pour garantir une intégration fluide de l'IA.",
-  seoHook: "commerce détail & industrie agroalimentaire",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
+  seoHook: "pruneau & agroalimentaire",
   ecosystemFr:
-    "Agen bénéficie de la présence de l'Agropole et du campus de l'Université de Bordeaux, favorisant l'innovation et la recherche dans la région.",
+    "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de TPE et PME que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",
   ecosystemEn:
-    "Agen bénéficie de la présence de l'Agropole et du campus de l'Université de Bordeaux, favorisant l'innovation et la recherche dans la région.",
-  distancesFr: "La gare TGV d'Agen est à 0 km du centre-ville, facilitant les déplacements.",
-  distancesEn: "La gare TGV d'Agen est à 0 km du centre-ville, facilitant les déplacements.",
+    "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de TPE et PME que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",
+  distancesFr:
+    "La gare d'Agen est en centre-ville sur l'axe Bordeaux-Toulouse (environ 1h de chaque). L'A62 traverse l'agglomération et l'aéroport d'Agen-La Garenne dessert le bassin.",
+  distancesEn:
+    "La gare d'Agen est en centre-ville sur l'axe Bordeaux-Toulouse (environ 1h de chaque). L'A62 traverse l'agglomération et l'aéroport d'Agen-La Garenne dessert le bassin.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Industrie agroalimentaire",
-    "Transports terrestres",
-    "Santé humaine",
+    "Transformation agroalimentaire (pruneau, fruits, conserve)",
+    "Coopératives et négoce agricole",
+    "Logistique et transport de produits frais",
+    "Commerce de détail et de gros alimentaire",
+    "Services aux entreprises et artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Agen pour identifier les opportunités IA dans le commerce de détail local.",
-      en: "Réaliser un audit à Agen pour identifier les opportunités IA dans le commerce de détail local.",
+      fr: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Agen auprès des entreprises de l'agroalimentaire pour automatiser les tâches administratives.",
-      en: "Intervenir à Agen auprès des entreprises de l'agroalimentaire pour automatiser les tâches administratives.",
+      fr: "Interventions IA sur site à Agen : formats adaptés à l'atelier de transformation, à la coopérative ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Agen : formats adaptés à l'atelier de transformation, à la coopérative ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Agen, soutenu par l'Agropole, pour améliorer l'efficacité opérationnelle.",
-      en: "Implémenter des solutions IA à Agen, soutenu par l'Agropole, pour améliorer l'efficacité opérationnelle.",
+      fr: "Implémentation IA à Agen : contrôle qualité visuel des fruits, prévision de la demande, optimisation de la logistique fraîche, agents conversationnels pour le négoce et automatisation administrative des PME agroalimentaires.",
+      en: "Implémentation IA à Agen : contrôle qualité visuel des fruits, prévision de la demande, optimisation de la logistique fraîche, agents conversationnels pour le négoce et automatisation administrative des PME agroalimentaires.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Agen pour intégrer l'IA dans les processus métiers des dirigeants.",
-      en: "Accompagner en un-à-un à Agen pour intégrer l'IA dans les processus métiers des dirigeants.",
+      fr: "Coaching 1-to-1 à Agen pour dirigeants de TPE et PME agroalimentaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Agen pour dirigeants de TPE et PME agroalimentaires : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Agen : plateformes et outils IA sur mesure pour le négoce agricole, la vente directe de produits du terroir et les services aux entreprises locales.",
+      en: "Sites web augmentés à Agen : plateformes et outils IA sur mesure pour le négoce agricole, la vente directe de produits du terroir et les services aux entreprises locales.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Agen ?",
-      a: "Nos audits IA à Agen débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA accompagne-t-il les TPE et PME agroalimentaires d'Agen ?",
+      a: "Oui, l'agroalimentaire est notre cible prioritaire à Agen : conserveries, coopératives fruitières, transformation du pruneau, négoce et logistique fraîche. Nous travaillons d'abord avec les TPE et PME, l'accompagnement des ETI restant marginal.",
     },
     {
-      q: "Comment se déroule une intervention IA à Agen ?",
-      a: "Nos interventions à Agen se font sur site, avec une première évaluation suivie de l'implémentation des solutions IA adaptées. Nous nous déplaçons dans les 5 jours ouvrés.",
+      q: "Quels gains IA pour une conserverie ou coopérative agenaise ?",
+      a: "Contrôle qualité visuel des fruits, prévision de récolte et de demande, traçabilité IGP automatisée et réduction des tâches administratives. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
     },
     {
-      q: "Axion-IA intervient-elle dans les communes autour d'Agen ?",
-      a: "Oui, nous nous déplaçons également dans les communes du bassin agenais, telles que Boé, Bon-Encontre, et Le Passage, pour accompagner les entreprises locales.",
+      q: "Quel est le tarif d'un audit IA à Agen ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT. Tous nos tarifs sont publics et sans devis opaque. Nous chiffrons ensuite chaque chantier d'implémentation au cas par cas selon le ROI identifié.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Agen ?",
-      a: "Nous garantissons que toutes nos solutions IA respectent les réglementations RGPD en vigueur, avec une attention particulière aux données sensibles des entreprises agenaises.",
+      q: "Intervenez-vous autour d'Agen, à Boé ou Le Passage ?",
+      a: "Oui, nous nous déplaçons dans toute l'agglomération agenaise : Boé, Le Passage-d'Agen, Bon-Encontre, Foulayronnes et les communes du Lot-et-Garonne. Frais de déplacement facturés à part, tarifs publics.",
+    },
+    {
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui, chaque solution déployée à Agen respecte le RGPD et l'AI Act. Vos données clients et données de production restent maîtrisées, sans verrou technologique ni dépendance à un prestataire unique.",
     },
   ],
 };

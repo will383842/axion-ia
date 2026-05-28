@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Mérignac (33, Gironde) — aéroport Bordeaux-Mérignac, Dassault Aviation (Rafale) et Thales, filière aéronautique-défense.
 
 import type { VilleCopy } from "./types";
 
 export const MERIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Mérignac, au cœur de l'écosystème aéronautique avec Dassault Aviation et Thales, pour optimiser vos processus grâce à l'IA.",
+    "Mérignac, en Gironde, est la deuxième ville de la métropole bordelaise et le poumon aéronautique du Sud-Ouest. On y trouve l'aéroport de Bordeaux-Mérignac, Dassault Aviation qui y assemble le Rafale, ainsi que Thales et toute une filière aéronautique-défense. Autour gravitent de nombreuses TPE et PME : sous-traitants industriels, ESN, commerces de la zone commerciale Mérignac-Soleil et services. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces dirigeants pour automatiser leurs processus avec un ROI mesurable.",
   pitchEn:
-    "Axion-IA intervient à Mérignac, au cœur de l'écosystème aéronautique avec Dassault Aviation et Thales, pour optimiser vos processus grâce à l'IA.",
+    "Mérignac, en Gironde, est la deuxième ville de la métropole bordelaise et le poumon aéronautique du Sud-Ouest. On y trouve l'aéroport de Bordeaux-Mérignac, Dassault Aviation qui y assemble le Rafale, ainsi que Thales et toute une filière aéronautique-défense. Autour gravitent de nombreuses TPE et PME : sous-traitants industriels, ESN, commerces de la zone commerciale Mérignac-Soleil et services. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces dirigeants pour automatiser leurs processus avec un ROI mesurable.",
   directAnswerFr:
-    "À Mérignac, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, notamment la programmation informatique et le transport aérien. Avec des acteurs comme Safran et des infrastructures telles que l'Aéroport de Bordeaux-Mérignac, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mérignac (33, Gironde). Nous accompagnons en priorité les TPE puis les PME de la filière aéronautique-défense de la métropole bordelaise : sous-traitants de Dassault Aviation et Thales, ESN, commerces de Mérignac-Soleil et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
   directAnswerEn:
-    "À Mérignac, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, notamment la programmation informatique et le transport aérien. Avec des acteurs comme Safran et des infrastructures telles que l'Aéroport de Bordeaux-Mérignac, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle.",
-  seoHook: "programmation informatique & transport aérien",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mérignac (33, Gironde). Nous accompagnons en priorité les TPE puis les PME de la filière aéronautique-défense de la métropole bordelaise : sous-traitants de Dassault Aviation et Thales, ESN, commerces de Mérignac-Soleil et services. Audit des processus, automatisation des devis et relances, agents conversationnels, formation des équipes sur site. Les ETI restent un public marginal pour nous. Tarifs publics, ROI documenté.",
+  seoHook: "aéronautique-défense & tertiaire",
   ecosystemFr:
-    "Mérignac est un pôle industriel avec des entreprises comme Dassault Aviation et Safran. Le Parc d'activités du Phare et Technowest soutiennent l'innovation locale.",
+    "Mérignac concentre l'un des plus importants pôles aéronautique-défense de France : Dassault Aviation y assemble le Rafale, Thales y déploie ses activités, autour d'un dense réseau de sous-traitants industriels. L'aéroport de Bordeaux-Mérignac, le parc d'activités du Phare et le cluster Aerospace Valley irriguent ce tissu, complété par la grande zone commerciale Mérignac-Soleil et de nombreuses ESN. Ce mélange d'industrie de pointe et de services en fait un terrain riche pour l'automatisation IA et les agents métier.",
   ecosystemEn:
-    "Mérignac est un pôle industriel avec des entreprises comme Dassault Aviation et Safran. Le Parc d'activités du Phare et Technowest soutiennent l'innovation locale.",
+    "Mérignac concentre l'un des plus importants pôles aéronautique-défense de France : Dassault Aviation y assemble le Rafale, Thales y déploie ses activités, autour d'un dense réseau de sous-traitants industriels. L'aéroport de Bordeaux-Mérignac, le parc d'activités du Phare et le cluster Aerospace Valley irriguent ce tissu, complété par la grande zone commerciale Mérignac-Soleil et de nombreuses ESN. Ce mélange d'industrie de pointe et de services en fait un terrain riche pour l'automatisation IA et les agents métier.",
   distancesFr:
-    "L'Aéroport de Bordeaux-Mérignac est à seulement 3 km, facilitant nos déplacements pour des interventions rapides.",
+    "Mérignac jouxte l'aéroport de Bordeaux-Mérignac, à seulement 3 km du centre-ville, et Bordeaux centre est à 10 km, accessible par le tramway A et la rocade. La gare Bordeaux Saint-Jean, desservie par la LGV qui place Paris à un peu plus de deux heures, est à 20 minutes. Le parc d'activités du Phare et la zone Mérignac-Soleil sont au cœur de la ville, facilitant nos interventions sur toute la métropole bordelaise.",
   distancesEn:
-    "L'Aéroport de Bordeaux-Mérignac est à seulement 3 km, facilitant nos déplacements pour des interventions rapides.",
+    "Mérignac jouxte l'aéroport de Bordeaux-Mérignac, à seulement 3 km du centre-ville, et Bordeaux centre est à 10 km, accessible par le tramway A et la rocade. La gare Bordeaux Saint-Jean, desservie par la LGV qui place Paris à un peu plus de deux heures, est à 20 minutes. Le parc d'activités du Phare et la zone Mérignac-Soleil sont au cœur de la ville, facilitant nos interventions sur toute la métropole bordelaise.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Transport aérien",
-    "Réparation de machines",
-    "Commerce de gros",
+    "Construction aéronautique et défense",
+    "Sous-traitance industrielle de précision",
+    "Programmation et édition de logiciels",
+    "Commerce de détail et grande distribution",
+    "Ingénierie et études techniques",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Mérignac avec Axion-IA permet d'identifier les processus automatisables, dès 490 € HT.",
-      en: "Réaliser un audit à Mérignac avec Axion-IA permet d'identifier les processus automatisables, dès 490 € HT.",
+      fr: "Audit IA à Mérignac : diagnostic des processus pour sous-traitants aéronautique-défense, ESN et PME de services de la métropole bordelaise. Nous chiffrons les automatisations à fort ROI.",
+      en: "Audit IA à Mérignac : diagnostic des processus pour sous-traitants aéronautique-défense, ESN et PME de services de la métropole bordelaise. Nous chiffrons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Mérignac pour automatiser vos devis et relances, en s'appuyant sur l'écosystème local.",
-      en: "Intervenir à Mérignac pour automatiser vos devis et relances, en s'appuyant sur l'écosystème local.",
+      fr: "Interventions IA sur site à Mérignac : automatisation des devis, relances et flux documentaires pour les TPE et PME industrielles et de services, avec montée en autonomie des équipes.",
+      en: "Interventions IA sur site à Mérignac : automatisation des devis, relances et flux documentaires pour les TPE et PME industrielles et de services, avec montée en autonomie des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Mérignac, en intégrant vos systèmes existants, dès 990 € HT.",
-      en: "Implémenter des solutions IA à Mérignac, en intégrant vos systèmes existants, dès 990 € HT.",
+      fr: "Implémentation IA à Mérignac : agents conversationnels, classification de documents techniques et automatisation des flux entre ERP et donneurs d'ordres de la filière aéronautique.",
+      en: "Implémentation IA à Mérignac : agents conversationnels, classification de documents techniques et automatisation des flux entre ERP et donneurs d'ordres de la filière aéronautique.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Mérignac en sessions 1-to-1 pour une adoption rapide de l'IA.",
-      en: "Accompagner les dirigeants de Mérignac en sessions 1-to-1 pour une adoption rapide de l'IA.",
+      fr: "Coaching 1-to-1 à Mérignac : sessions dans vos locaux du parc du Phare ou en visio pour les dirigeants de TPE et PME de la métropole bordelaise.",
+      en: "Coaching 1-to-1 à Mérignac : sessions dans vos locaux du parc du Phare ou en visio pour les dirigeants de TPE et PME de la métropole bordelaise.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Mérignac : plateformes sur mesure avec IA intégrée pour sous-traitants industriels, ESN et commerces souhaitant qualifier leurs leads B2B girondins.",
+      en: "Sites web augmentés à Mérignac : plateformes sur mesure avec IA intégrée pour sous-traitants industriels, ESN et commerces souhaitant qualifier leurs leads B2B girondins.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Mérignac ?",
-      a: "Nos interventions à Mérignac débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il sur site à Mérignac ?",
+      a: "Oui. Nos architectes IA se déplacent à Mérignac et dans toute la métropole bordelaise pour réaliser audits, interventions et implémentations dans vos locaux, généralement sous cinq jours ouvrés après validation.",
     },
     {
-      q: "Comment se déroule un audit IA à Mérignac ?",
-      a: "Un audit IA à Mérignac commence par une analyse de vos processus. L'Audit Flash de 4h est proposé à partir de 490 € HT.",
+      q: "Travaillez-vous avec les sous-traitants aéronautiques de Mérignac ?",
+      a: "Oui. La filière aéronautique-défense autour de Dassault Aviation et Thales est notre cœur de cible. Nous automatisons devis, relances et flux de documents techniques entre vous et vos donneurs d'ordres, dans le respect de la traçabilité.",
     },
     {
-      q: "Axion-IA intervient-elle rapidement à Mérignac ?",
-      a: "Oui, nous nous déplaçons à Mérignac dans les 5 jours ouvrés pour des interventions sur site.",
+      q: "Accompagnez-vous les TPE et PME de Mérignac en priorité ?",
+      a: "Oui. Les TPE puis les PME sont notre public prioritaire à Mérignac. Nous adaptons les formats aux ateliers, ESN et commerces. Les ETI restent un public marginal de notre activité.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Mérignac ?",
-      a: "Nous garantissons la conformité RGPD en intégrant des pratiques de protection des données dans toutes nos interventions à Mérignac.",
+      q: "Quels services pour les commerces de Mérignac-Soleil ?",
+      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la gestion des demandes.",
+    },
+    {
+      q: "Comment se passe une mission depuis Bordeaux centre ?",
+      a: "Mérignac est à 10 km de Bordeaux centre, relié par le tramway A et la rocade. Nous couvrons toute la métropole bordelaise. Les frais de mission éventuels suivent une grille tarifaire publique, sans devis opaque.",
     },
   ],
 };

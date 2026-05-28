@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Lorient (56, Morbihan) — base sous-marins, port de pêche Keroman (2e France), course au large, agroalimentaire mer.
 
 import type { VilleCopy } from "./types";
 
 export const LORIENT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Lorient, ville où l'industrie agroalimentaire et Naval Group sont prépondérants, pour optimiser les processus métier grâce à l'IA.",
+    "Lorient (56), grand port du Morbihan, conjugue un patrimoine naval majeur (ancienne base de sous-marins de Keroman), le deuxième port de pêche de France, un Pôle Course au Large reconnu mondialement et une filière agroalimentaire de la mer dynamique. La ville accueille aussi le Festival Interceltique. Son tissu mêle TPE — pêche, mareyage, services portuaires, commerces, artisans — et PME de l'agroalimentaire, du nautisme et de la course au large. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME lorientaises, l'ETI restant marginale.",
   pitchEn:
-    "Axion-IA intervient à Lorient, ville où l'industrie agroalimentaire et Naval Group sont prépondérants, pour optimiser les processus métier grâce à l'IA.",
+    "Lorient (56), grand port du Morbihan, conjugue un patrimoine naval majeur (ancienne base de sous-marins de Keroman), le deuxième port de pêche de France, un Pôle Course au Large reconnu mondialement et une filière agroalimentaire de la mer dynamique. La ville accueille aussi le Festival Interceltique. Son tissu mêle TPE — pêche, mareyage, services portuaires, commerces, artisans — et PME de l'agroalimentaire, du nautisme et de la course au large. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME lorientaises, l'ETI restant marginale.",
   directAnswerFr:
-    "À Lorient, Axion-IA propose des services d'IA adaptés aux secteurs de la construction navale et des transports maritimes. Nous intervenons directement sur site pour automatiser les tâches administratives et optimiser les processus. Notre approche pragmatique permet aux entreprises locales de bénéficier d'un retour sur investissement rapide, en s'appuyant sur notre expertise nationale.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorient (56). Nous accompagnons en priorité les TPE — pêche et mareyage, services portuaires, commerces, artisans, indépendants — puis les PME de l'agroalimentaire de la mer, du nautisme et de la course au large, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (traçabilité, commandes, relation client, reporting). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "À Lorient, Axion-IA propose des services d'IA adaptés aux secteurs de la construction navale et des transports maritimes. Nous intervenons directement sur site pour automatiser les tâches administratives et optimiser les processus. Notre approche pragmatique permet aux entreprises locales de bénéficier d'un retour sur investissement rapide, en s'appuyant sur notre expertise nationale.",
-  seoHook: "naval, agro mer & tourisme",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorient (56). Nous accompagnons en priorité les TPE — pêche et mareyage, services portuaires, commerces, artisans, indépendants — puis les PME de l'agroalimentaire de la mer, du nautisme et de la course au large, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (traçabilité, commandes, relation client, reporting). Tarifs publics, frais de déplacement transparents.",
+  seoHook: "pêche, agro mer & course au large",
   ecosystemFr:
-    "Lorient est un pôle stratégique avec des entités comme Naval Group et DCNS, soutenu par des infrastructures telles que la Zone Industrielle de Keroman.",
+    "Lorient bâtit son économie sur la mer : le port de pêche de Keroman, deuxième de France, irrigue une filière agroalimentaire (mareyage, transformation, conserverie) puissante, tandis que le Pôle Course au Large fait de la ville une référence de la voile de compétition. L'ancienne base de sous-marins, reconvertie, et le Festival Interceltique complètent ce profil singulier. Le tissu local est dominé par les TPE — pêche, mareyage, services portuaires, commerces, artisans — et des PME agroalimentaires, nautiques et événementielles. Axion-IA y privilégie les TPE et PME, pour qui automatiser traçabilité, commandes et relation client dégage un gain opérationnel concret.",
   ecosystemEn:
-    "Lorient est un pôle stratégique avec des entités comme Naval Group et DCNS, soutenu par des infrastructures telles que la Zone Industrielle de Keroman.",
+    "Lorient bâtit son économie sur la mer : le port de pêche de Keroman, deuxième de France, irrigue une filière agroalimentaire (mareyage, transformation, conserverie) puissante, tandis que le Pôle Course au Large fait de la ville une référence de la voile de compétition. L'ancienne base de sous-marins, reconvertie, et le Festival Interceltique complètent ce profil singulier. Le tissu local est dominé par les TPE — pêche, mareyage, services portuaires, commerces, artisans — et des PME agroalimentaires, nautiques et événementielles. Axion-IA y privilégie les TPE et PME, pour qui automatiser traçabilité, commandes et relation client dégage un gain opérationnel concret.",
   distancesFr:
-    "La Gare de Lorient est au cœur de la ville, et l'Aéroport de Lorient Bretagne Sud est à seulement 7 km.",
+    "Gare de Lorient desservie en TGV (Paris-Montparnasse en ~3h). Aéroport de Lorient Bretagne Sud à 7 km. Vannes à 55 km, Quimper à 65 km, Rennes à 150 km. Nos consultants se déplacent sur site à Lorient et dans le pays de Lorient (Lanester, Ploemeur, Hennebont).",
   distancesEn:
-    "La Gare de Lorient est au cœur de la ville, et l'Aéroport de Lorient Bretagne Sud est à seulement 7 km.",
+    "Gare de Lorient desservie en TGV (Paris-Montparnasse en ~3h). Aéroport de Lorient Bretagne Sud à 7 km. Vannes à 55 km, Quimper à 65 km, Rennes à 150 km. Nos consultants se déplacent sur site à Lorient et dans le pays de Lorient (Lanester, Ploemeur, Hennebont).",
   topSectorsNaf: [
-    "Industrie agroalimentaire",
-    "Transports maritimes",
-    "Construction navale",
-    "Commerce de détail",
+    "Pêche et mareyage",
+    "Industrie agroalimentaire de la mer",
+    "Services et chantiers nautiques",
+    "Construction et réparation navale",
+    "Commerce de détail et artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Lorient, notamment pour les entreprises de la Zone Industrielle de Keroman — identifier les axes d'optimisation IA.",
-      en: "Réaliser un audit à Lorient, notamment pour les entreprises de la Zone Industrielle de Keroman — identifier les axes d'optimisation IA.",
+      fr: "Audit IA à Lorient : diagnostic adapté aux acteurs de la pêche, du mareyage et de l'agroalimentaire de Keroman. Nous repérons les tâches à automatiser (traçabilité, commandes, devis) et chiffrons les gains.",
+      en: "Audit IA à Lorient : diagnostic adapté aux acteurs de la pêche, du mareyage et de l'agroalimentaire de Keroman. Nous repérons les tâches à automatiser (traçabilité, commandes, devis) et chiffrons les gains.",
     },
     interventions: {
-      fr: "Intervenir à Lorient, au sein des entreprises de construction navale — automatiser les processus administratifs.",
-      en: "Intervenir à Lorient, au sein des entreprises de construction navale — automatiser les processus administratifs.",
+      fr: "Interventions IA sur site à Lorient : formats courts pour TPE de la pêche, de l'agroalimentaire, du nautisme et du commerce. Vos équipes maîtrisent les outils IA du quotidien et repartent autonomes.",
+      en: "Interventions IA sur site à Lorient : formats courts pour TPE de la pêche, de l'agroalimentaire, du nautisme et du commerce. Vos équipes maîtrisent les outils IA du quotidien et repartent autonomes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Lorient, pour les acteurs de l'industrie agroalimentaire — améliorer l'efficacité opérationnelle.",
-      en: "Implémenter des solutions IA à Lorient, pour les acteurs de l'industrie agroalimentaire — améliorer l'efficacité opérationnelle.",
+      fr: "Implémentation IA à Lorient : automatisation de la traçabilité produits de la mer, gestion des commandes et de la logistique, agents de relation client, reporting pour la course au large. Solutions RGPD-conformes.",
+      en: "Implémentation IA à Lorient : automatisation de la traçabilité produits de la mer, gestion des commandes et de la logistique, agents de relation client, reporting pour la course au large. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Lorient, avec des sessions 1-to-1 — maximiser l'impact de l'IA sur leurs opérations.",
-      en: "Accompagner les dirigeants à Lorient, avec des sessions 1-to-1 — maximiser l'impact de l'IA sur leurs opérations.",
+      fr: "Coaching 1-to-1 à Lorient : sessions dans votre entreprise portuaire, atelier nautique, commerce ou en visio. Pour dirigeants de TPE/PME de la pêche, de l'agroalimentaire et du nautisme souhaitant piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à Lorient : sessions dans votre entreprise portuaire, atelier nautique, commerce ou en visio. Pour dirigeants de TPE/PME de la pêche, de l'agroalimentaire et du nautisme souhaitant piloter l'IA eux-mêmes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés IA à Lorient : portails B2B agroalimentaires avec traçabilité et commandes automatisées, sites vitrines nautiques et touristiques, dotés d'assistants intelligents et de contenus optimisés.",
+      en: "Sites web augmentés IA à Lorient : portails B2B agroalimentaires avec traçabilité et commandes automatisées, sites vitrines nautiques et touristiques, dotés d'assistants intelligents et de contenus optimisés.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Lorient ?",
-      a: "Nos interventions à Lorient débutent à partir de 590 € HT. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Lorient et dans le pays de Lorient ?",
+      a: "Oui. Nos consultants se déplacent sur site à Lorient et dans les communes voisines (Lanester, Ploemeur, Hennebont, Quéven), pour les acteurs portuaires, agroalimentaires et nautiques.",
     },
     {
-      q: "Axion-IA se déplace-t-il dans les communes autour de Lorient ?",
-      a: "Oui, nous intervenons également dans les communes voisines telles que Lanester, Ploemeur et Hennebont.",
+      q: "Travaillez-vous avec les acteurs de la pêche et de Keroman ?",
+      a: "Oui. Mareyeurs, transformateurs et services du deuxième port de pêche de France profitent d'automatisations sur la traçabilité, la gestion des commandes, la logistique et la relation client.",
     },
     {
-      q: "Combien de temps pour un audit IA à Lorient ?",
-      a: "Notre Audit Flash de 4 heures est généralement réalisé dans un délai de 5 jours ouvrés.",
+      q: "Quels cas d'usage IA pour l'agroalimentaire de la mer ?",
+      a: "Automatisation de la traçabilité, contrôle qualité par vision, prévision de la demande, gestion des commandes B2B et optimisation logistique pour les PME de transformation et de conserverie.",
     },
     {
-      q: "Comment Axion-IA gère-t-il la conformité RGPD à Lorient ?",
-      a: "Nous assurons que toutes nos solutions respectent les normes RGPD, en collaboration étroite avec vos équipes.",
+      q: "Accompagnez-vous le nautisme et la course au large ?",
+      a: "Oui. Les acteurs du Pôle Course au Large et du nautisme profitent d'outils IA pour le reporting, la relation partenaires, l'analyse de données de performance et la communication événementielle.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD ?",
+      a: "Chaque déploiement intègre l'analyse RGPD (données clients, commandes, partenaires) et nous privilégions un hébergement européen. Vous restez propriétaire de vos données, sans dépendance technique.",
+    },
+    {
+      q: "Quel délai pour démarrer une mission à Lorient ?",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré. Frais de déplacement transparents distincts du forfait.",
     },
   ],
 };

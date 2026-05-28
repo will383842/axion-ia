@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Achères (78, Yvelines) — plus grande gare de triage SNCF d'Europe, station d'épuration Seine Aval majeure, ville cheminote au bord de la Seine.
 
 import type { VilleCopy } from "./types";
 
 export const ACHERES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Achères, une ville dynamique proche de Paris. Nous aidons les entreprises locales à intégrer l'IA, en nous inspirant de l'écosystème innovant de la région Île-de-France, qui comprend des acteurs comme Cap Digital et Inria.",
+    "À Achères (78), ville cheminote au bord de la Seine qui abrite la plus grande gare de triage d'Europe et l'une des plus importantes stations d'épuration de France, Axion-IA accompagne les TPE et PME de la logistique, de l'industrie et des services. Prestataires ferroviaires et logistiques, PME de maintenance et d'environnement, artisans du bâtiment, commerces et professions libérales : nous concevons des usages IA concrets pour fiabiliser planning, devis et reporting.",
   pitchEn:
-    "Axion-IA intervient à Achères, une ville dynamique proche de Paris. Nous aidons les entreprises locales à intégrer l'IA, en nous inspirant de l'écosystème innovant de la région Île-de-France, qui comprend des acteurs comme Cap Digital et Inria.",
+    "À Achères (78), ville cheminote au bord de la Seine qui abrite la plus grande gare de triage d'Europe et l'une des plus importantes stations d'épuration de France, Axion-IA accompagne les TPE et PME de la logistique, de l'industrie et des services. Prestataires ferroviaires et logistiques, PME de maintenance et d'environnement, artisans du bâtiment, commerces et professions libérales : nous concevons des usages IA concrets pour fiabiliser planning, devis et reporting.",
   directAnswerFr:
-    "À Achères, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec une proximité de pôles comme Cap Digital et Inria, nous apportons notre expertise nationale pour automatiser les processus, optimiser les opérations et former les équipes. Notre approche est conçue pour répondre aux spécificités des secteurs dominants tels que les transports terrestres et le commerce de gros.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achères (Yvelines) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les prestataires ferroviaires et logistiques liés à la grande gare de triage, les PME de maintenance et d'environnement, les artisans du bâtiment et les commerces de cette ville cheminote de la Seine. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "À Achères, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec une proximité de pôles comme Cap Digital et Inria, nous apportons notre expertise nationale pour automatiser les processus, optimiser les opérations et former les équipes. Notre approche est conçue pour répondre aux spécificités des secteurs dominants tels que les transports terrestres et le commerce de gros.",
-  seoHook: "transports terrestres & commerce gros",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achères (Yvelines) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les prestataires ferroviaires et logistiques liés à la grande gare de triage, les PME de maintenance et d'environnement, les artisans du bâtiment et les commerces de cette ville cheminote de la Seine. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+  seoHook: "logistique ferroviaire & industrie",
   ecosystemFr:
-    "Le tissu économique d'Achères est enrichi par des secteurs comme le transport terrestre et le commerce de gros. La proximité avec Paris permet aux entreprises de bénéficier des ressources de Cap Digital et des innovations d'Inria.",
+    "Achères est une ville cheminote des bords de Seine, structurée autour de la plus grande gare de triage SNCF d'Europe et de la station d'épuration Seine Aval, l'une des plus importantes du continent. Son économie repose sur la logistique ferroviaire, la maintenance, les métiers de l'environnement et un tissu de TPE et PME de services et d'artisanat du bâtiment. Bien reliée à Paris et à La Défense par le RER A et le Transilien, la commune offre aux petites structures un terrain idéal pour des usages IA qui optimisent planning, tournées et gestion documentaire.",
   ecosystemEn:
-    "Le tissu économique d'Achères est enrichi par des secteurs comme le transport terrestre et le commerce de gros. La proximité avec Paris permet aux entreprises de bénéficier des ressources de Cap Digital et des innovations d'Inria.",
+    "Achères est une ville cheminote des bords de Seine, structurée autour de la plus grande gare de triage SNCF d'Europe et de la station d'épuration Seine Aval, l'une des plus importantes du continent. Son économie repose sur la logistique ferroviaire, la maintenance, les métiers de l'environnement et un tissu de TPE et PME de services et d'artisanat du bâtiment. Bien reliée à Paris et à La Défense par le RER A et le Transilien, la commune offre aux petites structures un terrain idéal pour des usages IA qui optimisent planning, tournées et gestion documentaire.",
   distancesFr:
-    "Achères est située à 20 km de la gare TGV de Paris-La Défense et à 45 km de l'aéroport de Paris-Charles de Gaulle.",
+    "Achères est reliée à Paris-centre en 35 minutes et à La Défense en 25 minutes par le RER A (Achères-Ville) et le Transilien (ligne J). Cergy-Pontoise est à 15 minutes, Saint-Germain-en-Laye à 10 minutes et l'aéroport de Paris-Charles de Gaulle à 45 km.",
   distancesEn:
-    "Achères est située à 20 km de la gare TGV de Paris-La Défense et à 45 km de l'aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Transports terrestres", "Commerce de gros", "Construction"],
+    "Achères est reliée à Paris-centre en 35 minutes et à La Défense en 25 minutes par le RER A (Achères-Ville) et le Transilien (ligne J). Cergy-Pontoise est à 15 minutes, Saint-Germain-en-Laye à 10 minutes et l'aéroport de Paris-Charles de Gaulle à 45 km.",
+  topSectorsNaf: [
+    "Logistique et transport ferroviaire",
+    "Maintenance industrielle",
+    "Environnement et traitement des eaux",
+    "Artisanat et travaux du bâtiment",
+    "Commerce de détail",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Achères pour identifier les opportunités IA dans le commerce de gros et les transports terrestres.",
-      en: "Réaliser un audit à Achères pour identifier les opportunités IA dans le commerce de gros et les transports terrestres.",
+      fr: "Audit IA à Achères : diagnostic adapté aux prestataires ferroviaires et logistiques, aux PME de maintenance et d'environnement et aux artisans. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
+      en: "Audit IA à Achères : diagnostic adapté aux prestataires ferroviaires et logistiques, aux PME de maintenance et d'environnement et aux artisans. Nous identifions les usages prioritaires et chiffrons le ROI avant tout engagement.",
     },
     interventions: {
-      fr: "Intervenir à Achères pour automatiser les tâches administratives et optimiser les processus de construction.",
-      en: "Intervenir à Achères pour automatiser les tâches administratives et optimiser les processus de construction.",
+      fr: "Interventions IA sur site à Achères : sessions sur site logistique, en atelier ou au bureau. Vos équipes deviennent autonomes sur les devis, le suivi des interventions et la gestion documentaire.",
+      en: "Interventions IA sur site à Achères : sessions sur site logistique, en atelier ou au bureau. Vos équipes deviennent autonomes sur les devis, le suivi des interventions et la gestion documentaire.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Achères, adaptées aux besoins des entreprises locales, pour améliorer l'efficacité opérationnelle.",
-      en: "Implémenter des solutions IA à Achères, adaptées aux besoins des entreprises locales, pour améliorer l'efficacité opérationnelle.",
+      fr: "Implémentation IA à Achères : optimisation des tournées logistiques, planification de maintenance, automatisation des devis et de la gestion documentaire et reporting pour PME ferroviaires et d'environnement.",
+      en: "Implémentation IA à Achères : optimisation des tournées logistiques, planification de maintenance, automatisation des devis et de la gestion documentaire et reporting pour PME ferroviaires et d'environnement.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants d'Achères dans des sessions 1-to-1 pour maximiser l'usage de l'IA dans leurs activités.",
-      en: "Accompagner les dirigeants d'Achères dans des sessions 1-to-1 pour maximiser l'usage de l'IA dans leurs activités.",
+      fr: "Accompagnement un-à-un à Achères : sessions individuelles pour dirigeants de TPE et PME, sur site, en atelier ou en visio, pour adopter l'IA dans le pilotage opérationnel.",
+      en: "Accompagnement un-à-un à Achères : sessions individuelles pour dirigeants de TPE et PME, sur site, en atelier ou en visio, pour adopter l'IA dans le pilotage opérationnel.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Achères : plateformes pour PME logistiques, de maintenance et artisans, avec demande de devis intelligente, prise de rendez-vous et suivi d'intervention automatisé.",
+      en: "Sites web augmentés à Achères : plateformes pour PME logistiques, de maintenance et artisans, avec demande de devis intelligente, prise de rendez-vous et suivi d'intervention automatisé.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Achères ?",
-      a: "Les audits IA à Achères commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Achères et dans les Yvelines ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Achères et du secteur de Saint-Germain-en-Laye et Cergy-Pontoise. Nos consultants se déplacent sur site, à 35 minutes de Paris par le RER A, ou interviennent en visio.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Achères ?",
-      a: "Notre équipe nationale se déplace sur site à Achères pour réaliser des interventions sur mesure, dans un délai de 5 jours ouvrés.",
+      q: "Travaillez-vous avec les prestataires logistiques et ferroviaires d'Achères ?",
+      a: "Oui, dans l'écosystème de la plus grande gare de triage d'Europe, nous accompagnons les prestataires logistiques et de maintenance : optimisation des tournées, suivi automatisé des interventions et reporting d'activité.",
     },
     {
-      q: "Les services d'Axion-IA sont-ils conformes au RGPD à Achères ?",
-      a: "Oui, toutes nos interventions à Achères respectent strictement les réglementations RGPD en vigueur, garantissant la protection des données.",
+      q: "Accompagnez-vous les PME de maintenance et d'environnement ?",
+      a: "Oui, autour de la station d'épuration Seine Aval, nous aidons les PME de maintenance et d'environnement à automatiser planification, devis et gestion documentaire, sur des outils simples à prendre en main.",
     },
     {
-      q: "Quels délais pour l'implémentation d'une solution IA à Achères ?",
-      a: "Les délais d'implémentation varient selon le projet, mais nous nous efforçons de finaliser les solutions IA dans un délai optimal pour nos clients à Achères.",
+      q: "Travaillez-vous avec les artisans et commerces d'Achères ?",
+      a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous déployons devis automatisés, gestion de planning, relances et facturation intelligente, après un audit qui chiffre le retour attendu.",
+    },
+    {
+      q: "Comment se déroule une mission depuis Paris ou La Défense ?",
+      a: "Achères est à 35 minutes de Paris-centre et 25 minutes de La Défense par le RER A. Nos consultants se déplacent sur site ; les frais de déplacement sont facturés séparément selon des tarifs publics.",
     },
   ],
 };

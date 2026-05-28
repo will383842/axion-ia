@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Anglet (64, Pyrénées-Atlantiques) — Côte basque entre Bayonne et Biarritz, surf, tourisme.
 
 import type { VilleCopy } from "./types";
 
 export const ANGLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Anglet pour accompagner les entreprises locales dans l'automatisation de leurs processus. Avec des acteurs tels que Dassault Aviation et Safran Helicopter Engines, la ville offre un cadre propice à l'innovation technologique.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Anglet pour accompagner les entreprises locales dans l'automatisation de leurs processus. Avec des acteurs tels que Dassault Aviation et Safran Helicopter Engines, la ville offre un cadre propice à l'innovation technologique.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA se déplace à Anglet pour proposer des solutions d'IA adaptées aux besoins spécifiques des entreprises locales. Avec la proximité de la Technopole Izarbel et de l'Université de Pau et des Pays de l'Adour, nous sommes en mesure d'accompagner efficacement les structures de la région dans leur transformation numérique.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA se déplace à Anglet pour proposer des solutions d'IA adaptées aux besoins spécifiques des entreprises locales. Avec la proximité de la Technopole Izarbel et de l'Université de Pau et des Pays de l'Adour, nous sommes en mesure d'accompagner efficacement les structures de la région dans leur transformation numérique.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+  seoHook: "surf & tourisme Côte basque",
   ecosystemFr:
-    "Anglet est un pôle économique dynamique avec des entreprises comme Dassault Aviation et Safran Helicopter Engines. La Technopole Izarbel et l'Université de Pau et des Pays de l'Adour enrichissent cet environnement propice à l'innovation.",
+    "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de TPE et PME couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",
   ecosystemEn:
-    "Anglet est un pôle économique dynamique avec des entreprises comme Dassault Aviation et Safran Helicopter Engines. La Technopole Izarbel et l'Université de Pau et des Pays de l'Adour enrichissent cet environnement propice à l'innovation.",
+    "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de TPE et PME couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",
   distancesFr:
-    "La gare TGV de Bayonne est située à 5 km d'Anglet, et l'aéroport de Biarritz Pays Basque à 3 km.",
+    "Anglet est encadrée par Bayonne et Biarritz : gare TGV de Bayonne à environ 5 km, aéroport de Biarritz-Pays Basque à environ 3 km, accès direct A63 vers Bordeaux et l'Espagne.",
   distancesEn:
-    "La gare TGV de Bayonne est située à 5 km d'Anglet, et l'aéroport de Biarritz Pays Basque à 3 km.",
+    "Anglet est encadrée par Bayonne et Biarritz : gare TGV de Bayonne à environ 5 km, aéroport de Biarritz-Pays Basque à environ 3 km, accès direct A63 vers Bordeaux et l'Espagne.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Construction",
-    "Restauration",
-    "Programmation informatique",
+    "Tourisme balnéaire et hébergement",
+    "Surf, glisse et loisirs nautiques",
+    "Restauration et cafés",
+    "Commerce de détail et de proximité",
+    "BTP et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Anglet avec Axion-IA permet d'identifier les opportunités d'automatisation dans des secteurs tels que la construction.",
-      en: "Réaliser un audit à Anglet avec Axion-IA permet d'identifier les opportunités d'automatisation dans des secteurs tels que la construction.",
+      fr: "Audit IA à Anglet pour hôtels, écoles de surf, commerces et acteurs du tourisme balnéaire : nous identifions les leviers (réservations, saisonnalité, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
+      en: "Audit IA à Anglet pour hôtels, écoles de surf, commerces et acteurs du tourisme balnéaire : nous identifions les leviers (réservations, saisonnalité, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Anglet pour automatiser les processus administratifs et réduire les coûts opérationnels dans les entreprises locales.",
-      en: "Intervenir à Anglet pour automatiser les processus administratifs et réduire les coûts opérationnels dans les entreprises locales.",
+      fr: "Interventions IA sur site à Anglet : formats adaptés à l'hôtel, à l'école de glisse, au commerce ou à l'artisan du BTP. Vos collaborateurs gèrent ensuite les outils en autonomie.",
+      en: "Interventions IA sur site à Anglet : formats adaptés à l'hôtel, à l'école de glisse, au commerce ou à l'artisan du BTP. Vos collaborateurs gèrent ensuite les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Anglet pour optimiser les opérations des entreprises, en s'appuyant sur l'écosystème local.",
-      en: "Implémenter des solutions IA à Anglet pour optimiser les opérations des entreprises, en s'appuyant sur l'écosystème local.",
+      fr: "Implémentation IA à Anglet : gestion des réservations et de la saisonnalité touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des TPE et PME de la Côte basque.",
+      en: "Implémentation IA à Anglet : gestion des réservations et de la saisonnalité touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des TPE et PME de la Côte basque.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Anglet pour former les dirigeants à l'utilisation de l'IA dans leur entreprise.",
-      en: "Proposer des sessions 1-to-1 à Anglet pour former les dirigeants à l'utilisation de l'IA dans leur entreprise.",
+      fr: "Coaching 1-to-1 à Anglet pour dirigeants de TPE et PME touristiques, commerce ou BTP : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      en: "Coaching 1-to-1 à Anglet pour dirigeants de TPE et PME touristiques, commerce ou BTP : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Anglet : plateformes de réservation directe, e-shops glisse et outils IA multilingues pour le tourisme, le commerce et les loisirs nautiques de la Côte basque.",
+      en: "Sites web augmentés à Anglet : plateformes de réservation directe, e-shops glisse et outils IA multilingues pour le tourisme, le commerce et les loisirs nautiques de la Côte basque.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Anglet ?",
-      a: "Les tarifs pour une intervention IA à Anglet commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Anglet et sur la Côte basque ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Anglet et de l'agglomération Bayonne-Anglet-Biarritz. Nous nous déplaçons sur site et travaillons aussi en visio. Frais de déplacement facturés à part, tarifs publics.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Anglet ?",
-      a: "Williams se déplace sur site à Anglet dans un délai de 5 jours ouvrés pour assurer une intervention rapide et efficace.",
+      q: "Quels gains IA pour un hôtel ou une école de surf angloye ?",
+      a: "Optimisation des réservations et de la saisonnalité, agents conversationnels multilingues pour la clientèle internationale, analyse des avis et automatisation administrative. Chaque piste est chiffrée en ROI dans l'Audit Flash.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services d'Axion-IA à Anglet ?",
-      a: "Les secteurs du commerce de détail, de la construction, et de la programmation informatique bénéficient particulièrement des services d'Axion-IA à Anglet.",
+      q: "Quel est le tarif d'un audit IA à Anglet ?",
+      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Anglet ?",
-      a: "Axion-IA garantit la conformité RGPD en intégrant des pratiques de protection des données dans toutes nos interventions à Anglet.",
+      q: "Intervenez-vous aussi à Bayonne et Biarritz ?",
+      a: "Oui, nous couvrons tout le BAB et le Pays basque côtier : Bayonne, Biarritz, Bidart, Saint-Jean-de-Luz et les communes voisines, depuis Anglet et la technopole Izarbel.",
+    },
+    {
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui, chaque solution déployée à Anglet respecte le RGPD et l'AI Act. Vos données clients et de réservation restent maîtrisées, sans verrou technologique ni dépendance à un prestataire unique.",
     },
   ],
 };

@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Gujan-Mestras (33, Gironde) — ostréiculture du bassin d'Arcachon (7 ports), tourisme, commerce.
 
 import type { VilleCopy } from "./types";
 
 export const GUJAN_MESTRAS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Gujan-Mestras, ville dynamique de Nouvelle-Aquitaine, pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA, s'inspirant des innovations de Cap Digital et Inria.",
+    "Axion-IA accompagne les TPE et PME de Gujan-Mestras, capitale ostréicole du bassin d'Arcachon avec ses sept ports, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser devis, relances, réservations et gestion de stock, au service des ostréiculteurs, hébergeurs touristiques et commerçants locaux.",
   pitchEn:
-    "Axion-IA intervient à Gujan-Mestras, ville dynamique de Nouvelle-Aquitaine, pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA, s'inspirant des innovations de Cap Digital et Inria.",
+    "Axion-IA accompagne les TPE et PME de Gujan-Mestras, capitale ostréicole du bassin d'Arcachon avec ses sept ports, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'architectes IA seniors, nous nous déplaçons sur site pour automatiser devis, relances, réservations et gestion de stock, au service des ostréiculteurs, hébergeurs touristiques et commerçants locaux.",
   directAnswerFr:
-    "À Gujan-Mestras, Axion-IA propose des services adaptés aux besoins des entreprises locales, en tirant parti des innovations observées chez Cap Digital et Inria. Nous offrons des audits, interventions et implémentations sur site pour automatiser et optimiser les processus métiers. Nos solutions s'adressent aux TPE, PME et ETI, avec des tarifs publics clairs et une approche opérationnelle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de Gujan-Mestras à intégrer l'intelligence artificielle dans leurs opérations quotidiennes. Sur ce territoire marqué par l'ostréiculture du bassin d'Arcachon, le tourisme balnéaire et le commerce de proximité, nous intervenons directement sur site pour auditer vos processus, automatiser vos tâches répétitives et déployer des outils mesurables. Tarifs publics, sans jargon, avec un démarrage rapide. Les PME complètent ce socle, les ETI restent marginales sur ce bassin de petites structures.",
   directAnswerEn:
-    "À Gujan-Mestras, Axion-IA propose des services adaptés aux besoins des entreprises locales, en tirant parti des innovations observées chez Cap Digital et Inria. Nous offrons des audits, interventions et implémentations sur site pour automatiser et optimiser les processus métiers. Nos solutions s'adressent aux TPE, PME et ETI, avec des tarifs publics clairs et une approche opérationnelle.",
-  seoHook: "commerce détail & hébergement",
+    "Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME de Gujan-Mestras à intégrer l'intelligence artificielle dans leurs opérations quotidiennes. Sur ce territoire marqué par l'ostréiculture du bassin d'Arcachon, le tourisme balnéaire et le commerce de proximité, nous intervenons directement sur site pour auditer vos processus, automatiser vos tâches répétitives et déployer des outils mesurables. Tarifs publics, sans jargon, avec un démarrage rapide. Les PME complètent ce socle, les ETI restent marginales sur ce bassin de petites structures.",
+  seoHook: "ostréiculture & tourisme balnéaire",
   ecosystemFr:
-    "Le tissu économique de Gujan-Mestras est marqué par le commerce de détail et la restauration. Les entreprises locales bénéficient de l'expérience d'Axion-IA, qui s'inspire des innovations de Cap Digital et Inria pour optimiser leurs processus.",
+    "Gujan-Mestras vit au rythme de l'ostréiculture du bassin d'Arcachon : ses sept ports ostréicoles, parmi les plus importants de France, structurent une filière conchylicole de TPE familiales doublée d'une forte activité touristique et de loisirs. Le commerce de détail, la restauration de produits de la mer, l'hébergement saisonnier et les activités nautiques composent un tissu de petites entreprises où l'IA fait gagner du temps sur la prise de commande, la traçabilité, la relation client et la gestion saisonnière. Axion-IA cible en priorité ces TPE, puis les PME du tourisme et de l'agroalimentaire local.",
   ecosystemEn:
-    "Le tissu économique de Gujan-Mestras est marqué par le commerce de détail et la restauration. Les entreprises locales bénéficient de l'expérience d'Axion-IA, qui s'inspire des innovations de Cap Digital et Inria pour optimiser leurs processus.",
+    "Gujan-Mestras vit au rythme de l'ostréiculture du bassin d'Arcachon : ses sept ports ostréicoles, parmi les plus importants de France, structurent une filière conchylicole de TPE familiales doublée d'une forte activité touristique et de loisirs. Le commerce de détail, la restauration de produits de la mer, l'hébergement saisonnier et les activités nautiques composent un tissu de petites entreprises où l'IA fait gagner du temps sur la prise de commande, la traçabilité, la relation client et la gestion saisonnière. Axion-IA cible en priorité ces TPE, puis les PME du tourisme et de l'agroalimentaire local.",
   distancesFr:
-    "Gujan-Mestras est située à 60 km de la Gare de Bordeaux-Saint-Jean et à 55 km de l'Aéroport de Bordeaux-Mérignac.",
+    "Gujan-Mestras se situe à environ 10 km d'Arcachon et à 50 km de Bordeaux. La gare de Gujan-Mestras est sur la ligne TER Bordeaux–Arcachon, la gare TGV de Bordeaux-Saint-Jean est à 55 km et l'aéroport de Bordeaux-Mérignac à 50 km, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
   distancesEn:
-    "Gujan-Mestras est située à 60 km de la Gare de Bordeaux-Saint-Jean et à 55 km de l'Aéroport de Bordeaux-Mérignac.",
-  topSectorsNaf: ["Commerce de détail", "Hébergement", "Restauration", "Activités sportives"],
+    "Gujan-Mestras se situe à environ 10 km d'Arcachon et à 50 km de Bordeaux. La gare de Gujan-Mestras est sur la ligne TER Bordeaux–Arcachon, la gare TGV de Bordeaux-Saint-Jean est à 55 km et l'aéroport de Bordeaux-Mérignac à 50 km, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
+  topSectorsNaf: [
+    "Conchyliculture et ostréiculture",
+    "Hébergement touristique",
+    "Restauration de produits de la mer",
+    "Commerce de détail",
+    "Activités nautiques et de loisirs",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Gujan-Mestras pour identifier les opportunités d'automatisation — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Gujan-Mestras pour identifier les opportunités d'automatisation — Audit Flash dès 490 € HT.",
+      fr: "Auditer une TPE ostréicole ou un hébergeur de Gujan-Mestras pour repérer les automatisations à fort impact : prise de commande, traçabilité des lots, planning saisonnier.",
+      en: "Auditer une TPE ostréicole ou un hébergeur de Gujan-Mestras pour repérer les automatisations à fort impact : prise de commande, traçabilité des lots, planning saisonnier.",
     },
     interventions: {
-      fr: "Intervenir à Gujan-Mestras pour optimiser vos processus — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Gujan-Mestras pour optimiser vos processus — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervenir sur site à Gujan-Mestras pour automatiser devis, relances et réservations des commerces et restaurants du front de mer, sans bouleverser vos outils.",
+      en: "Intervenir sur site à Gujan-Mestras pour automatiser devis, relances et réservations des commerces et restaurants du front de mer, sans bouleverser vos outils.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Gujan-Mestras pour automatiser vos tâches — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Gujan-Mestras pour automatiser vos tâches — à partir de 990 € HT.",
+      fr: "Implémenter des solutions IA durables pour les PME touristiques et agroalimentaires de Gujan-Mestras : gestion des stocks, suivi client, reporting saisonnier.",
+      en: "Implémenter des solutions IA durables pour les PME touristiques et agroalimentaires de Gujan-Mestras : gestion des stocks, suivi client, reporting saisonnier.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Gujan-Mestras en sessions 1-to-1 — dès 990 € HT pour des solutions concrètes.",
-      en: "Accompagner les dirigeants de Gujan-Mestras en sessions 1-to-1 — dès 990 € HT pour des solutions concrètes.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Gujan-Mestras pour piloter sereinement leur transition vers l'IA, à leur rythme.",
+      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Gujan-Mestras pour piloter sereinement leur transition vers l'IA, à leur rythme.",
+    },
+    sitesWeb: {
+      fr: "Concevoir des sites web augmentés par l'IA pour les ostréiculteurs et hébergeurs de Gujan-Mestras : vente en ligne, réservation directe, assistant client multilingue.",
+      en: "Concevoir des sites web augmentés par l'IA pour les ostréiculteurs et hébergeurs de Gujan-Mestras : vente en ligne, réservation directe, assistant client multilingue.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Gujan-Mestras ?",
-      a: "Les interventions à Gujan-Mestras commencent à partir de 590 € HT pour une Intervention Essentielle. Nos tarifs sont publics et consultables sur notre site.",
+      q: "Axion-IA se déplace-t-il sur les ports ostréicoles de Gujan-Mestras ?",
+      a: "Oui. Notre cabinet d'architectes IA se déplace directement sur les sept ports et les exploitations de Gujan-Mestras pour observer vos processus réels avant toute recommandation, généralement sous cinq jours ouvrés.",
+    },
+    {
+      q: "Quels gains l'IA apporte-t-elle à une TPE ostréicole de Gujan-Mestras ?",
+      a: "L'IA automatise la prise de commande, le suivi des lots, les relances clients et la gestion saisonnière. Une TPE ostréicole gagne du temps administratif et fiabilise sa traçabilité sans embaucher.",
+    },
+    {
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Gujan-Mestras ?",
+      a: "Non. Nous accompagnons en priorité les TPE puis les PME du bassin d'Arcachon. Les structures de quelques salariés sont notre cœur de cible, les ETI restant marginales sur ce territoire.",
     },
     {
       q: "Comment se déroule un audit IA à Gujan-Mestras ?",
-      a: "Nous réalisons un audit sur site à Gujan-Mestras pour identifier les opportunités d'automatisation. L'Audit Flash 4h est disponible dès 490 € HT.",
+      a: "Nous analysons sur site vos flux de travail, identifions les tâches automatisables et livrons une feuille de route priorisée avec des gains chiffrés, adaptée à votre activité touristique ou ostréicole.",
     },
     {
-      q: "Axion-IA peut-elle se déplacer à Gujan-Mestras ?",
-      a: "Oui, notre équipe nationale se déplace à Gujan-Mestras pour réaliser des audits, interventions et implémentations sur site.",
-    },
-    {
-      q: "Quels sont les délais pour une intervention IA à Gujan-Mestras ?",
-      a: "Nous nous engageons à intervenir sur site à Gujan-Mestras dans un délai de 5 jours ouvrés après validation de la mission.",
+      q: "Vos solutions respectent-elles le RGPD à Gujan-Mestras ?",
+      a: "Oui. Chaque solution déployée à Gujan-Mestras intègre la conformité RGPD dès la conception, avec hébergement maîtrisé des données et traçabilité complète des traitements.",
     },
   ],
 };

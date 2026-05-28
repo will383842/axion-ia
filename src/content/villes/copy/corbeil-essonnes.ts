@@ -1,61 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Corbeil-Essonnes (91, Essonne) — semi-conducteurs (Altis/STMicroelectronics), Snecma-Safran, Grands Moulins.
 
 import type { VilleCopy } from "./types";
 
 export const CORBEIL_ESSONNES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Corbeil-Essonnes, ville proche de Paris abritant Safran Aircraft Engines, pour optimiser vos processus grâce à l'IA.",
+    "Corbeil-Essonnes (91), ville du sud francilien sur la Seine, conjugue un patrimoine industriel fort : semi-conducteurs (héritage Altis / STMicroelectronics), moteurs aéronautiques avec Snecma-Safran, et les emblématiques Grands Moulins de la minoterie. Son tissu mêle sous-traitance industrielle, deeptech, agroalimentaire et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME corbeil-essonnoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Axion-IA intervient à Corbeil-Essonnes, ville proche de Paris abritant Safran Aircraft Engines, pour optimiser vos processus grâce à l'IA.",
+    "Corbeil-Essonnes (91), ville du sud francilien sur la Seine, conjugue un patrimoine industriel fort : semi-conducteurs (héritage Altis / STMicroelectronics), moteurs aéronautiques avec Snecma-Safran, et les emblématiques Grands Moulins de la minoterie. Son tissu mêle sous-traitance industrielle, deeptech, agroalimentaire et un dense réseau de TPE et PME. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME corbeil-essonnoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Nous intervenons à Corbeil-Essonnes, où le tissu économique inclut Safran Aircraft Engines et des secteurs comme le commerce de détail et la construction. Axion-IA propose des audits et des interventions. Nous nous déplaçons sur site pour accompagner les entreprises dans l'intégration de l'IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corbeil-Essonnes (91, Essonne). Nous accompagnons en priorité les TPE, puis les PME du sud francilien : sous-traitants des semi-conducteurs et de l'aéronautique (écosystèmes Altis/STMicroelectronics et Safran), agroalimentaire de la minoterie, construction, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
   directAnswerEn:
-    "Nous intervenons à Corbeil-Essonnes, où le tissu économique inclut Safran Aircraft Engines et des secteurs comme le commerce de détail et la construction. Axion-IA propose des audits et des interventions. Nous nous déplaçons sur site pour accompagner les entreprises dans l'intégration de l'IA.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corbeil-Essonnes (91, Essonne). Nous accompagnons en priorité les TPE, puis les PME du sud francilien : sous-traitants des semi-conducteurs et de l'aéronautique (écosystèmes Altis/STMicroelectronics et Safran), agroalimentaire de la minoterie, construction, commerces, artisans et cabinets de services. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+  seoHook: "semi-conducteurs & aéronautique",
   ecosystemFr:
-    "Corbeil-Essonnes, avec Safran Aircraft Engines et un secteur actif de la santé humaine, offre un cadre propice à l'innovation. Axion-IA y apporte son expertise nationale pour des solutions IA adaptées.",
+    "Corbeil-Essonnes possède un ADN industriel et deeptech rare en grande couronne : le pôle de semi-conducteurs hérité d'Altis et de STMicroelectronics, la production de moteurs aéronautiques de Snecma-Safran, et les Grands Moulins de Corbeil, fleuron historique de la minoterie française. Autour de ces piliers gravitent sous-traitants industriels, bureaux d'études, agroalimentaire et un secteur construction soutenu, complétés par les commerces et les services de proximité. Ce tissu de TPE et PME conjugue technicité et besoin de modernisation des processus.",
   ecosystemEn:
-    "Corbeil-Essonnes, avec Safran Aircraft Engines et un secteur actif de la santé humaine, offre un cadre propice à l'innovation. Axion-IA y apporte son expertise nationale pour des solutions IA adaptées.",
-  distancesFr: "Corbeil-Essonnes est à 32 km de la Gare de Lyon et à 20 km de l'Aéroport d'Orly.",
-  distancesEn: "Corbeil-Essonnes est à 32 km de la Gare de Lyon et à 20 km de l'Aéroport d'Orly.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Transports terrestres", "Santé humaine"],
+    "Corbeil-Essonnes possède un ADN industriel et deeptech rare en grande couronne : le pôle de semi-conducteurs hérité d'Altis et de STMicroelectronics, la production de moteurs aéronautiques de Snecma-Safran, et les Grands Moulins de Corbeil, fleuron historique de la minoterie française. Autour de ces piliers gravitent sous-traitants industriels, bureaux d'études, agroalimentaire et un secteur construction soutenu, complétés par les commerces et les services de proximité. Ce tissu de TPE et PME conjugue technicité et besoin de modernisation des processus.",
+  distancesFr:
+    "Paris-Gare de Lyon à environ 30 min par le RER D. Aéroport de Paris-Orly à 20 min, gare TGV de Massy à 30 min. Évry-Courcouronnes à 10 min, Melun à 25 min, francilienne et A6 à proximité.",
+  distancesEn:
+    "Paris-Gare de Lyon à environ 30 min par le RER D. Aéroport de Paris-Orly à 20 min, gare TGV de Massy à 30 min. Évry-Courcouronnes à 10 min, Melun à 25 min, francilienne et A6 à proximité.",
+  topSectorsNaf: [
+    "Semi-conducteurs et composants électroniques",
+    "Aéronautique et mécanique de précision",
+    "Agroalimentaire et minoterie",
+    "Construction et BTP",
+    "Commerce de détail et services",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Corbeil-Essonnes pour identifier les opportunités IA chez Safran Aircraft Engines et au-delà.",
-      en: "Réaliser un audit à Corbeil-Essonnes pour identifier les opportunités IA chez Safran Aircraft Engines et au-delà.",
+      fr: "Audit IA à Corbeil-Essonnes : diagnostic adapté aux TPE et PME — sous-traitants semi-conducteurs et aéronautique, agroalimentaire, BTP, commerces et services. Nous ciblons les automatisations à fort ROI.",
+      en: "Audit IA à Corbeil-Essonnes : diagnostic adapté aux TPE et PME — sous-traitants semi-conducteurs et aéronautique, agroalimentaire, BTP, commerces et services. Nous ciblons les automatisations à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Corbeil-Essonnes pour automatiser des tâches dans le commerce de détail et la construction.",
-      en: "Intervenir à Corbeil-Essonnes pour automatiser des tâches dans le commerce de détail et la construction.",
+      fr: "Interventions IA sur site à Corbeil-Essonnes : formats courts pour automatiser devis, planning d'atelier et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
+      en: "Interventions IA sur site à Corbeil-Essonnes : formats courts pour automatiser devis, planning d'atelier et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Corbeil-Essonnes, optimisant les processus des transports terrestres.",
-      en: "Implémenter des solutions IA à Corbeil-Essonnes, optimisant les processus des transports terrestres.",
+      fr: "Implémentation IA à Corbeil-Essonnes : agents conversationnels, automatisation des flux de production et classification documentaire pour l'industrie et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
+      en: "Implémentation IA à Corbeil-Essonnes : agents conversationnels, automatisation des flux de production et classification documentaire pour l'industrie et l'agroalimentaire. Déploiement souverain et conforme RGPD.",
     },
     unAUn: {
-      fr: "Proposer un accompagnement 1-to-1 à Corbeil-Essonnes, ciblant les dirigeants du secteur de la santé humaine.",
-      en: "Proposer un accompagnement 1-to-1 à Corbeil-Essonnes, ciblant les dirigeants du secteur de la santé humaine.",
+      fr: "Coaching un-à-un à Corbeil-Essonnes : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME industrielles, deeptech, BTP et commerçantes corbeil-essonnoises.",
+      en: "Coaching un-à-un à Corbeil-Essonnes : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME industrielles, deeptech, BTP et commerçantes corbeil-essonnoises.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés par l'IA à Corbeil-Essonnes : plateformes et outils sur mesure pour sous-traitants industriels, acteurs deeptech et commerces du sud francilien, avec automatisations et SEO local.",
+      en: "Sites web augmentés par l'IA à Corbeil-Essonnes : plateformes et outils sur mesure pour sous-traitants industriels, acteurs deeptech et commerces du sud francilien, avec automatisations et SEO local.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Corbeil-Essonnes ?",
-      a: "Nos interventions à Corbeil-Essonnes débutent à partir de 590 € HT. Consultez nos tarifs publics sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Corbeil-Essonnes et dans l'Essonne ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Corbeil-Essonnes et des communes voisines : Évry-Courcouronnes, Saint-Germain-lès-Corbeil, Le Coudray-Montceaux, Étampes. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
-      q: "Combien de temps faut-il pour organiser une intervention sur site à Corbeil-Essonnes ?",
-      a: "Nous nous déplaçons à Corbeil-Essonnes généralement sous 5 jours ouvrés après la confirmation de votre demande.",
+      q: "Travaillez-vous avec les sous-traitants industriels et deeptech ?",
+      a: "Oui. Beaucoup de TPE et PME corbeil-essonnoises sont sous-traitantes des semi-conducteurs ou de l'aéronautique (Safran). Nous automatisons leurs devis, leurs flux de production, leur planning d'atelier et leur classification documentaire.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD lors de ses interventions à Corbeil-Essonnes ?",
-      a: "Axion-IA respecte strictement le RGPD en analysant et en sécurisant les données traitées lors de nos interventions à Corbeil-Essonnes.",
+      q: "Accompagnez-vous l'agroalimentaire, le BTP et les commerces ?",
+      a: "Absolument — c'est notre priorité. Traçabilité, devis, plannings et relances : nous adaptons les automatisations aux TPE et PME de l'agroalimentaire, de la construction et du commerce de proximité.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services d'Axion-IA à Corbeil-Essonnes ?",
-      a: "Les secteurs du commerce de détail, de la construction, et des transports terrestres à Corbeil-Essonnes bénéficient particulièrement de nos services IA.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui. Toutes nos implémentations à Corbeil-Essonnes respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ?",
+      a: "Corbeil-Essonnes est à environ 30 min de Paris-Gare de Lyon par le RER D. Nous nous déplaçons sur site ; les frais de déplacement sont facturés à part, selon nos tarifs publics.",
+    },
+    {
+      q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",
+      a: "Oui, via le coaching un-à-un. Nous partons de vos cas réels pour rendre vos équipes autonomes sur l'IA, sans dépendance durable à un prestataire externe.",
     },
   ],
 };

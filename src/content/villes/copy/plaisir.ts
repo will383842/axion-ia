@@ -1,66 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Plaisir (78, Yvelines) — pôle commercial Grand Plaisir, zones d'activités des Gâtines/Clef-Saint-Pierre, sous-traitance Saint-Quentin-en-Yvelines.
 
 import type { VilleCopy } from "./types";
 
 export const PLAISIR_COPY: VilleCopy = {
   pitchFr:
-    "À Plaisir, Axion-IA intervient pour optimiser les processus des entreprises locales, notamment dans les secteurs du commerce de détail et de la programmation informatique.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Plaisir : commerces du pôle Grand Plaisir, artisans des Gâtines, sous-traitants industriels de Saint-Quentin-en-Yvelines. On structure des automatisations concrètes, pas des promesses de plateforme.",
   pitchEn:
-    "À Plaisir, Axion-IA intervient pour optimiser les processus des entreprises locales, notamment dans les secteurs du commerce de détail et de la programmation informatique.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Plaisir : commerces du pôle Grand Plaisir, artisans des Gâtines, sous-traitants industriels de Saint-Quentin-en-Yvelines. On structure des automatisations concrètes, pas des promesses de plateforme.",
   directAnswerFr:
-    "Axion-IA se déplace à Plaisir pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Renault et Thales présents dans la région, notre expertise permet d'automatiser les tâches administratives et de relance, assurant un retour sur investissement rapide et mesurable.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Plaisir, dans les Yvelines, auprès des TPE et PME du tissu local : enseignes du centre commercial Grand Plaisir, artisans et négoces des zones des Gâtines et de la Clef-Saint-Pierre, sous-traitants gravitant autour du bassin de Saint-Quentin-en-Yvelines. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
   directAnswerEn:
-    "Axion-IA se déplace à Plaisir pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Renault et Thales présents dans la région, notre expertise permet d'automatiser les tâches administratives et de relance, assurant un retour sur investissement rapide et mesurable.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Plaisir, dans les Yvelines, auprès des TPE et PME du tissu local : enseignes du centre commercial Grand Plaisir, artisans et négoces des zones des Gâtines et de la Clef-Saint-Pierre, sous-traitants gravitant autour du bassin de Saint-Quentin-en-Yvelines. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives répétitives (devis, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés, sans devis opaque ; les PME en priorité après les TPE, les ETI en complément.",
+  seoHook: "commerce & sous-traitance industrielle",
   ecosystemFr:
-    "Plaisir accueille des entreprises comme Renault et Thales, renforçant son tissu économique. La zone d'activités des Gâtines est un pôle industriel clé.",
+    "Plaisir structure son économie autour du pôle commercial Grand Plaisir, l'un des plus vastes des Yvelines, et de ses zones d'activités des Gâtines et de la Clef-Saint-Pierre. La commune profite de la proximité immédiate de la technopole de Saint-Quentin-en-Yvelines : un tissu dense de TPE de commerce, d'artisans du bâtiment, de garages et de PME de sous-traitance mécanique et électronique. Ce maillage de petites structures, souvent sans service informatique dédié, constitue la cible naturelle d'Axion-IA pour des gains de productivité rapides et mesurables.",
   ecosystemEn:
-    "Plaisir accueille des entreprises comme Renault et Thales, renforçant son tissu économique. La zone d'activités des Gâtines est un pôle industriel clé.",
-  distancesFr: "La gare TGV de Massy est à 40 km et l'aéroport de Paris-Orly à 45 km de Plaisir.",
-  distancesEn: "La gare TGV de Massy est à 40 km et l'aéroport de Paris-Orly à 45 km de Plaisir.",
+    "Plaisir structure son économie autour du pôle commercial Grand Plaisir, l'un des plus vastes des Yvelines, et de ses zones d'activités des Gâtines et de la Clef-Saint-Pierre. La commune profite de la proximité immédiate de la technopole de Saint-Quentin-en-Yvelines : un tissu dense de TPE de commerce, d'artisans du bâtiment, de garages et de PME de sous-traitance mécanique et électronique. Ce maillage de petites structures, souvent sans service informatique dédié, constitue la cible naturelle d'Axion-IA pour des gains de productivité rapides et mesurables.",
+  distancesFr:
+    "Plaisir est desservie par la gare Plaisir-Grignon (ligne N, Transilien vers Paris-Montparnasse en ~35 min) et la gare Plaisir-Les Clayes. L'A12 et la N12 relient directement la commune à Versailles et au pôle de Saint-Quentin-en-Yvelines, à une dizaine de kilomètres. L'aéroport de Paris-Orly se trouve à environ 40 km par l'A86, celui de Roissy-Charles-de-Gaulle à environ 55 km. Cette accessibilité routière facilite nos déplacements sur site, partout dans l'ouest francilien.",
+  distancesEn:
+    "Plaisir est desservie par la gare Plaisir-Grignon (ligne N, Transilien vers Paris-Montparnasse en ~35 min) et la gare Plaisir-Les Clayes. L'A12 et la N12 relient directement la commune à Versailles et au pôle de Saint-Quentin-en-Yvelines, à une dizaine de kilomètres. L'aéroport de Paris-Orly se trouve à environ 40 km par l'A86, celui de Roissy-Charles-de-Gaulle à environ 55 km. Cette accessibilité routière facilite nos déplacements sur site, partout dans l'ouest francilien.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Produits métalliques",
-    "Commerce automobile",
+    "Commerce de détail (pôle Grand Plaisir)",
+    "Construction et travaux du bâtiment",
+    "Sous-traitance mécanique et travail des métaux",
+    "Commerce et réparation automobile",
+    "Logistique et entreposage",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Plaisir, incluant des entreprises comme Renault, pour identifier les opportunités d'automatisation.",
-      en: "Réaliser un audit à Plaisir, incluant des entreprises comme Renault, pour identifier les opportunités d'automatisation.",
+      fr: "À Plaisir, l'audit IA cartographie les processus chronophages d'une TPE de commerce du pôle Grand Plaisir ou d'un sous-traitant des Gâtines, puis priorise 3 à 5 chantiers d'automatisation à fort ROI.",
+      en: "À Plaisir, l'audit IA cartographie les processus chronophages d'une TPE de commerce du pôle Grand Plaisir ou d'un sous-traitant des Gâtines, puis priorise 3 à 5 chantiers d'automatisation à fort ROI.",
     },
     interventions: {
-      fr: "Intervenir à Plaisir pour optimiser les processus métiers dans des secteurs tels que le commerce de détail.",
-      en: "Intervenir à Plaisir pour optimiser les processus métiers dans des secteurs tels que le commerce de détail.",
+      fr: "Nos interventions à Plaisir automatisent le quotidien des artisans et PME locales : génération de devis, relances clients, suivi de chantier, ressaisie comptable — directement sur vos outils existants.",
+      en: "Nos interventions à Plaisir automatisent le quotidien des artisans et PME locales : génération de devis, relances clients, suivi de chantier, ressaisie comptable — directement sur vos outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Plaisir, en tenant compte des spécificités des entreprises locales.",
-      en: "Implémenter des solutions IA à Plaisir, en tenant compte des spécificités des entreprises locales.",
+      fr: "L'implémentation déploie à Plaisir des assistants IA et workflows sur mesure pour les commerces et sous-traitants industriels, avec formation des équipes et conformité RGPD intégrée dès la conception.",
+      en: "L'implémentation déploie à Plaisir des assistants IA et workflows sur mesure pour les commerces et sous-traitants industriels, avec formation des équipes et conformité RGPD intégrée dès la conception.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants à Plaisir pour une intégration efficace de l'IA dans leur structure.",
-      en: "Accompagner en 1-to-1 les dirigeants à Plaisir pour une intégration efficace de l'IA dans leur structure.",
+      fr: "L'accompagnement un-à-un à Plaisir forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : prompts métier, choix d'outils, cadrage des cas d'usage, gouvernance des données.",
+      en: "L'accompagnement un-à-un à Plaisir forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : prompts métier, choix d'outils, cadrage des cas d'usage, gouvernance des données.",
+    },
+    sitesWeb: {
+      fr: "Nos sites web augmentés dotent les commerces et PME de Plaisir d'une plateforme rapide intégrant chatbot, prise de rendez-vous et génération de contenu IA, optimisée pour la recherche locale.",
+      en: "Nos sites web augmentés dotent les commerces et PME de Plaisir d'une plateforme rapide intégrant chatbot, prise de rendez-vous et génération de contenu IA, optimisée pour la recherche locale.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Plaisir ?",
-      a: "Les tarifs pour une intervention à Plaisir commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA se déplace-t-il vraiment sur site à Plaisir ?",
+      a: "Oui. Nos architectes IA viennent dans vos locaux à Plaisir, qu'il s'agisse d'un commerce du pôle Grand Plaisir, d'un atelier des Gâtines ou d'une PME de la Clef-Saint-Pierre. L'audit terrain reste le meilleur moyen de cibler les automatisations utiles.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Plaisir ?",
-      a: "Notre équipe se déplace directement sur site à Plaisir, garantissant une intervention rapide et efficace.",
+      q: "Quels types d'entreprises accompagnez-vous à Plaisir ?",
+      a: "En priorité les TPE puis les PME yvelinoises : commerces, artisans du bâtiment, garages, sous-traitants mécaniques et négoces. Les ETI sont accompagnées en complément. Nous adaptons chaque mission à la taille et aux outils déjà en place dans la structure.",
     },
     {
-      q: "Quel est le délai pour une implémentation à Plaisir ?",
-      a: "Nous nous engageons à intervenir dans les 5 jours ouvrés suivant la demande à Plaisir, selon la disponibilité.",
+      q: "Combien de temps avant une première intervention à Plaisir ?",
+      a: "Nous nous engageons généralement à démarrer sous cinq jours ouvrés après validation, selon nos disponibilités. La proximité de Plaisir avec l'axe A12 nous permet d'être réactifs sur tout l'ouest des Yvelines.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Plaisir ?",
-      a: "Nous assurons la conformité RGPD en intégrant des mesures de protection des données dès la phase d'audit et tout au long de notre intervention.",
+      q: "Comment garantissez-vous la conformité RGPD à Plaisir ?",
+      a: "La conformité RGPD est intégrée dès la phase d'audit : cartographie des données traitées, hébergement maîtrisé, minimisation et traçabilité. Chaque automatisation déployée à Plaisir respecte le cadre européen et l'AI Act.",
+    },
+    {
+      q: "Faut-il déjà maîtriser l'IA pour travailler avec vous à Plaisir ?",
+      a: "Non. La plupart des TPE et PME de Plaisir partent de zéro. Notre rôle d'architectes IA seniors est précisément de cadrer, vulgariser et déployer, puis de former vos équipes pour qu'elles deviennent autonomes.",
     },
   ],
 };

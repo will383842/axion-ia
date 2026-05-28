@@ -1,69 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 (qs moyen → premium).
+// Clichy (92, Hauts-de-Seine) — siège mondial L'Oréal, tertiaire et sièges sociaux, reconversion industrielle en proche couronne.
 
 import type { VilleCopy } from "./types";
 
 export const CLICHY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Clichy, au cœur d'un écosystème comprenant L'Oréal et BIC, pour optimiser vos processus grâce à l'IA.",
+    "Clichy (92), commune dense de la proche couronne nord-ouest de Paris, accueille le siège mondial historique de L'Oréal et concentre sièges sociaux, agences et activités tertiaires. Ancienne ville industrielle en pleine reconversion, son tissu mêle PME de services, agences créatives, TPE et commerces. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME clichoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   pitchEn:
-    "Axion-IA intervient à Clichy, au cœur d'un écosystème comprenant L'Oréal et BIC, pour optimiser vos processus grâce à l'IA.",
+    "Clichy (92), commune dense de la proche couronne nord-ouest de Paris, accueille le siège mondial historique de L'Oréal et concentre sièges sociaux, agences et activités tertiaires. Ancienne ville industrielle en pleine reconversion, son tissu mêle PME de services, agences créatives, TPE et commerces. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité les TPE puis les PME clichoises pour automatiser leurs processus et déployer une IA sobre et souveraine.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Clichy, où l'on trouve des entreprises telles que L'Oréal et BIC. Notre approche inclut des audits pour identifier les opportunités d'automatisation. Nous offrons également des implémentations 990 garantir une intégration fluide de l'IA dans vos processus existants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clichy (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME de la proche couronne nord-ouest : agences de communication et de marketing, PME tertiaires et de conseil, studios créatifs, prestataires de services, artisans et commerces. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Clichy, où l'on trouve des entreprises telles que L'Oréal et BIC. Notre approche inclut des audits pour identifier les opportunités d'automatisation. Nous offrons également des implémentations 990 garantir une intégration fluide de l'IA dans vos processus existants.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clichy (92, Hauts-de-Seine). Nous accompagnons en priorité les TPE, puis les PME de la proche couronne nord-ouest : agences de communication et de marketing, PME tertiaires et de conseil, studios créatifs, prestataires de services, artisans et commerces. Audit, interventions sur site, implémentation et coaching un-à-un — avec des automatisations concrètes, conformes RGPD, et un transfert d'autonomie à vos équipes. Les ETI restent un complément marginal de notre activité.",
+  seoHook: "sièges, agences & tertiaire",
   ecosystemFr:
-    "Clichy accueille des entreprises comme L'Oréal et BIC, reflétant son dynamisme économique. Le secteur de la programmation informatique y est particulièrement présent.",
+    "Clichy a transformé son passé industriel en un pôle tertiaire dynamique : le siège mondial de L'Oréal y côtoie de nombreux sièges sociaux, agences de publicité et de communication, studios créatifs et sociétés de services numériques. Cette concentration attire un dense réseau de PME de conseil et de marketing, de TPE indépendantes et de prestataires, complété par un commerce de proximité vivace. La proximité immédiate de Paris et de La Défense fait de Clichy un bassin tertiaire très attractif.",
   ecosystemEn:
-    "Clichy accueille des entreprises comme L'Oréal et BIC, reflétant son dynamisme économique. Le secteur de la programmation informatique y est particulièrement présent.",
+    "Clichy a transformé son passé industriel en un pôle tertiaire dynamique : le siège mondial de L'Oréal y côtoie de nombreux sièges sociaux, agences de publicité et de communication, studios créatifs et sociétés de services numériques. Cette concentration attire un dense réseau de PME de conseil et de marketing, de TPE indépendantes et de prestataires, complété par un commerce de proximité vivace. La proximité immédiate de Paris et de La Défense fait de Clichy un bassin tertiaire très attractif.",
   distancesFr:
-    "Clichy est à 5 km de la Gare de Paris-Saint-Lazare et à 25 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Paris-Saint-Lazare à environ 10 min par le Transilien, métro ligne 13 à Mairie de Clichy. La Défense à 15 min, Paris centre à 15 min, aéroport Paris-Charles-de-Gaulle à 30 min. Levallois et Asnières à proximité immédiate.",
   distancesEn:
-    "Clichy est à 5 km de la Gare de Paris-Saint-Lazare et à 25 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Paris-Saint-Lazare à environ 10 min par le Transilien, métro ligne 13 à Mairie de Clichy. La Défense à 15 min, Paris centre à 15 min, aéroport Paris-Charles-de-Gaulle à 30 min. Levallois et Asnières à proximité immédiate.",
   topSectorsNaf: [
-    "Commerce de détail",
+    "Sièges sociaux et holdings",
+    "Publicité et communication",
+    "Conseil et services aux entreprises",
     "Programmation informatique",
-    "Sièges sociaux",
-    "Publicité",
-    "Études de marché",
+    "Commerce de détail et artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Clichy avec Axion-IA permet d'identifier des gains d'efficacité pour votre entreprise.",
-      en: "Réaliser un audit à Clichy avec Axion-IA permet d'identifier des gains d'efficacité pour votre entreprise.",
+      fr: "Audit IA à Clichy : diagnostic adapté aux TPE et PME — agences de communication, cabinets de conseil, studios créatifs et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
+      en: "Audit IA à Clichy : diagnostic adapté aux TPE et PME — agences de communication, cabinets de conseil, studios créatifs et commerces. Nous ciblons les automatisations à fort ROI, sans jargon.",
     },
     interventions: {
-      fr: "Intervenir à Clichy pour automatiser les tâches administratives et libérer du temps pour vos équipes.",
-      en: "Intervenir à Clichy pour automatiser les tâches administratives et libérer du temps pour vos équipes.",
+      fr: "Interventions IA sur site à Clichy : formats courts pour automatiser production de contenu, devis, relances et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
+      en: "Interventions IA sur site à Clichy : formats courts pour automatiser production de contenu, devis, relances et tâches administratives. Vos collaborateurs reprennent la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Clichy pour améliorer la gestion des processus internes.",
-      en: "Implémenter des solutions IA à Clichy pour améliorer la gestion des processus internes.",
+      fr: "Implémentation IA à Clichy : agents conversationnels, automatisation de la production créative et marketing, classification documentaire pour les agences et le tertiaire. Déploiement conforme RGPD.",
+      en: "Implémentation IA à Clichy : agents conversationnels, automatisation de la production créative et marketing, classification documentaire pour les agences et le tertiaire. Déploiement conforme RGPD.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Clichy avec des sessions 1-to-1 pour une adoption réussie de l'IA.",
-      en: "Accompagner les dirigeants de Clichy avec des sessions 1-to-1 pour une adoption réussie de l'IA.",
+      fr: "Coaching un-à-un à Clichy : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME d'agences, de conseil et de commerce clichoises.",
+      en: "Coaching un-à-un à Clichy : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME d'agences, de conseil et de commerce clichoises.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés par l'IA à Clichy : plateformes et outils sur mesure pour agences créatives, cabinets de conseil et commerces de la proche couronne, avec automatisations et SEO local.",
+      en: "Sites web augmentés par l'IA à Clichy : plateformes et outils sur mesure pour agences créatives, cabinets de conseil et commerces de la proche couronne, avec automatisations et SEO local.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Clichy ?",
-      a: "Les interventions à Clichy débutent à partir de 590 € HT. Vous pouvez consulter nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Clichy et dans les Hauts-de-Seine ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Clichy et des communes voisines : Levallois-Perret, Asnières-sur-Seine, Saint-Ouen, Paris 17e. Nous nous déplaçons sur site et travaillons aussi en visio.",
     },
     {
-      q: "Comment se déroule un audit IA à Clichy ?",
-      a: "Nos audits à Clichy commencent avec un Audit Flash de 4 heures à partir de 490 € HT, pour identifier rapidement les opportunités d'optimisation.",
+      q: "Travaillez-vous avec les agences de communication et le tertiaire ?",
+      a: "Oui. Clichy concentre sièges, agences et studios créatifs. Nous automatisons la production de contenu, le reporting, la relation client et la gestion documentaire des PME de communication et de conseil.",
     },
     {
-      q: "Axion-IA intervient-elle rapidement sur Clichy ?",
-      a: "Oui, nous nous déplaçons sur Clichy dans un délai de 5 jours ouvrés pour répondre à vos besoins en IA.",
+      q: "Accompagnez-vous les TPE de services et les commerces ?",
+      a: "Absolument — c'est notre priorité. Devis, relances, relation client et planning : nous adaptons les automatisations aux petites équipes de services et aux commerces de proximité clichois.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Clichy ?",
-      a: "Nous intégrons les exigences RGPD dans toutes nos interventions à Clichy, garantissant la protection des données personnelles.",
+      q: "Vos solutions IA sont-elles conformes au RGPD ?",
+      a: "Oui. Toutes nos implémentations à Clichy respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ou La Défense ?",
+      a: "Clichy est à environ 15 min de Paris centre et de La Défense, et à 10 min de Paris-Saint-Lazare. Nous nous déplaçons sur site ; les frais de déplacement, réduits en proche couronne, sont facturés à part selon nos tarifs publics.",
+    },
+    {
+      q: "Proposez-vous un accompagnement individuel pour les dirigeants ?",
+      a: "Oui, via le coaching un-à-un. Nous partons de vos cas réels pour rendre vos équipes autonomes sur l'IA, sans dépendance durable à un prestataire externe.",
     },
   ],
 };
