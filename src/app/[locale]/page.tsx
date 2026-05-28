@@ -607,8 +607,8 @@ export default async function Home({ params }: HomeProps) {
                     filenameTarget="public/illustrations/home-founder-william.avif"
                     caption={
                       isFr
-                        ? "William J. — Fondateur & CEO Axion-IA"
-                        : "William J. — Founder & CEO Axion-IA"
+                        ? "William — Fondateur & CEO Axion-IA"
+                        : "William — Founder & CEO Axion-IA"
                     }
                     alt={t("founderPhotoAlt")}
                   />

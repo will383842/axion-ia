@@ -244,8 +244,8 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       slug: "un-a-un",
       labelFr: "Accompagnement 1-to-1",
       labelEn: "1-to-1 coaching",
-      descFr: `Journée 1-to-1 avec William J. à ${v} — cartographie IA de vos processus et 3 chantiers chiffrés, sans engagement. Dirigeants TPE, PME, ETI.`,
-      descEn: `1-on-1 day with William J. in ${v} — AI mapping of your processes and 3 costed projects, no commitment. Leaders of SMBs and mid-market.`,
+      descFr: `Journée 1-to-1 avec William à ${v} — cartographie IA de vos processus et 3 chantiers chiffrés, sans engagement. Dirigeants TPE, PME, ETI.`,
+      descEn: `1-on-1 day with William in ${v} — AI mapping of your processes and 3 costed projects, no commitment. Leaders of SMBs and mid-market.`,
       mainServiceHref: "/un-a-un",
     },
     {
@@ -722,7 +722,7 @@ export default async function VilleHubPage({ params }: Props) {
             pour capter l'attention immédiate post-services. ── */}
       <OrangeContactBanner isFr={isFr} villeSlug={ville.slug} />
 
-      {/* ── Section fondateur William J. — DÉPLACÉE juste après le bandeau
+      {/* ── Section fondateur William — DÉPLACÉE juste après le bandeau
             orange (Will 2026-05-26). « On ne promet pas l'excellence. On la livre. »
             arrive en renforcement immédiat de l'engagement contact. ── */}
       <FounderTrustSection isFr={isFr} />

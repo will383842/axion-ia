@@ -206,11 +206,11 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         contentUrl: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
         url: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
         name: isFr
-          ? "William J. — Fondateur Axion-IA et formateur IA"
-          : "William J. — Axion-IA founder and AI trainer",
+          ? "William — Fondateur Axion-IA et formateur IA"
+          : "William — Axion-IA founder and AI trainer",
         description: isFr
-          ? "Portrait de William J., fondateur d'Axion-IA et formateur IA dédié. Intervient souvent en personne ou avec un formateur de son équipe — forme les équipes TPE, PME, ETI et grandes entreprises partout en France métropolitaine."
-          : "Portrait of William J., Axion-IA founder and dedicated AI trainer. Often delivers in person or with a trainer from his team — trains French SME, mid-cap and large enterprise teams across metropolitan France.",
+          ? "Portrait de William, fondateur d'Axion-IA et formateur IA dédié. Intervient souvent en personne ou avec un formateur de son équipe — forme les équipes TPE, PME, ETI et grandes entreprises partout en France métropolitaine."
+          : "Portrait of William, Axion-IA founder and dedicated AI trainer. Often delivers in person or with a trainer from his team — trains French SME, mid-cap and large enterprise teams across metropolitan France.",
         width: 800,
         height: 1000,
         encodingFormat: "image/png",
@@ -997,7 +997,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                   />
                 </figure>
                 <div className="mt-4 text-center">
-                  <p className="text-fg text-lg font-semibold">William J.</p>
+                  <p className="text-fg text-lg font-semibold">William</p>
                   <p className="text-fg-muted text-sm">
                     {isFr
                       ? "Fondateur & formateur IA · Axion-IA"
