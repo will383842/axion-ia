@@ -25,15 +25,23 @@ export const CLAPIERS_COPY: VilleCopy = {
   servicesContext: {
     audit: {
       fr: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), TPE de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit Flash 490 € HT, ROI chiffré, livrable sous 5 jours ouvrés.",
+      en: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), TPE de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit Flash 490 € HT, ROI chiffré, livrable sous 5 jours ouvrés.",
+
     },
     interventions: {
       fr: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement depuis Montpellier en 12 min via tramway ligne 5 ou RD 65.",
+      en: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement depuis Montpellier en 12 min via tramway ligne 5 ou RD 65.",
+
     },
     implementation: {
       fr: "Implémentation IA à Clapiers : automatisation prise de RDV cabinets libéraux, chatbot client PME services, classification dossiers santé, optimisation supervision R&D pour acteurs scientifiques locaux. Code custom, pas de no-code.",
+      en: "Implémentation IA à Clapiers : automatisation prise de RDV cabinets libéraux, chatbot client PME services, classification dossiers santé, optimisation supervision R&D pour acteurs scientifiques locaux. Code custom, pas de no-code.",
+
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Clapiers : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants de commerces. Accompagnement adapté au tissu résidentiel et scientifique de Montpellier Méditerranée Métropole.",
+      en: "Coaching 1-to-1 à Clapiers : sessions sur site ou en visio pour professions libérales, dirigeants TPE/PME, artisans et gérants de commerces. Accompagnement adapté au tissu résidentiel et scientifique de Montpellier Méditerranée Métropole.",
+
     },
   },
   faqGeolocalisee: [
