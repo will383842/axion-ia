@@ -704,6 +704,44 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         </Container>
       </Section>
 
+      {/* BANDEAU TERRACOTTA — conversion forte entre la formation récurrente
+          et la section process. Sémantique SEO dense : formation IA en
+          entreprise, formateur IA expert, intervention sur site, montée en
+          compétence, équipes, vrais outils métier, gain de temps. */}
+      <CtaBlock
+        tone="terracotta"
+        eyebrow={isFr ? "Formation IA en entreprise" : "Corporate AI training"}
+        title={isFr ? "Faites monter en compétence" : "Upskill"}
+        titleEm={isFr ? "vos équipes à l'IA" : "your teams in AI"}
+        description={
+          isFr
+            ? "Un formateur IA expert intervient sur votre site. Vos équipes apprennent sur leurs vrais outils métier et gagnent des heures dès la 1ʳᵉ intervention de formation. Réservez un appel pour cadrer votre journée."
+            : "An expert AI trainer comes on site. Your teams learn on their real business tools and save hours from the very first training session. Book a call to scope your day."
+        }
+        cta={
+          <>
+            <Cta
+              href="/appel"
+              size="lg"
+              className="bg-paper text-terracotta hover:bg-paper shadow-card border-paper hover:border-paper-soft border-2"
+              track="collectives-terracotta-band-call"
+            >
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Cta>
+            <Cta
+              href="/contact"
+              variant="outline"
+              size="lg"
+              className="text-paper border-paper hover:bg-paper/15 border-2"
+              track="collectives-terracotta-band-contact"
+            >
+              {isFr ? "Nous écrire" : "Email us"}
+            </Cta>
+          </>
+        }
+      />
+
       {/* COMMENT ÇA FONCTIONNE — 3 étapes simplifiées (Sprint 2026-05-28 Will).
           1) 3 façons de réserver, 2) on prépare adapté à votre entreprise,
           3) cadrage téléphone + intervention le jour J. */}

@@ -13,9 +13,10 @@ interface CtaBlockProps {
   cta: React.ReactNode;
   /**
    * `mocha` (default) = brun-aubergine riche. `paper` = blanc. `sand` = ivoire chaud.
+   * `terracotta` = bandeau chaud signature (CTA marketing forts).
    * `dark` is kept as an alias of `mocha` for backward compat with v1/v2 callers.
    */
-  tone?: "mocha" | "paper" | "sand" | "dark" | "light";
+  tone?: "mocha" | "paper" | "sand" | "dark" | "light" | "terracotta";
   className?: string;
 }
 
@@ -25,6 +26,7 @@ const toneClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
   paper: "bg-paper text-fg",
   light: "bg-paper text-fg",
   sand: "bg-sand text-fg",
+  terracotta: "bg-terracotta text-mocha-fg",
 };
 
 const eyebrowClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
@@ -33,6 +35,7 @@ const eyebrowClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
   paper: "text-fg-muted",
   light: "text-fg-muted",
   sand: "text-fg-muted",
+  terracotta: "text-mocha-fg/75",
 };
 
 const descriptionClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
@@ -41,6 +44,7 @@ const descriptionClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
   paper: "text-fg-soft",
   light: "text-fg-soft",
   sand: "text-fg-soft",
+  terracotta: "text-mocha-fg/90",
 };
 
 const titleClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
@@ -49,6 +53,7 @@ const titleClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
   paper: "text-fg",
   light: "text-fg",
   sand: "text-fg",
+  terracotta: "text-mocha-fg",
 };
 
 const emClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
@@ -57,6 +62,7 @@ const emClasses: Record<NonNullable<CtaBlockProps["tone"]>, string> = {
   paper: "text-terracotta",
   light: "text-terracotta",
   sand: "text-terracotta",
+  terracotta: "text-paper",
 };
 
 // Editorial v3 — full-width conversion block, default tone = mocha-rich
