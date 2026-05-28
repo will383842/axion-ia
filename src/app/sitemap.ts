@@ -13,7 +13,7 @@ import {
 import { getAllComparisonSlugs } from "@/content/comparaisons";
 import { AUTOMATISATION_SLUGS_FR, AUTOMATISATION_SLUGS_EN } from "@/content/automatisations";
 import { getIndexableRegions } from "@/content/regions";
-import { getIndexableVilles } from "@/content/villes";
+import { VILLES, getIndexableVilles, isVilleIndexable } from "@/content/villes";
 import {
   getIndexableBlogPosts,
   getAllBlogSectorSlugs,
@@ -68,6 +68,14 @@ import { PRESS_RELEASES } from "@/content/press";
  * Search Console lisible et le crawl budget bien alloué.
  */
 const SITEMAP_CHUNK_SIZE = 1000;
+
+// Drip indexation (Will 2026-05-28) — le sitemap se régénère toutes les 24h
+// (ISR). La cohorte indexable (`getIndexableVilles` / `isVilleIndexable`) est
+// calculée depuis la date runtime, donc à chaque revalidation le sitemap inclut
+// automatiquement les nouvelles villes débloquées (+50/jour) SANS nouveau deploy.
+// Couplé à l'ISR 24h des pages villes (qui recalcule `robots index|noindex`),
+// l'élargissement de l'indexation est 100 % automatique.
+export const revalidate = 86400;
 
 type StaticSitemapId =
   | "pages"
@@ -229,11 +237,16 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
 // puis disparaisse sans raison.
 function getVillesSitemapIds(): string[] {
   const ids: string[] = [];
-  const indexable = getIndexableVilles();
+  // Structure de chunks STABLE : basée sur TOUTES les villes avec copy (pas la
+  // cohorte du jour). Ainsi les IDs de sub-sitemaps ne changent jamais quand la
+  // cohorte drip s'élargit (Google n'aime pas qu'un sub-sitemap apparaisse puis
+  // disparaisse). Seul le CONTENU de chaque chunk grandit dans le temps (cf.
+  // buildVillesByRegionSitemap qui filtre sur isVilleIndexable).
+  const withCopy = VILLES.filter((v) => !!v.copy);
   const regions = [...getIndexableRegions()].sort((a, b) => a.slug.localeCompare(b.slug));
 
   for (const region of regions) {
-    const villesInRegion = indexable.filter((v) => v.region === region.slug);
+    const villesInRegion = withCopy.filter((v) => v.region === region.slug);
     if (villesInRegion.length === 0) continue;
 
     // 2 locales (FR + EN) par ville → multiplie le compte d'URLs par 2
@@ -930,8 +943,13 @@ function buildVillesByRegionSitemap(
   chunkIdx: number,
   now: Date,
 ): MetadataRoute.Sitemap {
-  const villesInRegion = [...getIndexableVilles()]
-    .filter((v) => v.region === regionSlug)
+  // Drip indexation (Will 2026-05-28) : on part de TOUTES les villes de la région
+  // avec copy (structure stable, tri slug), mais on n'émet l'URL que si la ville
+  // est dans la cohorte indexable du jour (`isVilleIndexable`). Les villes pas
+  // encore dans la cohorte sont absentes du sitemap ET `noindex` côté page → elles
+  // basculeront automatiquement quand la cohorte les atteindra (+50/jour).
+  const villesInRegion = [...VILLES]
+    .filter((v) => v.region === regionSlug && !!v.copy && isVilleIndexable(v.slug, now))
     .sort((a, b) => a.slug.localeCompare(b.slug));
 
   // Build all URL pairs (FR + EN) for the region, paire par paire pour qu'un
@@ -995,6 +1013,8 @@ function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): Metad
     const hasCopy =
       service === "un-a-un" ? !!ville.copy?.services?.unAUn : !!ville.copy?.services?.[service];
     if (!hasCopy) continue;
+    // Drip indexation — n'émettre que si la ville est dans la cohorte du jour.
+    if (!isVilleIndexable(ville.slug, now)) continue;
     const frUrl = `${SITE_URL}/fr${pathFr}/${ville.slug}`;
     const enUrl = `${SITE_URL}/en${pathEn}/${ville.slug}`;
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };

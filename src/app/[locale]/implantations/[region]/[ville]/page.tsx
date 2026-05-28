@@ -46,7 +46,7 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { fmtPopulation } from "@/lib/intl";
 
 import { getRegion } from "@/content/regions";
-import { VILLES, type Ville } from "@/content/villes";
+import { VILLES, type Ville, isVilleIndexable } from "@/content/villes";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 import {
   AUDIT_TIERS,
@@ -187,8 +187,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       en: `/locations/${region.slug}/${ville.slug}`,
     },
   });
-  // Anti-doorway HCU 2024 — pages sans copy éditorial sortent en `noindex`.
-  if (!isPilot) {
+  // Phasing indexation (Will 2026-05-28) — drip automatique anti scaled-content.
+  // Une ville n'est `index:true` que si elle est dans la cohorte indexable du
+  // jour (premium d'abord, puis +50/jour). Les villes pas encore dans la cohorte
+  // OU sans copy éditorial sortent en `noindex, follow` (page accessible aux
+  // humains + liens suivis, mais hors index Google + hors sitemap). La cohorte
+  // s'élargissant chaque jour (ISR 24h recalcule), elles basculeront en index:true
+  // automatiquement à leur tour. Cohérent avec `getIndexableVilles()` côté sitemap.
+  if (!isPilot || !isVilleIndexable(ville.slug)) {
     return { ...meta, robots: { index: false, follow: true } };
   }
   return meta;

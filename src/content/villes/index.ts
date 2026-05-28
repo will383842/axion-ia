@@ -13,6 +13,7 @@ import type { VilleData } from "./data/types";
 import type { VilleCopy } from "./copy/types";
 import type { VilleEconomicData } from "./economic-data/types";
 import { getVilleEconomicData } from "./economic-data";
+import { PREMIUM_REWRITE_SLUGS } from "./premium-rewrite-slugs";
 import { REGIONS, type Region } from "@/content/regions";
 
 import { VILLES_ILE_DE_FRANCE } from "./data/ile-de-france";
@@ -183,12 +184,84 @@ export function getVillesByRegion(regionSlug: string): ReadonlyArray<Ville> {
   return VILLES.filter((v) => v.region === regionSlug);
 }
 
+// ─── Phasing indexation — drip automatique anti « scaled content abuse » ─────
+// Décision Will 2026-05-28 : toutes les villes finissent indexées, mais
+// PROGRESSIVEMENT et AUTOMATIQUEMENT, pour ne pas exposer 2157 pages d'un coup
+// à Google sur un domaine jeune (risque scaled-content / indexation partielle /
+// jugement qualité site-wide). La cohorte indexable est calculée depuis la DATE
+// runtime :
+//   - Jour 0 (INDEXATION_START) : toutes les villes premium (pop ≥ 20k OU
+//     rewrite premium MANUAL-REWRITE) = cohorte initiale ~655.
+//   - +VILLES_PER_DAY villes/jour ensuite, par population décroissante.
+//   → couverture 100 % des 2157 villes en ~30 jours, SANS intervention manuelle.
+// Le sitemap (revalidate quotidien) + les pages villes (ISR 24 h) recalculent
+// l'éligibilité chaque jour → la cohorte s'élargit toute seule. Pour accélérer/
+// ralentir le ramp, ajuster VILLES_PER_DAY (1 commit). Pour tout indexer
+// immédiatement, mettre INDEXATION_START loin dans le passé.
+const INDEXATION_START = new Date("2026-05-28T00:00:00Z");
+const VILLES_PER_DAY = 50;
+
+/** Ville premium = a un copy ET (pop ≥ 20k OU rewrite premium MANUAL-REWRITE). */
+export function isPremiumVille(v: Ville): boolean {
+  return !!v.copy && (v.population >= 20_000 || PREMIUM_REWRITE_SLUGS.has(v.slug));
+}
+
+// Villes avec copy, triées par priorité d'indexation : premium d'abord (par
+// population décroissante), puis le reste (par population décroissante). Ordre
+// déterministe et stable entre builds (tri par pop puis slug en tie-break).
+const RANKED_INDEXABLE: ReadonlyArray<Ville> = VILLES.filter((v) => !!v.copy).sort((a, b) => {
+  const pa = isPremiumVille(a);
+  const pb = isPremiumVille(b);
+  if (pa !== pb) return pa ? -1 : 1;
+  if (b.population !== a.population) return b.population - a.population;
+  return a.slug.localeCompare(b.slug);
+});
+
+const PREMIUM_COUNT = RANKED_INDEXABLE.filter(isPremiumVille).length;
+const INDEXABLE_RANK = new Map(RANKED_INDEXABLE.map((v, i) => [v.slug, i] as const));
+
+/** Taille de la cohorte indexable à la date `now` (premium + ramp quotidien). */
+export function cohortSize(now: Date = new Date()): number {
+  const days = Math.max(
+    0,
+    Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000),
+  );
+  return Math.min(RANKED_INDEXABLE.length, PREMIUM_COUNT + days * VILLES_PER_DAY);
+}
+
 /**
- * Pages villes éligibles à indexation Google. Filtre les villes qui ont un
- * `copy` éditorial — pas d'indexation des stubs structurels (anti-doorway HCU).
+ * True si la ville (par slug) est dans la cohorte indexable à la date `now`.
+ * Utilisé par la page hub ville pour décider `robots: index|noindex` et par le
+ * sitemap pour inclure/exclure l'URL — les deux DOIVENT rester cohérents.
+ */
+export function isVilleIndexable(slug: string, now: Date = new Date()): boolean {
+  const rank = INDEXABLE_RANK.get(slug);
+  if (rank === undefined) return false;
+  return rank < cohortSize(now);
+}
+
+/**
+ * Pages villes ÉLIGIBLES à indexation (= ont un `copy` éditorial substantiel,
+ * pas un stub anti-doorway HCU). Sémantique « destinées à être indexées à
+ * terme » — utilisée par le sitemap (structure de chunks), la whitelist Edge
+ * `seo-noindex-routes.ts` (X-Robots-Tag) et son test de sync.
+ *
+ * ⚠️ Ne PAS confondre avec le drip temporel : une ville éligible n'est
+ * réellement `index:true` aujourd'hui que si `isVilleIndexable(slug)` est vrai
+ * (cohorte du jour). Le sitemap filtre le CONTENU via `isVilleIndexable`, mais
+ * la liste des sub-sitemaps reste basée sur l'ensemble éligible (structure stable).
  */
 export function getIndexableVilles(): ReadonlyArray<Ville> {
   return VILLES.filter((v) => !!v.copy);
+}
+
+/**
+ * Villes réellement dans la cohorte indexable À LA DATE `now` (drip progressif :
+ * premium jour 0, puis +VILLES_PER_DAY/jour). Sous-ensemble de
+ * `getIndexableVilles()`. Cf. [[isVilleIndexable]].
+ */
+export function getVillesIndexableNow(now: Date = new Date()): ReadonlyArray<Ville> {
+  return RANKED_INDEXABLE.slice(0, cohortSize(now));
 }
 
 /**

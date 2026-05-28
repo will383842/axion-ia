@@ -40,11 +40,15 @@ describe("seo-noindex-routes — sync vs content datas", () => {
 });
 
 describe("isNoindexStubRoute — logique", () => {
-  it("retourne true pour ville stub sans copy", () => {
-    // lestrem = commune T4 (<20k hab) volontairement non traitée par le batch T3 LLM
-    // 2026-05-27 — reste en stub noindex (anti-doorway HCU 2024).
-    expect(isNoindexStubRoute("/fr/implantations/hauts-de-france/lestrem")).toBe(true);
-    expect(isNoindexStubRoute("/en/locations/hauts-de-france/lestrem")).toBe(true);
+  it("hub ville : plus de stub Edge depuis le sprint T4 (toutes les villes ont copy)", () => {
+    // Depuis le sprint T4 (2026-05-27), les 2157 villes ont toutes un `copy`
+    // → aucun hub ville n'est plus un stub Edge (whitelist = toutes les villes).
+    // Le noindex des villes pas encore dans la cohorte (drip indexation
+    // Will 2026-05-28, +50/jour) est désormais porté par le `<meta robots
+    // noindex,follow>` de la page (generateMetadata + isVilleIndexable), PAS par
+    // le X-Robots-Tag Edge (qui resterait sur la sémantique "stub = sans copy").
+    expect(isNoindexStubRoute("/fr/implantations/hauts-de-france/lestrem")).toBe(false);
+    expect(isNoindexStubRoute("/en/locations/hauts-de-france/lestrem")).toBe(false);
   });
 
   it("retourne false pour ville pilote (Paris)", () => {

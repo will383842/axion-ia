@@ -137,8 +137,14 @@ async function collectIndexableCityUrls(
   effectiveLocales: ReadonlyArray<"fr" | "en">,
 ): Promise<string[]> {
   try {
-    const { getIndexableVilles } = await import("../src/content/villes");
-    const villes = getIndexableVilles();
+    // Drip indexation (Will 2026-05-28) — on ne signale à IndexNow (Bing/Yandex)
+    // QUE la cohorte indexable du jour (`getVillesIndexableNow`), pas les 2157
+    // villes éligibles. Cohérent avec le sitemap + les meta robots : on ne pousse
+    // jamais plus de villes au crawl que ce qui est réellement index:true
+    // aujourd'hui. La cohorte s'élargissant (+50/jour), les pings successifs
+    // couvrent progressivement tout le corpus.
+    const { getVillesIndexableNow } = await import("../src/content/villes");
+    const villes = getVillesIndexableNow();
     const urls: string[] = [];
     for (const ville of villes) {
       // Hub ville : /{locale}/implantations/{region}/{ville}
