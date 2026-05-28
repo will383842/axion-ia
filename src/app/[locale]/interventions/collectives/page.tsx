@@ -199,11 +199,11 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         contentUrl: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
         url: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
         name: isFr
-          ? "William J. — Fondateur Axion-IA et formateur IA expert"
-          : "William J. — Axion-IA founder and expert AI trainer",
+          ? "William J. — Fondateur Axion-IA et formateur IA"
+          : "William J. — Axion-IA founder and AI trainer",
         description: isFr
-          ? "Portrait de William J., fondateur d'Axion-IA et formateur IA expert avec plus de 10 ans d'expertise en IA opérationnelle. Forme personnellement les équipes TPE, PME, ETI et grandes entreprises françaises sur ChatGPT, Claude, Mistral, Microsoft Copilot et la conception d'agents IA."
-          : "Portrait of William J., Axion-IA founder and expert AI trainer with 10+ years of operational AI expertise. Personally trains French SME, mid-cap and large enterprise teams on ChatGPT, Claude, Mistral, Microsoft Copilot and AI agent design.",
+          ? "Portrait de William J., fondateur d'Axion-IA et formateur IA dédié. Intervient souvent en personne ou avec un formateur de son équipe — forme les équipes TPE, PME, ETI et grandes entreprises partout en France métropolitaine."
+          : "Portrait of William J., Axion-IA founder and dedicated AI trainer. Often delivers in person or with a trainer from his team — trains French SME, mid-cap and large enterprise teams across metropolitan France.",
         width: 800,
         height: 1000,
         encodingFormat: "image/png",
@@ -850,6 +850,132 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         </Container>
       </Section>
 
+      {/* SECTION FORMATEUR — Sprint 2026-05-28 (Will). Pattern home « Section
+          Fondateur » adapté formation IA : crédibilité du formateur (William
+          ou un membre de son équipe) placé juste après le bloc Formation
+          régulière mensuelle. Donne confiance avant la conversion (bandeau
+          terracotta + Comment réserver + quadriptyque). */}
+      <section
+        id="formateur"
+        aria-labelledby="formateur-heading"
+        className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28"
+      >
+        <Container>
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            {/* Colonne gauche : copy formation */}
+            <div className="max-w-xl">
+              <p className="text-fg-muted mb-6 text-[12px] font-semibold tracking-[0.2em] uppercase">
+                <span className="bg-terracotta mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {isFr ? "Votre formateur IA" : "Your AI trainer"}
+              </p>
+              <h2
+                id="formateur-heading"
+                className="text-fg text-[clamp(2.5rem,5vw,4.25rem)] leading-[1.02] font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr ? "Un formateur" : "A trainer"}
+                <br />
+                <span className="text-terracotta italic">
+                  {isFr ? "dédié à votre entreprise" : "dedicated to your business"}
+                </span>
+              </h2>
+              <p className="text-fg-soft mt-7 text-lg leading-relaxed">
+                {isFr
+                  ? "William, fondateur d'Axion-IA, intervient souvent durant les formations, ou un membre de son équipe — formateur IA dédié à votre entreprise, qui adapte la formation à votre métier, votre stack et vos enjeux."
+                  : "William, founder of Axion-IA, often delivers the trainings himself, or a member of his team — a dedicated AI trainer who adapts the training to your business, your stack and your stakes."}
+              </p>
+              <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
+                <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
+                <p
+                  className="text-fg-soft text-base leading-relaxed italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr
+                    ? "« Notre engagement : que vos équipes ressortent autonomes dès le lendemain de la formation. »"
+                    : "« Our commitment: your teams leave autonomous from the day after training. »"}
+                </p>
+              </div>
+              <p className="mt-6">
+                <Link
+                  href="/a-propos"
+                  className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                >
+                  {isFr ? "Découvrir l'approche Axion-IA" : "Discover the Axion-IA approach"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </p>
+            </div>
+
+            {/* Colonne droite : photo William */}
+            <div className="flex justify-center lg:justify-end">
+              <div className="w-full max-w-xs">
+                <figure className="shadow-card m-0 overflow-hidden rounded-2xl">
+                  <Image
+                    src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
+                    alt={
+                      isFr
+                        ? "William, fondateur Axion-IA et formateur IA — portrait posé devant olivier, ambiance méditerranée. Forme les équipes TPE, PME, ETI et grandes entreprises françaises avec une équipe de formateurs experts dédiés."
+                        : "William, Axion-IA founder and AI trainer — portrait in front of olive tree, Mediterranean atmosphere. Trains French SME, mid-cap and large enterprise teams with a dedicated team of expert trainers."
+                    }
+                    width={800}
+                    height={1000}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 1024px) 80vw, 320px"
+                    className="aspect-[4/5] h-auto w-full object-cover"
+                    quality={85}
+                  />
+                </figure>
+                <div className="mt-4 text-center">
+                  <p className="text-fg text-lg font-semibold">William J.</p>
+                  <p className="text-fg-muted text-sm">
+                    {isFr
+                      ? "Fondateur & formateur IA · Axion-IA"
+                      : "Founder & AI trainer · Axion-IA"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats bar — 3 colonnes adaptées formation (sans mention années
+              d'expérience selon retour Will 2026-05-28). */}
+          <div className="border-border-strong mt-16 grid grid-cols-3 divide-x border-t pt-10">
+            {(
+              [
+                {
+                  number: isFr ? "Toute la France" : "All France",
+                  labelFr: "métropolitaine + international sur demande",
+                  labelEn: "metropolitan + international on request",
+                },
+                {
+                  number: isFr ? "3-5 / pers." : "3-5 / person",
+                  labelFr: "automatisations maîtrisées par formation",
+                  labelEn: "automations mastered per training",
+                },
+                {
+                  number: isFr ? "12h/sem" : "12h/week",
+                  labelFr: "gain de temps moyen post-formation",
+                  labelEn: "average time saved post-training",
+                },
+              ] as const
+            ).map((stat, idx) => (
+              <div key={idx} className="flex flex-col gap-1 px-6 first:pl-0 last:pr-0">
+                <span
+                  className="text-fg text-[clamp(1.25rem,2.5vw,1.75rem)] leading-tight font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {stat.number}
+                </span>
+                <span className="text-fg-soft text-sm leading-snug">
+                  {isFr ? stat.labelFr : stat.labelEn}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
       {/* BANDEAU TERRACOTTA compact — pattern aligné sur la home (line 1288 de
           `/[locale]/page.tsx`) : section py-16 sm:py-20 flex horizontal
           (texte gauche, CTAs droite). Will 2026-05-28 — wording d'orientation
@@ -959,132 +1085,6 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           sizes="100vw"
           className="h-auto w-full"
         />
-      </section>
-
-      {/* SECTION FONDATEUR / FORMATEUR — Sprint 2026-05-28 (Will). Pattern
-          aligné sur la home (line 553+ de `/[locale]/page.tsx`) mais adapté
-          au contexte formation IA : crédibilité du formateur expert dédié,
-          stats spécifiques (entreprises formées, heures économisées, années
-          d'expertise IA). Photo William en chemise sage devant olivier
-          (ambiance méditerranée, confiance, posture engagée). */}
-      <section
-        id="formateur"
-        aria-labelledby="formateur-heading"
-        className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28"
-      >
-        <Container>
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            {/* Colonne gauche : copy formation */}
-            <div className="max-w-xl">
-              <p className="text-fg-muted mb-6 text-[12px] font-semibold tracking-[0.2em] uppercase">
-                <span className="bg-terracotta mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-                {isFr ? "Votre formateur IA" : "Your AI trainer"}
-              </p>
-              <h2
-                id="formateur-heading"
-                className="text-fg text-[clamp(2.5rem,5vw,4.25rem)] leading-[1.02] font-semibold tracking-tight"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr ? "Un expert IA" : "An AI expert"}
-                <br />
-                <span className="text-terracotta italic">
-                  {isFr ? "qui forme vos équipes" : "training your teams"}
-                </span>
-              </h2>
-              <p className="text-fg-soft mt-7 text-lg leading-relaxed">
-                {isFr
-                  ? "William, fondateur d'Axion-IA, intervient personnellement chez vous. Plus de 10 ans dans l'IA opérationnelle, du prompt engineering aux agents IA et automatisations métier. Vos équipes montent en compétence sur leurs vrais outils — ChatGPT, Claude, Mistral, Microsoft Copilot — avec un formateur qui connaît votre quotidien."
-                  : "William, founder of Axion-IA, personally trains your team on site. 10+ years in operational AI, from prompt engineering to AI agents and business automations. Your teams upskill on their real tools — ChatGPT, Claude, Mistral, Microsoft Copilot — with a trainer who knows your daily work."}
-              </p>
-              <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
-                <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
-                <p
-                  className="text-fg-soft text-base leading-relaxed italic"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {isFr
-                    ? "« Mon engagement : que vos équipes maîtrisent l'IA opérationnelle dès le lendemain de la formation — pas dans 6 mois. »"
-                    : "« My commitment: your teams master operational AI from the day after training — not 6 months later. »"}
-                </p>
-              </div>
-              <p className="mt-6">
-                <Link
-                  href="/a-propos"
-                  className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
-                >
-                  {isFr ? "Découvrir l'approche Axion-IA" : "Discover the Axion-IA approach"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </p>
-            </div>
-
-            {/* Colonne droite : photo William */}
-            <div className="flex justify-center lg:justify-end">
-              <div className="w-full max-w-xs">
-                <figure className="shadow-card m-0 overflow-hidden rounded-2xl">
-                  <Image
-                    src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
-                    alt={
-                      isFr
-                        ? "William, fondateur Axion-IA et formateur IA expert — portrait posé devant olivier, ambiance méditerranée, plus de 10 ans d'expertise en IA opérationnelle pour TPE, PME, ETI et grandes entreprises françaises."
-                        : "William, Axion-IA founder and expert AI trainer — portrait in front of olive tree, Mediterranean atmosphere, 10+ years of expertise in operational AI for French SMEs, mid-caps and large enterprises."
-                    }
-                    width={800}
-                    height={1000}
-                    loading="lazy"
-                    decoding="async"
-                    sizes="(max-width: 1024px) 80vw, 320px"
-                    className="aspect-[4/5] h-auto w-full object-cover"
-                    quality={85}
-                  />
-                </figure>
-                <div className="mt-4 text-center">
-                  <p className="text-fg text-lg font-semibold">William J.</p>
-                  <p className="text-fg-muted text-sm">
-                    {isFr
-                      ? "Fondateur & formateur IA · Axion-IA"
-                      : "Founder & AI trainer · Axion-IA"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Stats bar — 3 colonnes adaptées formation */}
-          <div className="border-border-strong mt-16 grid grid-cols-3 divide-x border-t pt-10">
-            {(
-              [
-                {
-                  number: "10+",
-                  labelFr: "années d'expertise IA opérationnelle",
-                  labelEn: "years of operational AI expertise",
-                },
-                {
-                  number: isFr ? "3-5 / pers." : "3-5 / person",
-                  labelFr: "automatisations maîtrisées par formation",
-                  labelEn: "automations mastered per training",
-                },
-                {
-                  number: isFr ? "12h/sem" : "12h/week",
-                  labelFr: "gain de temps moyen post-formation",
-                  labelEn: "average time saved post-training",
-                },
-              ] as const
-            ).map((stat, idx) => (
-              <div key={idx} className="flex flex-col gap-1 px-6 first:pl-0 last:pr-0">
-                <span
-                  className="text-fg text-[clamp(1.25rem,2.5vw,1.75rem)] leading-tight font-semibold tracking-tight"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {stat.number}
-                </span>
-                <span className="text-fg-soft text-sm leading-snug">
-                  {isFr ? stat.labelFr : stat.labelEn}
-                </span>
-              </div>
-            ))}
-          </div>
-        </Container>
       </section>
 
       {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
