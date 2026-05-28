@@ -56,12 +56,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/interventions/collectives",
     title:
       loc === "fr"
-        ? "Formation IA pour équipes PME · 4 formats · sur site · Axion-IA"
-        : "AI team training for SMEs · 4 formats · on site · Axion-IA",
+        ? "Formation IA entreprise · TPE PME ETI · formateur IA sur site · Axion-IA"
+        : "Corporate AI training · SME ETI · on-site AI trainer · Axion-IA",
     description:
       loc === "fr"
-        ? `Formations IA opérationnelles pour vos équipes sur site, organisées en 4 paliers durée : 4 heures, 1 jour (dès ${essentiellePrice}), 2 jours, 3 jours et plus (sur devis). 2 à 30+ personnes.`
-        : `Operational AI trainings for your teams on site, organised in 4 duration tiers: 4 hours, 1 day (from ${essentiellePrice}), 2 days, 3 days+ (on request). 2 to 30+ people.`,
+        ? `Formation IA en entreprise sur site pour TPE, PME, ETI et grandes entreprises : 4 formats one-shot (4 h à 3 j+) ou formules récurrentes mensuelles/bi-mensuelles. Formateur IA dédié, montée en compétence continue, gains de temps instantanés. Dès ${essentiellePrice}.`
+        : `Corporate AI training on site for SMEs and large companies: 4 one-shot formats (4 h to 3 d+) or monthly/bi-monthly recurring programmes. Dedicated AI trainer, continuous upskilling, instant time savings. From ${essentiellePrice}.`,
   });
 }
 
@@ -187,24 +187,19 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         titleEm={isFr ? "en 4 h à 3 jours" : "in 4 h to 3 days"}
         description={
           isFr
-            ? "Vos équipes apprennent l'IA sur leurs vrais outils, leurs vrais cas. Elles ressortent avec des automatisations qui tournent dès le lendemain, des heures gagnées chaque semaine, et une autonomie nouvelle."
-            : "Your teams learn AI on their real tools, their real cases. They leave with automations running from day one, hours saved every week, and new autonomy."
+            ? "Formation IA en entreprise pour TPE, PME, ETI et grandes entreprises. Un formateur IA expert vient sur votre site, vos équipes montent en compétence sur leurs vrais outils et leurs vrais cas métier. Elles repartent avec des automatisations qui tournent dès le lendemain, des heures gagnées instantanément chaque semaine, et une autonomie IA nouvelle."
+            : "Corporate AI training for SMEs and large companies. An expert AI trainer comes on site, your teams upskill on their real tools and real business cases. They leave with automations running from day one, hours saved instantly every week, and new AI autonomy."
         }
         ctas={
-          <>
-            <Cta
-              href="/reserver"
-              size="lg"
-              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
-              track="collectives-hero-primary"
-            >
-              {isFr ? "Pré-réserver sur le calendrier" : "Pre-book on the calendar"}
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Cta>
-            <Cta href="/interventions" variant="outline" size="lg" track="collectives-hero-back">
-              {isFr ? "← Retour aux familles" : "← Back to families"}
-            </Cta>
-          </>
+          <Cta
+            href="/reserver"
+            size="lg"
+            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+            track="collectives-hero-primary"
+          >
+            {isFr ? "Pré-réserver sur le calendrier" : "Pre-book on the calendar"}
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Cta>
         }
         schemaCenterLabel={isFr ? "Votre équipe" : "Your team"}
         schemaAriaLabel={
@@ -412,6 +407,251 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         </div>
       </Section>
 
+      {/* ============================================================
+          FORMATION RÉGULIÈRE — Sprint 2026-05-28 (Will).
+          Bloc dédié aux entreprises qui veulent des formations IA
+          répétitives (mensuelles ou bi-mensuelles) pour installer
+          durablement la culture IA. Sémantique SEO renforcée pour
+          requêtes : « formation IA entreprise », « formateur IA »,
+          « formation IA TPE/PME/ETI/grandes entreprises », « montée
+          en compétence IA », « formation IA récurrente », « formation
+          continue IA », « formation IA mensuelle ».
+          ============================================================ */}
+      <Section
+        tone="sand"
+        eyebrow={isFr ? "Formation régulière" : "Recurring training"}
+        title={isFr ? "Montée en compétence IA" : "AI upskilling"}
+        titleEm={isFr ? "mois après mois" : "month after month"}
+        description={
+          isFr
+            ? "Pour les TPE, PME, ETI et grandes entreprises qui veulent installer durablement la culture IA et faire monter en compétence leurs équipes — un formateur IA expert intervient chez vous régulièrement, sur 6 ou 12 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, accompagnement pédagogique continu entre les journées de formation."
+            : "For SMEs, mid-caps and large companies that want to durably install AI culture and upskill their teams — an expert AI trainer comes on site regularly, over 6 or 12 months. Instant time savings measured at each session, business automations rolled out progressively, continuous educational support between training days."
+        }
+        contentClassName={TIGHT_X}
+      >
+        <Container>
+          <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:gap-7">
+            {/* CARD 1 — Formule mensuelle (la plus mise en avant) */}
+            <article className="bg-paper border-terracotta/40 shadow-subtle hover:border-terracotta hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
+              {/* Badge "Le plus choisi" */}
+              <span className="bg-terracotta text-mocha-fg absolute top-5 right-5 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
+                {isFr ? "Le plus choisi" : "Most chosen"}
+              </span>
+
+              {/* Filet couleur */}
+              <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
+
+              <div className="flex flex-1 flex-col p-7 sm:p-8">
+                <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl">
+                  <Users aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+
+                <h3 className="text-fg text-2xl leading-tight font-semibold tracking-tight">
+                  {isFr ? "Formule mensuelle" : "Monthly programme"}
+                </h3>
+                <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
+                  {isFr
+                    ? "1 journée de formation IA par mois, sur 6 ou 12 mois — le rythme soutenu pour installer rapidement la culture IA dans vos équipes."
+                    : "1 day of AI training per month, over 6 or 12 months — the sustained pace to quickly install AI culture across your teams."}
+                </p>
+
+                <ul className="mt-6 space-y-3">
+                  {(isFr
+                    ? [
+                        "Formateur IA expert dédié à votre entreprise",
+                        "Montée en compétence progressive et mesurable",
+                        "Gain de temps instantané dès la 1ʳᵉ session",
+                        "Nouvelles automatisations métier à chaque journée",
+                        "Support continu entre sessions (Slack/email)",
+                        "Bilan mensuel : KPI gains de temps et adoption",
+                      ]
+                    : [
+                        "Dedicated expert AI trainer for your company",
+                        "Progressive, measurable upskilling",
+                        "Instant time savings from session 1",
+                        "New business automations every session",
+                        "Continuous support between sessions (Slack/email)",
+                        "Monthly review: time-saving KPIs and adoption",
+                      ]
+                  ).map((line, i) => (
+                    <li key={i} className="text-fg flex items-start gap-3 text-[14px]">
+                      <span
+                        aria-hidden="true"
+                        className="bg-terracotta mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+                      />
+                      <span className="leading-snug">{line}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="bg-terracotta-soft text-terracotta-deep mt-6 inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold">
+                  <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
+                  <span>
+                    {isFr
+                      ? "Sur devis personnalisé · 6 ou 12 mois"
+                      : "Bespoke quote · 6 or 12 months"}
+                  </span>
+                </div>
+
+                <div className="mt-auto pt-7">
+                  <Cta
+                    href="/appel"
+                    size="lg"
+                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+                    track="collectives-recurring-monthly-call"
+                  >
+                    {isFr ? "Réserver un appel" : "Book a call"}
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  </Cta>
+                </div>
+              </div>
+            </article>
+
+            {/* CARD 2 — Formule bi-mensuelle (rythme plus souple) */}
+            <article className="bg-paper border-sage/40 shadow-subtle hover:border-sage hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
+              <span aria-hidden="true" className="bg-sage block h-2 w-full" />
+
+              <div className="flex flex-1 flex-col p-7 sm:p-8">
+                <div className="bg-sage-soft text-sage mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl">
+                  <Users aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+
+                <h3 className="text-fg text-2xl leading-tight font-semibold tracking-tight">
+                  {isFr ? "Formule bi-mensuelle" : "Bi-monthly programme"}
+                </h3>
+                <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
+                  {isFr
+                    ? "1 journée de formation IA tous les 2 mois, sur 6 ou 12 mois — le rythme idéal pour les TPE et équipes chargées qui veulent progresser sans saturer leur agenda."
+                    : "1 day of AI training every 2 months, over 6 or 12 months — the ideal pace for small businesses and busy teams that want to progress without saturating their schedule."}
+                </p>
+
+                <ul className="mt-6 space-y-3">
+                  {(isFr
+                    ? [
+                        "Cadence respectueuse de la charge opérationnelle",
+                        "Idéal TPE en démarrage ou équipes <10 personnes",
+                        "Mêmes bénéfices que mensuel, rythme ajusté",
+                        "Temps d'intégration entre sessions pour pratiquer",
+                        "Support continu entre journées (Slack/email)",
+                        "Bilan par session : adoption et automatisations",
+                      ]
+                    : [
+                        "Pace that respects operational workload",
+                        "Ideal for small businesses or teams <10 people",
+                        "Same benefits as monthly, adjusted pace",
+                        "Integration time between sessions to practice",
+                        "Continuous support between days (Slack/email)",
+                        "Per-session review: adoption and automations",
+                      ]
+                  ).map((line, i) => (
+                    <li key={i} className="text-fg flex items-start gap-3 text-[14px]">
+                      <span
+                        aria-hidden="true"
+                        className="bg-sage mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+                      />
+                      <span className="leading-snug">{line}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="bg-sage-soft text-sage mt-6 inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold">
+                  <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
+                  <span>
+                    {isFr
+                      ? "Sur devis personnalisé · 6 ou 12 mois"
+                      : "Bespoke quote · 6 or 12 months"}
+                  </span>
+                </div>
+
+                <div className="mt-auto pt-7">
+                  <Cta
+                    href="/appel"
+                    size="lg"
+                    className="bg-primary text-primary-fg hover:bg-primary-hover w-full justify-center shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+                    track="collectives-recurring-bimonthly-call"
+                  >
+                    {isFr ? "Réserver un appel" : "Book a call"}
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  </Cta>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          {/* Bandeau bénéfices SEO sémantique — densifie le contenu avec
+              les mots-clés cibles sans tomber dans le keyword stuffing :
+              chaque ligne est une affirmation utile au lecteur. */}
+          <div className="bg-paper border-border shadow-subtle mx-auto mt-10 max-w-5xl rounded-3xl border p-6 sm:p-8">
+            <h3 className="text-fg text-lg leading-tight font-semibold tracking-tight sm:text-xl">
+              {isFr
+                ? "Pourquoi une formation IA récurrente en entreprise ?"
+                : "Why recurring corporate AI training?"}
+            </h3>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+              {(isFr
+                ? [
+                    {
+                      t: "Formateur IA dédié",
+                      d: "Un seul formateur IA expert qui connaît votre métier, votre stack et vos équipes — pas de turn-over, pas de re-briefing à chaque session.",
+                    },
+                    {
+                      t: "Montée en compétence continue",
+                      d: "Les apprentissages s'installent dans la durée. Chaque mois consolide les gains du précédent et ouvre de nouveaux cas d'usage.",
+                    },
+                    {
+                      t: "Gain de temps instantané",
+                      d: "Dès la 1ʳᵉ journée, les participants repartent avec 3-5 automatisations opérationnelles qui leur font gagner du temps immédiatement.",
+                    },
+                    {
+                      t: "Adapté à toutes les tailles",
+                      d: "Programme calibré pour TPE (2-8 pers.), PME (9-50 pers.), ETI (50-250 pers.) ou grandes entreprises (déploiement multi-sites).",
+                    },
+                    {
+                      t: "Automatisations métier",
+                      d: "ChatGPT, Claude, Microsoft Copilot, Gemini, Make, Zapier, agents IA — on travaille uniquement sur vos vrais outils, vos vrais documents, vos vrais workflows.",
+                    },
+                    {
+                      t: "ROI mesuré",
+                      d: "À chaque session, on chiffre les heures gagnées, les tâches automatisées, l'adoption par participant. Bilan transparent à 3, 6, 12 mois.",
+                    },
+                  ]
+                : [
+                    {
+                      t: "Dedicated AI trainer",
+                      d: "One expert AI trainer who knows your business, stack and teams — no turnover, no re-briefing each session.",
+                    },
+                    {
+                      t: "Continuous upskilling",
+                      d: "Learning sticks over time. Each month consolidates previous gains and opens new use cases.",
+                    },
+                    {
+                      t: "Instant time savings",
+                      d: "From day 1, participants leave with 3-5 operational automations that save time immediately.",
+                    },
+                    {
+                      t: "Fits all company sizes",
+                      d: "Programme calibrated for small businesses (2-8 ppl), SMEs (9-50 ppl), mid-caps (50-250 ppl) or large enterprises (multi-site).",
+                    },
+                    {
+                      t: "Business automations",
+                      d: "ChatGPT, Claude, Microsoft Copilot, Gemini, Make, Zapier, AI agents — we work only on your real tools, real documents, real workflows.",
+                    },
+                    {
+                      t: "Measured ROI",
+                      d: "Each session: hours saved, automated tasks, per-participant adoption — transparent review at 3, 6, 12 months.",
+                    },
+                  ]
+              ).map((row, i) => (
+                <div key={i} className="flex flex-col gap-1.5">
+                  <span className="text-fg text-[14.5px] leading-tight font-semibold">{row.t}</span>
+                  <span className="text-fg-soft text-[13.5px] leading-relaxed">{row.d}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </Section>
+
       {/* MÉTHODOLOGIE — 4 étapes (Sprint uniformisation 2026-05-24) */}
       <Section
         eyebrow={isFr ? "Méthodologie" : "Methodology"}
@@ -559,8 +799,17 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             : "A short call to understand your context, point you to the right duration, and explain how it works. No commitment."
         }
         cta={
-          <Cta href={"/interventions/demande?objet=cadrage-formation-equipe" as never} size="lg">
-            {isFr ? "Demander un appel" : "Request a call"} →
+          // Sprint cohérence CTA 2026-05-28 (Will) — aligné Header primary :
+          // label « Réserver un appel », destination /appel, couleur primary bleu
+          // + glow. Tracking conservé pour distinguer cet appel pré-vente du CTA
+          // header générique en analytics.
+          <Cta
+            href="/appel"
+            size="lg"
+            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+            track="collectives-ctablock-consultation"
+          >
+            {isFr ? "Réserver un appel" : "Book a call"} →
           </Cta>
         }
         tone="dark"
@@ -568,8 +817,8 @@ export default async function CollectivesFamilyHub({ params }: Props) {
 
       {/* CTA mobile sticky (Sprint uniformisation 2026-05-24) */}
       <StickyMobileCta
-        href="/contact"
-        label={isFr ? "Réserver une formation" : "Book a training"}
+        href="/reserver"
+        label={isFr ? "Pré-réserver une formation" : "Pre-book a training"}
         track="interventions-collectives-sticky-mobile"
       />
 

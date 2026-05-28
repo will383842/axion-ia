@@ -113,7 +113,9 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
   const txt = dark ? "text-mocha-fg" : "text-fg";
   const txtSoft = dark ? "text-mocha-fg/85" : "text-fg-soft";
   const href = formatPath(entry, locale);
-  const ctaLabel = isFr ? "Voir cette intervention en détail" : "See this session in detail";
+  // Sprint perfection 2026-05-28 (Will) — label CTA raccourci de 5 mots à 3
+  // pour respecter le standard UX (2-3 mots sur CTA primary).
+  const ctaLabel = isFr ? "Voir le programme" : "See the programme";
 
   return (
     <article
@@ -127,6 +129,7 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
       <Link
         href={href as never}
         aria-label={`${isFr ? entry.labelFr : entry.labelEn} — ${ctaLabel}`}
+        data-cta={`intervention-format-${entry.slug}-overlay`}
         className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-3xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <span className="sr-only">{ctaLabel}</span>
@@ -198,6 +201,7 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
         <div className="relative z-[2] mt-7 flex flex-wrap items-center gap-3">
           <Link
             href={href as never}
+            data-cta={`intervention-format-${entry.slug}-detail`}
             className={cn(
               "cta-lift inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors",
               acc.cta,
@@ -214,6 +218,7 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
                   ? (`/reserver?intervention=${entry.slug}` as never)
                   : "/reserver"
               }
+              data-cta={`intervention-format-${entry.slug}-prebook`}
               className={cn(
                 "cta-lift inline-flex items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-colors",
                 dark
@@ -221,7 +226,7 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
                   : "border-terracotta-deep text-terracotta-deep hover:bg-terracotta-soft",
               )}
             >
-              {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"}
+              {isFr ? "Pré-réserver sur le calendrier" : "Pre-book on the calendar"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Link>
           ) : null}

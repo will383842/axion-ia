@@ -18,6 +18,13 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
+// Sprint perfection 2026-05-28 (Will) — enrichissement SEO/AEO sous-pages
+// durée : ajout FAQ Speakable + couverture locale + sticky CTA mobile pour
+// parité avec la page hub /collectives.
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import {
   type CollectiveDuration,
   getDuration,
@@ -43,8 +50,11 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
   const isEmpty = !isQuote && formats.length === 0;
   const contactHref = quoteContactPath(duration, locale);
 
+  // Sprint perfection 2026-05-28 (Will) — retrait du 1er item `/interventions`
+  // qui redirige 301 vers `/collectives` (hub /interventions supprimé refonte
+  // 2026-05-28, voir routes.ts:38-40). Breadcrumb 2 niveaux propres : famille
+  // → durée. Évite la boucle navigationnelle « parent mort ».
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
     {
       href: "/interventions/collectives",
       label: isFr ? family.labelFr : family.labelEn,
@@ -71,6 +81,249 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           })),
         })
       : null;
+
+  // Sprint perfection 2026-05-28 (Will) — FAQ Speakable par palier durée.
+  // Q/R spécifiques à chaque palier (effectif, contenu, prix, frais déplacement,
+  // garantie) pour éviter le duplicate content SEO entre les 4 sous-pages.
+  // FaqAccordion injecte automatiquement FAQPage JSON-LD + Speakable.
+  const FAQ_BY_DURATION: Record<
+    CollectiveDuration,
+    {
+      fr: ReadonlyArray<{ id: string; question: string; answer: string }>;
+      en: ReadonlyArray<{ id: string; question: string; answer: string }>;
+    }
+  > = {
+    "4h": {
+      fr: [
+        {
+          id: "4h-objectif",
+          question: "Que peut-on accomplir en 4 heures ?",
+          answer:
+            "Une demi-journée express pour découvrir l'IA, identifier 2-3 cas d'usage prioritaires et installer une première automatisation. Format idéal pour cadrer ou amorcer une démarche IA sans bloquer une journée complète.",
+        },
+        {
+          id: "4h-effectif",
+          question: "Combien de participants en 4 heures ?",
+          answer:
+            "De 2 à 20 personnes en prix fixe. Au-delà, on bascule sur le palier 1 jour ou Conférence pour garder de l'interaction.",
+        },
+        {
+          id: "4h-frais",
+          question: "Frais de déplacement inclus ?",
+          answer:
+            "Non. Logement (si nécessaire), repas et forfait trajet facturés en sus, calculés selon distance/durée. Devis transparent avant signature.",
+        },
+        {
+          id: "4h-suivi",
+          question: "Suivi inclus après la formation 4 heures ?",
+          answer:
+            "Oui — support 30 jours pour répondre aux questions post-formation par email. Option maintenance standard 290 €/mois pour aller plus loin.",
+        },
+      ],
+      en: [
+        {
+          id: "4h-objectif",
+          question: "What can be done in 4 hours?",
+          answer:
+            "An express half-day to discover AI, identify 2-3 priority use cases and install a first automation. Ideal to scope or kick off an AI initiative without blocking a full day.",
+        },
+        {
+          id: "4h-effectif",
+          question: "How many participants in 4 hours?",
+          answer:
+            "From 2 to 20 people, flat price. Beyond that, switch to the 1-day tier or Conference to keep interaction.",
+        },
+        {
+          id: "4h-frais",
+          question: "Travel expenses included?",
+          answer:
+            "No. Lodging (if needed), meals and travel allowance billed separately, calculated by distance/duration. Transparent quote before signature.",
+        },
+        {
+          id: "4h-suivi",
+          question: "Follow-up included after the 4-hour session?",
+          answer:
+            "Yes — 30-day email support for post-training questions. Standard maintenance option €290/month for deeper work.",
+        },
+      ],
+    },
+    "1-jour": {
+      fr: [
+        {
+          id: "1j-objectif",
+          question: "Que livre une formation IA d'1 jour ?",
+          answer:
+            "Une journée complète (≈ 7 h sur site) avec cadrage du matin, ateliers pratiques l'après-midi, plan d'action le soir. Chaque participant repart avec 3-5 automatisations applicables dès le lendemain.",
+        },
+        {
+          id: "1j-formats",
+          question: "Quels formats 1 jour disponibles ?",
+          answer:
+            "Trois formats au choix : Essentielle (découverte opérationnelle large), Gagner du temps (automatisations métier ciblées), Intervention Claude (focus Anthropic Claude pour rédaction et analyse).",
+        },
+        {
+          id: "1j-effectif",
+          question: "Combien de participants en 1 jour ?",
+          answer:
+            "De 2 à 30 personnes en 3 tranches tarifaires (2-8 / 9-15 / 16-30). Au-delà, on bascule sur Conférence (sur devis).",
+        },
+        {
+          id: "1j-outils",
+          question: "Quels outils IA utilisés en formation 1 jour ?",
+          answer:
+            "Ceux que votre équipe utilise déjà ou qui collent au métier : ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM + automatisations Make/Zapier si pertinent. Pas de techno imposée.",
+        },
+        {
+          id: "1j-frais",
+          question: "Frais de déplacement inclus en formation 1 jour ?",
+          answer:
+            "Non. Logement, repas et forfait trajet facturés en sus, calculés au cas par cas selon distance/durée. Devis transparent avant signature.",
+        },
+      ],
+      en: [
+        {
+          id: "1j-objectif",
+          question: "What does a 1-day AI training deliver?",
+          answer:
+            "A full day (≈ 7 h on site) with morning scoping, afternoon hands-on workshops, evening action plan. Each participant leaves with 3-5 automations applicable from day one.",
+        },
+        {
+          id: "1j-formats",
+          question: "Which 1-day formats are available?",
+          answer:
+            "Three formats: Essential (broad operational discovery), Save Time (targeted business automations), Claude Intervention (Anthropic Claude focus for writing and analysis).",
+        },
+        {
+          id: "1j-effectif",
+          question: "How many participants in 1 day?",
+          answer:
+            "From 2 to 30 people in 3 price brackets (2-8 / 9-15 / 16-30). Beyond that, switch to Conference (on quote).",
+        },
+        {
+          id: "1j-outils",
+          question: "Which AI tools are used in 1-day training?",
+          answer:
+            "The ones your team already uses or that fit the roles: ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM + Make/Zapier automations if relevant. No imposed tech.",
+        },
+        {
+          id: "1j-frais",
+          question: "Travel expenses included in 1-day training?",
+          answer:
+            "No. Lodging, meals and travel allowance billed separately, calculated by distance/duration. Transparent quote before signature.",
+        },
+      ],
+    },
+    "2-jours": {
+      fr: [
+        {
+          id: "2j-objectif",
+          question: "Pourquoi choisir 2 jours plutôt qu'1 jour ?",
+          answer:
+            "Pour aller en profondeur : approfondissement des cas réels de l'équipe, transfert IA-fluence durable, automatisations multi-étapes complexes. Les 2 jours permettent d'installer les méthodes, pas seulement de les présenter.",
+        },
+        {
+          id: "2j-effectif",
+          question: "Combien de participants en 2 jours ?",
+          answer:
+            "De 2 à 30 personnes en 3 tranches tarifaires (2-8 / 9-15 / 16-30) — même grille que le format 1 jour. Au-delà, on bascule sur 3 jours+ sur mesure.",
+        },
+        {
+          id: "2j-contenu",
+          question: "Que couvre une formation IA de 2 jours ?",
+          answer:
+            "Jour 1 : panorama IA + outils + premières automatisations. Jour 2 : cas métier avancés + intégrations (Make, Zapier, agents) + plan de déploiement équipe. Programme calibré sur les profils présents.",
+        },
+        {
+          id: "2j-frais",
+          question: "Frais de déplacement inclus en formation 2 jours ?",
+          answer:
+            "Non. Logement (2 nuits sur site), repas et forfait trajet facturés en sus. Devis transparent avant signature.",
+        },
+      ],
+      en: [
+        {
+          id: "2j-objectif",
+          question: "Why choose 2 days over 1 day?",
+          answer:
+            "To go deeper: deep dive into real team cases, durable AI-fluency transfer, complex multi-step automations. 2 days installs methods rather than just presenting them.",
+        },
+        {
+          id: "2j-effectif",
+          question: "How many participants in 2 days?",
+          answer:
+            "From 2 to 30 people in 3 price brackets (2-8 / 9-15 / 16-30) — same grid as the 1-day format. Beyond that, switch to bespoke 3-days+.",
+        },
+        {
+          id: "2j-contenu",
+          question: "What does a 2-day AI training cover?",
+          answer:
+            "Day 1: AI overview + tools + first automations. Day 2: advanced business cases + integrations (Make, Zapier, agents) + team deployment plan. Programme calibrated to profiles present.",
+        },
+        {
+          id: "2j-frais",
+          question: "Travel expenses included in 2-day training?",
+          answer:
+            "No. Lodging (2 nights on site), meals and travel allowance billed separately. Transparent quote before signature.",
+        },
+      ],
+    },
+    "3-jours-plus": {
+      fr: [
+        {
+          id: "3jplus-objectif",
+          question: "Quand choisir 3 jours ou plus ?",
+          answer:
+            "Pour les séminaires dirigeants, off-sites équipe, programmes multi-sites, ou contenus ultra-spécifiques nécessitant un déploiement progressif. Chaque programme est unique — on cadre par appel, on construit ensemble.",
+        },
+        {
+          id: "3jplus-process",
+          question: "Comment se déroule la demande de devis 3 jours+ ?",
+          answer:
+            "1) Cadrage par visio pour comprendre votre besoin et vos contraintes. 2) Programme personnalisé construit ensemble — durée, contenu, modalités. 3) Devis détaillé sous 48 h ouvrées. 4) Facturation après l'intervention.",
+        },
+        {
+          id: "3jplus-effectif",
+          question: "Y a-t-il une limite de participants ?",
+          answer:
+            "Non. Pour les multi-sites, on construit un dispositif avec des sessions parallèles ou un déploiement échelonné. Pour les off-sites cadres, on peut adapter en groupes de 6-12 pour maximiser l'interaction.",
+        },
+        {
+          id: "3jplus-tarif",
+          question: "Quel est le prix d'une formation 3 jours et plus ?",
+          answer:
+            "Sur devis — varie selon nombre de jours, effectif, complexité du contenu, frais de déplacement. À titre indicatif : un programme 3 jours pour 15 personnes démarre généralement à partir de 8 000 € HT.",
+        },
+      ],
+      en: [
+        {
+          id: "3jplus-objectif",
+          question: "When to choose 3 days or more?",
+          answer:
+            "For executive seminars, team off-sites, multi-site programmes, or ultra-specific content requiring progressive deployment. Each programme is unique — we frame by call, build together.",
+        },
+        {
+          id: "3jplus-process",
+          question: "How does the 3-days+ quote process work?",
+          answer:
+            "1) Framing video call to understand need and constraints. 2) Personalised programme built together — duration, content, format. 3) Detailed quote within 48 business hours. 4) Invoicing after the session.",
+        },
+        {
+          id: "3jplus-effectif",
+          question: "Is there a participant limit?",
+          answer:
+            "No. For multi-site, we build a setup with parallel sessions or staged deployment. For executive off-sites, we can adapt in groups of 6-12 to maximise interaction.",
+        },
+        {
+          id: "3jplus-tarif",
+          question: "What's the price for 3+ days training?",
+          answer:
+            "On quote — varies by days, headcount, content complexity, travel expenses. As reference: a 3-day programme for 15 people typically starts from €8,000 ex VAT.",
+        },
+      ],
+    },
+  };
+
+  const faqItems = isFr ? FAQ_BY_DURATION[durationId].fr : FAQ_BY_DURATION[durationId].en;
 
   // City Domination 2026-05-18 P1-2 (audit A4 P1) — Course JSON-LD activé
   // pour citation AEO "formation IA" par Google AI Overviews / Perplexity /
@@ -140,17 +393,23 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
                   href="/reserver"
                   size="lg"
                   className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+                  track={`collectives-${duration.slug}-hero-primary`}
                 >
-                  {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"}
+                  {isFr ? "Pré-réserver sur le calendrier" : "Pre-book on the calendar"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
               ) : (
-                <Cta href={contactHref} size="lg">
+                <Cta href={contactHref} size="lg" track={`collectives-${duration.slug}-hero-quote`}>
                   {isFr ? "Demander un devis sur mesure" : "Request a bespoke quote"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
               )}
-              <Cta href="/interventions/collectives" variant="outline" size="lg">
+              <Cta
+                href="/interventions/collectives"
+                variant="outline"
+                size="lg"
+                track={`collectives-${duration.slug}-hero-back`}
+              >
                 {isFr ? "← Autres durées" : "← Other durations"}
               </Cta>
             </div>
@@ -212,7 +471,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
               ))}
             </ul>
             <div className="mt-7">
-              <Cta href={contactHref} size="lg">
+              <Cta href={contactHref} size="lg" track={`collectives-${duration.slug}-quote-form`}>
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Ouvrir le formulaire de devis" : "Open the quote form"}
               </Cta>
@@ -246,11 +505,20 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
                 : `${duration.durationDetailEn}. We publish new trainings regularly — this page will fill up over time.`}
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Cta href={contactHref} size="lg">
+              <Cta
+                href={contactHref}
+                size="lg"
+                track={`collectives-${duration.slug}-empty-contact`}
+              >
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Demander une formation" : "Request a training"}
               </Cta>
-              <Cta href="/interventions/collectives" variant="outline" size="lg">
+              <Cta
+                href="/interventions/collectives"
+                variant="outline"
+                size="lg"
+                track={`collectives-${duration.slug}-empty-back`}
+              >
                 {isFr ? "Voir les autres durées" : "See other durations"}
               </Cta>
             </div>
@@ -279,6 +547,31 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
         </Section>
       )}
 
+      {/* COUVERTURE NATIONALE (pSEO villes/régions) — Sprint perfection 2026-05-28 */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr={`Les formations IA équipe ${duration.shortFr}`}
+        serviceLabelEn={`AI team trainings ${duration.shortEn}`}
+        serviceSlug="interventions"
+        tone="paper"
+      />
+
+      {/* FAQ GÉOLOCALISÉE — émet FAQPage Speakable JSON-LD */}
+      <LocalGeoFaqSection isFr={isFr} service="interventions" tone="sand" />
+
+      {/* FAQ spécifique au palier durée (4-5 Q/R) — FAQPage Speakable
+          JSON-LD injecté automatiquement par FaqAccordion. Q/R différentes
+          entre les 4 paliers pour éviter le duplicate content SEO. */}
+      <Section
+        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+        title={isFr ? `Formation ${duration.shortFr}` : `${duration.shortEn} training`}
+        titleEm={isFr ? "ce qu'on vous demande souvent" : "what we often get asked"}
+      >
+        <Container>
+          <FaqAccordion className="mx-auto max-w-3xl" items={faqItems} />
+        </Container>
+      </Section>
+
       <CtaBlock
         eyebrow={isFr ? "Une question ?" : "A question?"}
         title={isFr ? "Parler à quelqu'un avant de réserver" : "Talk to someone before booking"}
@@ -288,11 +581,27 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
             : "A call where we take the time to scope your project perfectly — to make sure this format fits your context. No commitment."
         }
         cta={
-          <Cta href={`/interventions/demande?objet=cadrage-${duration.slug}` as never} size="lg">
-            {isFr ? "Demander un appel" : "Request a call"} →
+          // Sprint cohérence CTA 2026-05-28 (Will) — aligné Header primary :
+          // label « Réserver un appel », destination /appel, couleur primary
+          // bleu + glow. Tracking conservé pour distinguer cet appel pré-vente
+          // par palier en analytics.
+          <Cta
+            href="/appel"
+            size="lg"
+            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+            track={`collectives-${duration.slug}-ctablock-consultation`}
+          >
+            {isFr ? "Réserver un appel" : "Book a call"} →
           </Cta>
         }
         tone="dark"
+      />
+
+      {/* CTA mobile sticky — parité avec page hub /collectives */}
+      <StickyMobileCta
+        href="/reserver"
+        label={isFr ? "Pré-réserver une formation" : "Pre-book a training"}
+        track={`collectives-${duration.slug}-sticky-mobile`}
       />
 
       {itemListJsonLd ? <JsonLd data={itemListJsonLd} /> : null}
