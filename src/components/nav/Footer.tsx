@@ -16,7 +16,7 @@ export async function Footer() {
       href: "/interventions/essentielle",
       label: isFr ? "Essentielle" : "Essential",
     },
-    { href: "/interventions", label: t("nav.interventions") },
+    { href: "/interventions/collectives", label: t("nav.interventions") },
     { href: "/audit", label: t("nav.audit") },
     { href: "/implementation", label: t("nav.implementation") },
     {

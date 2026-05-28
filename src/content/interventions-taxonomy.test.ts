@@ -30,12 +30,10 @@ import {
 } from "./interventions-taxonomy";
 
 describe("interventions-taxonomy — shape", () => {
-  it("FAMILIES expose exactement 4 familles", () => {
-    expect(FAMILIES).toHaveLength(4);
+  it("FAMILIES expose exactement 3 familles", () => {
+    expect(FAMILIES).toHaveLength(3);
     const ids = FAMILIES.map((f) => f.id);
-    expect(ids).toEqual(
-      expect.arrayContaining(["collectives", "individuel", "dirigeants", "conference"]),
-    );
+    expect(ids).toEqual(expect.arrayContaining(["collectives", "individuel", "dirigeants"]));
   });
 
   it("seule la famille Collectives a `hasDurations: true`", () => {
@@ -105,12 +103,7 @@ describe("interventions-taxonomy — lookups", () => {
 
 describe("interventions-taxonomy — filters & counts", () => {
   it("getFormatsByFamily filtre par famille", () => {
-    const families: ReadonlyArray<Family> = [
-      "collectives",
-      "individuel",
-      "dirigeants",
-      "conference",
-    ];
+    const families: ReadonlyArray<Family> = ["collectives", "individuel", "dirigeants"];
     for (const fam of families) {
       const formats = getFormatsByFamily(fam);
       for (const f of formats) {
@@ -128,12 +121,7 @@ describe("interventions-taxonomy — filters & counts", () => {
   });
 
   it("countFormatsByFamily est cohérent avec getFormatsByFamily", () => {
-    const families: ReadonlyArray<Family> = [
-      "collectives",
-      "individuel",
-      "dirigeants",
-      "conference",
-    ];
+    const families: ReadonlyArray<Family> = ["collectives", "individuel", "dirigeants"];
     for (const fam of families) {
       expect(countFormatsByFamily(fam)).toBe(getFormatsByFamily(fam).length);
     }

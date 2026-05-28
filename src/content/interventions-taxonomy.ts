@@ -1,11 +1,17 @@
-// SSOT taxonomie /interventions — Sprint 14.10.7 (2026-05-11).
+// SSOT taxonomie /interventions — Refonte 2026-05-28.
 //
-// Refonte structurelle de la page /interventions (Will 2026-05-11) :
-//   /interventions          → hub 3 BLOCS FAMILLE (équipe / 1-to-1 / dirigeants)
+// Structure post-refonte 1-to-1 (Will 2026-05-28) :
+//   /un-a-un                            → hub canonique 1-to-1 (FR)
+//                                         + 2 cards portes d'entrée vers
+//                                         `individuel` et `dirigeants`
 //   /interventions/collectives          → hub 4 PALIERS DURÉE (4h / 1j / 2j / 3j+)
-//   /interventions/collectives/<duree>  → liste des FORMATS qui matchent (family, duration)
-//   /interventions/individuel           → page famille liste plate
-//   /interventions/dirigeants           → page format existante (V1 = pas de hub famille)
+//   /interventions/collectives/<duree>  → liste des FORMATS qui matchent
+//   /interventions/individuel           → page famille liste plate (sous /un-a-un)
+//   /interventions/dirigeants           → page famille 3 formats (sous /un-a-un)
+//
+// Supprimés :
+//   - /interventions (hub des 4 familles) → 301 → /interventions/collectives
+//   - Famille « conference » (hub + 2 formats détail) → 301 → /interventions/collectives
 //
 // V1 = catalogue codé en TS. V2 (Sprint dédié, ADR-0011) = vue Prisma alimentée
 // par `/admin/catalog` avec slug history + 301 auto. L'API publique de ce module
@@ -28,7 +34,7 @@ import { INTERVENTION_TIERS, formatAmount, formatPrice, getTierById } from "./pr
 // Types
 // ============================================================================
 
-export type Family = "collectives" | "individuel" | "dirigeants" | "conference";
+export type Family = "collectives" | "individuel" | "dirigeants";
 
 /** Paliers durée — UNIQUEMENT pour la famille `collectives`. */
 export type CollectiveDuration = "4h" | "1-jour" | "2-jours" | "3-jours-plus";
@@ -169,31 +175,6 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
     pathEn: "/interventions/executives",
     hasDurations: false,
     accent: "mocha",
-  },
-  {
-    // 4ème famille ajoutée Sprint 14.10.7 (Will, 2026-05-11) — la Conférence
-    // mérite son propre bloc famille au même niveau que les autres. Elle était
-    // précédemment classée dans Collectives/1-jour mais ne colle pas vraiment
-    // à la grammaire « formations équipe » : c'est une plénière grands effectifs
-    // qui s'adresse à toute l'entreprise.
-    id: "conference",
-    slug: "conference",
-    labelFr: "Conférence",
-    labelEn: "Talk",
-    taglineFr:
-      "Plénière 1 journée pour mettre toute l'entreprise au même niveau IA — séminaires, kick-off annuels, grands effectifs.",
-    taglineEn:
-      "1-day plenary to bring your whole company to the same AI level — seminars, annual kick-offs, large audiences.",
-    // Sprint 14.10.7 (Will 2026-05-12) — `/interventions/conference` est
-    // désormais un HUB FAMILLE listant les 2 formats Conférence. Chaque format
-    // a sa page détail dédiée (cf. pathFr des entries `conference`,
-    // `conference-keynote`).
-    pathFr: "/interventions/conference",
-    pathEn: "/interventions/conference",
-    hasDurations: false,
-    // Sprint 14.10.7 fix charte couleur (Will 2026-05-11) : terracotta
-    // (orange brûlé Axion-IA), comme toutes les familles non-Dirigeants.
-    accent: "terracotta",
   },
 ] as const;
 
@@ -504,68 +485,6 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     accent: "claude",
     badgeFr: "Outil · Claude",
     badgeEn: "Tool · Claude",
-  },
-
-  // -------------------------------------------------------------------------
-  // FAMILLE : Conférence (liste plate, pas de paliers durée)
-  // Sprint 14.10.7 — extraite de Collectives/1-jour pour devenir une famille
-  // à part entière. Décision Will (2026-05-11).
-  // 2 formats distincts (Will 2026-05-12) :
-  //   1. `conference` — plénière 1 journée immersive (séminaire, kick-off
-  //      annuel, formation large échelle)
-  //   2. `conference-keynote` — keynote courte 1-2 h, en soirée / afterwork
-  //      / intégrée dans un événement client. Pas de redondance avec la
-  //      plénière (durée, format, contexte différents).
-  // -------------------------------------------------------------------------
-  {
-    slug: "conference",
-    family: "conference",
-    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée. `/interventions/conference`
-    // devient le hub famille (lister les 2 formats Conférence).
-    pathFr: "/interventions/conference-pleniere",
-    pathEn: "/interventions/conference-plenary",
-    labelFr: "Conférence plénière",
-    labelEn: "Plenary talk",
-    taglineFr:
-      "Plénière 1 journée pour mettre toute l'entreprise au même niveau IA — séminaires internes, kick-off annuels, formations grande échelle. Panorama IA 2026, démos live, Q&A, ateliers par groupes.",
-    taglineEn:
-      "1-day plenary to bring your whole company to the same AI level — internal seminars, annual kick-offs, large-scale onboarding. 2026 AI panorama, live demos, Q&A, group workshops.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    groupSizeFr: "Grands effectifs · 30 à 500+ personnes",
-    groupSizeEn: "Large audiences · 30 to 500+ people",
-    audienceFr: "Toute l'entreprise au même niveau IA en 1 journée",
-    audienceEn: "Whole company at the same AI level in 1 day",
-    accent: "terracotta",
-    badgeFr: "Plénière · 1 journée",
-    badgeEn: "Plenary · 1 day",
-  },
-  {
-    // Sprint 14.10.7 (Will 2026-05-12) — 2ᵉ format Conférence : keynote
-    // courte 1-2 h, en soirée ou intégrée dans un événement (afterwork,
-    // soirée client, séminaire externe). Format ÉVÉNEMENTIEL — pas un
-    // remplaçant de la plénière journée, un complément pour les contextes
-    // où la journée pleine ne colle pas.
-    slug: "conference-keynote",
-    family: "conference",
-    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée.
-    pathFr: "/interventions/conference-keynote",
-    pathEn: "/interventions/conference-keynote",
-    labelFr: "Keynote IA · événementielle",
-    labelEn: "AI Keynote · event format",
-    taglineFr:
-      "Keynote 1 à 2 heures sur l'IA opérationnelle 2026 — pour soirées clients, afterworks d'entreprise, séminaires externes, conventions, salons. Format dense, percutant, accessible à tous. Q&A live à la fin.",
-    taglineEn:
-      "1 to 2 hour keynote on operational AI 2026 — for client evenings, corporate afterworks, external seminars, conventions, trade shows. Dense, impactful, accessible to all. Live Q&A at the end.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    groupSizeFr: "Audience événement · 20 à 500+ personnes",
-    groupSizeEn: "Event audience · 20 to 500+ people",
-    audienceFr: "Événements clients, afterworks, conventions, salons",
-    audienceEn: "Client events, afterworks, conventions, trade shows",
-    accent: "terracotta",
-    badgeFr: "Keynote · 1-2 h · soirée OK",
-    badgeEn: "Keynote · 1-2 h · evening OK",
   },
 
   // -------------------------------------------------------------------------

@@ -82,18 +82,6 @@ export const routing = defineRouting({
       fr: "/interventions/approfondie",
       en: "/interventions/deep-dive",
     },
-    "/interventions/conference": {
-      fr: "/interventions/conference",
-      en: "/interventions/conference",
-    },
-    "/interventions/conference-pleniere": {
-      fr: "/interventions/conference-pleniere",
-      en: "/interventions/conference-plenary",
-    },
-    "/interventions/conference-keynote": {
-      fr: "/interventions/conference-keynote",
-      en: "/interventions/conference-keynote",
-    },
     "/interventions/dirigeants": {
       fr: "/interventions/dirigeants",
       en: "/interventions/executives",

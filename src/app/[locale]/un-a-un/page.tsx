@@ -21,6 +21,7 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { UnAUnHero } from "@/components/services/un-a-un/UnAUnHero";
+import { UnAUnFormatsCards } from "@/components/services/un-a-un/UnAUnFormatsCards";
 import { UnAUnTarget } from "@/components/services/un-a-un/UnAUnTarget";
 import { UnAUnMethodology } from "@/components/services/un-a-un/UnAUnMethodology";
 import { UnAUnFaq } from "@/components/services/un-a-un/UnAUnFaq";
@@ -77,6 +78,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       </Container>
 
       <UnAUnHero isFr={isFr} />
+      <UnAUnFormatsCards isFr={isFr} />
       <UnAUnTarget isFr={isFr} />
       <UnAUnMethodology isFr={isFr} />
 

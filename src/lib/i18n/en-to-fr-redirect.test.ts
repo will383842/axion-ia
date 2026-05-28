@@ -71,11 +71,6 @@ describe("mapEnToFr", () => {
     it("/en/interventions/deep-dive → /fr/interventions/approfondie", () => {
       expect(mapEnToFr("/en/interventions/deep-dive")).toBe("/fr/interventions/approfondie");
     });
-    it("/en/interventions/conference-plenary → /fr/interventions/conference-pleniere", () => {
-      expect(mapEnToFr("/en/interventions/conference-plenary")).toBe(
-        "/fr/interventions/conference-pleniere",
-      );
-    });
     it("/en/interventions/executives → /fr/interventions/dirigeants", () => {
       expect(mapEnToFr("/en/interventions/executives")).toBe("/fr/interventions/dirigeants");
     });

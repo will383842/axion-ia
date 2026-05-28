@@ -1,33 +1,21 @@
 // Configs SSOT des pages détail format — Sprint 14.10.7 (Will 2026-05-12).
 //
 // Centralise le contenu de chaque page détail format (hero + chips + benefits
-// + programme + FAQ) pour les formats Dirigeants et Conférence (en plus
-// des coachings individuels et formations 4 h qui ont leur propre template).
+// + programme + FAQ) pour les formats Dirigeants + Claude Implementation
+// Individuel (les coachings individuels et formations 4 h ont leur propre
+// template). Famille Conférence retirée 2026-05-28.
 //
 // Avantage : 1 seule source de vérité pour le contenu format, le template
 // `InterventionDetailPage` rend chaque page de façon identique → harmonie
 // visuelle parfaite entre les pages.
 
-import {
-  Compass,
-  Sparkles,
-  TrendingUp,
-  Target,
-  Inbox,
-  Eye,
-  Lightbulb,
-  Users,
-  Mic,
-  Coffee,
-} from "lucide-react";
+import { Compass, Sparkles, TrendingUp, Target, Inbox, Eye, Lightbulb } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export type InterventionDetailSlug =
   | "dirigeant-productivite"
   | "dirigeant-vision-strategique"
   | "claude-dirigeant"
-  | "conference-pleniere"
-  | "conference-keynote"
   | "claude-implementation-individuel";
 
 export interface DetailBenefit {
@@ -57,8 +45,8 @@ export interface InterventionDetailConfig {
   slug: InterventionDetailSlug;
   /** Slug du format dans INTERVENTION_FORMATS pour lookup taxonomy. */
   formatSlug: string;
-  /** Famille pour breadcrumbs (collectives / individuel / dirigeants / conference). */
-  familySlug: "dirigeants" | "conference" | "individuel" | "collectives";
+  /** Famille pour breadcrumbs (collectives / individuel / dirigeants). */
+  familySlug: "dirigeants" | "individuel" | "collectives";
   /** Objet pré-rempli pour /interventions/demande. */
   contactObject: string;
   titleFr: string;
@@ -461,186 +449,6 @@ const CLAUDE_DIRIGEANT_FAQ: ReadonlyArray<DetailFaq> = [
 ];
 
 // ============================================================================
-// CONFÉRENCE — 2 formats (Plénière 1 j / Keynote 1-2 h)
-// ============================================================================
-
-const CONFERENCE_PLENIERE_BENEFITS: ReadonlyArray<DetailBenefit> = [
-  {
-    icon: Users,
-    titleFr: "Toute l'entreprise au même niveau",
-    titleEn: "Whole company at the same level",
-    bodyFr:
-      "En 1 journée, 30 à 500+ collaborateurs partagent le même socle IA 2026 : outils, usages, vocabulaire, limites. Plus de personnes perdues, plus de fantasmes — un référentiel commun pour avancer.",
-    bodyEn:
-      "In 1 day, 30 to 500+ employees share the same 2026 AI foundation: tools, uses, vocabulary, limits. No more lost people, no more fantasies — a common reference to move forward.",
-  },
-  {
-    icon: Sparkles,
-    titleFr: "Démos live sur cas réels",
-    titleEn: "Live demos on real cases",
-    bodyFr:
-      "Pas de slides théoriques. Des exemples concrets de votre secteur testés en live devant l'audience : rédaction, analyse, recherche, synthèse. Tout le monde voit l'IA opérer en temps réel.",
-    bodyEn:
-      "No theoretical slides. Concrete examples from your sector tested live for the audience: writing, analysis, research, synthesis. Everyone sees AI operate in real time.",
-  },
-  {
-    icon: Compass,
-    titleFr: "Ateliers groupes pratiques",
-    titleEn: "Practical group workshops",
-    bodyFr:
-      "Pendant la journée, ateliers en petits groupes : chaque participant manipule l'IA sur ses vrais outils, ses vrais cas. Apprentissage actif, pas passif.",
-    bodyEn:
-      "During the day, small-group workshops: each participant manipulates AI on their real tools, their real cases. Active learning, not passive.",
-  },
-  {
-    icon: Target,
-    titleFr: "Q&A complète + ressources",
-    titleEn: "Full Q&A + takeaways",
-    bodyFr:
-      "Session Q&A finale ouverte (30-45 min) + ressources pédagogiques fournies (référentiel outils, prompts type, lectures recommandées) pour prolonger après la journée.",
-    bodyEn:
-      "Final open Q&A session (30-45 min) + learning takeaways (tool reference, sample prompts, recommended reading) to extend beyond the day.",
-  },
-];
-
-const CONFERENCE_PLENIERE_SCHEDULE: ReadonlyArray<DetailScheduleItem> = [
-  {
-    time: "9 h 00",
-    titleFr: "Accueil + cadrage des thèmes",
-    titleEn: "Welcome + theme framing",
-  },
-  {
-    time: "9 h 30",
-    titleFr: "Conférence — panorama IA opérationnelle 2026",
-    titleEn: "Talk — 2026 operational AI panorama",
-    descriptionFr: "2 h · outils principaux + démos live + idées d'usages par secteur.",
-    descriptionEn: "2 h · main tools + live demos + use-case ideas by sector.",
-  },
-  {
-    time: "11 h 30",
-    titleFr: "Pause",
-    titleEn: "Break",
-  },
-  {
-    time: "11 h 45",
-    titleFr: "Ateliers pratiques par groupes",
-    titleEn: "Hands-on group workshops",
-    descriptionFr: "1 h 15 · mise en pratique sur les cas d'usage métier.",
-    descriptionEn: "1 h 15 · applied practice on domain use cases.",
-  },
-  {
-    time: "13 h 00",
-    titleFr: "Pause déjeuner",
-    titleEn: "Lunch break",
-  },
-  {
-    time: "14 h 00",
-    titleFr: "Démos live + retours d'ateliers",
-    titleEn: "Live demos + workshop debrief",
-    descriptionFr: "2 h · approfondissement et confrontation à la réalité terrain.",
-    descriptionEn: "2 h · deepening and confrontation with field reality.",
-  },
-  {
-    time: "16 h 00",
-    titleFr: "Pause",
-    titleEn: "Break",
-  },
-  {
-    time: "16 h 15",
-    titleFr: "Q&A ouverte",
-    titleEn: "Open Q&A",
-    descriptionFr: "45 min · questions libres et plan d'action.",
-    descriptionEn: "45 min · open questions and action plan.",
-  },
-  {
-    time: "17 h 00",
-    titleFr: "Ressources pédagogiques fournies + clôture",
-    titleEn: "Learning takeaways shared + close",
-  },
-];
-
-const CONFERENCE_PLENIERE_FAQ: ReadonlyArray<DetailFaq> = [
-  {
-    qFr: "Combien de personnes peut-on accueillir ?",
-    qEn: "How many people can attend?",
-    aFr: "De 30 à 500+ personnes. Au-delà de 200, prévoir une organisation salle plénière + sous-salles ateliers. On cadre l'effectif et le format en amont par appel.",
-    aEn: "From 30 to 500+ people. Beyond 200, plan a plenary room + workshop sub-rooms setup. We frame headcount and format upstream by call.",
-  },
-  {
-    qFr: "Faut-il préparer quelque chose en amont ?",
-    qEn: "Anything to prepare upstream?",
-    aFr: "Quelques éléments : effectifs précis, profils types, 3-5 cas métier prioritaires pour adapter les démos, accès Wi-Fi salle, support écran. On envoie une checklist 15 jours avant.",
-    aEn: "A few things: precise headcount, typical profiles, 3-5 priority business cases to adapt demos, room Wi-Fi, screen support. We send a checklist 15 days before.",
-  },
-  {
-    qFr: "Et après la conférence ?",
-    qEn: "What about after the conference?",
-    aFr: "Les participants repartent avec un référentiel outils + prompts. Si vous voulez approfondir avec certaines équipes, basculer vers l'Approfondie 2 jours ou les coachings individuels. La conférence amorce, les formations transforment.",
-    aEn: "Participants leave with a tool + prompt reference. To go further with specific teams, switch to the 2-day Deep Dive or individual coachings. The conference kicks off, trainings transform.",
-  },
-];
-
-const CONFERENCE_KEYNOTE_BENEFITS: ReadonlyArray<DetailBenefit> = [
-  {
-    icon: Mic,
-    titleFr: "Format dense et percutant",
-    titleEn: "Dense, impactful format",
-    bodyFr:
-      "1 à 2 heures concentrées : panorama IA 2026, démos live percutantes, exemples concrets de votre secteur. Pas de blabla — chaque minute compte pour marquer l'audience.",
-    bodyEn:
-      "1 to 2 concentrated hours: 2026 AI panorama, impactful live demos, concrete examples from your sector. No fluff — every minute counts to mark the audience.",
-  },
-  {
-    icon: Coffee,
-    titleFr: "Adapté aux contextes événementiels",
-    titleEn: "Adapted to event contexts",
-    bodyFr:
-      "Soirée client, afterwork d'entreprise, séminaire externe, convention, salon. Format calibré pour fonctionner après une journée de travail ou intégré dans un événement plus large.",
-    bodyEn:
-      "Client evening, corporate afterwork, external seminar, convention, trade show. Format calibrated to work after a workday or integrated in a larger event.",
-  },
-  {
-    icon: Sparkles,
-    titleFr: "Démos live, pas slides",
-    titleEn: "Live demos, not slides",
-    bodyFr:
-      "Pendant la keynote : démos live sur des cas réels — l'audience voit l'IA opérer, pas une présentation théorique. Mémorable et concret.",
-    bodyEn:
-      "During the keynote: live demos on real cases — the audience sees AI operate, not a theoretical presentation. Memorable and concrete.",
-  },
-  {
-    icon: Target,
-    titleFr: "Q&A finale ouverte",
-    titleEn: "Open final Q&A",
-    bodyFr:
-      "15 à 30 minutes de Q&A en fin de keynote pour répondre aux vraies questions de votre audience. Format propice aux échanges directs.",
-    bodyEn:
-      "15 to 30 minutes of Q&A at the end of the keynote to answer your audience's real questions. Format conducive to direct exchanges.",
-  },
-];
-
-const CONFERENCE_KEYNOTE_FAQ: ReadonlyArray<DetailFaq> = [
-  {
-    qFr: "Quel public-type pour la keynote ?",
-    qEn: "Which audience profile for the keynote?",
-    aFr: "Clients, prospects, partenaires, collaborateurs lors d'un événement externe ou interne. Tous niveaux IA acceptés — le format est calibré pour parler à tout le monde, du débutant au curieux confirmé.",
-    aEn: "Clients, prospects, partners, employees at an external or internal event. All AI levels welcome — the format is calibrated to speak to everyone, from beginner to seasoned curious.",
-  },
-  {
-    qFr: "Combien de personnes maximum ?",
-    qEn: "Maximum audience size?",
-    aFr: "Jusqu'à 500+ personnes. Le format keynote scale bien — l'interaction passe par la Q&A finale, pas par des ateliers. Plus l'audience est large, plus on calibre les démos pour parler à tous.",
-    aEn: "Up to 500+ people. The keynote format scales well — interaction happens through the final Q&A, not workshops. The larger the audience, the more we calibrate demos to speak to everyone.",
-  },
-  {
-    qFr: "Peut-on combiner keynote + ateliers le lendemain ?",
-    qEn: "Can we combine keynote + workshops the next day?",
-    aFr: "Oui — c'est même un excellent format : keynote soir J pour marquer + Approfondie 2 jours J+1 pour les équipes prioritaires. On packagize sur devis.",
-    aEn: "Yes — it's actually an excellent format: evening keynote on day D for impact + 2-day Deep Dive on D+1 for priority teams. We package on request.",
-  },
-];
-
-// ============================================================================
 // INDIVIDUEL — Claude Implementation
 // ============================================================================
 
@@ -836,50 +644,6 @@ export const INTERVENTION_DETAIL_CONFIGS: Record<InterventionDetailSlug, Interve
       faq: CLAUDE_DIRIGEANT_FAQ,
       groupSizeFr: "1 dirigeant (1-to-1 strict)",
       groupSizeEn: "1 executive (strict 1-on-1)",
-    },
-    "conference-pleniere": {
-      slug: "conference-pleniere",
-      formatSlug: "conference",
-      familySlug: "conference",
-      contactObject: "conference",
-      titleFr: "Conférence plénière",
-      titleEn: "Plenary talk",
-      titleEmFr: "1 journée immersive",
-      titleEmEn: "1 immersive day",
-      promiseFr:
-        "Plénière 1 journée pour mettre toute l'entreprise au même niveau IA — séminaires internes, kick-off annuels, formations grande échelle. 30 à 500+ personnes, panorama IA 2026, démos live, ateliers groupes, Q&A complète. Tout le monde repart au même niveau.",
-      promiseEn:
-        "1-day plenary to bring your whole company to the same AI level — internal seminars, annual kick-offs, large-scale onboarding. 30 to 500+ people, 2026 AI panorama, live demos, group workshops, full Q&A. Everyone leaves at the same level.",
-      chipsFr: ["30 à 500+ personnes", "Démos live secteur", "Ressources fournies"],
-      chipsEn: ["30 to 500+ people", "Live sector demos", "Takeaways shared"],
-      benefits: CONFERENCE_PLENIERE_BENEFITS,
-      schedule: CONFERENCE_PLENIERE_SCHEDULE,
-      faq: CONFERENCE_PLENIERE_FAQ,
-      groupSizeFr: "Grands effectifs · 30 à 500+ personnes",
-      groupSizeEn: "Large audiences · 30 to 500+ people",
-    },
-    "conference-keynote": {
-      slug: "conference-keynote",
-      formatSlug: "conference-keynote",
-      familySlug: "conference",
-      contactObject: "conference-keynote",
-      titleFr: "Keynote IA · événementielle",
-      titleEn: "AI Keynote · event format",
-      titleEmFr: "1 à 2 h pour marquer",
-      titleEmEn: "1 to 2 hours to mark",
-      promiseFr:
-        "Keynote 1 à 2 heures sur l'IA opérationnelle 2026 — pour soirées clients, afterworks d'entreprise, séminaires externes, conventions, salons. Format dense, percutant, démos live, Q&A finale. L'audience repart marquée et inspirée.",
-      promiseEn:
-        "1 to 2 hour keynote on operational AI 2026 — for client evenings, corporate afterworks, external seminars, conventions, trade shows. Dense, impactful, live demos, final Q&A. The audience leaves marked and inspired.",
-      chipsFr: ["Format soir OK", "20 à 500+ personnes", "Démos live percutantes"],
-      chipsEn: ["Evening OK", "20 to 500+ people", "Impactful live demos"],
-      benefits: CONFERENCE_KEYNOTE_BENEFITS,
-      schedule: null, // Pas de programme fixe — adapté à l'événement
-      scheduleTitleFr: "Format flexible",
-      scheduleTitleEn: "Flexible format",
-      faq: CONFERENCE_KEYNOTE_FAQ,
-      groupSizeFr: "Audience événement · 20 à 500+ personnes",
-      groupSizeEn: "Event audience · 20 to 500+ people",
     },
     "claude-implementation-individuel": {
       slug: "claude-implementation-individuel",

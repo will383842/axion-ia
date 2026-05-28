@@ -47,7 +47,6 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/interventions/advanced-coaching", "/fr/interventions/coaching-avance"],
   ["/en/interventions/essential", "/fr/interventions/essentielle"],
   ["/en/interventions/deep-dive", "/fr/interventions/approfondie"],
-  ["/en/interventions/conference-plenary", "/fr/interventions/conference-pleniere"],
   ["/en/interventions/executive-productivity", "/fr/interventions/dirigeant-productivite"],
   [
     "/en/interventions/executive-strategic-vision",

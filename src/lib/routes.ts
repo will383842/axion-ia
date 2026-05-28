@@ -35,11 +35,11 @@ export const ROUTES = {
   glossary: "/glossaire",
   guideAi: "/guide-ia",
 
-  // Module 1 — Interventions
-  interventions: "/interventions",
+  // Module 1 — Interventions (hub /interventions supprimé refonte 2026-05-28 :
+  // 301 → /interventions/collectives. Famille Conférence supprimée entièrement.)
+  interventions: "/interventions/collectives",
   interventionsEssentielle: "/interventions/essentielle",
   interventionsApprofondie: "/interventions/approfondie",
-  interventionsConference: "/interventions/conference",
   interventionsDirigeants: "/interventions/dirigeants",
   interventionsGagnerDuTemps: "/interventions/gagner-du-temps",
   interventionsClaude: "/interventions/intervention-claude",

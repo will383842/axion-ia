@@ -60,7 +60,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
   const formats = getFormatsByFamily("dirigeants");
 
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions entreprise" : "Corporate AI sessions" },
+    { href: "/un-a-un", label: isFr ? "Accompagnement 1-to-1" : "1-to-1 coaching" },
     {
       href: "/interventions/dirigeants",
       label: isFr ? family.labelFr : family.labelEn,
@@ -184,8 +184,8 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Pré-réservez une journée" : "Pre-book a day"}
               </Cta>
-              <Cta href="/interventions" variant="outline" size="lg">
-                {isFr ? "← Retour aux familles" : "← Back to families"}
+              <Cta href="/un-a-un" variant="outline" size="lg">
+                {isFr ? "← Retour au 1-to-1" : "← Back to 1-to-1"}
               </Cta>
             </div>
           </div>
@@ -247,12 +247,12 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         </div>
         <div className="mt-8 flex justify-center">
           <Link
-            href="/interventions"
+            href="/un-a-un"
             className="text-fg hover:text-terracotta-deep text-sm font-medium underline underline-offset-4"
           >
             {isFr
-              ? "Pas sûr·e que c'est le bon format ? Voir les 4 familles →"
-              : "Not sure it's the right format? See the 4 families →"}
+              ? "Pas sûr·e que c'est le bon format ? Voir le hub 1-to-1 →"
+              : "Not sure it's the right format? See the 1-to-1 hub →"}
           </Link>
         </div>
       </Section>

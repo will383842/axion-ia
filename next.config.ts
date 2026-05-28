@@ -224,7 +224,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale(fr|en)/implantations/:region/:ville/interventions",
-        destination: "/:locale/interventions",
+        destination: "/:locale/interventions/collectives",
         permanent: true,
       },
       {
@@ -250,7 +250,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale(fr|en)/locations/:region/:ville/interventions",
-        destination: "/:locale/interventions",
+        destination: "/:locale/interventions/collectives",
         permanent: true,
       },
       {
@@ -266,6 +266,32 @@ const nextConfig: NextConfig = {
       {
         source: "/:locale(fr|en)/locations/:region/:ville/sites-web-ia",
         destination: "/:locale/sites-web-augmentes",
+        permanent: true,
+      },
+      // Refonte /interventions 2026-05-28 — simplification radicale du hub.
+      // Le hub des 4 familles `/interventions` est supprimé (devenu redondant
+      // après extraction du 1-to-1 vers `/un-a-un` et suppression de la
+      // famille Conférence). La page formations équipe `/interventions/collectives`
+      // devient la destination par défaut de `/interventions`. La famille
+      // Conférence est entièrement supprimée (3 pages : hub + 2 formats).
+      {
+        source: "/:locale(fr|en)/interventions",
+        destination: "/:locale/interventions/collectives",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/conference",
+        destination: "/:locale/interventions/collectives",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/conference-pleniere",
+        destination: "/:locale/interventions/collectives",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/interventions/conference-keynote",
+        destination: "/:locale/interventions/collectives",
         permanent: true,
       },
     ];
