@@ -711,31 +711,29 @@ export default async function CollectivesFamilyHub({ params }: Props) {
 
       {/* BANDEAU TERRACOTTA compact — pattern aligné sur la home (line 1288 de
           `/[locale]/page.tsx`) : section py-16 sm:py-20 flex horizontal
-          (texte gauche, CTAs droite). Beaucoup plus fin que le CtaBlock
-          épais (py-24/28/36). Sémantique SEO dense : formation IA en
-          entreprise, formateur IA expert, intervention sur site, montée en
-          compétence, vrais outils métier, gain de temps. CTAs alignés Header
-          (Primary bleu /appel + Secondary ivoire /contact). */}
+          (texte gauche, CTAs droite). Will 2026-05-28 — wording d'orientation
+          conversationnelle (vs bandeau sombre qui porte maintenant la
+          promesse formation IA / montée en compétence). CTAs alignés Header. */}
       <section className="bg-terracotta py-16 sm:py-20">
         <Container>
           <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
             <div className="max-w-2xl">
               <p className="text-mocha-fg/75 mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
-                {isFr ? "Formation IA en entreprise" : "Corporate AI training"}
+                {isFr ? "Pas sûr·e du bon format ?" : "Not sure which format?"}
               </p>
               <h2
                 className="text-mocha-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr ? "Faites monter en compétence" : "Upskill"}{" "}
+                {isFr ? "On vous oriente," : "We guide you,"}{" "}
                 <span className="text-paper italic" style={{ fontFamily: "var(--font-serif)" }}>
-                  {isFr ? "vos équipes à l'IA" : "your teams in AI"}
+                  {isFr ? "à votre rythme" : "at your pace"}
                 </span>
               </h2>
               <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">
                 {isFr
-                  ? "Un formateur IA expert intervient sur votre site. Vos équipes apprennent sur leurs vrais outils métier et gagnent des heures dès la 1ʳᵉ intervention."
-                  : "An expert AI trainer comes on site. Your teams learn on their real business tools and save hours from the very first session."}
+                  ? "Un appel pour comprendre votre contexte, vous conseiller la durée la plus adaptée à vos enjeux, et vous expliquer comment se déroule la formation. Sans engagement."
+                  : "A call to understand your context, advise the duration that fits your stakes, and explain how the training unfolds. No commitment."}
               </p>
             </div>
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
@@ -916,13 +914,13 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       </Section>
 
       <CtaBlock
-        eyebrow={isFr ? "Pas sûr·e du bon format ?" : "Not sure which format?"}
-        title={isFr ? "On vous oriente," : "We guide you,"}
-        titleEm={isFr ? "à votre rythme" : "at your pace"}
+        eyebrow={isFr ? "Formation IA en entreprise" : "Corporate AI training"}
+        title={isFr ? "Faites monter en compétence" : "Upskill"}
+        titleEm={isFr ? "vos équipes à l'IA" : "your teams in AI"}
         description={
           isFr
-            ? "Un appel pour comprendre votre contexte, vous conseiller la durée la plus adaptée à vos enjeux, et vous expliquer comment se déroule la formation. Sans engagement."
-            : "A call to understand your context, advise the duration that fits your stakes, and explain how the training unfolds. No commitment."
+            ? "Un formateur IA expert intervient sur votre site. Vos équipes apprennent sur leurs vrais outils métier et gagnent des heures dès la 1ʳᵉ intervention."
+            : "An expert AI trainer comes on site. Your teams learn on their real business tools and save hours from the very first session."
         }
         cta={
           // Sprint cohérence CTA 2026-05-28 (Will) — aligné Header primary :
