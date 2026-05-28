@@ -15,7 +15,12 @@ import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildServiceJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildImageGraphJsonLd,
+  buildHowToJsonLd,
+} from "@/lib/seo";
 import { UN_A_UN_TIERS, getEntryTier } from "@/content/pricing";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
@@ -67,6 +72,41 @@ export default async function UnAUnHubPage({ params }: Props) {
       : "Individual AI coaching: 1 employee coached by 1 Axion-IA expert. Sessions calibrated to the role, tools and objectives of the person. Anywhere in metropolitan France.",
     serviceType: isFr ? "Coaching IA individuel" : "Individual AI coaching",
     priceEur: entryTier.priceFlat ?? 990,
+  });
+
+  // HowTo JSON-LD — Sprint AEO Phase 3 2026-05-28 (Will). Process en 3
+  // étapes d'un coaching IA individuel 1-to-1 Axion-IA. Cité par AI
+  // Overviews / Perplexity sur requêtes « comment se passe un coaching IA »,
+  // « accompagnement IA 1-to-1 dirigeant ».
+  const unAUnHowToJsonLd = buildHowToJsonLd({
+    locale: isFr ? "fr" : "en",
+    path,
+    name: isFr
+      ? "Comment se passe un coaching IA individuel Axion-IA"
+      : "How an Axion-IA individual AI coaching works",
+    description: isFr
+      ? "3 étapes pour démarrer un coaching IA individuel 1-to-1 avec Axion-IA — du premier appel d'écoute aux sessions calibrées sur le poste et au bilan d'autonomie."
+      : "3 steps to start an individual 1-to-1 AI coaching with Axion-IA — from the first listening call to role-calibrated sessions and the autonomy review.",
+    steps: [
+      {
+        name: isFr ? "Premier appel d'écoute" : "First listening call",
+        text: isFr
+          ? "Appel de 30 minutes gratuit pour comprendre votre poste, vos outils actuels, vos objectifs et votre niveau IA. On valide ensemble si le format 1-to-1 est le plus adapté pour vous."
+          : "Free 30-minute call to understand your role, current tools, objectives and AI level. We jointly validate whether the 1-to-1 format fits best for you.",
+      },
+      {
+        name: isFr ? "Sessions calibrées sur le poste" : "Role-calibrated sessions",
+        text: isFr
+          ? "Sessions individuelles avec votre expert Axion-IA dédié, sur vos vrais cas et vos vrais outils. Sur site, à distance ou hybride. Cadence selon vos besoins (hebdo, bi-mensuel)."
+          : "Individual sessions with your dedicated Axion-IA expert, on your real cases and your real tools. On site, remote or hybrid. Pace based on your needs (weekly, bi-monthly).",
+      },
+      {
+        name: isFr ? "Bilan d'autonomie" : "Autonomy review",
+        text: isFr
+          ? "Bilan final mesuré : automatisations maîtrisées, gains de temps mesurés, autonomie acquise sur ChatGPT, Claude, Mistral et les outils de votre métier. Suite possible si besoin."
+          : "Final measured review: mastered automations, measured time savings, autonomy acquired on ChatGPT, Claude, Mistral and your business tools. Continuation possible if needed.",
+      },
+    ],
   });
 
   // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Portrait
@@ -138,6 +178,7 @@ export default async function UnAUnHubPage({ params }: Props) {
 
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={unAUnImagesJsonLd} />
+      <JsonLd data={unAUnHowToJsonLd} />
     </>
   );
 }

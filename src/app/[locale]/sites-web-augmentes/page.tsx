@@ -33,6 +33,7 @@ import {
   buildServiceJsonLd,
   buildItemListJsonLd,
   buildImageGraphJsonLd,
+  buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
@@ -127,6 +128,41 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
     ],
   });
 
+  // HowTo JSON-LD — Sprint AEO Phase 3 2026-05-28 (Will). Process en 3
+  // étapes pour créer un site web augmenté IA Axion-IA. Cité par AI
+  // Overviews / Perplexity sur « comment créer un site web IA »,
+  // « SaaS native IA process ».
+  const sitesWebHowToJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: "/sites-web-augmentes",
+    name: isFr
+      ? "Comment créer un site web augmenté IA Axion-IA"
+      : "How to build an AI-augmented website with Axion-IA",
+    description: isFr
+      ? "3 étapes pour concevoir, développer et lancer un site web augmenté IA ou SaaS native IA avec Axion-IA — agents conversationnels intégrés, recommandations IA, automatisations métier."
+      : "3 steps to design, build and launch an AI-augmented website or AI-native SaaS with Axion-IA — integrated conversational agents, AI recommendations, business automations.",
+    steps: [
+      {
+        name: isFr ? "Cadrage projet et UX" : "Project scoping and UX",
+        text: isFr
+          ? "Atelier de cadrage : audience cible, parcours utilisateur, agents IA à intégrer, sources de données. Wireframes UX et architecture technique validés ensemble."
+          : "Scoping workshop: target audience, user journey, AI agents to integrate, data sources. UX wireframes and technical architecture validated together.",
+      },
+      {
+        name: isFr ? "Design et développement" : "Design and development",
+        text: isFr
+          ? "Design éditorial responsive, développement Next.js + agents IA intégrés (Claude, ChatGPT, RAG sur vos données). Itérations courtes en sprint, démos hebdo en visio."
+          : "Responsive editorial design, Next.js development + integrated AI agents (Claude, ChatGPT, RAG on your data). Short sprint iterations, weekly video demos.",
+      },
+      {
+        name: isFr ? "Lancement et monitoring" : "Launch and monitoring",
+        text: isFr
+          ? "Mise en production, formation équipe interne, documentation. Monitoring Web Vitals et taux de conversion. Évolutions continues possibles en maintenance standard 290 € / mois."
+          : "Production launch, internal team training, documentation. Web Vitals and conversion rate monitoring. Continuous evolutions possible under standard maintenance €290/month.",
+      },
+    ],
+  });
+
   // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
   // équipe + portrait fondateur pour visibilité Google Images + citation
   // AI Overviews sur requêtes « site web IA », « SaaS native IA »,
@@ -170,6 +206,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
         scriptId="jsonld-sites-web-augmentes-itemlist"
       />
       <JsonLd data={sitesWebImagesJsonLd} />
+      <JsonLd data={sitesWebHowToJsonLd} />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />

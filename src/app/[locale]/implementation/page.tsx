@@ -37,7 +37,12 @@ import {
   getEntryPriceEur,
   getTierById,
 } from "@/content/pricing";
-import { buildProductMetadata, buildServiceJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildImageGraphJsonLd,
+  buildHowToJsonLd,
+} from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
@@ -159,6 +164,41 @@ export default async function ImplementationListing({ params }: Props) {
     },
   };
 
+  // HowTo JSON-LD — Sprint AEO Phase 3 2026-05-28 (Will). Process en 3
+  // étapes d'une implémentation IA opérationnelle Axion-IA. Permet citation
+  // Perplexity / Claude.ai / Google AI Overviews sur « comment déployer
+  // une IA en entreprise », « process implémentation IA ».
+  const implementationHowToJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: "/implementation",
+    name: isFr
+      ? "Comment déployer une implémentation IA opérationnelle"
+      : "How to deploy an operational AI implementation",
+    description: isFr
+      ? "3 étapes pour cadrer, prototyper et mettre en production un cas IA opérationnel avec Axion-IA — agents conversationnels, automatisations métier, intégrations CRM/ERP."
+      : "3 steps to scope, prototype and deploy an operational AI use case with Axion-IA — conversational agents, business automations, CRM/ERP integrations.",
+    steps: [
+      {
+        name: isFr ? "Cadrage du cas d'usage" : "Use case scoping",
+        text: isFr
+          ? "Atelier de cadrage pour identifier le cas IA opérationnel prioritaire selon votre métier (lecture de factures, agents conversationnels, automatisation back-office, RAG CRM, etc.). ROI chiffré et planning."
+          : "Scoping workshop to identify the priority operational AI use case for your business (invoice reading, conversational agents, back-office automation, CRM RAG, etc.). Quantified ROI and timeline.",
+      },
+      {
+        name: isFr ? "POC et MVP en 2-4 semaines" : "POC and MVP in 2-4 weeks",
+        text: isFr
+          ? "Prototype fonctionnel rapide pour valider le cas sur vos vraies données. MVP livré, équipe formée sur l'outil, KPI de qualité mesurés. Itérations courtes selon vos retours."
+          : "Fast functional prototype to validate the case on your real data. MVP delivered, team trained on the tool, quality KPIs measured. Short iterations based on your feedback.",
+      },
+      {
+        name: isFr ? "Mise en production et suivi" : "Production deployment and follow-up",
+        text: isFr
+          ? "Déploiement en production avec monitoring, formation équipe et documentation. Suivi 30 jours inclus, option maintenance standard 290 € / mois pour évolutions continues."
+          : "Production deployment with monitoring, team training and documentation. 30-day follow-up included, standard maintenance option €290/month for continuous evolutions.",
+      },
+    ],
+  });
+
   // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
   // équipe + portrait fondateur pour signal AEO Google Images +
   // citation AI Overviews sur requêtes « implémentation IA », « agents IA
@@ -197,6 +237,7 @@ export default async function ImplementationListing({ params }: Props) {
     <>
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={implementationImagesJsonLd} />
+      <JsonLd data={implementationHowToJsonLd} />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>

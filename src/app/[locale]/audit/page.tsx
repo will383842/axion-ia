@@ -33,6 +33,7 @@ import {
   buildServiceJsonLd,
   buildItemListJsonLd,
   buildImageGraphJsonLd,
+  buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -108,6 +109,39 @@ export default async function AuditHub({ params }: Props) {
       ? "4 niveaux d'audit IA selon la taille de l'entreprise et la situation. France & international."
       : "4 AI audit levels by company size and situation. France & international.",
     serviceType: "AI audit",
+  });
+
+  // HowTo JSON-LD — Sprint AEO Phase 3 2026-05-28 (Will). Process en 3
+  // étapes pour réserver et dérouler un audit IA Axion-IA. Permet citation
+  // par Perplexity / Claude.ai / Google AI Overviews sur requêtes « comment
+  // faire un audit IA », « comment se passe un audit IA ».
+  const auditHowToJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: "/audit",
+    name: isFr ? "Comment réserver un audit IA Axion-IA" : "How to book an Axion-IA AI audit",
+    description: isFr
+      ? "3 étapes pour cadrer et organiser votre audit IA stratégique avec Axion-IA — du premier contact à la restitution finale avec roadmap 6-12 mois."
+      : "3 steps to scope and run your strategic AI audit with Axion-IA — from first contact to final read-out with 6-12 month roadmap.",
+    steps: [
+      {
+        name: isFr ? "Décrivez votre contexte" : "Describe your context",
+        text: isFr
+          ? "Formulaire en ligne, appel téléphonique ou échange direct. Nous explorons votre effectif, votre secteur, votre maturité IA actuelle et vos objectifs business."
+          : "Online form, phone call or direct chat. We explore your headcount, sector, current AI maturity and business objectives.",
+      },
+      {
+        name: isFr ? "Niveau d'audit calibré" : "Calibrated audit tier",
+        text: isFr
+          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Flash (TPE), Ciblé (PME), Stratégique PME ou Stratégique ETI. Devis transparent sous 48 h ouvrées."
+          : "We recommend the optimal AI audit tier based on your size: Flash (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote within 48 business hours.",
+      },
+      {
+        name: isFr ? "Kick-off et restitution" : "Kick-off and read-out",
+        text: isFr
+          ? "Audit conduit sur 2 à 6 semaines selon le niveau choisi. Restitution finale avec cartographie IA, ROI chiffré par cas d'usage prioritaire, et roadmap 6-12 mois d'implémentation."
+          : "Audit conducted over 2 to 6 weeks depending on chosen tier. Final read-out with AI mapping, quantified ROI per priority use case, and 6-12 month implementation roadmap.",
+      },
+    ],
   });
 
   // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
@@ -252,6 +286,7 @@ export default async function AuditHub({ params }: Props) {
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-audit-itemlist" />
       <JsonLd data={auditImagesJsonLd} />
+      <JsonLd data={auditHowToJsonLd} />
     </>
   );
 }
