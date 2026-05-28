@@ -26,22 +26,18 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
     audit: {
       fr: "Audit IA à Rosny-sous-Bois : diagnostic pour TPE commerce de détail des galeries Westfield Rosny 2 et Domus, PME BTP, sociétés de services numériques et fournisseurs de l'IGN. Cas d'usage typiques : prévision stocks, chatbot SAV, classification documents, optimisation tournées. Audit Flash 490 € HT, ROI chiffré.",
       en: "Audit IA à Rosny-sous-Bois : diagnostic pour TPE commerce de détail des galeries Westfield Rosny 2 et Domus, PME BTP, sociétés de services numériques et fournisseurs de l'IGN. Cas d'usage typiques : prévision stocks, chatbot SAV, classification documents, optimisation tournées. Audit Flash 490 € HT, ROI chiffré.",
-
     },
     interventions: {
       fr: "Interventions IA sur site à Rosny-sous-Bois : ateliers pour TPE commerçantes (Westfield Rosny 2, Domus), PME BTP et services informatiques. Équipes autonomes sur outils IA métier. Déplacement depuis Paris via RER E (25 min Châtelet) ou métro ligne 11 (terminus Rosny-Bois-Perrier).",
       en: "Interventions IA sur site à Rosny-sous-Bois : ateliers pour TPE commerçantes (Westfield Rosny 2, Domus), PME BTP et services informatiques. Équipes autonomes sur outils IA métier. Déplacement depuis Paris via RER E (25 min Châtelet) ou métro ligne 11 (terminus Rosny-Bois-Perrier).",
-
     },
     implementation: {
       fr: "Implémentation IA à Rosny-sous-Bois : prévision de demande pour commerces Westfield, chatbot SAV centres commerciaux, automatisation devis BTP, classification documentaire pour PME tertiaires, agents IA cartographie pour écosystème IGN. Code custom, pas de no-code.",
       en: "Implémentation IA à Rosny-sous-Bois : prévision de demande pour commerces Westfield, chatbot SAV centres commerciaux, automatisation devis BTP, classification documentaire pour PME tertiaires, agents IA cartographie pour écosystème IGN. Code custom, pas de no-code.",
-
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Rosny-sous-Bois : sessions sur site ou en visio pour dirigeants TPE commerce de détail, gérants PME BTP, responsables sociétés de services numériques et fournisseurs de l'IGN.",
       en: "Coaching 1-to-1 à Rosny-sous-Bois : sessions sur site ou en visio pour dirigeants TPE commerce de détail, gérants PME BTP, responsables sociétés de services numériques et fournisseurs de l'IGN.",
-
     },
   },
   faqGeolocalisee: [
