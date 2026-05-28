@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Conflans-Sainte-Honorine (78, Yvelines) — Capitale de la batellerie, confluence Seine-Oise, transport fluvial.
 
 import type { VilleCopy } from "./types";
 
 export const CONFLANS_SAINTE_HONORINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Conflans-Sainte-Honorine pour accompagner les entreprises locales dans l'intégration de l'IA. Cette ville, proche de Paris, est un centre d'activités avec des entreprises telles que Renault et SNCF.",
+    "Conflans-Sainte-Honorine, capitale historique de la batellerie à la confluence de la Seine et de l'Oise, vit du transport fluvial, du commerce et des services de proximité. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME du nord des Yvelines pour automatiser sans recruter.",
   pitchEn:
-    "Axion-IA intervient à Conflans-Sainte-Honorine pour accompagner les entreprises locales dans l'intégration de l'IA. Cette ville, proche de Paris, est un centre d'activités avec des entreprises telles que Renault et SNCF.",
+    "Conflans-Sainte-Honorine, capitale historique de la batellerie à la confluence de la Seine et de l'Oise, vit du transport fluvial, du commerce et des services de proximité. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME du nord des Yvelines pour automatiser sans recruter.",
   directAnswerFr:
-    "À Conflans-Sainte-Honorine, Axion-IA propose des services adaptés aux entreprises du commerce de détail et de la construction. Avec des entités comme Renault et la Zone d'Activités des Boutries, notre cabinet se déplace pour optimiser vos processus. Nos audits commencent à et nos interventions.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Conflans-Sainte-Honorine (78) et dans le nord des Yvelines. Nous accompagnons en priorité les TPE puis les PME : bateliers et acteurs du transport fluvial, artisans du BTP, commerces, professions libérales et PME de services. Audit, interventions et implémentation pour automatiser devis, relances et gestion administrative, avec des livrables documentés et sans dépendance technique imposée.",
   directAnswerEn:
-    "À Conflans-Sainte-Honorine, Axion-IA propose des services adaptés aux entreprises du commerce de détail et de la construction. Avec des entités comme Renault et la Zone d'Activités des Boutries, notre cabinet se déplace pour optimiser vos processus. Nos audits commencent à et nos interventions.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Conflans-Sainte-Honorine (78) et dans le nord des Yvelines. Nous accompagnons en priorité les TPE puis les PME : bateliers et acteurs du transport fluvial, artisans du BTP, commerces, professions libérales et PME de services. Audit, interventions et implémentation pour automatiser devis, relances et gestion administrative, avec des livrables documentés et sans dépendance technique imposée.",
+  seoHook: "fluvial, BTP & commerce",
   ecosystemFr:
-    "Conflans-Sainte-Honorine abrite Renault et la SNCF. Ces grands groupes, associés à la Zone d'Activités des Boutries, forment un tissu économique diversifié où Axion-IA propose ses services IA.",
+    "Conflans-Sainte-Honorine est la capitale de la batellerie française, à la confluence de la Seine et de l'Oise. Le port fluvial, le musée de la Batellerie et la présence historique des familles de mariniers ont façonné une identité liée au transport fluvial de marchandises. Autour de ce socle gravitent des TPE et PME du BTP, du commerce, de l'artisanat et des services, ainsi que la zone d'activités des Boutries. Bien reliée à Paris et à la confluence logistique de la Seine, la commune accueille des entreprises de proximité. Axion-IA y déploie des chantiers IA calibrés pour des TPE et petites PME.",
   ecosystemEn:
-    "Conflans-Sainte-Honorine abrite Renault et la SNCF. Ces grands groupes, associés à la Zone d'Activités des Boutries, forment un tissu économique diversifié où Axion-IA propose ses services IA.",
+    "Conflans-Sainte-Honorine est la capitale de la batellerie française, à la confluence de la Seine et de l'Oise. Le port fluvial, le musée de la Batellerie et la présence historique des familles de mariniers ont façonné une identité liée au transport fluvial de marchandises. Autour de ce socle gravitent des TPE et PME du BTP, du commerce, de l'artisanat et des services, ainsi que la zone d'activités des Boutries. Bien reliée à Paris et à la confluence logistique de la Seine, la commune accueille des entreprises de proximité. Axion-IA y déploie des chantiers IA calibrés pour des TPE et petites PME.",
   distancesFr:
-    "Conflans-Sainte-Honorine se situe à 25 km de la Gare de Paris-Saint-Lazare et à 45 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "RER A et Transilien (gare de Conflans-Fin-d'Oise et Conflans-Sainte-Honorine) vers Paris-Saint-Lazare en environ 35 min. Cergy-Pontoise à 10 min, Poissy à 15 min. Aéroport de Paris-Charles-de-Gaulle à 45 min. Confluence Seine-Oise et port fluvial au cœur de la ville.",
   distancesEn:
-    "Conflans-Sainte-Honorine se situe à 25 km de la Gare de Paris-Saint-Lazare et à 45 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "RER A et Transilien (gare de Conflans-Fin-d'Oise et Conflans-Sainte-Honorine) vers Paris-Saint-Lazare en environ 35 min. Cergy-Pontoise à 10 min, Poissy à 15 min. Aéroport de Paris-Charles-de-Gaulle à 45 min. Confluence Seine-Oise et port fluvial au cœur de la ville.",
   topSectorsNaf: [
+    "Transport fluvial de fret et batellerie",
+    "Travaux de construction et artisanat du bâtiment",
     "Commerce de détail",
-    "Transports terrestres",
-    "Construction",
-    "Programmation informatique",
+    "Activités juridiques et comptables",
+    "Conseil et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Conflans-Sainte-Honorine auprès d'entreprises comme Renault — identifier les opportunités IA.",
-      en: "Réaliser un audit à Conflans-Sainte-Honorine auprès d'entreprises comme Renault — identifier les opportunités IA.",
+      fr: "Audit IA à Conflans-Sainte-Honorine : diagnostic pour TPE et PME du nord des Yvelines. On repère les automatisations utiles — devis, planning, suivi logistique fluvial, relances — à fort retour et sans recruter.",
+      en: "Audit IA à Conflans-Sainte-Honorine : diagnostic pour TPE et PME du nord des Yvelines. On repère les automatisations utiles — devis, planning, suivi logistique fluvial, relances — à fort retour et sans recruter.",
     },
     interventions: {
-      fr: "Intervenir à Conflans-Sainte-Honorine pour automatiser les processus chez les détaillants — réduire les coûts.",
-      en: "Intervenir à Conflans-Sainte-Honorine pour automatiser les processus chez les détaillants — réduire les coûts.",
+      fr: "Interventions IA sur site à Conflans-Sainte-Honorine : ateliers pour acteurs du transport fluvial, artisans du BTP et commerces. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
+      en: "Interventions IA sur site à Conflans-Sainte-Honorine : ateliers pour acteurs du transport fluvial, artisans du BTP et commerces. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Conflans-Sainte-Honorine dans le secteur de la construction — améliorer l'efficacité.",
-      en: "Implémenter des solutions IA à Conflans-Sainte-Honorine dans le secteur de la construction — améliorer l'efficacité.",
+      fr: "Implémentation IA à Conflans-Sainte-Honorine : automatisation des devis BTP, du suivi des transports fluviaux, des relances clients et de la gestion documentaire pour TPE et PME locales.",
+      en: "Implémentation IA à Conflans-Sainte-Honorine : automatisation des devis BTP, du suivi des transports fluviaux, des relances clients et de la gestion documentaire pour TPE et PME locales.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants à Conflans-Sainte-Honorine — maximiser le retour sur investissement IA.",
-      en: "Accompagner en un-à-un les dirigeants à Conflans-Sainte-Honorine — maximiser le retour sur investissement IA.",
+      fr: "Accompagnement un-à-un à Conflans-Sainte-Honorine : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du nord des Yvelines souhaitant adopter l'IA de façon maîtrisée.",
+      en: "Accompagnement un-à-un à Conflans-Sainte-Honorine : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du nord des Yvelines souhaitant adopter l'IA de façon maîtrisée.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Conflans-Sainte-Honorine : vitrine ou plateforme dotée d'IA pour artisans, commerces et acteurs du fluvial — devis en ligne, prise de rendez-vous, réponses clients automatisées.",
+      en: "Sites web augmentés à Conflans-Sainte-Honorine : vitrine ou plateforme dotée d'IA pour artisans, commerces et acteurs du fluvial — devis en ligne, prise de rendez-vous, réponses clients automatisées.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Conflans-Sainte-Honorine ?",
-      a: "Nos interventions à Conflans-Sainte-Honorine débutent à 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Conflans-Sainte-Honorine ?",
+      a: "Oui. Axion-IA se déplace à Conflans-Sainte-Honorine et dans le nord des Yvelines (Andrésy, Maurecourt, Achères, Poissy). Nos consultants interviennent sur site, y compris dans la zone des Boutries, ou en visio.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Conflans-Sainte-Honorine ?",
-      a: "Nous veillons à ce que toutes nos solutions respectent les normes RGPD, assurant la protection des données pour nos clients à Conflans-Sainte-Honorine.",
+      q: "Accompagnez-vous les acteurs du transport fluvial ?",
+      a: "Oui. Dans la capitale de la batellerie, nous accompagnons les bateliers et entreprises de transport fluvial avec des outils IA de gestion des rotations, de suivi de fret et de production des documents de transport.",
     },
     {
-      q: "Combien de temps faut-il pour une implémentation IA à Conflans-Sainte-Honorine ?",
-      a: "Le délai dépend du projet, mais nous nous efforçons de réaliser les implémentations dans des délais optimaux. Nos implémentations commencent à partir de 990 € HT.",
+      q: "Quels services pour les artisans du BTP de Conflans ?",
+      a: "Pour les artisans et TPE du BTP, nous automatisons la création des devis, les relances clients et le suivi des chantiers, en partant d'un Audit Flash ciblant les gains les plus immédiats.",
     },
     {
-      q: "Axion-IA peut-il se déplacer dans les zones industrielles de Conflans-Sainte-Honorine ?",
-      a: "Oui, notre équipe se déplace dans toutes les zones industrielles, y compris la Zone d'Activités des Boutries, pour réaliser nos prestations sur site.",
+      q: "Comment se déroule une mission à Conflans-Sainte-Honorine ?",
+      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes, sans dépendance technique durable.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Conflans-Sainte-Honorine ?",
+      a: "Toutes nos solutions IA respectent le RGPD et l'AI Act : minimisation des données, hébergement maîtrisé et traçabilité, intégrés dès la conception de chaque automatisation.",
     },
   ],
 };

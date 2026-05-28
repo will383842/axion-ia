@@ -1,0 +1,1405 @@
+{
+  "count": 100,
+  "villes": [
+    {
+      "slug": "sollies-pont",
+      "issues": [
+        "Chars uniques = 694 (<800)"
+      ],
+      "qualityScore": null,
+      "charsUnique": 694,
+      "nameFr": "Solliès-Pont",
+      "departement": "83",
+      "departementLabel": "83",
+      "region": "provence-alpes-cote-d-azur",
+      "regionLabel": "Provence-Alpes-Côte d'Azur",
+      "population": 12521
+    },
+    {
+      "slug": "escalquens",
+      "issues": [
+        "Chars uniques = 782 (<800)"
+      ],
+      "qualityScore": null,
+      "charsUnique": 782,
+      "nameFr": "Escalquens",
+      "departement": "31",
+      "departementLabel": "31",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 6924
+    },
+    {
+      "slug": "merville-31",
+      "issues": [
+        "Chars uniques = 792 (<800)"
+      ],
+      "qualityScore": null,
+      "charsUnique": 792,
+      "nameFr": "Merville",
+      "departement": "31",
+      "departementLabel": "31",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 6760
+    },
+    {
+      "slug": "chatou",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 800,
+      "nameFr": "Chatou",
+      "departement": "78",
+      "departementLabel": "78",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 30598
+    },
+    {
+      "slug": "bourges",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 801,
+      "nameFr": "Bourges",
+      "departement": "18",
+      "departementLabel": "18",
+      "region": "centre-val-de-loire",
+      "regionLabel": "Centre-Val de Loire",
+      "population": 64186
+    },
+    {
+      "slug": "les-ulis",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 802,
+      "nameFr": "Les Ulis",
+      "departement": "91",
+      "departementLabel": "91",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 25886
+    },
+    {
+      "slug": "bourg-en-bresse",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 803,
+      "nameFr": "Bourg-en-Bresse",
+      "departement": "01",
+      "departementLabel": "01",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 42372
+    },
+    {
+      "slug": "saint-denis-les-bourg",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 803,
+      "nameFr": "Saint-Denis-lès-Bourg",
+      "departement": "01",
+      "departementLabel": "01",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 6160
+    },
+    {
+      "slug": "oullins-pierre-benite",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 804,
+      "nameFr": "Oullins-Pierre-Bénite",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 38168
+    },
+    {
+      "slug": "dammarie-les-lys",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 805,
+      "nameFr": "Dammarie-les-Lys",
+      "departement": "77",
+      "departementLabel": "77",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 23559
+    },
+    {
+      "slug": "macon",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 805,
+      "nameFr": "Mâcon",
+      "departement": "71",
+      "departementLabel": "71",
+      "region": "bourgogne-franche-comte",
+      "regionLabel": "Bourgogne-Franche-Comté",
+      "population": 35177
+    },
+    {
+      "slug": "vaulx-en-velin",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 805,
+      "nameFr": "Vaulx-en-Velin",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 53069
+    },
+    {
+      "slug": "sucy-en-brie",
+      "issues": [
+        "Quality score gpt-4o = 55 (<75)"
+      ],
+      "qualityScore": 55,
+      "charsUnique": 807,
+      "nameFr": "Sucy-en-Brie",
+      "departement": "94",
+      "departementLabel": "94",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 27764
+    },
+    {
+      "slug": "montbeliard",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 808,
+      "nameFr": "Montbéliard",
+      "departement": "25",
+      "departementLabel": "25",
+      "region": "bourgogne-franche-comte",
+      "regionLabel": "Bourgogne-Franche-Comté",
+      "population": 24672
+    },
+    {
+      "slug": "poitiers",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 808,
+      "nameFr": "Poitiers",
+      "departement": "86",
+      "departementLabel": "86",
+      "region": "nouvelle-aquitaine",
+      "regionLabel": "Nouvelle-Aquitaine",
+      "population": 89916
+    },
+    {
+      "slug": "meyzieu",
+      "issues": [
+        "Quality score gpt-4o = 55 (<75)"
+      ],
+      "qualityScore": 55,
+      "charsUnique": 810,
+      "nameFr": "Meyzieu",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 36687
+    },
+    {
+      "slug": "olivet",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 810,
+      "nameFr": "Olivet",
+      "departement": "45",
+      "departementLabel": "45",
+      "region": "centre-val-de-loire",
+      "regionLabel": "Centre-Val de Loire",
+      "population": 23507
+    },
+    {
+      "slug": "velizy-villacoublay",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 810,
+      "nameFr": "Vélizy-Villacoublay",
+      "departement": "78",
+      "departementLabel": "78",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 23011
+    },
+    {
+      "slug": "vitrolles",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 810,
+      "nameFr": "Vitrolles",
+      "departement": "13",
+      "departementLabel": "13",
+      "region": "provence-alpes-cote-d-azur",
+      "regionLabel": "Provence-Alpes-Côte d'Azur",
+      "population": 36758
+    },
+    {
+      "slug": "henin-beaumont",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 811,
+      "nameFr": "Hénin-Beaumont",
+      "departement": "62",
+      "departementLabel": "62",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 25688
+    },
+    {
+      "slug": "cugnaux",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 812,
+      "nameFr": "Cugnaux",
+      "departement": "31",
+      "departementLabel": "31",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 20662
+    },
+    {
+      "slug": "dole",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 812,
+      "nameFr": "Dole",
+      "departement": "39",
+      "departementLabel": "39",
+      "region": "bourgogne-franche-comte",
+      "regionLabel": "Bourgogne-Franche-Comté",
+      "population": 23840
+    },
+    {
+      "slug": "reyrieux",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 813,
+      "nameFr": "Reyrieux",
+      "departement": "01",
+      "departementLabel": "01",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 5358
+    },
+    {
+      "slug": "manosque",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 815,
+      "nameFr": "Manosque",
+      "departement": "04",
+      "departementLabel": "04",
+      "region": "provence-alpes-cote-d-azur",
+      "regionLabel": "Provence-Alpes-Côte d'Azur",
+      "population": 22718
+    },
+    {
+      "slug": "commentry",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 817,
+      "nameFr": "Commentry",
+      "departement": "03",
+      "departementLabel": "03",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 6017
+    },
+    {
+      "slug": "rillieux-la-pape",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 818,
+      "nameFr": "Rillieux-la-Pape",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 31389
+    },
+    {
+      "slug": "istres",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 819,
+      "nameFr": "Istres",
+      "departement": "13",
+      "departementLabel": "13",
+      "region": "provence-alpes-cote-d-azur",
+      "regionLabel": "Provence-Alpes-Côte d'Azur",
+      "population": 44292
+    },
+    {
+      "slug": "colomiers",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 820,
+      "nameFr": "Colomiers",
+      "departement": "31",
+      "departementLabel": "31",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 40882
+    },
+    {
+      "slug": "douai",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 820,
+      "nameFr": "Douai",
+      "departement": "59",
+      "departementLabel": "59",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 40250
+    },
+    {
+      "slug": "villemomble",
+      "issues": [
+        "Quality score gpt-4o = 63 (<75)"
+      ],
+      "qualityScore": 63,
+      "charsUnique": 821,
+      "nameFr": "Villemomble",
+      "departement": "93",
+      "departementLabel": "93",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 29795
+    },
+    {
+      "slug": "beauvais",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 822,
+      "nameFr": "Beauvais",
+      "departement": "60",
+      "departementLabel": "60",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 55550
+    },
+    {
+      "slug": "bellerive-sur-allier",
+      "issues": [
+        "4/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 822,
+      "nameFr": "Bellerive-sur-Allier",
+      "departement": "03",
+      "departementLabel": "03",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 8943
+    },
+    {
+      "slug": "bethune",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 823,
+      "nameFr": "Béthune",
+      "departement": "62",
+      "departementLabel": "62",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 25224
+    },
+    {
+      "slug": "noisy-le-grand",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 823,
+      "nameFr": "Noisy-le-Grand",
+      "departement": "93",
+      "departementLabel": "93",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 72978
+    },
+    {
+      "slug": "wasquehal",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 823,
+      "nameFr": "Wasquehal",
+      "departement": "59",
+      "departementLabel": "59",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 20726
+    },
+    {
+      "slug": "frontignan",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 825,
+      "nameFr": "Frontignan",
+      "departement": "34",
+      "departementLabel": "34",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 24136
+    },
+    {
+      "slug": "le-teil",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 826,
+      "nameFr": "Le Teil",
+      "departement": "07",
+      "departementLabel": "07",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 8726
+    },
+    {
+      "slug": "canejan",
+      "issues": [
+        "4/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 827,
+      "nameFr": "Canéjan",
+      "departement": "33",
+      "departementLabel": "33",
+      "region": "nouvelle-aquitaine",
+      "regionLabel": "Nouvelle-Aquitaine",
+      "population": 5756
+    },
+    {
+      "slug": "genay",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 827,
+      "nameFr": "Genay",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 5585
+    },
+    {
+      "slug": "ternay",
+      "issues": [
+        "4/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 827,
+      "nameFr": "Ternay",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 5596
+    },
+    {
+      "slug": "aubagne",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 829,
+      "nameFr": "Aubagne",
+      "departement": "13",
+      "departementLabel": "13",
+      "region": "provence-alpes-cote-d-azur",
+      "regionLabel": "Provence-Alpes-Côte d'Azur",
+      "population": 47529
+    },
+    {
+      "slug": "beaupreau-en-mauges",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 829,
+      "nameFr": "Beaupréau-en-Mauges",
+      "departement": "49",
+      "departementLabel": "49",
+      "region": "pays-de-la-loire",
+      "regionLabel": "Pays de la Loire",
+      "population": 23989
+    },
+    {
+      "slug": "goussainville",
+      "issues": [
+        "Quality score gpt-4o = 55 (<75)"
+      ],
+      "qualityScore": 55,
+      "charsUnique": 829,
+      "nameFr": "Goussainville",
+      "departement": "95",
+      "departementLabel": "95",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 31301
+    },
+    {
+      "slug": "ludon-medoc",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 829,
+      "nameFr": "Ludon-Médoc",
+      "departement": "33",
+      "departementLabel": "33",
+      "region": "nouvelle-aquitaine",
+      "regionLabel": "Nouvelle-Aquitaine",
+      "population": 5578
+    },
+    {
+      "slug": "vienne",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 830,
+      "nameFr": "Vienne",
+      "departement": "38",
+      "departementLabel": "38",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 31778
+    },
+    {
+      "slug": "chaville",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 831,
+      "nameFr": "Chaville",
+      "departement": "92",
+      "departementLabel": "92",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 20594
+    },
+    {
+      "slug": "brive-la-gaillarde",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 832,
+      "nameFr": "Brive-la-Gaillarde",
+      "departement": "19",
+      "departementLabel": "19",
+      "region": "nouvelle-aquitaine",
+      "regionLabel": "Nouvelle-Aquitaine",
+      "population": 47095
+    },
+    {
+      "slug": "mantes-la-jolie",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 832,
+      "nameFr": "Mantes-la-Jolie",
+      "departement": "78",
+      "departementLabel": "78",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 43526
+    },
+    {
+      "slug": "rueil-malmaison",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 832,
+      "nameFr": "Rueil-Malmaison",
+      "departement": "92",
+      "departementLabel": "92",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 82874
+    },
+    {
+      "slug": "challans",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 834,
+      "nameFr": "Challans",
+      "departement": "85",
+      "departementLabel": "85",
+      "region": "pays-de-la-loire",
+      "regionLabel": "Pays de la Loire",
+      "population": 22943
+    },
+    {
+      "slug": "tresses",
+      "issues": [
+        "4/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 834,
+      "nameFr": "Tresses",
+      "departement": "33",
+      "departementLabel": "33",
+      "region": "nouvelle-aquitaine",
+      "regionLabel": "Nouvelle-Aquitaine",
+      "population": 5290
+    },
+    {
+      "slug": "nogent-sur-oise",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 835,
+      "nameFr": "Nogent-sur-Oise",
+      "departement": "60",
+      "departementLabel": "60",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 21907
+    },
+    {
+      "slug": "soissons",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 835,
+      "nameFr": "Soissons",
+      "departement": "02",
+      "departementLabel": "02",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 28046
+    },
+    {
+      "slug": "tassin-la-demi-lune",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 835,
+      "nameFr": "Tassin-la-Demi-Lune",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 23200
+    },
+    {
+      "slug": "calais",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 836,
+      "nameFr": "Calais",
+      "departement": "62",
+      "departementLabel": "62",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 67571
+    },
+    {
+      "slug": "champs-sur-marne",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 837,
+      "nameFr": "Champs-sur-Marne",
+      "departement": "77",
+      "departementLabel": "77",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 27451
+    },
+    {
+      "slug": "conflans-sainte-honorine",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 837,
+      "nameFr": "Conflans-Sainte-Honorine",
+      "departement": "78",
+      "departementLabel": "78",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 36958
+    },
+    {
+      "slug": "les-pennes-mirabeau",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 837,
+      "nameFr": "Les Pennes-Mirabeau",
+      "departement": "13",
+      "departementLabel": "13",
+      "region": "provence-alpes-cote-d-azur",
+      "regionLabel": "Provence-Alpes-Côte d'Azur",
+      "population": 22537
+    },
+    {
+      "slug": "savigny-sur-orge",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 837,
+      "nameFr": "Savigny-sur-Orge",
+      "departement": "91",
+      "departementLabel": "91",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 37601
+    },
+    {
+      "slug": "blagnac",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 838,
+      "nameFr": "Blagnac",
+      "departement": "31",
+      "departementLabel": "31",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 27604
+    },
+    {
+      "slug": "croix",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 838,
+      "nameFr": "Croix",
+      "departement": "59",
+      "departementLabel": "59",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 20566
+    },
+    {
+      "slug": "annemasse",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 839,
+      "nameFr": "Annemasse",
+      "departement": "74",
+      "departementLabel": "74",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 37628
+    },
+    {
+      "slug": "joue-les-tours",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 839,
+      "nameFr": "Joué-lès-Tours",
+      "departement": "37",
+      "departementLabel": "37",
+      "region": "centre-val-de-loire",
+      "regionLabel": "Centre-Val de Loire",
+      "population": 38423
+    },
+    {
+      "slug": "villeneuve-la-garenne",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 839,
+      "nameFr": "Villeneuve-la-Garenne",
+      "departement": "92",
+      "departementLabel": "92",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 26021
+    },
+    {
+      "slug": "dreux",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 840,
+      "nameFr": "Dreux",
+      "departement": "28",
+      "departementLabel": "28",
+      "region": "centre-val-de-loire",
+      "regionLabel": "Centre-Val de Loire",
+      "population": 31543
+    },
+    {
+      "slug": "vand-uvre-les-nancy",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 840,
+      "nameFr": "Vandœuvre-lès-Nancy",
+      "departement": "54",
+      "departementLabel": "54",
+      "region": "grand-est",
+      "regionLabel": "Grand Est",
+      "population": 29942
+    },
+    {
+      "slug": "bondy",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 841,
+      "nameFr": "Bondy",
+      "departement": "93",
+      "departementLabel": "93",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 50595
+    },
+    {
+      "slug": "champigny-sur-marne",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 841,
+      "nameFr": "Champigny-sur-Marne",
+      "departement": "94",
+      "departementLabel": "94",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 78072
+    },
+    {
+      "slug": "guyancourt",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 841,
+      "nameFr": "Guyancourt",
+      "departement": "78",
+      "departementLabel": "78",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 29778
+    },
+    {
+      "slug": "levallois-perret",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 842,
+      "nameFr": "Levallois-Perret",
+      "departement": "92",
+      "departementLabel": "92",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 68092
+    },
+    {
+      "slug": "domerat",
+      "issues": [
+        "4/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 843,
+      "nameFr": "Domérat",
+      "departement": "03",
+      "departementLabel": "03",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 8622
+    },
+    {
+      "slug": "longjumeau",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 843,
+      "nameFr": "Longjumeau",
+      "departement": "91",
+      "departementLabel": "91",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 21996
+    },
+    {
+      "slug": "tournefeuille",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 843,
+      "nameFr": "Tournefeuille",
+      "departement": "31",
+      "departementLabel": "31",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 30168
+    },
+    {
+      "slug": "coudekerque-branche",
+      "issues": [
+        "Quality score gpt-4o = 50 (<75)"
+      ],
+      "qualityScore": 50,
+      "charsUnique": 844,
+      "nameFr": "Coudekerque-Branche",
+      "departement": "59",
+      "departementLabel": "59",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 20787
+    },
+    {
+      "slug": "nogent-sur-marne",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 844,
+      "nameFr": "Nogent-sur-Marne",
+      "departement": "94",
+      "departementLabel": "94",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 32455
+    },
+    {
+      "slug": "bobigny",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 845,
+      "nameFr": "Bobigny",
+      "departement": "93",
+      "departementLabel": "93",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 56927
+    },
+    {
+      "slug": "fougeres",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 845,
+      "nameFr": "Fougères",
+      "departement": "35",
+      "departementLabel": "35",
+      "region": "bretagne",
+      "regionLabel": "Bretagne",
+      "population": 20307
+    },
+    {
+      "slug": "ris-orangis",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 846,
+      "nameFr": "Ris-Orangis",
+      "departement": "91",
+      "departementLabel": "91",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 31189
+    },
+    {
+      "slug": "chamalieres",
+      "issues": [
+        "4/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 847,
+      "nameFr": "Chamalières",
+      "departement": "63",
+      "departementLabel": "63",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 17509
+    },
+    {
+      "slug": "nevers",
+      "issues": [
+        "Quality score gpt-4o = 55 (<75)"
+      ],
+      "qualityScore": 55,
+      "charsUnique": 847,
+      "nameFr": "Nevers",
+      "departement": "58",
+      "departementLabel": "58",
+      "region": "bourgogne-franche-comte",
+      "regionLabel": "Bourgogne-Franche-Comté",
+      "population": 33085
+    },
+    {
+      "slug": "chatellerault",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 848,
+      "nameFr": "Châtellerault",
+      "departement": "86",
+      "departementLabel": "86",
+      "region": "nouvelle-aquitaine",
+      "regionLabel": "Nouvelle-Aquitaine",
+      "population": 31003
+    },
+    {
+      "slug": "loos",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 848,
+      "nameFr": "Loos",
+      "departement": "59",
+      "departementLabel": "59",
+      "region": "hauts-de-france",
+      "regionLabel": "Hauts-de-France",
+      "population": 22567
+    },
+    {
+      "slug": "rodez",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 848,
+      "nameFr": "Rodez",
+      "departement": "12",
+      "departementLabel": "12",
+      "region": "occitanie",
+      "regionLabel": "Occitanie",
+      "population": 23981
+    },
+    {
+      "slug": "sevran",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 848,
+      "nameFr": "Sevran",
+      "departement": "93",
+      "departementLabel": "93",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 52535
+    },
+    {
+      "slug": "villefranche-sur-saone",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 848,
+      "nameFr": "Villefranche-sur-Saône",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 36172
+    },
+    {
+      "slug": "izon",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 849,
+      "nameFr": "Izon",
+      "departement": "33",
+      "departementLabel": "33",
+      "region": "nouvelle-aquitaine",
+      "regionLabel": "Nouvelle-Aquitaine",
+      "population": 6374
+    },
+    {
+      "slug": "vernon",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 849,
+      "nameFr": "Vernon",
+      "departement": "27",
+      "departementLabel": "27",
+      "region": "normandie",
+      "regionLabel": "Normandie",
+      "population": 25290
+    },
+    {
+      "slug": "courbevoie",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 850,
+      "nameFr": "Courbevoie",
+      "departement": "92",
+      "departementLabel": "92",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 82902
+    },
+    {
+      "slug": "fontenay-sous-bois",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 850,
+      "nameFr": "Fontenay-sous-Bois",
+      "departement": "94",
+      "departementLabel": "94",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 53757
+    },
+    {
+      "slug": "orange",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 850,
+      "nameFr": "Orange",
+      "departement": "84",
+      "departementLabel": "84",
+      "region": "provence-alpes-cote-d-azur",
+      "regionLabel": "Provence-Alpes-Côte d'Azur",
+      "population": 29706
+    },
+    {
+      "slug": "bourgoin-jallieu",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 851,
+      "nameFr": "Bourgoin-Jallieu",
+      "departement": "38",
+      "departementLabel": "38",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 30151
+    },
+    {
+      "slug": "bron",
+      "issues": [
+        "Quality score gpt-4o = 63 (<75)"
+      ],
+      "qualityScore": 63,
+      "charsUnique": 851,
+      "nameFr": "Bron",
+      "departement": "69",
+      "departementLabel": "69",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 42982
+    },
+    {
+      "slug": "draveil",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 853,
+      "nameFr": "Draveil",
+      "departement": "91",
+      "departementLabel": "91",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 30098
+    },
+    {
+      "slug": "jassans-riottier",
+      "issues": [
+        "4/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 854,
+      "nameFr": "Jassans-Riottier",
+      "departement": "01",
+      "departementLabel": "01",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 6247
+    },
+    {
+      "slug": "meudon",
+      "issues": [
+        "Quality score gpt-4o = 58 (<75)"
+      ],
+      "qualityScore": 58,
+      "charsUnique": 855,
+      "nameFr": "Meudon",
+      "departement": "92",
+      "departementLabel": "92",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 46334
+    },
+    {
+      "slug": "aix-les-bains",
+      "issues": [
+        "Quality score gpt-4o = 55 (<75)"
+      ],
+      "qualityScore": 55,
+      "charsUnique": 856,
+      "nameFr": "Aix-les-Bains",
+      "departement": "73",
+      "departementLabel": "73",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 32406
+    },
+    {
+      "slug": "colmar",
+      "issues": [
+        "Quality score gpt-4o = 63 (<75)"
+      ],
+      "qualityScore": 63,
+      "charsUnique": 858,
+      "nameFr": "Colmar",
+      "departement": "68",
+      "departementLabel": "68",
+      "region": "grand-est",
+      "regionLabel": "Grand Est",
+      "population": 66970
+    },
+    {
+      "slug": "montluel",
+      "issues": [
+        "3/5 secteurs génériques"
+      ],
+      "qualityScore": null,
+      "charsUnique": 858,
+      "nameFr": "Montluel",
+      "departement": "01",
+      "departementLabel": "01",
+      "region": "auvergne-rhone-alpes",
+      "regionLabel": "Auvergne-Rhône-Alpes",
+      "population": 6895
+    },
+    {
+      "slug": "saint-gratien",
+      "issues": [
+        "Quality score gpt-4o = 55 (<75)"
+      ],
+      "qualityScore": 55,
+      "charsUnique": 858,
+      "nameFr": "Saint-Gratien",
+      "departement": "95",
+      "departementLabel": "95",
+      "region": "ile-de-france",
+      "regionLabel": "Île-de-France",
+      "population": 21336
+    },
+    {
+      "slug": "thionville",
+      "issues": [
+        "Quality score gpt-4o = 53 (<75)"
+      ],
+      "qualityScore": 53,
+      "charsUnique": 858,
+      "nameFr": "Thionville",
+      "departement": "57",
+      "departementLabel": "57",
+      "region": "grand-est",
+      "regionLabel": "Grand Est",
+      "population": 42658
+    }
+  ]
+}

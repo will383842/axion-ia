@@ -1,72 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Rueil-Malmaison (92, Hauts-de-Seine) — château de Malmaison (Napoléon-Joséphine), sièges (Schneider, Vinci, Unibail), tertiaire.
 
 import type { VilleCopy } from "./types";
 
 export const RUEIL_MALMAISON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Rueil-Malmaison, un pôle économique abritant Schneider Electric et Vinci, pour optimiser vos processus grâce à l'IA.",
+    "Rueil-Malmaison (92), ville d'histoire chère à Napoléon et Joséphine avec son château de Malmaison, est aussi un grand pôle tertiaire des Hauts-de-Seine qui accueille des sièges comme Schneider Electric, Vinci ou Unibail-Rodamco-Westfield. Autour de ces grands groupes gravite un dense écosystème de TPE et PME de services, conseil, tech et commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME rueilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Rueil-Malmaison, un pôle économique abritant Schneider Electric et Vinci, pour optimiser vos processus grâce à l'IA.",
+    "Rueil-Malmaison (92), ville d'histoire chère à Napoléon et Joséphine avec son château de Malmaison, est aussi un grand pôle tertiaire des Hauts-de-Seine qui accueille des sièges comme Schneider Electric, Vinci ou Unibail-Rodamco-Westfield. Autour de ces grands groupes gravite un dense écosystème de TPE et PME de services, conseil, tech et commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME rueilloises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "À Rueil-Malmaison, Axion-IA propose des interventions sur site pour automatiser des tâches administratives et optimiser les processus métiers. Grâce à notre expertise, nous aidons les entreprises locales, comme celles du secteur des services financiers ou de la programmation informatique, à intégrer l'IA efficacement. Nos services incluent des audits, des implémentations et des formations personnalisées.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rueil-Malmaison (92) auprès des TPE et PME : services aux entreprises, conseil, ingénierie, tech et commerce gravitant autour des grands sièges (Schneider Electric, Vinci, Unibail). Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "À Rueil-Malmaison, Axion-IA propose des interventions sur site pour automatiser des tâches administratives et optimiser les processus métiers. Grâce à notre expertise, nous aidons les entreprises locales, comme celles du secteur des services financiers ou de la programmation informatique, à intégrer l'IA efficacement. Nos services incluent des audits, des implémentations et des formations personnalisées.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rueil-Malmaison (92) auprès des TPE et PME : services aux entreprises, conseil, ingénierie, tech et commerce gravitant autour des grands sièges (Schneider Electric, Vinci, Unibail). Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+  seoHook: "tertiaire, conseil & ingénierie",
   ecosystemFr:
-    "Rueil-Malmaison accueille des entreprises comme Schneider Electric et Heineken France, favorisant un environnement propice aux services financiers et à l'informatique.",
+    "Rueil-Malmaison, en bord de Seine à l'ouest de Paris, est l'un des grands pôles tertiaires des Hauts-de-Seine, accueillant les sièges de Schneider Electric, Vinci et Unibail-Rodamco-Westfield à proximité de La Défense. Autour de ces grands groupes prospère un riche écosystème de TPE et PME de services, conseil, ingénierie, tech, immobilier et commerce, dans un cadre patrimonial marqué par le château de Malmaison. Cette densité de prestataires fait de Rueil un terrain idéal pour une IA appliquée à la productivité et à la relation client.",
   ecosystemEn:
-    "Rueil-Malmaison accueille des entreprises comme Schneider Electric et Heineken France, favorisant un environnement propice aux services financiers et à l'informatique.",
+    "Rueil-Malmaison, en bord de Seine à l'ouest de Paris, est l'un des grands pôles tertiaires des Hauts-de-Seine, accueillant les sièges de Schneider Electric, Vinci et Unibail-Rodamco-Westfield à proximité de La Défense. Autour de ces grands groupes prospère un riche écosystème de TPE et PME de services, conseil, ingénierie, tech, immobilier et commerce, dans un cadre patrimonial marqué par le château de Malmaison. Cette densité de prestataires fait de Rueil un terrain idéal pour une IA appliquée à la productivité et à la relation client.",
   distancesFr:
-    "Rueil-Malmaison est située à 8 km de la Gare de Paris-La Défense et à 35 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Rueil-Malmaison est à 8 km de La Défense, desservie par le RER A vers Paris en 20 min et par l'A86. L'aéroport de Paris-Charles-de-Gaulle est à 35 min et Paris-Orly à environ 40 min.",
   distancesEn:
-    "Rueil-Malmaison est située à 8 km de la Gare de Paris-La Défense et à 35 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Rueil-Malmaison est à 8 km de La Défense, desservie par le RER A vers Paris en 20 min et par l'A86. L'aéroport de Paris-Charles-de-Gaulle est à 35 min et Paris-Orly à environ 40 min.",
   topSectorsNaf: [
-    "Services financiers",
-    "Programmation informatique",
-    "Sièges sociaux",
-    "Activités juridiques",
+    "Services aux entreprises et conseil",
+    "Ingénierie et bureaux d'études",
+    "Programmation et activités tech",
+    "Activités immobilières",
+    "Commerce de détail et services",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Rueil-Malmaison pour identifier les opportunités IA dans les services financiers.",
-      en: "Réaliser un audit à Rueil-Malmaison pour identifier les opportunités IA dans les services financiers.",
+      fr: "Audit IA à Rueil-Malmaison : diagnostic des tâches automatisables pour conseil, ingénierie, tech, immobilier et services aux entreprises. Audit Flash dès 490 € HT, livrable priorisé.",
+      en: "Audit IA à Rueil-Malmaison : diagnostic des tâches automatisables pour conseil, ingénierie, tech, immobilier et services aux entreprises. Audit Flash dès 490 € HT, livrable priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Rueil-Malmaison pour automatiser les processus chez Schneider Electric.",
-      en: "Intervenir à Rueil-Malmaison pour automatiser les processus chez Schneider Electric.",
+      fr: "Interventions IA sur site à Rueil-Malmaison : ateliers pratiques pour cabinets, bureaux d'études et agences, afin de rendre vos équipes autonomes sur les outils IA.",
+      en: "Interventions IA sur site à Rueil-Malmaison : ateliers pratiques pour cabinets, bureaux d'études et agences, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Rueil-Malmaison pour optimiser la programmation informatique.",
-      en: "Implémenter des solutions IA à Rueil-Malmaison pour optimiser la programmation informatique.",
+      fr: "Implémentation IA à Rueil-Malmaison : automatisation administrative, rédaction et analyse documentaire assistées, agents conversationnels et CRM augmenté pour TPE et PME de services.",
+      en: "Implémentation IA à Rueil-Malmaison : automatisation administrative, rédaction et analyse documentaire assistées, agents conversationnels et CRM augmenté pour TPE et PME de services.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Rueil-Malmaison avec des sessions IA personnalisées.",
-      en: "Accompagner un dirigeant à Rueil-Malmaison avec des sessions IA personnalisées.",
+      fr: "Accompagnement un-à-un à Rueil-Malmaison : sessions sur site ou en visio pour dirigeants de TPE et PME de conseil, d'ingénierie et de tech, ciblées sur vos priorités de productivité.",
+      en: "Accompagnement un-à-un à Rueil-Malmaison : sessions sur site ou en visio pour dirigeants de TPE et PME de conseil, d'ingénierie et de tech, ciblées sur vos priorités de productivité.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Rueil-Malmaison : vitrine ou portail client avec IA intégrée (FAQ, prise de rendez-vous, devis, recherche documentaire) pour cabinets, agences et bureaux d'études.",
+      en: "Sites web augmentés à Rueil-Malmaison : vitrine ou portail client avec IA intégrée (FAQ, prise de rendez-vous, devis, recherche documentaire) pour cabinets, agences et bureaux d'études.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Rueil-Malmaison ?",
-      a: "Les audits à Rueil-Malmaison commencent à partir de 490 € HT pour un Audit Flash de 4 heures.",
+      q: "Axion-IA intervient-il à Rueil-Malmaison ?",
+      a: "Oui, Axion-IA intervient à Rueil-Malmaison et dans l'ouest parisien (Nanterre, Suresnes, Puteaux, La Défense, Chatou). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
-      q: "Comment se déroule une intervention à Rueil-Malmaison ?",
-      a: "Nous nous déplaçons sur site à Rueil-Malmaison pour analyser vos besoins et mettre en place des solutions IA adaptées.",
+      q: "Quel est le tarif d'un audit IA à Rueil-Malmaison ?",
+      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME rueilloises : conseil, ingénierie, tech, immobilier et services aux entreprises.",
     },
     {
-      q: "Proposez-vous des formations IA à Rueil-Malmaison ?",
-      a: "Oui, nous offrons des formations IA sur site à Rueil-Malmaison, adaptées aux besoins spécifiques de votre entreprise.",
+      q: "Comment l'IA aide-t-elle les sociétés de conseil et d'ingénierie ?",
+      a: "Pour les cabinets de conseil et bureaux d'études : rédaction et analyse documentaire assistées, automatisation administrative, gestion de la relation client et veille, par étapes maîtrisées.",
     },
     {
-      q: "Quels sont les délais pour une implémentation IA à Rueil-Malmaison ?",
-      a: "Les délais pour une implémentation IA à Rueil-Malmaison varient selon le projet, mais nous visons une mise en place rapide et efficace.",
+      q: "Quels services pour les TPE de la tech et de l'immobilier ?",
+      a: "Pour les structures tech et immobilières : agents conversationnels, automatisation des devis et des dossiers, qualification de leads et présence en ligne enrichie par l'IA, selon votre budget.",
     },
     {
-      q: "Comment Axion-IA gère-t-elle la conformité RGPD à Rueil-Malmaison ?",
-      a: "Axion-IA s'assure que toutes les solutions IA déployées à Rueil-Malmaison respectent les normes RGPD en vigueur.",
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous priorisons les TPE puis les PME de Rueil-Malmaison ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+    },
+    {
+      q: "Comment se déroule une mission à Rueil-Malmaison ?",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 8 km de La Défense. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

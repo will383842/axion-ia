@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Istres (13, Bouches-du-Rhône) — base aérienne 125 (essais en vol), étang de Berre, aéronautique militaire, PACA.
 
 import type { VilleCopy } from "./types";
 
 export const ISTRES_COPY: VilleCopy = {
   pitchFr:
-    "À Istres, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Avec des acteurs comme Dassault Aviation, nous intervenons pour optimiser les processus métiers grâce à des solutions IA concrètes.",
+    "Istres (13), ville des Bouches-du-Rhône au bord de l'étang de Berre, abrite la base aérienne 125 et son centre d'essais en vol, cœur de l'aéronautique militaire française. Son tissu mêle PME de sous-traitance aéro et défense, logistique du pourtour de l'étang, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME istréennes.",
   pitchEn:
-    "À Istres, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Avec des acteurs comme Dassault Aviation, nous intervenons pour optimiser les processus métiers grâce à des solutions IA concrètes.",
+    "Istres (13), ville des Bouches-du-Rhône au bord de l'étang de Berre, abrite la base aérienne 125 et son centre d'essais en vol, cœur de l'aéronautique militaire française. Son tissu mêle PME de sous-traitance aéro et défense, logistique du pourtour de l'étang, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME istréennes.",
   directAnswerFr:
-    "Axion-IA intervient à Istres pour aider les entreprises à intégrer l'IA dans leurs opérations. Avec des secteurs dominants comme la construction aéronautique et le commerce de détail, nous proposons des audits et implémentations adaptés. disponibles sur notre site.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Istres (13) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique et défense gravitant autour de la base 125, logistique de l'étang de Berre, artisans du BTP, commerces et services aux entreprises. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA intervient à Istres pour aider les entreprises à intégrer l'IA dans leurs opérations. Avec des secteurs dominants comme la construction aéronautique et le commerce de détail, nous proposons des audits et implémentations adaptés. disponibles sur notre site.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Istres (13) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique et défense gravitant autour de la base 125, logistique de l'étang de Berre, artisans du BTP, commerces et services aux entreprises. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "aéronautique défense & logistique",
   ecosystemFr:
-    "Istres, avec ses 4 000 établissements actifs, est un pôle industriel où se distingue Dassault Aviation. La ville est également un centre pour le commerce de détail et le transport terrestre, offrant un environnement propice aux innovations IA.",
+    "Istres est structurée par la base aérienne 125 et son centre d'essais en vol, qui irriguent un écosystème de PME de sous-traitance aéronautique et défense. Le pourtour de l'étang de Berre concentre logistique et industrie, tandis que le centre-ville réunit commerces, artisans du BTP et services aux entreprises. Bassin à forte culture technique et industrielle.",
   ecosystemEn:
-    "Istres, avec ses 4 000 établissements actifs, est un pôle industriel où se distingue Dassault Aviation. La ville est également un centre pour le commerce de détail et le transport terrestre, offrant un environnement propice aux innovations IA.",
+    "Istres est structurée par la base aérienne 125 et son centre d'essais en vol, qui irriguent un écosystème de PME de sous-traitance aéronautique et défense. Le pourtour de l'étang de Berre concentre logistique et industrie, tandis que le centre-ville réunit commerces, artisans du BTP et services aux entreprises. Bassin à forte culture technique et industrielle.",
   distancesFr:
-    "Istres est située à 40 km de l'Aéroport Marseille-Provence et à 50 km de la Gare d'Aix-en-Provence TGV.",
+    "Marseille à 1h. Aix-en-Provence à 50 min. Aéroport Marseille-Provence à 35 min. Gare TGV Aix-en-Provence à 50 min. Martigues à 20 min.",
   distancesEn:
-    "Istres est située à 40 km de l'Aéroport Marseille-Provence et à 50 km de la Gare d'Aix-en-Provence TGV.",
+    "Marseille à 1h. Aix-en-Provence à 50 min. Aéroport Marseille-Provence à 35 min. Gare TGV Aix-en-Provence à 50 min. Martigues à 20 min.",
   topSectorsNaf: [
-    "Construction aéronautique",
-    "Transports terrestres",
-    "Commerce de détail",
-    "Construction de bâtiments",
+    "Sous-traitance aéronautique & défense",
+    "Logistique de l'étang de Berre",
+    "Artisanat & travaux du BTP",
+    "Commerce de proximité",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Istres permet d'identifier les processus à automatiser chez Dassault Aviation, réduisant les coûts opérationnels.",
-      en: "Réaliser un audit à Istres permet d'identifier les processus à automatiser chez Dassault Aviation, réduisant les coûts opérationnels.",
+      fr: "Audit IA à Istres : diagnostic pour PME de sous-traitance aéro-défense, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Istres : diagnostic pour PME de sous-traitance aéro-défense, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
-      fr: "Intervenir à Istres dans le secteur du transport terrestre pour automatiser les relances clients et améliorer l'efficacité.",
-      en: "Intervenir à Istres dans le secteur du transport terrestre pour automatiser les relances clients et améliorer l'efficacité.",
+      fr: "Interventions IA sur site à Istres : formats adaptés à l'atelier, l'entrepôt, le commerce ou le bureau. Vos équipes prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Istres : formats adaptés à l'atelier, l'entrepôt, le commerce ou le bureau. Vos équipes prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Istres dans le commerce de détail, optimisant la gestion des stocks et des ventes.",
-      en: "Implémenter des solutions IA à Istres dans le commerce de détail, optimisant la gestion des stocks et des ventes.",
+      fr: "Implémentation IA à Istres : contrôle qualité par vision pour la sous-traitance aéro, traçabilité documentaire, optimisation logistique, automatisation administrative et agents conversationnels B2B.",
+      en: "Implémentation IA à Istres : contrôle qualité par vision pour la sous-traitance aéro, traçabilité documentaire, optimisation logistique, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Istres, notamment dans la construction aéronautique, pour une adoption maîtrisée de l'IA.",
-      en: "Accompagner les dirigeants à Istres, notamment dans la construction aéronautique, pour une adoption maîtrisée de l'IA.",
+      fr: "Coaching 1-to-1 à Istres : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME istréennes.",
+      en: "Coaching 1-to-1 à Istres : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME istréennes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Istres : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, suivi logistique et catalogues techniques connectés à vos process.",
+      en: "Sites web augmentés à Istres : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, suivi logistique et catalogues techniques connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Istres ?",
-      a: "Les interventions à Istres débutent à partir de 590 € HT. Pour des détails sur nos tarifs, consultez notre site où tous les prix publics sont disponibles.",
+      q: "Axion-IA intervient-il à Istres et autour de l'étang de Berre ?",
+      a: "Oui, Axion-IA intervient à Istres et tout le pourtour de l'étang de Berre (Martigues, Fos-sur-Mer, Miramas, Saint-Mitre). Nos consultants viennent de Marseille ou d'Aix-en-Provence.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Istres ?",
-      a: "Nos consultants se déplacent directement sur site à Istres, garantissant une intervention rapide et efficace, sans besoin de bureau local.",
+      q: "Accompagnez-vous la sous-traitance aéronautique et défense ?",
+      a: "Oui, contrôle qualité par vision, traçabilité documentaire, automatisation des flux et agents conversationnels B2B pour les PME fournisseurs gravitant autour de la base 125.",
     },
     {
-      q: "Quels délais pour un audit IA à Istres ?",
-      a: "Un audit Flash de 4 heures peut être organisé sous 5 jours ouvrés à Istres, permettant une évaluation rapide de vos besoins en IA.",
+      q: "Travaillez-vous avec les TPE artisans et commerces d'Istres ?",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Istres ?",
-      a: "Nous intégrons les exigences RGPD dans toutes nos interventions à Istres, assurant que vos données sont traitées en toute conformité avec la législation.",
+      q: "Quels services pour la logistique de l'étang de Berre ?",
+      a: "Optimisation des tournées et entrepôts, prédiction de maintenance, automatisation administrative et suivi de livraison. Tarifs publics, sans devis opaque.",
+    },
+    {
+      q: "Comment se passe une mission à Istres ?",
+      a: "Nos consultants se déplacent depuis Marseille ou Aix-en-Provence, ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Istres respecte strictement le RGPD, sans dépendance technologique imposée et avec transfert de compétences vers vos équipes.",
     },
   ],
 };

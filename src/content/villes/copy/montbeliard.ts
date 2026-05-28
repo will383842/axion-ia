@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Montbéliard (25, Doubs) — berceau automobile, usine historique Stellantis (ex-PSA Peugeot) de Sochaux, pays de Montbéliard, sous-traitance industrielle et présence Alstom.
 
 import type { VilleCopy } from "./types";
 
 export const MONTBELIARD_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Montbéliard, une ville dynamique avec PSA Peugeot Citroën et Alstom, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME du pays de Montbéliard — sous-traitants automobiles gravitant autour de l'usine Stellantis de Sochaux, mécanique de précision, métallurgie et services industriels. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Axion-IA intervient à Montbéliard, une ville dynamique avec PSA Peugeot Citroën et Alstom, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME du pays de Montbéliard — sous-traitants automobiles gravitant autour de l'usine Stellantis de Sochaux, mécanique de précision, métallurgie et services industriels. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "À Montbéliard, Axion-IA propose des interventions sur site pour répondre aux besoins des entreprises locales. Avec la présence de grands groupes comme PSA Peugeot Citroën et Alstom, la ville bénéficie d'un environnement industriel propice à l'innovation. Nos services incluent des audits, des implémentations et des formations personnalisées, adaptés aux spécificités de chaque entreprise, pour un retour sur investissement rapide.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Montbéliard, berceau automobile dont l'économie reste structurée par l'usine historique Stellantis (ex-PSA Peugeot) de Sochaux et son vaste réseau de sous-traitants. Nous nous déplaçons sur site, au plus près des ateliers de mécanique, de la métallurgie et des services industriels, pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "À Montbéliard, Axion-IA propose des interventions sur site pour répondre aux besoins des entreprises locales. Avec la présence de grands groupes comme PSA Peugeot Citroën et Alstom, la ville bénéficie d'un environnement industriel propice à l'innovation. Nos services incluent des audits, des implémentations et des formations personnalisées, adaptés aux spécificités de chaque entreprise, pour un retour sur investissement rapide.",
-  seoHook: "automobile & produits métalliques",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Montbéliard, berceau automobile dont l'économie reste structurée par l'usine historique Stellantis (ex-PSA Peugeot) de Sochaux et son vaste réseau de sous-traitants. Nous nous déplaçons sur site, au plus près des ateliers de mécanique, de la métallurgie et des services industriels, pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+  seoHook: "automobile & sous-traitance industrielle",
   ecosystemFr:
-    "Montbéliard est un pôle industriel avec PSA Peugeot Citroën et Alstom. Le secteur de la construction de véhicules automobiles est particulièrement développé.",
+    "Montbéliard est le berceau de l'aventure Peugeot : l'usine de Sochaux, aujourd'hui Stellantis, reste le cœur battant d'un pays de Montbéliard où gravite un dense réseau de sous-traitants en mécanique de précision, découpe, plasturgie et métallurgie. Alstom et d'autres acteurs ferroviaires et industriels complètent ce tissu profondément technique. Pour ces TPE et PME, souvent fournisseurs de grands donneurs d'ordre, l'IA opérationnelle fiabilise la gestion de production, les devis et le suivi qualité sans surdimensionner les outils.",
   ecosystemEn:
-    "Montbéliard est un pôle industriel avec PSA Peugeot Citroën et Alstom. Le secteur de la construction de véhicules automobiles est particulièrement développé.",
+    "Montbéliard est le berceau de l'aventure Peugeot : l'usine de Sochaux, aujourd'hui Stellantis, reste le cœur battant d'un pays de Montbéliard où gravite un dense réseau de sous-traitants en mécanique de précision, découpe, plasturgie et métallurgie. Alstom et d'autres acteurs ferroviaires et industriels complètent ce tissu profondément technique. Pour ces TPE et PME, souvent fournisseurs de grands donneurs d'ordre, l'IA opérationnelle fiabilise la gestion de production, les devis et le suivi qualité sans surdimensionner les outils.",
   distancesFr:
-    "La gare TGV Belfort-Montbéliard est à 15 km, facilitant l'accès à nos interventions.",
+    "Montbéliard bénéficie de la gare TGV Belfort-Montbéliard à une quinzaine de kilomètres, qui place Paris à environ 2h20 et Lyon à 1h30. L'autoroute A36 traverse l'agglomération et l'aéroport de Bâle-Mulhouse est accessible en moins d'une heure. Nos architectes se déplacent sur site dans tout le pays de Montbéliard, de Sochaux à Audincourt.",
   distancesEn:
-    "La gare TGV Belfort-Montbéliard est à 15 km, facilitant l'accès à nos interventions.",
+    "Montbéliard bénéficie de la gare TGV Belfort-Montbéliard à une quinzaine de kilomètres, qui place Paris à environ 2h20 et Lyon à 1h30. L'autoroute A36 traverse l'agglomération et l'aéroport de Bâle-Mulhouse est accessible en moins d'une heure. Nos architectes se déplacent sur site dans tout le pays de Montbéliard, de Sochaux à Audincourt.",
   topSectorsNaf: [
-    "Automobile",
-    "Produits métalliques",
-    "Machines et équipements",
-    "Commerce de gros",
+    "Construction automobile & sous-traitance",
+    "Mécanique de précision & métallurgie",
+    "Machines & équipements industriels",
+    "Plasturgie & traitement des métaux",
+    "Logistique industrielle",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Montbéliard avec Axion-IA permet d'identifier les opportunités d'optimisation chez PSA Peugeot Citroën.",
-      en: "Réaliser un audit à Montbéliard avec Axion-IA permet d'identifier les opportunités d'optimisation chez PSA Peugeot Citroën.",
+      fr: "Auditer à Montbéliard les processus d'un sous-traitant automobile ou d'un atelier de mécanique — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
+      en: "Auditer à Montbéliard les processus d'un sous-traitant automobile ou d'un atelier de mécanique — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir à Montbéliard pour automatiser les processus des entreprises locales, comme celles du Technoland.",
-      en: "Intervenir à Montbéliard pour automatiser les processus des entreprises locales, comme celles du Technoland.",
+      fr: "Intervenir sur site dans le pays de Montbéliard pour automatiser devis, suivi qualité et gestion de production des TPE/PME industrielles, sans bouleverser les équipes.",
+      en: "Intervenir sur site dans le pays de Montbéliard pour automatiser devis, suivi qualité et gestion de production des TPE/PME industrielles, sans bouleverser les équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Montbéliard pour améliorer la production chez Alstom.",
-      en: "Implémenter des solutions IA à Montbéliard pour améliorer la production chez Alstom.",
+      fr: "Implémenter à Montbéliard des outils IA durables, intégrés aux ERP et logiciels métier existants et documentés pour rester maîtrisés en interne après notre intervention.",
+      en: "Implémenter à Montbéliard des outils IA durables, intégrés aux ERP et logiciels métier existants et documentés pour rester maîtrisés en interne après notre intervention.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Montbéliard, en leur offrant une formation IA adaptée aux besoins de l'industrie locale.",
-      en: "Accompagner les dirigeants à Montbéliard, en leur offrant une formation IA adaptée aux besoins de l'industrie locale.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE/PME montbéliardaises pour comprendre l'IA, arbitrer les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de TPE/PME montbéliardaises pour comprendre l'IA, arbitrer les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+    },
+    sitesWeb: {
+      fr: "Concevoir à Montbéliard un site ou une plateforme web augmentée par l'IA pour un sous-traitant industriel — catalogue technique, demandes de devis et suivi client enrichis intelligemment.",
+      en: "Concevoir à Montbéliard un site ou une plateforme web augmentée par l'IA pour un sous-traitant industriel — catalogue technique, demandes de devis et suivi client enrichis intelligemment.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Montbéliard ?",
-      a: "Nos interventions à Montbéliard commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA se déplace-t-il sur site à Montbéliard ?",
+      a: "Oui. Nos architectes IA seniors interviennent directement dans vos ateliers à Montbéliard et dans tout le pays de Montbéliard, de Sochaux à Audincourt, pour observer vos processus réels avant toute recommandation.",
     },
     {
-      q: "Comment se déroule un audit à Montbéliard ?",
-      a: "Un audit à Montbéliard débute par une analyse sur site, à partir de 490 € HT, afin d'identifier les processus à optimiser.",
+      q: "Un sous-traitant automobile peut-il bénéficier de l'IA à Montbéliard ?",
+      a: "Oui. Nous aidons les sous-traitants et ateliers de mécanique à fiabiliser leurs devis, leur suivi qualité et leur gestion de production, avec des outils proportionnés à la taille de leur structure.",
     },
     {
-      q: "Axion-IA peut-elle intervenir rapidement à Montbéliard ?",
-      a: "Oui, nous nous déplaçons sur site à Montbéliard dans un délai de 5 jours ouvrés pour répondre à vos besoins.",
+      q: "L'IA est-elle accessible à une TPE industrielle de Montbéliard ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites structures fournisseuses de grands donneurs d'ordre, qui font gagner du temps sans coûts récurrents disproportionnés.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Montbéliard ?",
-      a: "Les secteurs de l'automobile et de la fabrication de machines, dominés par PSA Peugeot Citroën et Alstom, bénéficient grandement de l'IA.",
+      q: "Connaît-on les tarifs avant de s'engager ?",
+      a: "Oui. Axion-IA affiche une grille tarifaire publique et claire. Vous savez exactement ce que coûte un audit ou une intervention à Montbéliard avant de décider.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Montbéliard ?",
-      a: "Nous intégrons des pratiques conformes au RGPD dans toutes nos interventions à Montbéliard, garantissant la sécurité des données.",
+      q: "Vos solutions respectent-elles le RGPD ?",
+      a: "Oui. Chaque solution IA déployée à Montbéliard est conçue dans le respect du RGPD et sans dépendance forcée à un éditeur, pour que vous gardiez la maîtrise et la portabilité de vos données.",
     },
   ],
 };

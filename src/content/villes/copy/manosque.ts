@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Manosque (04, Alpes-de-Haute-Provence) — siège mondial L'Occitane en Provence, terre de Giono, lavande, proximité Cadarache-ITER.
 
 import type { VilleCopy } from "./types";
 
 export const MANOSQUE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Manosque, ville dynamique avec L'Occitane en Provence, pour optimiser vos processus avec l'IA. Nos services incluent audit, intervention et implémentation sur site.",
+    "Manosque (04), plus grande ville des Alpes-de-Haute-Provence et terre de Jean Giono, abrite le siège mondial de L'Occitane en Provence. Entre lavande, cosmétique, tourisme et proximité du centre de recherche Cadarache (réacteur de fusion ITER), son tissu mêle TPE artisanales, commerces et PME de services. Axion-IA accompagne en priorité les TPE puis les PME manosquines.",
   pitchEn:
-    "Axion-IA intervient à Manosque, ville dynamique avec L'Occitane en Provence, pour optimiser vos processus avec l'IA. Nos services incluent audit, intervention et implémentation sur site.",
+    "Manosque (04), plus grande ville des Alpes-de-Haute-Provence et terre de Jean Giono, abrite le siège mondial de L'Occitane en Provence. Entre lavande, cosmétique, tourisme et proximité du centre de recherche Cadarache (réacteur de fusion ITER), son tissu mêle TPE artisanales, commerces et PME de services. Axion-IA accompagne en priorité les TPE puis les PME manosquines.",
   directAnswerFr:
-    "À Manosque, Axion-IA propose des interventions personnalisées pour les entreprises locales. Avec des acteurs comme L'Occitane en Provence et un secteur commerce de détail florissant, nous adaptons nos solutions pour automatiser les tâches administratives ou améliorer les processus internes. Nos audits débutent à pour une analyse rapide et efficace de vos besoins en IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Manosque (04) auprès des TPE en priorité, puis des PME : cosmétique et lavande, commerces, hôtellerie-restauration touristique, artisans du BTP, professions libérales et prestataires de l'écosystème Cadarache-ITER. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "À Manosque, Axion-IA propose des interventions personnalisées pour les entreprises locales. Avec des acteurs comme L'Occitane en Provence et un secteur commerce de détail florissant, nous adaptons nos solutions pour automatiser les tâches administratives ou améliorer les processus internes. Nos audits débutent à pour une analyse rapide et efficace de vos besoins en IA.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Manosque (04) auprès des TPE en priorité, puis des PME : cosmétique et lavande, commerces, hôtellerie-restauration touristique, artisans du BTP, professions libérales et prestataires de l'écosystème Cadarache-ITER. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "cosmétique provence & tourisme",
   ecosystemFr:
-    "Manosque abrite L'Occitane en Provence et un secteur commerce de détail actif. Axion-IA intègre ces spécificités locales pour des interventions IA pertinentes.",
+    "Manosque rayonne grâce au siège mondial de L'Occitane en Provence, locomotive de la filière cosmétique et lavande. La proximité du centre CEA de Cadarache et du projet de fusion nucléaire ITER alimente un écosystème de PME prestataires high-tech. S'y ajoutent un tourisme provençal actif, des commerces de centre-ville, des artisans du BTP et de nombreuses professions libérales.",
   ecosystemEn:
-    "Manosque abrite L'Occitane en Provence et un secteur commerce de détail actif. Axion-IA intègre ces spécificités locales pour des interventions IA pertinentes.",
+    "Manosque rayonne grâce au siège mondial de L'Occitane en Provence, locomotive de la filière cosmétique et lavande. La proximité du centre CEA de Cadarache et du projet de fusion nucléaire ITER alimente un écosystème de PME prestataires high-tech. S'y ajoutent un tourisme provençal actif, des commerces de centre-ville, des artisans du BTP et de nombreuses professions libérales.",
   distancesFr:
-    "Manosque est à 80 km de la gare TGV Aix-en-Provence et à 90 km de l'aéroport Marseille Provence.",
+    "Aix-en-Provence à 50 min. Gare TGV Aix-en-Provence à 55 min. Marseille à 1h15. Aéroport Marseille-Provence à 1h. Cadarache-ITER à 30 min.",
   distancesEn:
-    "Manosque est à 80 km de la gare TGV Aix-en-Provence et à 90 km de l'aéroport Marseille Provence.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Santé humaine", "Culture animale"],
+    "Aix-en-Provence à 50 min. Gare TGV Aix-en-Provence à 55 min. Marseille à 1h15. Aéroport Marseille-Provence à 1h. Cadarache-ITER à 30 min.",
+  topSectorsNaf: [
+    "Cosmétique & filière lavande",
+    "Prestataires Cadarache-ITER (high-tech)",
+    "Hôtellerie-restauration & tourisme",
+    "Artisanat & travaux du BTP",
+    "Commerce de proximité",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Manosque avec Axion-IA permet d'identifier les opportunités IA pour L'Occitane en Provence et autres entreprises locales.",
-      en: "Réaliser un audit à Manosque avec Axion-IA permet d'identifier les opportunités IA pour L'Occitane en Provence et autres entreprises locales.",
+      fr: "Audit IA à Manosque : diagnostic pour TPE cosmétiques, commerces, hôtellerie touristique et prestataires Cadarache. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Manosque : diagnostic pour TPE cosmétiques, commerces, hôtellerie touristique et prestataires Cadarache. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
-      fr: "Intervenir à Manosque pour automatiser les tâches administratives des commerces de détail, avec des solutions IA adaptées.",
-      en: "Intervenir à Manosque pour automatiser les tâches administratives des commerces de détail, avec des solutions IA adaptées.",
+      fr: "Interventions IA sur site à Manosque : formats adaptés à l'atelier cosmétique, au commerce, à l'hôtel ou au bureau. Vos équipes prennent ensuite la main en autonomie.",
+      en: "Interventions IA sur site à Manosque : formats adaptés à l'atelier cosmétique, au commerce, à l'hôtel ou au bureau. Vos équipes prennent ensuite la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter à Manosque des solutions IA pour optimiser les processus de production animale et de santé humaine.",
-      en: "Implémenter à Manosque des solutions IA pour optimiser les processus de production animale et de santé humaine.",
+      fr: "Implémentation IA à Manosque : agents conversationnels multilingues pour le tourisme, contrôle qualité par vision en cosmétique, automatisation administrative et CRM augmentés.",
+      en: "Implémentation IA à Manosque : agents conversationnels multilingues pour le tourisme, contrôle qualité par vision en cosmétique, automatisation administrative et CRM augmentés.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Manosque pour intégrer l'IA dans leur stratégie d'entreprise.",
-      en: "Accompagner en un-à-un les dirigeants de Manosque pour intégrer l'IA dans leur stratégie d'entreprise.",
+      fr: "Coaching 1-to-1 à Manosque : sessions dans votre commerce, atelier, hôtel ou en visio. Pour gérants de TPE, artisans et dirigeants de PME manosquines.",
+      en: "Coaching 1-to-1 à Manosque : sessions dans votre commerce, atelier, hôtel ou en visio. Pour gérants de TPE, artisans et dirigeants de PME manosquines.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Manosque : plateformes et outils SaaS IA sur mesure — boutiques en ligne cosmétiques, réservation touristique multilingue, portails clients connectés à vos process.",
+      en: "Sites web augmentés à Manosque : plateformes et outils SaaS IA sur mesure — boutiques en ligne cosmétiques, réservation touristique multilingue, portails clients connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Manosque ?",
-      a: "Les audits IA à Manosque débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Manosque et en Haute-Provence ?",
+      a: "Oui, Axion-IA intervient à Manosque et tout le bassin du pays de Forcalquier-Montagne de Lure (Volx, Sainte-Tulle, Gréoux-les-Bains). Nos consultants viennent d'Aix-en-Provence, à 50 minutes.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Manosque ?",
-      a: "Notre équipe se déplace sur site à Manosque pour réaliser des interventions personnalisées, adaptées aux besoins spécifiques de chaque entreprise.",
+      q: "Accompagnez-vous les TPE du tourisme et de la cosmétique ?",
+      a: "Oui, les TPE sont notre priorité : agents conversationnels multilingues pour l'hôtellerie, automatisation des réservations, contrôle qualité cosmétique. Audit Flash dès 490 € HT.",
     },
     {
-      q: "Quels délais pour une intervention IA à Manosque ?",
-      a: "Les interventions à Manosque sont planifiées dans un délai de 5 jours ouvrés après validation du projet, selon la disponibilité.",
+      q: "Travaillez-vous avec les prestataires de Cadarache et ITER ?",
+      a: "Oui, automatisation documentaire, classification, agents conversationnels B2B et optimisation des process pour les PME prestataires de l'écosystème high-tech provençal.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Manosque ?",
-      a: "Axion-IA veille à ce que toutes les solutions IA déployées à Manosque respectent les normes RGPD, garantissant une gestion sécurisée des données.",
+      q: "Quels services pour les commerces et artisans manosquins ?",
+      a: "Automatisation des devis, relances, planning et SAV, CRM augmentés et plateformes web sur mesure. Tarifs publics, sans devis opaque.",
+    },
+    {
+      q: "Comment se passe une mission à Manosque ?",
+      a: "Nos consultants se déplacent depuis Aix-en-Provence ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Manosque respecte strictement le RGPD, sans dépendance technologique imposée et avec transfert de compétences vers vos équipes.",
     },
   ],
 };

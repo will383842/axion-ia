@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Orange (84, Vaucluse) — théâtre antique romain UNESCO, Chorégies, arc de triomphe, carrefour A7-A9.
 
 import type { VilleCopy } from "./types";
 
 export const ORANGE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Orange, une ville dynamique de Provence-Alpes-Côte d'Azur, pour automatiser les processus métiers. L'écosystème local inclut des secteurs comme le commerce de détail et la construction.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Orange (84), en Vaucluse. Ville du théâtre antique romain classé UNESCO, des Chorégies et de l'arc de triomphe, Orange est aussi un carrefour logistique entre A7 et A9. Tourisme patrimonial, commerce, agriculture et transport y nourrissent un tissu de petites entreprises que nous outillons d'une IA concrète.",
   pitchEn:
-    "Axion-IA intervient à Orange, une ville dynamique de Provence-Alpes-Côte d'Azur, pour automatiser les processus métiers. L'écosystème local inclut des secteurs comme le commerce de détail et la construction.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Orange (84), en Vaucluse. Ville du théâtre antique romain classé UNESCO, des Chorégies et de l'arc de triomphe, Orange est aussi un carrefour logistique entre A7 et A9. Tourisme patrimonial, commerce, agriculture et transport y nourrissent un tissu de petites entreprises que nous outillons d'une IA concrète.",
   directAnswerFr:
-    "Axion-IA se déplace à Orange pour offrir des solutions IA adaptées aux entreprises locales. Avec des services tels que l'audit et l'intervention, nous accompagnons les entreprises dans leur transformation numérique. Orange, avec son tissu économique comprenant le commerce de détail et la construction, est un terrain propice pour nos interventions.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA se déplace à Orange pour offrir des solutions IA adaptées aux entreprises locales. Avec des services tels que l'audit et l'intervention, nous accompagnons les entreprises dans leur transformation numérique. Orange, avec son tissu économique comprenant le commerce de détail et la construction, est un terrain propice pour nos interventions.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+  seoHook: "tourisme romain & logistique",
   ecosystemFr:
-    "Orange abrite un tissu économique diversifié avec 3 000 établissements actifs. Les secteurs du commerce de détail et de la construction dominent, offrant un cadre propice aux interventions IA.",
+    "Orange, en Vaucluse, vit au rythme de son patrimoine romain : le théâtre antique classé à l'UNESCO et l'arc de triomphe attirent un tourisme culturel amplifié l'été par le festival lyrique des Chorégies. Cette économie touristique côtoie un commerce de proximité actif, une agriculture provençale productive et, surtout, une forte fonction logistique au carrefour des autoroutes A7 et A9. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
   ecosystemEn:
-    "Orange abrite un tissu économique diversifié avec 3 000 établissements actifs. Les secteurs du commerce de détail et de la construction dominent, offrant un cadre propice aux interventions IA.",
+    "Orange, en Vaucluse, vit au rythme de son patrimoine romain : le théâtre antique classé à l'UNESCO et l'arc de triomphe attirent un tourisme culturel amplifié l'été par le festival lyrique des Chorégies. Cette économie touristique côtoie un commerce de proximité actif, une agriculture provençale productive et, surtout, une forte fonction logistique au carrefour des autoroutes A7 et A9. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
   distancesFr:
-    "Orange est située à 30 km de la Gare TGV d'Avignon et à 100 km de l'Aéroport de Marseille-Provence.",
+    "Gare TGV d'Avignon à 30 km (Paris ~2h40), gare d'Orange sur la ligne TER. Carrefour autoroutier A7-A9 en bordure de ville. Avignon centre à 30 km, Marseille à 100 km. Aéroport de Marseille-Provence à 100 km, Avignon-Provence plus proche.",
   distancesEn:
-    "Orange est située à 30 km de la Gare TGV d'Avignon et à 100 km de l'Aéroport de Marseille-Provence.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transport terrestre"],
+    "Gare TGV d'Avignon à 30 km (Paris ~2h40), gare d'Orange sur la ligne TER. Carrefour autoroutier A7-A9 en bordure de ville. Avignon centre à 30 km, Marseille à 100 km. Aéroport de Marseille-Provence à 100 km, Avignon-Provence plus proche.",
+  topSectorsNaf: [
+    "Tourisme & patrimoine culturel",
+    "Logistique & transport (A7-A9)",
+    "Commerce de proximité",
+    "Agriculture & agroalimentaire",
+    "Artisanat & BTP",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Orange pour identifier les processus automatisables — à partir de 490 € HT.",
-      en: "Réaliser un audit à Orange pour identifier les processus automatisables — à partir de 490 € HT.",
+      fr: "Audit IA à Orange : diagnostic 4h pour acteurs du tourisme du théâtre antique et des Chorégies, commerces, transporteurs du carrefour A7-A9 et exploitations agricoles. On repère les tâches à automatiser en priorité.",
+      en: "Audit IA à Orange : diagnostic 4h pour acteurs du tourisme du théâtre antique et des Chorégies, commerces, transporteurs du carrefour A7-A9 et exploitations agricoles. On repère les tâches à automatiser en priorité.",
     },
     interventions: {
-      fr: "Intervenir à Orange pour optimiser les tâches administratives — intervention dès 590 € HT.",
-      en: "Intervenir à Orange pour optimiser les tâches administratives — intervention dès 590 € HT.",
+      fr: "Interventions IA sur site à Orange : ateliers pour rendre autonomes vos équipes sur des outils IA configurés pour le tourisme patrimonial, le commerce et la logistique provençale.",
+      en: "Interventions IA sur site à Orange : ateliers pour rendre autonomes vos équipes sur des outils IA configurés pour le tourisme patrimonial, le commerce et la logistique provençale.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Orange dans le secteur du commerce — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Orange dans le secteur du commerce — à partir de 990 € HT.",
+      fr: "Implémentation IA à Orange : agents conversationnels multilingues pour le tourisme, gestion de tournées et suivi des stocks pour la logistique, automatisation des devis et CRM pour les commerces.",
+      en: "Implémentation IA à Orange : agents conversationnels multilingues pour le tourisme, gestion de tournées et suivi des stocks pour la logistique, automatisation des devis et CRM pour les commerces.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants d'Orange pour des stratégies IA personnalisées — dès 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants d'Orange pour des stratégies IA personnalisées — dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Orange : sessions individuelles pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, sur site ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Orange : sessions individuelles pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, sur site ou en visio, pour piloter l'IA en autonomie.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Orange : plateformes et SaaS IA sur mesure pour acteurs du tourisme et commerces — réservations, billetterie, agents IA d'accueil multilingues autour du théâtre antique et des Chorégies.",
+      en: "Sites web augmentés à Orange : plateformes et SaaS IA sur mesure pour acteurs du tourisme et commerces — réservations, billetterie, agents IA d'accueil multilingues autour du théâtre antique et des Chorégies.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Orange ?",
-      a: "Les interventions à Orange commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Orange ?",
+      a: "Oui, Axion-IA intervient à Orange et dans tout le Haut-Vaucluse (Caderousse, Sérignan-du-Comtat, Piolenc, Courthézon). Nos consultants se déplacent depuis Avignon (gare TGV à 30 km) pour rencontrer TPE et PME sur site.",
+    },
+    {
+      q: "Combien coûte un audit IA à Orange ?",
+      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME orangeoises, sans devis opaque.",
+    },
+    {
+      q: "Aidez-vous les acteurs du tourisme du théâtre antique et des Chorégies ?",
+      a: "Oui. Hôtels, restaurants, sites culturels et organisateurs gravitant autour du théâtre antique et des Chorégies peuvent déployer billetterie augmentée, agents IA d'accueil multilingues et gestion d'avis.",
+    },
+    {
+      q: "Accompagnez-vous les transporteurs et logisticiens du carrefour A7-A9 ?",
+      a: "Oui. Pour les transporteurs et logisticiens installés au carrefour A7-A9, nous automatisons gestion de tournées, suivi des stocks, devis et relances avec des outils IA fiables.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour d'Orange ?",
-      a: "Oui, nous intervenons également dans les communes voisines telles que Caderousse, Sérignan-du-Comtat, et Piolenc.",
+      a: "Oui, nous intervenons aussi à Caderousse, Sérignan-du-Comtat, Piolenc et Courthézon, sur l'ensemble du bassin du Haut-Vaucluse.",
     },
     {
-      q: "Quels délais pour une intervention IA à Orange ?",
-      a: "Williams se déplace sur site dans les 5 jours ouvrés suivant la demande à Orange.",
-    },
-    {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Orange ?",
-      a: "Nous intégrons les exigences RGPD dans toutes nos solutions IA pour garantir la conformité des entreprises à Orange.",
+      q: "Comment garantissez-vous la conformité RGPD ?",
+      a: "Chaque mission à Orange intègre le RGPD : minimisation des données, hébergement maîtrisé et absence d'enfermement propriétaire. Vous gardez la main sur vos outils.",
     },
   ],
 };

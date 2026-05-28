@@ -1,67 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Meyzieu (69, Rhône) — est lyonnais, zone industrielle de la Mi-Plaine, PME industrielles, logistique et services, intégrée à la métropole de Lyon.
 
 import type { VilleCopy } from "./types";
 
 export const MEYZIEU_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Meyzieu, au cœur d'un écosystème industriel comprenant Renault Trucks et Bosch Rexroth, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Meyzieu, dans l'est lyonnais — PME industrielles de la zone de la Mi-Plaine, logistique, négoce et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Axion-IA intervient à Meyzieu, au cœur d'un écosystème industriel comprenant Renault Trucks et Bosch Rexroth, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Meyzieu, dans l'est lyonnais — PME industrielles de la zone de la Mi-Plaine, logistique, négoce et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "À Meyzieu, Axion-IA propose des services d'IA pour les entreprises locales. Le Parc Industriel de Meyzieu, avec des acteurs comme Renault Trucks et Bosch Rexroth, offre un cadre idéal pour nos interventions. Nous aidons les entreprises à automatiser leurs processus, 590 une intervention essentielle, et un audit flash est disponible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Meyzieu, commune de l'est lyonnais structurée par la zone industrielle de la Mi-Plaine et intégrée à la métropole de Lyon. Nous nous déplaçons sur site auprès des PME industrielles, des entreprises de logistique, du négoce et des services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "À Meyzieu, Axion-IA propose des services d'IA pour les entreprises locales. Le Parc Industriel de Meyzieu, avec des acteurs comme Renault Trucks et Bosch Rexroth, offre un cadre idéal pour nos interventions. Nous aidons les entreprises à automatiser leurs processus, 590 une intervention essentielle, et un audit flash est disponible.",
-  seoHook: "automobiles & commerce gros",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Meyzieu, commune de l'est lyonnais structurée par la zone industrielle de la Mi-Plaine et intégrée à la métropole de Lyon. Nous nous déplaçons sur site auprès des PME industrielles, des entreprises de logistique, du négoce et des services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+  seoHook: "industrie & logistique Mi-Plaine",
   ecosystemFr:
-    "Le tissu économique de Meyzieu est marqué par la présence de Renault Trucks et Bosch Rexroth, favorisant le développement d'initiatives industrielles. Axion-IA intervient pour soutenir ces entreprises dans leur adoption de l'IA.",
+    "Meyzieu s'appuie sur la vaste zone industrielle de la Mi-Plaine, l'une des plus importantes de l'est lyonnais, qui concentre PME industrielles, ateliers de production, négoce et plateformes logistiques. Bien reliée à la métropole de Lyon et à l'aéroport Saint Exupéry, la commune attire des activités tournées vers la distribution et la sous-traitance. Pour ces TPE et PME, l'IA opérationnelle fiabilise la gestion des commandes, le suivi de stock et la planification, sans surdimensionner les outils ni alourdir des équipes resserrées.",
   ecosystemEn:
-    "Le tissu économique de Meyzieu est marqué par la présence de Renault Trucks et Bosch Rexroth, favorisant le développement d'initiatives industrielles. Axion-IA intervient pour soutenir ces entreprises dans leur adoption de l'IA.",
+    "Meyzieu s'appuie sur la vaste zone industrielle de la Mi-Plaine, l'une des plus importantes de l'est lyonnais, qui concentre PME industrielles, ateliers de production, négoce et plateformes logistiques. Bien reliée à la métropole de Lyon et à l'aéroport Saint Exupéry, la commune attire des activités tournées vers la distribution et la sous-traitance. Pour ces TPE et PME, l'IA opérationnelle fiabilise la gestion des commandes, le suivi de stock et la planification, sans surdimensionner les outils ni alourdir des équipes resserrées.",
   distancesFr:
-    "Meyzieu est à 10 km de l'Aéroport Lyon-Saint Exupéry et à 15 km de la Gare de Lyon Part-Dieu.",
+    "Meyzieu est intégrée à la métropole de Lyon : l'aéroport Lyon-Saint Exupéry se trouve à une dizaine de kilomètres et la gare TGV de Lyon Part-Dieu à une quinzaine, accessibles par le tramway, la rocade Est et l'autoroute A43. La zone de la Mi-Plaine borde la commune et facilite les flux logistiques. Nos architectes se déplacent sur tout l'est lyonnais.",
   distancesEn:
-    "Meyzieu est à 10 km de l'Aéroport Lyon-Saint Exupéry et à 15 km de la Gare de Lyon Part-Dieu.",
-  topSectorsNaf: ["Automobiles", "Commerce de gros", "Transports terrestres", "Métallurgie"],
+    "Meyzieu est intégrée à la métropole de Lyon : l'aéroport Lyon-Saint Exupéry se trouve à une dizaine de kilomètres et la gare TGV de Lyon Part-Dieu à une quinzaine, accessibles par le tramway, la rocade Est et l'autoroute A43. La zone de la Mi-Plaine borde la commune et facilite les flux logistiques. Nos architectes se déplacent sur tout l'est lyonnais.",
+  topSectorsNaf: [
+    "Industrie & production",
+    "Transport & logistique",
+    "Commerce de gros & négoce",
+    "Maintenance & services industriels",
+    "Construction spécialisée",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Meyzieu avec Axion-IA — identifier vos axes d'amélioration IA dès 490 € HT.",
-      en: "Réaliser un audit à Meyzieu avec Axion-IA — identifier vos axes d'amélioration IA dès 490 € HT.",
+      fr: "Auditer à Meyzieu les processus d'une PME industrielle ou logistique de la Mi-Plaine — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
+      en: "Auditer à Meyzieu les processus d'une PME industrielle ou logistique de la Mi-Plaine — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir à Meyzieu pour automatiser vos processus — réduction des coûts administratifs.",
-      en: "Intervenir à Meyzieu pour automatiser vos processus — réduction des coûts administratifs.",
+      fr: "Intervenir sur site à Meyzieu pour automatiser la gestion des commandes, le suivi de stock et la planification des TPE/PME, sans bouleverser les équipes.",
+      en: "Intervenir sur site à Meyzieu pour automatiser la gestion des commandes, le suivi de stock et la planification des TPE/PME, sans bouleverser les équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Meyzieu — intégration dans vos systèmes dès 990 € HT.",
-      en: "Implémenter des solutions IA à Meyzieu — intégration dans vos systèmes dès 990 € HT.",
+      fr: "Implémenter à Meyzieu des outils IA durables, intégrés aux logiciels de gestion et de stock existants et documentés pour rester maîtrisés en interne après notre intervention.",
+      en: "Implémenter à Meyzieu des outils IA durables, intégrés aux logiciels de gestion et de stock existants et documentés pour rester maîtrisés en interne après notre intervention.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Meyzieu en 1-to-1 — stratégie IA personnalisée dès 990 € HT.",
-      en: "Accompagner les dirigeants de Meyzieu en 1-to-1 — stratégie IA personnalisée dès 990 € HT.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE/PME de Meyzieu pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de TPE/PME de Meyzieu pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+    },
+    sitesWeb: {
+      fr: "Concevoir à Meyzieu un site ou une plateforme web augmentée par l'IA pour une PME industrielle ou de négoce — catalogue, demandes de devis et suivi client enrichis intelligemment.",
+      en: "Concevoir à Meyzieu un site ou une plateforme web augmentée par l'IA pour une PME industrielle ou de négoce — catalogue, demandes de devis et suivi client enrichis intelligemment.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Meyzieu ?",
-      a: "Axion-IA propose un audit IA à partir de 490 € HT à Meyzieu. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA se déplace-t-il sur site à Meyzieu ?",
+      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Meyzieu, notamment dans la zone de la Mi-Plaine, et dans tout l'est lyonnais, pour observer vos processus réels avant toute recommandation.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Meyzieu ?",
-      a: "Nous nous déplaçons directement sur site à Meyzieu pour réaliser nos interventions, assurant un service de proximité efficace.",
+      q: "Une PME industrielle ou logistique peut-elle bénéficier de l'IA à Meyzieu ?",
+      a: "Oui. Nous aidons les PME de la Mi-Plaine à fiabiliser la gestion des commandes, le suivi de stock et la planification, avec des outils proportionnés à la taille de leur structure.",
     },
     {
-      q: "Quels délais pour une intervention IA à Meyzieu ?",
-      a: "Williams se déplace dans les 5 jours ouvrés pour une intervention IA à Meyzieu, selon la disponibilité.",
+      q: "L'IA est-elle accessible à une TPE de Meyzieu ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites structures, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Meyzieu ?",
-      a: "Axion-IA garantit que toutes les solutions déployées à Meyzieu respectent les normes RGPD en vigueur, assurant la sécurité des données.",
+      q: "Connaît-on les tarifs avant de s'engager ?",
+      a: "Oui. Axion-IA affiche une grille tarifaire publique et claire. Vous savez exactement ce que coûte un audit ou une intervention à Meyzieu avant de décider.",
     },
     {
-      q: "Quels secteurs bénéficient de l'IA à Meyzieu ?",
-      a: "Les secteurs de la fabrication automobile, du commerce de gros, et des transports terrestres à Meyzieu bénéficient de nos solutions IA.",
+      q: "Vos solutions respectent-elles le RGPD ?",
+      a: "Oui. Chaque solution IA déployée à Meyzieu est conçue dans le respect du RGPD et sans dépendance forcée à un éditeur, pour que vous gardiez la maîtrise et la portabilité de vos données.",
     },
   ],
 };

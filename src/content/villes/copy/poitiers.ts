@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Poitiers (86, Vienne) — Futuroscope, université parmi les plus anciennes de France, patrimoine roman, pôle tertiaire et assurance (MAAF, MACIF à proximité), numérique.
 
 import type { VilleCopy } from "./types";
 
 export const POITIERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Poitiers, une ville dynamique avec des institutions comme l'Université de Poitiers et le Futuroscope, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Poitiers — services, tertiaire, assurance, numérique et tourisme dans le sillage du Futuroscope et de l'une des plus anciennes universités de France. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Axion-IA intervient à Poitiers, une ville dynamique avec des institutions comme l'Université de Poitiers et le Futuroscope, pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Poitiers — services, tertiaire, assurance, numérique et tourisme dans le sillage du Futuroscope et de l'une des plus anciennes universités de France. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Poitiers, ville universitaire de la Vienne marquée par le Futuroscope, son patrimoine roman et un fort pôle tertiaire et d'assurance (MAAF, MACIF à proximité). Nous nous déplaçons sur site auprès des entreprises de services, du numérique et du tourisme pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
-  seoHook: "université, assurance & tourisme",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Poitiers, ville universitaire de la Vienne marquée par le Futuroscope, son patrimoine roman et un fort pôle tertiaire et d'assurance (MAAF, MACIF à proximité). Nous nous déplaçons sur site auprès des entreprises de services, du numérique et du tourisme pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+  seoHook: "assurance, numérique & tourisme",
   ecosystemFr:
-    "Poitiers est un centre d'enseignement et de recherche avec l'Université de Poitiers et le Laboratoire de Mathématiques et Applications. Le Technopole du Futuroscope soutient l'innovation locale.",
+    "Poitiers conjugue une université parmi les plus anciennes de France, un riche patrimoine roman et la locomotive touristique du Futuroscope, qui irrigue tout un écosystème de loisirs et de numérique. La ville est un pôle tertiaire reconnu, au cœur d'un bassin d'assurances et de mutuelles (MAAF, MACIF à proximité immédiate) qui structure l'emploi de services. Pour ces TPE et PME de services, de tourisme et de numérique, l'IA bien dosée allège la relation client, la gestion de dossiers et la production de contenu sans alourdir des organisations agiles.",
   ecosystemEn:
-    "Poitiers est un centre d'enseignement et de recherche avec l'Université de Poitiers et le Laboratoire de Mathématiques et Applications. Le Technopole du Futuroscope soutient l'innovation locale.",
+    "Poitiers conjugue une université parmi les plus anciennes de France, un riche patrimoine roman et la locomotive touristique du Futuroscope, qui irrigue tout un écosystème de loisirs et de numérique. La ville est un pôle tertiaire reconnu, au cœur d'un bassin d'assurances et de mutuelles (MAAF, MACIF à proximité immédiate) qui structure l'emploi de services. Pour ces TPE et PME de services, de tourisme et de numérique, l'IA bien dosée allège la relation client, la gestion de dossiers et la production de contenu sans alourdir des organisations agiles.",
   distancesFr:
-    "La Gare de Poitiers est à 0 km du centre-ville, facilitant l'accès à nos interventions.",
+    "Poitiers est reliée par sa gare LGV au cœur de ville, qui place Paris à environ 1h20 et Bordeaux à 1h. L'autoroute A10 traverse le département et l'aéroport de Poitiers-Biard dessert quelques liaisons régionales. Le Futuroscope, au nord de la ville, concentre un pôle d'activités numériques et touristiques. Nos architectes se déplacent sur site dans toute la Vienne.",
   distancesEn:
-    "La Gare de Poitiers est à 0 km du centre-ville, facilitant l'accès à nos interventions.",
-  topSectorsNaf: ["Enseignement", "Santé humaine", "Recherche scientifique", "Commerce de détail"],
+    "Poitiers est reliée par sa gare LGV au cœur de ville, qui place Paris à environ 1h20 et Bordeaux à 1h. L'autoroute A10 traverse le département et l'aéroport de Poitiers-Biard dessert quelques liaisons régionales. Le Futuroscope, au nord de la ville, concentre un pôle d'activités numériques et touristiques. Nos architectes se déplacent sur site dans toute la Vienne.",
+  topSectorsNaf: [
+    "Assurance & mutuelles",
+    "Numérique & édition de logiciels",
+    "Tourisme & loisirs",
+    "Enseignement & recherche",
+    "Services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Poitiers avec des acteurs comme SPN — identifier les opportunités IA.",
-      en: "Réaliser un audit à Poitiers avec des acteurs comme SPN — identifier les opportunités IA.",
+      fr: "Auditer à Poitiers les processus d'une PME de services, d'assurance ou du numérique — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
+      en: "Auditer à Poitiers les processus d'une PME de services, d'assurance ou du numérique — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir à Poitiers, proche du Technopole du Futuroscope — automatiser vos processus.",
-      en: "Intervenir à Poitiers, proche du Technopole du Futuroscope — automatiser vos processus.",
+      fr: "Intervenir sur site à Poitiers pour automatiser la gestion de dossiers, la relation client et la production de contenu des TPE/PME, sans alourdir le quotidien des équipes.",
+      en: "Intervenir sur site à Poitiers pour automatiser la gestion de dossiers, la relation client et la production de contenu des TPE/PME, sans alourdir le quotidien des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Poitiers, en lien avec l'Université de Poitiers — optimiser vos systèmes.",
-      en: "Implémenter des solutions IA à Poitiers, en lien avec l'Université de Poitiers — optimiser vos systèmes.",
+      fr: "Implémenter à Poitiers des outils IA durables et documentés — assistants de traitement de dossiers et de support client conçus pour rester maîtrisés en interne après notre départ.",
+      en: "Implémenter à Poitiers des outils IA durables et documentés — assistants de traitement de dossiers et de support client conçus pour rester maîtrisés en interne après notre départ.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Poitiers — former dirigeants et managers à l'IA.",
-      en: "Accompagner en un-à-un à Poitiers — former dirigeants et managers à l'IA.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE/PME poitevines pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de TPE/PME poitevines pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+    },
+    sitesWeb: {
+      fr: "Concevoir à Poitiers un site ou une plateforme web augmentée par l'IA pour une PME de services ou du tourisme — réservation, support client et contenu enrichis intelligemment.",
+      en: "Concevoir à Poitiers un site ou une plateforme web augmentée par l'IA pour une PME de services ou du tourisme — réservation, support client et contenu enrichis intelligemment.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Poitiers ?",
-      a: "Nos tarifs publics pour une intervention à Poitiers commencent à 590 € HT pour l'Intervention Essentielle. Consultez notre site pour plus de détails.",
+      q: "Axion-IA se déplace-t-il sur site à Poitiers ?",
+      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Poitiers et dans toute la Vienne, jusqu'au pôle du Futuroscope, pour observer vos processus réels avant toute recommandation.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Poitiers ?",
-      a: "Williams se déplace à Poitiers en utilisant les infrastructures locales comme la Gare de Poitiers et l'Aéroport de Poitiers-Biard pour des interventions sur site.",
+      q: "Une PME d'assurance ou de services peut-elle profiter de l'IA à Poitiers ?",
+      a: "Oui. Nous aidons les acteurs des services, de l'assurance et du numérique poitevins à automatiser la gestion de dossiers, la relation client et la production de contenu, avec des outils proportionnés à leur taille.",
     },
     {
-      q: "Quels délais pour une intervention IA à Poitiers ?",
-      a: "Nous intervenons à Poitiers dans un délai de 5 jours ouvrés après validation de votre demande, selon la disponibilité de nos consultants.",
+      q: "L'IA est-elle accessible à une TPE de Poitiers ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites structures, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
-      q: "Comment Axion-IA gère-t-il la conformité RGPD à Poitiers ?",
-      a: "Axion-IA s'assure que toutes les solutions IA déployées à Poitiers respectent les normes RGPD, garantissant la protection des données personnelles.",
+      q: "Connaît-on les tarifs à l'avance ?",
+      a: "Oui. Axion-IA publie une grille tarifaire claire, sans devis opaque ni abonnement caché. Vous connaissez le coût d'un audit ou d'une intervention à Poitiers avant de vous engager.",
+    },
+    {
+      q: "Mes données sont-elles protégées et conformes au RGPD ?",
+      a: "Oui. Chaque solution IA déployée à Poitiers est conçue dans le respect du RGPD et sans dépendance forcée à un éditeur, pour que vous gardiez la maîtrise et la portabilité de vos données.",
     },
   ],
 };

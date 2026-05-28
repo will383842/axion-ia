@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Dammarie-les-Lys (77, Seine-et-Marne) — agglo de Melun, bords de Seine, proximité Safran Aircraft Engines (Snecma) Villaroche.
 
 import type { VilleCopy } from "./types";
 
 export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
   pitchFr:
-    "À Dammarie-les-Lys, Axion-IA intervient pour optimiser les processus des entreprises locales. En Île-de-France, où l'écosystème est influencé par Cap Digital et Inria, nous apportons notre expertise IA sur site.",
+    "Dammarie-les-Lys (77, Seine-et-Marne), commune de l'agglomération de Melun en bords de Seine, vit dans l'orbite du bassin d'emploi melunais et du pôle aéronautique de Villaroche (Safran Aircraft Engines, ex-Snecma) tout proche. Son tissu mêle TPE artisans et de services, commerces, PME du BTP, de la logistique et de la sous-traitance aéronautique. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
   pitchEn:
-    "À Dammarie-les-Lys, Axion-IA intervient pour optimiser les processus des entreprises locales. En Île-de-France, où l'écosystème est influencé par Cap Digital et Inria, nous apportons notre expertise IA sur site.",
+    "Dammarie-les-Lys (77, Seine-et-Marne), commune de l'agglomération de Melun en bords de Seine, vit dans l'orbite du bassin d'emploi melunais et du pôle aéronautique de Villaroche (Safran Aircraft Engines, ex-Snecma) tout proche. Son tissu mêle TPE artisans et de services, commerces, PME du BTP, de la logistique et de la sous-traitance aéronautique. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
   directAnswerFr:
-    "Axion-IA se déplace à Dammarie-les-Lys pour accompagner les entreprises dans l'intégration de l'IA. L'écosystème local, influencé par des entités comme Cap Digital et Inria, favorise l'innovation. Nous proposons des audits et des interventions pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dammarie-les-Lys (77) et dans l'agglomération de Melun. Nous accompagnons en priorité les TPE — artisans, commerces, services — puis les PME du BTP, de la logistique et de la sous-traitance aéronautique du bassin de Villaroche, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — devis, planning, gestion documentaire, relation client — avant tout déploiement, sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA se déplace à Dammarie-les-Lys pour accompagner les entreprises dans l'intégration de l'IA. L'écosystème local, influencé par des entités comme Cap Digital et Inria, favorise l'innovation. Nous proposons des audits et des interventions pour répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dammarie-les-Lys (77) et dans l'agglomération de Melun. Nous accompagnons en priorité les TPE — artisans, commerces, services — puis les PME du BTP, de la logistique et de la sous-traitance aéronautique du bassin de Villaroche, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — devis, planning, gestion documentaire, relation client — avant tout déploiement, sur site ou en visio.",
+  seoHook: "agglo Melun & sous-traitance aéro",
   ecosystemFr:
-    "Dammarie-les-Lys, avec son bassin économique comprenant Melun et Fontainebleau, bénéficie d'une proximité avec des pôles comme Cap Digital et Station F, propices à l'innovation technologique.",
+    "Dammarie-les-Lys est une ville de l'agglomération Melun Val de Seine, en bords de Seine au sud-est de Paris. Économie résidentielle et productive : commerces et zones d'activités, TPE artisans et de services, PME du BTP et de la logistique, et sous-traitance du pôle aéronautique de Villaroche (Safran Aircraft Engines) à quelques kilomètres. Proximité de Fontainebleau et de son tissu touristique.",
   ecosystemEn:
-    "Dammarie-les-Lys, avec son bassin économique comprenant Melun et Fontainebleau, bénéficie d'une proximité avec des pôles comme Cap Digital et Station F, propices à l'innovation technologique.",
+    "Dammarie-les-Lys est une ville de l'agglomération Melun Val de Seine, en bords de Seine au sud-est de Paris. Économie résidentielle et productive : commerces et zones d'activités, TPE artisans et de services, PME du BTP et de la logistique, et sous-traitance du pôle aéronautique de Villaroche (Safran Aircraft Engines) à quelques kilomètres. Proximité de Fontainebleau et de son tissu touristique.",
   distancesFr:
-    "Dammarie-les-Lys est située à 50 km de la Gare de Lyon et à 45 km de l'aéroport de Paris-Orly.",
+    "Paris Gare de Lyon à 45 min par le Transilien R depuis Melun. Melun centre à 8 min. Pôle aéronautique de Villaroche à 15 min. Aéroport de Paris-Orly à 40 min. Fontainebleau à 20 min par la N6.",
   distancesEn:
-    "Dammarie-les-Lys est située à 50 km de la Gare de Lyon et à 45 km de l'aéroport de Paris-Orly.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transports terrestres"],
+    "Paris Gare de Lyon à 45 min par le Transilien R depuis Melun. Melun centre à 8 min. Pôle aéronautique de Villaroche à 15 min. Aéroport de Paris-Orly à 40 min. Fontainebleau à 20 min par la N6.",
+  topSectorsNaf: [
+    "Artisanat & BTP de proximité",
+    "Sous-traitance aéronautique (pôle de Villaroche / Safran)",
+    "Logistique & transport (Seine-et-Marne)",
+    "Commerce de détail & zones d'activités",
+    "Conseil, services aux entreprises & professions libérales",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Dammarie-les-Lys permet d'identifier les opportunités IA dans le commerce de détail et la construction.",
-      en: "Réaliser un audit à Dammarie-les-Lys permet d'identifier les opportunités IA dans le commerce de détail et la construction.",
+      fr: "Audit IA à Dammarie-les-Lys : diagnostic ciblé pour TPE artisans et de services, PME du BTP, de la logistique et de la sous-traitance aéro de l'agglo melunaise, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA à Dammarie-les-Lys : diagnostic ciblé pour TPE artisans et de services, PME du BTP, de la logistique et de la sous-traitance aéro de l'agglo melunaise, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
-      fr: "Intervenir à Dammarie-les-Lys pour automatiser les tâches administratives dans les secteurs du transport et de la restauration.",
-      en: "Intervenir à Dammarie-les-Lys pour automatiser les tâches administratives dans les secteurs du transport et de la restauration.",
+      fr: "Interventions IA sur site à Dammarie-les-Lys : ateliers pratiques pour l'artisan, le sous-traitant aéro, le logisticien ou le commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Dammarie-les-Lys : ateliers pratiques pour l'artisan, le sous-traitant aéro, le logisticien ou le commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Dammarie-les-Lys, facilitant l'intégration dans les processus métiers locaux.",
-      en: "Implémenter des solutions IA à Dammarie-les-Lys, facilitant l'intégration dans les processus métiers locaux.",
+      fr: "Implémentation IA à Dammarie-les-Lys : génération de devis, planification de chantiers et tournées, gestion documentaire technique, agents conversationnels et CRM augmentés pour TPE-PME du 77.",
+      en: "Implémentation IA à Dammarie-les-Lys : génération de devis, planification de chantiers et tournées, gestion documentaire technique, agents conversationnels et CRM augmentés pour TPE-PME du 77.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants à Dammarie-les-Lys pour maximiser l'impact de l'IA sur leurs opérations.",
-      en: "Accompagner en un-à-un les dirigeants à Dammarie-les-Lys pour maximiser l'impact de l'IA sur leurs opérations.",
+      fr: "Coaching 1-to-1 à Dammarie-les-Lys : sessions pour dirigeants de TPE artisans et de services et de PME du BTP, de la logistique et de l'aéro de l'agglo melunaise, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Dammarie-les-Lys : sessions pour dirigeants de TPE artisans et de services et de PME du BTP, de la logistique et de l'aéro de l'agglo melunaise, dans vos locaux ou en visio.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Dammarie-les-Lys : vitrines artisans, portails de PME du BTP et de la logistique enrichis d'IA — devis en ligne, prise de contact qualifiée et contenus locaux automatisés.",
+      en: "Sites web augmentés à Dammarie-les-Lys : vitrines artisans, portails de PME du BTP et de la logistique enrichis d'IA — devis en ligne, prise de contact qualifiée et contenus locaux automatisés.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Dammarie-les-Lys ?",
-      a: "Nos interventions à Dammarie-les-Lys commencent à partir de 590 € HT. Les tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Dammarie-les-Lys et dans l'agglo de Melun ?",
+      a: "Oui, Axion-IA intervient à Dammarie-les-Lys et dans toute l'agglomération Melun Val de Seine (Melun, Le Mée-sur-Seine, La Rochette). Nos consultants se déplacent sur site ou animent les sessions en visio.",
     },
     {
-      q: "Comment Axion-IA gère-t-il le déplacement à Dammarie-les-Lys ?",
-      a: "Nous nous déplaçons directement chez nos clients à Dammarie-les-Lys, assurant une intervention sur site dans les délais convenus.",
+      q: "Quels secteurs accompagnez-vous en priorité à Dammarie-les-Lys ?",
+      a: "Nous accompagnons d'abord les TPE artisans, commerces et services, puis les PME du BTP, de la logistique et de la sous-traitance aéronautique. Les ETI restent un complément.",
     },
     {
-      q: "Proposez-vous des formations IA sur site à Dammarie-les-Lys ?",
-      a: "Oui, nous offrons des formations sur site à Dammarie-les-Lys pour aider les équipes à maîtriser les outils IA, avec un tarif à partir de 990 € HT.",
+      q: "Aidez-vous les sous-traitants aéronautiques proches de Villaroche ?",
+      a: "Oui. Le pôle aéronautique de Villaroche (Safran Aircraft Engines) est à 15 min. Pour ses PME et TPE sous-traitantes, l'IA sert la gestion documentaire technique, les devis, la planification et le suivi qualité.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD lors de vos interventions à Dammarie-les-Lys ?",
-      a: "Nous respectons strictement les normes RGPD lors de nos interventions à Dammarie-les-Lys, garantissant la protection des données de nos clients.",
+      q: "Quel budget prévoir pour un audit IA à Dammarie-les-Lys ?",
+      a: "Nos tarifs sont publics et calibrés selon la taille, de la TPE à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
+    },
+    {
+      q: "Comment se déroule une intervention IA à Dammarie-les-Lys ?",
+      a: "Nos consultants se déplacent sur site (Melun à 8 min, Paris Gare de Lyon à 45 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+    },
+    {
+      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions ?",
+      a: "Oui, toutes nos interventions à Dammarie-les-Lys sont conformes au RGPD : minimisation des données, hébergement maîtrisé et absence de dépendance bloquante aux outils déployés.",
     },
   ],
 };

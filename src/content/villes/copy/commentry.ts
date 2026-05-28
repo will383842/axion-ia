@@ -1,69 +1,79 @@
-// AUTO-GENERATED 2026-05-27 — T4 batch #16 Claude Code (Will).
-// Commentry (03, Allier) — bassin Montluçon, héritage minier/industriel, Bourbonnais.
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Commentry (03, Allier) — bassin de Montluçon, héritage minier houiller, chimie & métallurgie, Bourbonnais.
 
 import type { VilleCopy } from "./types";
 
 export const COMMENTRY_COPY: VilleCopy = {
   pitchFr:
-    "Commentry (03), commune du bassin de Montluçon dans l'Allier, a un héritage minier et industriel fort (ancien bassin houiller, métallurgie historique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur du Bourbonnais.",
+    "Commentry (03), commune du bassin de Montluçon dans l'Allier, porte un fort héritage minier et industriel (ancien bassin houiller, chimie et métallurgie historiques). Son tissu mêle PME industrielles diversifiées, TPE artisans du BTP, commerces et services aux entreprises du Bourbonnais. Axion-IA accompagne en priorité les TPE puis les PME commentryennes.",
   pitchEn:
-    "Commentry (03), commune du bassin de Montluçon dans l'Allier, a un héritage minier et industriel fort (ancien bassin houiller, métallurgie historique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur du Bourbonnais.",
+    "Commentry (03), commune du bassin de Montluçon dans l'Allier, porte un fort héritage minier et industriel (ancien bassin houiller, chimie et métallurgie historiques). Son tissu mêle PME industrielles diversifiées, TPE artisans du BTP, commerces et services aux entreprises du Bourbonnais. Axion-IA accompagne en priorité les TPE puis les PME commentryennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commentry (03). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier/métallurgique), TPE artisans BTP, commerçants et services aux entreprises du bassin Montluçon.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commentry (03) auprès des TPE en priorité, puis des PME : industries diversifiées issues de l'héritage chimie-métallurgie, artisans du BTP, commerces de proximité et services aux entreprises du bassin de Montluçon. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commentry (03). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier/métallurgique), TPE artisans BTP, commerçants et services aux entreprises du bassin Montluçon.",
-  seoHook: "bassin de montluçon",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commentry (03) auprès des TPE en priorité, puis des PME : industries diversifiées issues de l'héritage chimie-métallurgie, artisans du BTP, commerces de proximité et services aux entreprises du bassin de Montluçon. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "industrie & artisanat bourbonnais",
   ecosystemFr:
-    "Commentry est dans le bassin de Montluçon, héritage minier/industriel fort (ancien bassin houiller, métallurgie). Tissu PME industrielles diversifiées, TPE artisanat BTP, commerces.",
+    "Commentry s'inscrit dans le bassin industriel de Montluçon, marqué par un héritage minier houiller et une tradition de chimie et de métallurgie. Le tissu local mêle PME industrielles diversifiées, sous-traitance mécanique, TPE artisanales du bâtiment, commerces de centre-bourg et services aux entreprises. Bassin du Bourbonnais à forte culture industrielle et savoir-faire technique.",
   ecosystemEn:
-    "Commentry est dans le bassin de Montluçon, héritage minier/industriel fort (ancien bassin houiller, métallurgie). Tissu PME industrielles diversifiées, TPE artisanat BTP, commerces.",
-  distancesFr: "Montluçon à 15 min. Clermont-Ferrand à 1h15. Moulins à 1h15. Lyon à 2h30.",
-  distancesEn: "Montluçon à 15 min. Clermont-Ferrand à 1h15. Moulins à 1h15. Lyon à 2h30.",
+    "Commentry s'inscrit dans le bassin industriel de Montluçon, marqué par un héritage minier houiller et une tradition de chimie et de métallurgie. Le tissu local mêle PME industrielles diversifiées, sous-traitance mécanique, TPE artisanales du bâtiment, commerces de centre-bourg et services aux entreprises. Bassin du Bourbonnais à forte culture industrielle et savoir-faire technique.",
+  distancesFr:
+    "Montluçon à 15 min. Moulins à 1h15. Clermont-Ferrand à 1h15. Vichy à 1h. Lyon à 2h30.",
+  distancesEn:
+    "Montluçon à 15 min. Moulins à 1h15. Clermont-Ferrand à 1h15. Vichy à 1h. Lyon à 2h30.",
   topSectorsNaf: [
-    "PME industrielles diversifiées (héritage minier)",
-    "Héritage métallurgique",
-    "TPE artisanat BTP",
+    "PME industrielles diversifiées (héritage chimie-métallurgie)",
+    "Sous-traitance mécanique",
+    "Artisanat & travaux du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Commentry : diagnostic adapté aux PME industrielles diversifiées bassin Montluçon, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Commentry : diagnostic adapté aux PME industrielles diversifiées bassin Montluçon, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Commentry : diagnostic pour PME industrielles, sous-traitants mécaniques et TPE artisanes du bassin de Montluçon. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Commentry : diagnostic pour PME industrielles, sous-traitants mécaniques et TPE artisanes du bassin de Montluçon. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Commentry : formats adaptés à l'atelier industriel, commerce. Vos équipes maîtrisent les outils déployés.",
-      en: "Interventions IA sur site à Commentry : formats adaptés à l'atelier industriel, commerce. Vos équipes maîtrisent les outils déployés.",
+      fr: "Interventions IA sur site à Commentry : formats adaptés à l'atelier industriel, au commerce ou au bureau. Vos équipes maîtrisent ensuite les outils déployés en autonomie.",
+      en: "Interventions IA sur site à Commentry : formats adaptés à l'atelier industriel, au commerce ou au bureau. Vos équipes maîtrisent ensuite les outils déployés en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Commentry : prédiction maintenance industrielle, contrôle qualité par vision, agents conversationnels B2B, classification documents. Bassin Montluçon.",
-      en: "Implémentation IA à Commentry : prédiction maintenance industrielle, contrôle qualité par vision, agents conversationnels B2B, classification documents. Bassin Montluçon.",
+      fr: "Implémentation IA à Commentry : prédiction de maintenance industrielle, contrôle qualité par vision, automatisation administrative, agents conversationnels B2B et classification documentaire.",
+      en: "Implémentation IA à Commentry : prédiction de maintenance industrielle, contrôle qualité par vision, automatisation administrative, agents conversationnels B2B et classification documentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Commentry : sessions dans votre atelier, bureau, commerce ou en visio. Industriels, artisans, gérants TPE/PME commentryens.",
-      en: "Coaching 1-to-1 à Commentry : sessions dans votre atelier, bureau, commerce ou en visio. Industriels, artisans, gérants TPE/PME commentryens.",
+      fr: "Coaching 1-to-1 à Commentry : sessions dans votre atelier, bureau, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME commentryennes.",
+      en: "Coaching 1-to-1 à Commentry : sessions dans votre atelier, bureau, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME commentryennes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Commentry : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, prise de RDV et catalogues techniques connectés à vos process.",
+      en: "Sites web augmentés à Commentry : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, prise de RDV et catalogues techniques connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Commentry et bassin Montluçon ?",
-      a: "Oui, Axion-IA intervient à Commentry et tout le bassin montluçonnais (Montluçon à 15 min, Domérat, Désertines). Consultants depuis Clermont (1h15).",
+      q: "Axion-IA intervient-il à Commentry et dans le bassin de Montluçon ?",
+      a: "Oui, Axion-IA intervient à Commentry et tout le bassin montluçonnais (Montluçon à 15 min, Domérat, Désertines, Néris-les-Bains). Nos consultants viennent de Clermont-Ferrand, à 1h15.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles ?",
-      a: "Oui, prédiction maintenance, contrôle qualité par vision, optimisation production, classification documents.",
+      a: "Oui, prédiction de maintenance, contrôle qualité par vision, optimisation de production et classification documentaire pour les industries diversifiées du Bourbonnais.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Accompagnez-vous les TPE artisans et commerces de Commentry ?",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
     },
     {
-      q: "Quels services pour les indépendants ?",
-      a: "Agents conversationnels, automatisation RDV, classification dossiers. RGPD strict.",
+      q: "Quels services pour les indépendants et professions libérales ?",
+      a: "Agents conversationnels, automatisation de la prise de RDV, classification de dossiers et CRM augmentés. RGPD strict, sans dépendance imposée.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont ?",
-      a: "Nos consultants viennent de Clermont (1h15). Frais de déplacement facturés à part, tarifs publics.",
+      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      a: "Nos consultants se déplacent depuis Clermont-Ferrand en 1h15, ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Commentry respecte strictement le RGPD, sans dépendance technologique imposée et avec transfert de compétences vers vos équipes.",
     },
   ],
 };

@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Vernon (27, Eure) — ArianeGroup (moteurs de fusée Ariane), Seine, Giverny et Monet à proximité.
 
 import type { VilleCopy } from "./types";
 
 export const VERNON_COPY: VilleCopy = {
   pitchFr:
-    "À Vernon, Axion-IA propose des interventions IA sur site pour les entreprises locales. Avec des acteurs comme Safran et Thales, nous aidons à automatiser les processus métiers et à optimiser les opérations quotidiennes.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Vernon (27), dans l'Eure. Ville du site ArianeGroup, où sont conçus les moteurs des fusées Ariane, Vernon mêle high-tech spatial, industrie, commerce et un tourisme tiré par Giverny et les jardins de Monet. Nous y déployons une IA concrète au service des petites structures de la vallée de la Seine.",
   pitchEn:
-    "À Vernon, Axion-IA propose des interventions IA sur site pour les entreprises locales. Avec des acteurs comme Safran et Thales, nous aidons à automatiser les processus métiers et à optimiser les opérations quotidiennes.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Vernon (27), dans l'Eure. Ville du site ArianeGroup, où sont conçus les moteurs des fusées Ariane, Vernon mêle high-tech spatial, industrie, commerce et un tourisme tiré par Giverny et les jardins de Monet. Nous y déployons une IA concrète au service des petites structures de la vallée de la Seine.",
   directAnswerFr:
-    "Axion-IA intervient à Vernon pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme la fabrication de produits électroniques et la recherche-développement scientifique, notre expertise permet de répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA intervient à Vernon pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme la fabrication de produits électroniques et la recherche-développement scientifique, notre expertise permet de répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+  seoHook: "spatial & tourisme Giverny",
   ecosystemFr:
-    "Vernon accueille des entreprises comme Safran et Thales, renforçant son tissu industriel. Le Parc d'activités de la Grande Garenne est un pôle économique clé, soutenant la fabrication de produits électroniques et métalliques.",
+    "Vernon, dans l'Eure, abrite le site historique d'ArianeGroup où sont développés et testés les moteurs des lanceurs Ariane, ancrant un écosystème industriel et technique de haut niveau. Autour de ce pôle gravitent des sous-traitants, des bureaux d'études et un tissu dense de TPE artisanales. Sur les rives de la Seine, le tourisme lié à Giverny et aux jardins de Monet nourrit hôtellerie et commerces, terrain idéal pour des automatisations IA pragmatiques.",
   ecosystemEn:
-    "Vernon accueille des entreprises comme Safran et Thales, renforçant son tissu industriel. Le Parc d'activités de la Grande Garenne est un pôle économique clé, soutenant la fabrication de produits électroniques et métalliques.",
+    "Vernon, dans l'Eure, abrite le site historique d'ArianeGroup où sont développés et testés les moteurs des lanceurs Ariane, ancrant un écosystème industriel et technique de haut niveau. Autour de ce pôle gravitent des sous-traitants, des bureaux d'études et un tissu dense de TPE artisanales. Sur les rives de la Seine, le tourisme lié à Giverny et aux jardins de Monet nourrit hôtellerie et commerces, terrain idéal pour des automatisations IA pragmatiques.",
   distancesFr:
-    "Vernon est à 30 km de la Gare TGV de Mantes-la-Jolie et à 100 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Gare de Vernon-Giverny (ligne Paris-Saint-Lazare-Rouen, Paris ~45 min). Jardins de Monet à Giverny à 5 km. Rouen à 65 km, Paris à 80 km par l'A13. Aéroport de Paris-Charles-de-Gaulle à environ 100 km.",
   distancesEn:
-    "Vernon est à 30 km de la Gare TGV de Mantes-la-Jolie et à 100 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Gare de Vernon-Giverny (ligne Paris-Saint-Lazare-Rouen, Paris ~45 min). Jardins de Monet à Giverny à 5 km. Rouen à 65 km, Paris à 80 km par l'A13. Aéroport de Paris-Charles-de-Gaulle à environ 100 km.",
   topSectorsNaf: [
-    "Produits électroniques",
-    "Recherche scientifique",
-    "Produits métalliques",
-    "Commerce de détail",
+    "Industrie spatiale & aéronautique",
+    "Sous-traitance technique & bureaux d'études",
+    "Tourisme & hôtellerie",
+    "Commerce de proximité",
+    "Artisanat & BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vernon pour identifier les opportunités d'automatisation dans des secteurs comme la fabrication électronique.",
-      en: "Réaliser un audit à Vernon pour identifier les opportunités d'automatisation dans des secteurs comme la fabrication électronique.",
+      fr: "Audit IA à Vernon : diagnostic 4h pour sous-traitants industriels de l'écosystème ArianeGroup, structures touristiques de Giverny, commerces et artisans. On repère les tâches à automatiser en priorité.",
+      en: "Audit IA à Vernon : diagnostic 4h pour sous-traitants industriels de l'écosystème ArianeGroup, structures touristiques de Giverny, commerces et artisans. On repère les tâches à automatiser en priorité.",
     },
     interventions: {
-      fr: "Intervenir à Vernon pour optimiser les processus métiers des entreprises, notamment dans le commerce de détail.",
-      en: "Intervenir à Vernon pour optimiser les processus métiers des entreprises, notamment dans le commerce de détail.",
+      fr: "Interventions IA sur site à Vernon : ateliers pour rendre autonomes vos équipes sur des outils IA configurés pour l'industrie technique, le tourisme et le commerce de la vallée de la Seine.",
+      en: "Interventions IA sur site à Vernon : ateliers pour rendre autonomes vos équipes sur des outils IA configurés pour l'industrie technique, le tourisme et le commerce de la vallée de la Seine.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Vernon pour améliorer l'efficacité des opérations dans la recherche-développement scientifique.",
-      en: "Implémenter des solutions IA à Vernon pour améliorer l'efficacité des opérations dans la recherche-développement scientifique.",
+      fr: "Implémentation IA à Vernon : gestion documentaire technique, automatisation des devis, agents conversationnels multilingues pour le tourisme de Giverny et CRM augmentés pour les commerces.",
+      en: "Implémentation IA à Vernon : gestion documentaire technique, automatisation des devis, agents conversationnels multilingues pour le tourisme de Giverny et CRM augmentés pour les commerces.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Vernon avec des sessions 1-to-1 pour intégrer l'IA dans leurs stratégies d'entreprise.",
-      en: "Accompagner les dirigeants à Vernon avec des sessions 1-to-1 pour intégrer l'IA dans leurs stratégies d'entreprise.",
+      fr: "Coaching 1-to-1 à Vernon : sessions individuelles pour dirigeants de TPE et PME industrielles, touristiques ou de services, sur site ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Vernon : sessions individuelles pour dirigeants de TPE et PME industrielles, touristiques ou de services, sur site ou en visio, pour piloter l'IA en autonomie.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Vernon : plateformes et SaaS IA sur mesure pour acteurs touristiques de Giverny et commerces — réservations, agents IA d'accueil multilingues, portails clients connectés.",
+      en: "Sites web augmentés à Vernon : plateformes et SaaS IA sur mesure pour acteurs touristiques de Giverny et commerces — réservations, agents IA d'accueil multilingues, portails clients connectés.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Vernon ?",
-      a: "Nos audits IA à Vernon débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Vernon ?",
+      a: "Oui, Axion-IA intervient à Vernon et dans toute la vallée de la Seine, dans l'Eure. Nos consultants se déplacent depuis Paris (gare de Vernon-Giverny, ~45 min) pour rencontrer TPE et PME sur site.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Vernon ?",
-      a: "Williams se déplace sur site à Vernon pour réaliser des interventions IA, assurant un suivi personnalisé et adapté aux besoins locaux.",
+      q: "Combien coûte un audit IA à Vernon ?",
+      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME vernonnaises, sans devis opaque.",
     },
     {
-      q: "Quel est le délai d'intervention à Vernon ?",
-      a: "Nous nous engageons à intervenir sur site à Vernon dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Accompagnez-vous les sous-traitants de l'écosystème ArianeGroup ?",
+      a: "Oui. Pour les sous-traitants industriels et bureaux d'études gravitant autour du site ArianeGroup, nous automatisons gestion documentaire technique, devis, contrôle qualité et reporting.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Vernon ?",
-      a: "Axion-IA garantit la conformité RGPD lors de ses interventions à Vernon, en intégrant des pratiques de protection des données rigoureuses dans chaque projet.",
+      q: "Aidez-vous les acteurs touristiques de Giverny ?",
+      a: "Oui. Hôtels, restaurants et lieux d'accueil proches des jardins de Monet à Giverny peuvent déployer des agents IA multilingues, de la réservation augmentée et de la gestion d'avis.",
+    },
+    {
+      q: "Comment se déroule une mission à Vernon ?",
+      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Paris. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD ?",
+      a: "Chaque mission à Vernon intègre le RGPD : minimisation des données, hébergement maîtrisé et absence d'enfermement propriétaire. Vous gardez la main sur vos outils.",
     },
   ],
 };

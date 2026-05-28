@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Dreux (28, Eure-et-Loir) — sous-préfecture aux portes de l'Île-de-France, héritage électronique Philips-Radiotechnique, industrie automobile et plasturgie.
 
 import type { VilleCopy } from "./types";
 
 export const DREUX_COPY: VilleCopy = {
   pitchFr:
-    "À Dreux, Axion-IA intervient auprès des entreprises locales, notamment dans le secteur du commerce de détail et avec des acteurs comme Sanofi, pour optimiser leurs processus grâce à l'IA.",
+    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Dreux, sous-préfecture d'Eure-et-Loir aux portes de l'Île-de-France. Sur ce bassin industriel marqué par l'héritage électronique de Philips-Radiotechnique, l'automobile et la plasturgie, nous aidons ateliers, sous-traitants, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, planification, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   pitchEn:
-    "À Dreux, Axion-IA intervient auprès des entreprises locales, notamment dans le secteur du commerce de détail et avec des acteurs comme Sanofi, pour optimiser leurs processus grâce à l'IA.",
+    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Dreux, sous-préfecture d'Eure-et-Loir aux portes de l'Île-de-France. Sur ce bassin industriel marqué par l'héritage électronique de Philips-Radiotechnique, l'automobile et la plasturgie, nous aidons ateliers, sous-traitants, commerces et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, planification, suivi qualité, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Dreux pour aider les entreprises locales à automatiser et optimiser leurs processus. Avec des acteurs économiques tels que Sanofi et les Laboratoires Expanscience présents dans la région, nous offrons notre expertise pour répondre aux besoins spécifiques des secteurs dominants comme le commerce de détail et la santé humaine.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Dreux pour aider les entreprises locales à automatiser et optimiser leurs processus. Avec des acteurs économiques tels que Sanofi et les Laboratoires Expanscience présents dans la région, nous offrons notre expertise pour répondre aux besoins spécifiques des secteurs dominants comme le commerce de détail et la santé humaine.",
-  seoHook: "commerce détail & santé humaine",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Dreux, en Eure-et-Loir, aux portes de l'Île-de-France. Sur ce bassin industriel hérité de l'électronique Philips-Radiotechnique et tourné vers l'automobile et la plasturgie, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : chiffrage de devis, planification d'atelier, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+  seoHook: "industrie & sous-traitance",
   ecosystemFr:
-    "Dreux abrite des entreprises clés comme Sanofi et les Laboratoires Expanscience. Le Parc d'activités de la Radio est un centre d'affaires important, reflétant la diversité économique de la région.",
+    "Dreux est une sous-préfecture d'Eure-et-Loir adossée à l'Île-de-France, dont l'identité économique s'est forgée autour de l'électronique avec l'ancienne Radiotechnique-Philips, avant de se diversifier vers l'automobile, la plasturgie et la sous-traitance industrielle. Ses zones d'activités regroupent ateliers, PME industrielles, commerces et services de proximité. Ce tissu de TPE et de PME, confronté à des process de production et de gestion répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale dans notre portefeuille.",
   ecosystemEn:
-    "Dreux abrite des entreprises clés comme Sanofi et les Laboratoires Expanscience. Le Parc d'activités de la Radio est un centre d'affaires important, reflétant la diversité économique de la région.",
+    "Dreux est une sous-préfecture d'Eure-et-Loir adossée à l'Île-de-France, dont l'identité économique s'est forgée autour de l'électronique avec l'ancienne Radiotechnique-Philips, avant de se diversifier vers l'automobile, la plasturgie et la sous-traitance industrielle. Ses zones d'activités regroupent ateliers, PME industrielles, commerces et services de proximité. Ce tissu de TPE et de PME, confronté à des process de production et de gestion répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise pour les petites structures, l'ETI restant marginale dans notre portefeuille.",
   distancesFr:
-    "Dreux est situé à 25 km de la gare TGV de Maintenon et à 85 km de l'aéroport de Paris-Orly.",
+    "Dreux est reliée à Paris-Montparnasse en un peu plus d'une heure par le rail et bénéficie d'un accès rapide à l'Île-de-France via la N12. La gare de Dreux dessert directement la ligne N du Transilien, et l'aéroport de Paris-Orly est à environ 85 km. Cette position de porte d'entrée francilienne permet à Axion-IA d'intervenir sur site sans contrainte logistique.",
   distancesEn:
-    "Dreux est situé à 25 km de la gare TGV de Maintenon et à 85 km de l'aéroport de Paris-Orly.",
-  topSectorsNaf: ["Commerce de détail", "Santé humaine", "Construction", "Transports terrestres"],
+    "Dreux est reliée à Paris-Montparnasse en un peu plus d'une heure par le rail et bénéficie d'un accès rapide à l'Île-de-France via la N12. La gare de Dreux dessert directement la ligne N du Transilien, et l'aéroport de Paris-Orly est à environ 85 km. Cette position de porte d'entrée francilienne permet à Axion-IA d'intervenir sur site sans contrainte logistique.",
+  topSectorsNaf: [
+    "Industrie électronique et électrique",
+    "Plasturgie et transformation de matières plastiques",
+    "Sous-traitance automobile",
+    "Commerce de détail",
+    "Construction et BTP",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Dreux pour identifier des processus automatisables dans les secteurs comme la santé humaine.",
-      en: "Réaliser un audit à Dreux pour identifier des processus automatisables dans les secteurs comme la santé humaine.",
+      fr: "Audit IA à Dreux : une journée pour cartographier les tâches répétitives d'un atelier ou d'une PME industrielle — chiffrage, planification, suivi qualité — et prioriser ce qui mérite réellement d'être automatisé.",
+      en: "Audit IA à Dreux : une journée pour cartographier les tâches répétitives d'un atelier ou d'une PME industrielle — chiffrage, planification, suivi qualité — et prioriser ce qui mérite réellement d'être automatisé.",
     },
     interventions: {
-      fr: "Intervenir à Dreux pour automatiser les tâches administratives dans le commerce de détail.",
-      en: "Intervenir à Dreux pour automatiser les tâches administratives dans le commerce de détail.",
+      fr: "Interventions à Dreux : nous traitons un irritant précis d'une TPE ou PME locale — devis, relances fournisseurs, reporting de production — avec une automatisation sobre, livrée vite et tenable.",
+      en: "Interventions à Dreux : nous traitons un irritant précis d'une TPE ou PME locale — devis, relances fournisseurs, reporting de production — avec une automatisation sobre, livrée vite et tenable.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Dreux, optimisant les opérations des entreprises de construction.",
-      en: "Implémenter des solutions IA à Dreux, optimisant les opérations des entreprises de construction.",
+      fr: "Implémentation à Dreux : nous connectons l'IA aux ERP et outils de production déjà en place dans les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
+      en: "Implémentation à Dreux : nous connectons l'IA aux ERP et outils de production déjà en place dans les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Dreux avec des sessions 1-to-1 pour une adoption efficace de l'IA.",
-      en: "Accompagner les dirigeants de Dreux avec des sessions 1-to-1 pour une adoption efficace de l'IA.",
+      fr: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Dreux : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Dreux : pour les industriels, sous-traitants et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, catalogue assisté, prise de contact — pensés pour générer des affaires.",
+      en: "Sites web augmentés à Dreux : pour les industriels, sous-traitants et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, catalogue assisté, prise de contact — pensés pour générer des affaires.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Dreux?",
-      a: "Les tarifs pour une intervention à Dreux débutent à 590 € HT pour l'Intervention Essentielle. Consultez notre site pour les tarifs publics détaillés.",
+      q: "Axion-IA accompagne-t-il les petites entreprises de Dreux ?",
+      a: "Oui. Notre priorité va aux TPE puis aux PME de Dreux : ateliers, sous-traitants industriels, commerces et sociétés de services. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention à Dreux?",
-      a: "Williams se déplace sur site à Dreux dans les 5 jours ouvrés pour commencer l'intervention après validation.",
+      q: "L'IA est-elle utile aux PME industrielles de Dreux ?",
+      a: "Oui. Le bassin drouais, héritier de l'électronique et tourné vers l'automobile et la plasturgie, compte de nombreux ateliers et sous-traitants dont les tâches — chiffrage, planification, suivi qualité — sont répétitives et se prêtent bien à des automatisations ciblées et rentables.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Dreux?",
-      a: "Axion-IA s'assure que toutes les solutions déployées à Dreux respectent les normes RGPD, garantissant la protection des données personnelles.",
+      q: "Intervenez-vous sur site à Dreux ?",
+      a: "Oui. Dreux est à un peu plus d'une heure de Paris-Montparnasse et reliée à l'Île-de-France par la N12. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste du projet pouvant être mené à distance.",
     },
     {
-      q: "Proposez-vous des audits spécifiques pour le secteur de la santé à Dreux?",
-      a: "Oui, nous proposons des audits ciblés pour le secteur de la santé à Dreux, à partir de 490 € HT, pour identifier les opportunités d'automatisation.",
+      q: "Par où commencer un projet IA à Dreux ?",
+      a: "Par un audit. Nous passons une journée à cartographier vos tâches répétitives et à identifier celles qui méritent réellement d'être automatisées. Vous repartez avec une feuille de route priorisée et chiffrée, sans engagement de poursuivre avec nous.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Dreux ?",
+      a: "La conformité RGPD est intégrée dès le cadrage : minimisation des données, hébergement maîtrisé, traçabilité des traitements. Pour des industriels et commerces gérant données clients et fournisseurs, c'est une condition de départ non négociable.",
     },
   ],
 };

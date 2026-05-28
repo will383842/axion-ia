@@ -1,20 +1,8 @@
 {
-  "scannedAt": "2026-05-28T04:34:35.379Z",
+  "scannedAt": "2026-05-28T04:57:24.924Z",
   "totalVilles": 2157,
-  "problematicCount": 457,
+  "problematicCount": 355,
   "problematic": [
-    {
-      "slug": "aix-les-bains",
-      "qualityScore": 55,
-      "model": "gpt-4o.",
-      "charsUnique": 856,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 55 (<75)"
-      ]
-    },
     {
       "slug": "albi",
       "qualityScore": 63,
@@ -100,18 +88,6 @@
       ]
     },
     {
-      "slug": "annemasse",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 839,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "antony",
       "qualityScore": 63,
       "model": "gpt-4o.",
@@ -169,18 +145,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
-      "slug": "aubagne",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 829,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -316,30 +280,6 @@
       ]
     },
     {
-      "slug": "beaupreau-en-mauges",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 829,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "beauvais",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 822,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "begles",
       "qualityScore": 55,
       "model": "gpt-4o.",
@@ -349,30 +289,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 55 (<75)"
-      ]
-    },
-    {
-      "slug": "bellerive-sur-allier",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 822,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 4,
-      "totalSectors": 5,
-      "issues": [
-        "4/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "bethune",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 823,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
       ]
     },
     {
@@ -436,18 +352,6 @@
       ]
     },
     {
-      "slug": "blagnac",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 838,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "blanquefort",
       "qualityScore": null,
       "model": null,
@@ -460,18 +364,6 @@
       ]
     },
     {
-      "slug": "bobigny",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 845,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "bompas",
       "qualityScore": null,
       "model": null,
@@ -481,18 +373,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "bondy",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 841,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
       ]
     },
     {
@@ -532,48 +412,12 @@
       ]
     },
     {
-      "slug": "bourg-en-bresse",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 803,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "bourg-la-reine",
       "qualityScore": 53,
       "model": "gpt-4o.",
       "charsUnique": 868,
       "hasHardcodedPrices": false,
       "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "bourges",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 801,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "bourgoin-jallieu",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 851,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 53 (<75)"
@@ -613,30 +457,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "brive-la-gaillarde",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 832,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "bron",
-      "qualityScore": 63,
-      "model": "gpt-4o.",
-      "charsUnique": 851,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 63 (<75)"
       ]
     },
     {
@@ -748,18 +568,6 @@
       ]
     },
     {
-      "slug": "calais",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 836,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "cambrai",
       "qualityScore": 55,
       "model": "gpt-4o.",
@@ -769,18 +577,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 55 (<75)"
-      ]
-    },
-    {
-      "slug": "canejan",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 827,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 4,
-      "totalSectors": 5,
-      "issues": [
-        "4/5 secteurs génériques"
       ]
     },
     {
@@ -880,18 +676,6 @@
       ]
     },
     {
-      "slug": "challans",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 834,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "chalon-sur-saone",
       "qualityScore": 65,
       "model": "gpt-4o.",
@@ -904,18 +688,6 @@
       ]
     },
     {
-      "slug": "chamalieres",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 847,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 4,
-      "totalSectors": 5,
-      "issues": [
-        "4/5 secteurs génériques"
-      ]
-    },
-    {
       "slug": "champagne-au-mont-d-or",
       "qualityScore": null,
       "model": null,
@@ -925,30 +697,6 @@
       "totalSectors": 5,
       "issues": [
         "4/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "champigny-sur-marne",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 841,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "champs-sur-marne",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 837,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -988,18 +736,6 @@
       ]
     },
     {
-      "slug": "chatellerault",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 848,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "chatenay-malabry",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -1024,18 +760,6 @@
       ]
     },
     {
-      "slug": "chatou",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 800,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 5,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "chatuzange-le-goubet",
       "qualityScore": null,
       "model": null,
@@ -1057,18 +781,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 63 (<75)"
-      ]
-    },
-    {
-      "slug": "chaville",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 831,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -1156,18 +868,6 @@
       ]
     },
     {
-      "slug": "colmar",
-      "qualityScore": 63,
-      "model": "gpt-4o.",
-      "charsUnique": 858,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 63 (<75)"
-      ]
-    },
-    {
       "slug": "colombes",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -1180,18 +880,6 @@
       ]
     },
     {
-      "slug": "colomiers",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 820,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "combs-la-ville",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -1201,18 +889,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "commentry",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 817,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
       ]
     },
     {
@@ -1252,18 +928,6 @@
       ]
     },
     {
-      "slug": "conflans-sainte-honorine",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 837,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "contes",
       "qualityScore": null,
       "model": null,
@@ -1300,18 +964,6 @@
       ]
     },
     {
-      "slug": "coudekerque-branche",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 844,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "coueron",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -1321,18 +973,6 @@
       "totalSectors": 3,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "courbevoie",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 850,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -1372,30 +1012,6 @@
       ]
     },
     {
-      "slug": "croix",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 838,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "cugnaux",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 812,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 3,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "cusset",
       "qualityScore": null,
       "model": null,
@@ -1405,18 +1021,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "dammarie-les-lys",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 805,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -1450,42 +1054,6 @@
       "charsUnique": 906,
       "hasHardcodedPrices": false,
       "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "dole",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 812,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "domerat",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 843,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 4,
-      "totalSectors": 5,
-      "issues": [
-        "4/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "douai",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 820,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 53 (<75)"
@@ -1537,30 +1105,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "draveil",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 853,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "dreux",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 840,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -1645,18 +1189,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "escalquens",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 782,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 5,
-      "issues": [
-        "Chars uniques = 782 (<800)"
       ]
     },
     {
@@ -1780,18 +1312,6 @@
       ]
     },
     {
-      "slug": "fontenay-sous-bois",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 850,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "forbach",
       "qualityScore": 53,
       "model": "gpt-4o.",
@@ -1804,18 +1324,6 @@
       ]
     },
     {
-      "slug": "fougeres",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 845,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "francheville",
       "qualityScore": null,
       "model": null,
@@ -1825,18 +1333,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "frontignan",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 825,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
       ]
     },
     {
@@ -1880,18 +1376,6 @@
       "qualityScore": null,
       "model": null,
       "charsUnique": 985,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "genay",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 827,
       "hasHardcodedPrices": false,
       "genericSectorsCount": 3,
       "totalSectors": 5,
@@ -1945,18 +1429,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "goussainville",
-      "qualityScore": 55,
-      "model": "gpt-4o.",
-      "charsUnique": 829,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 55 (<75)"
       ]
     },
     {
@@ -2044,18 +1516,6 @@
       ]
     },
     {
-      "slug": "guyancourt",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 841,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "haguenau",
       "qualityScore": 53,
       "model": "gpt-4o.",
@@ -2089,30 +1549,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "henin-beaumont",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 811,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "herouville-saint-clair",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 1744,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
       ]
     },
     {
@@ -2176,18 +1612,6 @@
       ]
     },
     {
-      "slug": "istres",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 819,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "ivry-sur-seine",
       "qualityScore": 63,
       "model": "gpt-4o.",
@@ -2200,30 +1624,6 @@
       ]
     },
     {
-      "slug": "izon",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 849,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "jassans-riottier",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 854,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 4,
-      "totalSectors": 5,
-      "issues": [
-        "4/5 secteurs génériques"
-      ]
-    },
-    {
       "slug": "jeumont",
       "qualityScore": null,
       "model": null,
@@ -2233,30 +1633,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "joinville-le-pont",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 1841,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "joue-les-tours",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 839,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
       ]
     },
     {
@@ -2788,18 +2164,6 @@
       ]
     },
     {
-      "slug": "le-teil",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 826,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
-      ]
-    },
-    {
       "slug": "lens",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -2860,30 +2224,6 @@
       ]
     },
     {
-      "slug": "les-pennes-mirabeau",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 837,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
-      "slug": "les-ulis",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 802,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "lescar",
       "qualityScore": null,
       "model": null,
@@ -2893,18 +2233,6 @@
       "totalSectors": 5,
       "issues": [
         "4/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "levallois-perret",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 842,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -2968,30 +2296,6 @@
       ]
     },
     {
-      "slug": "longjumeau",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 843,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "loos",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 848,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "loriol-sur-drome",
       "qualityScore": null,
       "model": null,
@@ -3013,18 +2317,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 60 (<75)"
-      ]
-    },
-    {
-      "slug": "ludon-medoc",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 829,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
       ]
     },
     {
@@ -3061,18 +2353,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "macon",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 805,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -3121,30 +2401,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 63 (<75)"
-      ]
-    },
-    {
-      "slug": "manosque",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 815,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "mantes-la-jolie",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 832,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
       ]
     },
     {
@@ -3229,42 +2485,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 60 (<75)"
-      ]
-    },
-    {
-      "slug": "merville-31",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 792,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 5,
-      "issues": [
-        "Chars uniques = 792 (<800)"
-      ]
-    },
-    {
-      "slug": "meudon",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 855,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "meyzieu",
-      "qualityScore": 55,
-      "model": "gpt-4o.",
-      "charsUnique": 810,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 55 (<75)"
       ]
     },
     {
@@ -3364,18 +2584,6 @@
       ]
     },
     {
-      "slug": "montbeliard",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 808,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
       "slug": "montelimar",
       "qualityScore": 55,
       "model": "gpt-4o.",
@@ -3445,18 +2653,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "montluel",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 858,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
       ]
     },
     {
@@ -3604,60 +2800,12 @@
       ]
     },
     {
-      "slug": "nevers",
-      "qualityScore": 55,
-      "model": "gpt-4o.",
-      "charsUnique": 847,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 55 (<75)"
-      ]
-    },
-    {
       "slug": "niort",
       "qualityScore": 58,
       "model": "gpt-4o.",
       "charsUnique": 885,
       "hasHardcodedPrices": false,
       "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "nogent-sur-marne",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 844,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "nogent-sur-oise",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 835,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
-      ]
-    },
-    {
-      "slug": "noisy-le-grand",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 823,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
@@ -3685,42 +2833,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "olivet",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 810,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "orange",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 850,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "oullins-pierre-benite",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 804,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
       ]
     },
     {
@@ -3892,18 +3004,6 @@
       ]
     },
     {
-      "slug": "poitiers",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 808,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "pollestres",
       "qualityScore": null,
       "model": null,
@@ -4000,18 +3100,6 @@
       ]
     },
     {
-      "slug": "reyrieux",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 813,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
-      ]
-    },
-    {
       "slug": "reze",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -4021,30 +3109,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "rillieux-la-pape",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 818,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "ris-orangis",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 846,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 3,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -4093,18 +3157,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "rodez",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 848,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -4165,18 +3217,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 63 (<75)"
-      ]
-    },
-    {
-      "slug": "rueil-malmaison",
-      "qualityScore": 50,
-      "model": "gpt-4o.",
-      "charsUnique": 832,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 50 (<75)"
       ]
     },
     {
@@ -4288,18 +3328,6 @@
       ]
     },
     {
-      "slug": "saint-denis-les-bourg",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 803,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 3,
-      "totalSectors": 5,
-      "issues": [
-        "3/5 secteurs génériques"
-      ]
-    },
-    {
       "slug": "saint-didier-au-mont-d-or",
       "qualityScore": null,
       "model": null,
@@ -4357,18 +3385,6 @@
       "totalSectors": 3,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "saint-gratien",
-      "qualityScore": 55,
-      "model": "gpt-4o.",
-      "charsUnique": 858,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 55 (<75)"
       ]
     },
     {
@@ -4720,18 +3736,6 @@
       ]
     },
     {
-      "slug": "savigny-sur-orge",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 837,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 3,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "sceaux",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -4792,18 +3796,6 @@
       ]
     },
     {
-      "slug": "sevran",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 848,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "sevremoine",
       "qualityScore": 53,
       "model": "gpt-4o.",
@@ -4828,30 +3820,6 @@
       ]
     },
     {
-      "slug": "soissons",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 835,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "sollies-pont",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 694,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 5,
-      "issues": [
-        "Chars uniques = 694 (<800)"
-      ]
-    },
-    {
       "slug": "sorbiers",
       "qualityScore": null,
       "model": null,
@@ -4873,18 +3841,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "sucy-en-brie",
-      "qualityScore": 55,
-      "model": "gpt-4o.",
-      "charsUnique": 807,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 55 (<75)"
       ]
     },
     {
@@ -4924,18 +3880,6 @@
       ]
     },
     {
-      "slug": "tassin-la-demi-lune",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 835,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 3,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "taverny",
       "qualityScore": 65,
       "model": "gpt-4o.",
@@ -4945,30 +3889,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 65 (<75)"
-      ]
-    },
-    {
-      "slug": "ternay",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 827,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 4,
-      "totalSectors": 5,
-      "issues": [
-        "4/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "thionville",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 858,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -4996,18 +3916,6 @@
       ]
     },
     {
-      "slug": "tournefeuille",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 843,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "tremblay-en-france",
       "qualityScore": 53,
       "model": "gpt-4o.",
@@ -5017,18 +3925,6 @@
       "totalSectors": 5,
       "issues": [
         "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "tresses",
-      "qualityScore": null,
-      "model": null,
-      "charsUnique": 834,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 4,
-      "totalSectors": 5,
-      "issues": [
-        "4/5 secteurs génériques"
       ]
     },
     {
@@ -5104,18 +4000,6 @@
       ]
     },
     {
-      "slug": "vand-uvre-les-nancy",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 840,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 3,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "vanves",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -5137,30 +4021,6 @@
       "totalSectors": 5,
       "issues": [
         "3/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "vaulx-en-velin",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 805,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "velizy-villacoublay",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 810,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -5188,18 +4048,6 @@
       ]
     },
     {
-      "slug": "vernon",
-      "qualityScore": 58,
-      "model": "gpt-4o.",
-      "charsUnique": 849,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
       "slug": "verrieres-le-buisson",
       "qualityScore": null,
       "model": null,
@@ -5209,18 +4057,6 @@
       "totalSectors": 5,
       "issues": [
         "4/5 secteurs génériques"
-      ]
-    },
-    {
-      "slug": "vienne",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 830,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -5260,30 +4096,6 @@
       ]
     },
     {
-      "slug": "villefranche-sur-saone",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 848,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "villemomble",
-      "qualityScore": 63,
-      "model": "gpt-4o.",
-      "charsUnique": 821,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 63 (<75)"
-      ]
-    },
-    {
       "slug": "villenave-d-ornon",
       "qualityScore": 58,
       "model": "gpt-4o.",
@@ -5305,18 +4117,6 @@
       "totalSectors": 4,
       "issues": [
         "Quality score gpt-4o = 58 (<75)"
-      ]
-    },
-    {
-      "slug": "villeneuve-la-garenne",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 839,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 1,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
       ]
     },
     {
@@ -5440,18 +4240,6 @@
       ]
     },
     {
-      "slug": "vitrolles",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 810,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 0,
-      "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
       "slug": "voiron",
       "qualityScore": 53,
       "model": "gpt-4o.",
@@ -5459,18 +4247,6 @@
       "hasHardcodedPrices": false,
       "genericSectorsCount": 1,
       "totalSectors": 4,
-      "issues": [
-        "Quality score gpt-4o = 53 (<75)"
-      ]
-    },
-    {
-      "slug": "wasquehal",
-      "qualityScore": 53,
-      "model": "gpt-4o.",
-      "charsUnique": 823,
-      "hasHardcodedPrices": false,
-      "genericSectorsCount": 2,
-      "totalSectors": 3,
       "issues": [
         "Quality score gpt-4o = 53 (<75)"
       ]

@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Douai (59, Nord) — ancien bassin charbonnier, usine Renault, filière ferroviaire (Alstom proche), Parlement de Flandre historique.
 
 import type { VilleCopy } from "./types";
 
 export const DOUAI_COPY: VilleCopy = {
   pitchFr:
-    "À Douai, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Ville marquée par la présence de Renault, Douai bénéficie d'une économie diversifiée que nous aidons à transformer via nos interventions.",
+    "Douai (59), ville du Nord à l'histoire industrielle marquée par le charbon, abrite l'usine automobile Renault et un pôle ferroviaire structurant (Alstom à proximité). Ancienne cité du Parlement de Flandre, son tissu mêle sous-traitance automobile et ferroviaire, logistique, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME douaisiennes.",
   pitchEn:
-    "À Douai, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Ville marquée par la présence de Renault, Douai bénéficie d'une économie diversifiée que nous aidons à transformer via nos interventions.",
+    "Douai (59), ville du Nord à l'histoire industrielle marquée par le charbon, abrite l'usine automobile Renault et un pôle ferroviaire structurant (Alstom à proximité). Ancienne cité du Parlement de Flandre, son tissu mêle sous-traitance automobile et ferroviaire, logistique, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME douaisiennes.",
   directAnswerFr:
-    "Axion-IA intervient à Douai, un centre économique actif avec 3 000 établissements. Nous proposons des audits et des interventions. Douai, avec ses connexions vers Lille et l'Université d'Artois, est un lieu stratégique pour nos services d'IA opérationnelle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douai (59) auprès des TPE en priorité, puis des PME : sous-traitance automobile gravitant autour de Renault, filière ferroviaire, logistique, artisans du BTP, commerces et services aux entreprises du Douaisis. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA intervient à Douai, un centre économique actif avec 3 000 établissements. Nous proposons des audits et des interventions. Douai, avec ses connexions vers Lille et l'Université d'Artois, est un lieu stratégique pour nos services d'IA opérationnelle.",
-  seoHook: "transports terrestres & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douai (59) auprès des TPE en priorité, puis des PME : sous-traitance automobile gravitant autour de Renault, filière ferroviaire, logistique, artisans du BTP, commerces et services aux entreprises du Douaisis. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "automobile & ferroviaire douaisis",
   ecosystemFr:
-    "Douai est un pôle économique important avec Renault et l'Université d'Artois. Ces entités renforcent l'attractivité de la région pour des interventions en IA. Axion-IA s'adresse aux entreprises locales pour optimiser leurs opérations.",
+    "Douai, ancien bassin minier reconverti, structure son économie autour de l'usine Renault et d'une forte filière ferroviaire (Alstom à proximité de Valenciennes). Le tissu local mêle PME de sous-traitance automobile et ferroviaire, logistique, TPE artisanales du bâtiment, commerces de centre historique et services aux entreprises. Bassin du Douaisis à savoir-faire industriel ancré.",
   ecosystemEn:
-    "Douai est un pôle économique important avec Renault et l'Université d'Artois. Ces entités renforcent l'attractivité de la région pour des interventions en IA. Axion-IA s'adresse aux entreprises locales pour optimiser leurs opérations.",
+    "Douai, ancien bassin minier reconverti, structure son économie autour de l'usine Renault et d'une forte filière ferroviaire (Alstom à proximité de Valenciennes). Le tissu local mêle PME de sous-traitance automobile et ferroviaire, logistique, TPE artisanales du bâtiment, commerces de centre historique et services aux entreprises. Bassin du Douaisis à savoir-faire industriel ancré.",
   distancesFr:
-    "Douai est à 35 km de la Gare TGV de Lille-Europe et à 30 km de l'aéroport de Lille-Lesquin.",
+    "Lille à 35 min. Gare TGV Lille-Europe à 35 min. Arras à 25 min. Valenciennes à 30 min. Aéroport Lille-Lesquin à 30 min. Gare Douai TGV directe.",
   distancesEn:
-    "Douai est à 35 km de la Gare TGV de Lille-Europe et à 30 km de l'aéroport de Lille-Lesquin.",
+    "Lille à 35 min. Gare TGV Lille-Europe à 35 min. Arras à 25 min. Valenciennes à 30 min. Aéroport Lille-Lesquin à 30 min. Gare Douai TGV directe.",
   topSectorsNaf: [
-    "Transports terrestres",
-    "Construction",
-    "Commerce de gros",
-    "Administration publique",
+    "Sous-traitance automobile (écosystème Renault)",
+    "Filière ferroviaire",
+    "Logistique & transport",
+    "Artisanat & travaux du BTP",
+    "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Douai pour les entreprises du secteur des transports — identifier les axes d'amélioration.",
-      en: "Réaliser un audit à Douai pour les entreprises du secteur des transports — identifier les axes d'amélioration.",
+      fr: "Audit IA à Douai : diagnostic pour PME de sous-traitance automobile et ferroviaire, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Douai : diagnostic pour PME de sous-traitance automobile et ferroviaire, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
-      fr: "Intervenir à Douai auprès des acteurs de la construction — simplifier les processus administratifs.",
-      en: "Intervenir à Douai auprès des acteurs de la construction — simplifier les processus administratifs.",
+      fr: "Interventions IA sur site à Douai : formats adaptés à l'atelier industriel, l'entrepôt, le commerce ou le bureau. Vos équipes prennent ensuite la main sur les outils en autonomie.",
+      en: "Interventions IA sur site à Douai : formats adaptés à l'atelier industriel, l'entrepôt, le commerce ou le bureau. Vos équipes prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Douai pour les commerces de gros — automatiser les stocks.",
-      en: "Implémenter des solutions IA à Douai pour les commerces de gros — automatiser les stocks.",
+      fr: "Implémentation IA à Douai : contrôle qualité par vision pour la sous-traitance auto, prédiction de maintenance, optimisation logistique, automatisation administrative et agents conversationnels B2B.",
+      en: "Implémentation IA à Douai : contrôle qualité par vision pour la sous-traitance auto, prédiction de maintenance, optimisation logistique, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Douai — intégrer l'IA dans la stratégie d'entreprise.",
-      en: "Accompagner en un-à-un les dirigeants de Douai — intégrer l'IA dans la stratégie d'entreprise.",
+      fr: "Coaching 1-to-1 à Douai : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME douaisiennes.",
+      en: "Coaching 1-to-1 à Douai : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME douaisiennes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Douai : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, suivi logistique et catalogues techniques connectés à vos process.",
+      en: "Sites web augmentés à Douai : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, suivi logistique et catalogues techniques connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Douai ?",
-      a: "Nos interventions à Douai débutent à partir de 590 € HT. Consultez nos tarifs publics sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Douai et dans le Douaisis ?",
+      a: "Oui, Axion-IA intervient à Douai et tout le Douaisis (Sin-le-Noble, Waziers, Cuincy, Lambres-lez-Douai). Nos consultants viennent de Lille, à 35 minutes, ou via la gare TGV de Douai.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il pour un audit à Douai ?",
-      a: "Notre équipe nationale se déplace directement sur site à Douai pour réaliser des audits, garantissant une compréhension précise de vos besoins locaux.",
+      q: "Accompagnez-vous la sous-traitance automobile et ferroviaire ?",
+      a: "Oui, contrôle qualité par vision, prédiction de maintenance, traçabilité et automatisation des flux pour les PME fournisseurs de l'écosystème Renault et de la filière ferroviaire.",
     },
     {
-      q: "Quel est le délai pour une intervention IA à Douai ?",
-      a: "Nous nous engageons à intervenir à Douai dans un délai de 5 jours ouvrés après validation de votre demande.",
+      q: "Travaillez-vous avec les TPE artisans et commerces de Douai ?",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Douai ?",
-      a: "Oui, toutes nos interventions à Douai sont conformes au RGPD, assurant la protection de vos données personnelles et professionnelles.",
+      q: "Quels services pour la logistique et le transport ?",
+      a: "Optimisation des tournées et entrepôts, suivi de livraison, prédiction de maintenance et automatisation administrative. Tarifs publics, sans devis opaque.",
+    },
+    {
+      q: "Comment se passe une mission depuis Lille ?",
+      a: "Nos consultants se déplacent depuis Lille en 35 minutes, ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Douai respecte strictement le RGPD, sans dépendance technologique imposée et avec transfert de compétences vers vos équipes.",
     },
   ],
 };

@@ -1,72 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Colomiers (31, Haute-Garonne) — banlieue ouest de Toulouse, capitale de la sous-traitance aéronautique (Airbus), Occitanie.
 
 import type { VilleCopy } from "./types";
 
 export const COLOMIERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Colomiers, un hub pour l'industrie aéronautique avec Airbus et Safran. Nous vous accompagnons dans l'optimisation de vos processus grâce à l'IA.",
+    "Colomiers (31), deuxième ville de la banlieue ouest de Toulouse en Haute-Garonne, est un haut lieu de la sous-traitance aéronautique, en bordure immédiate des sites Airbus. Son tissu mêle PME aéro, services techniques, TPE artisanales du BTP, commerces et professions libérales. Axion-IA accompagne en priorité les TPE puis les PME columérines.",
   pitchEn:
-    "Axion-IA intervient à Colomiers, un hub pour l'industrie aéronautique avec Airbus et Safran. Nous vous accompagnons dans l'optimisation de vos processus grâce à l'IA.",
+    "Colomiers (31), deuxième ville de la banlieue ouest de Toulouse en Haute-Garonne, est un haut lieu de la sous-traitance aéronautique, en bordure immédiate des sites Airbus. Son tissu mêle PME aéro, services techniques, TPE artisanales du BTP, commerces et professions libérales. Axion-IA accompagne en priorité les TPE puis les PME columérines.",
   directAnswerFr:
-    "À Colomiers, Axion-IA propose des services d'IA opérationnelle adaptés aux entreprises locales. Avec des acteurs comme Airbus et Safran, nous intervenons pour automatiser les tâches administratives et optimiser les processus industriels. Nos audits débutent à et nos interventions essentielles à garantissant un retour sur investissement rapide.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colomiers (31) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique fournissant Airbus, bureaux d'études et services techniques, artisans du BTP, commerces et professions libérales de l'ouest toulousain. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "À Colomiers, Axion-IA propose des services d'IA opérationnelle adaptés aux entreprises locales. Avec des acteurs comme Airbus et Safran, nous intervenons pour automatiser les tâches administratives et optimiser les processus industriels. Nos audits débutent à et nos interventions essentielles à garantissant un retour sur investissement rapide.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colomiers (31) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique fournissant Airbus, bureaux d'études et services techniques, artisans du BTP, commerces et professions libérales de l'ouest toulousain. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "sous-traitance aéro & airbus",
   ecosystemFr:
-    "Colomiers est un centre industriel important, abritant Airbus et Safran. Le secteur aéronautique et la programmation informatique y sont prédominants, renforçant l'attrait pour les technologies de pointe.",
+    "Colomiers est l'une des principales communes de l'ouest toulousain, en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch. Son tissu est dominé par la sous-traitance aéronautique : usinage, mécanique de précision, bureaux d'études, services techniques et informatique embarquée. S'y ajoutent des TPE artisanales du bâtiment, des commerces de proximité et de nombreuses professions libérales.",
   ecosystemEn:
-    "Colomiers est un centre industriel important, abritant Airbus et Safran. Le secteur aéronautique et la programmation informatique y sont prédominants, renforçant l'attrait pour les technologies de pointe.",
+    "Colomiers est l'une des principales communes de l'ouest toulousain, en bordure des sites Airbus de Blagnac et Saint-Martin-du-Touch. Son tissu est dominé par la sous-traitance aéronautique : usinage, mécanique de précision, bureaux d'études, services techniques et informatique embarquée. S'y ajoutent des TPE artisanales du bâtiment, des commerces de proximité et de nombreuses professions libérales.",
   distancesFr:
-    "Colomiers est à 11 km de la gare TGV de Toulouse-Matabiau et à 8 km de l'aéroport de Toulouse-Blagnac.",
+    "Toulouse centre à 15 min. Aéroport Toulouse-Blagnac à 10 min. Sites Airbus à 5 min. Gare TGV Toulouse-Matabiau à 20 min. Gare Colomiers TER directe.",
   distancesEn:
-    "Colomiers est à 11 km de la gare TGV de Toulouse-Matabiau et à 8 km de l'aéroport de Toulouse-Blagnac.",
+    "Toulouse centre à 15 min. Aéroport Toulouse-Blagnac à 10 min. Sites Airbus à 5 min. Gare TGV Toulouse-Matabiau à 20 min. Gare Colomiers TER directe.",
   topSectorsNaf: [
-    "Construction aéronautique",
-    "Programmation informatique",
-    "Commerce de détail",
-    "Transports terrestres",
+    "Sous-traitance aéronautique (usinage, mécanique de précision)",
+    "Bureaux d'études & services techniques",
+    "Informatique embarquée",
+    "Artisanat & travaux du BTP",
+    "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Colomiers avec Axion-IA — identifier les opportunités d'optimisation pour Airbus et Safran.",
-      en: "Réaliser un audit à Colomiers avec Axion-IA — identifier les opportunités d'optimisation pour Airbus et Safran.",
+      fr: "Audit IA à Colomiers : diagnostic pour PME de sous-traitance aéro, bureaux d'études et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Colomiers : diagnostic pour PME de sous-traitance aéro, bureaux d'études et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
-      fr: "Intervenir à Colomiers sur site — automatiser les processus pour une efficacité accrue.",
-      en: "Intervenir à Colomiers sur site — automatiser les processus pour une efficacité accrue.",
+      fr: "Interventions IA sur site à Colomiers : formats adaptés à l'atelier d'usinage, au bureau d'études, au commerce ou au cabinet. Vos équipes prennent ensuite la main en autonomie.",
+      en: "Interventions IA sur site à Colomiers : formats adaptés à l'atelier d'usinage, au bureau d'études, au commerce ou au cabinet. Vos équipes prennent ensuite la main en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Colomiers — intégration fluide dans vos systèmes existants.",
-      en: "Implémenter des solutions IA à Colomiers — intégration fluide dans vos systèmes existants.",
+      fr: "Implémentation IA à Colomiers : contrôle qualité par vision pour la mécanique de précision, traçabilité documentaire, prédiction de maintenance, automatisation administrative et agents conversationnels B2B.",
+      en: "Implémentation IA à Colomiers : contrôle qualité par vision pour la mécanique de précision, traçabilité documentaire, prédiction de maintenance, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Colomiers — sessions personnalisées pour maîtriser l'IA.",
-      en: "Accompagner les dirigeants à Colomiers — sessions personnalisées pour maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Colomiers : sessions dans votre atelier, bureau d'études, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME columérines.",
+      en: "Coaching 1-to-1 à Colomiers : sessions dans votre atelier, bureau d'études, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME columérines.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Colomiers : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, catalogues techniques et configurateurs connectés à vos process.",
+      en: "Sites web augmentés à Colomiers : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, catalogues techniques et configurateurs connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Colomiers ?",
-      a: "Nos interventions essentielles à Colomiers débutent à 590 € HT. Pour plus de détails, consultez nos tarifs publics sur notre site.",
+      q: "Axion-IA intervient-il à Colomiers et dans l'ouest toulousain ?",
+      a: "Oui, Axion-IA intervient à Colomiers et toute la couronne ouest de Toulouse (Blagnac, Cornebarrieu, Tournefeuille, Pibrac). Nos consultants viennent de Toulouse, à 15 minutes.",
     },
     {
-      q: "Comment se déroule un audit IA à Colomiers ?",
-      a: "Nous réalisons un audit sur place, en identifiant les points d'amélioration. L'Audit Flash 4h est disponible à partir de 490 € HT.",
+      q: "Accompagnez-vous la sous-traitance aéronautique fournissant Airbus ?",
+      a: "Oui, contrôle qualité par vision, traçabilité documentaire, prédiction de maintenance et automatisation des flux pour les PME d'usinage et de mécanique de précision.",
     },
     {
-      q: "Axion-IA se déplace-t-il directement dans les entreprises de Colomiers ?",
-      a: "Oui, notre équipe nationale se déplace à Colomiers pour intervenir directement chez vous, assurant une compréhension précise de vos besoins.",
+      q: "Travaillez-vous avec les TPE artisans et commerces de Colomiers ?",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Colomiers ?",
-      a: "Les secteurs de la construction aéronautique et de la programmation informatique, avec des entreprises comme Airbus, sont particulièrement adaptés à l'optimisation par l'IA.",
+      q: "Quels services pour les bureaux d'études et l'informatique embarquée ?",
+      a: "Agents conversationnels techniques, automatisation documentaire, classification, copilotes de rédaction et CRM augmentés. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Colomiers ?",
-      a: "Nous intégrons des pratiques conformes au RGPD dans toutes nos interventions, assurant la protection des données personnelles de vos clients et employés.",
+      q: "Comment se passe une mission depuis Toulouse ?",
+      a: "Nos consultants se déplacent depuis Toulouse en 15 minutes. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Colomiers respecte strictement le RGPD, sans dépendance technologique imposée et avec transfert de compétences vers vos équipes.",
     },
   ],
 };

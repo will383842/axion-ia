@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Thionville (57, Moselle) — Moselle frontalière, travailleurs transfrontaliers Luxembourg, ex-sidérurgie lorraine, vallée de la Fensch.
 
 import type { VilleCopy } from "./types";
 
 export const THIONVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Thionville, où le secteur métallurgique est dominé par ArcelorMittal, pour optimiser les processus métiers grâce à l'IA. Notre expertise nationale s'adapte aux besoins spécifiques des entreprises thionvilloises.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Thionville, ville de Moselle au cœur du bassin transfrontalier luxembourgeois. Marquée par l'histoire sidérurgique de la vallée de la Fensch et portée aujourd'hui par les dizaines de milliers de travailleurs frontaliers vers le Luxembourg, Thionville mêle PME tertiaires, sous-traitance industrielle, commerces, artisanat et services. Nous y ancrons l'IA dans le concret : devis, relances, gestion administrative multilingue, support client.",
   pitchEn:
-    "Axion-IA intervient à Thionville, où le secteur métallurgique est dominé par ArcelorMittal, pour optimiser les processus métiers grâce à l'IA. Notre expertise nationale s'adapte aux besoins spécifiques des entreprises thionvilloises.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Thionville, ville de Moselle au cœur du bassin transfrontalier luxembourgeois. Marquée par l'histoire sidérurgique de la vallée de la Fensch et portée aujourd'hui par les dizaines de milliers de travailleurs frontaliers vers le Luxembourg, Thionville mêle PME tertiaires, sous-traitance industrielle, commerces, artisanat et services. Nous y ancrons l'IA dans le concret : devis, relances, gestion administrative multilingue, support client.",
   directAnswerFr:
-    "Axion-IA propose des solutions IA sur site à Thionville, où ArcelorMittal influence fortement le secteur métallurgique. Nous offrons des audits et des interventions. Nos services incluent des implémentations IA et des sessions 1-to-1 pour dirigeants, garantissant un retour sur investissement rapide et mesurable.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thionville (Moselle), dans le bassin frontalier du Luxembourg. Nous accompagnons en priorité les TPE et PME locales : PME tertiaires et de services, sous-traitance industrielle de la vallée de la Fensch, commerces, artisans du bâtiment et professions libérales. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   directAnswerEn:
-    "Axion-IA propose des solutions IA sur site à Thionville, où ArcelorMittal influence fortement le secteur métallurgique. Nous offrons des audits et des interventions. Nos services incluent des implémentations IA et des sessions 1-to-1 pour dirigeants, garantissant un retour sur investissement rapide et mesurable.",
-  seoHook: "métallurgie & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thionville (Moselle), dans le bassin frontalier du Luxembourg. Nous accompagnons en priorité les TPE et PME locales : PME tertiaires et de services, sous-traitance industrielle de la vallée de la Fensch, commerces, artisans du bâtiment et professions libérales. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+  seoHook: "frontalier Luxembourg & industrie",
   ecosystemFr:
-    "Thionville accueille ArcelorMittal, un acteur clé dans la métallurgie, et bénéficie de l'influence économique du transport terrestre. Les entreprises locales tirent parti de ce tissu industriel pour se développer.",
+    "Thionville, deuxième ville de Moselle, a transformé son passé sidérurgique — héritage des hauts-fourneaux de la vallée de la Fensch — en une économie de services tournée vers le Luxembourg, où travaillent des dizaines de milliers de frontaliers. Le tissu local associe PME tertiaires et de services, sous-traitance industrielle et métallurgique, logistique, commerces, artisanat du bâtiment et professions libérales. Ces TPE et PME, souvent en environnement multilingue et concurrentiel, gagnent à automatiser devis, relances et gestion administrative.",
   ecosystemEn:
-    "Thionville accueille ArcelorMittal, un acteur clé dans la métallurgie, et bénéficie de l'influence économique du transport terrestre. Les entreprises locales tirent parti de ce tissu industriel pour se développer.",
+    "Thionville, deuxième ville de Moselle, a transformé son passé sidérurgique — héritage des hauts-fourneaux de la vallée de la Fensch — en une économie de services tournée vers le Luxembourg, où travaillent des dizaines de milliers de frontaliers. Le tissu local associe PME tertiaires et de services, sous-traitance industrielle et métallurgique, logistique, commerces, artisanat du bâtiment et professions libérales. Ces TPE et PME, souvent en environnement multilingue et concurrentiel, gagnent à automatiser devis, relances et gestion administrative.",
   distancesFr:
-    "Thionville est à 30 km de la gare TGV Gare de Metz-Ville et à 45 km de l'aéroport de Luxembourg.",
+    "Thionville est sur l'axe TER/TGV Metz-Luxembourg : Metz est à 30 km (20 min), Luxembourg-Ville à 30 km (20 min) et l'aéroport de Luxembourg à 45 km. Nos consultants se déplacent sur tout le nord mosellan : Yutz, Hayange, la vallée de la Fensch, Cattenom et le bassin frontalier.",
   distancesEn:
-    "Thionville est à 30 km de la gare TGV Gare de Metz-Ville et à 45 km de l'aéroport de Luxembourg.",
-  topSectorsNaf: ["Métallurgie", "Transports terrestres", "Commerce de détail", "Construction"],
+    "Thionville est sur l'axe TER/TGV Metz-Luxembourg : Metz est à 30 km (20 min), Luxembourg-Ville à 30 km (20 min) et l'aéroport de Luxembourg à 45 km. Nos consultants se déplacent sur tout le nord mosellan : Yutz, Hayange, la vallée de la Fensch, Cattenom et le bassin frontalier.",
+  topSectorsNaf: [
+    "PME tertiaires & services",
+    "Sous-traitance industrielle & métallurgie",
+    "Commerce de détail",
+    "Artisanat du bâtiment",
+    "Logistique transfrontalière",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Thionville pour identifier les processus à automatiser, en s'appuyant sur l'expertise métallurgique locale.",
-      en: "Réaliser un audit à Thionville pour identifier les processus à automatiser, en s'appuyant sur l'expertise métallurgique locale.",
+      fr: "Audit IA à Thionville : diagnostic des devis, relances et process administratifs des PME tertiaires, sous-traitants industriels et commerces du bassin frontalier. ROI chiffré, priorité TPE/PME.",
+      en: "Audit IA à Thionville : diagnostic des devis, relances et process administratifs des PME tertiaires, sous-traitants industriels et commerces du bassin frontalier. ROI chiffré, priorité TPE/PME.",
     },
     interventions: {
-      fr: "Intervenir à Thionville pour optimiser les opérations des entreprises de transports terrestres.",
-      en: "Intervenir à Thionville pour optimiser les opérations des entreprises de transports terrestres.",
+      fr: "Interventions IA sur site à Thionville : formats courts adaptés au bureau, à l'atelier, au commerce ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Thionville : formats courts adaptés au bureau, à l'atelier, au commerce ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Thionville, renforçant les capacités du commerce de détail.",
-      en: "Implémenter des solutions IA à Thionville, renforçant les capacités du commerce de détail.",
+      fr: "Implémentation IA à Thionville : agents conversationnels B2B multilingues, automatisation des devis et relances, classification de documents, suivi de production pour TPE et PME.",
+      en: "Implémentation IA à Thionville : agents conversationnels B2B multilingues, automatisation des devis et relances, classification de documents, suivi de production pour TPE et PME.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants thionvillois pour intégrer l'IA dans la construction.",
-      en: "Accompagner en 1-to-1 les dirigeants thionvillois pour intégrer l'IA dans la construction.",
+      fr: "Coaching 1-to-1 à Thionville : sessions au bureau, à l'atelier, au commerce ou en visio. Pour dirigeants et professions libérales thionvilloises qui veulent piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à Thionville : sessions au bureau, à l'atelier, au commerce ou en visio. Pour dirigeants et professions libérales thionvilloises qui veulent piloter l'IA eux-mêmes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Thionville : plateformes et outils IA sur mesure pour PME de services, sous-traitants industriels et commerces du bassin frontalier — portails multilingues, devis intelligents, suivi de commandes.",
+      en: "Sites web augmentés à Thionville : plateformes et outils IA sur mesure pour PME de services, sous-traitants industriels et commerces du bassin frontalier — portails multilingues, devis intelligents, suivi de commandes.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Thionville ?",
-      a: "Les interventions IA à Thionville commencent à partir de 590 € HT. Nos tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Thionville et dans le nord mosellan ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Thionville et du bassin frontalier (Yutz, Hayange, vallée de la Fensch, Cattenom). Metz et Luxembourg sont à 20 min par le rail.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention à Thionville ?",
-      a: "Nous nous déplaçons sur site à Thionville dans un délai de 5 jours ouvrés pour débuter les interventions.",
+      q: "Accompagnez-vous les entreprises tournées vers le Luxembourg ?",
+      a: "Oui, dans un bassin de dizaines de milliers de frontaliers, le multilingue compte. Agents conversationnels B2B multilingues, automatisation des devis et support client cross-frontière.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Thionville ?",
-      a: "Axion-IA garantit la conformité RGPD en intégrant des processus rigoureux au sein de chaque intervention à Thionville, assurant la protection des données.",
+      q: "Travaillez-vous avec la sous-traitance industrielle de la Fensch ?",
+      a: "Oui, sous-traitants et ateliers métallurgiques font partie de notre cible TPE/PME. Suivi de production, classification de documents techniques, automatisation des devis et relances.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Thionville ?",
-      a: "Oui, nous offrons des sessions 1-to-1 à partir de 990 € HT pour former les dirigeants thionvillois à l'intégration de l'IA dans leurs processus.",
+      q: "Quels services pour les commerces et artisans thionvillois ?",
+      a: "Audit Flash, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
+    },
+    {
+      q: "Comment se passe une mission à Thionville ?",
+      a: "Nos consultants couvrent tout le nord mosellan, avec Metz et Luxembourg à 20 min par le rail. Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
     },
   ],
 };

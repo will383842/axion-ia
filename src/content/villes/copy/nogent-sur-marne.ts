@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Nogent-sur-Marne (94, Val-de-Marne) — bords de Marne chic, Pavillon Baltard, est parisien résidentiel.
 
 import type { VilleCopy } from "./types";
 
 export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "À Nogent-sur-Marne, Axion-IA intervient pour optimiser les processus des entreprises locales. Paris, avec ses pôles comme Cap Digital et Station F, influence les innovations que nous apportons sur site.",
+    "Nogent-sur-Marne (94), sous-préfecture du Val-de-Marne, est l'une des communes les plus prisées de l'est parisien, célèbre pour ses bords de Marne, ses guinguettes et le Pavillon Baltard. Cette ville résidentielle haut de gamme concentre professions libérales, cabinets, petites PME de services, commerces premium et acteurs de l'immobilier et de la santé. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser l'administratif et soigner la relation client, avec des solutions concrètes et un retour sur investissement mesurable.",
   pitchEn:
-    "À Nogent-sur-Marne, Axion-IA intervient pour optimiser les processus des entreprises locales. Paris, avec ses pôles comme Cap Digital et Station F, influence les innovations que nous apportons sur site.",
+    "Nogent-sur-Marne (94), sous-préfecture du Val-de-Marne, est l'une des communes les plus prisées de l'est parisien, célèbre pour ses bords de Marne, ses guinguettes et le Pavillon Baltard. Cette ville résidentielle haut de gamme concentre professions libérales, cabinets, petites PME de services, commerces premium et acteurs de l'immobilier et de la santé. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser l'administratif et soigner la relation client, avec des solutions concrètes et un retour sur investissement mesurable.",
   directAnswerFr:
-    "Axion-IA se déplace à Nogent-sur-Marne pour accompagner les entreprises dans l'automatisation de leurs tâches administratives. Grâce à notre expérience nationale, nous intervenons rapidement sur site. Paris, abritant des entités comme LVMH et Inria, inspire nos méthodes d'implémentation pour un retour sur investissement rapide.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Marne (94, Val-de-Marne) et dans l'est parisien. Nous accompagnons en priorité les TPE de services, professions libérales et commerces, puis les PME de l'immobilier, de la santé et du conseil ancrées sur les bords de Marne. Notre approche : un audit ciblé des tâches répétitives, des automatisations utiles posées sur vos outils, et la formation de vos équipes pour rester autonomes. Les ETI restent une part marginale de notre clientèle.",
   directAnswerEn:
-    "Axion-IA se déplace à Nogent-sur-Marne pour accompagner les entreprises dans l'automatisation de leurs tâches administratives. Grâce à notre expérience nationale, nous intervenons rapidement sur site. Paris, abritant des entités comme LVMH et Inria, inspire nos méthodes d'implémentation pour un retour sur investissement rapide.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Marne (94, Val-de-Marne) et dans l'est parisien. Nous accompagnons en priorité les TPE de services, professions libérales et commerces, puis les PME de l'immobilier, de la santé et du conseil ancrées sur les bords de Marne. Notre approche : un audit ciblé des tâches répétitives, des automatisations utiles posées sur vos outils, et la formation de vos équipes pour rester autonomes. Les ETI restent une part marginale de notre clientèle.",
+  seoHook: "services & immobilier bords de Marne",
   ecosystemFr:
-    "Nogent-sur-Marne, proche de Paris, bénéficie de l'influence économique de la capitale, où se trouvent des acteurs comme Cap Digital et Station F. Ces pôles favorisent l'innovation que nous apportons aux entreprises locales.",
+    "Nogent-sur-Marne profite de sa position privilégiée aux portes de Paris, sur des bords de Marne classés et touristiques autour du Pavillon Baltard et du bois de Vincennes. Son économie résidentielle aisée s'appuie sur des professions libérales, des cabinets de conseil et de santé, des agences immobilières, un commerce et une restauration premium ainsi que de petites PME de services. Ces TPE et PME, dirigées par des indépendants exigeants sur la qualité de service, trouvent dans l'IA appliquée un levier direct pour libérer du temps et fluidifier la relation client.",
   ecosystemEn:
-    "Nogent-sur-Marne, proche de Paris, bénéficie de l'influence économique de la capitale, où se trouvent des acteurs comme Cap Digital et Station F. Ces pôles favorisent l'innovation que nous apportons aux entreprises locales.",
+    "Nogent-sur-Marne profite de sa position privilégiée aux portes de Paris, sur des bords de Marne classés et touristiques autour du Pavillon Baltard et du bois de Vincennes. Son économie résidentielle aisée s'appuie sur des professions libérales, des cabinets de conseil et de santé, des agences immobilières, un commerce et une restauration premium ainsi que de petites PME de services. Ces TPE et PME, dirigées par des indépendants exigeants sur la qualité de service, trouvent dans l'IA appliquée un levier direct pour libérer du temps et fluidifier la relation client.",
   distancesFr:
-    "Nogent-sur-Marne est à 10 km de la Gare de Lyon et à 20 km de l'aéroport de Paris-Orly.",
+    "Paris intra-muros à 10 min (RER A et RER E Nogent-Le Perreux). Gare de Lyon à 10 km, aéroport de Paris-Orly à 20 km, Roissy-CDG à 30 min. Bois de Vincennes limitrophe. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
   distancesEn:
-    "Nogent-sur-Marne est à 10 km de la Gare de Lyon et à 20 km de l'aéroport de Paris-Orly.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Activités immobilières", "Santé humaine"],
+    "Paris intra-muros à 10 min (RER A et RER E Nogent-Le Perreux). Gare de Lyon à 10 km, aéroport de Paris-Orly à 20 km, Roissy-CDG à 30 min. Bois de Vincennes limitrophe. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
+  topSectorsNaf: [
+    "Professions libérales (juridique, conseil, santé)",
+    "Activités immobilières et gestion de patrimoine",
+    "Commerce de détail et restauration premium",
+    "Santé humaine et cabinets médicaux",
+    "Services tertiaires aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Nogent-sur-Marne permet de cibler les processus à automatiser, avec des tarifs à partir de 490 € HT.",
-      en: "Réaliser un audit à Nogent-sur-Marne permet de cibler les processus à automatiser, avec des tarifs à partir de 490 € HT.",
+      fr: "Audit IA à Nogent-sur-Marne : diagnostic sur site pour repérer les automatisations à fort retour dans un cabinet libéral, une agence immobilière ou une PME de services. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée, dans le respect du RGPD.",
+      en: "Audit IA à Nogent-sur-Marne : diagnostic sur site pour repérer les automatisations à fort retour dans un cabinet libéral, une agence immobilière ou une PME de services. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée, dans le respect du RGPD.",
     },
     interventions: {
-      fr: "Intervenir à Nogent-sur-Marne pour automatiser les devis et relances, réduisant les coûts opérationnels mesurés.",
-      en: "Intervenir à Nogent-sur-Marne pour automatiser les devis et relances, réduisant les coûts opérationnels mesurés.",
+      fr: "Interventions IA à Nogent-sur-Marne : sessions opérationnelles adaptées au cabinet, à l'agence ou au commerce. Vos collaborateurs repartent autonomes sur les outils déployés et gagnent du temps sur les devis et relances dès la première semaine.",
+      en: "Interventions IA à Nogent-sur-Marne : sessions opérationnelles adaptées au cabinet, à l'agence ou au commerce. Vos collaborateurs repartent autonomes sur les outils déployés et gagnent du temps sur les devis et relances dès la première semaine.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Nogent-sur-Marne, inspirées par l'écosystème parisien, dès 990 € HT.",
-      en: "Implémenter des solutions IA à Nogent-sur-Marne, inspirées par l'écosystème parisien, dès 990 € HT.",
+      fr: "Implémentation IA à Nogent-sur-Marne : automatisation des devis, relances et prises de rendez-vous, agents conversationnels client conformes RGPD, classification de dossiers immobiliers ou médicaux, intégrés à vos outils existants.",
+      en: "Implémentation IA à Nogent-sur-Marne : automatisation des devis, relances et prises de rendez-vous, agents conversationnels client conformes RGPD, classification de dossiers immobiliers ou médicaux, intégrés à vos outils existants.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Nogent-sur-Marne, pour une adoption rapide de l'IA, à partir de 990 € HT.",
-      en: "Accompagner en un-à-un à Nogent-sur-Marne, pour une adoption rapide de l'IA, à partir de 990 € HT.",
+      fr: "Coaching un-à-un à Nogent-sur-Marne : sessions individuelles avec le dirigeant, le professionnel libéral ou le gérant, sur site ou en visio. Pensé pour les TPE qui veulent un accompagnement sur mesure et discret, sans équipe technique.",
+      en: "Coaching un-à-un à Nogent-sur-Marne : sessions individuelles avec le dirigeant, le professionnel libéral ou le gérant, sur site ou en visio. Pensé pour les TPE qui veulent un accompagnement sur mesure et discret, sans équipe technique.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Nogent-sur-Marne : site vitrine ou portail métier sur mesure dopé à l'IA pour cabinets, agences et commerces premium des bords de Marne — prise de rendez-vous en ligne, réponses automatiques, image haut de gamme renforcée.",
+      en: "Sites web augmentés à Nogent-sur-Marne : site vitrine ou portail métier sur mesure dopé à l'IA pour cabinets, agences et commerces premium des bords de Marne — prise de rendez-vous en ligne, réponses automatiques, image haut de gamme renforcée.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Nogent-sur-Marne ?",
-      a: "Nos interventions à Nogent-sur-Marne débutent à 590 € HT. Les tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Nogent-sur-Marne et dans l'est parisien ?",
+      a: "Oui. Nous couvrons Nogent-sur-Marne et l'est du Val-de-Marne (Le Perreux, Vincennes, Joinville-le-Pont). Nos consultants se déplacent sur site depuis Paris, à 10 min en RER, ou interviennent en visio selon votre besoin.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Nogent-sur-Marne ?",
-      a: "Williams et notre équipe se déplacent directement sur site à Nogent-sur-Marne, garantissant une intervention rapide et efficace.",
+      q: "Accompagnez-vous les professions libérales et TPE de services ?",
+      a: "C'est notre priorité. Pour les cabinets, agences immobilières et indépendants, nous automatisons devis, relances et prises de rendez-vous, et nous formons le dirigeant à piloter ces outils sans équipe technique interne.",
     },
     {
-      q: "Quels délais pour un audit IA à Nogent-sur-Marne ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés pour réaliser un audit à Nogent-sur-Marne, avec un Audit Flash 4h à partir de 490 € HT.",
+      q: "Travaillez-vous avec les PME de l'immobilier et de la santé ?",
+      a: "Oui. Pour l'immobilier, le conseil et la santé, nous mettons en place agents conversationnels, classification de dossiers et automatisation de la relation client, toujours dans le respect strict du RGPD.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Nogent-sur-Marne ?",
-      a: "Nous intégrons systématiquement les normes RGPD dans nos interventions à Nogent-sur-Marne, assurant la protection des données tout au long du processus.",
+      q: "Mes données clients ou patients restent-elles protégées ?",
+      a: "Absolument. Toutes nos implémentations respectent le RGPD : minimisation des données, hébergement maîtrisé et traçabilité. C'est un point central de nos missions auprès des cabinets et agences nogentais.",
+    },
+    {
+      q: "Quel est le délai pour démarrer une mission à Nogent-sur-Marne ?",
+      a: "Le diagnostic peut être lancé sous quelques jours ouvrés. Les sessions clés se déroulent sur site à Nogent-sur-Marne, le suivi se poursuit en visio. Les frais de déplacement depuis Paris sont indiqués de façon transparente.",
     },
   ],
 };

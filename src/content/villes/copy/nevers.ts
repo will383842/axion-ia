@@ -1,70 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Nevers (58, Nièvre) — préfecture, faïence d'art de Nevers, circuit de Magny-Cours proche, bords de Loire, Bourgogne-Franche-Comté.
 
 import type { VilleCopy } from "./types";
 
 export const NEVERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Nevers pour optimiser les processus des entreprises locales. Avec des acteurs comme Faurecia et Eiffage, Nevers est un pôle industriel clé où nous apportons notre expertise en IA.",
+    "Nevers (58), préfecture de la Nièvre en Bourgogne-Franche-Comté, est une ville d'art et d'histoire au bord de la Loire, célèbre pour sa faïence d'art de Nevers, son sanctuaire Sainte-Bernadette et la proximité du circuit de Magny-Cours qui rythme la mécanique régionale. Son économie mêle artisanat d'art, PME industrielles et mécaniques, commerce, santé et tourisme. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   pitchEn:
-    "Axion-IA intervient à Nevers pour optimiser les processus des entreprises locales. Avec des acteurs comme Faurecia et Eiffage, Nevers est un pôle industriel clé où nous apportons notre expertise en IA.",
+    "Nevers (58), préfecture de la Nièvre en Bourgogne-Franche-Comté, est une ville d'art et d'histoire au bord de la Loire, célèbre pour sa faïence d'art de Nevers, son sanctuaire Sainte-Bernadette et la proximité du circuit de Magny-Cours qui rythme la mécanique régionale. Son économie mêle artisanat d'art, PME industrielles et mécaniques, commerce, santé et tourisme. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   directAnswerFr:
-    "Axion-IA se déplace à Nevers pour accompagner les entreprises dans l'adoption de l'IA. Avec des secteurs dominants tels que la fabrication de composants électroniques et des entreprises comme Faurecia, notre intervention vise à automatiser les tâches administratives et de relance, permettant un retour sur investissement rapide. Nos tarifs publics sont disponibles pour un audit.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nevers (58, Nièvre) et dans toute l'agglomération nivernaise. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME mécaniques et industrielles liées à l'écosystème de Magny-Cours, ainsi que les acteurs de santé et de services. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
   directAnswerEn:
-    "Axion-IA se déplace à Nevers pour accompagner les entreprises dans l'adoption de l'IA. Avec des secteurs dominants tels que la fabrication de composants électroniques et des entreprises comme Faurecia, notre intervention vise à automatiser les tâches administratives et de relance, permettant un retour sur investissement rapide. Nos tarifs publics sont disponibles pour un audit.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nevers (58, Nièvre) et dans toute l'agglomération nivernaise. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME mécaniques et industrielles liées à l'écosystème de Magny-Cours, ainsi que les acteurs de santé et de services. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+  seoHook: "mécanique & artisanat d'art",
   ecosystemFr:
-    "Nevers, avec ses 3 000 établissements actifs, est le siège de grands groupes tels que Faurecia et Eiffage. L'Institut Universitaire de Technologie de Nevers forme les talents de demain.",
+    "Nevers, préfecture de la Nièvre sur les bords de Loire, conjugue patrimoine, artisanat d'art et industrie. Sa faïence d'art reconnue, son sanctuaire Sainte-Bernadette et son centre historique en font une destination touristique, tandis que la proximité du circuit de Magny-Cours nourrit un pôle mécanique et de sous-traitance automobile. Autour gravitent des PME industrielles, des artisans d'art, des commerces, des acteurs de santé et de services. Ce tissu de TPE et PME, souvent piloté par des indépendants, est idéal pour des automatisations IA ciblées libérant du temps sur l'administratif et la production.",
   ecosystemEn:
-    "Nevers, avec ses 3 000 établissements actifs, est le siège de grands groupes tels que Faurecia et Eiffage. L'Institut Universitaire de Technologie de Nevers forme les talents de demain.",
-  distancesFr: "Nevers est desservie par la Gare TGV de Nevers, située à 0 km du centre-ville.",
-  distancesEn: "Nevers est desservie par la Gare TGV de Nevers, située à 0 km du centre-ville.",
+    "Nevers, préfecture de la Nièvre sur les bords de Loire, conjugue patrimoine, artisanat d'art et industrie. Sa faïence d'art reconnue, son sanctuaire Sainte-Bernadette et son centre historique en font une destination touristique, tandis que la proximité du circuit de Magny-Cours nourrit un pôle mécanique et de sous-traitance automobile. Autour gravitent des PME industrielles, des artisans d'art, des commerces, des acteurs de santé et de services. Ce tissu de TPE et PME, souvent piloté par des indépendants, est idéal pour des automatisations IA ciblées libérant du temps sur l'administratif et la production.",
+  distancesFr:
+    "Gare de Nevers en centre-ville (ligne Paris-Clermont, Paris à 2h). Circuit de Magny-Cours à 15 min, Bourges à 1h, Clermont-Ferrand à 1h30, Dijon à 2h, Lyon à 2h30 via l'A77 et l'A6. Nos consultants se déplacent sur site depuis Clermont-Ferrand ou Lyon, frais indiqués séparément, ou interviennent en visio.",
+  distancesEn:
+    "Gare de Nevers en centre-ville (ligne Paris-Clermont, Paris à 2h). Circuit de Magny-Cours à 15 min, Bourges à 1h, Clermont-Ferrand à 1h30, Dijon à 2h, Lyon à 2h30 via l'A77 et l'A6. Nos consultants se déplacent sur site depuis Clermont-Ferrand ou Lyon, frais indiqués séparément, ou interviennent en visio.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Transports terrestres",
-    "Composants électroniques",
-    "Santé humaine",
+    "Mécanique et sous-traitance automobile (pôle Magny-Cours)",
+    "Artisanat d'art et faïence de Nevers",
+    "Tourisme patrimonial et religieux, hôtellerie-restauration",
+    "Santé humaine et action sociale",
+    "Commerce de détail de centre-ville",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Nevers avec Faurecia pour identifier des opportunités d'automatisation.",
-      en: "Réaliser un audit à Nevers avec Faurecia pour identifier des opportunités d'automatisation.",
+      fr: "Audit IA à Nevers : diagnostic sur site pour identifier les automatisations à fort retour dans une PME mécanique, un atelier d'art ou un acteur touristique. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée.",
+      en: "Audit IA à Nevers : diagnostic sur site pour identifier les automatisations à fort retour dans une PME mécanique, un atelier d'art ou un acteur touristique. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée.",
     },
     interventions: {
-      fr: "Intervenir à Nevers chez Eiffage pour améliorer l'efficacité des processus.",
-      en: "Intervenir à Nevers chez Eiffage pour améliorer l'efficacité des processus.",
+      fr: "Interventions IA à Nevers : sessions opérationnelles adaptées à l'atelier, au commerce ou à l'hôtel-restaurant. Vos équipes maîtrisent les outils déployés et gagnent du temps sur la production et la relation client dès la première semaine.",
+      en: "Interventions IA à Nevers : sessions opérationnelles adaptées à l'atelier, au commerce ou à l'hôtel-restaurant. Vos équipes maîtrisent les outils déployés et gagnent du temps sur la production et la relation client dès la première semaine.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Nevers pour optimiser les opérations industrielles.",
-      en: "Implémenter des solutions IA à Nevers pour optimiser les opérations industrielles.",
+      fr: "Implémentation IA à Nevers : maintenance prédictive et contrôle qualité par vision pour la mécanique, classification de documents techniques, automatisation de réservations pour le tourisme, agents conversationnels intégrés à vos outils existants.",
+      en: "Implémentation IA à Nevers : maintenance prédictive et contrôle qualité par vision pour la mécanique, classification de documents techniques, automatisation de réservations pour le tourisme, agents conversationnels intégrés à vos outils existants.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Nevers avec des sessions 1-to-1 pour une adoption réussie de l'IA.",
-      en: "Accompagner les dirigeants à Nevers avec des sessions 1-to-1 pour une adoption réussie de l'IA.",
+      fr: "Coaching un-à-un à Nevers : sessions individuelles avec le dirigeant, l'artisan ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
+      en: "Coaching un-à-un à Nevers : sessions individuelles avec le dirigeant, l'artisan ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Nevers : site vitrine ou outil métier sur mesure dopé à l'IA pour artisans d'art, commerces et acteurs touristiques de la cité ligérienne — réservations en ligne, demandes de devis intelligentes, visibilité locale et patrimoniale renforcée.",
+      en: "Sites web augmentés à Nevers : site vitrine ou outil métier sur mesure dopé à l'IA pour artisans d'art, commerces et acteurs touristiques de la cité ligérienne — réservations en ligne, demandes de devis intelligentes, visibilité locale et patrimoniale renforcée.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Nevers ?",
-      a: "Nos interventions à Nevers débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Nevers et dans la Nièvre ?",
+      a: "Oui. Nous couvrons Nevers et l'agglomération nivernaise (Varennes-Vauzelles, Fourchambault, Magny-Cours). Nos consultants se déplacent sur site depuis Clermont-Ferrand (1h30) ou Lyon (2h30), ou interviennent en visio.",
     },
     {
-      q: "Comment se déroule le déplacement de votre équipe à Nevers ?",
-      a: "Notre équipe se déplace directement chez vous à Nevers, assurant une intervention sur site adaptée à vos besoins.",
+      q: "Accompagnez-vous les TPE artisanales, commerces et acteurs du tourisme ?",
+      a: "C'est notre priorité. Pour les artisans d'art, commerçants, hôtels et restaurants de Nevers, nous automatisons réservations, devis et relances, et nous formons le dirigeant à piloter ces outils sans dépendance à un prestataire.",
     },
     {
-      q: "Quel est le délai pour une intervention IA à Nevers ?",
-      a: "Nous garantissons un déplacement à Nevers dans les 5 jours ouvrés suivant la confirmation de votre demande.",
+      q: "Travaillez-vous avec les PME mécaniques liées à Magny-Cours ?",
+      a: "Oui. Pour la mécanique et la sous-traitance automobile de l'écosystème du circuit de Magny-Cours, nous mettons en place maintenance prédictive, contrôle qualité par vision et classification de documents techniques.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Nevers ?",
-      a: "Axion-IA intègre des standards RGPD stricts dans toutes ses interventions à Nevers, garantissant la protection des données.",
+      q: "Faut-il un gros budget informatique pour démarrer à Nevers ?",
+      a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un grand chantier coûteux.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises à Nevers ?",
-      a: "Oui, nous offrons des formations personnalisées à Nevers, incluant des sessions 1-to-1 pour dirigeants à partir de 990 € HT.",
+      q: "Comment se passe une mission depuis Clermont-Ferrand ou Lyon ?",
+      a: "Le diagnostic et les sessions clés se déroulent sur site à Nevers ; le suivi se poursuit en visio. Les frais de déplacement depuis Clermont (1h30) ou Lyon (2h30) sont indiqués séparément, en toute transparence.",
     },
   ],
 };

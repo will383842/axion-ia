@@ -1,67 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Cugnaux (31, Haute-Garonne) — banlieue sud-ouest Toulouse, périurbain aéronautique.
 
 import type { VilleCopy } from "./types";
 
 export const CUGNAUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Cugnaux pour optimiser les processus des entreprises locales. Avec des références comme LVMH et Cap Digital, nous apportons notre expertise nationale à votre entreprise.",
+    "Cugnaux (31), commune de la banlieue sud-ouest de Toulouse en Haute-Garonne, vit au rythme du bassin aéronautique toulousain. Tissu périurbain : TPE artisans BTP, commerces de proximité, PME services et sous-traitance industrielle gravitant autour d'Airbus et de ses donneurs d'ordre. Axion-IA accompagne en priorité les TPE puis les PME cugnalaises.",
   pitchEn:
-    "Axion-IA intervient à Cugnaux pour optimiser les processus des entreprises locales. Avec des références comme LVMH et Cap Digital, nous apportons notre expertise nationale à votre entreprise.",
+    "Cugnaux (31), commune de la banlieue sud-ouest de Toulouse en Haute-Garonne, vit au rythme du bassin aéronautique toulousain. Tissu périurbain : TPE artisans BTP, commerces de proximité, PME services et sous-traitance industrielle gravitant autour d'Airbus et de ses donneurs d'ordre. Axion-IA accompagne en priorité les TPE puis les PME cugnalaises.",
   directAnswerFr:
-    "À Cugnaux, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Avec le tissu économique comprenant LVMH et Cap Digital, nous aidons les entreprises à intégrer des solutions IA sur mesure. Nos services incluent des audits, implémentations et formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cugnaux (31) auprès des TPE en priorité, puis des PME : artisans du BTP, commerces de proximité, sous-traitants aéronautiques et prestataires de services du sud-ouest toulousain. Nous diagnostiquons, déployons et transférons des automatisations concrètes sur site, sans jargon, avec un ROI mesurable et une conformité RGPD stricte. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "À Cugnaux, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Avec le tissu économique comprenant LVMH et Cap Digital, nous aidons les entreprises à intégrer des solutions IA sur mesure. Nos services incluent des audits, implémentations et formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cugnaux (31) auprès des TPE en priorité, puis des PME : artisans du BTP, commerces de proximité, sous-traitants aéronautiques et prestataires de services du sud-ouest toulousain. Nous diagnostiquons, déployons et transférons des automatisations concrètes sur site, sans jargon, avec un ROI mesurable et une conformité RGPD stricte. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "périurbain & sous-traitance aéro",
   ecosystemFr:
-    "Cugnaux bénéficie de la proximité de Toulouse, abritant des entreprises comme LVMH et Cap Digital, ce qui enrichit le tissu économique local.",
+    "Cugnaux fait partie de la couronne sud-ouest de Toulouse Métropole, à proximité immédiate du pôle aéronautique de Blagnac. Le tissu local mêle TPE artisanales du bâtiment, commerces de centre-bourg, professions libérales et PME de sous-traitance industrielle qui fournissent les grands donneurs d'ordre aéronautiques. Population dynamique, fort résidentiel périurbain, zones d'activités tournées vers les services aux entreprises.",
   ecosystemEn:
-    "Cugnaux bénéficie de la proximité de Toulouse, abritant des entreprises comme LVMH et Cap Digital, ce qui enrichit le tissu économique local.",
+    "Cugnaux fait partie de la couronne sud-ouest de Toulouse Métropole, à proximité immédiate du pôle aéronautique de Blagnac. Le tissu local mêle TPE artisanales du bâtiment, commerces de centre-bourg, professions libérales et PME de sous-traitance industrielle qui fournissent les grands donneurs d'ordre aéronautiques. Population dynamique, fort résidentiel périurbain, zones d'activités tournées vers les services aux entreprises.",
   distancesFr:
-    "Cugnaux est à 15 km de la gare TGV Toulouse Matabiau et à 18 km de l'aéroport de Toulouse-Blagnac.",
+    "Toulouse centre à 15 min. Aéroport Toulouse-Blagnac à 15 min. Gare TGV Toulouse-Matabiau à 20 min. Aérospace Valley (Blagnac) à 20 min. Accès rocade ouest immédiat.",
   distancesEn:
-    "Cugnaux est à 15 km de la gare TGV Toulouse Matabiau et à 18 km de l'aéroport de Toulouse-Blagnac.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Programmation informatique"],
+    "Toulouse centre à 15 min. Aéroport Toulouse-Blagnac à 15 min. Gare TGV Toulouse-Matabiau à 20 min. Aérospace Valley (Blagnac) à 20 min. Accès rocade ouest immédiat.",
+  topSectorsNaf: [
+    "Sous-traitance aéronautique et mécanique de précision",
+    "BTP et construction résidentielle périurbaine toulousaine",
+    "Santé, cliniques et services à la personne",
+    "Commerce et zones d'activités du Sud-Ouest toulousain",
+    "Logistique et négoce industriel",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Cugnaux permet d'identifier les opportunités IA dans les secteurs clés comme la construction.",
-      en: "Réaliser un audit à Cugnaux permet d'identifier les opportunités IA dans les secteurs clés comme la construction.",
+      fr: "Audit IA à Cugnaux : diagnostic ciblé pour TPE artisanes, commerces et sous-traitants aéro. Repérage des tâches automatisables (devis, relances, planning) et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Cugnaux : diagnostic ciblé pour TPE artisanes, commerces et sous-traitants aéro. Repérage des tâches automatisables (devis, relances, planning) et ROI chiffré avant tout déploiement.",
     },
     interventions: {
-      fr: "Intervenir à Cugnaux pour automatiser les processus administratifs et commerciaux, réduisant ainsi les coûts opérationnels.",
-      en: "Intervenir à Cugnaux pour automatiser les processus administratifs et commerciaux, réduisant ainsi les coûts opérationnels.",
+      fr: "Interventions IA sur site à Cugnaux : formats courts adaptés à l'atelier, au commerce ou au bureau. Vos équipes prennent ensuite la main sur les outils déployés en autonomie.",
+      en: "Interventions IA sur site à Cugnaux : formats courts adaptés à l'atelier, au commerce ou au bureau. Vos équipes prennent ensuite la main sur les outils déployés en autonomie.",
     },
     implementation: {
-      fr: "Mettre en œuvre des solutions IA à Cugnaux pour optimiser les systèmes informatiques existants.",
-      en: "Mettre en œuvre des solutions IA à Cugnaux pour optimiser les systèmes informatiques existants.",
+      fr: "Implémentation IA à Cugnaux : agents conversationnels devis/SAV, automatisation administrative, contrôle qualité par vision pour la sous-traitance aéro, CRM augmentés TPE/PME.",
+      en: "Implémentation IA à Cugnaux : agents conversationnels devis/SAV, automatisation administrative, contrôle qualité par vision pour la sous-traitance aéro, CRM augmentés TPE/PME.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Cugnaux avec des sessions 1-to-1 pour une adoption rapide et efficace de l'IA.",
-      en: "Accompagner les dirigeants de Cugnaux avec des sessions 1-to-1 pour une adoption rapide et efficace de l'IA.",
+      fr: "Coaching 1-to-1 à Cugnaux : sessions dans votre atelier, commerce ou bureau, ou en visio. Pensé pour gérants de TPE, artisans et dirigeants de PME du sud-ouest toulousain.",
+      en: "Coaching 1-to-1 à Cugnaux : sessions dans votre atelier, commerce ou bureau, ou en visio. Pensé pour gérants de TPE, artisans et dirigeants de PME du sud-ouest toulousain.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Cugnaux : plateformes et outils SaaS IA sur mesure pour TPE/PME locales — prise de RDV intelligente, devis en ligne, portails clients connectés à vos process.",
+      en: "Sites web augmentés à Cugnaux : plateformes et outils SaaS IA sur mesure pour TPE/PME locales — prise de RDV intelligente, devis en ligne, portails clients connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Cugnaux ?",
-      a: "Nos audits IA à Cugnaux commencent à partir de 490 € HT pour l'Audit Flash 4h. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Cugnaux et dans le sud-ouest toulousain ?",
+      a: "Oui, Axion-IA intervient à Cugnaux et toute la couronne sud-ouest de Toulouse (Tournefeuille, Plaisance-du-Touch, Villeneuve-Tolosane). Nos consultants viennent de Toulouse, à 15 minutes.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Cugnaux ?",
-      a: "Nous nous déplaçons directement sur site à Cugnaux pour réaliser nos interventions, assurant un service personnalisé et adapté à vos besoins.",
+      q: "Accompagnez-vous les TPE et artisans de Cugnaux ?",
+      a: "Oui, les TPE et artisans sont notre priorité : automatisation des devis, relances clients, planning de chantier et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
     },
     {
-      q: "Quel est le délai pour une intervention à Cugnaux ?",
-      a: "Williams se déplace sur site dans les 5 jours ouvrés pour débuter les interventions à Cugnaux, selon la disponibilité de votre entreprise.",
+      q: "Travaillez-vous avec la sous-traitance aéronautique ?",
+      a: "Oui, contrôle qualité par vision, traçabilité documentaire, automatisation des flux administratifs et agents conversationnels B2B pour les PME fournisseurs des donneurs d'ordre aéro.",
     },
     {
-      q: "Vos services sont-ils conformes au RGPD à Cugnaux ?",
-      a: "Oui, toutes nos interventions à Cugnaux respectent strictement les normes RGPD, garantissant la protection des données de votre entreprise.",
+      q: "Quels services pour les commerces et PME de services ?",
+      a: "Agents conversationnels, automatisation de la relation client, CRM augmentés et plateformes web sur mesure. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Proposez-vous des formations IA à Cugnaux ?",
-      a: "Nous offrons des formations IA sur site à Cugnaux, adaptées aux besoins spécifiques des dirigeants et managers pour une intégration efficace.",
+      q: "Comment se passe une mission depuis Toulouse ?",
+      a: "Nos consultants se déplacent depuis Toulouse en 15 minutes. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Cugnaux respecte strictement le RGPD, sans dépendance technologique imposée et avec un transfert de compétences vers vos équipes.",
     },
   ],
 };

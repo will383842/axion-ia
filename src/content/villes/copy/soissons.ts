@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Soissons (02, Aisne) — Cité historique, cathédrale gothique, agroalimentaire betteravier.
 
 import type { VilleCopy } from "./types";
 
 export const SOISSONS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Soissons, une ville où le commerce de détail et l'industrie alimentaire prospèrent. Nos services incluent audits et implémentations d'IA, adaptés aux besoins spécifiques des entreprises locales.",
+    "Soissons, sous-préfecture de l'Aisne célèbre pour sa cathédrale gothique et le vase de Soissons, vit aujourd'hui d'un tissu de TPE et de PME ancré dans l'agroalimentaire betteravier, le commerce et le BTP. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME pour automatiser sans recruter.",
   pitchEn:
-    "Axion-IA intervient à Soissons, une ville où le commerce de détail et l'industrie alimentaire prospèrent. Nos services incluent audits et implémentations d'IA, adaptés aux besoins spécifiques des entreprises locales.",
+    "Soissons, sous-préfecture de l'Aisne célèbre pour sa cathédrale gothique et le vase de Soissons, vit aujourd'hui d'un tissu de TPE et de PME ancré dans l'agroalimentaire betteravier, le commerce et le BTP. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME pour automatiser sans recruter.",
   directAnswerFr:
-    "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits et des interventions, garantissant une approche personnalisée pour chaque secteur d'activité.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Soissons (02) et dans le sud de l'Aisne. Nous accompagnons en priorité les TPE puis les PME du bassin soissonnais : coopératives et industries de la filière sucre-betterave, commerces du centre historique, entreprises du BTP et de services. Audit, interventions et implémentation pour automatiser devis, relances et gestion administrative, avec des livrables documentés et zéro dépendance technique imposée.",
   directAnswerEn:
-    "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits et des interventions, garantissant une approche personnalisée pour chaque secteur d'activité.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Soissons (02) et dans le sud de l'Aisne. Nous accompagnons en priorité les TPE puis les PME du bassin soissonnais : coopératives et industries de la filière sucre-betterave, commerces du centre historique, entreprises du BTP et de services. Audit, interventions et implémentation pour automatiser devis, relances et gestion administrative, avec des livrables documentés et zéro dépendance technique imposée.",
+  seoHook: "agroalimentaire, commerce & BTP",
   ecosystemFr:
-    "À Soissons, le tissu économique est renforcé par la présence de grands groupes tels que Nestlé et Cooperl. Le Parc d'activités du Plateau joue un rôle crucial dans le développement industriel local.",
+    "Soissons, ville d'art et d'histoire dominée par sa cathédrale Saint-Gervais-Saint-Protais et marquée par la légende du vase de Soissons, est aussi un pôle agroalimentaire majeur de l'Aisne. La plaine betteravière environnante alimente sucreries et industries de transformation, autour desquelles gravitent de nombreuses TPE et PME : maintenance, transport, conseil, commerce. Le centre historique concentre commerces et professions libérales. Axion-IA y déploie des chantiers IA calibrés pour des entreprises ancrées dans le territoire, soucieuses d'efficacité plus que de gadgets.",
   ecosystemEn:
-    "À Soissons, le tissu économique est renforcé par la présence de grands groupes tels que Nestlé et Cooperl. Le Parc d'activités du Plateau joue un rôle crucial dans le développement industriel local.",
+    "Soissons, ville d'art et d'histoire dominée par sa cathédrale Saint-Gervais-Saint-Protais et marquée par la légende du vase de Soissons, est aussi un pôle agroalimentaire majeur de l'Aisne. La plaine betteravière environnante alimente sucreries et industries de transformation, autour desquelles gravitent de nombreuses TPE et PME : maintenance, transport, conseil, commerce. Le centre historique concentre commerces et professions libérales. Axion-IA y déploie des chantiers IA calibrés pour des entreprises ancrées dans le territoire, soucieuses d'efficacité plus que de gadgets.",
   distancesFr:
-    "Soissons est située à 70 km de la Gare TGV Haute-Picardie et à 90 km de l'aéroport de Paris-Charles de Gaulle.",
+    "Gare de Soissons à liaison directe vers Paris-Gare du Nord via Crépy-en-Valois (environ 1h15). Gare TGV Haute-Picardie à 70 km. Aéroport de Paris-Charles-de-Gaulle à 90 km par l'A1. Reims à 60 km, Laon à 35 km, Compiègne à 40 km.",
   distancesEn:
-    "Soissons est située à 70 km de la Gare TGV Haute-Picardie et à 90 km de l'aéroport de Paris-Charles de Gaulle.",
+    "Gare de Soissons à liaison directe vers Paris-Gare du Nord via Crépy-en-Valois (environ 1h15). Gare TGV Haute-Picardie à 70 km. Aéroport de Paris-Charles-de-Gaulle à 90 km par l'A1. Reims à 60 km, Laon à 35 km, Compiègne à 40 km.",
   topSectorsNaf: [
+    "Industrie agroalimentaire et filière sucre-betterave",
     "Commerce de détail",
-    "Construction",
-    "Industrie alimentaire",
+    "Travaux de construction et BTP",
+    "Transports terrestres et logistique agricole",
     "Activités pour la santé humaine",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Soissons dans le secteur du commerce de détail — identifier les processus automatisables.",
-      en: "Réaliser un audit à Soissons dans le secteur du commerce de détail — identifier les processus automatisables.",
+      fr: "Audit IA à Soissons : diagnostic pour TPE et PME du bassin soissonnais. On identifie les processus automatisables — gestion des commandes agroalimentaires, devis BTP, relances commerce — et on priorise par retour rapide.",
+      en: "Audit IA à Soissons : diagnostic pour TPE et PME du bassin soissonnais. On identifie les processus automatisables — gestion des commandes agroalimentaires, devis BTP, relances commerce — et on priorise par retour rapide.",
     },
     interventions: {
-      fr: "Intervenir à Soissons auprès de l'industrie alimentaire — optimiser la gestion des stocks par IA.",
-      en: "Intervenir à Soissons auprès de l'industrie alimentaire — optimiser la gestion des stocks par IA.",
+      fr: "Interventions IA sur site à Soissons : ateliers pour acteurs de l'agroalimentaire, commerçants et entreprises du BTP. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
+      en: "Interventions IA sur site à Soissons : ateliers pour acteurs de l'agroalimentaire, commerçants et entreprises du BTP. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Soissons pour la construction — améliorer l'efficacité des chantiers.",
-      en: "Implémenter des solutions IA à Soissons pour la construction — améliorer l'efficacité des chantiers.",
+      fr: "Implémentation IA à Soissons : automatisation des commandes et de la traçabilité agroalimentaire, devis BTP, relances clients et classement documentaire pour TPE et PME locales.",
+      en: "Implémentation IA à Soissons : automatisation des commandes et de la traçabilité agroalimentaire, devis BTP, relances clients et classement documentaire pour TPE et PME locales.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Soissons les dirigeants de PME — comprendre l'impact de l'IA sur leur entreprise.",
-      en: "Accompagner en un-à-un à Soissons les dirigeants de PME — comprendre l'impact de l'IA sur leur entreprise.",
+      fr: "Accompagnement un-à-un à Soissons : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du Soissonnais souhaitant intégrer l'IA à leur rythme.",
+      en: "Accompagnement un-à-un à Soissons : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du Soissonnais souhaitant intégrer l'IA à leur rythme.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Soissons : vitrine ou plateforme dotée d'IA pour commerces, acteurs agroalimentaires et entreprises de services — devis en ligne, prise de commande automatisée, réponses clients instantanées.",
+      en: "Sites web augmentés à Soissons : vitrine ou plateforme dotée d'IA pour commerces, acteurs agroalimentaires et entreprises de services — devis en ligne, prise de commande automatisée, réponses clients instantanées.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Soissons ?",
-      a: "Nos interventions à Soissons commencent à partir de 590 € HT. Vous pouvez consulter l'ensemble de nos tarifs publics sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Soissons ?",
+      a: "Oui. Axion-IA se déplace à Soissons et dans le sud de l'Aisne (Villers-Cotterêts, Crépy-en-Valois, Vic-sur-Aisne, Braine). Nos consultants seniors interviennent sur site ou en visio, selon vos contraintes logistiques.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Soissons ?",
-      a: "Nous nous déplaçons directement sur site à Soissons pour travailler avec vous. Notre équipe nationale est flexible et s'adapte à vos besoins logistiques.",
+      q: "Accompagnez-vous la filière agroalimentaire de Soissons ?",
+      a: "Oui. Pour les acteurs de la filière sucre-betterave et de l'agroalimentaire local, nous mettons en place l'automatisation des commandes, de la traçabilité et du reporting, ainsi que des agents IA pour le suivi fournisseurs.",
+    },
+    {
+      q: "Quels services pour les commerces du centre historique ?",
+      a: "Pour les commerces de Soissons, nous proposons des agents conversationnels pour les demandes clients, l'automatisation des relances et de la gestion des stocks, à partir d'un Audit Flash ciblé.",
     },
     {
       q: "Quels délais pour un audit IA à Soissons ?",
-      a: "Un audit Flash de 4 heures à Soissons peut être réalisé rapidement, avec un démarrage possible sous 5 jours ouvrés après la prise de contact.",
+      a: "Un Audit Flash peut démarrer sous quelques jours après la prise de contact. Il aboutit à un plan d'action priorisé et à des recommandations concrètes adaptées à votre TPE ou PME soissonnaise.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Soissons ?",
-      a: "Nous garantissons que toutes nos solutions IA respectent les normes RGPD, en intégrant des mécanismes de protection des données dès la conception.",
+      a: "Toutes nos solutions IA sont conçues conformes au RGPD et à l'AI Act : minimisation des données, hébergement maîtrisé et traçabilité des traitements, dès la phase de conception.",
     },
   ],
 };

@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Châtellerault (86, Vienne) — ex-Manufacture d'armes (MAC), équipementiers automobile, fonderie, aéronautique.
 
 import type { VilleCopy } from "./types";
 
 export const CHATELLERAULT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Châtellerault, ville marquée par la présence de Thales et des Fonderies du Poitou, pour optimiser vos processus avec l'IA. Nos services incluent audits, interventions et implémentations sur site.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Châtellerault (86). Héritière de la Manufacture d'armes (MAC), la ville vit aujourd'hui de l'équipement automobile, de la fonderie et de la sous-traitance aéronautique. Nous outillons ateliers, bureaux d'études et commerces du bassin de la Vienne avec une IA concrète et mesurée.",
   pitchEn:
-    "Axion-IA intervient à Châtellerault, ville marquée par la présence de Thales et des Fonderies du Poitou, pour optimiser vos processus avec l'IA. Nos services incluent audits, interventions et implémentations sur site.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Châtellerault (86). Héritière de la Manufacture d'armes (MAC), la ville vit aujourd'hui de l'équipement automobile, de la fonderie et de la sous-traitance aéronautique. Nous outillons ateliers, bureaux d'études et commerces du bassin de la Vienne avec une IA concrète et mesurée.",
   directAnswerFr:
-    "Axion-IA se déplace à Châtellerault pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs industriels comme Thales et les Fonderies du Poitou, nous proposons des audits et des interventions. Notre approche opérationnelle garantit des résultats mesurables et adaptés aux spécificités du secteur.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit Flash sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA se déplace à Châtellerault pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs industriels comme Thales et les Fonderies du Poitou, nous proposons des audits et des interventions. Notre approche opérationnelle garantit des résultats mesurables et adaptés aux spécificités du secteur.",
-  seoHook: "automobiles & machines équipements",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit Flash sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
+  seoHook: "automobile & fonderie",
   ecosystemFr:
-    "Châtellerault se distingue par ses secteurs industriels avec des entreprises comme Thales et les Fonderies du Poitou. La Zone Industrielle Nord renforce son rôle dans la fabrication de véhicules et de machines.",
+    "Châtellerault, deuxième ville de la Vienne, conserve un fort ADN industriel hérité de la Manufacture d'armes. La zone industrielle Nord concentre fonderies, équipementiers automobile et sous-traitants aéronautique, autour d'un tissu dense de TPE artisanales, de bureaux d'études et de commerces. Le site de l'ancienne MAC et la reconversion tertiaire ouvrent un terrain idéal pour des automatisations IA pragmatiques au service des petites structures locales.",
   ecosystemEn:
-    "Châtellerault se distingue par ses secteurs industriels avec des entreprises comme Thales et les Fonderies du Poitou. La Zone Industrielle Nord renforce son rôle dans la fabrication de véhicules et de machines.",
+    "Châtellerault, deuxième ville de la Vienne, conserve un fort ADN industriel hérité de la Manufacture d'armes. La zone industrielle Nord concentre fonderies, équipementiers automobile et sous-traitants aéronautique, autour d'un tissu dense de TPE artisanales, de bureaux d'études et de commerces. Le site de l'ancienne MAC et la reconversion tertiaire ouvrent un terrain idéal pour des automatisations IA pragmatiques au service des petites structures locales.",
   distancesFr:
-    "La gare TGV de Poitiers est à 30 km de Châtellerault, facilitant nos interventions sur site.",
+    "Gare de Châtellerault sur la ligne Paris-Bordeaux (TGV Paris-Montparnasse ~1h40). Poitiers et sa gare TGV à 35 km (A10). Aéroport de Poitiers-Biard à 40 km. Accès direct A10, sortie Châtellerault Nord vers la zone industrielle.",
   distancesEn:
-    "La gare TGV de Poitiers est à 30 km de Châtellerault, facilitant nos interventions sur site.",
+    "Gare de Châtellerault sur la ligne Paris-Bordeaux (TGV Paris-Montparnasse ~1h40). Poitiers et sa gare TGV à 35 km (A10). Aéroport de Poitiers-Biard à 40 km. Accès direct A10, sortie Châtellerault Nord vers la zone industrielle.",
   topSectorsNaf: [
-    "Automobiles",
-    "Machines et équipements",
-    "Produits métalliques",
-    "Commerce de détail",
+    "Fonderie & métallurgie",
+    "Équipementiers automobile",
+    "Sous-traitance aéronautique",
+    "Artisanat & BTP",
+    "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Châtellerault pour identifier les processus automatisables avec l'IA — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Châtellerault pour identifier les processus automatisables avec l'IA — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Châtellerault : diagnostic 4h pour fonderies, équipementiers automobile, sous-traitants aéronautique et TPE de la zone industrielle Nord. On repère les tâches ateliers et bureaux d'études à automatiser en priorité.",
+      en: "Audit IA à Châtellerault : diagnostic 4h pour fonderies, équipementiers automobile, sous-traitants aéronautique et TPE de la zone industrielle Nord. On repère les tâches ateliers et bureaux d'études à automatiser en priorité.",
     },
     interventions: {
-      fr: "Intervenir à Châtellerault pour implémenter des solutions IA sur site — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Châtellerault pour implémenter des solutions IA sur site — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Châtellerault : ateliers concrets pour rendre vos équipes autonomes sur des outils IA configurés pour la fonderie, l'usinage et la gestion d'atelier. Format adapté aux TPE et PME industrielles.",
+      en: "Interventions IA sur site à Châtellerault : ateliers concrets pour rendre vos équipes autonomes sur des outils IA configurés pour la fonderie, l'usinage et la gestion d'atelier. Format adapté aux TPE et PME industrielles.",
     },
     implementation: {
-      fr: "Implémenter des outils IA à Châtellerault, adaptés aux industries locales — Déploiement à partir de 990 € HT.",
-      en: "Implémenter des outils IA à Châtellerault, adaptés aux industries locales — Déploiement à partir de 990 € HT.",
+      fr: "Implémentation IA à Châtellerault : automatisation devis et chiffrage, contrôle qualité assisté, agents conversationnels, gestion documentaire pour sous-traitants automobile et aéronautique de la Vienne.",
+      en: "Implémentation IA à Châtellerault : automatisation devis et chiffrage, contrôle qualité assisté, agents conversationnels, gestion documentaire pour sous-traitants automobile et aéronautique de la Vienne.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Châtellerault dans l'adoption de l'IA — Sessions 1-to-1 dès 990 € HT.",
-      en: "Accompagner les dirigeants de Châtellerault dans l'adoption de l'IA — Sessions 1-to-1 dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Châtellerault : sessions individuelles pour dirigeants de TPE et PME industrielles, en atelier ou en visio, pour piloter l'IA sans dépendre d'un prestataire externe.",
+      en: "Coaching 1-to-1 à Châtellerault : sessions individuelles pour dirigeants de TPE et PME industrielles, en atelier ou en visio, pour piloter l'IA sans dépendre d'un prestataire externe.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Châtellerault : plateformes et SaaS IA sur mesure pour équipementiers et artisans — configurateurs de devis, portails sous-traitance, suivi commandes connecté à vos outils.",
+      en: "Sites web augmentés à Châtellerault : plateformes et SaaS IA sur mesure pour équipementiers et artisans — configurateurs de devis, portails sous-traitance, suivi commandes connecté à vos outils.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Châtellerault ?",
-      a: "Nos tarifs pour une intervention IA à Châtellerault commencent à partir de 590 € HT pour une Intervention Essentielle. Les détails complets sont disponibles sur notre site.",
+      q: "Axion-IA intervient-il à Châtellerault ?",
+      a: "Oui, Axion-IA intervient à Châtellerault et dans tout le bassin de la Vienne. Nos consultants se déplacent depuis Poitiers (35 min) ou Paris (TGV 1h40) pour rencontrer TPE, PME industrielles et artisans sur site.",
     },
     {
-      q: "Combien de temps faut-il pour intervenir sur site à Châtellerault ?",
-      a: "Nous nous engageons à intervenir sur site à Châtellerault dans un délai de 5 jours ouvrés après la validation de votre demande.",
+      q: "Combien coûte un audit IA à Châtellerault ?",
+      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. Il s'agit d'un diagnostic court adapté aux TPE et PME de la zone industrielle Nord, sans devis opaque.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Châtellerault ?",
-      a: "Axion-IA intègre les exigences du RGPD dans toutes ses interventions à Châtellerault, garantissant la protection des données personnelles et la conformité légale.",
+      q: "Accompagnez-vous les équipementiers automobile et la fonderie ?",
+      a: "Oui. Pour les fonderies, équipementiers automobile et sous-traitants aéronautique de Châtellerault, nous automatisons devis, contrôle qualité, gestion documentaire et reporting d'atelier avec une IA fiable.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Châtellerault ?",
-      a: "Oui, nous proposons des sessions de formation IA personnalisées pour les entreprises de Châtellerault, avec des options 1-to-1 à partir de 990 € HT.",
+      q: "Quels services pour les TPE artisans de Châtellerault ?",
+      a: "Les TPE artisans et commerçants bénéficient de l'Audit Flash, d'interventions d'une journée et du coaching 1-to-1 : automatisation des devis, relances clients et gestion du planning.",
+    },
+    {
+      q: "Comment se déroule une mission à Châtellerault ?",
+      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Poitiers. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD ?",
+      a: "Chaque mission à Châtellerault intègre les exigences RGPD : minimisation des données, hébergement maîtrisé et pas d'enfermement propriétaire. Vous gardez la main sur vos outils.",
     },
   ],
 };

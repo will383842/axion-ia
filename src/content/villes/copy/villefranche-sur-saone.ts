@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Villefranche-sur-Saône (69, Rhône) — capitale du Beaujolais, négoce du vin, industrie et commerce de gros.
 
 import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Villefranche-sur-Saône, optimisant les processus pour les entreprises locales. Avec des acteurs comme Blédina et le Groupe Seb, nous apportons notre expertise IA sur site.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Villefranche-sur-Saône (69), capitale du Beaujolais. Entre négoce du vin, industrie agroalimentaire, commerce de gros et logistique le long de la Saône, Caladois et Beaujolais forment un bassin productif dense. Nous y déployons une IA concrète au service des petites structures rhodaniennes.",
   pitchEn:
-    "Axion-IA intervient à Villefranche-sur-Saône, optimisant les processus pour les entreprises locales. Avec des acteurs comme Blédina et le Groupe Seb, nous apportons notre expertise IA sur site.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Villefranche-sur-Saône (69), capitale du Beaujolais. Entre négoce du vin, industrie agroalimentaire, commerce de gros et logistique le long de la Saône, Caladois et Beaujolais forment un bassin productif dense. Nous y déployons une IA concrète au service des petites structures rhodaniennes.",
   directAnswerFr:
-    "À Villefranche-sur-Saône, Axion-IA propose des services adaptés aux entreprises locales, y compris celles du Parc d'activités de la Sauvagère. Que vous soyez dans le commerce de détail ou l'industrie alimentaire, nos interventions IA visent à améliorer l'efficacité opérationnelle. L'audit Flash commence à et l'intervention essentielle à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit Flash sur site, tarifs publics, déplacement depuis Lyon. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "À Villefranche-sur-Saône, Axion-IA propose des services adaptés aux entreprises locales, y compris celles du Parc d'activités de la Sauvagère. Que vous soyez dans le commerce de détail ou l'industrie alimentaire, nos interventions IA visent à améliorer l'efficacité opérationnelle. L'audit Flash commence à et l'intervention essentielle à",
-  seoHook: "commerce détail & commerce gros",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit Flash sur site, tarifs publics, déplacement depuis Lyon. Les ETI restent un cas marginal de notre clientèle.",
+  seoHook: "vin & négoce du Beaujolais",
   ecosystemFr:
-    "Villefranche-sur-Saône héberge des entreprises telles que Blédina et le Groupe Seb, reflétant un tissu économique diversifié. Le commerce de gros et l'industrie alimentaire y sont particulièrement développés.",
+    "Villefranche-sur-Saône, capitale du Beaujolais, structure un bassin viticole et productif majeur du Rhône. Domaines, maisons de négoce du vin et coopératives côtoient l'industrie agroalimentaire, le commerce de gros et la logistique facilités par la Saône et l'A6. Autour de ce socle gravite un tissu dense de TPE artisanales et de commerces, terrain idéal pour des automatisations IA pragmatiques au service des petites entreprises caladoises.",
   ecosystemEn:
-    "Villefranche-sur-Saône héberge des entreprises telles que Blédina et le Groupe Seb, reflétant un tissu économique diversifié. Le commerce de gros et l'industrie alimentaire y sont particulièrement développés.",
+    "Villefranche-sur-Saône, capitale du Beaujolais, structure un bassin viticole et productif majeur du Rhône. Domaines, maisons de négoce du vin et coopératives côtoient l'industrie agroalimentaire, le commerce de gros et la logistique facilités par la Saône et l'A6. Autour de ce socle gravite un tissu dense de TPE artisanales et de commerces, terrain idéal pour des automatisations IA pragmatiques au service des petites entreprises caladoises.",
   distancesFr:
-    "La Gare de Lyon Part-Dieu est à 35 km, et l'Aéroport Lyon-Saint Exupéry à 50 km de Villefranche-sur-Saône.",
+    "Gare de Villefranche-sur-Saône (TER vers Lyon ~25 min, accès TGV à Lyon Part-Dieu ~35 km). Lyon centre à 35 km par l'A6. Aéroport Lyon-Saint-Exupéry à 50 km. Mâcon et la Bourgogne accessibles au nord par l'A6.",
   distancesEn:
-    "La Gare de Lyon Part-Dieu est à 35 km, et l'Aéroport Lyon-Saint Exupéry à 50 km de Villefranche-sur-Saône.",
+    "Gare de Villefranche-sur-Saône (TER vers Lyon ~25 min, accès TGV à Lyon Part-Dieu ~35 km). Lyon centre à 35 km par l'A6. Aéroport Lyon-Saint-Exupéry à 50 km. Mâcon et la Bourgogne accessibles au nord par l'A6.",
   topSectorsNaf: [
-    "Commerce de détail",
+    "Viticulture & négoce du vin",
+    "Industrie agroalimentaire",
     "Commerce de gros",
-    "Industrie alimentaire",
-    "Transports terrestres",
+    "Logistique & transport",
+    "Artisanat & commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Villefranche-sur-Saône avec Axion-IA — identifier les processus à automatiser.",
-      en: "Réaliser un audit à Villefranche-sur-Saône avec Axion-IA — identifier les processus à automatiser.",
+      fr: "Audit IA à Villefranche-sur-Saône : diagnostic 4h pour domaines viticoles, maisons de négoce, agroalimentaire, commerce de gros et artisans du Beaujolais. On repère les tâches à automatiser en priorité.",
+      en: "Audit IA à Villefranche-sur-Saône : diagnostic 4h pour domaines viticoles, maisons de négoce, agroalimentaire, commerce de gros et artisans du Beaujolais. On repère les tâches à automatiser en priorité.",
     },
     interventions: {
-      fr: "Intervenir à Villefranche-sur-Saône pour optimiser les flux de travail chez Blédina et autres.",
-      en: "Intervenir à Villefranche-sur-Saône pour optimiser les flux de travail chez Blédina et autres.",
+      fr: "Interventions IA sur site à Villefranche-sur-Saône : ateliers pour rendre autonomes vos équipes sur des outils IA configurés pour le négoce du vin, l'agroalimentaire et la logistique caladoise.",
+      en: "Interventions IA sur site à Villefranche-sur-Saône : ateliers pour rendre autonomes vos équipes sur des outils IA configurés pour le négoce du vin, l'agroalimentaire et la logistique caladoise.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Villefranche-sur-Saône — améliorer la productivité.",
-      en: "Implémenter des solutions IA à Villefranche-sur-Saône — améliorer la productivité.",
+      fr: "Implémentation IA à Villefranche-sur-Saône : traçabilité viticole, automatisation des commandes et de la facturation, agents conversationnels et CRM augmentés pour le négoce et le commerce de gros.",
+      en: "Implémentation IA à Villefranche-sur-Saône : traçabilité viticole, automatisation des commandes et de la facturation, agents conversationnels et CRM augmentés pour le négoce et le commerce de gros.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Villefranche-sur-Saône — développer des compétences IA spécifiques.",
-      en: "Accompagner en un-à-un à Villefranche-sur-Saône — développer des compétences IA spécifiques.",
+      fr: "Coaching 1-to-1 à Villefranche-sur-Saône : sessions individuelles pour vignerons, négociants et dirigeants de TPE et PME, au domaine, en entrepôt ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Villefranche-sur-Saône : sessions individuelles pour vignerons, négociants et dirigeants de TPE et PME, au domaine, en entrepôt ou en visio, pour piloter l'IA en autonomie.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Villefranche-sur-Saône : plateformes et SaaS IA sur mesure pour domaines et négociants — boutiques en ligne, oenotourisme, portails B2B de commande connectés à votre gestion.",
+      en: "Sites web augmentés à Villefranche-sur-Saône : plateformes et SaaS IA sur mesure pour domaines et négociants — boutiques en ligne, oenotourisme, portails B2B de commande connectés à votre gestion.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Villefranche-sur-Saône?",
-      a: "Les interventions à Villefranche-sur-Saône commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Villefranche-sur-Saône ?",
+      a: "Oui, Axion-IA intervient à Villefranche-sur-Saône et dans tout le Beaujolais. Nos consultants se déplacent depuis Lyon (35 km, A6) pour rencontrer domaines, négociants et PME sur site.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Villefranche-sur-Saône?",
-      a: "Nous intégrons des protocoles stricts pour garantir que toutes nos solutions respectent les normes RGPD en vigueur.",
+      q: "Combien coûte un audit IA à Villefranche-sur-Saône ?",
+      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME caladoises, sans devis opaque.",
     },
     {
-      q: "Quel est le délai d'intervention à Villefranche-sur-Saône?",
-      a: "Williams se déplace sur site dans les 5 jours ouvrés suivant la demande pour une intervention à Villefranche-sur-Saône.",
+      q: "Accompagnez-vous les domaines viticoles et le négoce du vin ?",
+      a: "Oui. Pour les domaines et maisons de négoce du Beaujolais, nous travaillons traçabilité parcellaire, automatisation des commandes, oenotourisme augmenté et CRM intelligents.",
     },
     {
-      q: "Offrez-vous des formations IA pour les dirigeants à Villefranche-sur-Saône?",
-      a: "Oui, nous proposons des sessions un-à-un à partir de 990 € HT pour les dirigeants souhaitant approfondir leurs connaissances en IA.",
+      q: "Quels services pour le commerce de gros et l'agroalimentaire ?",
+      a: "Pour le commerce de gros et l'agroalimentaire, nous automatisons facturation, gestion des stocks, relances et reporting. Audit Flash, intervention d'une journée et coaching 1-to-1 disponibles.",
+    },
+    {
+      q: "Comment se déroule une mission à Villefranche-sur-Saône ?",
+      a: "Nos consultants interviennent dans vos locaux, au domaine ou en visio, depuis Lyon. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD ?",
+      a: "Chaque mission à Villefranche-sur-Saône intègre le RGPD : minimisation des données, hébergement maîtrisé et absence d'enfermement propriétaire. Vous gardez la main sur vos outils.",
     },
   ],
 };

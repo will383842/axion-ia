@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Beaupréau-en-Mauges (49, Maine-et-Loire) — Mauges, chaussure-textile historique, agroalimentaire.
 
 import type { VilleCopy } from "./types";
 
 export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Beaupréau-en-Mauges, une ville active dans le secteur agroalimentaire. Paris abrite des pôles comme Cap Digital et Inria, qui inspirent nos méthodes innovantes appliquées localement.",
+    "Beaupréau-en-Mauges (49), commune nouvelle au cœur des Mauges, conjugue un héritage industriel chaussure-textile, un solide tissu agroalimentaire et de nombreuses TPE et PME familiales d'artisanat, de transformation et de commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME mauclésiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui sert les métiers de terrain sans complexité inutile ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Beaupréau-en-Mauges, une ville active dans le secteur agroalimentaire. Paris abrite des pôles comme Cap Digital et Inria, qui inspirent nos méthodes innovantes appliquées localement.",
+    "Beaupréau-en-Mauges (49), commune nouvelle au cœur des Mauges, conjugue un héritage industriel chaussure-textile, un solide tissu agroalimentaire et de nombreuses TPE et PME familiales d'artisanat, de transformation et de commerce. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME mauclésiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui sert les métiers de terrain sans complexité inutile ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA se déplace à Beaupréau-en-Mauges pour accompagner les entreprises dans l'adoption de l'IA. Notre approche s'inspire des écosystèmes comme Cap Digital à Paris et Station F, garantissant une intégration efficace de l'IA dans des secteurs tels que l'industrie agroalimentaire et le commerce de gros.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaupréau-en-Mauges (49) auprès des TPE et PME des Mauges : ateliers chaussure et textile, agroalimentaire, artisanat, industrie et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA se déplace à Beaupréau-en-Mauges pour accompagner les entreprises dans l'adoption de l'IA. Notre approche s'inspire des écosystèmes comme Cap Digital à Paris et Station F, garantissant une intégration efficace de l'IA dans des secteurs tels que l'industrie agroalimentaire et le commerce de gros.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaupréau-en-Mauges (49) auprès des TPE et PME des Mauges : ateliers chaussure et textile, agroalimentaire, artisanat, industrie et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+  seoHook: "chaussure-textile & agroalimentaire",
   ecosystemFr:
-    "Beaupréau-en-Mauges se distingue par son industrie agroalimentaire et la fabrication de produits métalliques. L'écosystème local est complété par le commerce de gros et les transports terrestres.",
+    "Beaupréau-en-Mauges, commune nouvelle issue de la fusion de plusieurs bourgs des Mauges, s'appuie sur un héritage industriel chaussure et textile reconverti, un agroalimentaire dynamique et de petites industries familiales. Les zones d'activité locales accueillent des TPE et PME de transformation, de mécanique, de logistique et de commerce. Ce tissu rural-industriel, dense et tourné vers l'export régional, constitue un terrain idéal pour une IA appliquée à la production, à la qualité et à la gestion.",
   ecosystemEn:
-    "Beaupréau-en-Mauges se distingue par son industrie agroalimentaire et la fabrication de produits métalliques. L'écosystème local est complété par le commerce de gros et les transports terrestres.",
+    "Beaupréau-en-Mauges, commune nouvelle issue de la fusion de plusieurs bourgs des Mauges, s'appuie sur un héritage industriel chaussure et textile reconverti, un agroalimentaire dynamique et de petites industries familiales. Les zones d'activité locales accueillent des TPE et PME de transformation, de mécanique, de logistique et de commerce. Ce tissu rural-industriel, dense et tourné vers l'export régional, constitue un terrain idéal pour une IA appliquée à la production, à la qualité et à la gestion.",
   distancesFr:
-    "Beaupréau-en-Mauges est située à 50 km de la gare TGV Gare d'Angers Saint-Laud et à 60 km de l'aéroport Nantes Atlantique.",
+    "Beaupréau-en-Mauges est à 30 min de Cholet et à 45 min d'Angers par la D752. La gare TGV d'Angers Saint-Laud est à 50 min, Nantes et son aéroport Atlantique à environ 1 h.",
   distancesEn:
-    "Beaupréau-en-Mauges est située à 50 km de la gare TGV Gare d'Angers Saint-Laud et à 60 km de l'aéroport Nantes Atlantique.",
+    "Beaupréau-en-Mauges est à 30 min de Cholet et à 45 min d'Angers par la D752. La gare TGV d'Angers Saint-Laud est à 50 min, Nantes et son aéroport Atlantique à environ 1 h.",
   topSectorsNaf: [
-    "Industrie agroalimentaire",
-    "Produits métalliques",
-    "Commerce de gros",
-    "Transports terrestres",
+    "Industrie chaussure et textile",
+    "Industries agroalimentaires",
+    "Mécanique et métallurgie",
+    "Artisanat et construction BTP",
+    "Commerce de gros et de détail",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Beaupréau-en-Mauges pour identifier les opportunités IA dans l'industrie agroalimentaire.",
-      en: "Réaliser un audit à Beaupréau-en-Mauges pour identifier les opportunités IA dans l'industrie agroalimentaire.",
+      fr: "Audit IA à Beaupréau-en-Mauges : diagnostic des tâches automatisables pour ateliers textile, agroalimentaire, industrie et commerce des Mauges. Audit Flash dès 490 € HT, livrable priorisé.",
+      en: "Audit IA à Beaupréau-en-Mauges : diagnostic des tâches automatisables pour ateliers textile, agroalimentaire, industrie et commerce des Mauges. Audit Flash dès 490 € HT, livrable priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Beaupréau-en-Mauges pour optimiser les processus industriels grâce à l'IA.",
-      en: "Intervenir à Beaupréau-en-Mauges pour optimiser les processus industriels grâce à l'IA.",
+      fr: "Interventions IA sur site à Beaupréau-en-Mauges : ateliers pratiques pour lignes de production, qualité et administration, afin de rendre vos équipes autonomes sur les outils IA.",
+      en: "Interventions IA sur site à Beaupréau-en-Mauges : ateliers pratiques pour lignes de production, qualité et administration, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Beaupréau-en-Mauges pour améliorer l'efficacité dans le commerce de gros.",
-      en: "Implémenter des solutions IA à Beaupréau-en-Mauges pour améliorer l'efficacité dans le commerce de gros.",
+      fr: "Implémentation IA à Beaupréau-en-Mauges : traçabilité agroalimentaire, automatisation devis et planning, contrôle qualité assisté et CRM augmenté pour TPE et PME industrielles.",
+      en: "Implémentation IA à Beaupréau-en-Mauges : traçabilité agroalimentaire, automatisation devis et planning, contrôle qualité assisté et CRM augmenté pour TPE et PME industrielles.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Beaupréau-en-Mauges pour une adoption stratégique de l'IA.",
-      en: "Accompagner les dirigeants à Beaupréau-en-Mauges pour une adoption stratégique de l'IA.",
+      fr: "Accompagnement un-à-un à Beaupréau-en-Mauges : sessions en atelier ou en visio pour dirigeants de TPE et PME familiales, ciblées sur vos priorités de production et de gestion.",
+      en: "Accompagnement un-à-un à Beaupréau-en-Mauges : sessions en atelier ou en visio pour dirigeants de TPE et PME familiales, ciblées sur vos priorités de production et de gestion.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Beaupréau-en-Mauges : vitrine ou e-boutique B2B avec IA intégrée (devis, catalogue, recherche) pour industriels textile, agroalimentaire et artisans des Mauges.",
+      en: "Sites web augmentés à Beaupréau-en-Mauges : vitrine ou e-boutique B2B avec IA intégrée (devis, catalogue, recherche) pour industriels textile, agroalimentaire et artisans des Mauges.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Beaupréau-en-Mauges ?",
-      a: "Les audits à Beaupréau-en-Mauges commencent à partir de 490 € HT pour un Audit Flash 4h. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Beaupréau-en-Mauges ?",
+      a: "Oui, Axion-IA intervient à Beaupréau-en-Mauges et dans les Mauges (Cholet, Chemillé, Montrevault, Sèvremoine). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
-      q: "Comment se déroule une intervention IA sur site à Beaupréau-en-Mauges ?",
-      a: "Nos interventions sur site à Beaupréau-en-Mauges incluent une analyse des besoins spécifiques et la mise en œuvre de solutions IA adaptées aux secteurs locaux.",
+      q: "Quel est le tarif d'un audit IA à Beaupréau-en-Mauges ?",
+      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME des Mauges : industrie, agroalimentaire, artisanat et commerce.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Beaupréau-en-Mauges ?",
-      a: "Nous nous engageons à intervenir rapidement à Beaupréau-en-Mauges, généralement sous 5 jours ouvrés après validation du projet.",
+      q: "Accompagnez-vous l'agroalimentaire des Mauges ?",
+      a: "Oui, nous aidons les TPE et PME agroalimentaires à mettre en place traçabilité, prévision de la demande, contrôle qualité assisté et automatisation administrative, par étapes maîtrisées.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Beaupréau-en-Mauges ?",
-      a: "Axion-IA garantit la conformité RGPD dans toutes ses interventions à Beaupréau-en-Mauges, en intégrant des protocoles stricts de gestion des données.",
+      q: "Quels services pour l'industrie textile et la chaussure ?",
+      a: "Pour les ateliers textile et chaussure : automatisation des devis et du planning, assistance à la conception, gestion des stocks et catalogues en ligne enrichis par l'IA, sans toucher au savoir-faire.",
+    },
+    {
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous priorisons les TPE puis les PME des Mauges ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+    },
+    {
+      q: "Comment se déroule une mission à Beaupréau-en-Mauges ?",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio depuis Cholet (30 min) ou Angers (45 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

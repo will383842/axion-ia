@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Joué-lès-Tours (37, Indre-et-Loire) — deuxième ville de la métropole de Tours, ancrage industriel fort (Michelin, SKF roulements), ZAC des Deux Lions.
 
 import type { VilleCopy } from "./types";
 
 export const JOUE_LES_TOURS_COPY: VilleCopy = {
   pitchFr:
-    "À Joué-lès-Tours, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs comme STMicroelectronics et Sanofi, notre expertise en IA s'adapte à ce contexte économique dynamique.",
+    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Joué-lès-Tours, deuxième ville de la métropole tourangelle en Indre-et-Loire. Sur ce territoire à l'ancrage industriel marqué — pneumatique Michelin, roulements SKF, sous-traitance — nous aidons ateliers, commerces, sociétés de services et PME industrielles à transformer une envie d'IA en automatisations concrètes : devis, planification d'atelier, suivi qualité. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   pitchEn:
-    "À Joué-lès-Tours, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs comme STMicroelectronics et Sanofi, notre expertise en IA s'adapte à ce contexte économique dynamique.",
+    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Joué-lès-Tours, deuxième ville de la métropole tourangelle en Indre-et-Loire. Sur ce territoire à l'ancrage industriel marqué — pneumatique Michelin, roulements SKF, sous-traitance — nous aidons ateliers, commerces, sociétés de services et PME industrielles à transformer une envie d'IA en automatisations concrètes : devis, planification d'atelier, suivi qualité. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "Axion-IA se déplace à Joué-lès-Tours pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Le tissu économique local, comprenant des groupes comme STMicroelectronics et Sanofi, bénéficie de nos interventions sur site. Notre offre inclut des audits et des implémentations, garantissant des solutions adaptées aux besoins locaux.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Joué-lès-Tours, en Indre-et-Loire, au sein de la métropole de Tours. Sur ce bassin à forte tradition industrielle — pneumatique, roulements, mécanique de précision — et autour de la ZAC des Deux Lions, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, planification, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "Axion-IA se déplace à Joué-lès-Tours pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Le tissu économique local, comprenant des groupes comme STMicroelectronics et Sanofi, bénéficie de nos interventions sur site. Notre offre inclut des audits et des implémentations, garantissant des solutions adaptées aux besoins locaux.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Joué-lès-Tours, en Indre-et-Loire, au sein de la métropole de Tours. Sur ce bassin à forte tradition industrielle — pneumatique, roulements, mécanique de précision — et autour de la ZAC des Deux Lions, nous diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, planification, suivi qualité, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+  seoHook: "industrie & PME tourangelles",
   ecosystemFr:
-    "Joué-lès-Tours bénéficie d'un écosystème économique riche avec la présence de STMicroelectronics et Sanofi. La ZAC des Deux Lions contribue également à l'innovation locale.",
+    "Joué-lès-Tours est la deuxième ville de la métropole de Tours et un de ses moteurs industriels, héritière d'une présence du pneumatique Michelin et de la fabrication de roulements SKF qui a structuré son tissu de sous-traitants mécaniques. Autour de la ZAC des Deux Lions et des zones d'activités jocondiennes gravitent ateliers, PME industrielles, commerces et sociétés de services. Ce maillage de TPE et de PME, souvent confronté à des process de production et de devis répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise, l'ETI restant marginale.",
   ecosystemEn:
-    "Joué-lès-Tours bénéficie d'un écosystème économique riche avec la présence de STMicroelectronics et Sanofi. La ZAC des Deux Lions contribue également à l'innovation locale.",
+    "Joué-lès-Tours est la deuxième ville de la métropole de Tours et un de ses moteurs industriels, héritière d'une présence du pneumatique Michelin et de la fabrication de roulements SKF qui a structuré son tissu de sous-traitants mécaniques. Autour de la ZAC des Deux Lions et des zones d'activités jocondiennes gravitent ateliers, PME industrielles, commerces et sociétés de services. Ce maillage de TPE et de PME, souvent confronté à des process de production et de devis répétitifs, gagne vite avec des automatisations ciblées qu'Axion-IA priorise, l'ETI restant marginale.",
   distancesFr:
-    "La gare TGV de Tours est à 7 km de Joué-lès-Tours, facilitant l'accès aux entreprises locales.",
+    "Joué-lès-Tours est desservie par le tramway et les lignes de bus de la métropole, à une dizaine de minutes du centre de Tours. La gare de Tours et la gare TGV de Saint-Pierre-des-Corps sont à environ 7 km, mettant Paris à un peu plus d'une heure. Cette desserte permet à Axion-IA d'intervenir sur site à Joué-lès-Tours sans contrainte logistique.",
   distancesEn:
-    "La gare TGV de Tours est à 7 km de Joué-lès-Tours, facilitant l'accès aux entreprises locales.",
+    "Joué-lès-Tours est desservie par le tramway et les lignes de bus de la métropole, à une dizaine de minutes du centre de Tours. La gare de Tours et la gare TGV de Saint-Pierre-des-Corps sont à environ 7 km, mettant Paris à un peu plus d'une heure. Cette desserte permet à Axion-IA d'intervenir sur site à Joué-lès-Tours sans contrainte logistique.",
   topSectorsNaf: [
+    "Fabrication mécanique et industrie",
+    "Sous-traitance industrielle",
     "Commerce de détail",
-    "Programmation informatique",
-    "Santé humaine",
-    "Construction de bâtiments",
+    "Construction et BTP",
+    "Transports et logistique",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Joué-lès-Tours permet d'identifier les opportunités IA adaptées aux secteurs du commerce et de la programmation informatique.",
-      en: "Réaliser un audit à Joué-lès-Tours permet d'identifier les opportunités IA adaptées aux secteurs du commerce et de la programmation informatique.",
+      fr: "Audit IA à Joué-lès-Tours : une journée pour cartographier les tâches répétitives d'un atelier ou d'une PME industrielle — devis, planification de production, suivi qualité — et prioriser ce qui mérite d'être automatisé.",
+      en: "Audit IA à Joué-lès-Tours : une journée pour cartographier les tâches répétitives d'un atelier ou d'une PME industrielle — devis, planification de production, suivi qualité — et prioriser ce qui mérite d'être automatisé.",
     },
     interventions: {
-      fr: "Intervenir à Joué-lès-Tours auprès des entreprises comme celles de la ZAC des Deux Lions pour automatiser les tâches administratives.",
-      en: "Intervenir à Joué-lès-Tours auprès des entreprises comme celles de la ZAC des Deux Lions pour automatiser les tâches administratives.",
+      fr: "Interventions à Joué-lès-Tours : nous traitons un irritant précis d'une TPE ou PME locale — chiffrage de devis, relances fournisseurs, reporting d'atelier — avec une automatisation sobre, livrée vite et tenable.",
+      en: "Interventions à Joué-lès-Tours : nous traitons un irritant précis d'une TPE ou PME locale — chiffrage de devis, relances fournisseurs, reporting d'atelier — avec une automatisation sobre, livrée vite et tenable.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Joué-lès-Tours, en optimisant les processus chez des acteurs du secteur de la santé humaine.",
-      en: "Implémenter des solutions IA à Joué-lès-Tours, en optimisant les processus chez des acteurs du secteur de la santé humaine.",
+      fr: "Implémentation à Joué-lès-Tours : nous connectons l'IA aux ERP et outils de production déjà utilisés par les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
+      en: "Implémentation à Joué-lès-Tours : nous connectons l'IA aux ERP et outils de production déjà utilisés par les industriels et sous-traitants locaux, pour un déploiement intégré, documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Joué-lès-Tours pour les dirigeants cherchant à intégrer l'IA dans leur stratégie d'entreprise.",
-      en: "Accompagner en un-à-un à Joué-lès-Tours pour les dirigeants cherchant à intégrer l'IA dans leur stratégie d'entreprise.",
+      fr: "Accompagnement un-à-un à Joué-lès-Tours : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Joué-lès-Tours : un dirigeant de TPE ou PME industrielle, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA en atelier et décider des priorités sans jargon.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Joué-lès-Tours : pour les industriels, sous-traitants et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, catalogue assisté, prise de contact — pensés pour générer des affaires.",
+      en: "Sites web augmentés à Joué-lès-Tours : pour les industriels, sous-traitants et commerces locaux, nous bâtissons des sites dopés à l'IA — demande de devis qualifiée, catalogue assisté, prise de contact — pensés pour générer des affaires.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Joué-lès-Tours ?",
-      a: "Les interventions à Joué-lès-Tours commencent à partir de 590 € HT. Nos tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA accompagne-t-il les petites entreprises de Joué-lès-Tours ?",
+      a: "Oui. Notre priorité va aux TPE puis aux PME de Joué-lès-Tours : ateliers, sous-traitants industriels, commerces et sociétés de services. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Joué-lès-Tours ?",
-      a: "Nous respectons strictement le RGPD lors de nos interventions à Joué-lès-Tours, garantissant la protection des données personnelles de nos clients.",
+      q: "L'IA est-elle utile aux PME industrielles de Joué-lès-Tours ?",
+      a: "Oui. Le bassin jocondien, marqué par le pneumatique et les roulements, compte de nombreux ateliers et sous-traitants dont les tâches — chiffrage de devis, planification, suivi qualité — sont répétitives et se prêtent bien à des automatisations ciblées et rentables.",
     },
     {
-      q: "Quel est le délai pour une intervention à Joué-lès-Tours ?",
-      a: "Williams se déplace sur site à Joué-lès-Tours dans les 5 jours ouvrés suivant la confirmation de la prestation.",
+      q: "Intervenez-vous sur site à Joué-lès-Tours ?",
+      a: "Oui. Joué-lès-Tours est à une dizaine de minutes du centre de Tours et à 7 km des gares de Tours et Saint-Pierre-des-Corps. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Joué-lès-Tours ?",
-      a: "Oui, nous offrons des formations IA sur site à Joué-lès-Tours pour aider les entreprises à intégrer l'IA dans leurs opérations quotidiennes.",
+      q: "Par où commencer un projet IA à Joué-lès-Tours ?",
+      a: "Par un audit. Nous passons une journée à cartographier vos tâches répétitives et à identifier celles qui méritent réellement d'être automatisées. Vous repartez avec une feuille de route priorisée et chiffrée, sans engagement de poursuivre avec nous.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Joué-lès-Tours ?",
+      a: "La conformité RGPD est intégrée dès le cadrage : minimisation des données, hébergement maîtrisé, traçabilité des traitements. Pour des industriels et commerces gérant données clients et fournisseurs, c'est une condition de départ non négociable.",
     },
   ],
 };

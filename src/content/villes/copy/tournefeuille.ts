@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Tournefeuille (31, Haute-Garonne) — banlieue ouest de Toulouse, résidentielle aisée, cadres aéronautiques.
 
 import type { VilleCopy } from "./types";
 
 export const TOURNEFEUILLE_COPY: VilleCopy = {
   pitchFr:
-    "À Tournefeuille, Axion-IA intervient pour optimiser les processus des entreprises locales, dans un contexte économique comprenant des secteurs comme le commerce de détail et la programmation informatique.",
+    "Tournefeuille (31), troisième commune de Haute-Garonne, est une banlieue résidentielle aisée de l'ouest toulousain, à deux pas des sites Airbus de Blagnac et Saint-Martin-du-Touch. Sa population de cadres et d'ingénieurs aéronautiques nourrit un tissu dense de TPE de services, professions libérales, commerces premium et petites PME de conseil et d'ingénierie. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser l'administratif et professionnaliser la relation client, sans complexité inutile.",
   pitchEn:
-    "À Tournefeuille, Axion-IA intervient pour optimiser les processus des entreprises locales, dans un contexte économique comprenant des secteurs comme le commerce de détail et la programmation informatique.",
+    "Tournefeuille (31), troisième commune de Haute-Garonne, est une banlieue résidentielle aisée de l'ouest toulousain, à deux pas des sites Airbus de Blagnac et Saint-Martin-du-Touch. Sa population de cadres et d'ingénieurs aéronautiques nourrit un tissu dense de TPE de services, professions libérales, commerces premium et petites PME de conseil et d'ingénierie. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser l'administratif et professionnaliser la relation client, sans complexité inutile.",
   directAnswerFr:
-    "Axion-IA se déplace à Tournefeuille pour accompagner les entreprises dans l'automatisation et l'optimisation de leurs processus. Avec des acteurs économiques tels que Sanofi et LVMH présents dans la région, notre équipe nationale propose des audits et interventions sur site, adaptés aux besoins spécifiques des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournefeuille (31, Haute-Garonne) et dans l'ouest toulousain. Nous accompagnons en priorité les TPE de services, professions libérales et commerces, puis les PME de conseil et d'ingénierie liées à l'écosystème aéronautique d'Airbus. Notre démarche : un audit ciblé, des automatisations concrètes posées sur vos outils, et la formation de vos équipes pour rester autonomes. Les grandes ETI restent une part marginale de notre clientèle.",
   directAnswerEn:
-    "Axion-IA se déplace à Tournefeuille pour accompagner les entreprises dans l'automatisation et l'optimisation de leurs processus. Avec des acteurs économiques tels que Sanofi et LVMH présents dans la région, notre équipe nationale propose des audits et interventions sur site, adaptés aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournefeuille (31, Haute-Garonne) et dans l'ouest toulousain. Nous accompagnons en priorité les TPE de services, professions libérales et commerces, puis les PME de conseil et d'ingénierie liées à l'écosystème aéronautique d'Airbus. Notre démarche : un audit ciblé, des automatisations concrètes posées sur vos outils, et la formation de vos équipes pour rester autonomes. Les grandes ETI restent une part marginale de notre clientèle.",
+  seoHook: "services & ingénierie aéro",
   ecosystemFr:
-    "Tournefeuille bénéficie d'une proximité avec des pôles économiques comme Toulouse, abritant des entreprises telles que Sanofi et Airbus. Ce tissu économique diversifié stimule l'innovation locale.",
+    "Tournefeuille bénéficie de sa position dans l'aire urbaine de Toulouse, premier bassin aéronautique européen autour d'Airbus, Thales et de leur réseau de sous-traitants. La commune, résidentielle et attractive, concentre des professions libérales, des bureaux d'études et de petites PME de conseil, d'ingénierie et de services numériques, en plus d'un commerce et d'une restauration soignés. Ce tissu de TPE et PME, souvent piloté par des indépendants exigeants, constitue un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
   ecosystemEn:
-    "Tournefeuille bénéficie d'une proximité avec des pôles économiques comme Toulouse, abritant des entreprises telles que Sanofi et Airbus. Ce tissu économique diversifié stimule l'innovation locale.",
+    "Tournefeuille bénéficie de sa position dans l'aire urbaine de Toulouse, premier bassin aéronautique européen autour d'Airbus, Thales et de leur réseau de sous-traitants. La commune, résidentielle et attractive, concentre des professions libérales, des bureaux d'études et de petites PME de conseil, d'ingénierie et de services numériques, en plus d'un commerce et d'une restauration soignés. Ce tissu de TPE et PME, souvent piloté par des indépendants exigeants, constitue un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
   distancesFr:
-    "Tournefeuille est située à 10 km de l'aéroport Toulouse-Blagnac et à 12 km de la gare TGV Toulouse Matabiau.",
+    "Toulouse centre à 15 min, sites Airbus de Blagnac à 10 min. Aéroport Toulouse-Blagnac à 10 km, gare TGV Toulouse-Matabiau à 12 km. Accès direct par la rocade ouest. Nos consultants se déplacent sur site depuis Toulouse, frais indiqués séparément, ou interviennent en visio.",
   distancesEn:
-    "Tournefeuille est située à 10 km de l'aéroport Toulouse-Blagnac et à 12 km de la gare TGV Toulouse Matabiau.",
+    "Toulouse centre à 15 min, sites Airbus de Blagnac à 10 min. Aéroport Toulouse-Blagnac à 10 km, gare TGV Toulouse-Matabiau à 12 km. Accès direct par la rocade ouest. Nos consultants se déplacent sur site depuis Toulouse, frais indiqués séparément, ou interviennent en visio.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
-    "Construction de bâtiments",
+    "Conseil et ingénierie (écosystème aéronautique)",
+    "Professions libérales et bureaux d'études",
+    "Services numériques et informatiques",
+    "Commerce de détail et restauration premium",
+    "Artisanat du BTP et second œuvre",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Tournefeuille pour identifier les processus automatisables — optimiser l'efficacité opérationnelle.",
-      en: "Réaliser un audit à Tournefeuille pour identifier les processus automatisables — optimiser l'efficacité opérationnelle.",
+      fr: "Audit IA à Tournefeuille : diagnostic sur site pour repérer les automatisations à fort retour dans un cabinet libéral, un bureau d'études ou une PME de conseil. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée.",
+      en: "Audit IA à Tournefeuille : diagnostic sur site pour repérer les automatisations à fort retour dans un cabinet libéral, un bureau d'études ou une PME de conseil. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée.",
     },
     interventions: {
-      fr: "Intervenir à Tournefeuille pour mettre en place des solutions IA — améliorer la productivité des équipes.",
-      en: "Intervenir à Tournefeuille pour mettre en place des solutions IA — améliorer la productivité des équipes.",
+      fr: "Interventions IA à Tournefeuille : sessions opérationnelles adaptées au cabinet, au bureau d'études ou au commerce. Vos collaborateurs repartent autonomes sur les outils déployés, sans dépendance à un prestataire.",
+      en: "Interventions IA à Tournefeuille : sessions opérationnelles adaptées au cabinet, au bureau d'études ou au commerce. Vos collaborateurs repartent autonomes sur les outils déployés, sans dépendance à un prestataire.",
     },
     implementation: {
-      fr: "Implémenter des outils IA à Tournefeuille pour intégrer l'IA dans les systèmes existants — faciliter la transition numérique.",
-      en: "Implémenter des outils IA à Tournefeuille pour intégrer l'IA dans les systèmes existants — faciliter la transition numérique.",
+      fr: "Implémentation IA à Tournefeuille : automatisation des devis et propositions pour le conseil et l'ingénierie, classification de documents techniques, agents conversationnels B2B, assistants de rédaction intégrés à vos outils existants.",
+      en: "Implémentation IA à Tournefeuille : automatisation des devis et propositions pour le conseil et l'ingénierie, classification de documents techniques, agents conversationnels B2B, assistants de rédaction intégrés à vos outils existants.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Tournefeuille pour les dirigeants — renforcer la compréhension et l'utilisation de l'IA.",
-      en: "Proposer des sessions 1-to-1 à Tournefeuille pour les dirigeants — renforcer la compréhension et l'utilisation de l'IA.",
+      fr: "Coaching un-à-un à Tournefeuille : sessions individuelles avec le dirigeant, le consultant ou le professionnel libéral, sur site ou en visio. Conçu pour les TPE qui veulent un accompagnement sur mesure et exigeant.",
+      en: "Coaching un-à-un à Tournefeuille : sessions individuelles avec le dirigeant, le consultant ou le professionnel libéral, sur site ou en visio. Conçu pour les TPE qui veulent un accompagnement sur mesure et exigeant.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Tournefeuille : site vitrine ou outil métier sur mesure dopé à l'IA pour cabinets, bureaux d'études et commerces premium de l'ouest toulousain — prise de contact qualifiée, devis assistés, image professionnelle renforcée.",
+      en: "Sites web augmentés à Tournefeuille : site vitrine ou outil métier sur mesure dopé à l'IA pour cabinets, bureaux d'études et commerces premium de l'ouest toulousain — prise de contact qualifiée, devis assistés, image professionnelle renforcée.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Tournefeuille ?",
-      a: "Les interventions à Tournefeuille commencent à 590 € HT pour l'Intervention Essentielle. Les tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Tournefeuille et dans l'ouest toulousain ?",
+      a: "Oui. Nous couvrons Tournefeuille et l'aire urbaine de Toulouse (Blagnac, Colomiers, Plaisance-du-Touch). Nos consultants se déplacent sur site depuis Toulouse, à 15 min, ou interviennent en visio selon votre besoin.",
     },
     {
-      q: "Axion-IA peut-il se déplacer rapidement à Tournefeuille ?",
-      a: "Oui, Axion-IA se déplace sur site à Tournefeuille dans un délai rapide, généralement dans les 5 jours ouvrés, pour répondre aux besoins urgents des entreprises.",
+      q: "Accompagnez-vous les professions libérales et TPE de services ?",
+      a: "C'est notre priorité. Pour les cabinets, indépendants et petites structures de services, nous automatisons devis, relances et tâches administratives, et nous formons le dirigeant à utiliser ces outils sans équipe technique.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Tournefeuille ?",
-      a: "Axion-IA intègre des pratiques conformes au RGPD dans toutes ses interventions, assurant la protection des données personnelles des entreprises de Tournefeuille.",
+      q: "Travaillez-vous avec les PME de conseil et d'ingénierie ?",
+      a: "Oui. Pour les bureaux d'études et PME liées à l'écosystème aéronautique, nous mettons en place automatisation de propositions commerciales, classification de documents techniques et agents conversationnels B2B.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services d'Axion-IA à Tournefeuille ?",
-      a: "Les secteurs du commerce de détail et de la programmation informatique à Tournefeuille bénéficient particulièrement de nos services d'optimisation et d'automatisation.",
+      q: "Faut-il des compétences techniques en interne pour démarrer ?",
+      a: "Non. Nous partons de vos logiciels existants et formons vos équipes pas à pas. L'objectif est un gain de temps concret et mesurable, accessible à une TPE comme à une PME, sans recruter de profil technique.",
+    },
+    {
+      q: "Comment se déroule une mission à Tournefeuille depuis Toulouse ?",
+      a: "Le diagnostic et les sessions clés se font sur site ; le suivi se poursuit en visio. La proximité de Toulouse (15 min) permet des déplacements rapides, dont les frais sont indiqués séparément et en toute transparence.",
     },
   ],
 };

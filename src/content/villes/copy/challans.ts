@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Challans (85, Vendée) — canard de Challans, agroalimentaire-volaille, marché traditionnel, capitale du Marais nord-vendéen.
 
 import type { VilleCopy } from "./types";
 
 export const CHALLANS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Challans, facilitant l'adoption de l'IA pour les entreprises locales. Avec des références comme LVMH et Cap Digital, nous apportons notre expertise nationale pour optimiser vos processus.",
+    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Challans, facilitant l'adoption de l'IA pour les entreprises locales. Avec des références comme LVMH et Cap Digital, nous apportons notre expertise nationale pour optimiser vos processus.",
+    "Challans (85), capitale du Marais nord-vendéen, est réputée pour son canard de Challans, son agroalimentaire avicole et son marché traditionnel animé. Porte d'entrée du littoral vendéen, la ville rassemble de nombreuses TPE et PME : volaille et agroalimentaire, commerce, artisanat, BTP et tourisme. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME challandaises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA propose des services d'IA adaptés aux besoins des entreprises de Challans. Avec un audit Flash et une intervention, nous offrons des solutions concrètes. Notre approche s'inspire de réussites observées dans des écosystèmes comme ceux de LVMH et Cap Digital, garantissant des résultats mesurables.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA propose des services d'IA adaptés aux besoins des entreprises de Challans. Avec un audit Flash et une intervention, nous offrons des solutions concrètes. Notre approche s'inspire de réussites observées dans des écosystèmes comme ceux de LVMH et Cap Digital, garantissant des résultats mesurables.",
-  seoHook: "commerce détail & industrie alimentaire",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Challans (85) auprès des TPE et PME : filière volaille et canard de Challans, agroalimentaire, commerce, artisanat, BTP et tourisme du littoral vendéen. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+  seoHook: "volaille & agroalimentaire vendéen",
   ecosystemFr:
-    "Challans, avec ses 2 000 établissements actifs, bénéficie d'une proximité avec des centres économiques influents comme Nantes et son aéroport. Les entreprises locales peuvent s'inspirer de modèles tels que Station F et Inria.",
+    "Challans, au cœur du Marais nord-vendéen, doit sa renommée à la filière avicole et au canard de Challans, soutenue par un agroalimentaire dynamique et un marché traditionnel emblématique. Porte d'entrée du littoral (Saint-Jean-de-Monts, Noirmoutier), la ville accueille un commerce de détail vivant, de l'artisanat, du BTP, de la logistique et un tourisme saisonnier fort. Ce tissu de TPE et PME, à la fois rural, agroalimentaire et tourné vers la côte, constitue un terrain concret pour une IA appliquée à la production, à la vente et à la gestion saisonnière.",
   ecosystemEn:
-    "Challans, avec ses 2 000 établissements actifs, bénéficie d'une proximité avec des centres économiques influents comme Nantes et son aéroport. Les entreprises locales peuvent s'inspirer de modèles tels que Station F et Inria.",
+    "Challans, au cœur du Marais nord-vendéen, doit sa renommée à la filière avicole et au canard de Challans, soutenue par un agroalimentaire dynamique et un marché traditionnel emblématique. Porte d'entrée du littoral (Saint-Jean-de-Monts, Noirmoutier), la ville accueille un commerce de détail vivant, de l'artisanat, du BTP, de la logistique et un tourisme saisonnier fort. Ce tissu de TPE et PME, à la fois rural, agroalimentaire et tourné vers la côte, constitue un terrain concret pour une IA appliquée à la production, à la vente et à la gestion saisonnière.",
   distancesFr:
-    "Challans est située à 60 km de la Gare de Nantes et à 55 km de l'Aéroport Nantes Atlantique.",
+    "Challans est à 40 min de Nantes par la D937 et à 20 min du littoral (Saint-Jean-de-Monts). La gare de Nantes est à environ 1 h, l'aéroport Nantes-Atlantique à 50 min.",
   distancesEn:
-    "Challans est située à 60 km de la Gare de Nantes et à 55 km de l'Aéroport Nantes Atlantique.",
+    "Challans est à 40 min de Nantes par la D937 et à 20 min du littoral (Saint-Jean-de-Monts). La gare de Nantes est à environ 1 h, l'aéroport Nantes-Atlantique à 50 min.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Industrie alimentaire",
-    "Construction",
-    "Transports terrestres",
+    "Filière avicole et canard de Challans",
+    "Industries agroalimentaires",
+    "Commerce de gros et de détail",
+    "Artisanat et construction BTP",
+    "Tourisme et hôtellerie littorale",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Challans pour identifier les opportunités IA dans le commerce de détail — amélioration des processus.",
-      en: "Réaliser un audit à Challans pour identifier les opportunités IA dans le commerce de détail — amélioration des processus.",
+      fr: "Audit IA à Challans : diagnostic des tâches automatisables pour filière volaille, agroalimentaire, commerce et tourisme du littoral. Audit Flash dès 490 € HT, livrable priorisé.",
+      en: "Audit IA à Challans : diagnostic des tâches automatisables pour filière volaille, agroalimentaire, commerce et tourisme du littoral. Audit Flash dès 490 € HT, livrable priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Challans pour automatiser les tâches administratives — gain de temps significatif.",
-      en: "Intervenir à Challans pour automatiser les tâches administratives — gain de temps significatif.",
+      fr: "Interventions IA sur site à Challans : ateliers pratiques pour exploitations avicoles, ateliers agroalimentaires, commerces et BTP, afin de rendre vos équipes autonomes sur les outils IA.",
+      en: "Interventions IA sur site à Challans : ateliers pratiques pour exploitations avicoles, ateliers agroalimentaires, commerces et BTP, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Challans dans l'industrie alimentaire — optimisation des chaînes de production.",
-      en: "Implémenter des solutions IA à Challans dans l'industrie alimentaire — optimisation des chaînes de production.",
+      fr: "Implémentation IA à Challans : traçabilité de la filière volaille, prévision de la demande, automatisation des devis et stocks, e-boutique terroir et CRM augmenté pour TPE et PME.",
+      en: "Implémentation IA à Challans : traçabilité de la filière volaille, prévision de la demande, automatisation des devis et stocks, e-boutique terroir et CRM augmenté pour TPE et PME.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Challans les dirigeants — adoption rapide et efficace des outils IA.",
-      en: "Accompagner en un-à-un à Challans les dirigeants — adoption rapide et efficace des outils IA.",
+      fr: "Accompagnement un-à-un à Challans : sessions sur site ou en visio pour dirigeants de TPE et PME avicoles, agroalimentaires, commerciales et touristiques, ciblées sur vos priorités.",
+      en: "Accompagnement un-à-un à Challans : sessions sur site ou en visio pour dirigeants de TPE et PME avicoles, agroalimentaires, commerciales et touristiques, ciblées sur vos priorités.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Challans : e-boutique terroir, plateforme de réservation ou vitrine avec IA intégrée (vente, recommandation, réservation) pour producteurs, commerces et hébergeurs.",
+      en: "Sites web augmentés à Challans : e-boutique terroir, plateforme de réservation ou vitrine avec IA intégrée (vente, recommandation, réservation) pour producteurs, commerces et hébergeurs.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Challans?",
-      a: "Les tarifs pour une intervention IA à Challans commencent à partir de 590 € HT. Consultez nos tarifs publics sur le site pour plus de détails.",
+      q: "Axion-IA intervient-il à Challans ?",
+      a: "Oui, Axion-IA intervient à Challans et dans le nord-ouest vendéen (Saint-Jean-de-Monts, Saint-Gilles-Croix-de-Vie, Machecoul, Noirmoutier). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Challans?",
-      a: "Notre équipe nationale se déplace directement sur site à Challans, assurant une intervention rapide et efficace dans vos locaux.",
+      q: "Quel est le tarif d'un audit IA à Challans ?",
+      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME challandaises : filière volaille, agroalimentaire, commerce, artisanat et tourisme.",
     },
     {
-      q: "Quel est le délai pour une intervention à Challans?",
-      a: "Nous nous engageons à intervenir à Challans dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Comment l'IA aide-t-elle la filière volaille de Challans ?",
+      a: "Pour les éleveurs et transformateurs de la filière canard : traçabilité, prévision de la demande, automatisation des expéditions et de la qualité, et vente en ligne enrichie par l'IA, par étapes maîtrisées.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Challans?",
-      a: "Axion-IA veille à ce que toutes les solutions implémentées à Challans respectent strictement les normes RGPD, assurant la protection des données.",
+      q: "Quels services pour le commerce et le tourisme littoral ?",
+      a: "Pour les commerces et l'hôtellerie : agents conversationnels, gestion des réservations, automatisation des devis et présence en ligne enrichie par l'IA, calibrés selon votre taille et votre budget.",
+    },
+    {
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous priorisons les TPE puis les PME de Challans ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+    },
+    {
+      q: "Comment se déroule une mission à Challans ?",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 40 min de Nantes. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

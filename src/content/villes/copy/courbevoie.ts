@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Courbevoie (92, Hauts-de-Seine) — quartier d'affaires La Défense, sièges sociaux, tertiaire premium.
 
 import type { VilleCopy } from "./types";
 
 export const COURBEVOIE_COPY: VilleCopy = {
   pitchFr:
-    "À Courbevoie, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs économiques comme TotalEnergies et Saint-Gobain, notre expertise s'adapte aux besoins des services financiers et informatiques.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Courbevoie (92), au cœur du quartier d'affaires de La Défense. Au pied des tours qui abritent de grands sièges, un dense réseau de petites structures tertiaires — conseil, finance, services aux entreprises — fait vivre la ville. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces TPE et PME franciliennes.",
   pitchEn:
-    "À Courbevoie, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs économiques comme TotalEnergies et Saint-Gobain, notre expertise s'adapte aux besoins des services financiers et informatiques.",
+    "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Courbevoie (92), au cœur du quartier d'affaires de La Défense. Au pied des tours qui abritent de grands sièges, un dense réseau de petites structures tertiaires — conseil, finance, services aux entreprises — fait vivre la ville. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces TPE et PME franciliennes.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Courbevoie, une ville abritant des entreprises comme TotalEnergies et Engie. Nos services incluent audits, implémentations et formations pour les TPE, PME et ETI. Nous nous déplaçons sur site pour offrir des solutions concrètes aux défis opérationnels des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Courbevoie, une ville abritant des entreprises comme TotalEnergies et Engie. Nos services incluent audits, implémentations et formations pour les TPE, PME et ETI. Nous nous déplaçons sur site pour offrir des solutions concrètes aux défis opérationnels des entreprises locales.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+  seoHook: "tertiaire & La Défense",
   ecosystemFr:
-    "Courbevoie est un pôle économique avec des entreprises telles que TotalEnergies et Saint-Gobain. Ses secteurs dominants incluent les services financiers et la programmation informatique.",
+    "Courbevoie, dans les Hauts-de-Seine, accueille une large part du quartier d'affaires de La Défense et ses tours abritant de grands sièges sociaux. Autour de cette concentration tertiaire premium — finance, conseil, juridique, informatique — gravite un écosystème dense de TPE et PME : cabinets indépendants, agences, éditeurs de logiciels et prestataires de services aux entreprises. Très bien connectée, la ville offre un terrain idéal pour des automatisations IA exigeantes et conformes.",
   ecosystemEn:
-    "Courbevoie est un pôle économique avec des entreprises telles que TotalEnergies et Saint-Gobain. Ses secteurs dominants incluent les services financiers et la programmation informatique.",
+    "Courbevoie, dans les Hauts-de-Seine, accueille une large part du quartier d'affaires de La Défense et ses tours abritant de grands sièges sociaux. Autour de cette concentration tertiaire premium — finance, conseil, juridique, informatique — gravite un écosystème dense de TPE et PME : cabinets indépendants, agences, éditeurs de logiciels et prestataires de services aux entreprises. Très bien connectée, la ville offre un terrain idéal pour des automatisations IA exigeantes et conformes.",
   distancesFr:
-    "Courbevoie est à 8 km de la Gare de Paris-Saint-Lazare et à 30 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "La Défense et son pôle de transport (RER A, métro 1, Transilien, tramway T2) à pied. Gare de Paris-Saint-Lazare à 8 km (~10 min RER). Paris centre à 7 km. Aéroport de Paris-Charles-de-Gaulle à 30 km, Paris-La Défense relié en direct.",
   distancesEn:
-    "Courbevoie est à 8 km de la Gare de Paris-Saint-Lazare et à 30 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "La Défense et son pôle de transport (RER A, métro 1, Transilien, tramway T2) à pied. Gare de Paris-Saint-Lazare à 8 km (~10 min RER). Paris centre à 7 km. Aéroport de Paris-Charles-de-Gaulle à 30 km, Paris-La Défense relié en direct.",
   topSectorsNaf: [
-    "Services financiers",
-    "Programmation informatique",
-    "Sièges sociaux",
+    "Conseil & services aux entreprises",
+    "Services financiers & assurance",
     "Activités juridiques",
+    "Édition & prestation informatique",
+    "Sièges sociaux & sous-traitants",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Courbevoie pour identifier les optimisations possibles chez TotalEnergies — Audit Flash à partir de 490 € HT.",
-      en: "Réaliser un audit à Courbevoie pour identifier les optimisations possibles chez TotalEnergies — Audit Flash à partir de 490 € HT.",
+      fr: "Audit IA à Courbevoie : diagnostic 4h pour cabinets de conseil, services financiers, professions du droit et prestataires informatiques de La Défense. On cible les tâches d'analyse et de production documentaire à automatiser.",
+      en: "Audit IA à Courbevoie : diagnostic 4h pour cabinets de conseil, services financiers, professions du droit et prestataires informatiques de La Défense. On cible les tâches d'analyse et de production documentaire à automatiser.",
     },
     interventions: {
-      fr: "Intervenir à Courbevoie pour automatiser les processus chez Saint-Gobain — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Courbevoie pour automatiser les processus chez Saint-Gobain — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Courbevoie : ateliers pour rendre autonomes les équipes de cabinets et PME tertiaires sur des outils IA configurés métier, avec un haut niveau d'exigence sur la conformité.",
+      en: "Interventions IA sur site à Courbevoie : ateliers pour rendre autonomes les équipes de cabinets et PME tertiaires sur des outils IA configurés métier, avec un haut niveau d'exigence sur la conformité.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Courbevoie pour les entreprises du secteur informatique — Dès 990 € HT.",
-      en: "Implémenter des solutions IA à Courbevoie pour les entreprises du secteur informatique — Dès 990 € HT.",
+      fr: "Implémentation IA à Courbevoie : automatisation de l'analyse documentaire, rédaction assistée, reporting financier, agents conversationnels internes et CRM augmentés pour le tertiaire de La Défense.",
+      en: "Implémentation IA à Courbevoie : automatisation de l'analyse documentaire, rédaction assistée, reporting financier, agents conversationnels internes et CRM augmentés pour le tertiaire de La Défense.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Courbevoie avec un coaching personnalisé — 1-to-1 dès 990 € HT.",
-      en: "Accompagner un dirigeant à Courbevoie avec un coaching personnalisé — 1-to-1 dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Courbevoie : sessions individuelles pour dirigeants et associés de TPE et PME du conseil, de la finance et du droit, sur site ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Courbevoie : sessions individuelles pour dirigeants et associés de TPE et PME du conseil, de la finance et du droit, sur site ou en visio, pour piloter l'IA en autonomie.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Courbevoie : plateformes et SaaS IA sur mesure pour cabinets et éditeurs — portails clients, espaces documentaires sécurisés, assistants IA métier conformes RGPD.",
+      en: "Sites web augmentés à Courbevoie : plateformes et SaaS IA sur mesure pour cabinets et éditeurs — portails clients, espaces documentaires sécurisés, assistants IA métier conformes RGPD.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Courbevoie?",
-      a: "Nos interventions à Courbevoie commencent à partir de 590 € HT pour une Intervention Essentielle. Les tarifs sont publics et consultables sur notre site.",
+      q: "Axion-IA intervient-il à Courbevoie ?",
+      a: "Oui, Axion-IA intervient à Courbevoie et dans tout le quartier d'affaires de La Défense. Nos consultants se déplacent depuis Paris (RER A, ~10 min) pour rencontrer cabinets, PME tertiaires et indépendants sur site.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Courbevoie?",
-      a: "Notre équipe nationale se déplace sur site à Courbevoie dans un délai de 5 jours ouvrés pour répondre aux besoins spécifiques des entreprises locales.",
+      q: "Combien coûte un audit IA à Courbevoie ?",
+      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME tertiaires de Courbevoie, sans devis opaque.",
     },
     {
-      q: "Proposez-vous des audits pour les entreprises de Courbevoie?",
-      a: "Oui, nous réalisons des audits à partir de 490 € HT. Nos audits permettent d'identifier les opportunités d'optimisation pour les entreprises de Courbevoie.",
+      q: "Accompagnez-vous les cabinets de conseil et de droit ?",
+      a: "Oui. Pour les cabinets de conseil, services financiers et professions juridiques de La Défense, nous automatisons analyse documentaire, rédaction assistée et reporting, avec une exigence forte de confidentialité.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD lors de vos interventions à Courbevoie?",
-      a: "Nous respectons strictement les normes RGPD lors de nos interventions à Courbevoie, garantissant la protection des données personnelles de nos clients.",
+      q: "Travaillez-vous avec les prestataires des grands sièges de La Défense ?",
+      a: "Oui. De nombreuses TPE et PME sous-traitent ou fournissent des services aux grands sièges installés à Courbevoie. Nous les outillons pour gagner en productivité et fiabiliser leurs livrables.",
+    },
+    {
+      q: "Comment se déroule une mission à Courbevoie ?",
+      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Paris. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD ?",
+      a: "Chaque mission à Courbevoie intègre le RGPD : minimisation des données, hébergement maîtrisé et absence d'enfermement propriétaire, point essentiel pour le tertiaire financier et juridique local.",
     },
   ],
 };

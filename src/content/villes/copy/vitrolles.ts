@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Vitrolles (13, Bouches-du-Rhône) — étang de Berre, aéroport Marseille-Provence à proximité, pôle logistique et zones commerciales (ZAC de l'Anjoly), industrie.
 
 import type { VilleCopy } from "./types";
 
 export const VITROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Vitrolles, une ville dynamique avec des entreprises comme Geodis et DHL. Notre cabinet national se déplace pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Vitrolles, au bord de l'étang de Berre — logistique et transport autour de l'aéroport Marseille-Provence, commerce des grandes zones d'activité et industrie. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Axion-IA intervient à Vitrolles, une ville dynamique avec des entreprises comme Geodis et DHL. Notre cabinet national se déplace pour optimiser vos processus grâce à l'IA.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Vitrolles, au bord de l'étang de Berre — logistique et transport autour de l'aéroport Marseille-Provence, commerce des grandes zones d'activité et industrie. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA se déplace à Vitrolles pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs économiques tels que Geodis et Kuehne + Nagel, Vitrolles est un centre stratégique pour le transport et l'entreposage. Notre équipe propose des audits et des interventions, adaptés aux besoins spécifiques de chaque secteur.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vitrolles, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logistique et de vastes zones commerciales comme la ZAC de l'Anjoly, nous nous déplaçons sur site auprès des entreprises de transport, de négoce, du commerce et de l'industrie pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA se déplace à Vitrolles pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs économiques tels que Geodis et Kuehne + Nagel, Vitrolles est un centre stratégique pour le transport et l'entreposage. Notre équipe propose des audits et des interventions, adaptés aux besoins spécifiques de chaque secteur.",
-  seoHook: "transports terrestres & entreposage",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vitrolles, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logistique et de vastes zones commerciales comme la ZAC de l'Anjoly, nous nous déplaçons sur site auprès des entreprises de transport, de négoce, du commerce et de l'industrie pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+  seoHook: "logistique & zones commerciales",
   ecosystemFr:
-    "Vitrolles accueille des géants du transport comme Geodis et DHL. La ville est également proche de la ZAC de l'Anjoly, un pôle d'activité clé pour les entreprises de la région.",
+    "Vitrolles tire son dynamisme de sa position stratégique au bord de l'étang de Berre, à proximité immédiate de l'aéroport Marseille-Provence. La commune concentre un important pôle logistique et de transport, de vastes zones commerciales comme la ZAC de l'Anjoly et un tissu industriel hérité de l'aire métropolitaine d'Aix-Marseille. Pour ces TPE et PME du transport, du négoce et du commerce, l'IA opérationnelle fiabilise la gestion des flux, le suivi des commandes et la relation client sans surdimensionner les outils.",
   ecosystemEn:
-    "Vitrolles accueille des géants du transport comme Geodis et DHL. La ville est également proche de la ZAC de l'Anjoly, un pôle d'activité clé pour les entreprises de la région.",
+    "Vitrolles tire son dynamisme de sa position stratégique au bord de l'étang de Berre, à proximité immédiate de l'aéroport Marseille-Provence. La commune concentre un important pôle logistique et de transport, de vastes zones commerciales comme la ZAC de l'Anjoly et un tissu industriel hérité de l'aire métropolitaine d'Aix-Marseille. Pour ces TPE et PME du transport, du négoce et du commerce, l'IA opérationnelle fiabilise la gestion des flux, le suivi des commandes et la relation client sans surdimensionner les outils.",
   distancesFr:
-    "L'aéroport Marseille Provence est à seulement 5 km de Vitrolles, facilitant les déplacements professionnels.",
+    "Vitrolles est voisine de l'aéroport Marseille-Provence, à seulement quelques kilomètres, et dispose de sa propre gare reliée à Marseille en une vingtaine de minutes. Les autoroutes A7 et A55 desservent l'agglomération et Marseille se trouve à une trentaine de kilomètres. Nos architectes se déplacent sur site dans tout le pourtour de l'étang de Berre et l'aire d'Aix-Marseille.",
   distancesEn:
-    "L'aéroport Marseille Provence est à seulement 5 km de Vitrolles, facilitant les déplacements professionnels.",
+    "Vitrolles est voisine de l'aéroport Marseille-Provence, à seulement quelques kilomètres, et dispose de sa propre gare reliée à Marseille en une vingtaine de minutes. Les autoroutes A7 et A55 desservent l'agglomération et Marseille se trouve à une trentaine de kilomètres. Nos architectes se déplacent sur site dans tout le pourtour de l'étang de Berre et l'aire d'Aix-Marseille.",
   topSectorsNaf: [
-    "Transports terrestres",
-    "Entreposage",
-    "Commerce de gros",
-    "Construction spécialisée",
+    "Transport & logistique",
+    "Entreposage & messagerie",
+    "Commerce de gros & détail",
+    "Industrie & maintenance",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vitrolles permet d'identifier les axes d'amélioration dans des secteurs clés comme le transport.",
-      en: "Réaliser un audit à Vitrolles permet d'identifier les axes d'amélioration dans des secteurs clés comme le transport.",
+      fr: "Auditer à Vitrolles les processus d'une entreprise de transport, de logistique ou de commerce — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
+      en: "Auditer à Vitrolles les processus d'une entreprise de transport, de logistique ou de commerce — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir à Vitrolles auprès d'entreprises comme celles de la ZAC de l'Anjoly — automatisation des tâches administratives.",
-      en: "Intervenir à Vitrolles auprès d'entreprises comme celles de la ZAC de l'Anjoly — automatisation des tâches administratives.",
+      fr: "Intervenir sur site à Vitrolles pour automatiser la gestion des flux, le suivi des commandes et les relances clients des TPE/PME, sans alourdir le quotidien des équipes.",
+      en: "Intervenir sur site à Vitrolles pour automatiser la gestion des flux, le suivi des commandes et les relances clients des TPE/PME, sans alourdir le quotidien des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Vitrolles pour optimiser les flux logistiques chez des acteurs tels que Kuehne + Nagel.",
-      en: "Implémenter des solutions IA à Vitrolles pour optimiser les flux logistiques chez des acteurs tels que Kuehne + Nagel.",
+      fr: "Implémenter à Vitrolles des outils IA durables, intégrés aux logiciels de gestion et de transport existants et documentés pour rester maîtrisés en interne après notre intervention.",
+      en: "Implémenter à Vitrolles des outils IA durables, intégrés aux logiciels de gestion et de transport existants et documentés pour rester maîtrisés en interne après notre intervention.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants de Vitrolles pour une adoption rapide et efficace de l'IA.",
-      en: "Accompagner en 1-to-1 les dirigeants de Vitrolles pour une adoption rapide et efficace de l'IA.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE/PME vitrollaises pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de TPE/PME vitrollaises pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+    },
+    sitesWeb: {
+      fr: "Concevoir à Vitrolles un site ou une plateforme web augmentée par l'IA pour une PME de logistique ou de commerce — suivi de commandes, devis en ligne et relation client enrichis intelligemment.",
+      en: "Concevoir à Vitrolles un site ou une plateforme web augmentée par l'IA pour une PME de logistique ou de commerce — suivi de commandes, devis en ligne et relation client enrichis intelligemment.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les délais d'intervention à Vitrolles ?",
-      a: "Nous intervenons à Vitrolles dans un délai de 5 jours ouvrés après validation de la mission, garantissant une réactivité adaptée aux besoins locaux.",
+      q: "Axion-IA se déplace-t-il sur site à Vitrolles ?",
+      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Vitrolles, notamment dans la ZAC de l'Anjoly, et tout autour de l'étang de Berre, pour observer vos processus réels avant toute recommandation.",
     },
     {
-      q: "Quels sont les tarifs pour un audit IA à Vitrolles ?",
-      a: "Nos audits IA à Vitrolles débutent à 490 € HT pour un Audit Flash de 4 heures. Les tarifs sont consultables sur notre site.",
+      q: "Une entreprise de transport ou de logistique peut-elle profiter de l'IA à Vitrolles ?",
+      a: "Oui. Nous aidons les acteurs du transport, de la logistique et du commerce à fiabiliser la gestion des flux, le suivi des commandes et la relation client, avec des outils proportionnés à leur taille.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Vitrolles ?",
-      a: "Axion-IA respecte scrupuleusement les normes RGPD lors de ses interventions à Vitrolles, garantissant la protection des données de nos clients.",
+      q: "L'IA est-elle accessible à une TPE de Vitrolles ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites structures, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
-      q: "Proposez-vous des formations IA sur site à Vitrolles ?",
-      a: "Oui, nous proposons des formations sur site à Vitrolles, adaptées aux besoins spécifiques des entreprises locales, avec des tarifs à partir de 990 € HT.",
+      q: "Connaît-on les tarifs à l'avance ?",
+      a: "Oui. Axion-IA publie une grille tarifaire claire, sans devis opaque ni abonnement caché. Vous connaissez le coût d'un audit ou d'une intervention à Vitrolles avant de vous engager.",
+    },
+    {
+      q: "Mes données sont-elles protégées et conformes au RGPD ?",
+      a: "Oui. Chaque solution IA déployée à Vitrolles est conçue dans le respect du RGPD et sans dépendance forcée à un éditeur, pour que vous gardiez la maîtrise et la portabilité de vos données.",
     },
   ],
 };

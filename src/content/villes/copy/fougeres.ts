@@ -1,61 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Fougères (35, Ille-et-Vilaine) — château fort médiéval majeur, chaussure historique, sous-traitance électronique, Bretagne.
 
 import type { VilleCopy } from "./types";
 
 export const FOUGERES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Fougères, où Delta Dore et Cooper Standard illustrent la diversité industrielle. Nous proposons des solutions IA adaptées aux besoins locaux, tout en nous déplaçant sur site pour chaque projet.",
+    "Fougères (35), porte de la Bretagne en Ille-et-Vilaine, est dominée par l'un des plus grands châteaux forts médiévaux d'Europe et porte un riche héritage industriel : capitale historique de la chaussure, elle s'est reconvertie dans la sous-traitance électronique et l'agroalimentaire. Le tissu local mêle PME industrielles, TPE artisanales, commerces et acteurs du tourisme patrimonial. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   pitchEn:
-    "Axion-IA intervient à Fougères, où Delta Dore et Cooper Standard illustrent la diversité industrielle. Nous proposons des solutions IA adaptées aux besoins locaux, tout en nous déplaçant sur site pour chaque projet.",
+    "Fougères (35), porte de la Bretagne en Ille-et-Vilaine, est dominée par l'un des plus grands châteaux forts médiévaux d'Europe et porte un riche héritage industriel : capitale historique de la chaussure, elle s'est reconvertie dans la sous-traitance électronique et l'agroalimentaire. Le tissu local mêle PME industrielles, TPE artisanales, commerces et acteurs du tourisme patrimonial. Axion-IA, cabinet d'architectes IA seniors, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   directAnswerFr:
-    "À Fougères, Axion-IA propose des interventions IA adaptées aux secteurs de l'habillement et des produits métalliques. Notre équipe nationale se déplace pour auditer et implémenter des solutions sur site. Avec des entreprises comme Delta Dore et Cooper Standard, nous comprenons les enjeux locaux et offrons des services pour un audit Flash de 4 heures.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fougères (35, Ille-et-Vilaine) et dans l'est de la Bretagne. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME de sous-traitance électronique et d'agroalimentaire héritières du passé industriel de la ville. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
   directAnswerEn:
-    "À Fougères, Axion-IA propose des interventions IA adaptées aux secteurs de l'habillement et des produits métalliques. Notre équipe nationale se déplace pour auditer et implémenter des solutions sur site. Avec des entreprises comme Delta Dore et Cooper Standard, nous comprenons les enjeux locaux et offrons des services pour un audit Flash de 4 heures.",
-  seoHook: "habillement & produits métalliques",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fougères (35, Ille-et-Vilaine) et dans l'est de la Bretagne. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME de sous-traitance électronique et d'agroalimentaire héritières du passé industriel de la ville. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+  seoHook: "électronique & patrimoine breton",
   ecosystemFr:
-    "Fougères est un pôle industriel avec Delta Dore et Cooper Standard. Le Parc d'Activités de l'Aumaillerie soutient le développement économique local, favorisant l'innovation dans divers secteurs.",
+    "Fougères, sous-préfecture d'Ille-et-Vilaine aux portes de la Normandie et du Maine, conjugue patrimoine et industrie. Sa cité médiévale et son château fort en font une destination touristique, tandis que son tissu économique, hérité de la grande tradition de la chaussure, s'est tourné vers la sous-traitance électronique, la plasturgie et l'agroalimentaire. Autour de ces PME gravitent des TPE artisanales, des commerces de centre-ville et des acteurs du tourisme. Ce profil de petites structures, souvent dirigées par leur fondateur, est idéal pour des automatisations IA ciblées et un gain de temps concret.",
   ecosystemEn:
-    "Fougères est un pôle industriel avec Delta Dore et Cooper Standard. Le Parc d'Activités de l'Aumaillerie soutient le développement économique local, favorisant l'innovation dans divers secteurs.",
-  distancesFr: "Fougères est à 55 km de la Gare TGV de Rennes et à 60 km de l'Aéroport de Rennes.",
-  distancesEn: "Fougères est à 55 km de la Gare TGV de Rennes et à 60 km de l'Aéroport de Rennes.",
-  topSectorsNaf: ["Habillement", "Produits métalliques", "Commerce de gros", "Commerce de détail"],
+    "Fougères, sous-préfecture d'Ille-et-Vilaine aux portes de la Normandie et du Maine, conjugue patrimoine et industrie. Sa cité médiévale et son château fort en font une destination touristique, tandis que son tissu économique, hérité de la grande tradition de la chaussure, s'est tourné vers la sous-traitance électronique, la plasturgie et l'agroalimentaire. Autour de ces PME gravitent des TPE artisanales, des commerces de centre-ville et des acteurs du tourisme. Ce profil de petites structures, souvent dirigées par leur fondateur, est idéal pour des automatisations IA ciblées et un gain de temps concret.",
+  distancesFr:
+    "Rennes et sa gare TGV à 1h (55 km), Saint-Malo à 1h, Le Mont-Saint-Michel à 45 min, Laval à 50 min. Aéroport de Rennes à 60 km. Paris à 3h15 via Rennes. Nos consultants se déplacent sur site depuis Rennes, frais indiqués séparément, ou interviennent en visio.",
+  distancesEn:
+    "Rennes et sa gare TGV à 1h (55 km), Saint-Malo à 1h, Le Mont-Saint-Michel à 45 min, Laval à 50 min. Aéroport de Rennes à 60 km. Paris à 3h15 via Rennes. Nos consultants se déplacent sur site depuis Rennes, frais indiqués séparément, ou interviennent en visio.",
+  topSectorsNaf: [
+    "Sous-traitance électronique et plasturgie",
+    "Industrie agroalimentaire",
+    "Artisanat du BTP et second œuvre",
+    "Tourisme patrimonial et hôtellerie-restauration",
+    "Commerce de détail de centre-ville",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser des audits à Fougères pour évaluer vos processus industriels — à partir de 490 € HT.",
-      en: "Réaliser des audits à Fougères pour évaluer vos processus industriels — à partir de 490 € HT.",
+      fr: "Audit IA à Fougères : diagnostic sur site pour identifier les automatisations à fort retour dans une PME électronique, agroalimentaire ou un acteur touristique. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée.",
+      en: "Audit IA à Fougères : diagnostic sur site pour identifier les automatisations à fort retour dans une PME électronique, agroalimentaire ou un acteur touristique. Cartographie des tâches chronophages et feuille de route priorisée et chiffrée.",
     },
     interventions: {
-      fr: "Intervenir à Fougères dans l'industrie de l'habillement — optimisation des processus sur site.",
-      en: "Intervenir à Fougères dans l'industrie de l'habillement — optimisation des processus sur site.",
+      fr: "Interventions IA à Fougères : sessions opérationnelles adaptées à l'atelier, au commerce ou à l'hôtel-restaurant. Vos équipes maîtrisent les outils déployés et gagnent du temps sur la production et la relation client dès la première semaine.",
+      en: "Interventions IA à Fougères : sessions opérationnelles adaptées à l'atelier, au commerce ou à l'hôtel-restaurant. Vos équipes maîtrisent les outils déployés et gagnent du temps sur la production et la relation client dès la première semaine.",
     },
     implementation: {
-      fr: "Implémenter à Fougères pour la fabrication de produits métalliques — solutions IA dès 990 € HT.",
-      en: "Implémenter à Fougères pour la fabrication de produits métalliques — solutions IA dès 990 € HT.",
+      fr: "Implémentation IA à Fougères : contrôle qualité par vision pour l'électronique, classification de documents techniques, automatisation de la traçabilité agroalimentaire, agents conversationnels pour le tourisme, intégrés à vos outils existants.",
+      en: "Implémentation IA à Fougères : contrôle qualité par vision pour l'électronique, classification de documents techniques, automatisation de la traçabilité agroalimentaire, agents conversationnels pour le tourisme, intégrés à vos outils existants.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Fougères avec un coaching IA personnalisé — tarifs dès 990 € HT.",
-      en: "Accompagner les dirigeants de Fougères avec un coaching IA personnalisé — tarifs dès 990 € HT.",
+      fr: "Coaching un-à-un à Fougères : sessions individuelles avec le dirigeant ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
+      en: "Coaching un-à-un à Fougères : sessions individuelles avec le dirigeant ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Fougères : site vitrine ou outil métier sur mesure dopé à l'IA pour artisans, commerces et acteurs touristiques de la cité médiévale — réservations en ligne, demandes de devis intelligentes, visibilité locale et patrimoniale renforcée.",
+      en: "Sites web augmentés à Fougères : site vitrine ou outil métier sur mesure dopé à l'IA pour artisans, commerces et acteurs touristiques de la cité médiévale — réservations en ligne, demandes de devis intelligentes, visibilité locale et patrimoniale renforcée.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Fougères ?",
-      a: "Les interventions à Fougères commencent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Fougères et dans l'est de la Bretagne ?",
+      a: "Oui. Nous couvrons Fougères et son pays (Vitré, Saint-Aubin-du-Cormier) jusqu'aux portes de la Normandie. Nos consultants se déplacent sur site depuis Rennes, à 1h, ou interviennent en visio selon votre besoin.",
     },
     {
-      q: "Comment se déroulent vos déplacements à Fougères ?",
-      a: "Notre équipe nationale se déplace directement sur site à Fougères pour chaque projet, assurant un service personnalisé et adapté.",
+      q: "Accompagnez-vous les TPE artisanales, commerces et acteurs du tourisme ?",
+      a: "C'est notre priorité. Pour les artisans, commerçants et hôtels-restaurants de la cité médiévale, nous automatisons réservations, devis et relances, et nous formons le dirigeant à piloter ces outils sans dépendance à un prestataire.",
     },
     {
-      q: "Vos services sont-ils conformes au RGPD à Fougères ?",
-      a: "Oui, toutes nos solutions IA sont conçues pour respecter le RGPD, garantissant la conformité des données traitées à Fougères.",
+      q: "Travaillez-vous avec les PME électroniques et agroalimentaires ?",
+      a: "Oui. Pour la sous-traitance électronique et l'agroalimentaire héritières du passé industriel de Fougères, nous mettons en place contrôle qualité par vision, classification de documents et automatisation de la traçabilité.",
     },
     {
-      q: "Quel est le délai pour une intervention IA à Fougères ?",
-      a: "Nous nous engageons à intervenir sur site à Fougères dans un délai de 5 jours ouvrés après validation de votre projet.",
+      q: "Faut-il un gros budget informatique pour démarrer à Fougères ?",
+      a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un grand chantier coûteux.",
+    },
+    {
+      q: "Comment se passe une mission depuis Rennes ?",
+      a: "Le diagnostic et les sessions clés se déroulent sur site à Fougères ; le suivi se poursuit en visio. Les frais de déplacement depuis Rennes (1h) sont indiqués séparément, en toute transparence.",
     },
   ],
 };

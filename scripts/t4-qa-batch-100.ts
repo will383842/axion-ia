@@ -11,7 +11,12 @@ import { promises as fs } from "fs";
 import path from "path";
 
 const COPY_DIR = path.join(process.cwd(), "src", "content", "villes", "copy");
-const CONTEXT = path.join(process.cwd(), "_AUDIT", "VILLES-T4-PROGRESS", "worst-100-context.json");
+const CONTEXT = path.join(
+  process.cwd(),
+  "_AUDIT",
+  "VILLES-T4-PROGRESS",
+  process.argv[2] ?? "worst-100-context.json",
+);
 
 const GENERIC_SECTORS = [
   "tpe artisanat btp", "tpe artisanat", "pme tertiaires", "pme tertiaires services",

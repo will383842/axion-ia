@@ -14,8 +14,9 @@ import { VILLES } from "../src/content/villes";
 import { REGIONS } from "../src/content/regions";
 
 const N = Number(process.argv[2] ?? 100);
+const OUTPUT_NAME = process.argv[3] ?? `worst-${N}-context.json`;
 const LOW_QUALITY = path.join(process.cwd(), "_AUDIT", "VILLES-T4-PROGRESS", "low-quality-villes.json");
-const OUTPUT = path.join(process.cwd(), "_AUDIT", "VILLES-T4-PROGRESS", `worst-${N}-context.json`);
+const OUTPUT = path.join(process.cwd(), "_AUDIT", "VILLES-T4-PROGRESS", OUTPUT_NAME);
 
 async function main() {
   const raw = JSON.parse(await fs.readFile(LOW_QUALITY, "utf-8"));
@@ -24,6 +25,10 @@ async function main() {
 
   const regionLabel = new Map(REGIONS.map((r) => [r.slug, r.nameFr]));
   const villeBySlug = new Map(VILLES.map((v) => [v.slug, v]));
+
+  // Tri priorité doorway : contenu le plus pauvre d'abord (charsUnique ascending),
+  // les villes vraiment thin = vrai risque HCU 2024 traitées en premier.
+  problematic.sort((a, b) => (a.charsUnique ?? 0) - (b.charsUnique ?? 0));
 
   const worst = problematic.slice(0, N).map((p) => {
     const v = villeBySlug.get(p.slug);

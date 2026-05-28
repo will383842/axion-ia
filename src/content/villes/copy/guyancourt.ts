@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Guyancourt (78, Yvelines) — pôle majeur de Saint-Quentin-en-Yvelines, Technocentre Renault (R&D auto), siège Bouygues, présence Thales, dense écosystème ingénierie et R&D.
 
 import type { VilleCopy } from "./types";
 
 export const GUYANCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Guyancourt, un pôle économique dynamique avec Renault et Bouygues. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, avec un audit.",
+    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Guyancourt, pôle majeur de Saint-Quentin-en-Yvelines. Sur ce territoire d'ingénierie et de R&D structuré par le Technocentre Renault, le siège de Bouygues et la présence de Thales, nous aidons bureaux d'études, prestataires techniques, sous-traitants et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, reporting, documentation, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   pitchEn:
-    "Axion-IA intervient à Guyancourt, un pôle économique dynamique avec Renault et Bouygues. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, avec un audit.",
+    "Architectes IA seniors, Axion-IA accompagne les TPE et PME de Guyancourt, pôle majeur de Saint-Quentin-en-Yvelines. Sur ce territoire d'ingénierie et de R&D structuré par le Technocentre Renault, le siège de Bouygues et la présence de Thales, nous aidons bureaux d'études, prestataires techniques, sous-traitants et sociétés de services à transformer une envie d'IA en automatisations concrètes : devis, reporting, documentation, relances. Un dirigeant, un interlocuteur senior, des décisions tenables — l'ETI reste marginale.",
   directAnswerFr:
-    "À Guyancourt, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises. Le Technocentre Renault et l'Université de Versailles Saint-Quentin-en-Yvelines sont des acteurs clés de l'écosystème local. Nos services incluent audits, implémentations et formations, adaptés aux spécificités des secteurs dominants tels que la programmation informatique et l'ingénierie.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Guyancourt, dans les Yvelines, au cœur de Saint-Quentin-en-Yvelines. Autour du Technocentre Renault, premier centre de R&D automobile d'Europe, du siège de Bouygues et de Thales, gravite un dense écosystème d'ingénierie : bureaux d'études, prestataires techniques, sous-traitants. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, reporting, documentation technique, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
   directAnswerEn:
-    "À Guyancourt, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises. Le Technocentre Renault et l'Université de Versailles Saint-Quentin-en-Yvelines sont des acteurs clés de l'écosystème local. Nos services incluent audits, implémentations et formations, adaptés aux spécificités des secteurs dominants tels que la programmation informatique et l'ingénierie.",
-  seoHook: "programmation informatique & activités des",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Guyancourt, dans les Yvelines, au cœur de Saint-Quentin-en-Yvelines. Autour du Technocentre Renault, premier centre de R&D automobile d'Europe, du siège de Bouygues et de Thales, gravite un dense écosystème d'ingénierie : bureaux d'études, prestataires techniques, sous-traitants. Nous y diagnostiquons les tâches répétitives avant d'automatiser ce qui compte : devis, reporting, documentation technique, relances. Un interlocuteur senior unique, des livrables sobres, un ROI vérifiable. Les ETI sont accompagnées plus à la marge.",
+  seoHook: "ingénierie & R&D auto",
   ecosystemFr:
-    "Guyancourt accueille Renault et Bouygues, renforçant son secteur de l'ingénierie. L'Université de Versailles Saint-Quentin-en-Yvelines contribue à la formation de talents locaux.",
+    "Guyancourt est l'un des moteurs de Saint-Quentin-en-Yvelines, dominé par le Technocentre Renault — premier centre de recherche et développement automobile d'Europe — auquel s'ajoutent le siège de Bouygues, la présence de Thales et l'Université de Versailles Saint-Quentin-en-Yvelines. Cette concentration d'ingénierie et de R&D attire une nuée de bureaux d'études, de prestataires techniques et de sous-traitants. Ces TPE et PME affrontent des tâches répétitives — devis, reporting, documentation, veille — qui se prêtent particulièrement bien à des automatisations ciblées et rentables qu'Axion-IA priorise, l'ETI restant marginale.",
   ecosystemEn:
-    "Guyancourt accueille Renault et Bouygues, renforçant son secteur de l'ingénierie. L'Université de Versailles Saint-Quentin-en-Yvelines contribue à la formation de talents locaux.",
+    "Guyancourt est l'un des moteurs de Saint-Quentin-en-Yvelines, dominé par le Technocentre Renault — premier centre de recherche et développement automobile d'Europe — auquel s'ajoutent le siège de Bouygues, la présence de Thales et l'Université de Versailles Saint-Quentin-en-Yvelines. Cette concentration d'ingénierie et de R&D attire une nuée de bureaux d'études, de prestataires techniques et de sous-traitants. Ces TPE et PME affrontent des tâches répétitives — devis, reporting, documentation, veille — qui se prêtent particulièrement bien à des automatisations ciblées et rentables qu'Axion-IA priorise, l'ETI restant marginale.",
   distancesFr:
-    "Guyancourt est à 25 km de la Gare de Massy TGV et à 30 km de l'Aéroport de Paris-Orly.",
+    "Guyancourt est reliée à Paris-Montparnasse en une trentaine de minutes via les gares de Saint-Quentin-en-Yvelines et de Versailles, et bénéficie des accès rapides de l'A12 et de la N12. La gare de Massy TGV est à une vingtaine de kilomètres et l'aéroport de Paris-Orly à une trentaine. Cette desserte permet à Axion-IA d'intervenir sur site à Guyancourt sans contrainte logistique.",
   distancesEn:
-    "Guyancourt est à 25 km de la Gare de Massy TGV et à 30 km de l'Aéroport de Paris-Orly.",
+    "Guyancourt est reliée à Paris-Montparnasse en une trentaine de minutes via les gares de Saint-Quentin-en-Yvelines et de Versailles, et bénéficie des accès rapides de l'A12 et de la N12. La gare de Massy TGV est à une vingtaine de kilomètres et l'aéroport de Paris-Orly à une trentaine. Cette desserte permet à Axion-IA d'intervenir sur site à Guyancourt sans contrainte logistique.",
   topSectorsNaf: [
+    "Ingénierie et études techniques",
+    "Recherche-développement automobile",
     "Programmation informatique",
     "Activités des sièges sociaux",
-    "Ingénierie",
-    "Administration publique",
+    "Conseil et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Guyancourt avec Axion-IA — identifier les opportunités IA chez Renault et Bouygues.",
-      en: "Réaliser un audit à Guyancourt avec Axion-IA — identifier les opportunités IA chez Renault et Bouygues.",
+      fr: "Audit IA à Guyancourt : une journée pour cartographier les tâches répétitives d'un bureau d'études ou d'un prestataire technique gravitant autour du Technocentre — devis, reporting, documentation — et prioriser ce qui mérite d'être automatisé.",
+      en: "Audit IA à Guyancourt : une journée pour cartographier les tâches répétitives d'un bureau d'études ou d'un prestataire technique gravitant autour du Technocentre — devis, reporting, documentation — et prioriser ce qui mérite d'être automatisé.",
     },
     interventions: {
-      fr: "Intervenir à Guyancourt pour automatiser les processus — réduire le temps de traitement administratif.",
-      en: "Intervenir à Guyancourt pour automatiser les processus — réduire le temps de traitement administratif.",
+      fr: "Interventions à Guyancourt : nous traitons un irritant précis d'une TPE ou PME d'ingénierie — chiffrage de devis, production de documentation, relances — avec une automatisation sobre, livrée vite et tenable.",
+      en: "Interventions à Guyancourt : nous traitons un irritant précis d'une TPE ou PME d'ingénierie — chiffrage de devis, production de documentation, relances — avec une automatisation sobre, livrée vite et tenable.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Guyancourt — intégrer les outils IA dans les systèmes existants.",
-      en: "Implémenter des solutions IA à Guyancourt — intégrer les outils IA dans les systèmes existants.",
+      fr: "Implémentation à Guyancourt : nous connectons l'IA aux outils déjà utilisés par les bureaux d'études et prestataires techniques — gestion de projet, PLM, CRM — pour un déploiement intégré, documenté et sans dépendance imposée.",
+      en: "Implémentation à Guyancourt : nous connectons l'IA aux outils déjà utilisés par les bureaux d'études et prestataires techniques — gestion de projet, PLM, CRM — pour un déploiement intégré, documenté et sans dépendance imposée.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Guyancourt — formation sur l'IA pour optimiser ses opérations quotidiennes.",
-      en: "Accompagner un dirigeant à Guyancourt — formation sur l'IA pour optimiser ses opérations quotidiennes.",
+      fr: "Accompagnement un-à-un à Guyancourt : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA dans l'ingénierie et la R&D et décider des priorités sans jargon.",
+      en: "Accompagnement un-à-un à Guyancourt : un dirigeant de TPE ou PME, un architecte IA senior, pour clarifier les usages réellement utiles de l'IA dans l'ingénierie et la R&D et décider des priorités sans jargon.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Guyancourt : pour les bureaux d'études, prestataires techniques et sociétés de services, nous bâtissons des sites dopés à l'IA — qualification de contacts, documentation assistée, contenus techniques — pensés pour convertir une clientèle exigeante.",
+      en: "Sites web augmentés à Guyancourt : pour les bureaux d'études, prestataires techniques et sociétés de services, nous bâtissons des sites dopés à l'IA — qualification de contacts, documentation assistée, contenus techniques — pensés pour convertir une clientèle exigeante.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Guyancourt ?",
-      a: "Les audits à Guyancourt commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA accompagne-t-il les petites entreprises de Guyancourt ?",
+      a: "Oui. Notre priorité va aux TPE puis aux PME de Guyancourt : bureaux d'études, prestataires techniques, sous-traitants et sociétés de services gravitant autour du Technocentre. Nous accompagnons les ETI plus à la marge. L'objectif est d'apporter des automatisations utiles, sans complexité inutile.",
     },
     {
-      q: "Axion-IA intervient-elle directement sur site à Guyancourt ?",
-      a: "Oui, Axion-IA se déplace directement sur site à Guyancourt pour réaliser des interventions personnalisées selon les besoins de votre entreprise.",
+      q: "Le Technocentre Renault influence-t-il les projets IA à Guyancourt ?",
+      a: "Oui. Le premier centre de R&D automobile d'Europe, le siège de Bouygues et Thales attirent une nuée de bureaux d'études et de sous-traitants dont les tâches — devis, reporting, documentation technique — sont répétitives et se prêtent bien à des automatisations ciblées et rentables.",
     },
     {
-      q: "Quelle est la durée d'une implémentation IA à Guyancourt ?",
-      a: "La durée d'une implémentation IA à Guyancourt dépend du projet, mais nos interventions sont conçues pour être rapides et efficaces. Contactez-nous pour plus d'informations.",
+      q: "Intervenez-vous sur site à Guyancourt ?",
+      a: "Oui. Guyancourt est à une trentaine de minutes de Paris-Montparnasse via Saint-Quentin-en-Yvelines, et reliée par l'A12 et la N12. Un architecte senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Guyancourt ?",
-      a: "Axion-IA garantit la conformité RGPD lors de ses interventions à Guyancourt, en respectant les réglementations en vigueur pour protéger les données de votre entreprise.",
+      q: "Par où commencer un projet IA à Guyancourt ?",
+      a: "Par un audit. Nous passons une journée à cartographier vos tâches répétitives et à identifier celles qui méritent réellement d'être automatisées. Vous repartez avec une feuille de route priorisée et chiffrée, sans engagement de poursuivre avec nous.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Guyancourt ?",
+      a: "La conformité RGPD est intégrée dès le cadrage : minimisation des données, hébergement maîtrisé, traçabilité des traitements. Pour des bureaux d'études manipulant des données projet et des secrets industriels, la confidentialité est une condition de départ non négociable.",
     },
   ],
 };

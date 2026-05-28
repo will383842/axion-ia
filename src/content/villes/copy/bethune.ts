@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Béthune (62, Pas-de-Calais) — ancien bassin minier, Bridgestone (pneumatiques), agroalimentaire, Grand-Place et beffroi.
 
 import type { VilleCopy } from "./types";
 
 export const BETHUNE_COPY: VilleCopy = {
   pitchFr:
-    "À Béthune, Axion-IA intervient pour optimiser les processus des entreprises locales. Bridgestone et le Parc d'activités de la Porte Nord illustrent le dynamisme économique de la région.",
+    "Béthune (62), ville du Pas-de-Calais au cœur de l'ancien bassin minier des Hauts-de-France, conjugue une reconversion industrielle marquée (usine Bridgestone, pneumatiques) avec une économie agroalimentaire et logistique, autour d'une Grand-Place et d'un beffroi emblématiques. Son tissu repose d'abord sur les TPE — artisans BTP, commerçants, professions libérales — puis sur des PME industrielles, agroalimentaires et de services aux entreprises. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE et PME béthunoises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, des ateliers de la reconversion minière aux commerces du centre historique.",
   pitchEn:
-    "À Béthune, Axion-IA intervient pour optimiser les processus des entreprises locales. Bridgestone et le Parc d'activités de la Porte Nord illustrent le dynamisme économique de la région.",
+    "Béthune (62), ville du Pas-de-Calais au cœur de l'ancien bassin minier des Hauts-de-France, conjugue une reconversion industrielle marquée (usine Bridgestone, pneumatiques) avec une économie agroalimentaire et logistique, autour d'une Grand-Place et d'un beffroi emblématiques. Son tissu repose d'abord sur les TPE — artisans BTP, commerçants, professions libérales — puis sur des PME industrielles, agroalimentaires et de services aux entreprises. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE et PME béthunoises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, des ateliers de la reconversion minière aux commerces du centre historique.",
   directAnswerFr:
-    "Axion-IA se déplace à Béthune pour accompagner les entreprises dans leur transition vers l'IA. Avec des acteurs comme Bridgestone et des infrastructures telles que le Parc d'activités de la Porte Nord, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur, qu'il s'agisse de commerce de détail ou de transports terrestres. Nos audits débutent à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Béthune (62). Nous accompagnons en priorité les TPE puis les PME béthunoises : artisans BTP, commerçants, professions libérales, PME industrielles (héritage du bassin minier, environnement Bridgestone), agroalimentaires, logistiques et services aux entreprises. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les ETI restent accompagnées à la marge.",
   directAnswerEn:
-    "Axion-IA se déplace à Béthune pour accompagner les entreprises dans leur transition vers l'IA. Avec des acteurs comme Bridgestone et des infrastructures telles que le Parc d'activités de la Porte Nord, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur, qu'il s'agisse de commerce de détail ou de transports terrestres. Nos audits débutent à",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Béthune (62). Nous accompagnons en priorité les TPE puis les PME béthunoises : artisans BTP, commerçants, professions libérales, PME industrielles (héritage du bassin minier, environnement Bridgestone), agroalimentaires, logistiques et services aux entreprises. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les ETI restent accompagnées à la marge.",
+  seoHook: "industrie & agroalimentaire 62",
   ecosystemFr:
-    "Béthune, avec des entreprises comme Bridgestone et le Parc d'activités de la Porte Nord, est un centre économique fortifié par le commerce de détail et les transports terrestres.",
+    "Béthune, au cœur de l'ancien bassin minier du Pas-de-Calais, a opéré une reconversion industrielle dont l'usine Bridgestone (pneumatiques) est un symbole, complétée par l'agroalimentaire et la logistique. Le tissu local est avant tout composé de TPE — artisans BTP, commerçants autour de la Grand-Place et du beffroi, professions libérales — et de PME industrielles et agroalimentaires. Parcs d'activités de la Porte Nord. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
   ecosystemEn:
-    "Béthune, avec des entreprises comme Bridgestone et le Parc d'activités de la Porte Nord, est un centre économique fortifié par le commerce de détail et les transports terrestres.",
+    "Béthune, au cœur de l'ancien bassin minier du Pas-de-Calais, a opéré une reconversion industrielle dont l'usine Bridgestone (pneumatiques) est un symbole, complétée par l'agroalimentaire et la logistique. Le tissu local est avant tout composé de TPE — artisans BTP, commerçants autour de la Grand-Place et du beffroi, professions libérales — et de PME industrielles et agroalimentaires. Parcs d'activités de la Porte Nord. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
   distancesFr:
-    "Béthune est à 40 km de la Gare de Lille-Europe et à 50 km de l'Aéroport de Lille-Lesquin.",
+    "Lille à 40 min (gare Lille-Europe). Lens à 20 min. Arras à 35 min. Aéroport Lille-Lesquin à 50 km. Paris à 2h15 en TGV. Calais à 1h.",
   distancesEn:
-    "Béthune est à 40 km de la Gare de Lille-Europe et à 50 km de l'Aéroport de Lille-Lesquin.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Lille à 40 min (gare Lille-Europe). Lens à 20 min. Arras à 35 min. Aéroport Lille-Lesquin à 50 km. Paris à 2h15 en TGV. Calais à 1h.",
+  topSectorsNaf: [
+    "Industrie (pneumatiques, héritage minier)",
+    "Industries agroalimentaires",
+    "Logistique & transports terrestres",
+    "TPE artisanat BTP",
+    "Commerce de proximité",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Béthune, notamment pour les entreprises du Parc d'activités de la Porte Nord — identifier des améliorations IA.",
-      en: "Réaliser un audit à Béthune, notamment pour les entreprises du Parc d'activités de la Porte Nord — identifier des améliorations IA.",
+      fr: "Audit IA à Béthune : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME industrielles, agroalimentaires et logistiques de l'ancien bassin minier. ROI quantifié, audit Flash 4h.",
+      en: "Audit IA à Béthune : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME industrielles, agroalimentaires et logistiques de l'ancien bassin minier. ROI quantifié, audit Flash 4h.",
     },
     interventions: {
-      fr: "Intervenir à Béthune dans le secteur du commerce de détail — automatiser les processus administratifs.",
-      en: "Intervenir à Béthune dans le secteur du commerce de détail — automatiser les processus administratifs.",
+      fr: "Interventions IA sur site à Béthune : formats adaptés à l'atelier, au commerce, au cabinet ou à l'entrepôt logistique. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Béthune : formats adaptés à l'atelier, au commerce, au cabinet ou à l'entrepôt logistique. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Béthune pour les transports terrestres — optimiser la logistique.",
-      en: "Implémenter des solutions IA à Béthune pour les transports terrestres — optimiser la logistique.",
+      fr: "Implémentation IA à Béthune : prédiction de maintenance industrielle, contrôle qualité par vision, optimisation logistique, agents conversationnels B2B, automatisation de la traçabilité agroalimentaire.",
+      en: "Implémentation IA à Béthune : prédiction de maintenance industrielle, contrôle qualité par vision, optimisation logistique, agents conversationnels B2B, automatisation de la traçabilité agroalimentaire.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants de Béthune — personnaliser l'adoption de l'IA dans leur entreprise.",
-      en: "Accompagner en 1-to-1 les dirigeants de Béthune — personnaliser l'adoption de l'IA dans leur entreprise.",
+      fr: "Coaching 1-to-1 à Béthune : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE et PME béthunois : artisans, commerçants, professions libérales, industriels.",
+      en: "Coaching 1-to-1 à Béthune : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE et PME béthunois : artisans, commerçants, professions libérales, industriels.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés IA à Béthune : plateformes sur mesure pour TPE et PME du Pas-de-Calais — devis en ligne, agents conversationnels intégrés, automatisation du suivi client et de la prise de commande.",
+      en: "Sites web augmentés IA à Béthune : plateformes sur mesure pour TPE et PME du Pas-de-Calais — devis en ligne, agents conversationnels intégrés, automatisation du suivi client et de la prise de commande.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont vos tarifs pour une intervention à Béthune ?",
-      a: "Nos interventions à Béthune commencent à partir de 590 € HT. Les tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Béthune et dans le bassin minier ?",
+      a: "Oui, Axion-IA intervient à Béthune et dans tout l'ancien bassin minier du Pas-de-Calais (Lens à 20 min, Arras à 35 min). Nos consultants se déplacent depuis Lille (40 min) ou Paris (TGV 2h15).",
     },
     {
-      q: "Comment se déroule une intervention sur site à Béthune ?",
-      a: "Nous nous déplaçons directement chez vous à Béthune, que votre entreprise soit située au Parc d'activités de la Porte Nord ou ailleurs, pour analyser et optimiser vos processus.",
+      q: "Accompagnez-vous les TPE et artisans béthunois ?",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants de la Grand-Place, professions libérales. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Béthune ?",
-      a: "Les délais varient selon le projet, mais nous nous engageons à débuter les travaux sur site dans les 5 jours ouvrés suivant la validation.",
+      q: "Travaillez-vous avec les PME industrielles de Béthune ?",
+      a: "Oui, pour les PME industrielles issues de la reconversion minière : prédiction de maintenance, contrôle qualité par vision, optimisation de la production, classification documentaire.",
     },
     {
-      q: "Vos services respectent-ils le RGPD à Béthune ?",
-      a: "Oui, toutes nos interventions à Béthune sont conformes au RGPD, garantissant la protection des données de votre entreprise et de vos clients.",
+      q: "Accompagnez-vous les PME agroalimentaires et logistiques ?",
+      a: "Oui, pour l'agroalimentaire : automatisation de la traçabilité, prédiction de la demande, contrôle qualité. Pour la logistique : optimisation des flux et des tournées, agents conversationnels.",
+    },
+    {
+      q: "Comment se déroule une mission depuis Lille ou Paris ?",
+      a: "Nos consultants rejoignent Béthune depuis Lille (40 min) ou Paris (TGV 2h15). Déplacements facturés séparément, grille tarifaire publique. Sessions sur site ou en visio.",
     },
   ],
 };

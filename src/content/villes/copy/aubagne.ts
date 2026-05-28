@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Aubagne (13, Bouches-du-Rhône) — Marcel Pagnol, santons d'argile, Légion étrangère, est marseillais.
 
 import type { VilleCopy } from "./types";
 
 export const AUBAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Aubagne pour optimiser les processus des entreprises locales. Avec des acteurs comme Gemalto et Immunotech, nous proposons des solutions adaptées aux besoins des TPE et PME.",
+    "Aubagne (13), patrie de Marcel Pagnol et capitale du santon d'argile, prolonge sa tradition céramique et tuilière par un tissu dense de TPE et PME : artisanat d'art, agroalimentaire, commerce de proximité et logistique de l'est marseillais. La ville accueille aussi le commandement de la Légion étrangère. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Aubagne pour optimiser les processus des entreprises locales. Avec des acteurs comme Gemalto et Immunotech, nous proposons des solutions adaptées aux besoins des TPE et PME.",
+    "Aubagne (13), patrie de Marcel Pagnol et capitale du santon d'argile, prolonge sa tradition céramique et tuilière par un tissu dense de TPE et PME : artisanat d'art, agroalimentaire, commerce de proximité et logistique de l'est marseillais. La ville accueille aussi le commandement de la Légion étrangère. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "À Aubagne, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Nous intervenons dans des secteurs variés tels que le commerce de gros et la fabrication de produits métalliques, où des entreprises comme Gemalto et Immunotech sont implantées. Nos services incluent des audits, des interventions et des formations pour maximiser l'efficacité opérationnelle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubagne (13) auprès des TPE et PME : santonniers et céramistes, agroalimentaire, commerces de proximité, artisans BTP et logistique de l'est marseillais. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "À Aubagne, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Nous intervenons dans des secteurs variés tels que le commerce de gros et la fabrication de produits métalliques, où des entreprises comme Gemalto et Immunotech sont implantées. Nos services incluent des audits, des interventions et des formations pour maximiser l'efficacité opérationnelle.",
-  seoHook: "commerce gros & produits métalliques",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubagne (13) auprès des TPE et PME : santonniers et céramistes, agroalimentaire, commerces de proximité, artisans BTP et logistique de l'est marseillais. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+  seoHook: "santons, céramique & agroalimentaire",
   ecosystemFr:
-    "Aubagne, avec la ZAC Napollon, accueille des entreprises telles que Gemalto et Immunotech, renforçant son tissu économique dans le commerce de gros et l'industrie.",
+    "Aubagne, dans la vallée de l'Huveaune entre Marseille et la Sainte-Baume, conjugue artisanat d'art (santons, céramique, tuilerie historique), agroalimentaire, commerce de détail et activités logistiques de l'est marseillais. Les zones d'activité Napollon et des Paluds concentrent des TPE et PME industrielles et de services. La présence du commandement de la Légion étrangère et un tourisme culturel autour de Marcel Pagnol nourrissent un écosystème local diversifié, propice à une IA appliquée aux métiers réels.",
   ecosystemEn:
-    "Aubagne, avec la ZAC Napollon, accueille des entreprises telles que Gemalto et Immunotech, renforçant son tissu économique dans le commerce de gros et l'industrie.",
+    "Aubagne, dans la vallée de l'Huveaune entre Marseille et la Sainte-Baume, conjugue artisanat d'art (santons, céramique, tuilerie historique), agroalimentaire, commerce de détail et activités logistiques de l'est marseillais. Les zones d'activité Napollon et des Paluds concentrent des TPE et PME industrielles et de services. La présence du commandement de la Légion étrangère et un tourisme culturel autour de Marcel Pagnol nourrissent un écosystème local diversifié, propice à une IA appliquée aux métiers réels.",
   distancesFr:
-    "Aubagne est située à 40 km de la Gare TGV Aix-en-Provence et à 45 km de l'Aéroport Marseille Provence.",
+    "Aubagne est reliée à Marseille en 20 min (A50) et au centre par sa gare. L'aéroport Marseille-Provence est à 45 min, la gare TGV Aix-en-Provence à 40 min, et Toulon à 50 min par l'A50.",
   distancesEn:
-    "Aubagne est située à 40 km de la Gare TGV Aix-en-Provence et à 45 km de l'Aéroport Marseille Provence.",
+    "Aubagne est reliée à Marseille en 20 min (A50) et au centre par sa gare. L'aéroport Marseille-Provence est à 45 min, la gare TGV Aix-en-Provence à 40 min, et Toulon à 50 min par l'A50.",
   topSectorsNaf: [
-    "Commerce de gros",
-    "Produits métalliques",
+    "Artisanat d'art (santons, céramique)",
     "Industries alimentaires",
-    "Produits en caoutchouc",
+    "Commerce de détail",
+    "Construction et artisanat BTP",
+    "Logistique et transport est marseillais",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Aubagne pour identifier les opportunités IA dans le commerce de gros — dès 490 € HT.",
-      en: "Réaliser un audit à Aubagne pour identifier les opportunités IA dans le commerce de gros — dès 490 € HT.",
+      fr: "Audit IA à Aubagne : diagnostic des tâches automatisables pour santonniers, agroalimentaire, commerces et artisans de l'Huveaune. Audit Flash dès 490 € HT, livrable priorisé.",
+      en: "Audit IA à Aubagne : diagnostic des tâches automatisables pour santonniers, agroalimentaire, commerces et artisans de l'Huveaune. Audit Flash dès 490 € HT, livrable priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Aubagne pour automatiser les tâches administratives — intervention essentielle à partir de 590 € HT.",
-      en: "Intervenir à Aubagne pour automatiser les tâches administratives — intervention essentielle à partir de 590 € HT.",
+      fr: "Interventions IA sur site à Aubagne : ateliers pratiques pour ateliers céramique, lignes agroalimentaires et commerces, afin de rendre vos équipes autonomes sur les outils IA.",
+      en: "Interventions IA sur site à Aubagne : ateliers pratiques pour ateliers céramique, lignes agroalimentaires et commerces, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Aubagne dans les industries alimentaires — dès 990 € HT pour une mise en œuvre efficace.",
-      en: "Implémenter des solutions IA à Aubagne dans les industries alimentaires — dès 990 € HT pour une mise en œuvre efficace.",
+      fr: "Implémentation IA à Aubagne : automatisation devis et stocks, agents conversationnels boutique, CRM augmenté et traçabilité agroalimentaire pour TPE et PME locales.",
+      en: "Implémentation IA à Aubagne : automatisation devis et stocks, agents conversationnels boutique, CRM augmenté et traçabilité agroalimentaire pour TPE et PME locales.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 aux dirigeants à Aubagne pour une adoption rapide de l'IA — à partir de 990 € HT.",
-      en: "Proposer des sessions 1-to-1 aux dirigeants à Aubagne pour une adoption rapide de l'IA — à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un à Aubagne : sessions en atelier ou en visio pour dirigeants de TPE et PME, ciblées sur vos priorités métier dans la vallée de l'Huveaune.",
+      en: "Accompagnement un-à-un à Aubagne : sessions en atelier ou en visio pour dirigeants de TPE et PME, ciblées sur vos priorités métier dans la vallée de l'Huveaune.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Aubagne : vitrine ou e-boutique avec IA intégrée (recherche, devis, oenotourisme culturel Pagnol) pour artisans d'art, agroalimentaire et commerces.",
+      en: "Sites web augmentés à Aubagne : vitrine ou e-boutique avec IA intégrée (recherche, devis, oenotourisme culturel Pagnol) pour artisans d'art, agroalimentaire et commerces.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les délais d'intervention à Aubagne ?",
-      a: "Axion-IA intervient à Aubagne dans un délai de 5 jours ouvrés après validation de la demande, pour assurer une réactivité optimale.",
+      q: "Axion-IA intervient-il à Aubagne ?",
+      a: "Oui, Axion-IA intervient à Aubagne et dans l'est marseillais (Gémenos, La Penne-sur-Huveaune, Cassis, La Ciotat). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
-      q: "Quels sont les tarifs pour un audit à Aubagne ?",
-      a: "L'audit Flash de 4 heures est proposé à partir de 490 € HT. Consultez nos tarifs publics pour plus d'informations.",
+      q: "Quel est le tarif d'un audit IA à Aubagne ?",
+      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME aubagnaises : artisanat d'art, agroalimentaire et commerces de proximité.",
     },
     {
-      q: "Comment Axion-IA respecte-t-il le RGPD lors des interventions à Aubagne ?",
-      a: "Nous garantissons la conformité RGPD en sécurisant les données traitées et en formant nos clients aux meilleures pratiques.",
+      q: "Accompagnez-vous les santonniers et céramistes d'Aubagne ?",
+      a: "Oui, nous aidons les ateliers d'art à automatiser devis, gestion de stocks et relation client, et à créer des contenus et boutiques en ligne enrichis par l'IA, sans perdre le savoir-faire artisanal.",
     },
     {
-      q: "Axion-IA peut-il se déplacer dans les communes proches d'Aubagne ?",
-      a: "Oui, nous intervenons également dans les communes voisines comme Marseille, La Ciotat et Cassis.",
+      q: "Quels services pour l'agroalimentaire local ?",
+      a: "Pour les TPE et PME agroalimentaires de la vallée de l'Huveaune : traçabilité, prévision de la demande, automatisation administrative et qualité, avec audit puis implémentation progressive.",
+    },
+    {
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous priorisons les TPE puis les PME d'Aubagne ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+    },
+    {
+      q: "Comment se déroule une mission à Aubagne ?",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio depuis Marseille (20 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

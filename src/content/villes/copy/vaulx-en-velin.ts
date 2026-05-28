@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Vaulx-en-Velin (69, Rhône) — est de la métropole de Lyon, école d'ingénieurs ENTPE, planétarium, reconversion industrielle et quartiers en renouvellement.
 
 import type { VilleCopy } from "./types";
 
 export const VAULX_EN_VELIN_COPY: VilleCopy = {
   pitchFr:
-    "À Vaulx-en-Velin, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Proche du Carré de Soie et des grands groupes comme Renault Trucks, nous accompagnons les entreprises locales dans leur transformation numérique.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Vaulx-en-Velin, dans l'est de la métropole lyonnaise — ateliers industriels, artisanat, BTP, commerce et services. Nous concevons des automatisations utiles et durables, sans enfermement technologique.",
   pitchEn:
-    "À Vaulx-en-Velin, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Proche du Carré de Soie et des grands groupes comme Renault Trucks, nous accompagnons les entreprises locales dans leur transformation numérique.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Vaulx-en-Velin, dans l'est de la métropole lyonnaise — ateliers industriels, artisanat, BTP, commerce et services. Nous concevons des automatisations utiles et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA propose ses services à Vaulx-en-Velin, une ville dynamique avec des entreprises comme Groupe Seb et Renault Trucks. Nous offrons des audits et des interventions. Notre objectif est d'automatiser et d'optimiser les processus des entreprises, en nous déplaçant directement sur site pour une efficacité maximale.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vaulx-en-Velin, commune de l'est lyonnais marquée par une longue reconversion industrielle et la présence de l'école d'ingénieurs ENTPE. Nous nous déplaçons sur site, au plus près des ateliers, du BTP, du commerce et des services, pour identifier les tâches répétitives, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA propose ses services à Vaulx-en-Velin, une ville dynamique avec des entreprises comme Groupe Seb et Renault Trucks. Nous offrons des audits et des interventions. Notre objectif est d'automatiser et d'optimiser les processus des entreprises, en nous déplaçant directement sur site pour une efficacité maximale.",
-  seoHook: "construction bâtiments & travaux spécialisés",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Vaulx-en-Velin, commune de l'est lyonnais marquée par une longue reconversion industrielle et la présence de l'école d'ingénieurs ENTPE. Nous nous déplaçons sur site, au plus près des ateliers, du BTP, du commerce et des services, pour identifier les tâches répétitives, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+  seoHook: "industrie & BTP de l'est lyonnais",
   ecosystemFr:
-    "Vaulx-en-Velin bénéficie de la proximité du Carré de Soie et de grands groupes tels que Renault Trucks et Groupe Seb, renforçant son attractivité économique.",
+    "Vaulx-en-Velin a transformé son passé industriel en un tissu varié d'ateliers, d'entreprises du BTP, de logistique et de services, dans le sillage de la dynamique de la métropole de Lyon. La présence de l'école d'ingénieurs ENTPE et d'équipements comme le planétarium ancre une culture technique et scientifique, tandis que les quartiers en renouvellement urbain attirent de nouvelles activités. Pour ces TPE et PME souvent jeunes, l'IA opérationnelle simplifie la gestion administrative, les devis et le suivi de chantier sans surdimensionner les outils.",
   ecosystemEn:
-    "Vaulx-en-Velin bénéficie de la proximité du Carré de Soie et de grands groupes tels que Renault Trucks et Groupe Seb, renforçant son attractivité économique.",
+    "Vaulx-en-Velin a transformé son passé industriel en un tissu varié d'ateliers, d'entreprises du BTP, de logistique et de services, dans le sillage de la dynamique de la métropole de Lyon. La présence de l'école d'ingénieurs ENTPE et d'équipements comme le planétarium ancre une culture technique et scientifique, tandis que les quartiers en renouvellement urbain attirent de nouvelles activités. Pour ces TPE et PME souvent jeunes, l'IA opérationnelle simplifie la gestion administrative, les devis et le suivi de chantier sans surdimensionner les outils.",
   distancesFr:
-    "Vaulx-en-Velin est à 10 km de la gare TGV Lyon Part-Dieu et à 20 km de l'aéroport Lyon-Saint Exupéry.",
+    "Vaulx-en-Velin est intégrée à la métropole de Lyon : la gare TGV de Lyon Part-Dieu se trouve à une dizaine de kilomètres et l'aéroport Lyon-Saint Exupéry à une vingtaine, accessibles par le périphérique et les transports en commun. Le quartier du Carré de Soie, à la limite de la commune, renforce sa connexion au cœur lyonnais. Nos architectes se déplacent sur tout l'est lyonnais.",
   distancesEn:
-    "Vaulx-en-Velin est à 10 km de la gare TGV Lyon Part-Dieu et à 20 km de l'aéroport Lyon-Saint Exupéry.",
+    "Vaulx-en-Velin est intégrée à la métropole de Lyon : la gare TGV de Lyon Part-Dieu se trouve à une dizaine de kilomètres et l'aéroport Lyon-Saint Exupéry à une vingtaine, accessibles par le périphérique et les transports en commun. Le quartier du Carré de Soie, à la limite de la commune, renforce sa connexion au cœur lyonnais. Nos architectes se déplacent sur tout l'est lyonnais.",
   topSectorsNaf: [
-    "Construction de bâtiments",
-    "Travaux spécialisés",
-    "Commerce de gros",
-    "Transports terrestres",
+    "Industrie & production",
+    "Construction & BTP",
+    "Transport & logistique",
+    "Commerce de gros & détail",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vaulx-en-Velin avec Axion-IA permet d'identifier les processus à automatiser pour réduire les coûts.",
-      en: "Réaliser un audit à Vaulx-en-Velin avec Axion-IA permet d'identifier les processus à automatiser pour réduire les coûts.",
+      fr: "Auditer à Vaulx-en-Velin les processus d'un atelier industriel ou d'une entreprise du BTP — repérer les tâches répétitives et bâtir une feuille de route IA priorisée par retour réel.",
+      en: "Auditer à Vaulx-en-Velin les processus d'un atelier industriel ou d'une entreprise du BTP — repérer les tâches répétitives et bâtir une feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir à Vaulx-en-Velin pour automatiser les tâches administratives et optimiser le temps des équipes.",
-      en: "Intervenir à Vaulx-en-Velin pour automatiser les tâches administratives et optimiser le temps des équipes.",
+      fr: "Intervenir sur site dans l'est lyonnais pour automatiser devis, suivi de chantier et tâches administratives des TPE/PME, sans alourdir le quotidien des équipes.",
+      en: "Intervenir sur site dans l'est lyonnais pour automatiser devis, suivi de chantier et tâches administratives des TPE/PME, sans alourdir le quotidien des équipes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur site à Vaulx-en-Velin, intégrant les systèmes existants pour une transition fluide.",
-      en: "Implémenter des solutions IA sur site à Vaulx-en-Velin, intégrant les systèmes existants pour une transition fluide.",
+      fr: "Implémenter à Vaulx-en-Velin des outils IA durables, intégrés aux logiciels métier existants et documentés pour rester maîtrisés en interne après notre intervention.",
+      en: "Implémenter à Vaulx-en-Velin des outils IA durables, intégrés aux logiciels métier existants et documentés pour rester maîtrisés en interne après notre intervention.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Vaulx-en-Velin avec des sessions 1-to-1 pour maximiser l'impact de l'IA dans leur entreprise.",
-      en: "Accompagner les dirigeants de Vaulx-en-Velin avec des sessions 1-to-1 pour maximiser l'impact de l'IA dans leur entreprise.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE/PME de Vaulx-en-Velin pour démystifier l'IA, choisir les bons cas d'usage et garder la main sur leurs décisions.",
+      en: "Accompagner en un-à-un les dirigeants de TPE/PME de Vaulx-en-Velin pour démystifier l'IA, choisir les bons cas d'usage et garder la main sur leurs décisions.",
+    },
+    sitesWeb: {
+      fr: "Concevoir à Vaulx-en-Velin un site ou une plateforme web augmentée par l'IA pour une PME industrielle ou de services — devis en ligne, suivi client et contenu enrichis intelligemment.",
+      en: "Concevoir à Vaulx-en-Velin un site ou une plateforme web augmentée par l'IA pour une PME industrielle ou de services — devis en ligne, suivi client et contenu enrichis intelligemment.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Vaulx-en-Velin ?",
-      a: "Les interventions à Vaulx-en-Velin commencent à partir de 590 € HT. Pour plus de détails, nos tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA se déplace-t-il sur site à Vaulx-en-Velin ?",
+      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Vaulx-en-Velin et dans tout l'est de la métropole lyonnaise, afin d'observer vos processus réels avant toute recommandation.",
     },
     {
-      q: "Combien de temps faut-il pour qu'Axion-IA intervienne à Vaulx-en-Velin ?",
-      a: "Nous nous déplaçons sur site à Vaulx-en-Velin dans les 5 jours ouvrés suivant la demande, garantissant une réactivité optimale.",
+      q: "Mon atelier industriel peut-il bénéficier de l'IA à Vaulx-en-Velin ?",
+      a: "Oui. Nous aidons les ateliers et entreprises du BTP à automatiser la gestion administrative, les devis et le suivi de production, avec des outils proportionnés à la taille de votre structure.",
     },
     {
-      q: "Les services d'Axion-IA respectent-ils la conformité RGPD à Vaulx-en-Velin ?",
-      a: "Oui, toutes nos interventions à Vaulx-en-Velin respectent strictement les réglementations RGPD, assurant la protection des données.",
+      q: "L'IA est-elle accessible à une TPE de Vaulx-en-Velin ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, conçues pour les petites entreprises, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
-      q: "Comment se déroule un audit IA à Vaulx-en-Velin ?",
-      a: "Un audit IA à Vaulx-en-Velin commence par une analyse sur site pour identifier les opportunités d'automatisation, avec un rapport détaillé fourni.",
+      q: "Connaît-on les tarifs avant de s'engager ?",
+      a: "Oui. Axion-IA affiche une grille tarifaire publique et claire. Vous savez exactement ce que coûte un audit ou une intervention à Vaulx-en-Velin avant de décider.",
+    },
+    {
+      q: "Vos solutions respectent-elles le RGPD ?",
+      a: "Oui. Chaque solution IA déployée à Vaulx-en-Velin est conçue dans le respect du RGPD et sans dépendance forcée à un éditeur, pour que vous gardiez la maîtrise de vos données.",
     },
   ],
 };

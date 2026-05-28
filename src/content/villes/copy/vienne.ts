@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Vienne (38, Isère) — théâtre antique romain, festival Jazz à Vienne, vallée du Rhône, patrimoine.
 
 import type { VilleCopy } from "./types";
 
 export const VIENNE_COPY: VilleCopy = {
   pitchFr:
-    "À Vienne, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des références comme LVMH et BNP Paribas, nous apportons notre expertise IA pour transformer vos opérations.",
+    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "À Vienne, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des références comme LVMH et BNP Paribas, nous apportons notre expertise IA pour transformer vos opérations.",
+    "Vienne (38), cité gallo-romaine de la vallée du Rhône célèbre pour son théâtre antique et son festival Jazz à Vienne, conjugue tourisme patrimonial, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale au sud de Lyon. Son tissu est porté par des TPE et PME locales. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME viennoises, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Vienne pour automatiser les tâches administratives et optimiser les processus métiers. Forts de notre expérience avec des entreprises comme Hermès et Sanofi, nous garantissons un audit clair et des solutions adaptées aux besoins spécifiques de chaque entreprise, qu'il s'agisse de TPE ou de grandes entreprises.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Vienne pour automatiser les tâches administratives et optimiser les processus métiers. Forts de notre expérience avec des entreprises comme Hermès et Sanofi, nous garantissons un audit clair et des solutions adaptées aux besoins spécifiques de chaque entreprise, qu'il s'agisse de TPE ou de grandes entreprises.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vienne (38) auprès des TPE et PME : tourisme et patrimoine, hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique de la vallée du Rhône. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+  seoHook: "tourisme patrimonial & vallée du Rhône",
   ecosystemFr:
-    "Le tissu économique de Vienne est soutenu par le commerce de détail et la construction, avec des entreprises telles que Bouygues et Renault présentes dans la région.",
+    "Vienne, au sud de Lyon sur les rives du Rhône, s'appuie sur un patrimoine antique exceptionnel (théâtre romain, temple d'Auguste) et le festival Jazz à Vienne, moteurs d'un tourisme culturel fort. Le tissu économique mêle hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale et routière le long de l'axe rhodanien. Cette diversité de TPE et PME, entre patrimoine et corridor logistique, offre un terrain fertile pour une IA appliquée à l'accueil, à la vente et à la gestion.",
   ecosystemEn:
-    "Le tissu économique de Vienne est soutenu par le commerce de détail et la construction, avec des entreprises telles que Bouygues et Renault présentes dans la région.",
+    "Vienne, au sud de Lyon sur les rives du Rhône, s'appuie sur un patrimoine antique exceptionnel (théâtre romain, temple d'Auguste) et le festival Jazz à Vienne, moteurs d'un tourisme culturel fort. Le tissu économique mêle hôtellerie-restauration, commerce de centre-ville, artisanat, agroalimentaire et logistique fluviale et routière le long de l'axe rhodanien. Cette diversité de TPE et PME, entre patrimoine et corridor logistique, offre un terrain fertile pour une IA appliquée à l'accueil, à la vente et à la gestion.",
   distancesFr:
-    "Vienne est située à 30 km de la gare TGV Gare de Lyon Part-Dieu et à 40 km de l'aéroport Lyon-Saint Exupéry.",
+    "Vienne est à 30 min au sud de Lyon par l'A7 et desservie par sa gare sur l'axe Lyon-Valence. La gare TGV Lyon Part-Dieu est à 30 min et l'aéroport Lyon-Saint-Exupéry à 40 min.",
   distancesEn:
-    "Vienne est située à 30 km de la gare TGV Gare de Lyon Part-Dieu et à 40 km de l'aéroport Lyon-Saint Exupéry.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Vienne est à 30 min au sud de Lyon par l'A7 et desservie par sa gare sur l'axe Lyon-Valence. La gare TGV Lyon Part-Dieu est à 30 min et l'aéroport Lyon-Saint-Exupéry à 40 min.",
+  topSectorsNaf: [
+    "Tourisme et patrimoine culturel",
+    "Hôtellerie-restauration",
+    "Commerce de détail centre-ville",
+    "Industries alimentaires",
+    "Logistique vallée du Rhône",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vienne pour identifier les processus à automatiser — dès 490 € HT.",
-      en: "Réaliser un audit à Vienne pour identifier les processus à automatiser — dès 490 € HT.",
+      fr: "Audit IA à Vienne : diagnostic des tâches automatisables pour tourisme, hôtellerie-restauration, commerce de centre-ville et logistique rhodanienne. Audit Flash dès 490 € HT, livrable priorisé.",
+      en: "Audit IA à Vienne : diagnostic des tâches automatisables pour tourisme, hôtellerie-restauration, commerce de centre-ville et logistique rhodanienne. Audit Flash dès 490 € HT, livrable priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Vienne pour mettre en œuvre des solutions IA sur site — tarif à partir de 590 € HT.",
-      en: "Intervenir à Vienne pour mettre en œuvre des solutions IA sur site — tarif à partir de 590 € HT.",
+      fr: "Interventions IA sur site à Vienne : ateliers pratiques pour accueil touristique, restauration, commerces et administration, afin de rendre vos équipes autonomes sur les outils IA.",
+      en: "Interventions IA sur site à Vienne : ateliers pratiques pour accueil touristique, restauration, commerces et administration, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémenter des systèmes IA à Vienne pour optimiser vos opérations — dès 990 € HT.",
-      en: "Implémenter des systèmes IA à Vienne pour optimiser vos opérations — dès 990 € HT.",
+      fr: "Implémentation IA à Vienne : agents conversationnels touristiques, gestion de réservations, automatisation devis et stocks, CRM augmenté pour TPE et PME du patrimoine et du commerce.",
+      en: "Implémentation IA à Vienne : agents conversationnels touristiques, gestion de réservations, automatisation devis et stocks, CRM augmenté pour TPE et PME du patrimoine et du commerce.",
     },
     unAUn: {
-      fr: "Proposer un accompagnement 1-to-1 à Vienne pour les dirigeants — à partir de 990 € HT.",
-      en: "Proposer un accompagnement 1-to-1 à Vienne pour les dirigeants — à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un à Vienne : sessions sur site ou en visio pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, ciblées sur vos priorités métier.",
+      en: "Accompagnement un-à-un à Vienne : sessions sur site ou en visio pour dirigeants de TPE et PME du tourisme, du commerce et de la logistique, ciblées sur vos priorités métier.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Vienne : vitrine ou plateforme de réservation avec IA intégrée (recherche, réservation, recommandation) pour acteurs du tourisme, hôtels, restaurants et commerces.",
+      en: "Sites web augmentés à Vienne : vitrine ou plateforme de réservation avec IA intégrée (recherche, réservation, recommandation) pour acteurs du tourisme, hôtels, restaurants et commerces.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Vienne ?",
-      a: "Nos interventions à Vienne débutent à partir de 590 € HT. Les tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Vienne ?",
+      a: "Oui, Axion-IA intervient à Vienne et dans le sud lyonnais (Pont-Évêque, Chasse-sur-Rhône, Givors, Estrablin). Nos architectes IA seniors se déplacent depuis Lyon (30 min) ou travaillent en visio.",
     },
     {
-      q: "Axion-IA intervient-elle directement sur site à Vienne ?",
-      a: "Oui, notre équipe nationale se déplace à Vienne pour réaliser des interventions directement sur site chez nos clients.",
+      q: "Quel est le tarif d'un audit IA à Vienne ?",
+      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME viennoises : tourisme, hôtellerie-restauration, commerce et logistique.",
     },
     {
-      q: "Combien de temps faut-il pour démarrer un projet IA à Vienne ?",
-      a: "Nous nous engageons à intervenir sur site à Vienne dans les 5 jours ouvrés suivant la validation de votre projet.",
+      q: "Comment l'IA aide-t-elle les acteurs du tourisme à Vienne ?",
+      a: "Pour les hôtels, restaurants et sites patrimoniaux : agents conversationnels multilingues, gestion des réservations, recommandation et automatisation administrative, par étapes maîtrisées.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Vienne ?",
-      a: "Nous intégrons les exigences RGPD dès la phase d'audit pour garantir que toutes nos solutions IA respectent les normes de protection des données.",
+      q: "Quels services pour les commerces de centre-ville ?",
+      a: "Pour les commerces et artisans : automatisation des devis, gestion des stocks, présence en ligne enrichie par l'IA et fidélisation client, calibrés selon votre taille et votre budget.",
+    },
+    {
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous priorisons les TPE puis les PME de Vienne ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+    },
+    {
+      q: "Comment se déroule une mission à Vienne ?",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio depuis Lyon (30 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

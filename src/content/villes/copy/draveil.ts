@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Draveil (91, Essonne) — bords de Seine, lisière de la forêt de Sénart, sud francilien résidentiel.
 
 import type { VilleCopy } from "./types";
 
 export const DRAVEIL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Draveil pour optimiser les processus d'entreprises locales. L'écosystème francilien, incluant des pôles comme Cap Digital et Station F, offre un cadre propice à l'innovation en IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Draveil, commune verte de l'Essonne entre les bords de Seine et la forêt de Sénart. Dans ce sud francilien à dominante résidentielle, le tissu économique repose sur le commerce de proximité, l'artisanat du bâtiment, les services aux particuliers et les professions libérales. Nous y ancrons l'IA dans le concret : devis automatisés, relances, prise de rendez-vous, support administratif.",
   pitchEn:
-    "Axion-IA intervient à Draveil pour optimiser les processus d'entreprises locales. L'écosystème francilien, incluant des pôles comme Cap Digital et Station F, offre un cadre propice à l'innovation en IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Draveil, commune verte de l'Essonne entre les bords de Seine et la forêt de Sénart. Dans ce sud francilien à dominante résidentielle, le tissu économique repose sur le commerce de proximité, l'artisanat du bâtiment, les services aux particuliers et les professions libérales. Nous y ancrons l'IA dans le concret : devis automatisés, relances, prise de rendez-vous, support administratif.",
   directAnswerFr:
-    "Axion-IA propose ses services à Draveil, une ville de l'Île-de-France où le commerce de détail et la construction sont prédominants. Avec des entités comme LVMH et Inria situées dans la région, Draveil bénéficie d'un environnement économique diversifié. Nos interventions sur site permettent d'automatiser des tâches administratives et de relance pour les entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Draveil (Essonne). Nous accompagnons en priorité les TPE et PME locales : commerces de proximité, artisans du bâtiment, professions libérales, services aux particuliers et petites entreprises du sud francilien. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   directAnswerEn:
-    "Axion-IA propose ses services à Draveil, une ville de l'Île-de-France où le commerce de détail et la construction sont prédominants. Avec des entités comme LVMH et Inria situées dans la région, Draveil bénéficie d'un environnement économique diversifié. Nos interventions sur site permettent d'automatiser des tâches administratives et de relance pour les entreprises locales.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Draveil (Essonne). Nous accompagnons en priorité les TPE et PME locales : commerces de proximité, artisans du bâtiment, professions libérales, services aux particuliers et petites entreprises du sud francilien. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+  seoHook: "commerce & artisanat de proximité",
   ecosystemFr:
-    "Draveil est entourée de communes dynamiques telles que Juvisy-sur-Orge et Montgeron. L'écosystème francilien, avec des acteurs comme Cap Digital et Station F, stimule les initiatives en IA.",
+    "Draveil, étirée le long de la Seine et adossée à la forêt de Sénart, est une commune résidentielle de l'Essonne intégrée au sud de l'agglomération parisienne. Son économie locale repose sur le commerce de centre-ville, l'artisanat du bâtiment, la restauration, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de TPE et de petites PME, souvent en sous-effectif administratif, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
   ecosystemEn:
-    "Draveil est entourée de communes dynamiques telles que Juvisy-sur-Orge et Montgeron. L'écosystème francilien, avec des acteurs comme Cap Digital et Station F, stimule les initiatives en IA.",
+    "Draveil, étirée le long de la Seine et adossée à la forêt de Sénart, est une commune résidentielle de l'Essonne intégrée au sud de l'agglomération parisienne. Son économie locale repose sur le commerce de centre-ville, l'artisanat du bâtiment, la restauration, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de TPE et de petites PME, souvent en sous-effectif administratif, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
   distancesFr:
-    "Draveil est à 10 km de l'aéroport de Paris-Orly et à 20 km de la gare de Massy TGV.",
+    "Draveil est à 25 km au sud de Paris, reliée par le RER D via Juvisy-sur-Orge (10 min) et à 12 km de l'aéroport de Paris-Orly. Massy TGV est à 20 km. Nos consultants se déplacent depuis Paris sur tout le sud-est de l'Essonne : Montgeron, Vigneux-sur-Seine, Ris-Orangis et la vallée de la Seine.",
   distancesEn:
-    "Draveil est à 10 km de l'aéroport de Paris-Orly et à 20 km de la gare de Massy TGV.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Santé humaine"],
+    "Draveil est à 25 km au sud de Paris, reliée par le RER D via Juvisy-sur-Orge (10 min) et à 12 km de l'aéroport de Paris-Orly. Massy TGV est à 20 km. Nos consultants se déplacent depuis Paris sur tout le sud-est de l'Essonne : Montgeron, Vigneux-sur-Seine, Ris-Orangis et la vallée de la Seine.",
+  topSectorsNaf: [
+    "BTP et artisanat du bâtiment",
+    "Commerce et restauration de bord de Seine",
+    "Tourisme vert et loisirs (forêt de Sénart, Seine)",
+    "Santé et services à la personne",
+    "Nautisme et bases de loisirs",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Draveil pour identifier les processus améliorables — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Draveil pour identifier les processus améliorables — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Draveil : diagnostic des devis, relances et tâches administratives dans les commerces, l'artisanat et les cabinets libéraux. ROI chiffré, priorité TPE/PME.",
+      en: "Audit IA à Draveil : diagnostic des devis, relances et tâches administratives dans les commerces, l'artisanat et les cabinets libéraux. ROI chiffré, priorité TPE/PME.",
     },
     interventions: {
-      fr: "Intervenir à Draveil pour automatiser les devis et relances — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Draveil pour automatiser les devis et relances — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Draveil : formats courts adaptés au commerce, au chantier ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Draveil : formats courts adaptés au commerce, au chantier ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Draveil pour optimiser la gestion — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Draveil pour optimiser la gestion — à partir de 990 € HT.",
+      fr: "Implémentation IA à Draveil : automatisation des devis et relances, agents conversationnels, prise de RDV intelligente, classification de documents pour TPE et PME.",
+      en: "Implémentation IA à Draveil : automatisation des devis et relances, agents conversationnels, prise de RDV intelligente, classification de documents pour TPE et PME.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Draveil en sessions 1-to-1 — dès 990 € HT pour un suivi personnalisé.",
-      en: "Accompagner les dirigeants de Draveil en sessions 1-to-1 — dès 990 € HT pour un suivi personnalisé.",
+      fr: "Coaching 1-to-1 à Draveil : sessions au commerce, au cabinet, sur chantier ou en visio. Pour dirigeants de TPE/PME draveilloises qui veulent piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à Draveil : sessions au commerce, au cabinet, sur chantier ou en visio. Pour dirigeants de TPE/PME draveilloises qui veulent piloter l'IA eux-mêmes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Draveil : plateformes et outils IA sur mesure pour commerces, artisans et professions libérales — prise de RDV, devis intelligents, portails clients.",
+      en: "Sites web augmentés à Draveil : plateformes et outils IA sur mesure pour commerces, artisans et professions libérales — prise de RDV, devis intelligents, portails clients.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Draveil ?",
-      a: "Nos interventions à Draveil commencent à partir de 590 € HT pour l'Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Draveil et dans le sud-est de l'Essonne ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Draveil et des communes voisines (Montgeron, Vigneux-sur-Seine, Ris-Orangis). Nos consultants viennent de Paris, à 25 min par le RER D.",
     },
     {
-      q: "Comment se déroule un audit IA à Draveil ?",
-      a: "L'audit IA à Draveil débute par une analyse de vos processus actuels. Nous proposons l'Audit Flash 4h à partir de 490 € HT pour identifier les opportunités d'automatisation.",
+      q: "Accompagnez-vous les artisans du bâtiment de Draveil ?",
+      a: "Oui, les artisans BTP sont une cible privilégiée. Devis automatisés, relances de chantiers, suivi des interventions et support administratif allégé.",
     },
     {
-      q: "Axion-IA intervient-elle rapidement à Draveil ?",
-      a: "Oui, Axion-IA se déplace sur site à Draveil dans un délai de 5 jours ouvrés pour répondre à vos besoins d'automatisation.",
+      q: "Travaillez-vous avec les professions libérales et les commerces ?",
+      a: "Oui, professions libérales et commerces de proximité font partie de notre cible TPE/PME. Prise de RDV intelligente, agents conversationnels, classification de documents.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services IA à Draveil ?",
-      a: "Les secteurs du commerce de détail, de la construction et de la santé humaine à Draveil tirent parti de nos services pour optimiser leurs processus et améliorer leur efficacité.",
+      q: "Quels services pour une petite entreprise draveilloise ?",
+      a: "Audit Flash, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ?",
+      a: "Nos consultants se déplacent depuis Paris (25 min par le RER D via Juvisy). Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
     },
   ],
 };

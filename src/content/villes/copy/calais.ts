@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Calais (62, Pas-de-Calais) — Port transmanche, tunnel sous la Manche, dentelle de Calais, logistique.
 
 import type { VilleCopy } from "./types";
 
 export const CALAIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Calais, une ville où Eurotunnel et Tioxide Europe jouent un rôle clé. Nous accompagnons les entreprises locales dans l'optimisation de leurs processus grâce à l'IA, en nous déplaçant directement sur site.",
+    "Calais, premier port transmanche de passagers et porte du tunnel sous la Manche, vit du fret, de la logistique et d'un héritage textile autour de la célèbre dentelle de Calais. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME — transit, transport, négoce, services portuaires — pour automatiser sans recruter.",
   pitchEn:
-    "Axion-IA intervient à Calais, une ville où Eurotunnel et Tioxide Europe jouent un rôle clé. Nous accompagnons les entreprises locales dans l'optimisation de leurs processus grâce à l'IA, en nous déplaçant directement sur site.",
+    "Calais, premier port transmanche de passagers et porte du tunnel sous la Manche, vit du fret, de la logistique et d'un héritage textile autour de la célèbre dentelle de Calais. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME — transit, transport, négoce, services portuaires — pour automatiser sans recruter.",
   directAnswerFr:
-    "À Calais, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des acteurs comme Eurotunnel et la Zone Industrielle des Dunes, nous offrons des audits et des interventions. Notre équipe nationale se déplace pour vous accompagner dans vos projets IA, garantissant une approche personnalisée et efficace.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Calais (62) et sur le littoral du Pas-de-Calais. Nous accompagnons en priorité les TPE puis les PME liées au port transmanche et au tunnel sous la Manche : transitaires, transporteurs routiers, entrepôts logistiques, négoce, services portuaires et ateliers de dentelle. Audit, interventions et implémentation pour automatiser documents douaniers, planning fret, devis et suivi clients, avec des livrables documentés.",
   directAnswerEn:
-    "À Calais, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des acteurs comme Eurotunnel et la Zone Industrielle des Dunes, nous offrons des audits et des interventions. Notre équipe nationale se déplace pour vous accompagner dans vos projets IA, garantissant une approche personnalisée et efficace.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Calais (62) et sur le littoral du Pas-de-Calais. Nous accompagnons en priorité les TPE puis les PME liées au port transmanche et au tunnel sous la Manche : transitaires, transporteurs routiers, entrepôts logistiques, négoce, services portuaires et ateliers de dentelle. Audit, interventions et implémentation pour automatiser documents douaniers, planning fret, devis et suivi clients, avec des livrables documentés.",
+  seoHook: "logistique, transmanche & fret",
   ecosystemFr:
-    "Calais est un pôle stratégique avec Eurotunnel et Tioxide Europe. La Zone Industrielle des Dunes renforce l'activité économique, offrant un environnement propice aux interventions IA d'Axion-IA.",
+    "Calais est le grand point de passage transmanche : son port assure un trafic majeur de passagers et de fret routier, tandis que le tunnel sous la Manche, accessible à Coquelles, draine le fret ferroviaire et la navette. Cette position fait de la logistique, du transit douanier et du transport routier l'épine dorsale de l'économie locale, autour des zones d'activités proches du port et du terminal. S'y ajoute l'héritage textile de la dentelle de Calais, illustré par la Cité de la Dentelle et de la Mode. Axion-IA y déploie des chantiers IA pour TPE et PME de la chaîne logistique transmanche.",
   ecosystemEn:
-    "Calais est un pôle stratégique avec Eurotunnel et Tioxide Europe. La Zone Industrielle des Dunes renforce l'activité économique, offrant un environnement propice aux interventions IA d'Axion-IA.",
+    "Calais est le grand point de passage transmanche : son port assure un trafic majeur de passagers et de fret routier, tandis que le tunnel sous la Manche, accessible à Coquelles, draine le fret ferroviaire et la navette. Cette position fait de la logistique, du transit douanier et du transport routier l'épine dorsale de l'économie locale, autour des zones d'activités proches du port et du terminal. S'y ajoute l'héritage textile de la dentelle de Calais, illustré par la Cité de la Dentelle et de la Mode. Axion-IA y déploie des chantiers IA pour TPE et PME de la chaîne logistique transmanche.",
   distancesFr:
-    "La Gare TGV de Calais-Fréthun est à 5 km, facilitant l'accès pour nos interventions.",
+    "Gare de Calais-Fréthun (TGV et Eurostar) à 10 min, Londres en environ 1h par le tunnel sous la Manche. Port de Calais et terminal transmanche au cœur de la ville. Lille à 1h10 par l'A26, Dunkerque à 40 min, Boulogne-sur-Mer à 30 min.",
   distancesEn:
-    "La Gare TGV de Calais-Fréthun est à 5 km, facilitant l'accès pour nos interventions.",
+    "Gare de Calais-Fréthun (TGV et Eurostar) à 10 min, Londres en environ 1h par le tunnel sous la Manche. Port de Calais et terminal transmanche au cœur de la ville. Lille à 1h10 par l'A26, Dunkerque à 40 min, Boulogne-sur-Mer à 30 min.",
   topSectorsNaf: [
-    "Transports terrestres",
-    "Industrie agroalimentaire",
-    "Commerce de gros",
-    "Entreposage et services auxiliaires",
+    "Transports terrestres et fret routier",
+    "Entreposage et services auxiliaires des transports",
+    "Transit, douane et services portuaires",
+    "Fabrication de textile et dentelle",
+    "Commerce de gros et négoce",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Calais, notamment pour les entreprises de la Zone Industrielle des Dunes, permet d'identifier des opportunités d'optimisation.",
-      en: "Réaliser un audit à Calais, notamment pour les entreprises de la Zone Industrielle des Dunes, permet d'identifier des opportunités d'optimisation.",
+      fr: "Audit IA à Calais : diagnostic pour TPE et PME de la chaîne logistique transmanche. On cible les automatisations à fort retour — documents douaniers, planning fret, suivi des expéditions — sans recruter.",
+      en: "Audit IA à Calais : diagnostic pour TPE et PME de la chaîne logistique transmanche. On cible les automatisations à fort retour — documents douaniers, planning fret, suivi des expéditions — sans recruter.",
     },
     interventions: {
-      fr: "Intervenir à Calais auprès d'entreprises comme Eurotunnel pour automatiser les processus administratifs et logistiques.",
-      en: "Intervenir à Calais auprès d'entreprises comme Eurotunnel pour automatiser les processus administratifs et logistiques.",
+      fr: "Interventions IA sur site à Calais : ateliers pour transitaires, transporteurs et entrepôts logistiques. Vos équipes deviennent autonomes sur des outils IA configurés pour le fret transmanche.",
+      en: "Interventions IA sur site à Calais : ateliers pour transitaires, transporteurs et entrepôts logistiques. Vos équipes deviennent autonomes sur des outils IA configurés pour le fret transmanche.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Calais, en tenant compte des spécificités du secteur des transports terrestres.",
-      en: "Implémenter des solutions IA à Calais, en tenant compte des spécificités du secteur des transports terrestres.",
+      fr: "Implémentation IA à Calais : automatisation des documents douaniers, du planning de fret, des devis transport et du suivi clients pour TPE et PME logistiques et de négoce.",
+      en: "Implémentation IA à Calais : automatisation des documents douaniers, du planning de fret, des devis transport et du suivi clients pour TPE et PME logistiques et de négoce.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants calaisiens pour une adoption rapide et efficace de l'IA.",
-      en: "Accompagner en un-à-un les dirigeants calaisiens pour une adoption rapide et efficace de l'IA.",
+      fr: "Accompagnement un-à-un à Calais : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du transmanche souhaitant adopter l'IA de façon maîtrisée.",
+      en: "Accompagnement un-à-un à Calais : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du transmanche souhaitant adopter l'IA de façon maîtrisée.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Calais : plateforme dotée d'IA pour transitaires et négoces — demande de cotation transport en ligne, suivi d'expédition, réponses automatisées aux clients transmanche.",
+      en: "Sites web augmentés à Calais : plateforme dotée d'IA pour transitaires et négoces — demande de cotation transport en ligne, suivi d'expédition, réponses automatisées aux clients transmanche.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Calais ?",
-      a: "Nos audits à Calais débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Calais ?",
+      a: "Oui. Axion-IA se déplace à Calais et sur le littoral du Pas-de-Calais (Coquelles, Marck, Sangatte, Guînes). Nos consultants interviennent sur site, y compris dans les zones logistiques proches du port et du terminal transmanche, ou en visio.",
     },
     {
-      q: "Comment se déroule une intervention IA à Calais ?",
-      a: "Nous nous déplaçons sur site à Calais pour réaliser des interventions IA, assurant une prise en charge complète et personnalisée des besoins de votre entreprise.",
+      q: "Accompagnez-vous les transitaires et transporteurs de Calais ?",
+      a: "Oui, c'est un cœur de cible. Pour les transitaires et transporteurs liés au tunnel sous la Manche et au port, nous automatisons la préparation des documents douaniers, le planning de fret et le suivi des expéditions.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Calais ?",
-      a: "Les délais d'implémentation à Calais varient selon le projet, mais nous nous engageons à intervenir rapidement pour répondre à vos besoins.",
+      q: "Travaillez-vous avec les acteurs de la dentelle de Calais ?",
+      a: "Oui. Pour les ateliers et entreprises de la dentelle de Calais, nous mettons en place des outils IA de gestion commerciale, de rédaction de fiches produits et de réponse aux demandes, dans le respect de leur savoir-faire.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Calais ?",
-      a: "Oui, toutes nos interventions à Calais sont conformes au RGPD, garantissant la protection des données personnelles de nos clients.",
+      q: "Quels délais pour un audit IA à Calais ?",
+      a: "Un Audit Flash peut démarrer rapidement après la prise de contact et aboutit à un plan d'action priorisé, adapté aux contraintes des TPE et PME de la chaîne logistique transmanche.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Calais ?",
-      a: "Oui, nous offrons des sessions de formation IA sur site à Calais, adaptées aux besoins spécifiques de votre entreprise.",
+      q: "Comment garantissez-vous la conformité RGPD à Calais ?",
+      a: "Toutes nos solutions IA respectent le RGPD et l'AI Act : minimisation des données, hébergement maîtrisé et traçabilité — un point clé pour les flux de données transfrontaliers liés au transmanche.",
     },
   ],
 };

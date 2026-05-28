@@ -1,66 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Colmar (68, Haut-Rhin) — capitale des vins d'Alsace, vieille ville "Petite Venise", route des vins, Bartholdi natif, musée Unterlinden (retable d'Issenheim), tourisme majeur.
 
 import type { VilleCopy } from "./types";
 
 export const COLMAR_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Colmar pour optimiser les processus des entreprises locales. Avec des acteurs comme Timken et Bucher Vaslin, nous apportons notre expertise en IA pour automatiser les tâches administratives et améliorer l'efficacité des opérations.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Colmar, capitale des vins d'Alsace. Entre la vieille ville et sa Petite Venise, le musée Unterlinden et son retable d'Issenheim, et le départ de la route des vins, Colmar — ville natale de Bartholdi, créateur de la statue de la Liberté — vit du tourisme, du vignoble, du commerce et de l'industrie. Nous y ancrons l'IA dans le concret : réservations, devis, relances, gestion administrative.",
   pitchEn:
-    "Axion-IA intervient à Colmar pour optimiser les processus des entreprises locales. Avec des acteurs comme Timken et Bucher Vaslin, nous apportons notre expertise en IA pour automatiser les tâches administratives et améliorer l'efficacité des opérations.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Colmar, capitale des vins d'Alsace. Entre la vieille ville et sa Petite Venise, le musée Unterlinden et son retable d'Issenheim, et le départ de la route des vins, Colmar — ville natale de Bartholdi, créateur de la statue de la Liberté — vit du tourisme, du vignoble, du commerce et de l'industrie. Nous y ancrons l'IA dans le concret : réservations, devis, relances, gestion administrative.",
   directAnswerFr:
-    "À Colmar, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec un écosystème incluant Timken et le Parc d'Activités Europe, nous offrons des audits et des implémentations. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colmar (Haut-Rhin). Nous accompagnons en priorité les TPE et PME : domaines viticoles et négociants de la route des vins, hôtels, restaurants et commerces du centre touristique, artisans, industries (produits métalliques, agroalimentaire) et services. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   directAnswerEn:
-    "À Colmar, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec un écosystème incluant Timken et le Parc d'Activités Europe, nous offrons des audits et des implémentations. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & industrie alimentaire",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colmar (Haut-Rhin). Nous accompagnons en priorité les TPE et PME : domaines viticoles et négociants de la route des vins, hôtels, restaurants et commerces du centre touristique, artisans, industries (produits métalliques, agroalimentaire) et services. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+  seoHook: "vins d'Alsace & tourisme",
   ecosystemFr:
-    "Colmar abrite des entreprises comme Timken et Bucher Vaslin, au cœur d'un écosystème industriel diversifié. Le Parc d'Activités Europe soutient l'innovation et la croissance des entreprises locales.",
+    "Colmar, capitale des vins d'Alsace, conjugue un tourisme de premier plan — vieille ville, Petite Venise, musée Unterlinden et son retable d'Issenheim, marchés de Noël — avec un vignoble réputé sur la route des vins et une base industrielle (produits métalliques, agroalimentaire, équipementiers viticoles). Le tissu local repose largement sur des TPE et PME : domaines, caves, hôtels, restaurants, commerces et artisans. Soumises à une forte saisonnalité touristique, ces structures gagnent à automatiser réservations, devis et gestion administrative.",
   ecosystemEn:
-    "Colmar abrite des entreprises comme Timken et Bucher Vaslin, au cœur d'un écosystème industriel diversifié. Le Parc d'Activités Europe soutient l'innovation et la croissance des entreprises locales.",
-  distancesFr: "La gare TGV de Colmar est à 0 km, facilitant l'accès rapide à nos interventions.",
-  distancesEn: "La gare TGV de Colmar est à 0 km, facilitant l'accès rapide à nos interventions.",
+    "Colmar, capitale des vins d'Alsace, conjugue un tourisme de premier plan — vieille ville, Petite Venise, musée Unterlinden et son retable d'Issenheim, marchés de Noël — avec un vignoble réputé sur la route des vins et une base industrielle (produits métalliques, agroalimentaire, équipementiers viticoles). Le tissu local repose largement sur des TPE et PME : domaines, caves, hôtels, restaurants, commerces et artisans. Soumises à une forte saisonnalité touristique, ces structures gagnent à automatiser réservations, devis et gestion administrative.",
+  distancesFr:
+    "Colmar est sur la ligne TGV Strasbourg-Mulhouse-Bâle (gare en centre-ville), à 70 km au sud de Strasbourg et 40 km au nord de Mulhouse. L'aéroport de Bâle-Mulhouse est à 50 km. Nos consultants se déplacent sur tout le centre-Alsace : Sélestat, Munster, Kaysersberg, Ribeauvillé et la route des vins.",
+  distancesEn:
+    "Colmar est sur la ligne TGV Strasbourg-Mulhouse-Bâle (gare en centre-ville), à 70 km au sud de Strasbourg et 40 km au nord de Mulhouse. L'aéroport de Bâle-Mulhouse est à 50 km. Nos consultants se déplacent sur tout le centre-Alsace : Sélestat, Munster, Kaysersberg, Ribeauvillé et la route des vins.",
   topSectorsNaf: [
+    "Viticulture & négoce de vins",
+    "Hébergement & restauration touristique",
     "Commerce de détail",
-    "Industrie alimentaire",
-    "Produits métalliques",
-    "Hébergement",
+    "Industrie & produits métalliques",
+    "Artisanat du bâtiment",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Colmar avec Axion-IA permet d'identifier les opportunités d'automatisation.",
-      en: "Réaliser un audit à Colmar avec Axion-IA permet d'identifier les opportunités d'automatisation.",
+      fr: "Audit IA à Colmar : diagnostic des réservations, devis et gestion administrative dans les domaines viticoles, l'hôtellerie touristique et les commerces. ROI chiffré, priorité TPE/PME.",
+      en: "Audit IA à Colmar : diagnostic des réservations, devis et gestion administrative dans les domaines viticoles, l'hôtellerie touristique et les commerces. ROI chiffré, priorité TPE/PME.",
     },
     interventions: {
-      fr: "Intervenir à Colmar pour automatiser les processus administratifs et réduire les coûts.",
-      en: "Intervenir à Colmar pour automatiser les processus administratifs et réduire les coûts.",
+      fr: "Interventions IA sur site à Colmar : formats courts adaptés au domaine, à l'hôtel, au commerce ou à l'atelier. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Colmar : formats courts adaptés au domaine, à l'hôtel, au commerce ou à l'atelier. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Colmar pour améliorer la productivité des entreprises.",
-      en: "Implémenter des solutions IA à Colmar pour améliorer la productivité des entreprises.",
+      fr: "Implémentation IA à Colmar : agents conversationnels de réservation et vente directe, automatisation des devis et relances, classification de documents pour TPE et PME.",
+      en: "Implémentation IA à Colmar : agents conversationnels de réservation et vente directe, automatisation des devis et relances, classification de documents pour TPE et PME.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Colmar en sessions 1-to-1 pour une adoption réussie de l'IA.",
-      en: "Accompagner les dirigeants de Colmar en sessions 1-to-1 pour une adoption réussie de l'IA.",
+      fr: "Coaching 1-to-1 à Colmar : sessions au domaine, à l'hôtel, au commerce ou en visio. Pour dirigeants de TPE/PME colmariennes du tourisme, du vin et des services.",
+      en: "Coaching 1-to-1 à Colmar : sessions au domaine, à l'hôtel, au commerce ou en visio. Pour dirigeants de TPE/PME colmariennes du tourisme, du vin et des services.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Colmar : plateformes et outils IA sur mesure pour domaines viticoles, hôtels et commerces touristiques — réservation, vente directe, gestion d'avis, portails clients.",
+      en: "Sites web augmentés à Colmar : plateformes et outils IA sur mesure pour domaines viticoles, hôtels et commerces touristiques — réservation, vente directe, gestion d'avis, portails clients.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Colmar ?",
-      a: "Les interventions à Colmar commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Colmar et dans le centre-Alsace ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Colmar et de tout le centre-Alsace (Sélestat, Kaysersberg, Ribeauvillé, la route des vins). Gare TGV en centre-ville, aéroport de Bâle-Mulhouse à 50 km.",
     },
     {
-      q: "Comment se déroule une intervention sur site à Colmar ?",
-      a: "Nos experts se déplacent à Colmar pour analyser vos besoins et mettre en place des solutions IA adaptées.",
+      q: "Accompagnez-vous les domaines viticoles de la route des vins ?",
+      a: "Oui, domaines et caves font partie de notre cible. Agents de vente directe, automatisation des commandes et expéditions, gestion d'avis et relances clients, classification de documents.",
     },
     {
-      q: "Combien de temps faut-il pour une implémentation IA à Colmar ?",
-      a: "Le délai dépend de la complexité, mais nous visons une mise en œuvre rapide pour un ROI immédiat.",
+      q: "Travaillez-vous avec l'hôtellerie et la restauration touristiques ?",
+      a: "Oui, hôtels et restaurants du centre touristique sont une cible privilégiée. Agents de réservation, lissage des pics saisonniers (marchés de Noël), gestion d'avis et accueil automatisé.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Colmar ?",
-      a: "Oui, toutes nos interventions à Colmar sont conformes au RGPD, garantissant la protection des données.",
+      q: "Quels services pour les commerces et artisans colmariens ?",
+      a: "Audit Flash, journée de formation sur site et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
+    },
+    {
+      q: "Comment se passe une mission à Colmar ?",
+      a: "Colmar est accessible en TGV (gare en centre-ville) et nos consultants couvrent tout le centre-Alsace. Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics.",
     },
   ],
 };

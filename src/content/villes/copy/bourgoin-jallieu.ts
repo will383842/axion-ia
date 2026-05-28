@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Bourgoin-Jallieu (38, Isère) — Nord-Isère, ennoblissement textile historique, plateforme logistique CAPI.
 
 import type { VilleCopy } from "./types";
 
 export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bourgoin-Jallieu, au cœur de la région Auvergne-Rhône-Alpes, pour optimiser les processus des entreprises locales, notamment dans les secteurs du commerce de gros et de l'industrie alimentaire.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Bourgoin-Jallieu, capitale du Nord-Isère. Berceau de l'ennoblissement textile et devenu carrefour logistique de la CAPI sur l'axe Lyon-Grenoble, Berjallie concentre des prestataires de l'entreposage, du commerce de gros et de l'industrie. Nous y ancrons l'IA dans le quotidien réel : automatisation des devis, suivi des expéditions, relances clients, support administratif.",
   pitchEn:
-    "Axion-IA intervient à Bourgoin-Jallieu, au cœur de la région Auvergne-Rhône-Alpes, pour optimiser les processus des entreprises locales, notamment dans les secteurs du commerce de gros et de l'industrie alimentaire.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Bourgoin-Jallieu, capitale du Nord-Isère. Berceau de l'ennoblissement textile et devenu carrefour logistique de la CAPI sur l'axe Lyon-Grenoble, Berjallie concentre des prestataires de l'entreposage, du commerce de gros et de l'industrie. Nous y ancrons l'IA dans le quotidien réel : automatisation des devis, suivi des expéditions, relances clients, support administratif.",
   directAnswerFr:
-    "À Bourgoin-Jallieu, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme STMicroelectronics et Caterpillar présents dans la région, nous proposons des audits et des interventions, permettant une intégration rapide et efficace.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourgoin-Jallieu (Nord-Isère). Nous accompagnons en priorité les TPE et PME locales — entrepôts logistiques de la CAPI, négociants en commerce de gros, ateliers d'ennoblissement textile, artisans du bâtiment, commerces et professions libérales. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   directAnswerEn:
-    "À Bourgoin-Jallieu, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme STMicroelectronics et Caterpillar présents dans la région, nous proposons des audits et des interventions, permettant une intégration rapide et efficace.",
-  seoHook: "commerce gros & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourgoin-Jallieu (Nord-Isère). Nous accompagnons en priorité les TPE et PME locales — entrepôts logistiques de la CAPI, négociants en commerce de gros, ateliers d'ennoblissement textile, artisans du bâtiment, commerces et professions libérales. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+  seoHook: "logistique CAPI & textile",
   ecosystemFr:
-    "Le Parc Technologique Porte de l'Isère à Bourgoin-Jallieu accueille des entreprises telles que STMicroelectronics et Caterpillar, renforçant le tissu économique local. Axion-IA intervient pour soutenir cette dynamique industrielle.",
+    "Bourgoin-Jallieu, ville-centre de la CAPI (Communauté d'Agglomération Porte de l'Isère), s'est construite sur l'industrie textile et l'ennoblissement avant de devenir une grande plateforme logistique du couloir rhodanien Lyon-Grenoble. Le tissu local mêle entrepôts et transport, négoce de gros, sous-traitance industrielle (produits métalliques, agroalimentaire), artisanat du bâtiment et commerces de centre-ville. Ce maillage de TPE et PME, dépendant de marges serrées et de flux tendus, trouve dans l'IA opérationnelle un levier direct de productivité.",
   ecosystemEn:
-    "Le Parc Technologique Porte de l'Isère à Bourgoin-Jallieu accueille des entreprises telles que STMicroelectronics et Caterpillar, renforçant le tissu économique local. Axion-IA intervient pour soutenir cette dynamique industrielle.",
+    "Bourgoin-Jallieu, ville-centre de la CAPI (Communauté d'Agglomération Porte de l'Isère), s'est construite sur l'industrie textile et l'ennoblissement avant de devenir une grande plateforme logistique du couloir rhodanien Lyon-Grenoble. Le tissu local mêle entrepôts et transport, négoce de gros, sous-traitance industrielle (produits métalliques, agroalimentaire), artisanat du bâtiment et commerces de centre-ville. Ce maillage de TPE et PME, dépendant de marges serrées et de flux tendus, trouve dans l'IA opérationnelle un levier direct de productivité.",
   distancesFr:
-    "Bourgoin-Jallieu est à 30 km de la Gare de Lyon Saint-Exupéry TGV et de l'aéroport de Lyon-Saint Exupéry.",
+    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min), porte d'entrée vers Grenoble (60 km). La gare relie Lyon Part-Dieu en moins de 40 min. Nos consultants se déplacent depuis Lyon sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
   distancesEn:
-    "Bourgoin-Jallieu est à 30 km de la Gare de Lyon Saint-Exupéry TGV et de l'aéroport de Lyon-Saint Exupéry.",
+    "Bourgoin-Jallieu se situe sur l'A43 entre Lyon (40 km, 35 min) et l'aéroport Lyon-Saint-Exupéry (25 km, 25 min), porte d'entrée vers Grenoble (60 km). La gare relie Lyon Part-Dieu en moins de 40 min. Nos consultants se déplacent depuis Lyon sur tout le Nord-Isère : La Tour-du-Pin, L'Isle-d'Abeau, Villefontaine et la plaine de la CAPI.",
   topSectorsNaf: [
+    "Entreposage & logistique",
     "Commerce de gros",
-    "Transports terrestres",
-    "Produits métalliques",
-    "Industrie alimentaire",
+    "Ennoblissement textile",
+    "Artisanat du bâtiment",
+    "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bourgoin-Jallieu avec Axion-IA permet d'évaluer rapidement les opportunités d'optimisation dans votre entreprise.",
-      en: "Réaliser un audit à Bourgoin-Jallieu avec Axion-IA permet d'évaluer rapidement les opportunités d'optimisation dans votre entreprise.",
+      fr: "Audit IA à Bourgoin-Jallieu : diagnostic des flux logistiques, devis et relances dans les entrepôts CAPI, le négoce de gros et l'artisanat. ROI chiffré, priorité TPE/PME.",
+      en: "Audit IA à Bourgoin-Jallieu : diagnostic des flux logistiques, devis et relances dans les entrepôts CAPI, le négoce de gros et l'artisanat. ROI chiffré, priorité TPE/PME.",
     },
     interventions: {
-      fr: "Intervenir à Bourgoin-Jallieu pour automatiser les tâches administratives, réduisant ainsi les charges opérationnelles.",
-      en: "Intervenir à Bourgoin-Jallieu pour automatiser les tâches administratives, réduisant ainsi les charges opérationnelles.",
+      fr: "Interventions IA sur site à Bourgoin-Jallieu : formats courts adaptés aux équipes d'entrepôt, de négoce ou de commerce. Vos collaborateurs repartent autonomes sur leurs outils.",
+      en: "Interventions IA sur site à Bourgoin-Jallieu : formats courts adaptés aux équipes d'entrepôt, de négoce ou de commerce. Vos collaborateurs repartent autonomes sur leurs outils.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bourgoin-Jallieu pour améliorer l'efficacité des processus métiers existants.",
-      en: "Implémenter des solutions IA à Bourgoin-Jallieu pour améliorer l'efficacité des processus métiers existants.",
+      fr: "Implémentation IA à Bourgoin-Jallieu : automatisation devis et suivi expéditions, agents conversationnels B2B, classification documents, relance impayés pour TPE et PME.",
+      en: "Implémentation IA à Bourgoin-Jallieu : automatisation devis et suivi expéditions, agents conversationnels B2B, classification documents, relance impayés pour TPE et PME.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Bourgoin-Jallieu pour les dirigeants souhaitant comprendre l'impact de l'IA sur leur activité.",
-      en: "Proposer des sessions 1-to-1 à Bourgoin-Jallieu pour les dirigeants souhaitant comprendre l'impact de l'IA sur leur activité.",
+      fr: "Coaching 1-to-1 à Bourgoin-Jallieu : sessions dans votre bureau, entrepôt ou commerce, ou en visio. Pour dirigeants de TPE/PME berjalliennes qui veulent piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à Bourgoin-Jallieu : sessions dans votre bureau, entrepôt ou commerce, ou en visio. Pour dirigeants de TPE/PME berjalliennes qui veulent piloter l'IA eux-mêmes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Bourgoin-Jallieu : plateformes et outils IA sur mesure pour négociants, logisticiens et commerces du Nord-Isère — portails clients, suivi de commandes, devis intelligents.",
+      en: "Sites web augmentés à Bourgoin-Jallieu : plateformes et outils IA sur mesure pour négociants, logisticiens et commerces du Nord-Isère — portails clients, suivi de commandes, devis intelligents.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Bourgoin-Jallieu ?",
-      a: "Les interventions à Bourgoin-Jallieu débutent à 590 € HT. Consultez nos tarifs publics sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Bourgoin-Jallieu et dans la CAPI ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bourgoin-Jallieu et de toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Nos consultants viennent de Lyon, à 35 min par l'A43.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Bourgoin-Jallieu ?",
-      a: "Notre équipe nationale se déplace directement sur site à Bourgoin-Jallieu, assurant une intervention rapide et efficace.",
+      q: "Travaillez-vous avec les entrepôts et logisticiens du Nord-Isère ?",
+      a: "Oui, la logistique est un secteur clé local. Nous automatisons le suivi des expéditions, la relance des impayés, la classification des documents et déployons des agents conversationnels B2B.",
     },
     {
-      q: "Quels délais pour une intervention à Bourgoin-Jallieu ?",
-      a: "Nous nous engageons à intervenir à Bourgoin-Jallieu dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Accompagnez-vous le négoce de gros et l'industrie textile ?",
+      a: "Oui, négociants en commerce de gros et ateliers d'ennoblissement textile font partie de notre cible TPE/PME. Automatisation des devis, gestion des stocks et support administratif.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Bourgoin-Jallieu ?",
-      a: "Axion-IA garantit que toutes nos solutions respectent les normes RGPD, assurant la protection des données de nos clients à Bourgoin-Jallieu.",
+      q: "Quels services pour les artisans et commerces de Berjallie ?",
+      a: "Audit Flash, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
+    },
+    {
+      q: "Comment se passe une mission depuis Lyon ?",
+      a: "Nos consultants se déplacent depuis Lyon (35 min par l'A43). Les frais de déplacement sont facturés séparément du forfait, selon nos tarifs publics et transparents.",
     },
   ],
 };

@@ -1,63 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Villemomble (93, Seine-Saint-Denis) — banlieue est de Paris, commune résidentielle, tissu TPE/PME de proximité, Île-de-France.
 
 import type { VilleCopy } from "./types";
 
 export const VILLEMOMBLE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Villemomble, une ville proche de Paris, pour optimiser vos processus métiers grâce à l'IA. Paris abrite Cap Digital et Station F, des pôles d'innovation majeurs.",
+    "Villemomble (93), commune résidentielle de la banlieue est de Paris en Seine-Saint-Denis, bénéficie d'un accès rapide à la capitale et à ses pôles d'affaires. Son tissu mêle TPE artisanales du BTP, commerces de proximité, professions libérales, santé et PME de services. Axion-IA accompagne en priorité les TPE puis les PME villemomboises.",
   pitchEn:
-    "Axion-IA intervient à Villemomble, une ville proche de Paris, pour optimiser vos processus métiers grâce à l'IA. Paris abrite Cap Digital et Station F, des pôles d'innovation majeurs.",
+    "Villemomble (93), commune résidentielle de la banlieue est de Paris en Seine-Saint-Denis, bénéficie d'un accès rapide à la capitale et à ses pôles d'affaires. Son tissu mêle TPE artisanales du BTP, commerces de proximité, professions libérales, santé et PME de services. Axion-IA accompagne en priorité les TPE puis les PME villemomboises.",
   directAnswerFr:
-    "Axion-IA propose des solutions IA adaptées aux entreprises de Villemomble. Avec la proximité de Paris, ville qui abrite l'Inria et des entreprises comme LVMH, nous offrons des audits et des implémentations. Nos services incluent l'automatisation des tâches administratives et la formation des équipes pour un retour sur investissement rapide.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemomble (93) auprès des TPE en priorité, puis des PME : artisans du BTP, commerces de proximité, professions de santé, professions libérales et PME de services de l'est parisien. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "Axion-IA propose des solutions IA adaptées aux entreprises de Villemomble. Avec la proximité de Paris, ville qui abrite l'Inria et des entreprises comme LVMH, nous offrons des audits et des implémentations. Nos services incluent l'automatisation des tâches administratives et la formation des équipes pour un retour sur investissement rapide.",
-  seoHook: "commerce détail & travaux construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemomble (93) auprès des TPE en priorité, puis des PME : artisans du BTP, commerces de proximité, professions de santé, professions libérales et PME de services de l'est parisien. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "tpe & pme est parisien",
   ecosystemFr:
-    "Villemomble bénéficie de l'influence économique de Paris, où se trouvent des entreprises comme Hermès et BNP Paribas. L'écosystème local est enrichi par la proximité de ces acteurs économiques.",
+    "Villemomble est une commune résidentielle de l'est francilien, à la frontière de la Seine-Saint-Denis et de la Seine-et-Marne. Son économie repose sur un tissu de proximité : TPE artisanales du bâtiment, commerces de centre-ville, professions de santé, professions libérales et PME de services aux particuliers et aux entreprises. La proximité immédiate de Paris ouvre l'accès à un large bassin de donneurs d'ordre.",
   ecosystemEn:
-    "Villemomble bénéficie de l'influence économique de Paris, où se trouvent des entreprises comme Hermès et BNP Paribas. L'écosystème local est enrichi par la proximité de ces acteurs économiques.",
+    "Villemomble est une commune résidentielle de l'est francilien, à la frontière de la Seine-Saint-Denis et de la Seine-et-Marne. Son économie repose sur un tissu de proximité : TPE artisanales du bâtiment, commerces de centre-ville, professions de santé, professions libérales et PME de services aux particuliers et aux entreprises. La proximité immédiate de Paris ouvre l'accès à un large bassin de donneurs d'ordre.",
   distancesFr:
-    "Villemomble est à 12 km de la Gare de Paris-Est et à 20 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Paris centre à 25 min. Gare de Paris-Est à 20 min (RER E / Transilien). Aéroport Roissy-Charles-de-Gaulle à 30 min. Bobigny à 15 min. A3 immédiate.",
   distancesEn:
-    "Villemomble est à 12 km de la Gare de Paris-Est et à 20 km de l'Aéroport de Paris-Charles-de-Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Travaux de construction", "Restauration", "Santé humaine"],
+    "Paris centre à 25 min. Gare de Paris-Est à 20 min (RER E / Transilien). Aéroport Roissy-Charles-de-Gaulle à 30 min. Bobigny à 15 min. A3 immédiate.",
+  topSectorsNaf: [
+    "Artisanat & travaux du BTP",
+    "Commerce de proximité",
+    "Professions de santé",
+    "Professions libérales",
+    "PME de services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Villemomble pour identifier les processus à automatiser — Audit Flash 4h à partir de 490 € HT.",
-      en: "Réaliser un audit à Villemomble pour identifier les processus à automatiser — Audit Flash 4h à partir de 490 € HT.",
+      fr: "Audit IA à Villemomble : diagnostic pour TPE artisanes, commerces, professions de santé et libérales. Repérage des tâches automatisables (RDV, devis, relances) et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Villemomble : diagnostic pour TPE artisanes, commerces, professions de santé et libérales. Repérage des tâches automatisables (RDV, devis, relances) et ROI chiffré avant tout déploiement.",
     },
     interventions: {
-      fr: "Intervenir à Villemomble pour accompagner les entreprises dans l'optimisation de leurs opérations — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Villemomble pour accompagner les entreprises dans l'optimisation de leurs opérations — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Villemomble : formats courts adaptés au cabinet, au commerce ou au bureau. Vos équipes prennent ensuite la main sur les outils déployés en autonomie.",
+      en: "Interventions IA sur site à Villemomble : formats courts adaptés au cabinet, au commerce ou au bureau. Vos équipes prennent ensuite la main sur les outils déployés en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Villemomble pour automatiser les tâches répétitives — Début des tarifs à 990 € HT.",
-      en: "Implémenter des solutions IA à Villemomble pour automatiser les tâches répétitives — Début des tarifs à 990 € HT.",
+      fr: "Implémentation IA à Villemomble : agents conversationnels de prise de RDV, automatisation administrative, classification de dossiers patients, CRM augmentés et relances clients.",
+      en: "Implémentation IA à Villemomble : agents conversationnels de prise de RDV, automatisation administrative, classification de dossiers patients, CRM augmentés et relances clients.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Villemomble avec des sessions 1-to-1 pour intégrer l'IA dans leur stratégie — À partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Villemomble avec des sessions 1-to-1 pour intégrer l'IA dans leur stratégie — À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Villemomble : sessions dans votre cabinet, commerce, bureau ou en visio. Pour gérants de TPE, artisans, professionnels de santé et dirigeants de PME villemomboises.",
+      en: "Coaching 1-to-1 à Villemomble : sessions dans votre cabinet, commerce, bureau ou en visio. Pour gérants de TPE, artisans, professionnels de santé et dirigeants de PME villemomboises.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Villemomble : plateformes et outils SaaS IA sur mesure — prise de RDV intelligente santé, devis en ligne BTP, portails clients et boutiques connectés à vos process.",
+      en: "Sites web augmentés à Villemomble : plateformes et outils SaaS IA sur mesure — prise de RDV intelligente santé, devis en ligne BTP, portails clients et boutiques connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Villemomble ?",
-      a: "Nos audits à Villemomble commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Villemomble et dans l'est parisien ?",
+      a: "Oui, Axion-IA intervient à Villemomble et tout l'est francilien (Rosny-sous-Bois, Le Raincy, Gagny, Montfermeil, Neuilly-Plaisance). Nos consultants viennent de Paris, à 25 minutes.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention à Villemomble ?",
-      a: "Nous nous déplaçons à Villemomble dans un délai standard de 5 jours ouvrés pour commencer une intervention sur site.",
+      q: "Accompagnez-vous les TPE artisans et commerces de Villemomble ?",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
     },
     {
-      q: "Comment Axion-IA gère-t-il la conformité RGPD à Villemomble ?",
-      a: "Axion-IA assure que toutes nos solutions respectent les normes RGPD, garantissant la protection des données personnelles lors de nos interventions à Villemomble.",
+      q: "Travaillez-vous avec les professions de santé et libérales ?",
+      a: "Oui, agents conversationnels de prise de RDV, automatisation administrative, classification de dossiers et relances, dans le respect strict du RGPD et du secret médical.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Villemomble ?",
-      a: "Oui, nous proposons des sessions de formation IA pour les entreprises de Villemomble, adaptées aux besoins spécifiques de vos équipes et de votre secteur.",
+      q: "Quels services pour les PME de services ?",
+      a: "Agents conversationnels B2B, automatisation de workflows, CRM augmentés et plateformes web sur mesure. Tarifs publics, sans devis opaque.",
+    },
+    {
+      q: "Comment se passe une mission depuis Paris ?",
+      a: "Nos consultants se déplacent depuis Paris en 25 minutes. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Villemomble respecte strictement le RGPD, sans dépendance technologique imposée et avec transfert de compétences vers vos équipes.",
     },
   ],
 };

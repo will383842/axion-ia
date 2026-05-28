@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Noisy-le-Grand (93, Seine-Saint-Denis) — Marne-la-Vallée, quartier d'affaires Mont d'Est, tertiaire, Arche de Noisy.
 
 import type { VilleCopy } from "./types";
 
 export const NOISY_LE_GRAND_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Noisy-le-Grand, ville où se trouvent la Société Générale et BNP Paribas, pour optimiser vos processus grâce à l'IA. Nos services couvrent audit, implémentation et accompagnement personnalisé.",
+    "Noisy-le-Grand (93), ville de Seine-Saint-Denis à l'entrée ouest de Marne-la-Vallée, abrite l'un des grands quartiers d'affaires de l'est francilien autour du Mont d'Est (Arche de Noisy, immeubles tertiaires) et bénéficie du RER A. Son économie est avant tout tertiaire : services aux entreprises, informatique, professions libérales, commerces. Le tissu repose d'abord sur les TPE et les indépendants, puis sur des PME de services et de programmation informatique. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE et PME noiséennes pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du bureau du Mont d'Est au commerce de quartier.",
   pitchEn:
-    "Axion-IA intervient à Noisy-le-Grand, ville où se trouvent la Société Générale et BNP Paribas, pour optimiser vos processus grâce à l'IA. Nos services couvrent audit, implémentation et accompagnement personnalisé.",
+    "Noisy-le-Grand (93), ville de Seine-Saint-Denis à l'entrée ouest de Marne-la-Vallée, abrite l'un des grands quartiers d'affaires de l'est francilien autour du Mont d'Est (Arche de Noisy, immeubles tertiaires) et bénéficie du RER A. Son économie est avant tout tertiaire : services aux entreprises, informatique, professions libérales, commerces. Le tissu repose d'abord sur les TPE et les indépendants, puis sur des PME de services et de programmation informatique. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE et PME noiséennes pour intégrer concrètement l'intelligence artificielle dans leurs opérations, du bureau du Mont d'Est au commerce de quartier.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Noisy-le-Grand, une ville dynamique avec des entreprises comme Société Générale et BNP Paribas. Nos services incluent des audits, des interventions, et des implémentations. Nous nous déplaçons sur site pour des solutions adaptées à vos besoins.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Grand (93). Nous accompagnons en priorité les TPE puis les PME : indépendants et professions libérales, PME tertiaires et de services aux entreprises, agences informatiques du quartier d'affaires du Mont d'Est, commerçants. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Noisy-le-Grand, une ville dynamique avec des entreprises comme Société Générale et BNP Paribas. Nos services incluent des audits, des interventions, et des implémentations. Nous nous déplaçons sur site pour des solutions adaptées à vos besoins.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Grand (93). Nous accompagnons en priorité les TPE puis les PME : indépendants et professions libérales, PME tertiaires et de services aux entreprises, agences informatiques du quartier d'affaires du Mont d'Est, commerçants. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
+  seoHook: "tertiaire & informatique Mont d'Est",
   ecosystemFr:
-    "Noisy-le-Grand abrite des entreprises telles que Société Générale et BNP Paribas. La ZAC du Mont d'Est est un pôle économique important, renforçant l'attractivité de la ville pour les entreprises du secteur tertiaire.",
+    "Noisy-le-Grand structure son économie autour du quartier d'affaires du Mont d'Est (Arche de Noisy, immeubles tertiaires) à l'entrée de Marne-la-Vallée, desservi par le RER A. L'activité est très majoritairement tertiaire : services aux entreprises, programmation informatique, professions libérales, commerces. Le tissu local est avant tout composé de TPE et d'indépendants, complétés par des PME de services et de technologie. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
   ecosystemEn:
-    "Noisy-le-Grand abrite des entreprises telles que Société Générale et BNP Paribas. La ZAC du Mont d'Est est un pôle économique important, renforçant l'attractivité de la ville pour les entreprises du secteur tertiaire.",
+    "Noisy-le-Grand structure son économie autour du quartier d'affaires du Mont d'Est (Arche de Noisy, immeubles tertiaires) à l'entrée de Marne-la-Vallée, desservi par le RER A. L'activité est très majoritairement tertiaire : services aux entreprises, programmation informatique, professions libérales, commerces. Le tissu local est avant tout composé de TPE et d'indépendants, complétés par des PME de services et de technologie. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
   distancesFr:
-    "La gare TGV de Marne-la-Vallée - Chessy est à 20 km de Noisy-le-Grand, facilitant l'accès aux grandes lignes.",
+    "Paris à 20 min (RER A, Noisy-le-Grand–Mont d'Est). La Défense à 35 min. Gare TGV de Marne-la-Vallée–Chessy à 20 min. Aéroport Paris-CDG à 40 min. Marne-la-Vallée à proximité immédiate.",
   distancesEn:
-    "La gare TGV de Marne-la-Vallée - Chessy est à 20 km de Noisy-le-Grand, facilitant l'accès aux grandes lignes.",
+    "Paris à 20 min (RER A, Noisy-le-Grand–Mont d'Est). La Défense à 35 min. Gare TGV de Marne-la-Vallée–Chessy à 20 min. Aéroport Paris-CDG à 40 min. Marne-la-Vallée à proximité immédiate.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Construction de bâtiments",
-    "Activités des sièges sociaux",
+    "Sièges sociaux et back-offices (quartier Mont d'Est)",
+    "Banque, assurance et services financiers",
+    "Numérique, éditeurs de logiciels et ESN",
+    "Promotion immobilière et BTP du Grand Paris Est",
+    "Commerce et restauration (centre Les Arcades)",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Noisy-le-Grand pour identifier les opportunités d'automatisation avec la Société Générale — à partir de 490 € HT.",
-      en: "Réaliser un audit à Noisy-le-Grand pour identifier les opportunités d'automatisation avec la Société Générale — à partir de 490 € HT.",
+      fr: "Audit IA à Noisy-le-Grand : diagnostic adapté aux indépendants, professions libérales et commerçants, puis aux PME tertiaires et agences informatiques du Mont d'Est. ROI quantifié, audit Flash 4h.",
+      en: "Audit IA à Noisy-le-Grand : diagnostic adapté aux indépendants, professions libérales et commerçants, puis aux PME tertiaires et agences informatiques du Mont d'Est. ROI quantifié, audit Flash 4h.",
     },
     interventions: {
-      fr: "Intervenir à Noisy-le-Grand pour optimiser les processus de BNP Paribas — intervention dès 590 € HT.",
-      en: "Intervenir à Noisy-le-Grand pour optimiser les processus de BNP Paribas — intervention dès 590 € HT.",
+      fr: "Interventions IA sur site à Noisy-le-Grand : formats adaptés au bureau du Mont d'Est, au cabinet ou au commerce. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Noisy-le-Grand : formats adaptés au bureau du Mont d'Est, au cabinet ou au commerce. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Noisy-le-Grand, en lien avec la ZAC du Mont d'Est — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Noisy-le-Grand, en lien avec la ZAC du Mont d'Est — à partir de 990 € HT.",
+      fr: "Implémentation IA à Noisy-le-Grand : automatisation des workflows tertiaires, agents conversationnels B2B, copilotes de développement pour agences informatiques, CRM augmentés, classification documentaire.",
+      en: "Implémentation IA à Noisy-le-Grand : automatisation des workflows tertiaires, agents conversationnels B2B, copilotes de développement pour agences informatiques, CRM augmentés, classification documentaire.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Noisy-le-Grand pour une stratégie IA personnalisée — sessions à partir de 990 € HT.",
-      en: "Accompagner un dirigeant à Noisy-le-Grand pour une stratégie IA personnalisée — sessions à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Noisy-le-Grand : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE et PME noiséens : indépendants, professions libérales, dirigeants tertiaires et tech.",
+      en: "Coaching 1-to-1 à Noisy-le-Grand : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE et PME noiséens : indépendants, professions libérales, dirigeants tertiaires et tech.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
+      en: "Sites web augmentés IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Noisy-le-Grand ?",
-      a: "Nos audits à Noisy-le-Grand commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Noisy-le-Grand et à Marne-la-Vallée ?",
+      a: "Oui, Axion-IA intervient à Noisy-le-Grand et dans tout l'est francilien (Marne-la-Vallée, Bry-sur-Marne, Champs-sur-Marne). Nos consultants rejoignent le Mont d'Est en 20 min depuis Paris par le RER A.",
     },
     {
-      q: "Comment se déroule une intervention IA à Noisy-le-Grand ?",
-      a: "Nous nous déplaçons sur site à Noisy-le-Grand pour des interventions dès 590 € HT, adaptées à vos besoins spécifiques.",
+      q: "Accompagnez-vous les PME tertiaires du quartier du Mont d'Est ?",
+      a: "Oui, c'est un cas d'usage prioritaire : automatisation des workflows, agents conversationnels B2B, CRM augmentés, classification documentaire et reporting automatisé pour les bureaux du quartier d'affaires.",
     },
     {
-      q: "Quelles entreprises bénéficient de vos services à Noisy-le-Grand ?",
-      a: "Nous intervenons auprès d'entreprises de divers secteurs, notamment celles situées dans la ZAC du Mont d'Est comme Société Générale.",
+      q: "Accompagnez-vous les agences informatiques de Noisy-le-Grand ?",
+      a: "Oui, pour les PME de programmation informatique : copilotes de développement, automatisation des tests, agents internes, intégration de modèles IA dans vos produits, dans le respect du RGPD.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Noisy-le-Grand ?",
-      a: "Les délais varient selon le projet, mais nous nous engageons à intervenir rapidement, généralement sous 5 jours ouvrés après la validation du projet.",
+      q: "Accompagnez-vous les TPE, indépendants et professions libérales ?",
+      a: "Oui, les TPE sont notre priorité : indépendants, professions libérales, commerçants. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation administrative et relation client.",
+    },
+    {
+      q: "Comment se déroule une mission à Noisy-le-Grand ?",
+      a: "Nos consultants se déplacent sur site (Mont d'Est, centre-ville) ou en visio. Accès rapide par le RER A depuis Paris (20 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

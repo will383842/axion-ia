@@ -1,67 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Aix-les-Bains (73, Savoie) — thermalisme, lac du Bourget (plus grand lac naturel de France), tourisme bien-être & casino.
 
 import type { VilleCopy } from "./types";
 
 export const AIX_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Aix-les-Bains, où le secteur de l'hébergement et les Thermes Nationaux d'Aix-les-Bains sont des acteurs clés, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME d'Aix-les-Bains, ville thermale de Savoie au bord du lac du Bourget, le plus grand lac naturel de France. Station de bien-être et de tourisme avec son casino, ses thermes et ses hôtels, Aix concentre l'hébergement, la restauration, le commerce, la santé et les services. Nous y ancrons l'IA dans le concret : réservations, relation client, devis, gestion administrative et relances.",
   pitchEn:
-    "Axion-IA intervient à Aix-les-Bains, où le secteur de l'hébergement et les Thermes Nationaux d'Aix-les-Bains sont des acteurs clés, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME d'Aix-les-Bains, ville thermale de Savoie au bord du lac du Bourget, le plus grand lac naturel de France. Station de bien-être et de tourisme avec son casino, ses thermes et ses hôtels, Aix concentre l'hébergement, la restauration, le commerce, la santé et les services. Nous y ancrons l'IA dans le concret : réservations, relation client, devis, gestion administrative et relances.",
   directAnswerFr:
-    "À Aix-les-Bains, Axion-IA se déplace pour accompagner les entreprises dans l'optimisation de leurs opérations. Avec des acteurs économiques tels que les Thermes Nationaux d'Aix-les-Bains et un secteur du commerce de détail florissant, nous proposons des audits et des interventions 590 répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aix-les-Bains (Savoie). Nous accompagnons en priorité les TPE et PME locales : hôtels et hébergements thermaux, restaurants, commerces du centre et des bords du lac du Bourget, professionnels de santé et du bien-être, artisans et services. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
   directAnswerEn:
-    "À Aix-les-Bains, Axion-IA se déplace pour accompagner les entreprises dans l'optimisation de leurs opérations. Avec des acteurs économiques tels que les Thermes Nationaux d'Aix-les-Bains et un secteur du commerce de détail florissant, nous proposons des audits et des interventions 590 répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "hébergement & activités sportives",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aix-les-Bains (Savoie). Nous accompagnons en priorité les TPE et PME locales : hôtels et hébergements thermaux, restaurants, commerces du centre et des bords du lac du Bourget, professionnels de santé et du bien-être, artisans et services. Audit pragmatique, formation des équipes sur site et implémentation d'outils concrets, sans jargon. Les ETI restent une cible marginale de notre activité.",
+  seoHook: "thermalisme & tourisme bien-être",
   ecosystemFr:
-    "L'écosystème économique d'Aix-les-Bains est marqué par les Thermes Nationaux d'Aix-les-Bains et un secteur dynamique du commerce de détail, offrant un cadre propice à l'innovation et à l'amélioration des processus par l'IA.",
+    "Aix-les-Bains, deuxième ville de Savoie, vit au rythme du thermalisme et du tourisme : thermes, casino, port de plaisance et hôtellerie bordent le lac du Bourget, plus grand lac naturel de France. L'économie locale repose sur l'hébergement, la restauration, le commerce de détail, les activités sportives et de bien-être, la santé et une saisonnalité marquée. Ce tissu de TPE et PME, à la relation client intense et aux pics d'activité forts, tire un bénéfice direct de l'IA pour fluidifier réservations, accueil et gestion administrative.",
   ecosystemEn:
-    "L'écosystème économique d'Aix-les-Bains est marqué par les Thermes Nationaux d'Aix-les-Bains et un secteur dynamique du commerce de détail, offrant un cadre propice à l'innovation et à l'amélioration des processus par l'IA.",
+    "Aix-les-Bains, deuxième ville de Savoie, vit au rythme du thermalisme et du tourisme : thermes, casino, port de plaisance et hôtellerie bordent le lac du Bourget, plus grand lac naturel de France. L'économie locale repose sur l'hébergement, la restauration, le commerce de détail, les activités sportives et de bien-être, la santé et une saisonnalité marquée. Ce tissu de TPE et PME, à la relation client intense et aux pics d'activité forts, tire un bénéfice direct de l'IA pour fluidifier réservations, accueil et gestion administrative.",
   distancesFr:
-    "La gare TGV Gare d'Aix-les-Bains-Le Revard facilite l'accès, avec l'aéroport de Chambéry-Savoie à seulement 8 km.",
+    "Aix-les-Bains est sur l'axe TGV Paris-Chambéry-Annecy (gare Aix-les-Bains-Le Revard) et à 8 km de l'aéroport de Chambéry-Savoie. Chambéry est à 15 min, Annecy à 35 min, Lyon à 1 h 15. Nos consultants se déplacent sur tout le bassin du lac du Bourget : Chambéry, Le Bourget-du-Lac, Grésy-sur-Aix et la Savoie nord.",
   distancesEn:
-    "La gare TGV Gare d'Aix-les-Bains-Le Revard facilite l'accès, avec l'aéroport de Chambéry-Savoie à seulement 8 km.",
-  topSectorsNaf: ["Hébergement", "Activités sportives", "Santé humaine", "Commerce de détail"],
+    "Aix-les-Bains est sur l'axe TGV Paris-Chambéry-Annecy (gare Aix-les-Bains-Le Revard) et à 8 km de l'aéroport de Chambéry-Savoie. Chambéry est à 15 min, Annecy à 35 min, Lyon à 1 h 15. Nos consultants se déplacent sur tout le bassin du lac du Bourget : Chambéry, Le Bourget-du-Lac, Grésy-sur-Aix et la Savoie nord.",
+  topSectorsNaf: [
+    "Hébergement & hôtellerie thermale",
+    "Restauration",
+    "Santé & bien-être",
+    "Commerce de détail",
+    "Activités sportives & de loisirs",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Aix-les-Bains, notamment pour les Thermes Nationaux, permet d'identifier des améliorations opérationnelles.",
-      en: "Réaliser un audit à Aix-les-Bains, notamment pour les Thermes Nationaux, permet d'identifier des améliorations opérationnelles.",
+      fr: "Audit IA à Aix-les-Bains : diagnostic des réservations, de l'accueil et de la gestion administrative dans l'hôtellerie, la restauration et les commerces. ROI chiffré, priorité TPE/PME.",
+      en: "Audit IA à Aix-les-Bains : diagnostic des réservations, de l'accueil et de la gestion administrative dans l'hôtellerie, la restauration et les commerces. ROI chiffré, priorité TPE/PME.",
     },
     interventions: {
-      fr: "Intervenir à Aix-les-Bains, où le commerce de détail est prédominant, pour automatiser les processus administratifs.",
-      en: "Intervenir à Aix-les-Bains, où le commerce de détail est prédominant, pour automatiser les processus administratifs.",
+      fr: "Interventions IA sur site à Aix-les-Bains : formats courts adaptés à l'hôtel, au restaurant, au commerce ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Aix-les-Bains : formats courts adaptés à l'hôtel, au restaurant, au commerce ou au cabinet. Vos équipes repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Aix-les-Bains pour optimiser les activités sportives et de santé humaine.",
-      en: "Implémenter des solutions IA à Aix-les-Bains pour optimiser les activités sportives et de santé humaine.",
+      fr: "Implémentation IA à Aix-les-Bains : agents conversationnels de réservation, automatisation de l'accueil et des relances, gestion d'avis clients, planning saisonnier pour TPE et PME.",
+      en: "Implémentation IA à Aix-les-Bains : agents conversationnels de réservation, automatisation de l'accueil et des relances, gestion d'avis clients, planning saisonnier pour TPE et PME.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Aix-les-Bains pour les dirigeants des secteurs de l'hébergement et de la santé.",
-      en: "Proposer des sessions 1-to-1 à Aix-les-Bains pour les dirigeants des secteurs de l'hébergement et de la santé.",
+      fr: "Coaching 1-to-1 à Aix-les-Bains : sessions à l'hôtel, au commerce, au cabinet ou en visio. Pour dirigeants de TPE/PME aixoises du tourisme, du bien-être et des services.",
+      en: "Coaching 1-to-1 à Aix-les-Bains : sessions à l'hôtel, au commerce, au cabinet ou en visio. Pour dirigeants de TPE/PME aixoises du tourisme, du bien-être et des services.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Aix-les-Bains : plateformes et outils IA sur mesure pour hôtels, restaurants et acteurs du bien-être — réservation intelligente, gestion d'avis, portails clients.",
+      en: "Sites web augmentés à Aix-les-Bains : plateformes et outils IA sur mesure pour hôtels, restaurants et acteurs du bien-être — réservation intelligente, gestion d'avis, portails clients.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Aix-les-Bains ?",
-      a: "Les interventions à Aix-les-Bains commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails sur les prestations disponibles.",
+      q: "Axion-IA intervient-il à Aix-les-Bains et autour du lac du Bourget ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME d'Aix-les-Bains et de tout le bassin du lac (Chambéry à 15 min, Le Bourget-du-Lac, Grésy-sur-Aix). Accès TGV direct et aéroport de Chambéry à 8 km.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Aix-les-Bains ?",
-      a: "Axion-IA intègre les principes de conformité RGPD dans toutes ses interventions à Aix-les-Bains, en garantissant la protection des données personnelles lors de chaque projet.",
+      q: "Accompagnez-vous les hôtels et hébergements thermaux ?",
+      a: "Oui, l'hôtellerie thermale est un secteur clé local. Agents conversationnels de réservation, automatisation de l'accueil, gestion d'avis clients et lissage des pics saisonniers.",
     },
     {
-      q: "Quels délais pour une intervention sur site à Aix-les-Bains ?",
-      a: "Nous nous déplaçons sur site à Aix-les-Bains généralement dans un délai de 5 jours ouvrés, selon la disponibilité et la nature du projet.",
+      q: "Travaillez-vous avec les restaurants et commerces du centre ?",
+      a: "Oui, restauration et commerce de détail font partie de notre cible TPE/PME. Prise de commande et réservation intelligentes, relances, support administratif allégé.",
     },
     {
-      q: "Proposez-vous des formations IA pour les PME à Aix-les-Bains ?",
-      a: "Oui, Axion-IA propose des formations spécifiques pour les PME d'Aix-les-Bains, avec des sessions 1-to-1 à partir de 990 € HT pour accompagner les dirigeants dans l'adoption de l'IA.",
+      q: "Quels services pour les professionnels du bien-être et de la santé ?",
+      a: "Audit Flash, journée de formation sur site et coaching 1-to-1. Agents de prise de RDV, classification de dossiers, RGPD strict pour cabinets et acteurs du bien-être.",
     },
     {
-      q: "Comment accéder à vos services depuis le centre d'Aix-les-Bains ?",
-      a: "La gare TGV Gare d'Aix-les-Bains-Le Revard est un point d'accès central pour nos services, facilitant nos interventions sur site.",
+      q: "Comment se passe une mission à Aix-les-Bains ?",
+      a: "Nos consultants se déplacent sur le bassin du lac du Bourget, avec un accès TGV et l'aéroport de Chambéry à 8 km. Les frais de déplacement sont facturés séparément, selon nos tarifs publics.",
     },
   ],
 };

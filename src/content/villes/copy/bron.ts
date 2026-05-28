@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Bron (69, Rhône) — est lyonnais, aéroport d'affaires Lyon-Bron, proximité hôpital Édouard Herriot.
 
 import type { VilleCopy } from "./types";
 
 export const BRON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bron pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme Sanofi et bioMérieux, Bron est un pôle économique clé en Auvergne-Rhône-Alpes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Bron, deuxième ville de la Métropole de Lyon. Adossée à l'aéroport d'affaires Lyon-Bron et au pôle hospitalo-universitaire de l'est lyonnais, Bron concentre un tissu dense de PME tertiaires, de prestataires de santé, de commerces et d'industries. Nous y ancrons l'IA dans le concret : automatisation administrative, agents conversationnels, relances et gestion documentaire.",
   pitchEn:
-    "Axion-IA intervient à Bron pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme Sanofi et bioMérieux, Bron est un pôle économique clé en Auvergne-Rhône-Alpes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Bron, deuxième ville de la Métropole de Lyon. Adossée à l'aéroport d'affaires Lyon-Bron et au pôle hospitalo-universitaire de l'est lyonnais, Bron concentre un tissu dense de PME tertiaires, de prestataires de santé, de commerces et d'industries. Nous y ancrons l'IA dans le concret : automatisation administrative, agents conversationnels, relances et gestion documentaire.",
   directAnswerFr:
-    "Axion-IA se déplace à Bron pour offrir des services d'IA opérationnelle, adaptés aux besoins des entreprises locales. Bron, avec ses 4 000 établissements actifs, bénéficie de la proximité de grands groupes comme Sanofi et d'institutions académiques telles que l'Université Lumière Lyon 2, facilitant ainsi l'innovation et la collaboration.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bron, dans l'est de la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME : PME tertiaires et services, professionnels de santé (proximité de l'hôpital Édouard Herriot et du pôle universitaire Lyon 2), commerces, artisans et prestataires liés à l'aéroport d'affaires Lyon-Bron. Audit pragmatique, formation sur site, implémentation d'outils réels. Les ETI restent marginales dans notre activité.",
   directAnswerEn:
-    "Axion-IA se déplace à Bron pour offrir des services d'IA opérationnelle, adaptés aux besoins des entreprises locales. Bron, avec ses 4 000 établissements actifs, bénéficie de la proximité de grands groupes comme Sanofi et d'institutions académiques telles que l'Université Lumière Lyon 2, facilitant ainsi l'innovation et la collaboration.",
-  seoHook: "programmation informatique & santé humaine",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bron, dans l'est de la Métropole de Lyon. Nous accompagnons en priorité les TPE et PME : PME tertiaires et services, professionnels de santé (proximité de l'hôpital Édouard Herriot et du pôle universitaire Lyon 2), commerces, artisans et prestataires liés à l'aéroport d'affaires Lyon-Bron. Audit pragmatique, formation sur site, implémentation d'outils réels. Les ETI restent marginales dans notre activité.",
+  seoHook: "aéroport d'affaires & santé",
   ecosystemFr:
-    "Bron est un centre économique dynamique avec des entreprises comme Sanofi et bioMérieux. Le Parc d'activités de Chassieu renforce l'attractivité de la ville pour les secteurs de la santé et de la programmation informatique.",
+    "Bron, intégrée à la Métropole de Lyon, structure son économie autour de l'aéroport d'affaires Lyon-Bron, du pôle universitaire (Lyon 2) et de la proximité immédiate du grand hôpital Édouard Herriot. Le tissu local associe PME tertiaires et services, professionnels de santé, commerce de détail, petites industries et logistique de l'est lyonnais. Ces TPE et PME, prises dans une concurrence métropolitaine forte, gagnent à automatiser leurs tâches répétitives pour libérer du temps à forte valeur.",
   ecosystemEn:
-    "Bron est un centre économique dynamique avec des entreprises comme Sanofi et bioMérieux. Le Parc d'activités de Chassieu renforce l'attractivité de la ville pour les secteurs de la santé et de la programmation informatique.",
+    "Bron, intégrée à la Métropole de Lyon, structure son économie autour de l'aéroport d'affaires Lyon-Bron, du pôle universitaire (Lyon 2) et de la proximité immédiate du grand hôpital Édouard Herriot. Le tissu local associe PME tertiaires et services, professionnels de santé, commerce de détail, petites industries et logistique de l'est lyonnais. Ces TPE et PME, prises dans une concurrence métropolitaine forte, gagnent à automatiser leurs tâches répétitives pour libérer du temps à forte valeur.",
   distancesFr:
-    "Bron est à 8 km de la Gare de Lyon Part-Dieu et à 15 km de l'Aéroport Lyon-Saint Exupéry.",
+    "Bron est à 8 km du centre de Lyon et de la gare Part-Dieu (15 min en T2/T5), à 15 km de l'aéroport Lyon-Saint-Exupéry et dispose de son propre aéroport d'affaires, Lyon-Bron. Nos consultants se déplacent depuis Lyon sur tout l'est métropolitain : Villeurbanne, Vénissieux, Chassieu, Saint-Priest et Décines.",
   distancesEn:
-    "Bron est à 8 km de la Gare de Lyon Part-Dieu et à 15 km de l'Aéroport Lyon-Saint Exupéry.",
+    "Bron est à 8 km du centre de Lyon et de la gare Part-Dieu (15 min en T2/T5), à 15 km de l'aéroport Lyon-Saint-Exupéry et dispose de son propre aéroport d'affaires, Lyon-Bron. Nos consultants se déplacent depuis Lyon sur tout l'est métropolitain : Villeurbanne, Vénissieux, Chassieu, Saint-Priest et Décines.",
   topSectorsNaf: [
-    "Programmation informatique",
+    "PME tertiaires & services",
     "Santé humaine",
     "Commerce de détail",
-    "Transports terrestres",
+    "Aviation d'affaires & maintenance",
+    "Logistique est lyonnais",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bron permet d'identifier les opportunités IA dans des secteurs tels que la santé et le commerce. Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Bron permet d'identifier les opportunités IA dans des secteurs tels que la santé et le commerce. Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Bron : diagnostic des process administratifs et de la relation client dans les PME tertiaires, cabinets de santé et commerces de l'est lyonnais. ROI chiffré, priorité TPE/PME.",
+      en: "Audit IA à Bron : diagnostic des process administratifs et de la relation client dans les PME tertiaires, cabinets de santé et commerces de l'est lyonnais. ROI chiffré, priorité TPE/PME.",
     },
     interventions: {
-      fr: "Intervenir à Bron pour automatiser les processus administratifs dans les entreprises locales, avec des solutions adaptées à chaque secteur.",
-      en: "Intervenir à Bron pour automatiser les processus administratifs dans les entreprises locales, avec des solutions adaptées à chaque secteur.",
+      fr: "Interventions IA sur site à Bron : formats courts pour équipes tertiaires, cabinets de santé ou commerces. Vos collaborateurs repartent autonomes sur leurs outils IA.",
+      en: "Interventions IA sur site à Bron : formats courts pour équipes tertiaires, cabinets de santé ou commerces. Vos collaborateurs repartent autonomes sur leurs outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bron, en tenant compte des infrastructures existantes comme celles de Sanofi. Tarifs à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Bron, en tenant compte des infrastructures existantes comme celles de Sanofi. Tarifs à partir de 990 € HT.",
+      fr: "Implémentation IA à Bron : agents conversationnels patient/client, automatisation des RDV et relances, classification de dossiers, CRM augmentés pour TPE et PME.",
+      en: "Implémentation IA à Bron : agents conversationnels patient/client, automatisation des RDV et relances, classification de dossiers, CRM augmentés pour TPE et PME.",
     },
     unAUn: {
-      fr: "Accompagner individuellement les dirigeants de Bron pour optimiser l'utilisation de l'IA dans leurs opérations quotidiennes. Sessions dès 990 € HT.",
-      en: "Accompagner individuellement les dirigeants de Bron pour optimiser l'utilisation de l'IA dans leurs opérations quotidiennes. Sessions dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Bron : sessions au cabinet, au bureau ou en visio. Pour dirigeants et professions libérales brondillantes qui veulent piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à Bron : sessions au cabinet, au bureau ou en visio. Pour dirigeants et professions libérales brondillantes qui veulent piloter l'IA eux-mêmes.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Bron : plateformes et outils IA sur mesure pour cabinets de santé, PME de services et commerces — prise de RDV intelligente, portails clients, automatisation des demandes.",
+      en: "Sites web augmentés à Bron : plateformes et outils IA sur mesure pour cabinets de santé, PME de services et commerces — prise de RDV intelligente, portails clients, automatisation des demandes.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Bron ?",
-      a: "Les interventions IA à Bron commencent à partir de 590 € HT. Nos tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Bron et dans l'est lyonnais ?",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bron et de tout l'est de la Métropole (Villeurbanne, Vénissieux, Chassieu, Saint-Priest). Nos consultants viennent de Lyon, à 15 min.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Bron pour ses services ?",
-      a: "Williams se déplace à Bron pour réaliser nos services IA, garantissant une intervention sur site rapide et efficace.",
+      q: "Accompagnez-vous les professionnels de santé près de l'hôpital Édouard Herriot ?",
+      a: "Oui, cabinets et structures de santé de l'est lyonnais font partie de notre cible. Agents conversationnels patient, automatisation des RDV, classification de dossiers, RGPD strict.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Bron ?",
-      a: "Les délais d'implémentation à Bron varient selon le projet, mais nous nous engageons à intervenir dans les 5 jours ouvrés suivant la demande.",
+      q: "Travaillez-vous avec les PME tertiaires et de services ?",
+      a: "Oui, c'est notre cœur de cible. Agents conversationnels B2B, automatisation de workflow, relances clients, classification de documents et CRM augmentés.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Bron ?",
-      a: "Oui, Axion-IA s'assure que toutes ses interventions à Bron respectent strictement le RGPD, garantissant la protection des données personnelles.",
+      q: "Quels services pour les commerces et prestataires de l'aéroport Lyon-Bron ?",
+      a: "Audit Flash, journée de formation sur site et coaching 1-to-1. Nous adaptons les formats aux TPE locales, des commerces aux prestataires de l'aviation d'affaires.",
+    },
+    {
+      q: "Comment se passe une mission depuis Lyon ?",
+      a: "Bron étant dans la Métropole, nos consultants sont sur place en 15 min depuis le centre de Lyon. Les frais de déplacement sont facturés séparément, selon nos tarifs publics.",
     },
   ],
 };

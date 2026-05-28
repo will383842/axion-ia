@@ -1,72 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Goussainville (95, Val-d'Oise) — proximité Roissy-CDG, logistique aéroportuaire, Vieux Pays.
 
 import type { VilleCopy } from "./types";
 
 export const GOUSSAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Goussainville, au cœur d'un écosystème comprenant DHL et FedEx, pour optimiser vos processus grâce à l'IA.",
+    "Goussainville (95), aux portes de l'aéroport Roissy-Charles-de-Gaulle, vit au rythme de la logistique aéroportuaire, de l'entreposage, du transport et d'un commerce de proximité dense. Ses zones d'activité concentrent de nombreuses TPE et PME de fret, de services aux entreprises et d'artisanat. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME val-d'oisiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui fluidifie flux, planning et relation client sans dépendance technique.",
   pitchEn:
-    "Axion-IA intervient à Goussainville, au cœur d'un écosystème comprenant DHL et FedEx, pour optimiser vos processus grâce à l'IA.",
+    "Goussainville (95), aux portes de l'aéroport Roissy-Charles-de-Gaulle, vit au rythme de la logistique aéroportuaire, de l'entreposage, du transport et d'un commerce de proximité dense. Ses zones d'activité concentrent de nombreuses TPE et PME de fret, de services aux entreprises et d'artisanat. Axion-IA, cabinet d'architectes IA seniors, accompagne en priorité ces TPE puis les PME val-d'oisiennes, plus rarement les ETI, pour déployer une IA opérationnelle qui fluidifie flux, planning et relation client sans dépendance technique.",
   directAnswerFr:
-    "Axion-IA se déplace à Goussainville pour proposer des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme DHL et FedEx présents dans la région, nous aidons à automatiser les processus logistiques et administratifs. Nos services incluent audits, interventions et implémentations, garantissant un retour sur investissement rapide et mesurable.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Goussainville (95) auprès des TPE et PME : logistique et fret aéroportuaire de Roissy-CDG, entreposage, transport, services aux entreprises et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA se déplace à Goussainville pour proposer des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme DHL et FedEx présents dans la région, nous aidons à automatiser les processus logistiques et administratifs. Nos services incluent audits, interventions et implémentations, garantissant un retour sur investissement rapide et mesurable.",
-  seoHook: "transports terrestres & entreposage",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Goussainville (95) auprès des TPE et PME : logistique et fret aéroportuaire de Roissy-CDG, entreposage, transport, services aux entreprises et commerce. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+  seoHook: "logistique Roissy & entreposage",
   ecosystemFr:
-    "Goussainville bénéficie de la proximité de grands groupes tels que DHL et FedEx, renforçant son tissu économique. La ZAC des Tulipes est un pôle d'activité clé, soutenant les secteurs du transport et de l'entreposage.",
+    "Goussainville, dans le Val-d'Oise au nord de la plaine de France, tire son dynamisme de la proximité immédiate de l'aéroport Roissy-Charles-de-Gaulle. Ses zones d'activité accueillent des TPE et PME de logistique, fret, entreposage, transport routier et services aux entreprises, complétées par un commerce de détail et un artisanat de proximité. Le contraste entre le Vieux Pays patrimonial et les pôles logistiques modernes nourrit un écosystème où l'IA appliquée aux flux et à l'administration crée une vraie valeur.",
   ecosystemEn:
-    "Goussainville bénéficie de la proximité de grands groupes tels que DHL et FedEx, renforçant son tissu économique. La ZAC des Tulipes est un pôle d'activité clé, soutenant les secteurs du transport et de l'entreposage.",
+    "Goussainville, dans le Val-d'Oise au nord de la plaine de France, tire son dynamisme de la proximité immédiate de l'aéroport Roissy-Charles-de-Gaulle. Ses zones d'activité accueillent des TPE et PME de logistique, fret, entreposage, transport routier et services aux entreprises, complétées par un commerce de détail et un artisanat de proximité. Le contraste entre le Vieux Pays patrimonial et les pôles logistiques modernes nourrit un écosystème où l'IA appliquée aux flux et à l'administration crée une vraie valeur.",
   distancesFr:
-    "Goussainville est située à 10 km de l'aéroport de Paris-Charles de Gaulle et à 20 km de la Gare de Paris-Nord.",
+    "Goussainville est à 10 min de l'aéroport Roissy-Charles-de-Gaulle et desservie par le RER D. La gare de Paris-Nord est à environ 30 min, et l'A1 relie directement Paris et le nord.",
   distancesEn:
-    "Goussainville est située à 10 km de l'aéroport de Paris-Charles de Gaulle et à 20 km de la Gare de Paris-Nord.",
+    "Goussainville est à 10 min de l'aéroport Roissy-Charles-de-Gaulle et desservie par le RER D. La gare de Paris-Nord est à environ 30 min, et l'A1 relie directement Paris et le nord.",
   topSectorsNaf: [
-    "Transports terrestres",
-    "Entreposage",
-    "Commerce de gros",
-    "Travaux de construction",
+    "Logistique et fret aéroportuaire",
+    "Entreposage et stockage",
+    "Transports routiers de marchandises",
+    "Services aux entreprises",
+    "Commerce de gros et de détail",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Goussainville pour identifier les opportunités d'automatisation avec DHL et FedEx — à partir de 490 € HT.",
-      en: "Réaliser un audit à Goussainville pour identifier les opportunités d'automatisation avec DHL et FedEx — à partir de 490 € HT.",
+      fr: "Audit IA à Goussainville : diagnostic des tâches automatisables pour logistique Roissy, entreposage, transport et services. Audit Flash dès 490 € HT, livrable priorisé.",
+      en: "Audit IA à Goussainville : diagnostic des tâches automatisables pour logistique Roissy, entreposage, transport et services. Audit Flash dès 490 € HT, livrable priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Goussainville pour optimiser les processus logistiques dans la ZAC des Tulipes — intervention dès 590 € HT.",
-      en: "Intervenir à Goussainville pour optimiser les processus logistiques dans la ZAC des Tulipes — intervention dès 590 € HT.",
+      fr: "Interventions IA sur site à Goussainville : ateliers pratiques pour exploitation logistique, planning et administration, afin de rendre vos équipes autonomes sur les outils IA.",
+      en: "Interventions IA sur site à Goussainville : ateliers pratiques pour exploitation logistique, planning et administration, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Goussainville, intégrant les systèmes existants des entreprises — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Goussainville, intégrant les systèmes existants des entreprises — dès 990 € HT.",
+      fr: "Implémentation IA à Goussainville : optimisation des tournées, suivi des expéditions, automatisation documentaire douane et CRM augmenté pour TPE et PME de fret aéroportuaire.",
+      en: "Implémentation IA à Goussainville : optimisation des tournées, suivi des expéditions, automatisation documentaire douane et CRM augmenté pour TPE et PME de fret aéroportuaire.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Goussainville avec des sessions 1-to-1 pour une adoption rapide de l'IA — à partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Goussainville avec des sessions 1-to-1 pour une adoption rapide de l'IA — à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un à Goussainville : sessions sur site ou en visio pour dirigeants de TPE et PME logistiques, ciblées sur vos priorités d'exploitation et de gestion.",
+      en: "Accompagnement un-à-un à Goussainville : sessions sur site ou en visio pour dirigeants de TPE et PME logistiques, ciblées sur vos priorités d'exploitation et de gestion.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Goussainville : portail client ou vitrine B2B avec IA intégrée (suivi colis, devis transport, recherche) pour logisticiens, transporteurs et services aux entreprises.",
+      en: "Sites web augmentés à Goussainville : portail client ou vitrine B2B avec IA intégrée (suivi colis, devis transport, recherche) pour logisticiens, transporteurs et services aux entreprises.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Goussainville ?",
-      a: "Nos tarifs commencent à 590 € HT pour une intervention essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Goussainville ?",
+      a: "Oui, Axion-IA intervient à Goussainville et autour de Roissy (Le Thillay, Louvres, Sarcelles, Gonesse). Nos architectes IA seniors se déplacent sur site ou travaillent en visio.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Goussainville ?",
-      a: "Notre équipe nationale se déplace directement sur site à Goussainville pour réaliser des audits, interventions et implémentations.",
+      q: "Quel est le tarif d'un audit IA à Goussainville ?",
+      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME val-d'oisiennes : logistique, transport, entreposage et services aux entreprises.",
     },
     {
-      q: "Quel est le délai pour une intervention à Goussainville ?",
-      a: "Williams se déplace sur site à Goussainville dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Comment l'IA aide-t-elle les entreprises logistiques de Roissy ?",
+      a: "Pour les TPE et PME de fret et d'entreposage : optimisation des tournées, suivi des expéditions, automatisation documentaire et douanière, et réponses client plus rapides, par étapes maîtrisées.",
     },
     {
-      q: "Comment l'IA peut-elle aider les entreprises de transport à Goussainville ?",
-      a: "L'IA optimise les processus logistiques, réduit les coûts et améliore l'efficacité, particulièrement dans le secteur du transport.",
+      q: "Quels services pour les commerces et artisans de Goussainville ?",
+      a: "Pour les commerces et artisans : automatisation des devis, gestion des stocks, agents conversationnels et présence en ligne enrichie par l'IA, calibrés selon votre taille et votre budget.",
     },
     {
-      q: "Quelles sont les garanties de conformité RGPD pour les entreprises de Goussainville ?",
-      a: "Axion-IA assure que toutes les solutions déployées respectent les normes RGPD, garantissant la protection des données.",
+      q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
+      a: "Non. Nous priorisons les TPE puis les PME de Goussainville ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+    },
+    {
+      q: "Comment se déroule une mission à Goussainville ?",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio, à 10 min de Roissy. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Dole (39, Jura) — ville natale de Louis Pasteur, canal du Rhône au Rhin, agroalimentaire & métallurgie.
 
 import type { VilleCopy } from "./types";
 
 export const DOLE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Dole, au cœur d'un écosystème comprenant Euroserum et Solvay, pour optimiser vos processus grâce à l'IA.",
+    "Dole (39), sous-préfecture du Jura et ville natale de Louis Pasteur, conjugue patrimoine et industrie. Adossée au canal du Rhône au Rhin, son économie repose sur l'agroalimentaire, la métallurgie, la plasturgie et un tissu dense de TPE artisanales et commerces. Axion-IA accompagne en priorité les TPE puis les PME doloises.",
   pitchEn:
-    "Axion-IA intervient à Dole, au cœur d'un écosystème comprenant Euroserum et Solvay, pour optimiser vos processus grâce à l'IA.",
+    "Dole (39), sous-préfecture du Jura et ville natale de Louis Pasteur, conjugue patrimoine et industrie. Adossée au canal du Rhône au Rhin, son économie repose sur l'agroalimentaire, la métallurgie, la plasturgie et un tissu dense de TPE artisanales et commerces. Axion-IA accompagne en priorité les TPE puis les PME doloises.",
   directAnswerFr:
-    "À Dole, Axion-IA propose des services d'IA adaptés aux secteurs de l'industrie agroalimentaire et des transports terrestres. Nos interventions sur site permettent aux entreprises de Dole de bénéficier de solutions IA concrètes. Avec des acteurs comme Euroserum et Solvay implantés localement, nous apportons notre expertise nationale pour répondre aux besoins spécifiques de chaque entreprise.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dole (39) auprès des TPE en priorité, puis des PME : agroalimentaire jurassien, métallurgie, plasturgie, artisans du BTP, commerces et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
   directAnswerEn:
-    "À Dole, Axion-IA propose des services d'IA adaptés aux secteurs de l'industrie agroalimentaire et des transports terrestres. Nos interventions sur site permettent aux entreprises de Dole de bénéficier de solutions IA concrètes. Avec des acteurs comme Euroserum et Solvay implantés localement, nous apportons notre expertise nationale pour répondre aux besoins spécifiques de chaque entreprise.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dole (39) auprès des TPE en priorité, puis des PME : agroalimentaire jurassien, métallurgie, plasturgie, artisans du BTP, commerces et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+  seoHook: "agroalimentaire & métallurgie jura",
   ecosystemFr:
-    "Le tissu économique de Dole inclut des entreprises comme Euroserum et Solvay. La Zone Industrielle de Dole est un centre d'activités majeur, renforçant le dynamisme économique local.",
+    "Dole est le premier pôle économique du Jura, structuré autour du canal du Rhône au Rhin et de ses zones industrielles. Le tissu local mêle PME agroalimentaires, métallurgie, plasturgie et un réseau dense de TPE artisanales, commerces de centre historique et professions libérales. L'héritage pastorien ancre une culture d'innovation et de rigueur scientifique dans le bassin dolois.",
   ecosystemEn:
-    "Le tissu économique de Dole inclut des entreprises comme Euroserum et Solvay. La Zone Industrielle de Dole est un centre d'activités majeur, renforçant le dynamisme économique local.",
+    "Dole est le premier pôle économique du Jura, structuré autour du canal du Rhône au Rhin et de ses zones industrielles. Le tissu local mêle PME agroalimentaires, métallurgie, plasturgie et un réseau dense de TPE artisanales, commerces de centre historique et professions libérales. L'héritage pastorien ancre une culture d'innovation et de rigueur scientifique dans le bassin dolois.",
   distancesFr:
-    "La Gare TGV de Dole-Ville et l'Aéroport de Dole-Jura facilitent nos déplacements pour intervenir rapidement.",
+    "Gare TGV Dole-Ville (liaison Paris et Lyon directe). Besançon à 45 min. Dijon à 50 min. Lyon à 1h45. Aéroport Dole-Jura à 10 min.",
   distancesEn:
-    "La Gare TGV de Dole-Ville et l'Aéroport de Dole-Jura facilitent nos déplacements pour intervenir rapidement.",
+    "Gare TGV Dole-Ville (liaison Paris et Lyon directe). Besançon à 45 min. Dijon à 50 min. Lyon à 1h45. Aéroport Dole-Jura à 10 min.",
   topSectorsNaf: [
-    "Industrie agroalimentaire",
-    "Transports terrestres",
-    "Commerce de détail",
-    "Santé humaine",
+    "Industrie agroalimentaire jurassienne",
+    "Métallurgie & travail des métaux",
+    "Plasturgie",
+    "Artisanat & travaux du BTP",
+    "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Dole permet d'identifier des opportunités d'optimisation pour les entreprises locales dès 490 € HT.",
-      en: "Réaliser un audit à Dole permet d'identifier des opportunités d'optimisation pour les entreprises locales dès 490 € HT.",
+      fr: "Audit IA à Dole : diagnostic pour PME agroalimentaires, métallurgie et TPE artisanes. Identification des gains sur la production, la qualité et l'administratif, avec ROI chiffré avant tout engagement.",
+      en: "Audit IA à Dole : diagnostic pour PME agroalimentaires, métallurgie et TPE artisanes. Identification des gains sur la production, la qualité et l'administratif, avec ROI chiffré avant tout engagement.",
     },
     interventions: {
-      fr: "Intervenir à Dole chez Euroserum ou Solvay pour automatiser les processus internes et améliorer l'efficacité.",
-      en: "Intervenir à Dole chez Euroserum ou Solvay pour automatiser les processus internes et améliorer l'efficacité.",
+      fr: "Interventions IA sur site à Dole : formats adaptés à l'atelier industriel, au commerce ou au cabinet. Vos collaborateurs maîtrisent ensuite les outils en autonomie.",
+      en: "Interventions IA sur site à Dole : formats adaptés à l'atelier industriel, au commerce ou au cabinet. Vos collaborateurs maîtrisent ensuite les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Dole dans l'industrie agroalimentaire pour un retour sur investissement rapide dès 990 € HT.",
-      en: "Implémenter des solutions IA à Dole dans l'industrie agroalimentaire pour un retour sur investissement rapide dès 990 € HT.",
+      fr: "Implémentation IA à Dole : contrôle qualité par vision en agroalimentaire et métallurgie, prédiction de maintenance, traçabilité, automatisation administrative et agents conversationnels B2B.",
+      en: "Implémentation IA à Dole : contrôle qualité par vision en agroalimentaire et métallurgie, prédiction de maintenance, traçabilité, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Dole avec des sessions 1-to-1 pour intégrer l'IA dans la stratégie d'entreprise.",
-      en: "Accompagner les dirigeants de Dole avec des sessions 1-to-1 pour intégrer l'IA dans la stratégie d'entreprise.",
+      fr: "Coaching 1-to-1 à Dole : sessions dans votre atelier, bureau, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME du bassin dolois.",
+      en: "Coaching 1-to-1 à Dole : sessions dans votre atelier, bureau, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME du bassin dolois.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Dole : plateformes et outils SaaS IA sur mesure — vente directe agroalimentaire, portails clients, prise de RDV et devis en ligne connectés à vos process.",
+      en: "Sites web augmentés à Dole : plateformes et outils SaaS IA sur mesure — vente directe agroalimentaire, portails clients, prise de RDV et devis en ligne connectés à vos process.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Dole ?",
-      a: "Nos interventions IA à Dole débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Dole et dans le Jura ?",
+      a: "Oui, Axion-IA intervient à Dole et tout le bassin jurassien (Tavaux, Choisey, Authume, Foucherans). Nos consultants se déplacent depuis Lyon ou via la gare TGV Dole-Ville.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Dole pour les interventions ?",
-      a: "Nous nous déplaçons à Dole en utilisant la Gare TGV de Dole-Ville et l'Aéroport de Dole-Jura pour assurer une intervention rapide sur site.",
+      q: "Accompagnez-vous les PME agroalimentaires ?",
+      a: "Oui, contrôle qualité par vision, traçabilité, prédiction de maintenance et automatisation administrative pour les industries agroalimentaires du Jura.",
     },
     {
-      q: "Quels délais pour un audit IA à Dole ?",
-      a: "Nous proposons un Audit Flash de 4 heures à Dole, réalisable rapidement à partir de 490 € HT.",
+      q: "Travaillez-vous avec les TPE artisans et commerces de Dole ?",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Dole ?",
-      a: "Axion-IA garantit la conformité RGPD lors de ses interventions à Dole, en respectant les réglementations en vigueur pour protéger les données.",
+      q: "Quels services pour la métallurgie et la plasturgie ?",
+      a: "Prédiction de maintenance, contrôle qualité par vision, optimisation de production et classification documentaire pour les PME industrielles doloises.",
+    },
+    {
+      q: "Comment se passe une mission à Dole ?",
+      a: "Nos consultants se déplacent sur site ou en visio. Les frais de déplacement sont facturés à part selon une grille tarifaire publique.",
+    },
+    {
+      q: "Vos interventions sont-elles conformes au RGPD ?",
+      a: "Oui, chaque intervention à Dole respecte strictement le RGPD, sans dépendance technologique imposée et avec transfert de compétences vers vos équipes.",
     },
   ],
 };

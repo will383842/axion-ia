@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Sucy-en-Brie (94, Val-de-Marne) — banlieue résidentielle du sud-est parisien, tissu de TPE/PME de proximité, commerces, artisanat et services aux entreprises.
 
 import type { VilleCopy } from "./types";
 
 export const SUCY_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sucy-en-Brie pour optimiser les processus des entreprises locales. L'écosystème de la région, incluant des entités comme LVMH et Cap Digital, offre un contexte propice à l'innovation.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Axion-IA intervient à Sucy-en-Brie pour optimiser les processus des entreprises locales. L'écosystème de la région, incluant des entités comme LVMH et Cap Digital, offre un contexte propice à l'innovation.",
+    "Cabinet d'architectes IA seniors, Axion-IA accompagne les TPE et PME de Sucy-en-Brie, commune résidentielle du sud-est du Val-de-Marne — commerces de proximité, artisanat, professions libérales et services aux entreprises. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "À Sucy-en-Brie, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Avec un audit Flash et des interventions, nous accompagnons les entreprises dans un contexte économique dynamique où LVMH et Cap Digital sont présents. Consultez nos tarifs publics pour plus de détails.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
   directAnswerEn:
-    "À Sucy-en-Brie, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Avec un audit Flash et des interventions, nous accompagnons les entreprises dans un contexte économique dynamique où LVMH et Cap Digital sont présents. Consultez nos tarifs publics pour plus de détails.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE puis les PME de Sucy-en-Brie, ville résidentielle du sud-est francilien proche de Créteil et bien reliée à Paris. Nous nous déplaçons sur site auprès des commerces, artisans, cabinets libéraux et prestataires de services pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne représentent qu'un complément marginal de notre activité.",
+  seoHook: "commerces & services de proximité",
   ecosystemFr:
-    "Sucy-en-Brie bénéficie de la proximité de pôles économiques tels que LVMH et Cap Digital, favorisant le développement des entreprises locales dans des secteurs variés.",
+    "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un bassin de petites structures dynamiques. Pour ces TPE et PME, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
   ecosystemEn:
-    "Sucy-en-Brie bénéficie de la proximité de pôles économiques tels que LVMH et Cap Digital, favorisant le développement des entreprises locales dans des secteurs variés.",
+    "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un bassin de petites structures dynamiques. Pour ces TPE et PME, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
   distancesFr:
-    "Sucy-en-Brie est située à 20 km de la Gare de Lyon et à 15 km de l'aéroport de Paris-Orly.",
+    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos architectes se déplacent sur site dans tout le sud-est du Val-de-Marne.",
   distancesEn:
-    "Sucy-en-Brie est située à 20 km de la Gare de Lyon et à 15 km de l'aéroport de Paris-Orly.",
+    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos architectes se déplacent sur site dans tout le sud-est du Val-de-Marne.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Transports terrestres",
-    "Travaux de construction",
-    "Restauration",
+    "Commerce de détail de proximité",
+    "Artisanat & construction",
+    "Activités libérales & santé",
+    "Services aux entreprises",
+    "Hébergement & restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Sucy-en-Brie pour identifier les axes d'amélioration — audit Flash à partir de 490 € HT.",
-      en: "Réaliser un audit à Sucy-en-Brie pour identifier les axes d'amélioration — audit Flash à partir de 490 € HT.",
+      fr: "Auditer à Sucy-en-Brie les processus d'un commerce, d'un cabinet libéral ou d'un artisan — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
+      en: "Auditer à Sucy-en-Brie les processus d'un commerce, d'un cabinet libéral ou d'un artisan — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir à Sucy-en-Brie pour automatiser les tâches administratives — intervention dès 590 € HT.",
-      en: "Intervenir à Sucy-en-Brie pour automatiser les tâches administratives — intervention dès 590 € HT.",
+      fr: "Intervenir sur site à Sucy-en-Brie pour automatiser la prise de rendez-vous, les devis et les relances clients des TPE/PME de proximité, sans alourdir leur quotidien.",
+      en: "Intervenir sur site à Sucy-en-Brie pour automatiser la prise de rendez-vous, les devis et les relances clients des TPE/PME de proximité, sans alourdir leur quotidien.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Sucy-en-Brie pour optimiser vos opérations — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Sucy-en-Brie pour optimiser vos opérations — à partir de 990 € HT.",
+      fr: "Implémenter à Sucy-en-Brie des outils IA durables et documentés — assistants de gestion et de relation client conçus pour rester maîtrisés en interne après notre départ.",
+      en: "Implémenter à Sucy-en-Brie des outils IA durables et documentés — assistants de gestion et de relation client conçus pour rester maîtrisés en interne après notre départ.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 à Sucy-en-Brie pour des conseils personnalisés — à partir de 990 € HT.",
-      en: "Accompagner en 1-to-1 à Sucy-en-Brie pour des conseils personnalisés — à partir de 990 € HT.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE/PME de Sucy-en-Brie pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie.",
+      en: "Accompagner en un-à-un les dirigeants de TPE/PME de Sucy-en-Brie pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie.",
+    },
+    sitesWeb: {
+      fr: "Concevoir à Sucy-en-Brie un site ou une plateforme web augmentée par l'IA pour un commerce ou un cabinet — prise de rendez-vous, devis en ligne et contenu enrichis intelligemment.",
+      en: "Concevoir à Sucy-en-Brie un site ou une plateforme web augmentée par l'IA pour un commerce ou un cabinet — prise de rendez-vous, devis en ligne et contenu enrichis intelligemment.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Sucy-en-Brie ?",
-      a: "Pour une intervention à Sucy-en-Brie, les tarifs commencent à 590 € HT. Consultez nos tarifs publics pour plus d'informations.",
+      q: "Axion-IA se déplace-t-il sur site à Sucy-en-Brie ?",
+      a: "Oui. Nos architectes IA seniors interviennent directement dans vos locaux à Sucy-en-Brie et dans le sud-est du Val-de-Marne, pour observer vos processus réels avant toute recommandation.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Sucy-en-Brie ?",
-      a: "Nos experts se déplacent directement sur site à Sucy-en-Brie, généralement dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Un commerce ou un cabinet libéral peut-il vraiment profiter de l'IA ?",
+      a: "Oui. Nous aidons commerces, artisans et professions libérales de Sucy-en-Brie à automatiser la prise de rendez-vous, les devis et la relation client, avec des outils proportionnés à une petite structure.",
     },
     {
-      q: "Quels services proposez-vous pour les TPE à Sucy-en-Brie ?",
-      a: "Nous proposons des audits, interventions et implémentations pour aider les TPE à automatiser les tâches administratives et optimiser leurs processus.",
+      q: "L'IA est-elle accessible à une TPE de Sucy-en-Brie ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites entreprises, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD lors de vos interventions à Sucy-en-Brie ?",
-      a: "Nous respectons strictement les directives RGPD, garantissant la protection des données tout au long de nos interventions à Sucy-en-Brie.",
+      q: "Connaît-on les tarifs à l'avance ?",
+      a: "Oui. Axion-IA publie une grille tarifaire claire, sans devis opaque ni abonnement caché. Vous connaissez le coût d'un audit ou d'une intervention à Sucy-en-Brie avant de vous engager.",
     },
     {
-      q: "Quels sont les délais pour une implémentation IA à Sucy-en-Brie ?",
-      a: "Les délais pour une implémentation IA à Sucy-en-Brie varient selon le projet, mais nous nous engageons à intervenir rapidement après l'audit initial.",
+      q: "Mes données sont-elles protégées et conformes au RGPD ?",
+      a: "Oui. Chaque solution IA déployée à Sucy-en-Brie est conçue dans le respect du RGPD et sans dépendance forcée à un éditeur, pour que vous gardiez la maîtrise de vos données.",
     },
   ],
 };

@@ -1,71 +1,79 @@
-﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
-// Escalquens (31, Haute-Garonne) — Sud-est Toulouse.
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Escalquens (31, Haute-Garonne) — Sud-est toulousain, Sicoval, périurbain aéronautique.
 
 import type { VilleCopy } from "./types";
 
 export const ESCALQUENS_COPY: VilleCopy = {
   pitchFr:
-    "Escalquens (31), commune du sud-est de Toulouse avec près de 7 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du Sicoval sud-est toulousain.",
+    "Escalquens (31, Haute-Garonne), commune résidentielle du sud-est toulousain au sein du Sicoval, vit dans l'orbite du pôle aéronautique et spatial de Toulouse. Son tissu mêle TPE artisans, PME de services et sous-traitants techniques, professions libérales, commerces de proximité et restauration. Axion-IA accompagne en priorité ces TPE puis les PME, les ETI restant marginales sur la commune.",
   pitchEn:
-    "Escalquens (31), commune du sud-est de Toulouse avec près de 7 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du Sicoval sud-est toulousain.",
+    "Escalquens (31, Haute-Garonne), commune résidentielle du sud-est toulousain au sein du Sicoval, vit dans l'orbite du pôle aéronautique et spatial de Toulouse. Son tissu mêle TPE artisans, PME de services et sous-traitants techniques, professions libérales, commerces de proximité et restauration. Axion-IA accompagne en priorité ces TPE puis les PME, les ETI restant marginales sur la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-est Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31) et dans tout le Sicoval. Nous accompagnons en priorité les TPE artisans et indépendants, puis les PME de services et sous-traitants de la filière aéronautique périurbaine, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — devis, planning, gestion documentaire, relation client — avant tout déploiement, à 18 min de Toulouse ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-est Toulouse. Audit Flash sur mesure.",
-  seoHook: "artisanat & commerce détail",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31) et dans tout le Sicoval. Nous accompagnons en priorité les TPE artisans et indépendants, puis les PME de services et sous-traitants de la filière aéronautique périurbaine, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — devis, planning, gestion documentaire, relation client — avant tout déploiement, à 18 min de Toulouse ou en visio.",
+  seoHook: "artisanat & sous-traitance aéro",
   ecosystemFr:
-    "Escalquens est une commune résidentielle du sud-est de Toulouse, dans le Sicoval. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de Castanet-Tolosan et Labège.",
+    "Escalquens est une commune périurbaine du sud-est de Toulouse, dans la communauté du Sicoval, proche de Labège-Innopole et Castanet-Tolosan. Économie résidentielle et de services tirée par le bassin aéronautique et spatial toulousain : TPE artisans et BTP, PME de services et sous-traitants techniques, professions libérales et santé, commerces et restauration.",
   ecosystemEn:
-    "Escalquens est une commune résidentielle du sud-est de Toulouse, dans le Sicoval. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de Castanet-Tolosan et Labège.",
+    "Escalquens est une commune périurbaine du sud-est de Toulouse, dans la communauté du Sicoval, proche de Labège-Innopole et Castanet-Tolosan. Économie résidentielle et de services tirée par le bassin aéronautique et spatial toulousain : TPE artisans et BTP, PME de services et sous-traitants techniques, professions libérales et santé, commerces et restauration.",
   distancesFr:
-    "Toulouse centre à 18 min (D813). Gare Matabiau à 22 min. Aéroport Toulouse-Blagnac à 30 min. Castanet-Tolosan à 5 min.",
+    "Toulouse centre à 18 min par la D813. Gare Matabiau à 22 min. Aéroport Toulouse-Blagnac à 30 min. Labège-Innopole à 6 min. Castanet-Tolosan à 5 min.",
   distancesEn:
-    "Toulouse centre à 18 min (D813). Gare Matabiau à 22 min. Aéroport Toulouse-Blagnac à 30 min. Castanet-Tolosan à 5 min.",
+    "Toulouse centre à 18 min par la D813. Gare Matabiau à 22 min. Aéroport Toulouse-Blagnac à 30 min. Labège-Innopole à 6 min. Castanet-Tolosan à 5 min.",
   topSectorsNaf: [
-    "Artisanat & BTP",
-    "Services aux entreprises",
-    "Commerce de détail",
+    "Artisanat & BTP de proximité",
+    "Sous-traitance technique aéronautique & spatiale",
+    "Conseil & services aux entreprises (Sicoval/Labège)",
     "Professions libérales & santé",
-    "Restauration & hébergement",
+    "Commerce de détail & restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Escalquens : diagnostic adapté aux TPE artisans, PME de services et professions libérales du Sicoval. Audit Flash 490 € HT.",
-      en: "Audit IA à Escalquens : diagnostic adapté aux TPE artisans, PME de services et professions libérales du Sicoval. Audit Flash 490 € HT.",
+      fr: "Audit IA à Escalquens : diagnostic ciblé pour TPE artisans, sous-traitants aéronautiques et PME de services du Sicoval, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA à Escalquens : diagnostic ciblé pour TPE artisans, sous-traitants aéronautiques et PME de services du Sicoval, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Escalquens : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
-      en: "Interventions IA sur site à Escalquens : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
+      fr: "Interventions IA sur site à Escalquens : ateliers pratiques pour l'artisan, le sous-traitant technique, le cabinet libéral ou le commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Escalquens : ateliers pratiques pour l'artisan, le sous-traitant technique, le cabinet libéral ou le commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémentation IA à Escalquens : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME du Sicoval.",
-      en: "Implémentation IA à Escalquens : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME du Sicoval.",
+      fr: "Implémentation IA à Escalquens : génération de devis, planification, classification de documents techniques, agents conversationnels et CRM augmentés pour TPE-PME du sud-est toulousain.",
+      en: "Implémentation IA à Escalquens : génération de devis, planification, classification de documents techniques, agents conversationnels et CRM augmentés pour TPE-PME du sud-est toulousain.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Escalquens : sessions dirigeants TPE et PME du sud-est toulousain, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Escalquens : sessions dirigeants TPE et PME du sud-est toulousain, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Escalquens : sessions pour dirigeants de TPE et PME du Sicoval, dans vos locaux ou en visio, centrées sur des outils IA directement applicables.",
+      en: "Coaching 1-to-1 à Escalquens : sessions pour dirigeants de TPE et PME du Sicoval, dans vos locaux ou en visio, centrées sur des outils IA directement applicables.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Escalquens : vitrines et portails métiers enrichis d'IA pour artisans, sous-traitants et services — prise de contact qualifiée, devis en ligne, contenu local automatisé.",
+      en: "Sites web augmentés à Escalquens : vitrines et portails métiers enrichis d'IA pour artisans, sous-traitants et services — prise de contact qualifiée, devis en ligne, contenu local automatisé.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Escalquens ?",
-      a: "Oui, Axion-IA intervient à Escalquens et dans tout le Sicoval (Castanet-Tolosan, Labège, Ramonville). Nos consultants se déplacent en 18 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Escalquens et dans tout le Sicoval (Labège, Castanet-Tolosan, Ramonville). Nos consultants se déplacent en 18 min depuis Toulouse par la D813, ou animent les sessions en visio.",
     },
     {
-      q: "Quels secteurs accompagnez-vous à Escalquens ?",
-      a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
+      q: "Quels secteurs accompagnez-vous en priorité à Escalquens ?",
+      a: "Nous accompagnons d'abord les TPE artisans et indépendants, puis les PME de services et sous-traitants de la filière aéronautique. Professions libérales, santé, commerces et restauration sont également couverts ; les ETI restent marginales ici.",
     },
     {
-      q: "Quel est le prix d'un audit IA pour entreprises à Escalquens  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      q: "Aidez-vous les sous-traitants aéronautiques du sud-est toulousain ?",
+      a: "Oui. Pour les PME et TPE sous-traitantes proches de Labège-Innopole, l'IA aide sur la gestion documentaire technique, les devis, la planification et le suivi qualité.",
+    },
+    {
+      q: "Quel budget prévoir pour un audit IA à Escalquens ?",
+      a: "Nos tarifs sont publics et calibrés selon la taille : de la TPE artisanale à la PME de services. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
     },
     {
       q: "Comment se déroule une intervention IA à Escalquens ?",
-      a: "Nos consultants se déplacent à Escalquens depuis Toulouse (18 min D813). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nos consultants se déplacent depuis Toulouse (18 min, D813). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Proposez-vous du coaching individuel à Escalquens ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Escalquens. Format flexible : locaux, visio. À partir de 990 € HT.",
+      a: "Oui, des sessions 1-to-1 pour dirigeants de TPE et PME du Sicoval, en présentiel ou en visio, axées sur des outils IA directement utiles à votre activité.",
     },
   ],
 };

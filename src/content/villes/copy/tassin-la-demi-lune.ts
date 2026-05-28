@@ -1,65 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Tassin-la-Demi-Lune (69, Rhône) — Ouest lyonnais résidentiel, tertiaire et professions libérales.
 
 import type { VilleCopy } from "./types";
 
 export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Tassin-la-Demi-Lune, proche de Lyon, pour optimiser vos processus IA. Avec des acteurs comme Cap Digital et Inria, nous apportons notre expertise nationale aux entreprises locales.",
+    "Tassin-la-Demi-Lune, commune résidentielle et tertiaire de l'ouest lyonnais, concentre professions libérales, cabinets de conseil, commerces et petites PME de services. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME de l'ouest de la Métropole de Lyon pour automatiser sans recruter.",
   pitchEn:
-    "Axion-IA intervient à Tassin-la-Demi-Lune, proche de Lyon, pour optimiser vos processus IA. Avec des acteurs comme Cap Digital et Inria, nous apportons notre expertise nationale aux entreprises locales.",
+    "Tassin-la-Demi-Lune, commune résidentielle et tertiaire de l'ouest lyonnais, concentre professions libérales, cabinets de conseil, commerces et petites PME de services. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME de l'ouest de la Métropole de Lyon pour automatiser sans recruter.",
   directAnswerFr:
-    "Axion-IA se déplace à Tassin-la-Demi-Lune pour accompagner les entreprises dans leur transformation IA. Proche de Lyon, cette ville bénéficie de l'influence économique de la région Auvergne-Rhône-Alpes, avec des acteurs comme LVMH et BNP Paribas. Nos prestations incluent audits, interventions et implémentations pour répondre aux besoins spécifiques des TPE, PME et ETI locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Tassin-la-Demi-Lune (69) et dans l'ouest de la Métropole de Lyon. Nous accompagnons en priorité les TPE puis les PME : professions libérales, cabinets de conseil et d'expertise, commerces, agences immobilières et PME de services. Audit, interventions et implémentation pour automatiser rendez-vous, devis, relances et gestion documentaire, avec des livrables documentés et sans dépendance technique durable.",
   directAnswerEn:
-    "Axion-IA se déplace à Tassin-la-Demi-Lune pour accompagner les entreprises dans leur transformation IA. Proche de Lyon, cette ville bénéficie de l'influence économique de la région Auvergne-Rhône-Alpes, avec des acteurs comme LVMH et BNP Paribas. Nos prestations incluent audits, interventions et implémentations pour répondre aux besoins spécifiques des TPE, PME et ETI locales.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Tassin-la-Demi-Lune (69) et dans l'ouest de la Métropole de Lyon. Nous accompagnons en priorité les TPE puis les PME : professions libérales, cabinets de conseil et d'expertise, commerces, agences immobilières et PME de services. Audit, interventions et implémentation pour automatiser rendez-vous, devis, relances et gestion documentaire, avec des livrables documentés et sans dépendance technique durable.",
+  seoHook: "libéral, conseil & services",
   ecosystemFr:
-    "Tassin-la-Demi-Lune est entourée de communes dynamiques comme Lyon et Écully. L'écosystème économique local inclut des entreprises influentes telles que Sanofi et Renault.",
+    "Tassin-la-Demi-Lune est une commune prisée de l'ouest lyonnais, à la fois résidentielle et tertiaire. Son tissu économique repose sur les professions libérales — santé, droit, expertise comptable — les cabinets de conseil, les agences immobilières et les commerces, complétés par de petites PME de services. Proche d'Écully et de son pôle d'enseignement et de sièges sociaux, elle bénéficie de la dynamique de la Métropole de Lyon tout en gardant une échelle de proximité. Axion-IA y adapte ses chantiers IA aux cabinets et PME de services qui cherchent à libérer du temps.",
   ecosystemEn:
-    "Tassin-la-Demi-Lune est entourée de communes dynamiques comme Lyon et Écully. L'écosystème économique local inclut des entreprises influentes telles que Sanofi et Renault.",
-  distancesFr: "La gare TGV Lyon Part-Dieu est à 8 km, et l'aéroport Lyon-Saint Exupéry à 35 km.",
-  distancesEn: "La gare TGV Lyon Part-Dieu est à 8 km, et l'aéroport Lyon-Saint Exupéry à 35 km.",
+    "Tassin-la-Demi-Lune est une commune prisée de l'ouest lyonnais, à la fois résidentielle et tertiaire. Son tissu économique repose sur les professions libérales — santé, droit, expertise comptable — les cabinets de conseil, les agences immobilières et les commerces, complétés par de petites PME de services. Proche d'Écully et de son pôle d'enseignement et de sièges sociaux, elle bénéficie de la dynamique de la Métropole de Lyon tout en gardant une échelle de proximité. Axion-IA y adapte ses chantiers IA aux cabinets et PME de services qui cherchent à libérer du temps.",
+  distancesFr:
+    "Lyon centre à 15 min. Gare de Lyon Part-Dieu à 8 km (TGV Paris en 2h). Aéroport de Lyon-Saint-Exupéry à 35 km. Écully à 5 min, Charbonnières-les-Bains et le tramway T2 / liaison rail de l'ouest lyonnais à proximité directe.",
+  distancesEn:
+    "Lyon centre à 15 min. Gare de Lyon Part-Dieu à 8 km (TGV Paris en 2h). Aéroport de Lyon-Saint-Exupéry à 35 km. Écully à 5 min, Charbonnières-les-Bains et le tramway T2 / liaison rail de l'ouest lyonnais à proximité directe.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
+    "Activités juridiques et comptables",
+    "Conseil pour les affaires et la gestion",
+    "Activités pour la santé humaine",
+    "Agences immobilières",
+    "Commerce de détail de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Tassin-la-Demi-Lune pour identifier les opportunités IA — Audit Flash à partir de 490 € HT.",
-      en: "Réaliser un audit à Tassin-la-Demi-Lune pour identifier les opportunités IA — Audit Flash à partir de 490 € HT.",
+      fr: "Audit IA à Tassin-la-Demi-Lune : diagnostic pour cabinets libéraux, conseils et PME de services de l'ouest lyonnais. On repère les tâches répétitives — prise de rendez-vous, relances, saisie — automatisables sans recruter.",
+      en: "Audit IA à Tassin-la-Demi-Lune : diagnostic pour cabinets libéraux, conseils et PME de services de l'ouest lyonnais. On repère les tâches répétitives — prise de rendez-vous, relances, saisie — automatisables sans recruter.",
     },
     interventions: {
-      fr: "Intervenir à Tassin-la-Demi-Lune pour automatiser vos processus — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Tassin-la-Demi-Lune pour automatiser vos processus — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Tassin-la-Demi-Lune : ateliers pour professions libérales, cabinets de conseil et commerces. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
+      en: "Interventions IA sur site à Tassin-la-Demi-Lune : ateliers pour professions libérales, cabinets de conseil et commerces. Vos équipes deviennent autonomes sur des outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Tassin-la-Demi-Lune pour optimiser vos opérations — Départ à 990 € HT.",
-      en: "Implémenter des solutions IA à Tassin-la-Demi-Lune pour optimiser vos opérations — Départ à 990 € HT.",
+      fr: "Implémentation IA à Tassin-la-Demi-Lune : automatisation de la prise de rendez-vous, des devis, des relances et du classement documentaire pour cabinets et PME de services.",
+      en: "Implémentation IA à Tassin-la-Demi-Lune : automatisation de la prise de rendez-vous, des devis, des relances et du classement documentaire pour cabinets et PME de services.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 à Tassin-la-Demi-Lune pour un pilotage IA sur mesure — À partir de 990 € HT.",
-      en: "Accompagner en 1-to-1 à Tassin-la-Demi-Lune pour un pilotage IA sur mesure — À partir de 990 € HT.",
+      fr: "Accompagnement un-à-un à Tassin-la-Demi-Lune : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de l'ouest lyonnais souhaitant piloter leur adoption de l'IA.",
+      en: "Accompagnement un-à-un à Tassin-la-Demi-Lune : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME de l'ouest lyonnais souhaitant piloter leur adoption de l'IA.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Tassin-la-Demi-Lune : vitrine ou plateforme dotée d'IA pour cabinets et agences — prise de rendez-vous automatisée, espace client, réponses instantanées aux demandes.",
+      en: "Sites web augmentés à Tassin-la-Demi-Lune : vitrine ou plateforme dotée d'IA pour cabinets et agences — prise de rendez-vous automatisée, espace client, réponses instantanées aux demandes.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Tassin-la-Demi-Lune ?",
-      a: "Nos interventions à Tassin-la-Demi-Lune commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Tassin-la-Demi-Lune ?",
+      a: "Oui. Axion-IA se déplace à Tassin-la-Demi-Lune et dans tout l'ouest lyonnais (Écully, Charbonnières-les-Bains, Sainte-Foy-lès-Lyon, Francheville). Nos consultants interviennent sur site depuis Lyon centre en 15 min ou en visio.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention sur site à Tassin-la-Demi-Lune ?",
-      a: "Nos équipes se déplacent sur site à Tassin-la-Demi-Lune dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Accompagnez-vous les professions libérales de Tassin ?",
+      a: "Oui, c'est un cœur de cible. Pour les cabinets de santé, de droit et d'expertise comptable, nous automatisons la prise de rendez-vous, les relances, le classement des dossiers et le premier contact client par agent IA.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Tassin-la-Demi-Lune ?",
-      a: "Nous garantissons la conformité RGPD dans toutes nos interventions à Tassin-la-Demi-Lune, en respectant les réglementations en vigueur.",
+      q: "Quels services pour les cabinets de conseil et PME de services ?",
+      a: "Pour les conseils et PME de services de l'ouest lyonnais, nous mettons en place des automatisations de devis, de reporting et de réponse client, après un Audit Flash ciblant les gains les plus rapides.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de vos services à Tassin-la-Demi-Lune ?",
-      a: "Les secteurs du commerce de détail, de la programmation informatique et des activités des sièges sociaux sont particulièrement adaptés à nos services IA à Tassin-la-Demi-Lune.",
+      q: "Comment se déroule une mission à Tassin-la-Demi-Lune ?",
+      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique imposée.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Tassin-la-Demi-Lune ?",
+      a: "Toutes nos solutions IA respectent le RGPD et l'AI Act : minimisation des données, hébergement maîtrisé et traçabilité, particulièrement utiles pour les professions libérales manipulant des données sensibles.",
     },
   ],
 };

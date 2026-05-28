@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Blagnac (31, Haute-Garonne) — Siège mondial Airbus, aéroport Toulouse-Blagnac, pôle aéronautique-spatial.
 
 import type { VilleCopy } from "./types";
 
 export const BLAGNAC_COPY: VilleCopy = {
   pitchFr:
-    "À Blagnac, Axion-IA intervient pour optimiser les processus des entreprises locales, notamment dans les secteurs de l'aéronautique avec Airbus et ATR. Nous proposons des solutions IA adaptées aux besoins spécifiques de chaque organisation.",
+    "Blagnac, qui abrite le siège mondial d'Airbus et l'aéroport Toulouse-Blagnac, est l'un des pôles aéronautiques et spatiaux majeurs d'Europe. Autour des grands donneurs d'ordres gravite un dense réseau de sous-traitants. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME de la supply chain aéronautique pour automatiser sans recruter.",
   pitchEn:
-    "À Blagnac, Axion-IA intervient pour optimiser les processus des entreprises locales, notamment dans les secteurs de l'aéronautique avec Airbus et ATR. Nous proposons des solutions IA adaptées aux besoins spécifiques de chaque organisation.",
+    "Blagnac, qui abrite le siège mondial d'Airbus et l'aéroport Toulouse-Blagnac, est l'un des pôles aéronautiques et spatiaux majeurs d'Europe. Autour des grands donneurs d'ordres gravite un dense réseau de sous-traitants. Axion-IA, cabinet d'architectes IA seniors, y accompagne d'abord les TPE puis les PME de la supply chain aéronautique pour automatiser sans recruter.",
   directAnswerFr:
-    "Axion-IA se déplace à Blagnac pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local marqué par la présence d'Airbus et ATR. Nos services incluent des audits, des interventions et des implémentations, avec des tarifs publics pour un audit Flash 4h.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Blagnac (31) et dans l'ouest toulousain. Nous accompagnons en priorité les TPE puis les PME sous-traitantes de la filière aéronautique et spatiale gravitant autour du siège mondial d'Airbus et de l'aéroport Toulouse-Blagnac : usinage, ingénierie, contrôle, logistique, services techniques. Audit, interventions et implémentation pour automatiser devis, reporting, gestion documentaire et qualité, avec des livrables documentés.",
   directAnswerEn:
-    "Axion-IA se déplace à Blagnac pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local marqué par la présence d'Airbus et ATR. Nos services incluent des audits, des interventions et des implémentations, avec des tarifs publics pour un audit Flash 4h.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA est un cabinet d'architectes IA seniors qui se déplace à Blagnac (31) et dans l'ouest toulousain. Nous accompagnons en priorité les TPE puis les PME sous-traitantes de la filière aéronautique et spatiale gravitant autour du siège mondial d'Airbus et de l'aéroport Toulouse-Blagnac : usinage, ingénierie, contrôle, logistique, services techniques. Audit, interventions et implémentation pour automatiser devis, reporting, gestion documentaire et qualité, avec des livrables documentés.",
+  seoHook: "aéronautique, ingénierie & spatial",
   ecosystemFr:
-    "Blagnac, avec ses 3 000 établissements actifs, accueille des géants comme Airbus et ATR, renforçant sa position dans le secteur aéronautique. La zone ZAC Andromède est un pôle d'activité clé.",
+    "Blagnac est le cœur battant de l'aéronautique européenne : siège mondial d'Airbus, présence d'ATR, aéroport Toulouse-Blagnac et lignes d'assemblage majeures. Autour de ces donneurs d'ordres s'est structuré un écosystème dense de TPE et PME sous-traitantes — usinage de précision, ingénierie, bureaux d'études, contrôle qualité, logistique industrielle et services techniques — relayé par des zones comme la ZAC Andromède. La filière spatiale toulousaine complète ce paysage. Axion-IA y adapte ses chantiers IA aux PME de la supply chain aéronautique soumises à de fortes exigences de qualité et de traçabilité.",
   ecosystemEn:
-    "Blagnac, avec ses 3 000 établissements actifs, accueille des géants comme Airbus et ATR, renforçant sa position dans le secteur aéronautique. La zone ZAC Andromède est un pôle d'activité clé.",
+    "Blagnac est le cœur battant de l'aéronautique européenne : siège mondial d'Airbus, présence d'ATR, aéroport Toulouse-Blagnac et lignes d'assemblage majeures. Autour de ces donneurs d'ordres s'est structuré un écosystème dense de TPE et PME sous-traitantes — usinage de précision, ingénierie, bureaux d'études, contrôle qualité, logistique industrielle et services techniques — relayé par des zones comme la ZAC Andromède. La filière spatiale toulousaine complète ce paysage. Axion-IA y adapte ses chantiers IA aux PME de la supply chain aéronautique soumises à de fortes exigences de qualité et de traçabilité.",
   distancesFr:
-    "L'aéroport Toulouse-Blagnac est situé à seulement 2 km du centre de Blagnac, facilitant l'accès aux entreprises.",
+    "Aéroport Toulouse-Blagnac à 2 km du centre, relié au centre de Toulouse par le tramway T1 et T2. Gare de Toulouse-Matabiau (TGV) à 20 min. Toulouse centre à 15 min. Accès direct au périphérique toulousain et aux zones industrielles aéronautiques de l'ouest de l'agglomération.",
   distancesEn:
-    "L'aéroport Toulouse-Blagnac est situé à seulement 2 km du centre de Blagnac, facilitant l'accès aux entreprises.",
+    "Aéroport Toulouse-Blagnac à 2 km du centre, relié au centre de Toulouse par le tramway T1 et T2. Gare de Toulouse-Matabiau (TGV) à 20 min. Toulouse centre à 15 min. Accès direct au périphérique toulousain et aux zones industrielles aéronautiques de l'ouest de l'agglomération.",
   topSectorsNaf: [
-    "Construction aéronautique",
-    "Programmation informatique",
-    "Recherche-développement scientifique",
-    "Entreposage et services auxiliaires",
+    "Construction aéronautique et spatiale",
+    "Usinage de précision et sous-traitance industrielle",
+    "Ingénierie et bureaux d'études techniques",
+    "Logistique industrielle et entreposage",
+    "Programmation et conseil informatique",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Blagnac, notamment pour les entreprises aéronautiques, permet d'identifier des optimisations IA dès 490 € HT.",
-      en: "Réaliser un audit à Blagnac, notamment pour les entreprises aéronautiques, permet d'identifier des optimisations IA dès 490 € HT.",
+      fr: "Audit IA à Blagnac : diagnostic pour TPE et PME de la supply chain aéronautique. On cible les automatisations à fort retour — chiffrage, dossiers qualité, traçabilité, reporting — sans recruter.",
+      en: "Audit IA à Blagnac : diagnostic pour TPE et PME de la supply chain aéronautique. On cible les automatisations à fort retour — chiffrage, dossiers qualité, traçabilité, reporting — sans recruter.",
     },
     interventions: {
-      fr: "Intervenir à Blagnac dans des secteurs comme l'aéronautique pour automatiser les processus et améliorer l'efficacité.",
-      en: "Intervenir à Blagnac dans des secteurs comme l'aéronautique pour automatiser les processus et améliorer l'efficacité.",
+      fr: "Interventions IA sur site à Blagnac : ateliers pour sous-traitants aéronautiques, ateliers d'usinage et bureaux d'études. Vos équipes deviennent autonomes sur des outils IA configurés pour leurs exigences qualité.",
+      en: "Interventions IA sur site à Blagnac : ateliers pour sous-traitants aéronautiques, ateliers d'usinage et bureaux d'études. Vos équipes deviennent autonomes sur des outils IA configurés pour leurs exigences qualité.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Blagnac, en intégrant les spécificités locales, dès 990 € HT.",
-      en: "Implémenter des solutions IA à Blagnac, en intégrant les spécificités locales, dès 990 € HT.",
+      fr: "Implémentation IA à Blagnac : automatisation du chiffrage, des dossiers qualité et de traçabilité, du reporting et de la gestion documentaire pour PME sous-traitantes de l'aéronautique.",
+      en: "Implémentation IA à Blagnac : automatisation du chiffrage, des dossiers qualité et de traçabilité, du reporting et de la gestion documentaire pour PME sous-traitantes de l'aéronautique.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Blagnac pour dirigeants, afin de maîtriser l'IA dans leur contexte professionnel.",
-      en: "Proposer des sessions 1-to-1 à Blagnac pour dirigeants, afin de maîtriser l'IA dans leur contexte professionnel.",
+      fr: "Accompagnement un-à-un à Blagnac : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME aéronautiques souhaitant piloter leur adoption de l'IA dans un cadre exigeant.",
+      en: "Accompagnement un-à-un à Blagnac : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME aéronautiques souhaitant piloter leur adoption de l'IA dans un cadre exigeant.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés à Blagnac : plateforme dotée d'IA pour sous-traitants et bureaux d'études — qualification des appels d'offres, espace client sécurisé, réponses automatisées aux demandes techniques.",
+      en: "Sites web augmentés à Blagnac : plateforme dotée d'IA pour sous-traitants et bureaux d'études — qualification des appels d'offres, espace client sécurisé, réponses automatisées aux demandes techniques.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Blagnac ?",
-      a: "Nos tarifs pour une intervention à Blagnac commencent à partir de 590 € HT. Vous pouvez consulter tous nos tarifs publics directement sur notre site.",
+      q: "Axion-IA intervient-il à Blagnac ?",
+      a: "Oui. Axion-IA se déplace à Blagnac et dans l'ouest toulousain (Colomiers, Cornebarrieu, Beauzelle, Toulouse). Nos consultants interviennent sur site, y compris dans les zones aéronautiques et la ZAC Andromède, ou en visio.",
     },
     {
-      q: "Comment se déroule un audit IA à Blagnac ?",
-      a: "Un audit IA à Blagnac commence par une évaluation sur site, ciblant les secteurs clés comme l'aéronautique. Le tarif de l'Audit Flash débute à 490 € HT.",
+      q: "Accompagnez-vous les sous-traitants d'Airbus ?",
+      a: "Oui, c'est un cœur de cible. Pour les TPE et PME de la supply chain aéronautique, nous automatisons le chiffrage, les dossiers qualité et de traçabilité, ainsi que le reporting exigés par les donneurs d'ordres.",
     },
     {
-      q: "Axion-IA propose-t-il des formations pour les entreprises de Blagnac ?",
-      a: "Oui, Axion-IA propose des formations 1-to-1 pour dirigeants à Blagnac, à partir de 990 € HT, adaptées aux besoins spécifiques de chaque secteur.",
+      q: "Quels services pour les bureaux d'études aéronautiques ?",
+      a: "Pour les bureaux d'études et PME d'ingénierie de Blagnac, nous mettons en place l'automatisation des devis, la production documentaire technique et le suivi de projet, après un Audit Flash priorisant les gains rapides.",
     },
     {
-      q: "Est-il possible d'obtenir une implémentation rapide à Blagnac ?",
-      a: "Nous proposons des implémentations IA à Blagnac dès 990 € HT, avec une intervention rapide et efficace sur site.",
+      q: "Comment se déroule une mission à Blagnac ?",
+      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes, sans dépendance technique durable.",
     },
     {
-      q: "Quels délais pour une intervention IA à Blagnac ?",
-      a: "Williams se déplace sur site à Blagnac dans un délai de 5 jours ouvrés pour débuter l'intervention IA.",
+      q: "Comment garantissez-vous la conformité RGPD à Blagnac ?",
+      a: "Toutes nos solutions IA respectent le RGPD et l'AI Act : minimisation des données, hébergement maîtrisé et traçabilité — des garanties essentielles pour la confidentialité industrielle de la filière aéronautique.",
     },
   ],
 };

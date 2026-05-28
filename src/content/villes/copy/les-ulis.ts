@@ -1,66 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-28 — Audit Will batch 100 #2 (qs moyen → premium).
+// Les Ulis (91, Essonne) — technopôle sud Saclay, parc de Courtaboeuf, pharma & électronique.
 
 import type { VilleCopy } from "./types";
 
 export const LES_ULIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Les Ulis, un pôle technologique avec Hewlett-Packard et Intel. Nous accompagnons les entreprises locales dans l'optimisation de leurs processus grâce à l'IA.",
+    "Les Ulis (91, Essonne), à la lisière sud du plateau de Saclay, accueille le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe, orientée pharma, électronique, informatique et R&D. Au-delà des grands sièges, la commune concentre un dense tissu de TPE de services techniques et de PME sous-traitantes. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
   pitchEn:
-    "Axion-IA intervient à Les Ulis, un pôle technologique avec Hewlett-Packard et Intel. Nous accompagnons les entreprises locales dans l'optimisation de leurs processus grâce à l'IA.",
+    "Les Ulis (91, Essonne), à la lisière sud du plateau de Saclay, accueille le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe, orientée pharma, électronique, informatique et R&D. Au-delà des grands sièges, la commune concentre un dense tissu de TPE de services techniques et de PME sous-traitantes. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
   directAnswerFr:
-    "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles pour un audit Flash.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
   directAnswerEn:
-    "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles pour un audit Flash.",
-  seoHook: "programmation informatique & commerce gros",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
+  seoHook: "tech, pharma & électronique",
   ecosystemFr:
-    "Les Ulis abrite des entreprises comme Hewlett-Packard et Intel, au cœur de la zone Courtaboeuf. Le secteur de la programmation informatique y est particulièrement développé.",
+    "Les Ulis sont structurées par le parc d'activités de Courtaboeuf, pôle technologique majeur du sud Saclay : pharma et santé, électronique et instrumentation, informatique et logiciel, R&D. Autour des grands établissements, un réseau dense de TPE de services techniques et de PME sous-traitantes alimente les filières. Proximité immédiate d'Orsay, Gif-sur-Yvette et du cluster Paris-Saclay.",
   ecosystemEn:
-    "Les Ulis abrite des entreprises comme Hewlett-Packard et Intel, au cœur de la zone Courtaboeuf. Le secteur de la programmation informatique y est particulièrement développé.",
-  distancesFr: "Les Ulis est à 10 km de la gare TGV Massy TGV et à 20 km de l'aéroport Paris-Orly.",
-  distancesEn: "Les Ulis est à 10 km de la gare TGV Massy TGV et à 20 km de l'aéroport Paris-Orly.",
+    "Les Ulis sont structurées par le parc d'activités de Courtaboeuf, pôle technologique majeur du sud Saclay : pharma et santé, électronique et instrumentation, informatique et logiciel, R&D. Autour des grands établissements, un réseau dense de TPE de services techniques et de PME sous-traitantes alimente les filières. Proximité immédiate d'Orsay, Gif-sur-Yvette et du cluster Paris-Saclay.",
+  distancesFr:
+    "Massy TGV à 15 min (Paris en 20 min en RER B depuis Massy). Paris-Orly à 25 min. La Défense à 35 min par l'A10/A86. Orsay à 8 min. Parc de Courtaboeuf sur place.",
+  distancesEn:
+    "Massy TGV à 15 min (Paris en 20 min en RER B depuis Massy). Paris-Orly à 25 min. La Défense à 35 min par l'A10/A86. Orsay à 8 min. Parc de Courtaboeuf sur place.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Commerce de gros",
-    "Recherche-développement",
-    "Produits électroniques",
+    "Industrie pharmaceutique & dispositifs médicaux",
+    "Électronique & instrumentation",
+    "Programmation informatique & édition de logiciels",
+    "Recherche-développement & ingénierie",
+    "Services techniques & commerce de gros B2B",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Les Ulis pour identifier les opportunités IA chez Hewlett-Packard — coûts dès 490 € HT.",
-      en: "Réaliser un audit à Les Ulis pour identifier les opportunités IA chez Hewlett-Packard — coûts dès 490 € HT.",
+      fr: "Audit IA aux Ulis : diagnostic ciblé pour TPE de services techniques et PME sous-traitantes pharma/électronique/IT du parc de Courtaboeuf, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA aux Ulis : diagnostic ciblé pour TPE de services techniques et PME sous-traitantes pharma/électronique/IT du parc de Courtaboeuf, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
-      fr: "Intervenir à Les Ulis dans le secteur électronique — automatisation des processus administratifs.",
-      en: "Intervenir à Les Ulis dans le secteur électronique — automatisation des processus administratifs.",
+      fr: "Interventions IA sur site aux Ulis : ateliers pratiques pour l'équipe technique, le support, le bureau d'études ou le commerce B2B. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site aux Ulis : ateliers pratiques pour l'équipe technique, le support, le bureau d'études ou le commerce B2B. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Les Ulis pour les entreprises comme Intel — intégration fluide.",
-      en: "Implémenter des solutions IA à Les Ulis pour les entreprises comme Intel — intégration fluide.",
+      fr: "Implémentation IA aux Ulis : assistance à la documentation technique, classification, support automatisé, agents conversationnels et CRM augmentés pour TPE-PME du sud Saclay.",
+      en: "Implémentation IA aux Ulis : assistance à la documentation technique, classification, support automatisé, agents conversationnels et CRM augmentés pour TPE-PME du sud Saclay.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants à Les Ulis — stratégie IA personnalisée dès 990 € HT.",
-      en: "Accompagner en 1-to-1 les dirigeants à Les Ulis — stratégie IA personnalisée dès 990 € HT.",
+      fr: "Coaching 1-to-1 aux Ulis : sessions pour dirigeants de TPE techniques et de PME sous-traitantes du parc de Courtaboeuf, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 aux Ulis : sessions pour dirigeants de TPE techniques et de PME sous-traitantes du parc de Courtaboeuf, dans vos locaux ou en visio.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés aux Ulis : sites produits et portails techniques enrichis d'IA pour éditeurs, fournisseurs pharma/électronique et services — documentation interactive, support et qualification de leads.",
+      en: "Sites web augmentés aux Ulis : sites produits et portails techniques enrichis d'IA pour éditeurs, fournisseurs pharma/électronique et services — documentation interactive, support et qualification de leads.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Les Ulis ?",
-      a: "Les interventions IA à Les Ulis débutent à partir de 590 € HT. Pour des détails sur nos services et tarifs, consultez notre site.",
+      q: "Axion-IA intervient-il aux Ulis et sur le parc de Courtaboeuf ?",
+      a: "Oui, Axion-IA intervient aux Ulis et sur tout le sud Saclay (Courtaboeuf, Orsay, Gif-sur-Yvette, Villebon). Nos consultants se déplacent sur site ou animent les sessions en visio.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Les Ulis ?",
-      a: "Nos experts se déplacent directement sur site à Les Ulis, facilitant ainsi une collaboration efficace avec vos équipes.",
+      q: "Quels secteurs accompagnez-vous en priorité aux Ulis ?",
+      a: "Nous accompagnons d'abord les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique. Les grandes entreprises et ETI du parc restent un complément.",
     },
     {
-      q: "Combien de temps faut-il pour un audit IA à Les Ulis ?",
-      a: "Un audit Flash à Les Ulis peut être réalisé en 4 heures, offrant une première évaluation rapide des opportunités IA.",
+      q: "L'IA peut-elle aider une PME tech sous-traitante du sud Saclay ?",
+      a: "Oui. Pour une PME pharma, électronique ou logicielle, l'IA accélère la documentation technique, la classification, le support client, la veille et la qualification commerciale.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Les Ulis ?",
-      a: "Oui, Axion-IA respecte strictement le RGPD lors de toutes ses interventions à Les Ulis, garantissant la conformité et la sécurité des données.",
+      q: "Quel budget prévoir pour un audit IA aux Ulis ?",
+      a: "Nos tarifs sont publics et calibrés selon la taille, de la TPE à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
+    },
+    {
+      q: "Comment se déroule une intervention IA aux Ulis ?",
+      a: "Nos consultants se déplacent (Massy TGV à 15 min, Paris-Orly à 25 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+    },
+    {
+      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions aux Ulis ?",
+      a: "Oui, toutes nos interventions aux Ulis sont conformes au RGPD : minimisation des données, hébergement maîtrisé et absence de dépendance bloquante aux outils déployés.",
     },
   ],
 };
