@@ -1,5 +1,6 @@
 // Sprint 14.10.7 — hub famille « Formations équipe » avec 4 paliers durée.
 import type { Metadata } from "next";
+import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -30,9 +31,10 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ServiceHero } from "@/components/sections/ServiceHero";
-// Sprint Matrice hero 2026-05-28 (Will) — visuel custom data-viz qui
-// remplace l'orbital générique (différenciation concurrentielle).
-import { HeroMatrix } from "@/components/sections/HeroMatrix";
+// Sprint Hero orbital v2 2026-05-28 (Will) — orbital travaillé avec glyphes
+// brand SVG inline + animations CSS subtiles. Remplace HeroMatrix (trop dense)
+// et l'orbital générique (pas assez travaillé).
+import { HeroOrbital } from "@/components/sections/HeroOrbital";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -218,18 +220,77 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             </Cta>
           </>
         }
-        customVisual={<HeroMatrix isFr={isFr} />}
+        customVisual={
+          <HeroOrbital
+            centerLabel={isFr ? "Votre équipe" : "Your team"}
+            ariaLabel={
+              isFr
+                ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen)."
+                : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen)."
+            }
+            nodes={[
+              {
+                slug: "chatgpt",
+                label: "ChatGPT",
+                benefit: isFr ? "Rédaction, synthèse" : "Writing, synthesis",
+                accent: "terracotta",
+              },
+              {
+                slug: "claude",
+                label: "Claude",
+                benefit: isFr ? "Analyse, code" : "Analysis, code",
+                accent: "primary",
+              },
+              {
+                slug: "mistral",
+                label: "Mistral",
+                benefit: isFr ? "IA souveraine FR" : "Sovereign EU AI",
+                accent: "sage",
+              },
+              {
+                slug: "copilot",
+                label: "Copilot",
+                benefit: isFr ? "Office, Outlook" : "Office, Outlook",
+                accent: "mocha",
+              },
+              {
+                slug: "perplexity",
+                label: "Perplexity",
+                benefit: isFr ? "Recherche sourcée" : "Sourced research",
+                accent: "terracotta",
+              },
+              {
+                slug: "midjourney",
+                label: "Midjourney",
+                benefit: isFr ? "Création visuelle" : "Visual creation",
+                accent: "primary",
+              },
+              {
+                slug: "sora",
+                label: "Sora",
+                benefit: isFr ? "Vidéo IA" : "AI video",
+                accent: "sage",
+              },
+              {
+                slug: "heygen",
+                label: "HeyGen",
+                benefit: isFr ? "Avatars formation" : "Training avatars",
+                accent: "mocha",
+              },
+            ]}
+          />
+        }
       />
 
       {/* 4 CARDS PALIER DURÉE */}
       <Section
         eyebrow={isFr ? "Quel format pour votre équipe ?" : "Which format for your team?"}
-        title={isFr ? "Des durées de formation" : "Training durations"}
-        titleEm={isFr ? "à partir de 590 € HT" : "from €590 ex VAT"}
+        title={isFr ? "Choisissez la durée" : "Choose the duration"}
+        titleEm={isFr ? "selon vos besoins" : "that fits your needs"}
         description={
           isFr
-            ? "Que vous découvriez l'IA en entreprise ou que vous l'utilisiez déjà quotidiennement, après chaque journée de formation vos équipes font un bond en avant — gain de temps mesurable, automatisations maîtrisées, autonomie nouvelle."
-            : "Whether you're discovering corporate AI or already using it daily, after each training day your teams take a leap forward — measurable time savings, mastered automations, new autonomy."
+            ? "Que vous découvriez l'IA ou que vous l'utilisiez quotidiennement, chaque journée d'intervention sera un bond en avant et un déclic évolutif."
+            : "Whether you're discovering AI or using it daily, each training day will be a leap forward and an evolutionary trigger."
         }
         contentClassName={TIGHT_X}
       >
@@ -387,15 +448,36 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           en compétence IA », « formation IA récurrente », « formation
           continue IA », « formation IA mensuelle ».
           ============================================================ */}
+      {/* Image quadriptyque illustrative — séquence formation IA Claude
+          Axion-IA (présentation au tableau, écran Claude, équipe collaborative,
+          salle de formation). Visuel d'ancrage avant le bloc récurrent. */}
+      <div className="bg-paper px-4 py-10 sm:py-12 lg:py-14">
+        <div className="mx-auto max-w-6xl">
+          <Image
+            src="/illustrations/formation-claude-team-quadriptyque.png"
+            alt={
+              isFr
+                ? "Séquence formation IA Axion-IA : présentation, écran Claude, équipe collaborative, salle de formation"
+                : "Axion-IA training sequence: presentation, Claude screen, collaborative team, training room"
+            }
+            width={2400}
+            height={800}
+            className="shadow-card h-auto w-full rounded-2xl"
+            sizes="(max-width: 1280px) 100vw, 1152px"
+            priority={false}
+          />
+        </div>
+      </div>
+
       <Section
         tone="sand"
         eyebrow={isFr ? "Formation régulière" : "Recurring training"}
-        title={isFr ? "Montée en compétence IA" : "AI upskilling"}
-        titleEm={isFr ? "mois après mois" : "month after month"}
+        title={isFr ? "Formation régulière" : "Recurring training"}
+        titleEm={isFr ? "mensuelle" : "monthly"}
         description={
           isFr
-            ? "Pour les TPE, PME, ETI et grandes entreprises qui veulent installer durablement la culture IA et faire monter en compétence leurs équipes — un formateur IA expert intervient chez vous régulièrement, sur 6 ou 12 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, accompagnement pédagogique continu entre les journées de formation."
-            : "For SMEs, mid-caps and large companies that want to durably install AI culture and upskill their teams — an expert AI trainer comes on site regularly, over 6 or 12 months. Instant time savings measured at each session, business automations rolled out progressively, continuous educational support between training days."
+            ? "Pour les TPE, PME, ETI, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
+            : "For SMEs, mid-caps and large companies, an expert AI trainer comes on site regularly, over 6, 12 or 24 months. Instant time savings measured at each session, business automations rolled out progressively, continuous exchanges between training days so you're never left alone."
         }
         contentClassName={TIGHT_X}
       >
@@ -622,44 +704,42 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         </Container>
       </Section>
 
-      {/* MÉTHODOLOGIE — 4 étapes (Sprint uniformisation 2026-05-24) */}
+      {/* COMMENT ÇA FONCTIONNE — 3 étapes simplifiées (Sprint 2026-05-28 Will).
+          1) 3 façons de réserver, 2) on prépare adapté à votre entreprise,
+          3) cadrage téléphone + intervention le jour J. */}
       <Section
-        eyebrow={isFr ? "Méthodologie" : "Methodology"}
-        title={isFr ? "De la commande" : "From order"}
-        titleEm={isFr ? "au transfert" : "to transfer"}
-        titleTail={isFr ? " de compétence." : "."}
+        eyebrow={isFr ? "Comment ça fonctionne" : "How it works"}
+        title={isFr ? "Comment réserver" : "How to book"}
+        titleEm={isFr ? "votre journée de formation" : "your training day"}
       >
         <Container>
           <ProcessSteps
             orientation="horizontal"
             steps={[
               {
-                id: "step-1-cadrage",
-                title: isFr ? "Cadrage 30 min" : "30-min scoping",
+                id: "step-1-reservation",
+                title: isFr ? "Vous réservez" : "You book",
                 description: isFr
-                  ? "Appel découverte gratuit : effectif, niveau IA, métier, objectifs. On recommande le palier durée adapté (4 h, 1 j, 2 j ou 3 j+)."
-                  : "Free discovery call: headcount, AI level, role, objectives. We recommend the right duration tier (4 h, 1 d, 2 d or 3 d+).",
+                  ? "Trois façons de nous solliciter : pré-réservation directe sur le calendrier (nous vous rappelons), formulaire de contact en quelques clics, ou prise de rendez-vous téléphonique. Vous choisissez le canal qui vous convient."
+                  : "Three ways to reach us: direct pre-booking on the calendar (we call you back), quick contact form, or phone appointment. Pick the channel that suits you.",
               },
               {
                 id: "step-2-preparation",
-                title: isFr ? "Préparation sur mesure" : "Tailored preparation",
+                title: isFr
+                  ? "Préparation adaptée à votre entreprise"
+                  : "Preparation tailored to your business",
                 description: isFr
-                  ? "Le formateur prépare des démos sur VOS vrais documents et VOS vrais cas — pas de scénarios génériques. Programme calibré sur les profils présents."
-                  : "The trainer prepares demos on YOUR real documents and YOUR real cases — no generic scenarios. Programme calibrated to the profiles present.",
+                  ? "Avant la formation, le formateur étudie votre secteur, vos outils et vos enjeux. Le contenu est calibré pour votre entreprise — vos équipes apprennent sur des exemples qui leur parlent immédiatement."
+                  : "Before the training, the trainer studies your industry, tools and business challenges. The content is calibrated for your company — your teams learn on examples that resonate immediately.",
               },
               {
-                id: "step-3-intervention",
-                title: isFr ? "Intervention sur site" : "On-site session",
+                id: "step-3-cadrage-intervention",
+                title: isFr
+                  ? "Cadrage puis intervention le jour J"
+                  : "Scoping then on-site delivery",
                 description: isFr
-                  ? "Démos live sur vos données, outils en main sur les postes, exercices appliqués métier. Chaque participant maîtrise 3-5 automatisations applicables à ses tâches."
-                  : "Live demos on your data, tools hands-on at workstations, role-applied exercises. Each participant masters 3-5 automations applicable to their tasks.",
-              },
-              {
-                id: "step-4-suivi",
-                title: isFr ? "Suivi 30 j inclus" : "30-day follow-up included",
-                description: isFr
-                  ? "Support 30 j pour répondre aux questions post-formation. Option : maintenance standard 290 €/mois ou journée 1-to-1 dirigeant pour approfondir."
-                  : "30-day support for post-training questions. Option: standard maintenance €290/month or 1-to-1 executive day for deeper work.",
+                  ? "Une fois réservé, on cadre la journée par un appel téléphonique pour aligner les objectifs et le programme. Le jour J, le formateur intervient sur votre site avec vos équipes."
+                  : "Once booked, we frame the day on a phone call to align objectives and programme. On the day, the trainer comes on site with your teams.",
               },
             ]}
           />
