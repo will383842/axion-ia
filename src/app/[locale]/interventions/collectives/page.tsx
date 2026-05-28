@@ -448,26 +448,27 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           en compétence IA », « formation IA récurrente », « formation
           continue IA », « formation IA mensuelle ».
           ============================================================ */}
-      {/* Image quadriptyque illustrative — séquence formation IA Claude
-          Axion-IA (présentation au tableau, écran Claude, équipe collaborative,
-          salle de formation). Visuel d'ancrage avant le bloc récurrent. */}
-      <div className="bg-paper px-4 py-10 sm:py-12 lg:py-14">
-        <div className="mx-auto max-w-6xl">
-          <Image
-            src="/illustrations/formation-claude-team-quadriptyque.png"
-            alt={
-              isFr
-                ? "Séquence formation IA Axion-IA : présentation, écran Claude, équipe collaborative, salle de formation"
-                : "Axion-IA training sequence: presentation, Claude screen, collaborative team, training room"
-            }
-            width={2400}
-            height={800}
-            className="shadow-card h-auto w-full rounded-2xl"
-            sizes="(max-width: 1280px) 100vw, 1152px"
-            priority={false}
-          />
-        </div>
-      </div>
+      {/* BANDEAU QUADRIPTYQUE FORMATION — full-bleed.
+          Pattern aligné sur la home (`home-bandeau-team.avif`) : hors Container,
+          bord-à-bord, sans wrapper blanc ni arrondis. Le visuel respire et
+          fait coupure narrative entre la section paliers durée et la section
+          formation récurrente. */}
+      <section className="bg-bg">
+        <Image
+          src="/illustrations/formation-claude-team-quadriptyque.png"
+          alt={
+            isFr
+              ? "Séquence formation IA Axion-IA : présentation au tableau, écran Claude, équipe collaborative, salle de formation"
+              : "Axion-IA training sequence: presentation, Claude screen, collaborative team, training room"
+          }
+          width={2400}
+          height={800}
+          loading="lazy"
+          decoding="async"
+          sizes="100vw"
+          className="h-auto w-full"
+        />
+      </section>
 
       <Section
         tone="sand"
