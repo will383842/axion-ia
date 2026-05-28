@@ -22,7 +22,14 @@ import {
   getFamily,
 } from "@/content/interventions-taxonomy";
 import { INTERVENTION_TIERS, formatAmount, getEntryPriceEur, getTierById } from "@/content/pricing";
-import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildItemListJsonLd,
+  buildHowToJsonLd,
+  buildCourseJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 // Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
@@ -273,7 +280,9 @@ export default async function CollectivesFamilyHub({ params }: Props) {
     };
   });
 
-  // Service JSON-LD
+  // Service JSON-LD — Sprint perfection AEO 2026-05-28 (Will) : Speakable
+  // activé pour citation Google Assistant / Claude voice / Alexa. Selectors
+  // par défaut couvrent h1/h2/[data-speakable].
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/interventions/collectives",
@@ -286,6 +295,67 @@ export default async function CollectivesFamilyHub({ params }: Props) {
     serviceType: "AI training",
     priceEur: getEntryPriceEur(INTERVENTION_TIERS) ?? 0,
     areasServed: buildServiceAreasServed(loc),
+    speakable: true,
+  });
+
+  // Course JSON-LD ×4 — Sprint perfection AEO 2026-05-28 (Will). Un Course
+  // par palier durée. Permet citation Google AI Overviews / Perplexity /
+  // Claude pour requêtes « formation IA 4h », « formation IA 1 jour », etc.
+  // Pattern réutilisé depuis `CollectiveDurationListing` (sous-pages) mais
+  // émis aussi sur le hub avec `@id` unique pour indexation listing.
+  const courseJsonLdArray = COLLECTIVE_DURATIONS.filter((d) => !d.isQuoteOnly).map((d) =>
+    buildCourseJsonLd({
+      locale: loc,
+      path: loc === "fr" ? d.pathFr : d.pathEn,
+      name: isFr
+        ? `Formation IA opérationnelle ${d.labelFr}`
+        : `Operational AI training — ${d.labelEn}`,
+      description: isFr
+        ? `Formation IA opérationnelle sur ${d.labelFr.toLowerCase()} pour TPE, PME, ETI et grandes entreprises. Format Axion-IA sur site, ChatGPT, Claude, Mistral, agents IA et automatisations métier. De 2 à 30+ personnes.`
+        : `Operational AI training over ${d.labelEn.toLowerCase()} for SMEs, mid-caps and large enterprises. Axion-IA on-site format, ChatGPT, Claude, Mistral, AI agents and business automations. From 2 to 30+ people.`,
+      courseMode: ["Onsite"],
+      ...(d.iso8601Duration ? { duration: d.iso8601Duration } : {}),
+      audienceType: isFr
+        ? "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)"
+        : "Decision-makers, managers, operational teams SME mid-cap large enterprise (B2B)",
+      about: "IA opérationnelle (ChatGPT, Claude, Mistral, Copilot, agents IA, automatisations)",
+    }),
+  );
+
+  // HowTo JSON-LD — Sprint perfection AEO 2026-05-28 (Will). Section
+  // « Comment réserver » : 3 étapes (réserver → préparation → intervention).
+  // Permet aux LLMs (Perplexity, Claude.ai, Google AI Overviews) de citer
+  // le process complet pour requêtes « comment se passe une formation IA
+  // Axion-IA ».
+  const howToReserverJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: "/interventions/collectives",
+    name: isFr
+      ? "Comment réserver votre formation IA en entreprise"
+      : "How to book your corporate AI training",
+    description: isFr
+      ? "3 étapes simples pour réserver et organiser votre formation IA sur site : vous réservez (3 canaux), on prépare votre journée adaptée à votre entreprise, le formateur intervient le jour J."
+      : "3 simple steps to book and organise your on-site AI training: you book (3 channels), we prepare your day tailored to your business, the trainer delivers on the day.",
+    steps: [
+      {
+        name: isFr ? "Vous réservez" : "You book",
+        text: isFr
+          ? "Calendrier en ligne, formulaire de contact ou rendez-vous téléphonique : 3 canaux disponibles, vous choisissez celui qui vous convient."
+          : "Online calendar, contact form or phone appointment: 3 available channels, you pick the one that suits you.",
+      },
+      {
+        name: isFr ? "On prépare votre journée" : "We prepare your day",
+        text: isFr
+          ? "Étude de votre secteur, vos outils et vos enjeux. Le programme est calibré pour votre entreprise — vos équipes apprennent sur des exemples qui leur parlent immédiatement."
+          : "Study of your industry, tools and business challenges. The programme is calibrated for your company — your teams learn on examples that resonate immediately.",
+      },
+      {
+        name: isFr ? "Intervention sur site" : "On-site delivery",
+        text: isFr
+          ? "Cadrage rapide par téléphone, puis le formateur intervient le jour J sur votre site avec vos équipes."
+          : "Quick phone scoping, then the trainer comes on site with your teams on the day.",
+      },
+    ],
   });
 
   // ItemList JSON-LD — 4 paliers durée. Factory centralisée seo.ts
@@ -1266,6 +1336,10 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} />
       <JsonLd data={photosImageObjectJsonLd} />
+      <JsonLd data={howToReserverJsonLd} />
+      {courseJsonLdArray.map((course, idx) => (
+        <JsonLd key={`course-${idx}`} data={course} />
+      ))}
     </>
   );
 }

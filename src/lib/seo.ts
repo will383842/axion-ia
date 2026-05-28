@@ -206,6 +206,15 @@ interface ServiceJsonLdInput {
    * « où est-ce que ce service est disponible ? ».
    */
   availableChannels?: ReadonlyArray<{ name: string; url: string }>;
+  /**
+   * Speakable specification — auto-injecte `speakable` (selectors CSS) sur
+   * Service JSON-LD pour citation Google Assistant / Alexa / Claude voice.
+   * Sprint perfection AEO 2026-05-28 (Will). Default : non émis (backward
+   * compat avec ~25 pages services qui n'en avaient pas besoin). Pass
+   * `speakable: true` pour activer avec selectors par défaut h1/h2/[data-
+   * speakable], OU `speakable: { selectors: [...] }` pour custom.
+   */
+  speakable?: boolean | { selectors: ReadonlyArray<string> };
 }
 
 export function buildServiceJsonLd({
@@ -219,6 +228,7 @@ export function buildServiceJsonLd({
   area,
   areasServed,
   availableChannels,
+  speakable,
 }: ServiceJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
 
@@ -282,6 +292,20 @@ export function buildServiceJsonLd({
             availability: "https://schema.org/InStock",
             url,
           },
+        }
+      : {}),
+    // Speakable specification — Sprint perfection AEO 2026-05-28 (Will).
+    // Centralisé sur toutes les pages services. Selectors par défaut
+    // h1/h2/[data-speakable] couvrent les zones critiques (titre, sous-titre,
+    // contenus vocaux). Custom selectors si besoin via param objet.
+    ...(speakable
+      ? {
+          speakable: buildSpeakableSpecification({
+            selectors:
+              typeof speakable === "object" && speakable.selectors
+                ? speakable.selectors
+                : ["h1", "h2", "[data-speakable]"],
+          }),
         }
       : {}),
   } as const;
