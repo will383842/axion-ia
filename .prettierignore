@@ -10,3 +10,5 @@ pnpm-lock.yaml
 *.md.bak
 public
 src/components/ui
+_AUDIT
+.claude/worktrees

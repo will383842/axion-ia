@@ -20,9 +20,13 @@ async function main() {
   const files = (await fs.readdir(COPY_DIR)).filter(
     (f) =>
       f.endsWith(".ts") &&
-      !["types.ts", "_auto-generated-index.ts", "index.ts", "resolve-with-copy.ts", "premium-rewrite-slugs.ts"].includes(
-        f,
-      ),
+      ![
+        "types.ts",
+        "_auto-generated-index.ts",
+        "index.ts",
+        "resolve-with-copy.ts",
+        "premium-rewrite-slugs.ts",
+      ].includes(f),
   );
 
   const premium: string[] = [];

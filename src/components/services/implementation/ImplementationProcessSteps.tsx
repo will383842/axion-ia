@@ -15,9 +15,7 @@ export interface ImplementationProcessStepsProps {
   readonly isFr: boolean;
 }
 
-export function ImplementationProcessSteps({
-  isFr,
-}: ImplementationProcessStepsProps): ReactNode {
+export function ImplementationProcessSteps({ isFr }: ImplementationProcessStepsProps): ReactNode {
   const processSteps = isFr
     ? [
         {

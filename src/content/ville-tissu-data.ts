@@ -205,9 +205,7 @@ function normalize(input: string): string {
  * vers une entrée du catalogue. Renvoie `undefined` si aucun keyword ne match
  * (le composant utilisera le fallback générique).
  */
-export function resolveSectorOpportunity(
-  label: string,
-): SectorIaOpportunity | undefined {
+export function resolveSectorOpportunity(label: string): SectorIaOpportunity | undefined {
   const haystack = normalize(label);
   return SECTOR_IA_OPPORTUNITIES.find((entry) =>
     entry.keywords.some((kw) => haystack.includes(kw)),

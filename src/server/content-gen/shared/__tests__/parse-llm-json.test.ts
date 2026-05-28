@@ -28,11 +28,11 @@ describe("parseLlmJson", () => {
   });
 
   it("throw SyntaxError si JSON invalide post-strip", () => {
-    expect(() => parseLlmJson('```json\nnot valid\n```')).toThrow(SyntaxError);
+    expect(() => parseLlmJson("```json\nnot valid\n```")).toThrow(SyntaxError);
   });
 
   it("safe variant retourne null sur parse fail", () => {
-    expect(parseLlmJsonSafe('```json\nnot valid\n```')).toBeNull();
+    expect(parseLlmJsonSafe("```json\nnot valid\n```")).toBeNull();
   });
 
   it("safe variant retourne objet sur succès", () => {

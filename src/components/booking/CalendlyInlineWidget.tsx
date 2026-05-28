@@ -70,19 +70,14 @@ export function CalendlyInlineWidget({
       />
       <div className="mx-auto mt-4 max-w-xl text-center">
         <p className="text-fg-muted text-sm">
-          {isFr
-            ? "Le calendrier ne s’affiche pas ?"
-            : "Calendar not showing?"}
-          {" "}
+          {isFr ? "Le calendrier ne s’affiche pas ?" : "Calendar not showing?"}{" "}
           <a
             href={calendlyUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-terracotta font-medium underline underline-offset-2"
           >
-            {isFr
-              ? "Ouvrir Calendly directement →"
-              : "Open Calendly directly →"}
+            {isFr ? "Ouvrir Calendly directement →" : "Open Calendly directly →"}
           </a>
         </p>
       </div>

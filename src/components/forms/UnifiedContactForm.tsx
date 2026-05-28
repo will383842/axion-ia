@@ -391,10 +391,7 @@ export function UnifiedContactForm({
           click outside ferment). */}
       {!lockType ? (
         <div className="space-y-1.5" ref={typeDropdownRef}>
-          <label
-            htmlFor="type-trigger"
-            className="text-fg block text-base font-bold sm:text-lg"
-          >
+          <label htmlFor="type-trigger" className="text-fg block text-base font-bold sm:text-lg">
             {t.typeLabel}
             <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
           </label>
@@ -415,11 +412,7 @@ export function UnifiedContactForm({
               <span className="flex items-center gap-2">
                 {type ? (
                   <>
-                    <Check
-                      aria-hidden="true"
-                      strokeWidth={3}
-                      className="h-4 w-4 shrink-0"
-                    />
+                    <Check aria-hidden="true" strokeWidth={3} className="h-4 w-4 shrink-0" />
                     <span className="text-fg font-semibold">{t.typeOptions[type]}</span>
                   </>
                 ) : (
@@ -436,11 +429,14 @@ export function UnifiedContactForm({
                 id="type-listbox"
                 role="listbox"
                 aria-label={t.typeLabel}
-                className="bg-paper border-border shadow-card absolute top-full left-0 right-0 z-20 mt-2 max-h-[60vh] overflow-y-auto rounded-xl border-2 p-2"
+                className="bg-paper border-border shadow-card absolute top-full right-0 left-0 z-20 mt-2 max-h-[60vh] overflow-y-auto rounded-xl border-2 p-2"
               >
                 {(["projet", "autre"] as const).map((groupKey, gIdx) => (
-                  <div key={groupKey} className={cn(gIdx > 0 && "border-border mt-2 border-t pt-2")}>
-                    <p className="text-fg-muted px-3 pb-1 pt-2 text-[10.5px] font-semibold tracking-[0.16em] uppercase">
+                  <div
+                    key={groupKey}
+                    className={cn(gIdx > 0 && "border-border mt-2 border-t pt-2")}
+                  >
+                    <p className="text-fg-muted px-3 pt-2 pb-1 text-[10.5px] font-semibold tracking-[0.16em] uppercase">
                       {t.typeGroups[groupKey]}
                     </p>
                     <ul className="space-y-0.5">

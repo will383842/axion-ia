@@ -19,10 +19,7 @@ export interface SitesWebStackAdapteeProps {
   readonly villeContext?: VilleContext;
 }
 
-export function SitesWebStackAdaptee({
-  isFr,
-  villeContext,
-}: SitesWebStackAdapteeProps): ReactNode {
+export function SitesWebStackAdaptee({ isFr, villeContext }: SitesWebStackAdapteeProps): ReactNode {
   const offers = isFr
     ? [
         {

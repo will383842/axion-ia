@@ -19,7 +19,10 @@ interface UnAUnMethodologyProps {
 
 export function UnAUnMethodology({ isFr }: UnAUnMethodologyProps) {
   return (
-    <Section eyebrow={isFr ? "Format" : "Format"} title={isFr ? "Comment ça se passe" : "How it works"}>
+    <Section
+      eyebrow={isFr ? "Format" : "Format"}
+      title={isFr ? "Comment ça se passe" : "How it works"}
+    >
       <Container>
         <ProcessSteps
           orientation="horizontal"

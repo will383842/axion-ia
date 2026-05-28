@@ -17,7 +17,10 @@ const ALL_PRICES = "(490|590|690|890|990|1490|1990|2990|3490|3990|4990)";
 
 const REPLACEMENTS: ReadonlyArray<{ from: RegExp; to: string }> = [
   // "à partir de X € HT pour ..." → ""
-  { from: new RegExp(`\\s*à partir de ${ALL_PRICES}\\s*€\\s*HT[^.,]*?(pour|avec|et|en)`, "gi"), to: " $1" },
+  {
+    from: new RegExp(`\\s*à partir de ${ALL_PRICES}\\s*€\\s*HT[^.,]*?(pour|avec|et|en)`, "gi"),
+    to: " $1",
+  },
   { from: new RegExp(`\\s*à partir de ${ALL_PRICES}\\s*€\\s*HT`, "gi"), to: "" },
   { from: new RegExp(`\\s*dès ${ALL_PRICES}\\s*€\\s*HT`, "gi"), to: "" },
   { from: new RegExp(`\\s*\\(${ALL_PRICES}\\s*€\\s*HT\\)`, "gi"), to: "" },
@@ -41,7 +44,14 @@ function cleanup(text: string): string {
 function fixContent(content: string): { newContent: string; changes: number } {
   let changes = 0;
   let newContent = content;
-  const targets = ["pitchFr", "pitchEn", "directAnswerFr", "directAnswerEn", "ecosystemFr", "ecosystemEn"];
+  const targets = [
+    "pitchFr",
+    "pitchEn",
+    "directAnswerFr",
+    "directAnswerEn",
+    "ecosystemFr",
+    "ecosystemEn",
+  ];
 
   for (const field of targets) {
     const pattern = new RegExp(`(${field}:\\s*\\n?\\s*")([^"]+)(")`, "g");

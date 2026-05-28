@@ -54,9 +54,7 @@ export function AuditCtaBlock({ isFr, villeContext }: AuditCtaBlockProps): React
           size="lg"
           className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
           track={
-            villeContext
-              ? `audit-cta-flash-ville-${villeContext.villeSlug}`
-              : "audit-cta-flash"
+            villeContext ? `audit-cta-flash-ville-${villeContext.villeSlug}` : "audit-cta-flash"
           }
         >
           <Calendar aria-hidden="true" className="h-4 w-4" />

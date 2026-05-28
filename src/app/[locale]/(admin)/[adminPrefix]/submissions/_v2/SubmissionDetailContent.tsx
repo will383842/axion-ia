@@ -41,7 +41,9 @@ export async function SubmissionDetailContent({
   // afficher le label fin (presse, recrutement, etc.) plutôt que le type DB
   // générique « contact ». Cf. submission-type-labels.ts.
   const details =
-    submission.details && typeof submission.details === "object" && !Array.isArray(submission.details)
+    submission.details &&
+    typeof submission.details === "object" &&
+    !Array.isArray(submission.details)
       ? (submission.details as Record<string, unknown>)
       : null;
   const unifiedType =

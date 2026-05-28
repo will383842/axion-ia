@@ -19,10 +19,22 @@ const CONTEXT = path.join(
 );
 
 const GENERIC_SECTORS = [
-  "tpe artisanat btp", "tpe artisanat", "pme tertiaires", "pme tertiaires services",
-  "commerce de proximité", "commerce proximité", "services aux entreprises",
-  "professions libérales", "commerce de détail", "commerce détail", "restauration",
-  "programmation informatique", "activités créatives", "hébergement", "services", "artisanat",
+  "tpe artisanat btp",
+  "tpe artisanat",
+  "pme tertiaires",
+  "pme tertiaires services",
+  "commerce de proximité",
+  "commerce proximité",
+  "services aux entreprises",
+  "professions libérales",
+  "commerce de détail",
+  "commerce détail",
+  "restauration",
+  "programmation informatique",
+  "activités créatives",
+  "hébergement",
+  "services",
+  "artisanat",
 ];
 
 function countWords(s: string): number {
@@ -70,7 +82,8 @@ async function main() {
     const directAnswerFr = extractField(content, "directAnswerFr");
     if (!directAnswerFr) v.push("directAnswerFr absent");
     else {
-      if (countWords(directAnswerFr) < 30) v.push(`directAnswerFr ${countWords(directAnswerFr)} mots (<30)`);
+      if (countWords(directAnswerFr) < 30)
+        v.push(`directAnswerFr ${countWords(directAnswerFr)} mots (<30)`);
       if (!/Axion-IA/.test(directAnswerFr)) v.push("directAnswerFr sans 'Axion-IA'");
     }
 
@@ -81,12 +94,15 @@ async function main() {
     if (!distancesFr) v.push("distancesFr absent");
 
     // 5. combined ≥ 900 chars (on tolère 850 pour marge)
-    const combined = (pitchFr ?? "") + (directAnswerFr ?? "") + (ecosystemFr ?? "") + (distancesFr ?? "");
+    const combined =
+      (pitchFr ?? "") + (directAnswerFr ?? "") + (ecosystemFr ?? "") + (distancesFr ?? "");
     if (combined.length < 850) v.push(`combined ${combined.length} chars (<850)`);
 
     // 6. topSectorsNaf = 5 dont ≥3 spécifiques
     const sectorsBlock = content.match(/topSectorsNaf:\s*\[([\s\S]*?)\]/);
-    const sectors = sectorsBlock ? Array.from(sectorsBlock[1]!.matchAll(/"([^"]+)"/g)).map((m) => m[1]!) : [];
+    const sectors = sectorsBlock
+      ? Array.from(sectorsBlock[1]!.matchAll(/"([^"]+)"/g)).map((m) => m[1]!)
+      : [];
     if (sectors.length < 5) v.push(`topSectorsNaf ${sectors.length} (<5)`);
     const generic = sectors.filter((s) => GENERIC_SECTORS.includes(s.toLowerCase().trim())).length;
     if (generic >= 3) v.push(`${generic}/${sectors.length} secteurs génériques`);
@@ -97,9 +113,13 @@ async function main() {
     if (faqCount < 5) v.push(`FAQ ${faqCount} entrées (<5)`);
 
     // 8. servicesContext 5 verticales
-    const hasAllServices = ["audit:", "interventions:", "implementation:", "unAUn:", "sitesWeb:"].filter((s) =>
-      content.includes(s),
-    ).length;
+    const hasAllServices = [
+      "audit:",
+      "interventions:",
+      "implementation:",
+      "unAUn:",
+      "sitesWeb:",
+    ].filter((s) => content.includes(s)).length;
     if (hasAllServices < 5) v.push(`servicesContext ${hasAllServices}/5 verticales`);
 
     // 9. EN = mirror FR (pitch + directAnswer)
@@ -110,7 +130,11 @@ async function main() {
 
     // 10. pas de tarif hardcodé dans pitch/directAnswer/ecosystem
     const priceRe = /\b(490|590|690|890|990|1490|1990|2990)\s*€\s*HT\b/;
-    if (priceRe.test(pitchFr ?? "") || priceRe.test(directAnswerFr ?? "") || priceRe.test(ecosystemFr ?? "")) {
+    if (
+      priceRe.test(pitchFr ?? "") ||
+      priceRe.test(directAnswerFr ?? "") ||
+      priceRe.test(ecosystemFr ?? "")
+    ) {
       v.push("tarif hardcodé dans pitch/directAnswer/ecosystem");
     }
 

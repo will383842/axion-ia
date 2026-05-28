@@ -42,7 +42,9 @@ function main() {
   console.log(`\nRégions totales                   : ${regionsTotal}`);
   console.log(`Régions indexables                : ${regionsIndexable}`);
   console.log(`\n--- ESTIMATION TOTAL pSEO INDEXABLE (FR) ---`);
-  console.log(`Hub villes + services×villes + régions = ${hubVilles + svcTotal + regionsIndexable}`);
+  console.log(
+    `Hub villes + services×villes + régions = ${hubVilles + svcTotal + regionsIndexable}`,
+  );
 }
 
 main();

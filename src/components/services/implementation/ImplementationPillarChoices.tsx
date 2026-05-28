@@ -15,9 +15,7 @@ export interface ImplementationPillarChoicesProps {
   readonly isFr: boolean;
 }
 
-export function ImplementationPillarChoices({
-  isFr,
-}: ImplementationPillarChoicesProps): ReactNode {
+export function ImplementationPillarChoices({ isFr }: ImplementationPillarChoicesProps): ReactNode {
   const pillars = isFr
     ? [
         {
@@ -75,9 +73,7 @@ export function ImplementationPillarChoices({
   return (
     <Section
       eyebrow={isFr ? "Deux portes d'entrée" : "Two ways in"}
-      title={
-        isFr ? "Audit, ou directement implémentation" : "Audit, or straight to implementation"
-      }
+      title={isFr ? "Audit, ou directement implémentation" : "Audit, or straight to implementation"}
     >
       <ul className="grid gap-6 md:grid-cols-3">
         {pillars.map((p) => (

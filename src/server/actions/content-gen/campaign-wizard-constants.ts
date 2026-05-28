@@ -76,11 +76,6 @@ export const WIZARD_SECTIONS = [
   {
     id: "conversion-local",
     label: "Conversion locale",
-    types: [
-      "pain_point_solution",
-      "case_study_local",
-      "calculator_roi",
-      "glossary_term",
-    ] as const,
+    types: ["pain_point_solution", "case_study_local", "calculator_roi", "glossary_term"] as const,
   },
 ] as const;

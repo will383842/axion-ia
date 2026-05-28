@@ -19,14 +19,21 @@ import path from "path";
 
 const COPY_DIR = path.join(process.cwd(), "src", "content", "villes", "copy");
 
-const REPLACEMENTS: ReadonlyArray<{ from: RegExp; to: string; field?: "pitch" | "directAnswer" | "ecosystem" }> = [
+const REPLACEMENTS: ReadonlyArray<{
+  from: RegExp;
+  to: string;
+  field?: "pitch" | "directAnswer" | "ecosystem";
+}> = [
   // Forme "Audit Flash à partir de 490 € HT" → "Audit Flash sur mesure"
   { from: /Audit Flash dès 490\s*€\s*HT/g, to: "Audit Flash sur mesure" },
   { from: /Audit Flash 490\s*€\s*HT/g, to: "Audit Flash sur mesure" },
   { from: /Audit Flash à partir de 490\s*€\s*HT/g, to: "Audit Flash sur mesure" },
   { from: /audit Flash 490\s*€\s*HT/g, to: "audit Flash sur mesure" },
   // Phrases composées avec prix
-  { from: /Nos services incluent des audits à partir de 490\s*€\s*HT et des interventions dès 590\s*€\s*HT,?\s*/g, to: "" },
+  {
+    from: /Nos services incluent des audits à partir de 490\s*€\s*HT et des interventions dès 590\s*€\s*HT,?\s*/g,
+    to: "",
+  },
   { from: /Nos services débutent à 490\s*€\s*HT\.\s*/g, to: "" },
   { from: /\(à partir de 490\s*€\s*HT\)/g, to: "" },
   { from: /\(dès 490\s*€\s*HT\)/g, to: "" },
@@ -45,7 +52,14 @@ function fixContent(content: string): { newContent: string; changes: number } {
   let newContent = content;
 
   // Extract les champs à modifier
-  const targets = ["pitchFr", "pitchEn", "directAnswerFr", "directAnswerEn", "ecosystemFr", "ecosystemEn"];
+  const targets = [
+    "pitchFr",
+    "pitchEn",
+    "directAnswerFr",
+    "directAnswerEn",
+    "ecosystemFr",
+    "ecosystemEn",
+  ];
 
   for (const field of targets) {
     const pattern = new RegExp(`(${field}:\\s*\\n?\\s*")([^"]+)(")`, "g");

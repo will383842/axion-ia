@@ -19,8 +19,8 @@
 
 import { createHash } from "node:crypto";
 
-const BASE_URL = process.argv.find((a) => a.startsWith("--base-url="))?.split("=")[1] ??
-  "https://axion-ia.com";
+const BASE_URL =
+  process.argv.find((a) => a.startsWith("--base-url="))?.split("=")[1] ?? "https://axion-ia.com";
 
 interface QaResult {
   url: string;
@@ -58,7 +58,7 @@ function extractJsonLd(html: string): unknown[] {
     try {
       const parsed = JSON.parse(m[1]!);
       if (Array.isArray((parsed as { "@graph"?: unknown[] })["@graph"])) {
-        scripts.push(...((parsed as { "@graph": unknown[] })["@graph"]));
+        scripts.push(...(parsed as { "@graph": unknown[] })["@graph"]);
       } else {
         scripts.push(parsed);
       }

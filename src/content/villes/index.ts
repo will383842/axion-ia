@@ -222,10 +222,7 @@ const INDEXABLE_RANK = new Map(RANKED_INDEXABLE.map((v, i) => [v.slug, i] as con
 
 /** Taille de la cohorte indexable à la date `now` (premium + ramp quotidien). */
 export function cohortSize(now: Date = new Date()): number {
-  const days = Math.max(
-    0,
-    Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000),
-  );
+  const days = Math.max(0, Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000));
   return Math.min(RANKED_INDEXABLE.length, PREMIUM_COUNT + days * VILLES_PER_DAY);
 }
 

@@ -18,10 +18,7 @@ export interface AuditMaturityLevelsProps {
   readonly villeContext?: VilleContext;
 }
 
-export function AuditMaturityLevels({
-  isFr,
-  villeContext,
-}: AuditMaturityLevelsProps): ReactNode {
+export function AuditMaturityLevels({ isFr, villeContext }: AuditMaturityLevelsProps): ReactNode {
   const cards = isFr
     ? [
         {

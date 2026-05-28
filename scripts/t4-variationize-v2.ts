@@ -88,7 +88,9 @@ const VARIATIONS: ReadonlyArray<{ from: RegExp; to: ReadonlyArray<string> }> = [
 ];
 
 function hashSlugToBucket(slug: string, salt: string, n: number): number {
-  const h = createHash("md5").update(slug + salt).digest("hex");
+  const h = createHash("md5")
+    .update(slug + salt)
+    .digest("hex");
   return parseInt(h.substring(0, 8), 16) % n;
 }
 
