@@ -959,6 +959,12 @@ model Article {
   categoryId      String?       @map("category_id") @db.Uuid
   category        Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   featuredImage   String?       @map("featured_image") @db.VarChar(512)
+  // Sprint AEO Phase 4 2026-05-28 (Will) — alt SEO/A11y additif pour
+  // featured_image. Nullable (backward compat 100%). Pré-remplissable via
+  // script seed `prisma/scripts/seed-image-alts-2026-05-28.ts` (Cf. audit
+  // images cross-site Phase 1).
+  featuredImageAltFr String?    @map("featured_image_alt_fr") @db.VarChar(255)
+  featuredImageAltEn String?    @map("featured_image_alt_en") @db.VarChar(255)
   status          PublishStatus @default(draft)
   publishedAt     DateTime?     @map("published_at")
   readingTime     Int?          @map("reading_time")
@@ -1115,6 +1121,8 @@ model ArticleTranslation {
   metaTitle       String?  @map("meta_title") @db.VarChar(70)
   metaDescription String?  @map("meta_description") @db.VarChar(160)
   ogImage         String?  @map("og_image") @db.VarChar(512)
+  // Sprint AEO Phase 4 2026-05-28 (Will) — alt SEO og:image per-locale.
+  ogImageAlt      String?  @map("og_image_alt") @db.VarChar(255)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
@@ -1214,6 +1222,9 @@ model Testimonial {
   fullQuoteEn     String?           @map("full_quote_en") @db.Text
   rating          Int?
   photoUrl        String?           @map("photo_url") @db.VarChar(512)
+  // Sprint AEO Phase 4 2026-05-28 (Will) — alt SEO/A11y additif pour photo
+  // témoignage client (Cf. audit images cross-site Phase 1).
+  photoAlt        String?           @map("photo_alt") @db.VarChar(255)
   videoUrl        String?           @map("video_url") @db.VarChar(512)
   module          ModuleKind?
   resultHighlight String?           @map("result_highlight") @db.VarChar(255)
