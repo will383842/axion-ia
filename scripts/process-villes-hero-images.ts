@@ -19,13 +19,7 @@ import sharp from "sharp";
 
 const SOURCE_DIR = "C:\\Users\\willi\\Downloads\\photo héro par ville";
 const OUTPUT_DIR = path.join(process.cwd(), "public", "villes-hero");
-const MAP_FILE = path.join(
-  process.cwd(),
-  "src",
-  "content",
-  "villes",
-  "hero-images-map.ts",
-);
+const MAP_FILE = path.join(process.cwd(), "src", "content", "villes", "hero-images-map.ts");
 
 const SIZE = 1200;
 const AVIF_QUALITY = 60;
@@ -37,7 +31,7 @@ function nameToSlug(filename: string): string {
   // "Hub_ville_Saint-Etienne.png" → "saint-etienne"
   // "Hub_ville_Montélimar.png" → "montelimar"
   // "Hub_ville_Le_Mans.png" → "le-mans"
-  let s = filename
+  const s = filename
     .replace(/^Hub_ville_/, "")
     .replace(/\.(png|jpg|jpeg|webp)$/i, "")
     .toLowerCase()
@@ -53,9 +47,7 @@ function nameToSlug(filename: string): string {
 async function main() {
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
-  const files = (await fs.readdir(SOURCE_DIR)).filter((f) =>
-    /\.(png|jpg|jpeg|webp)$/i.test(f),
-  );
+  const files = (await fs.readdir(SOURCE_DIR)).filter((f) => /\.(png|jpg|jpeg|webp)$/i.test(f));
 
   const slugs: string[] = [];
   let processed = 0;

@@ -8,15 +8,22 @@
 //
 // Référencé dans `app/sitemap-index.xml/route.ts` (CUSTOM_SITEMAPS).
 
-import { VILLES } from "@/content/villes";
+import { VILLES, isVilleIndexable } from "@/content/villes";
 import { SITEMAP_CACHE_HEADER } from "@/server/image-bank/constants";
 import { buildVillesSitemapXml } from "@/server/image-bank/utils/villes-sitemap";
 
-export const dynamic = "force-static";
+// Drip-aware sitemap (Will 2026-05-28 — audit GSC `_AUDIT/GSC-INDEXATION-2026-05-28`).
+// Filtre sur la cohorte drip + présence copy. Les ~83 villes T2 sont toutes
+// premium (pop ≥ 20k) donc toutes émises au jour 0.
+export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 export function GET(): Response {
   const t2 = [...VILLES]
-    .filter((v) => v.population >= 50_000 && v.population < 100_000)
+    .filter(
+      (v) =>
+        v.population >= 50_000 && v.population < 100_000 && !!v.copy && isVilleIndexable(v.slug),
+    )
     .sort((a, b) => b.population - a.population);
 
   const body = buildVillesSitemapXml(

@@ -42,6 +42,32 @@ export default auth((req) => {
     }
   }
 
+  // 0bis. Force 301 (permanent) au lieu du 307 (temporary) émis par next-intl
+  //       pour les routes sans préfixe locale (`/a-propos`, `/galerie`, etc.).
+  //       Audit GSC 2026-05-28 D-6 (`_AUDIT/GSC-INDEXATION-2026-05-28`) — le 307
+  //       garde l'URL source dans l'index Google plus longtemps (« Page avec
+  //       redirection » section GSC = 39 URLs partiellement expliquées). Le 301
+  //       signale « permanent » et accélère l'absorption.
+  //
+  //       Heuristique : tout pathname qui (1) commence par `/` autre chose
+  //       que `/fr` ou `/en`, (2) n'est pas une asset/sitemap/api/manifest/icon
+  //       (matcher filter le fait déjà), (3) n'est pas la racine `/` (next-intl
+  //       gère la racine via redirect to defaultLocale). On préfixe avec `/fr`.
+  //
+  //       Exclusions explicites : `_next`, `api`, `.well-known`, etc. — déjà
+  //       écartées par le `matcher` config en bas du fichier. Donc ici on a
+  //       seulement des routes publiques type `/a-propos`, `/contact`, etc.
+  {
+    const path = req.nextUrl.pathname;
+    const firstSeg = path.split("/")[1] ?? "";
+    const isLocalePrefixed = firstSeg === "fr" || firstSeg === "en";
+    const isRoot = path === "/" || path === "";
+    if (!isLocalePrefixed && !isRoot) {
+      const dest = new URL(`/fr${path}${req.nextUrl.search}`, req.url);
+      return NextResponse.redirect(dest, 301);
+    }
+  }
+
   // 1. Génère un nonce et l'expose à la requête via `x-nonce` AVANT que
   //    next-intl process la requête, pour que les Server Components qui
   //    appellent `cspNonce()` voient le bon header.
