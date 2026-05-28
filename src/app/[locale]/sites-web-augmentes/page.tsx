@@ -28,7 +28,13 @@ import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMet
 import { SitesWebFaq } from "@/components/services/sites-web/SitesWebFaq";
 import { SitesWebCtaBlock } from "@/components/services/sites-web/SitesWebCtaBlock";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
-import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildItemListJsonLd,
+  buildImageGraphJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -121,6 +127,40 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
     ],
   });
 
+  // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
+  // équipe + portrait fondateur pour visibilité Google Images + citation
+  // AI Overviews sur requêtes « site web IA », « SaaS native IA »,
+  // « site web augmenté entreprise ».
+  const sitesWebImagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — création sites web et SaaS native IA"
+          : "Axion-IA team — AI-native websites and SaaS",
+        alt: isFr
+          ? "Équipe Axion-IA en session conception site web augmenté IA — sites vitrines, SaaS métier, plateformes B2B avec agents conversationnels intégrés pour TPE, PME, ETI et grandes entreprises françaises."
+          : "Axion-IA team designing AI-augmented website — showcase sites, business SaaS, B2B platforms with integrated conversational agents for French SMEs, mid-caps and large enterprises.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA et architecte sites web IA"
+          : "William — Axion-IA founder and AI website architect",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote la création de sites web augmentés IA et SaaS native IA pour dirigeants TPE, PME, ETI et grandes entreprises françaises — agents conversationnels, recommandations IA, automatisations métier."
+          : "Portrait of William, Axion-IA founder. Drives AI-augmented website and AI-native SaaS creation for French SME, mid-cap and large enterprise executives — conversational agents, AI recommendations, business automations.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
+
   return (
     <>
       <JsonLd data={serviceJsonLd} />
@@ -129,6 +169,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
         strategy="afterInteractive"
         scriptId="jsonld-sites-web-augmentes-itemlist"
       />
+      <JsonLd data={sitesWebImagesJsonLd} />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />

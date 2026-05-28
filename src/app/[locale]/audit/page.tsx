@@ -28,7 +28,13 @@ import { AuditMethodology } from "@/components/services/audit/AuditMethodology";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
 import { AUDIT_TIERS, formatAmount, formatAmountRange, getTierById } from "@/content/pricing";
 import { AUDIT_BY_SIZE, AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
-import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildItemListJsonLd,
+  buildImageGraphJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 // ============================================================================
 // Sprint A · Phase 3 Refactor-1 (Will 2026-05-25) — page hub /audit reconstruite
@@ -102,6 +108,39 @@ export default async function AuditHub({ params }: Props) {
       ? "4 niveaux d'audit IA selon la taille de l'entreprise et la situation. France & international."
       : "4 AI audit levels by company size and situation. France & international.",
     serviceType: "AI audit",
+  });
+
+  // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
+  // équipe + portrait fondateur exposés à Google Images + AI Overviews
+  // pour requêtes « audit IA entreprise », « cabinet IA France ».
+  const auditImagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — audit IA stratégique pour entreprises"
+          : "Axion-IA team — strategic AI audit for companies",
+        alt: isFr
+          ? "Équipe Axion-IA en session de cadrage audit IA — cabinet IA opérationnel français pour TPE, PME, ETI et grandes entreprises. Audit Flash, Ciblé, Stratégique PME et ETI."
+          : "Axion-IA team in AI audit scoping session — French operational AI consultancy for SMEs, mid-caps and large enterprises. Flash, Targeted, Strategic SME and mid-cap audits.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA et auditeur IA"
+          : "William — Axion-IA founder and AI auditor",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Réalise personnellement les audits IA stratégiques pour dirigeants TPE, PME, ETI et grandes entreprises françaises — cartographie IA, ROI chiffré, roadmap 6-12 mois."
+          : "Portrait of William, Axion-IA founder. Personally conducts strategic AI audits for French SME, mid-cap and large enterprise executives — AI mapping, quantified ROI, 6-12 month roadmap.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
   });
 
   // ItemList JSON-LD — 4 tiers d'audit. AEO 2026 : LLMs énumèrent les niveaux
@@ -212,6 +251,7 @@ export default async function AuditHub({ params }: Props) {
           critique), ItemList déféré afterInteractive (-100 à -200 ms TBT). */}
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-audit-itemlist" />
+      <JsonLd data={auditImagesJsonLd} />
     </>
   );
 }

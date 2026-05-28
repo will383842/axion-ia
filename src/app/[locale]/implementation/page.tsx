@@ -37,7 +37,7 @@ import {
   getEntryPriceEur,
   getTierById,
 } from "@/content/pricing";
-import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
@@ -159,9 +159,44 @@ export default async function ImplementationListing({ params }: Props) {
     },
   };
 
+  // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Photo
+  // équipe + portrait fondateur pour signal AEO Google Images +
+  // citation AI Overviews sur requêtes « implémentation IA », « agents IA
+  // entreprise », « automatisation IA TPE/PME/ETI ».
+  const implementationImagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — implémentation IA opérationnelle pour entreprises"
+          : "Axion-IA team — operational AI implementation for companies",
+        alt: isFr
+          ? "Équipe Axion-IA en mission d'implémentation IA opérationnelle — agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom pour TPE, PME, ETI et grandes entreprises françaises. ROI chiffré 6-12 semaines."
+          : "Axion-IA team on operational AI implementation mission — conversational agents, back-office automation, CRM/ERP integration, custom AI for French SMEs, mid-caps and large enterprises. Quantified ROI in 6-12 weeks.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA et architecte IA"
+          : "William — Axion-IA founder and AI architect",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote les missions d'implémentation IA (agents IA conversationnels, automatisations métier, RAG, intégrations CRM ERP) pour dirigeants TPE PME ETI grandes entreprises françaises."
+          : "Portrait of William, Axion-IA founder. Drives AI implementation missions (conversational AI agents, business automations, RAG, CRM ERP integrations) for French SME mid-cap large enterprise executives.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
+
   return (
     <>
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={implementationImagesJsonLd} />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>

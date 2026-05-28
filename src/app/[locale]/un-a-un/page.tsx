@@ -15,7 +15,7 @@ import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
 import { UN_A_UN_TIERS, getEntryTier } from "@/content/pricing";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
@@ -69,6 +69,38 @@ export default async function UnAUnHubPage({ params }: Props) {
     priceEur: entryTier.priceFlat ?? 990,
   });
 
+  // ImageObject @graph — Sprint perfection AEO 2026-05-28 (Will). Portrait
+  // fondateur + équipe Axion-IA pour visibilité Google Images + citation
+  // AI Overviews sur requêtes « coaching IA dirigeant », « accompagnement
+  // IA individuel 1-to-1 ».
+  const unAUnImagesJsonLd = buildImageGraphJsonLd({
+    locale: isFr ? "fr" : "en",
+    images: [
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA et coach IA individuel"
+          : "William — Axion-IA founder and individual AI coach",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA et coach IA individuel 1-to-1. Accompagne personnellement dirigeants TPE, PME, ETI et managers sur ChatGPT, Claude, Mistral, agents IA et automatisations métier. Sessions calibrées sur le poste."
+          : "Portrait of William, Axion-IA founder and individual AI coach 1-to-1. Personally coaches executives of SMEs, mid-caps and managers on ChatGPT, Claude, Mistral, AI agents and business automations. Sessions calibrated to the role.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr ? "Équipe Axion-IA — coachs IA dédiés" : "Axion-IA team — dedicated AI coaches",
+        alt: isFr
+          ? "Équipe Axion-IA — coachs IA individuels dédiés aux dirigeants et collaborateurs clés d'entreprises françaises. Méthode 1-to-1, partout en France métropolitaine, sur site ou à distance."
+          : "Axion-IA team — individual AI coaches dedicated to executives and key team members of French companies. 1-to-1 method, across metropolitan France, on site or remote.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -105,6 +137,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       />
 
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={unAUnImagesJsonLd} />
     </>
   );
 }
