@@ -153,7 +153,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           id: "1j-objectif",
           question: "Que livre une formation IA d'1 jour ?",
           answer:
-            "Une journée complète (≈ 7 h sur site) avec cadrage du matin, ateliers pratiques l'après-midi, plan d'action le soir. Chaque participant repart avec 3-5 automatisations applicables dès le lendemain.",
+            "Une journée complète (≈ 7 h sur site) avec cadrage du matin, ateliers pratiques l'après-midi, plan d'action le soir. Chaque participant maîtrise 3-5 automatisations applicables à ses tâches dès le lendemain.",
         },
         {
           id: "1j-formats",
@@ -185,7 +185,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           id: "1j-objectif",
           question: "What does a 1-day AI training deliver?",
           answer:
-            "A full day (≈ 7 h on site) with morning scoping, afternoon hands-on workshops, evening action plan. Each participant leaves with 3-5 automations applicable from day one.",
+            "A full day (≈ 7 h on site) with morning scoping, afternoon hands-on workshops, evening action plan. Each participant masters 3-5 automations applicable to their tasks from day one.",
         },
         {
           id: "1j-formats",

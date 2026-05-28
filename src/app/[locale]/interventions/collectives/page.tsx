@@ -183,12 +183,12 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
-        title={isFr ? "Vos équipes plus performantes" : "Your teams more efficient"}
-        titleEm={isFr ? "en 4 h à 3 jours" : "in 4 h to 3 days"}
+        title={isFr ? "Formez vos équipes IA," : "Train your teams in AI,"}
+        titleEm={isFr ? "gagnez du temps instantanément" : "save time instantly"}
         description={
           isFr
-            ? "Formation IA en entreprise pour TPE, PME, ETI et grandes entreprises. Un formateur IA expert vient sur votre site, vos équipes montent en compétence sur leurs vrais outils et leurs vrais cas métier. Elles repartent avec des automatisations qui tournent dès le lendemain, des heures gagnées instantanément chaque semaine, et une autonomie IA nouvelle."
-            : "Corporate AI training for SMEs and large companies. An expert AI trainer comes on site, your teams upskill on their real tools and real business cases. They leave with automations running from day one, hours saved instantly every week, and new AI autonomy."
+            ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur leurs vrais outils et leurs vrais cas métier — et gagnent des heures dès la 1ʳᵉ session."
+            : "An expert AI trainer comes on site. Your teams upskill on their real tools and real business cases — and save hours from the very first session."
         }
         ctas={
           <Cta
@@ -204,8 +204,8 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         schemaCenterLabel={isFr ? "Votre équipe" : "Your team"}
         schemaAriaLabel={
           isFr
-            ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM, Make, Zapier) avec leur usage métier."
-            : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM, Make, Zapier) with their business use."
+            ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Microsoft Copilot, Gemini, Perplexity, Midjourney, Sora, HeyGen) avec leur usage métier."
+            : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Microsoft Copilot, Gemini, Perplexity, Midjourney, Sora, HeyGen) with their business use."
         }
         schemaNodes={[
           {
@@ -234,18 +234,18 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             accent: "terracotta",
           },
           {
-            label: "NotebookLM",
-            benefit: isFr ? "Docs en assistant" : "Docs as assistant",
+            label: "Midjourney",
+            benefit: isFr ? "Création visuelle" : "Visual creation",
             accent: "primary",
           },
           {
-            label: "Make",
-            benefit: isFr ? "Automatisations" : "Automations",
+            label: "Sora",
+            benefit: isFr ? "Vidéo IA" : "AI video",
             accent: "sage",
           },
           {
-            label: "Zapier",
-            benefit: isFr ? "Workflows métier" : "Business workflows",
+            label: "HeyGen",
+            benefit: isFr ? "Avatars formation" : "Training avatars",
             accent: "mocha",
           },
         ]}
@@ -461,7 +461,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                         "Formateur IA expert dédié à votre entreprise",
                         "Montée en compétence progressive et mesurable",
                         "Gain de temps instantané dès la 1ʳᵉ session",
-                        "Nouvelles automatisations métier à chaque journée",
+                        "Nouveaux cas d'automatisation métier maîtrisés chaque journée",
                         "Support continu entre sessions (Slack/email)",
                         "Bilan mensuel : KPI gains de temps et adoption",
                       ]
@@ -469,7 +469,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                         "Dedicated expert AI trainer for your company",
                         "Progressive, measurable upskilling",
                         "Instant time savings from session 1",
-                        "New business automations every session",
+                        "New business automation cases mastered every session",
                         "Continuous support between sessions (Slack/email)",
                         "Monthly review: time-saving KPIs and adoption",
                       ]
@@ -600,7 +600,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                     },
                     {
                       t: "Gain de temps instantané",
-                      d: "Dès la 1ʳᵉ journée, les participants repartent avec 3-5 automatisations opérationnelles qui leur font gagner du temps immédiatement.",
+                      d: "Dès la 1ʳᵉ journée, les participants maîtrisent 3-5 automatisations applicables à leurs tâches, qui leur font gagner du temps immédiatement.",
                     },
                     {
                       t: "Adapté à toutes les tailles",
@@ -626,7 +626,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                     },
                     {
                       t: "Instant time savings",
-                      d: "From day 1, participants leave with 3-5 operational automations that save time immediately.",
+                      d: "From day 1, participants master 3-5 automations applicable to their tasks, saving time immediately.",
                     },
                     {
                       t: "Fits all company sizes",
@@ -681,8 +681,8 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                 id: "step-3-intervention",
                 title: isFr ? "Intervention sur site" : "On-site session",
                 description: isFr
-                  ? "Démos live sur vos données, outils installés sur les postes, exercices appliqués métier. Chaque participant repart avec 3-5 automatisations opérationnelles."
-                  : "Live demos on your data, tools installed on workstations, role-applied exercises. Each participant leaves with 3-5 operational automations.",
+                  ? "Démos live sur vos données, outils en main sur les postes, exercices appliqués métier. Chaque participant maîtrise 3-5 automatisations applicables à ses tâches."
+                  : "Live demos on your data, tools hands-on at workstations, role-applied exercises. Each participant masters 3-5 automations applicable to their tasks.",
               },
               {
                 id: "step-4-suivi",
@@ -748,7 +748,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                       id: "remboursement",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Si l'équipe n'a rien tiré de la formation (cas extrêmement rare), on rembourse intégralement. Concrètement, 100 % de nos clients ressortent avec 3-5 automatisations applicables dès le lendemain.",
+                        "Si l'équipe n'a rien tiré de la formation (cas extrêmement rare), on rembourse intégralement. Concrètement, 100 % de nos clients ressortent en maîtrisant 3-5 automatisations applicables à leurs tâches dès le lendemain.",
                     },
                   ]
                 : [
@@ -780,7 +780,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                       id: "guarantee",
                       question: "Guarantee?",
                       answer:
-                        "If the team got nothing from the training (extremely rare), we refund in full. Concretely, 100 % of our customers come out with 3-5 automations applicable the next day.",
+                        "If the team got nothing from the training (extremely rare), we refund in full. Concretely, 100 % of our customers come out mastering 3-5 automations applicable to their tasks the next day.",
                     },
                   ]
             }
