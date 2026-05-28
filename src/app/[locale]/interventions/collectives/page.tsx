@@ -30,6 +30,9 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ServiceHero } from "@/components/sections/ServiceHero";
+// Sprint Matrice hero 2026-05-28 (Will) — visuel custom data-viz qui
+// remplace l'orbital générique (différenciation concurrentielle).
+import { HeroMatrix } from "@/components/sections/HeroMatrix";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -183,83 +186,50 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
-        title={isFr ? "Formez vos équipes IA," : "Train your teams in AI,"}
-        titleEm={isFr ? "gagnez du temps instantanément" : "save time instantly"}
+        title={isFr ? "Formez vos équipes à l'IA" : "Train your teams in AI"}
+        titleEm={isFr ? "pour du gain de temps immédiat" : "for immediate time savings"}
         description={
           isFr
             ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur leurs vrais outils et leurs vrais cas métier — et gagnent des heures dès la 1ʳᵉ session."
             : "An expert AI trainer comes on site. Your teams upskill on their real tools and real business cases — and save hours from the very first session."
         }
         ctas={
-          <Cta
-            href="/reserver"
-            size="lg"
-            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
-            track="collectives-hero-primary"
-          >
-            {isFr ? "Pré-réserver sur le calendrier" : "Pre-book on the calendar"}
-            <ArrowRight aria-hidden="true" className="h-4 w-4" />
-          </Cta>
+          // Sprint cohérence CTA 2026-05-28 (Will) — alignés Header (Primary
+          // « Réserver un appel » + Secondary « Nous écrire »). Le booking
+          // calendrier formation est accessible plus bas via les cards palier.
+          <>
+            <Cta
+              href="/appel"
+              size="lg"
+              className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+              track="collectives-hero-book-call"
+            >
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Cta>
+            <Cta
+              href="/contact"
+              variant="outline"
+              size="lg"
+              className="bg-paper text-terracotta hover:bg-paper border-terracotta-deep shadow-subtle border-2"
+              track="collectives-hero-contact"
+            >
+              {isFr ? "Nous écrire" : "Email us"}
+            </Cta>
+          </>
         }
-        schemaCenterLabel={isFr ? "Votre équipe" : "Your team"}
-        schemaAriaLabel={
-          isFr
-            ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen) avec leur usage métier."
-            : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen) with their business use."
-        }
-        schemaNodes={[
-          {
-            label: "ChatGPT",
-            benefit: isFr ? "Rédaction, synthèse" : "Writing, synthesis",
-            accent: "terracotta",
-          },
-          {
-            label: "Claude",
-            benefit: isFr ? "Analyse, code" : "Analysis, code",
-            accent: "primary",
-          },
-          {
-            label: "Mistral",
-            benefit: isFr ? "IA souveraine FR" : "Sovereign EU AI",
-            accent: "sage",
-          },
-          {
-            label: "Copilot",
-            benefit: isFr ? "Office, Outlook" : "Office, Outlook",
-            accent: "mocha",
-          },
-          {
-            label: "Perplexity",
-            benefit: isFr ? "Recherche sourcée" : "Sourced research",
-            accent: "terracotta",
-          },
-          {
-            label: "Midjourney",
-            benefit: isFr ? "Création visuelle" : "Visual creation",
-            accent: "primary",
-          },
-          {
-            label: "Sora",
-            benefit: isFr ? "Vidéo IA" : "AI video",
-            accent: "sage",
-          },
-          {
-            label: "HeyGen",
-            benefit: isFr ? "Avatars formation" : "Training avatars",
-            accent: "mocha",
-          },
-        ]}
+        customVisual={<HeroMatrix isFr={isFr} />}
       />
 
       {/* 4 CARDS PALIER DURÉE */}
       <Section
-        eyebrow={isFr ? "Quel objectif pour votre équipe ?" : "What's the goal for your team?"}
-        title={isFr ? "4 niveaux d'impact" : "4 levels of impact"}
-        titleEm={isFr ? "selon vos ambitions" : "to match your ambition"}
+        eyebrow={isFr ? "Quel format pour votre équipe ?" : "Which format for your team?"}
+        title={isFr ? "Des durées de formation" : "Training durations"}
+        titleEm={isFr ? "à partir de 590 € HT" : "from €590 ex VAT"}
         description={
           isFr
-            ? "Du démarrage express à la transformation complète. Chaque format livre un bénéfice concret pour vos équipes — automatisations testées, méthodes installées, gains chiffrés."
-            : "From express kickoff to complete transformation. Each format delivers a concrete benefit for your teams — tested automations, installed methods, quantified gains."
+            ? "Que vous découvriez l'IA en entreprise ou que vous l'utilisiez déjà quotidiennement, après chaque journée de formation vos équipes font un bond en avant — gain de temps mesurable, automatisations maîtrisées, autonomie nouvelle."
+            : "Whether you're discovering corporate AI or already using it daily, after each training day your teams take a leap forward — measurable time savings, mastered automations, new autonomy."
         }
         contentClassName={TIGHT_X}
       >
