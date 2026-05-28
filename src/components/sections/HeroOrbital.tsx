@@ -19,6 +19,13 @@
 // ont des comportements aléatoires cross-browser et débordaient). CLS = 0.
 
 import type { ReactNode } from "react";
+// Sprint logos brand 2026-05-28 (Will) — utilise les vrais logos SVG officiels
+// pour 5 marques via `simple-icons` (CC0 1.0, licence libre pour usage
+// commercial éditorial). Les 3 manquantes (ChatGPT/OpenAI, Midjourney, Sora,
+// HeyGen) tombent en fallback sur des glyphes minimalistes stroke-based —
+// simple-icons ne contient pas ces logos (OpenAI retiré pour copyright,
+// Midjourney/Sora/HeyGen pas encore indexés).
+import { siClaude, siMistralai, siPerplexity, siGithubcopilot } from "simple-icons";
 
 type Accent = "terracotta" | "primary" | "sage" | "mocha";
 
@@ -37,22 +44,36 @@ interface ToolNode {
   accent: Accent;
 }
 
-// Paths SVG des glyphes brand — dupliqués depuis `brand-logos.tsx` pour
-// inliner dans le SVG principal (évite `<foreignObject>` et garantit le
-// rendu pur SSR sans boundary client).
-const BRAND_GLYPHS: Record<ToolNode["slug"], string> = {
-  chatgpt:
-    "M12 4 L18 8 L18 16 L12 20 L6 16 L6 8 Z M12 4 L12 12 L18 16 M6 8 L12 12 L18 8 M6 16 L12 12 L12 20",
-  claude: "M12 3 L13.2 10.5 L20 12 L13.2 13.5 L12 21 L10.8 13.5 L4 12 L10.8 10.5 Z",
-  mistral: "M4 18 L4 7 L8 13 L12 7 L12 18 M15 9 L20 9 M15 13 L18 13 M15 17 L20 17",
-  copilot:
-    "M12 4 C8 4 4 8 4 12 M12 4 C16 4 20 8 20 12 M12 20 C8 20 4 16 4 12 M12 20 C16 20 20 16 20 12",
-  perplexity:
-    "M12 4 L12 7 M12 17 L12 20 M4 12 L7 12 M17 12 L20 12 M6.3 6.3 L8.5 8.5 M15.5 15.5 L17.7 17.7 M17.7 6.3 L15.5 8.5 M8.5 15.5 L6.3 17.7",
-  midjourney:
-    "M12 4 L12 16 M12 6 L18 14 L12 14 Z M12 6 L6 14 L12 14 Z M4 18 L20 18 M6 18 L8 20 L16 20 L18 18",
-  sora: "M12 4 L13 11 L20 12 L13 13 L12 20 L11 13 L4 12 L11 11 Z",
-  heygen: "M6 4 L6 20 M18 4 L18 20 M6 12 Q12 9 18 12",
+// Brand glyphs — mix logos officiels simple-icons (fill mode, paths solides)
+// + glyphes fallback minimalistes (stroke mode, paths filaires) pour les 4
+// marques absentes du registre simple-icons.
+const BRAND_LOGOS: Record<ToolNode["slug"], { path: string; mode: "fill" | "stroke" }> = {
+  // simple-icons (vrais logos officiels)
+  claude: { path: siClaude.path, mode: "fill" },
+  mistral: { path: siMistralai.path, mode: "fill" },
+  perplexity: { path: siPerplexity.path, mode: "fill" },
+  // GitHub Copilot comme proxy visuel pour Microsoft Copilot (simple-icons
+  // n'indexe pas Microsoft Copilot directement, mais le glyphe Copilot est
+  // visuellement identique sur les 2 produits depuis 2024).
+  copilot: { path: siGithubcopilot.path, mode: "fill" },
+  // Fallbacks stroke-based pour les marques non indexées par simple-icons.
+  // À migrer vers simple-icons si/quand elles sont ajoutées au registre.
+  chatgpt: {
+    path: "M12 4 L18 8 L18 16 L12 20 L6 16 L6 8 Z M12 4 L12 12 L18 16 M6 8 L12 12 L18 8 M6 16 L12 12 L12 20",
+    mode: "stroke",
+  },
+  midjourney: {
+    path: "M12 4 L12 16 M12 6 L18 14 L12 14 Z M12 6 L6 14 L12 14 Z M4 18 L20 18 M6 18 L8 20 L16 20 L18 18",
+    mode: "stroke",
+  },
+  sora: {
+    path: "M12 4 L13 11 L20 12 L13 13 L12 20 L11 13 L4 12 L11 11 Z",
+    mode: "stroke",
+  },
+  heygen: {
+    path: "M6 4 L6 20 M18 4 L18 20 M6 12 Q12 9 18 12",
+    mode: "stroke",
+  },
 };
 
 const accentColor: Record<Accent, string> = {
@@ -249,7 +270,7 @@ export function HeroOrbital({
           const pos = ellipsePos(angle, rx, ry, cx, cy);
           const layout = labelLayout(angle);
           const accent = accentColor[node.accent];
-          const glyphPath = BRAND_GLYPHS[node.slug];
+          const logo = BRAND_LOGOS[node.slug];
 
           return (
             <g key={`sat-${idx}`}>
@@ -267,17 +288,26 @@ export function HeroOrbital({
                 strokeWidth="2"
                 filter="url(#ho-shadow)"
               />
-              {/* Glyph brand au centre du disque — couleur accent */}
-              <g
-                transform={`translate(${pos.x - 12} ${pos.y - 12})`}
-                stroke={accent}
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              >
-                <path d={glyphPath} />
-              </g>
+              {/* Logo brand au centre du disque — fill mode pour simple-icons
+                  (paths solides 24×24), stroke mode pour les glyphes
+                  fallback (paths filaires). Tous positionnés via translate
+                  pour centrer le viewBox 24×24 sur (pos.x, pos.y). */}
+              {logo.mode === "fill" ? (
+                <g transform={`translate(${pos.x - 12} ${pos.y - 12})`}>
+                  <path d={logo.path} fill={accent} />
+                </g>
+              ) : (
+                <g
+                  transform={`translate(${pos.x - 12} ${pos.y - 12})`}
+                  stroke={accent}
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                >
+                  <path d={logo.path} />
+                </g>
+              )}
               {/* Label outil — serif italique terracotta */}
               <text
                 x={pos.x + layout.dx}

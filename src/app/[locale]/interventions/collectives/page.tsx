@@ -28,7 +28,6 @@ import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
-import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 // Sprint Hero orbital v2 2026-05-28 (Will) — orbital travaillé avec glyphes
@@ -189,7 +188,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
         title={isFr ? "Formez vos équipes à l'IA" : "Train your teams in AI"}
-        titleEm={isFr ? "pour du gain de temps immédiat" : "for immediate time savings"}
+        titleEm={isFr ? "pour un gain de temps immédiat" : "for immediate time savings"}
         description={
           isFr
             ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur leurs vrais outils et leurs vrais cas métier — et gagnent des heures dès la 1ʳᵉ session."
@@ -809,10 +808,10 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         tone="paper"
       />
 
-      {/* FAQ GÉOLOCALISÉE */}
-      <LocalGeoFaqSection isFr={isFr} service="interventions" tone="sand" />
-
-      {/* FAQ générique formations équipe (5 questions essentielles) */}
+      {/* FAQ unifiée formations équipe (Sprint 2026-05-28 Will) — fusion de
+          la FAQ générique + 2 Q/R géolocalisées (couverture). Une seule FAQ
+          au lieu de deux pour ne pas alourdir la page. Speakable FAQPage
+          JSON-LD émis automatiquement par FaqAccordion. */}
       <Section
         eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
         title={isFr ? "Avant de réserver" : "Before booking"}
@@ -846,7 +845,19 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                       id: "outils",
                       question: "Quels outils IA utilisés ?",
                       answer:
-                        "Ceux que votre équipe utilise déjà ou qui correspondent aux métiers : ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM + automatisations métier (Make, Zapier) si pertinent. Pas de techno imposée.",
+                        "Ceux que votre équipe utilise déjà ou qui correspondent aux métiers : ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity pour le texte et la recherche ; Midjourney pour le visuel ; Sora et HeyGen pour la vidéo et les avatars. Pas de techno imposée.",
+                    },
+                    {
+                      id: "couverture-france",
+                      question: "Intervenez-vous dans toute la France ?",
+                      answer:
+                        "Oui. Nos formateurs IA experts se déplacent dans toute la France métropolitaine, des grandes métropoles (Paris, Lyon, Marseille, Bordeaux, Lille, Nantes, Toulouse) jusqu'aux villes moyennes. Frais de déplacement chiffrés au cas par cas dans le devis.",
+                    },
+                    {
+                      id: "couverture-international",
+                      question: "Et à l'international ?",
+                      answer:
+                        "Oui, sur demande. Nos formateurs peuvent intervenir dans les pays francophones (Belgique, Suisse, Luxembourg, Québec…) ou anglophones. Cadrage par appel pour valider la faisabilité et les modalités.",
                     },
                     {
                       id: "remboursement",
@@ -878,7 +889,19 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                       id: "tools",
                       question: "Which AI tools are used?",
                       answer:
-                        "The ones your team already uses or that fit the roles: ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM + business automations (Make, Zapier) if relevant. No imposed tech.",
+                        "The ones your team already uses or that fit the roles: ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity for text and research; Midjourney for visual; Sora and HeyGen for video and avatars. No imposed tech.",
+                    },
+                    {
+                      id: "coverage-france",
+                      question: "Do you cover all of France?",
+                      answer:
+                        "Yes. Our expert AI trainers travel throughout metropolitan France, from major cities (Paris, Lyon, Marseille, Bordeaux, Lille, Nantes, Toulouse) to mid-size towns. Travel costs quoted case by case.",
+                    },
+                    {
+                      id: "coverage-international",
+                      question: "And internationally?",
+                      answer:
+                        "Yes, on request. Our trainers can travel to French-speaking countries (Belgium, Switzerland, Luxembourg, Quebec…) or English-speaking ones. Scoping call to validate feasibility and terms.",
                     },
                     {
                       id: "guarantee",
@@ -893,14 +916,13 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       </Section>
 
       <CtaBlock
-        eyebrow={isFr ? "Pas sûr·e du bon palier ?" : "Not sure which tier?"}
-        title={
-          isFr ? "On en parle 15 minutes au téléphone" : "Let's chat for 15 minutes on the phone"
-        }
+        eyebrow={isFr ? "Pas sûr·e du bon format ?" : "Not sure which format?"}
+        title={isFr ? "On vous oriente," : "We guide you,"}
+        titleEm={isFr ? "à votre rythme" : "at your pace"}
         description={
           isFr
-            ? "Un appel court pour comprendre votre contexte, vous orienter sur la durée la plus adaptée, et vous expliquer comment ça se passe. Sans engagement."
-            : "A short call to understand your context, point you to the right duration, and explain how it works. No commitment."
+            ? "Un appel pour comprendre votre contexte, vous conseiller la durée la plus adaptée à vos enjeux, et vous expliquer comment se déroule la formation. Sans engagement."
+            : "A call to understand your context, advise the duration that fits your stakes, and explain how the training unfolds. No commitment."
         }
         cta={
           // Sprint cohérence CTA 2026-05-28 (Will) — aligné Header primary :
