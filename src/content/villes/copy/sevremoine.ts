@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUAL EDIT 2026-05-28 — anti-doorway HCU 2024 fix (Wikipedia factuel).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const SEVREMOINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sèvremoine, optimisant les processus des entreprises locales. Avec des acteurs comme LVMH et Inria en tête, nous apportons notre expertise nationale en IA pour répondre aux besoins spécifiques des entreprises sèvremoinaises.",
+    "Axion-IA accompagne les TPE et PME de Sèvremoine (25 797 habitants, Maine-et-Loire, Pays de la Loire), commune nouvelle créée le 15 décembre 2015 par la fusion de dix communes déléguées dont Saint-Macaire-en-Mauges (chef-lieu). Située dans l'arrondissement de Cholet, au cœur des Mauges, Sèvremoine accueille notamment le Groupe Grimaud, leader mondial de la sélection génétique animale. Notre cabinet national s'y déplace pour mener audits IA et automatisations en code custom adaptés au tissu agroalimentaire et industriel local.",
   pitchEn:
-    "Axion-IA intervient à Sèvremoine, optimisant les processus des entreprises locales. Avec des acteurs comme LVMH et Inria en tête, nous apportons notre expertise nationale en IA pour répondre aux besoins spécifiques des entreprises sèvremoinaises.",
+    "Axion-IA accompagne les TPE et PME de Sèvremoine (25 797 habitants, Maine-et-Loire, Pays de la Loire), commune nouvelle créée le 15 décembre 2015 par la fusion de dix communes déléguées dont Saint-Macaire-en-Mauges (chef-lieu). Située dans l'arrondissement de Cholet, au cœur des Mauges, Sèvremoine accueille notamment le Groupe Grimaud, leader mondial de la sélection génétique animale. Notre cabinet national s'y déplace pour mener audits IA et automatisations en code custom adaptés au tissu agroalimentaire et industriel local.",
   directAnswerFr:
-    "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits.",
+    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits.",
-  seoHook: "industrie agroalimentaire & commerce gros",
+    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
+  seoHook: "Groupe Grimaud, Mauges agroalimentaires & gare TER Torfou",
   ecosystemFr:
-    "Sèvremoine bénéficie d'une proximité avec des pôles économiques comme Cholet et Clisson. L'industrie agroalimentaire et la fabrication de produits métalliques y sont prédominantes, offrant un terreau fertile pour l'innovation IA.",
+    "Sèvremoine, commune nouvelle des Mauges, regroupe dix communes déléguées (Saint-Macaire-en-Mauges siège administratif, plus Torfou et huit autres). Elle s'inscrit dans le bassin économique de Cholet, marqué par l'agroalimentaire, la fabrication de produits métalliques et la sous-traitance industrielle. Le Groupe Grimaud, spécialiste mondial de la biologie humaine et animale, y est un employeur majeur. La commune borde Beaupréau-en-Mauges, Bégrolles-en-Mauges et La Séguinière, formant un bassin de TPE et PME industrielles dense.",
   ecosystemEn:
-    "Sèvremoine bénéficie d'une proximité avec des pôles économiques comme Cholet et Clisson. L'industrie agroalimentaire et la fabrication de produits métalliques y sont prédominantes, offrant un terreau fertile pour l'innovation IA.",
+    "Sèvremoine, commune nouvelle des Mauges, regroupe dix communes déléguées (Saint-Macaire-en-Mauges siège administratif, plus Torfou et huit autres). Elle s'inscrit dans le bassin économique de Cholet, marqué par l'agroalimentaire, la fabrication de produits métalliques et la sous-traitance industrielle. Le Groupe Grimaud, spécialiste mondial de la biologie humaine et animale, y est un employeur majeur. La commune borde Beaupréau-en-Mauges, Bégrolles-en-Mauges et La Séguinière, formant un bassin de TPE et PME industrielles dense.",
   distancesFr:
-    "La gare TGV de Cholet est à 20 km de Sèvremoine, facilitant l'accès pour nos interventions sur site.",
+    "Sèvremoine est dans l'arrondissement de Cholet, à environ 20 km de Cholet et 50 km au sud-est de Nantes ; la gare TER de Torfou la dessert sur la ligne Nantes-Cholet via Clisson, complétée par le réseau Aléop.",
   distancesEn:
-    "La gare TGV de Cholet est à 20 km de Sèvremoine, facilitant l'accès pour nos interventions sur site.",
+    "Sèvremoine est dans l'arrondissement de Cholet, à environ 20 km de Cholet et 50 km au sud-est de Nantes ; la gare TER de Torfou la dessert sur la ligne Nantes-Cholet via Clisson, complétée par le réseau Aléop.",
   topSectorsNaf: [
-    "Industrie agroalimentaire",
+    "Industrie agroalimentaire (élevage, transformation)",
+    "Fabrication de produits métalliques",
     "Commerce de gros",
-    "Transports terrestres",
-    "Produits métalliques",
+    "Transports terrestres et logistique",
+    "Sélection génétique animale (Groupe Grimaud)",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Sèvremoine pour identifier les processus automatisables — économies immédiates.",
-      en: "Réaliser un audit à Sèvremoine pour identifier les processus automatisables — économies immédiates.",
+      fr: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès 490 € HT.",
+      en: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Sèvremoine pour optimiser les relances clients — gain de temps précieux.",
-      en: "Intervenir à Sèvremoine pour optimiser les relances clients — gain de temps précieux.",
+      fr: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès 590 € HT.",
+      en: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Sèvremoine dans le secteur agroalimentaire — efficacité accrue.",
-      en: "Implémenter des solutions IA à Sèvremoine dans le secteur agroalimentaire — efficacité accrue.",
+      fr: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès 990 € HT.",
+      en: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Sèvremoine pour un coaching IA — décision stratégique éclairée.",
-      en: "Accompagner un dirigeant à Sèvremoine pour un coaching IA — décision stratégique éclairée.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Sèvremoine ?",
-      a: "Nos tarifs pour une intervention à Sèvremoine débutent à 590 € HT. Consultez notre site pour les détails complets.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention IA à Sèvremoine ?",
+      a: "Nos tarifs publics démarrent à 490 € HT pour un Audit Flash et 590 € HT pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à 990 € HT, sans frais cachés.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Sèvremoine ?",
-      a: "Notre équipe se déplace à Sèvremoine dans les 5 jours ouvrés suivant votre demande, assurant une intervention rapide et efficace.",
+      q: "Axion-IA se déplace-t-il sur site à Sèvremoine (Maine-et-Loire) ?",
+      a: "Oui, nos consultants se rendent à Sèvremoine via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou en voiture depuis Cholet (20 km) ou Nantes (50 km).",
     },
     {
-      q: "Quelles entreprises peuvent bénéficier de vos services à Sèvremoine ?",
-      a: "Nous accompagnons les TPE, PME et ETI de Sèvremoine, notamment dans les secteurs agroalimentaire et métallurgique.",
+      q: "Quels délais pour démarrer un projet IA à Sèvremoine ?",
+      a: "Nous intervenons à Sèvremoine dans un délai de 5 jours ouvrés après validation. L'Audit Flash se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
+    },
+    {
+      q: "Intervenez-vous dans les communes voisines de Sèvremoine ?",
+      a: "Oui, nous couvrons Beaupréau-en-Mauges, Bégrolles-en-Mauges, La Séguinière, Cholet et Clisson, qui bordent ou jouxtent Sèvremoine et partagent le tissu industriel des Mauges.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Sèvremoine ?",
-      a: "Nous intégrons systématiquement les normes RGPD dans nos solutions IA, garantissant la protection des données de vos clients à Sèvremoine.",
+      a: "Nous codons toutes les automatisations en code custom hébergé sur infrastructure européenne, avec registre des traitements, DPA et minimisation des données — conforme RGPD et AI Act.",
+    },
+    {
+      q: "Quels secteurs locaux de Sèvremoine accompagnez-vous en priorité ?",
+      a: "Nous priorisons les TPE et PME de l'agroalimentaire, de la fabrication de produits métalliques, du commerce de gros et du transport — l'ADN industriel des Mauges et de l'arrondissement de Cholet.",
     },
   ],
 };

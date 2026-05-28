@@ -1,68 +1,73 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUALLY EDITED 2026-05-28 — anti-doorway HCU 2024 (sources : fr.wikipedia.org/wiki/Sainte-Geneviève-des-Bois_(Essonne)).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "À Sainte-Geneviève-des-Bois, Axion-IA propose des interventions en IA pour optimiser les processus des entreprises locales. Bénéficiez de notre expertise nationale pour transformer vos opérations avec des solutions adaptées.",
+    "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les TPE et PME locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
   pitchEn:
-    "À Sainte-Geneviève-des-Bois, Axion-IA propose des interventions en IA pour optimiser les processus des entreprises locales. Bénéficiez de notre expertise nationale pour transformer vos opérations avec des solutions adaptées.",
+    "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les TPE et PME locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois, où le tissu économique est marqué par Carrefour et le commerce de détail. Nous proposons des audits, interventions et implémentations sur site pour répondre aux besoins spécifiques des entreprises locales, en s'appuyant sur notre expertise nationale et des tarifs publics transparents.",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
   directAnswerEn:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois, où le tissu économique est marqué par Carrefour et le commerce de détail. Nous proposons des audits, interventions et implémentations sur site pour répondre aux besoins spécifiques des entreprises locales, en s'appuyant sur notre expertise nationale et des tarifs publics transparents.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
+  seoHook: "commerce de détail La Croix-Blanche & artisanat Essonne",
   ecosystemFr:
-    "Sainte-Geneviève-des-Bois est un centre économique dynamique avec Carrefour et un secteur du commerce de détail florissant. Axion-IA accompagne les entreprises locales dans cette région en pleine croissance.",
+    "Sainte-Geneviève-des-Bois est siège de Cœur d'Essonne Agglomération. Le tissu économique est structuré autour du parc commercial La Croix-Blanche (premier parc commercial d'Île-de-France) où a ouvert le premier Carrefour de France en 1963. Les communes limitrophes incluent Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge. Le territoire est urbanisé à 74,9 %, avec 10,9 % d'espace rural.",
   ecosystemEn:
-    "Sainte-Geneviève-des-Bois est un centre économique dynamique avec Carrefour et un secteur du commerce de détail florissant. Axion-IA accompagne les entreprises locales dans cette région en pleine croissance.",
+    "Sainte-Geneviève-des-Bois est siège de Cœur d'Essonne Agglomération. Le tissu économique est structuré autour du parc commercial La Croix-Blanche (premier parc commercial d'Île-de-France) où a ouvert le premier Carrefour de France en 1963. Les communes limitrophes incluent Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge. Le territoire est urbanisé à 74,9 %, avec 10,9 % d'espace rural.",
   distancesFr:
-    "Sainte-Geneviève-des-Bois est à 15 km de la Gare de Massy TGV et de l'Aéroport de Paris-Orly.",
+    "Sainte-Geneviève-des-Bois est à 24 km au sud de Paris, à 12 km de Paris-Orly et 42 km de Paris-Charles-de-Gaulle. La ville est desservie par le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) et par la RN104, RD117, RD25 et RD46.",
   distancesEn:
-    "Sainte-Geneviève-des-Bois est à 15 km de la Gare de Massy TGV et de l'Aéroport de Paris-Orly.",
+    "Sainte-Geneviève-des-Bois est à 24 km au sud de Paris, à 12 km de Paris-Orly et 42 km de Paris-Charles-de-Gaulle. La ville est desservie par le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) et par la RN104, RD117, RD25 et RD46.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Transports terrestres",
-    "Restauration",
-    "Construction de bâtiments",
+    "Commerce de détail (parc La Croix-Blanche, grande distribution)",
+    "Services aux entreprises et indépendants",
+    "Travaux de construction et artisanat BTP",
+    "Restauration et services aux particuliers",
+    "Logistique et transports terrestres",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Sainte-Geneviève-des-Bois permet de cibler les améliorations possibles, en tenant compte des spécificités locales.",
-      en: "Réaliser un audit à Sainte-Geneviève-des-Bois permet de cibler les améliorations possibles, en tenant compte des spécificités locales.",
+      fr: "Réaliser un audit IA à Sainte-Geneviève-des-Bois pour les TPE et PME du parc commercial La Croix-Blanche et du centre — identifier les automatisations prioritaires (caisse, stock, CRM, devis).",
+      en: "Réaliser un audit IA à Sainte-Geneviève-des-Bois pour les TPE et PME du parc commercial La Croix-Blanche et du centre — identifier les automatisations prioritaires (caisse, stock, CRM, devis).",
     },
     interventions: {
-      fr: "Intervenir à Sainte-Geneviève-des-Bois pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
-      en: "Intervenir à Sainte-Geneviève-des-Bois pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+      fr: "Intervenir à Sainte-Geneviève-des-Bois (24 km au sud de Paris, RER C ou RN104) pour automatiser les processus métier des commerçants et artisans locaux — code custom, pas de no-code.",
+      en: "Intervenir à Sainte-Geneviève-des-Bois (24 km au sud de Paris, RER C ou RN104) pour automatiser les processus métier des commerçants et artisans locaux — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Sainte-Geneviève-des-Bois pour optimiser les processus métiers des entreprises locales.",
-      en: "Implémenter des solutions IA à Sainte-Geneviève-des-Bois pour optimiser les processus métiers des entreprises locales.",
+      fr: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services, avec accompagnement post-livraison.",
+      en: "Implémenter des solutions IA sur mesure à Sainte-Geneviève-des-Bois pour les TPE et PME du commerce et des services, avec accompagnement post-livraison.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Sainte-Geneviève-des-Bois avec des sessions personnalisées pour intégrer l'IA efficacement.",
-      en: "Accompagner les dirigeants de Sainte-Geneviève-des-Bois avec des sessions personnalisées pour intégrer l'IA efficacement.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE et PME à Sainte-Geneviève-des-Bois pour une adoption IA stratégique et durable.",
+      en: "Accompagner en un-à-un les dirigeants de TPE et PME à Sainte-Geneviève-des-Bois pour une adoption IA stratégique et durable.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Sainte-Geneviève-des-Bois ?",
-      a: "Les audits à Sainte-Geneviève-des-Bois commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus d'informations.",
+      q: "Quels sont les tarifs pour un audit IA à Sainte-Geneviève-des-Bois ?",
+      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à 590 € HT pour un Audit Flash de 4 heures sur site, déplacement Williams depuis Paris via RER C inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention IA sur site ?",
-      a: "Williams se déplace sur site à Sainte-Geneviève-des-Bois dans un délai de 5 jours ouvrés pour une intervention IA, selon la disponibilité et la complexité du projet.",
+      q: "Combien de temps faut-il pour une intervention IA à Sainte-Geneviève-des-Bois ?",
+      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (24 km au sud de Paris). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
     },
     {
-      q: "Axion-IA propose-t-il des solutions conformes au RGPD ?",
-      a: "Oui, toutes nos solutions IA sont conçues pour être conformes au RGPD, garantissant la protection des données personnelles de vos clients à Sainte-Geneviève-des-Bois.",
+      q: "Axion-IA propose-t-il des solutions conformes au RGPD à Sainte-Geneviève-des-Bois ?",
+      a: "Oui. Axion-IA développe du code custom hébergé en Europe, sans no-code ni outils opaques. Les données des TPE et PME de Sainte-Geneviève-des-Bois restent souveraines et conformes au RGPD.",
     },
     {
-      q: "Proposez-vous des formations IA pour les dirigeants ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour les dirigeants à Sainte-Geneviève-des-Bois à partir de 990 € HT, afin de les aider à intégrer l'IA dans leurs stratégies.",
+      q: "Quels secteurs accompagnez-vous à Sainte-Geneviève-des-Bois ?",
+      a: "Nous accompagnons les TPE et PME locales : commerçants et services du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises, logistique et restauration.",
+    },
+    {
+      q: "Axion-IA intervient-il dans les communes autour de Sainte-Geneviève-des-Bois ?",
+      a: "Oui, nous intervenons également dans les communes limitrophes de Cœur d'Essonne Agglomération : Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge.",
     },
   ],
 };

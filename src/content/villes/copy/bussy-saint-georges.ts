@@ -1,65 +1,72 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — HCU 2024 anti-doorway sprint (Wikipedia-sourced).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bussy-Saint-Georges, au cœur d'un écosystème comprenant la ZAC du Sycomore et des entreprises de programmation informatique. Nos services s'adaptent aux besoins spécifiques de chaque entreprise.",
+    "Axion-IA accompagne les TPE et PME de Bussy-Saint-Georges, commune de 27 498 habitants en Seine-et-Marne (secteur 3 de Marne-la-Vallée). Notre cabinet déploie du code IA sur mesure pour les artisans, commerces et sociétés de services implantés autour du parc Gustave-Eiffel, de la ZAC du Sycomore et de la zone d'activité de la Rucherie. En complément, nos interventions répondent aux besoins d'automatisation des ETI locales du commerce de gros, du transport et de l'hébergement-restauration (652 unités légales recensées en 2019).",
   pitchEn:
-    "Axion-IA intervient à Bussy-Saint-Georges, au cœur d'un écosystème comprenant la ZAC du Sycomore et des entreprises de programmation informatique. Nos services s'adaptent aux besoins spécifiques de chaque entreprise.",
+    "Axion-IA accompagne les TPE et PME de Bussy-Saint-Georges, commune de 27 498 habitants en Seine-et-Marne (secteur 3 de Marne-la-Vallée). Notre cabinet déploie du code IA sur mesure pour les artisans, commerces et sociétés de services implantés autour du parc Gustave-Eiffel, de la ZAC du Sycomore et de la zone d'activité de la Rucherie. En complément, nos interventions répondent aux besoins d'automatisation des ETI locales du commerce de gros, du transport et de l'hébergement-restauration (652 unités légales recensées en 2019).",
   directAnswerFr:
-    "À Bussy-Saint-Georges, Axion-IA propose des interventions pour automatiser les processus administratifs et optimiser la gestion des entreprises locales. Le bassin économique inclut des secteurs tels que le commerce de détail et la construction de bâtiments. Nous nous déplaçons pour des audits et implémentations, avec des tarifs publics débutant à pour un audit Flash 4h.",
+    "Axion-IA intervient à Bussy-Saint-Georges pour automatiser les processus métier des TPE et PME locales : devis, facturation, relances clients, gestion administrative. Notre cabinet conçoit du code IA sur mesure (pas de no-code) adapté au tissu économique de la communauté d'agglomération Marne et Gondoire. Les PME du parc Gustave-Eiffel et les commerces du centre-ville bénéficient d'un Audit Flash à 590 € HT, suivi d'interventions ciblées. Les ETI locales (transport, logistique, hébergement) sont également couvertes.",
   directAnswerEn:
-    "À Bussy-Saint-Georges, Axion-IA propose des interventions pour automatiser les processus administratifs et optimiser la gestion des entreprises locales. Le bassin économique inclut des secteurs tels que le commerce de détail et la construction de bâtiments. Nous nous déplaçons pour des audits et implémentations, avec des tarifs publics débutant à pour un audit Flash 4h.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA intervient à Bussy-Saint-Georges pour automatiser les processus métier des TPE et PME locales : devis, facturation, relances clients, gestion administrative. Notre cabinet conçoit du code IA sur mesure (pas de no-code) adapté au tissu économique de la communauté d'agglomération Marne et Gondoire. Les PME du parc Gustave-Eiffel et les commerces du centre-ville bénéficient d'un Audit Flash à 590 € HT, suivi d'interventions ciblées. Les ETI locales (transport, logistique, hébergement) sont également couvertes.",
+  seoHook: "commerce, transport & services aux PME",
   ecosystemFr:
-    "Bussy-Saint-Georges, avec la ZAC du Sycomore, est un pôle économique dynamique. La proximité avec la Gare de Marne-la-Vallée - Chessy et l'aéroport Charles de Gaulle facilite les déplacements professionnels.",
+    "Bussy-Saint-Georges s'appuie sur le parc Gustave-Eiffel au sud de la commune et la ZAC du Sycomore, dans la communauté d'agglomération Marne et Gondoire. La zone Léonard-de-Vinci et le secteur de la Rucherie (80 hectares) prolongent l'offre foncière pour PME. En 2020, 457 entreprises ont été créées sur la commune, traduisant un tissu entrepreneurial actif autour du commerce, du transport et des services.",
   ecosystemEn:
-    "Bussy-Saint-Georges, avec la ZAC du Sycomore, est un pôle économique dynamique. La proximité avec la Gare de Marne-la-Vallée - Chessy et l'aéroport Charles de Gaulle facilite les déplacements professionnels.",
-  distancesFr: "La Gare TGV Gare de Marne-la-Vallée - Chessy est à 10 km de Bussy-Saint-Georges.",
-  distancesEn: "La Gare TGV Gare de Marne-la-Vallée - Chessy est à 10 km de Bussy-Saint-Georges.",
-  topSectorsNaf: ["Commerce de détail", "Programmation informatique", "Construction de bâtiments"],
+    "Bussy-Saint-Georges s'appuie sur le parc Gustave-Eiffel au sud de la commune et la ZAC du Sycomore, dans la communauté d'agglomération Marne et Gondoire. La zone Léonard-de-Vinci et le secteur de la Rucherie (80 hectares) prolongent l'offre foncière pour PME. En 2020, 457 entreprises ont été créées sur la commune, traduisant un tissu entrepreneurial actif autour du commerce, du transport et des services.",
+  distancesFr:
+    "Bussy-Saint-Georges est desservie par la gare RER A sur la commune. La gare TGV Marne-la-Vallée - Chessy est à environ 10 km. Accès par l'A4 (sortie 12) et l'A104 (sortie 11).",
+  distancesEn:
+    "Bussy-Saint-Georges est desservie par la gare RER A sur la commune. La gare TGV Marne-la-Vallée - Chessy est à environ 10 km. Accès par l'A4 (sortie 12) et l'A104 (sortie 11).",
+  topSectorsNaf: [
+    "Commerce de gros",
+    "Commerce de détail",
+    "Transport et entreposage",
+    "Hébergement et restauration",
+    "Services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bussy-Saint-Georges pour identifier les processus automatisables — amélioration immédiate.",
-      en: "Réaliser un audit à Bussy-Saint-Georges pour identifier les processus automatisables — amélioration immédiate.",
+      fr: "Audit Flash 4h sur site à Bussy-Saint-Georges pour les TPE et PME du parc Gustave-Eiffel ou du centre-ville — 590 € HT.",
+      en: "Audit Flash 4h sur site à Bussy-Saint-Georges pour les TPE et PME du parc Gustave-Eiffel ou du centre-ville — 590 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Bussy-Saint-Georges pour optimiser les tâches administratives — gain de temps notable.",
-      en: "Intervenir à Bussy-Saint-Georges pour optimiser les tâches administratives — gain de temps notable.",
+      fr: "Interventions Axion-IA à Bussy-Saint-Georges pour automatiser devis, facturation, relances et tâches administratives des TPE/PME.",
+      en: "Interventions Axion-IA à Bussy-Saint-Georges pour automatiser devis, facturation, relances et tâches administratives des TPE/PME.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bussy-Saint-Georges pour les entreprises de la ZAC du Sycomore — efficacité accrue.",
-      en: "Implémenter des solutions IA à Bussy-Saint-Georges pour les entreprises de la ZAC du Sycomore — efficacité accrue.",
+      fr: "Implémentation de code IA sur mesure à Bussy-Saint-Georges pour les PME de la ZAC du Sycomore ou de la Rucherie — pas de no-code.",
+      en: "Implémentation de code IA sur mesure à Bussy-Saint-Georges pour les PME de la ZAC du Sycomore ou de la Rucherie — pas de no-code.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants à Bussy-Saint-Georges — prise de décision éclairée.",
-      en: "Accompagner en un-à-un les dirigeants à Bussy-Saint-Georges — prise de décision éclairée.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE/PME à Bussy-Saint-Georges pour cadrer leur feuille de route IA.",
+      en: "Accompagnement un-à-un des dirigeants de TPE/PME à Bussy-Saint-Georges pour cadrer leur feuille de route IA.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention à Bussy-Saint-Georges ?",
-      a: "Nos interventions à Bussy-Saint-Georges débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      a: "Nos tarifs publics démarrent à 590 € HT pour un Audit Flash de 4 heures à Bussy-Saint-Georges. Les interventions et implémentations suivantes sont facturées sur devis selon le périmètre validé après l'audit.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention sur site à Bussy-Saint-Georges ?",
-      a: "Nous nous engageons à nous déplacer sur site dans les 5 jours ouvrés suivant la confirmation de votre demande.",
+      q: "Sous quel délai Axion-IA se déplace-t-il sur site à Bussy-Saint-Georges ?",
+      a: "Williams se déplace sur site à Bussy-Saint-Georges dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
+    },
+    {
+      q: "Intervenez-vous dans les communes proches de Bussy-Saint-Georges ?",
+      a: "Oui, Axion-IA couvre également les communes limitrophes : Bussy-Saint-Martin, Guermantes, Conches-sur-Gondoire, Chanteloup-en-Brie, Collégien, Jossigny, Ferrières-en-Brie, Pontcarré et Favières.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Bussy-Saint-Georges ?",
-      a: "Axion-IA respecte scrupuleusement le RGPD lors de ses interventions à Bussy-Saint-Georges, assurant la protection des données personnelles.",
+      a: "Toutes nos interventions à Bussy-Saint-Georges respectent le RGPD : minimisation des données, hébergement UE quand applicable, contrat de sous-traitance et registre de traitements. Aucune donnée n'est utilisée pour entraîner un modèle externe.",
     },
     {
-      q: "Intervenez-vous dans les communes autour de Bussy-Saint-Georges ?",
-      a: "Oui, nous intervenons également dans les communes avoisinantes telles que Torcy, Lagny-sur-Marne et Montévrain.",
-    },
-    {
-      q: "Proposez-vous des formations IA pour les PME à Bussy-Saint-Georges ?",
-      a: "Oui, nous proposons des formations IA adaptées aux besoins des PME de Bussy-Saint-Georges, avec un accompagnement personnalisé.",
+      q: "Quels secteurs locaux profitent le plus de vos services à Bussy-Saint-Georges ?",
+      a: "Les TPE du commerce de détail du centre-ville, les PME du parc Gustave-Eiffel (commerce de gros, services) et les ETI logistiques liées à l'A4/A104 utilisent surtout nos automatisations de facturation, relances clients et reporting.",
     },
   ],
 };

@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — anti-doorway HCU pass (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const IVRY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Ivry-sur-Seine, une ville dynamique de l'Île-de-France, proche de Paris. Nous accompagnons les entreprises locales, notamment dans les secteurs du commerce de détail et de la programmation informatique, pour optimiser leurs processus grâce à l'IA.",
+    "Ivry-sur-Seine (65 064 habitants en 2023, Val-de-Marne) est une commune historiquement industrielle de la rive gauche de la Seine, située à environ 5 km du centre de Paris. Axion-IA y accompagne en priorité les TPE et PME du tissu local — commerces, ateliers, agences, prestataires de services — souvent installées dans la ZAC Ivry Confluences (145 hectares, projet lancé en 2008). Notre approche code custom, sans no-code, vise des automatisations concrètes et durables.",
   pitchEn:
-    "Axion-IA intervient à Ivry-sur-Seine, une ville dynamique de l'Île-de-France, proche de Paris. Nous accompagnons les entreprises locales, notamment dans les secteurs du commerce de détail et de la programmation informatique, pour optimiser leurs processus grâce à l'IA.",
+    "Ivry-sur-Seine (65 064 habitants en 2023, Val-de-Marne) est une commune historiquement industrielle de la rive gauche de la Seine, située à environ 5 km du centre de Paris. Axion-IA y accompagne en priorité les TPE et PME du tissu local — commerces, ateliers, agences, prestataires de services — souvent installées dans la ZAC Ivry Confluences (145 hectares, projet lancé en 2008). Notre approche code custom, sans no-code, vise des automatisations concrètes et durables.",
   directAnswerFr:
-    "À Ivry-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de divers secteurs, tels que le commerce de détail et la programmation informatique. Avec des acteurs économiques comme Fnac Darty et E.Leclerc, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA se déplace à Ivry-sur-Seine (Val-de-Marne, 65 064 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption de l'IA opérationnelle. La ville, marquée par sa désindustrialisation progressive depuis les années 1960, se reconvertit autour du projet d'aménagement Ivry Confluences. Notre cœur de cible : petits commerces, agences, artisans, cabinets et PME présentes dans le bassin d'Ivry. Les ETI sont accompagnées de manière plus ponctuelle. Nos interventions sont planifiées sous 5 jours ouvrés après validation.",
   directAnswerEn:
-    "À Ivry-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de divers secteurs, tels que le commerce de détail et la programmation informatique. Avec des acteurs économiques comme Fnac Darty et E.Leclerc, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA se déplace à Ivry-sur-Seine (Val-de-Marne, 65 064 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption de l'IA opérationnelle. La ville, marquée par sa désindustrialisation progressive depuis les années 1960, se reconvertit autour du projet d'aménagement Ivry Confluences. Notre cœur de cible : petits commerces, agences, artisans, cabinets et PME présentes dans le bassin d'Ivry. Les ETI sont accompagnées de manière plus ponctuelle. Nos interventions sont planifiées sous 5 jours ouvrés après validation.",
+  seoHook: "TPE PME tertiaire & reconversion industrielle",
   ecosystemFr:
-    "Ivry-sur-Seine bénéficie d'un écosystème économique diversifié avec des entreprises comme Fnac Darty et E.Leclerc. La proximité de Paris et des infrastructures de transport facilite l'accès aux ressources et aux talents nécessaires pour le développement des entreprises locales.",
+    "Le tissu économique d'Ivry-sur-Seine est en pleine reconversion : après une longue tradition industrielle, la ville mise sur le projet Ivry Confluences (145 ha, mixte logement-bureaux-commerces) pour attirer un nouveau tissu de TPE-PME tertiaires, services, ESS et économie créative. Le bassin local reste dense en commerces de proximité, ateliers, agences et prestataires B2B. Les sociétés présentes ou voisines (Fnac Darty, E.Leclerc) côtoient un tissu majoritaire de petites structures, qui constituent notre cible principale.",
   ecosystemEn:
-    "Ivry-sur-Seine bénéficie d'un écosystème économique diversifié avec des entreprises comme Fnac Darty et E.Leclerc. La proximité de Paris et des infrastructures de transport facilite l'accès aux ressources et aux talents nécessaires pour le développement des entreprises locales.",
+    "Le tissu économique d'Ivry-sur-Seine est en pleine reconversion : après une longue tradition industrielle, la ville mise sur le projet Ivry Confluences (145 ha, mixte logement-bureaux-commerces) pour attirer un nouveau tissu de TPE-PME tertiaires, services, ESS et économie créative. Le bassin local reste dense en commerces de proximité, ateliers, agences et prestataires B2B. Les sociétés présentes ou voisines (Fnac Darty, E.Leclerc) côtoient un tissu majoritaire de petites structures, qui constituent notre cible principale.",
   distancesFr:
-    "Ivry-sur-Seine est située à 5 km de la Gare de Lyon et à 12 km de l'Aéroport de Paris-Orly.",
+    "Ivry-sur-Seine est desservie par la ligne 7 du métro (4 stations dont Mairie d'Ivry), le RER C (gare d'Ivry-sur-Seine) et la ligne 9 du tramway (inaugurée en avril 2021). Le centre de Paris est à environ 5 km, l'aéroport de Paris-Orly à environ 12 km.",
   distancesEn:
-    "Ivry-sur-Seine est située à 5 km de la Gare de Lyon et à 12 km de l'Aéroport de Paris-Orly.",
+    "Ivry-sur-Seine est desservie par la ligne 7 du métro (4 stations dont Mairie d'Ivry), le RER C (gare d'Ivry-sur-Seine) et la ligne 9 du tramway (inaugurée en avril 2021). Le centre de Paris est à environ 5 km, l'aéroport de Paris-Orly à environ 12 km.",
   topSectorsNaf: [
     "Commerce de détail",
-    "Programmation informatique",
-    "Transports terrestres",
-    "Activités des sièges sociaux",
+    "Activités de services administratifs et de soutien",
+    "Construction",
+    "Activités informatiques et services d'information",
+    "Transports et entreposage",
+    "Activités spécialisées scientifiques et techniques",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Ivry-sur-Seine pour identifier les opportunités d'automatisation dans les entreprises locales, dès 490 € HT.",
-      en: "Réaliser un audit à Ivry-sur-Seine pour identifier les opportunités d'automatisation dans les entreprises locales, dès 490 € HT.",
+      fr: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit Flash 4h dès 490 € HT.",
+      en: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit Flash 4h dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Ivry-sur-Seine pour optimiser les processus métiers des entreprises, avec des solutions IA adaptées.",
-      en: "Intervenir à Ivry-sur-Seine pour optimiser les processus métiers des entreprises, avec des solutions IA adaptées.",
+      fr: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès 590 € HT.",
+      en: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Ivry-sur-Seine pour améliorer l'efficacité opérationnelle des entreprises locales.",
-      en: "Implémenter des solutions IA à Ivry-sur-Seine pour améliorer l'efficacité opérationnelle des entreprises locales.",
+      fr: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès 990 € HT.",
+      en: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Offrir des sessions 1-to-1 à Ivry-sur-Seine pour les dirigeants souhaitant intégrer l'IA dans leur stratégie.",
-      en: "Offrir des sessions 1-to-1 à Ivry-sur-Seine pour les dirigeants souhaitant intégrer l'IA dans leur stratégie.",
+      fr: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès 990 € HT.",
+      en: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Ivry-sur-Seine ?",
-      a: "Les audits à Ivry-sur-Seine commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA à Ivry-sur-Seine ?",
+      a: "Tarifs publics : Audit Flash 4h dès 490 € HT, Intervention Essentielle dès 590 € HT, implémentation ou 1-to-1 dès 990 € HT. Mêmes tarifs partout en France, sans surcoût de déplacement caché.",
     },
     {
-      q: "Comment se déroule une intervention à Ivry-sur-Seine ?",
-      a: "Nos interventions à Ivry-sur-Seine sont réalisées sur site, avec un déplacement de notre équipe nationale dans les 5 jours ouvrés suivant la demande.",
+      q: "Quels délais pour une intervention à Ivry-sur-Seine ?",
+      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 facilite l'accès depuis Paris.",
     },
     {
-      q: "Proposez-vous des formations IA à Ivry-sur-Seine ?",
-      a: "Oui, nous proposons des formations IA personnalisées à Ivry-sur-Seine, adaptées aux besoins spécifiques des entreprises locales.",
+      q: "Quelles communes proches couvrez-vous depuis Ivry-sur-Seine ?",
+      a: "Depuis Ivry-sur-Seine, nous couvrons les communes limitrophes : Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre et Villejuif. Tout le sud-est parisien est accessible facilement.",
+    },
+    {
+      q: "Quels secteurs locaux accompagnez-vous à Ivry-sur-Seine ?",
+      a: "Priorité aux TPE et PME du commerce de détail, des services aux entreprises, de la construction, du numérique et de la logistique, qui dominent le bassin d'Ivry et de la ZAC Ivry Confluences. Les ETI sont accompagnées de manière plus ponctuelle.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Ivry-sur-Seine ?",
-      a: "Axion-IA garantit la conformité RGPD de toutes ses solutions IA déployées à Ivry-sur-Seine, en respectant les normes européennes en vigueur.",
+      a: "Toutes nos solutions IA déployées à Ivry-sur-Seine respectent le RGPD : hébergement européen, minimisation des données, traçabilité des accès. La conformité est pensée dès la conception (privacy by design).",
+    },
+    {
+      q: "Vous déplacez-vous sur site à Ivry-sur-Seine ?",
+      a: "Oui, notre équipe se déplace directement à Ivry-sur-Seine pour audits, interventions et implémentations. Le métro ligne 7 (4 stations sur la commune) rend le déplacement très simple depuis Paris.",
     },
   ],
 };

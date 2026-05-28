@@ -1,67 +1,73 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — HCU 2024 anti-doorway sprint (Wikipedia-sourced).
+// Removed hallucinations LVMH/Cap Digital — not present at Neuilly-Plaisance.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Neuilly-Plaisance, ville proche de Paris, pour optimiser vos processus grâce à l'IA. Dans un bassin économique incluant des géants comme LVMH et Cap Digital, nous vous accompagnons dans votre transformation technologique.",
+    "Axion-IA accompagne les TPE et PME de Neuilly-Plaisance, commune résidentielle de 21 941 habitants en Seine-Saint-Denis (4e revenu net par foyer du département). Notre cabinet conçoit du code IA sur mesure pour les artisans, commerces de proximité, professions libérales et PME de services implantés autour de la gare RER A. En complément, nos interventions couvrent les ETI locales.",
   pitchEn:
-    "Axion-IA intervient à Neuilly-Plaisance, ville proche de Paris, pour optimiser vos processus grâce à l'IA. Dans un bassin économique incluant des géants comme LVMH et Cap Digital, nous vous accompagnons dans votre transformation technologique.",
+    "Axion-IA accompagne les TPE et PME de Neuilly-Plaisance, commune résidentielle de 21 941 habitants en Seine-Saint-Denis (4e revenu net par foyer du département). Notre cabinet conçoit du code IA sur mesure pour les artisans, commerces de proximité, professions libérales et PME de services implantés autour de la gare RER A. En complément, nos interventions couvrent les ETI locales.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Neuilly-Plaisance, où le commerce de détail et la construction dominent. Nous offrons des audits, interventions et implémentations pour les entreprises locales. Nos services s'adaptent aux besoins spécifiques des secteurs présents, comme ceux de LVMH ou Cap Digital, sans lien contractuel avec ces entités. Consultez nos tarifs publics pour plus de détails.",
+    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit Flash 4h à 590 € HT, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Neuilly-Plaisance, où le commerce de détail et la construction dominent. Nous offrons des audits, interventions et implémentations pour les entreprises locales. Nos services s'adaptent aux besoins spécifiques des secteurs présents, comme ceux de LVMH ou Cap Digital, sans lien contractuel avec ces entités. Consultez nos tarifs publics pour plus de détails.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit Flash 4h à 590 € HT, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
+  seoHook: "commerces de proximité & professions libérales",
   ecosystemFr:
-    "Neuilly-Plaisance bénéficie de la proximité de pôles économiques tels que LVMH et Cap Digital. Ces entités illustrent la diversité et la vitalité du tissu économique environnant, offrant de nombreuses opportunités pour les entreprises locales.",
+    "Neuilly-Plaisance est une commune à dominante résidentielle, 4e du département de la Seine-Saint-Denis par revenu net moyen par foyer (derrière Gournay-sur-Marne, Le Raincy et Coubron). Son tissu économique repose sur les commerces de proximité, l'artisanat, les professions libérales (santé, droit, conseil) et les PME de services. Le parc urbain de 31,4 hectares (1999), aménagé sur d'anciennes carrières de gypse du plateau d'Avron, structure le cadre de vie.",
   ecosystemEn:
-    "Neuilly-Plaisance bénéficie de la proximité de pôles économiques tels que LVMH et Cap Digital. Ces entités illustrent la diversité et la vitalité du tissu économique environnant, offrant de nombreuses opportunités pour les entreprises locales.",
+    "Neuilly-Plaisance est une commune à dominante résidentielle, 4e du département de la Seine-Saint-Denis par revenu net moyen par foyer (derrière Gournay-sur-Marne, Le Raincy et Coubron). Son tissu économique repose sur les commerces de proximité, l'artisanat, les professions libérales (santé, droit, conseil) et les PME de services. Le parc urbain de 31,4 hectares (1999), aménagé sur d'anciennes carrières de gypse du plateau d'Avron, structure le cadre de vie.",
   distancesFr:
-    "Neuilly-Plaisance est à 12 km de la Gare de Lyon et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Neuilly-Plaisance dispose de la station Neuilly-Plaisance sur la ligne A du RER (accès direct Paris). Trois réseaux de bus desservent la commune (Ourcq, Bord de Marne, Titus). L'A86 borde le territoire.",
   distancesEn:
-    "Neuilly-Plaisance est à 12 km de la Gare de Lyon et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transports terrestres"],
+    "Neuilly-Plaisance dispose de la station Neuilly-Plaisance sur la ligne A du RER (accès direct Paris). Trois réseaux de bus desservent la commune (Ourcq, Bord de Marne, Titus). L'A86 borde le territoire.",
+  topSectorsNaf: [
+    "Commerce de détail de proximité",
+    "Activités pour la santé humaine (libéraux)",
+    "Activités juridiques et de conseil",
+    "Construction et artisanat du bâtiment",
+    "Hébergement et restauration",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Neuilly-Plaisance pour identifier les opportunités IA dans le commerce de détail — à partir de 490 € HT.",
-      en: "Réaliser un audit à Neuilly-Plaisance pour identifier les opportunités IA dans le commerce de détail — à partir de 490 € HT.",
+      fr: "Audit Flash 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — 590 € HT.",
+      en: "Audit Flash 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — 590 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Neuilly-Plaisance pour automatiser les tâches administratives dans la construction — intervention dès 590 € HT.",
-      en: "Intervenir à Neuilly-Plaisance pour automatiser les tâches administratives dans la construction — intervention dès 590 € HT.",
+      fr: "Interventions Axion-IA à Neuilly-Plaisance pour automatiser facturation, relances, prise de rendez-vous et reporting des TPE/PME locales.",
+      en: "Interventions Axion-IA à Neuilly-Plaisance pour automatiser facturation, relances, prise de rendez-vous et reporting des TPE/PME locales.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Neuilly-Plaisance pour optimiser la gestion des transports terrestres — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Neuilly-Plaisance pour optimiser la gestion des transports terrestres — à partir de 990 € HT.",
+      fr: "Implémentation de code IA sur mesure à Neuilly-Plaisance pour PME de services et artisans — pas de no-code.",
+      en: "Implémentation de code IA sur mesure à Neuilly-Plaisance pour PME de services et artisans — pas de no-code.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants de Neuilly-Plaisance pour maximiser l'usage de l'IA — dès 990 € HT.",
-      en: "Accompagner en 1-to-1 les dirigeants de Neuilly-Plaisance pour maximiser l'usage de l'IA — dès 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants TPE/PME à Neuilly-Plaisance pour cadrer leur feuille de route IA.",
+      en: "Accompagnement un-à-un des dirigeants TPE/PME à Neuilly-Plaisance pour cadrer leur feuille de route IA.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit à Neuilly-Plaisance ?",
-      a: "Nos audits à Neuilly-Plaisance commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Tous nos tarifs publics sont consultables en ligne.",
+      a: "Nos audits à Neuilly-Plaisance commencent à 590 € HT pour un Audit Flash de 4 heures. Les interventions et implémentations qui suivent sont chiffrées sur devis, selon le périmètre validé après l'audit.",
     },
     {
       q: "Axion-IA se déplace-t-il à Neuilly-Plaisance pour les interventions ?",
-      a: "Oui, notre équipe nationale se déplace à Neuilly-Plaisance pour réaliser des interventions sur site, assurant une mise en œuvre directe et personnalisée.",
+      a: "Oui, Williams se déplace sur site à Neuilly-Plaisance dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
     },
     {
-      q: "Quels délais pour une intervention IA à Neuilly-Plaisance ?",
-      a: "Nous nous engageons à intervenir sur site à Neuilly-Plaisance dans un délai de 5 jours ouvrés, selon la disponibilité des équipes.",
+      q: "Intervenez-vous dans les communes proches de Neuilly-Plaisance ?",
+      a: "Oui, Axion-IA couvre également les communes limitrophes : Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-sur-Marne, Noisy-le-Grand, Le Perreux-sur-Marne, Rosny-sous-Bois et Villemomble.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Neuilly-Plaisance ?",
-      a: "Nous intégrons les normes RGPD dans toutes nos solutions IA mises en œuvre à Neuilly-Plaisance, garantissant la protection des données personnelles.",
+      a: "Toutes nos interventions à Neuilly-Plaisance respectent le RGPD : minimisation des données, hébergement UE quand applicable, contrat de sous-traitance et registre de traitements. Aucune donnée client n'est utilisée pour entraîner un modèle externe.",
     },
     {
-      q: "Proposez-vous des formations IA pour les dirigeants à Neuilly-Plaisance ?",
-      a: "Oui, nous offrons des sessions 1-to-1 pour les dirigeants à Neuilly-Plaisance, débutant à 990 € HT, pour les aider à intégrer l'IA dans leur stratégie.",
+      q: "Quels secteurs locaux profitent le plus de vos services à Neuilly-Plaisance ?",
+      a: "Les commerces de proximité, les professions libérales (santé, conseil, droit) et les PME de services à la personne utilisent surtout nos automatisations de prise de rendez-vous, facturation et relances clients.",
     },
   ],
 };

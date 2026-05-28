@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const FABREGUES_COPY: VilleCopy = {
   pitchFr:
-    "Fabrègues (34), commune résidentielle du sud-ouest de l'agglomération de Montpellier, entre garrigue et littoral. Zones d'activités commerciales, accès A9/A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fabrègues (34, Hérault), 7 447 habitants en 2023, commune située à 12 km au sud-ouest de Montpellier, au pied du massif de la Gardiole. Tissu économique dominé par le commerce de détail (26,6 % des établissements), le BTP (18,2 %) et les services publics et sociaux (15 %). Limitrophe de Pignan, Cournonsec, Cournonterral, Gigean, Mireval, Saussan, Saint-Jean-de-Védas, Vic-la-Gardiole, Villeneuve-lès-Maguelone. Patrimoine en circulade médiévale (XIe-XIIe), site Natura 2000, viticulture historique. Axion-IA accompagne TPE, PME et professions libérales locales.",
   pitchEn:
-    "Fabrègues (34), commune résidentielle du sud-ouest de l'agglomération de Montpellier, entre garrigue et littoral. Zones d'activités commerciales, accès A9/A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fabrègues (34, Hérault), 7 447 habitants en 2023, commune située à 12 km au sud-ouest de Montpellier, au pied du massif de la Gardiole. Tissu économique dominé par le commerce de détail (26,6 % des établissements), le BTP (18,2 %) et les services publics et sociaux (15 %). Limitrophe de Pignan, Cournonsec, Cournonterral, Gigean, Mireval, Saussan, Saint-Jean-de-Védas, Vic-la-Gardiole, Villeneuve-lès-Maguelone. Patrimoine en circulade médiévale (XIe-XIIe), site Natura 2000, viticulture historique. Axion-IA accompagne TPE, PME et professions libérales locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons TPE commerçants, PME services et logistique, artisans BTP, professions libérales et entreprises du sud-ouest montpelliérain.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons en priorité les TPE commerçants et artisans (26,6 % des établissements de la commune), puis les PME services et BTP (18,2 %), professions libérales, exploitants viticoles et acteurs publics et sociaux (15 %). Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons TPE commerçants, PME services et logistique, artisans BTP, professions libérales et entreprises du sud-ouest montpelliérain.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons en priorité les TPE commerçants et artisans (26,6 % des établissements de la commune), puis les PME services et BTP (18,2 %), professions libérales, exploitants viticoles et acteurs publics et sociaux (15 %). Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
   ecosystemFr:
-    "Fabrègues est une commune résidentielle dynamique au sud-ouest de Montpellier, entre garrigue et littoral (Villeneuve-lès-Maguelone à 10 min). Zones d'activités commerciales et logistiques, accès direct A9 et A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales.",
+    "Fabrègues, 7 447 habitants, polarise une économie résidentielle et commerçante au sud-ouest de Montpellier. Sur ses 729 établissements, 194 relèvent du commerce de détail (26,6 %), le BTP représente 18,2 % et les services publics et sociaux 15 %. La commune conserve une viticulture comme activité agricole principale, héritage de son histoire. Le patrimoine inclut une circulade médiévale (XIe-XIIe siècles), un oppidum à La Roque et un site Natura 2000 pour la conservation des oiseaux.",
   ecosystemEn:
-    "Fabrègues est une commune résidentielle dynamique au sud-ouest de Montpellier, entre garrigue et littoral (Villeneuve-lès-Maguelone à 10 min). Zones d'activités commerciales et logistiques, accès direct A9 et A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales.",
+    "Fabrègues, 7 447 habitants, polarise une économie résidentielle et commerçante au sud-ouest de Montpellier. Sur ses 729 établissements, 194 relèvent du commerce de détail (26,6 %), le BTP représente 18,2 % et les services publics et sociaux 15 %. La commune conserve une viticulture comme activité agricole principale, héritage de son histoire. Le patrimoine inclut une circulade médiévale (XIe-XIIe siècles), un oppidum à La Roque et un site Natura 2000 pour la conservation des oiseaux.",
   distancesFr:
     "Montpellier centre à 15 min voiture. Sète à 25 min. Gare TGV Montpellier Sud de France à 20 min. Aéroport Montpellier-Méditerranée à 20 min. Accès A9/A750.",
   distancesEn:
@@ -49,7 +49,7 @@ export const FABREGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fabrègues ?",
-      a: "Oui, Axion-IA intervient à Fabrègues et dans tout le sud-ouest Montpellier (Pignan, Cournonterral, Villeneuve-lès-Maguelone, Saint-Jean-de-Védas). Nos consultants se déplacent depuis Montpellier en 15 min.",
+      a: "Oui, Axion-IA intervient à Fabrègues et dans les communes limitrophes : Pignan, Cournonsec, Cournonterral, Gigean, Mireval, Saussan, Saint-Jean-de-Védas, Vic-la-Gardiole, Villeneuve-lès-Maguelone. Nos consultants se déplacent depuis Montpellier en 15 min.",
     },
     {
       q: "Proposez-vous des audits IA pour les PME de logistique ?",

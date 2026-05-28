@@ -1,71 +1,80 @@
-﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
-// Servian (34, Hérault) — agglo Béziers, vignoble, zone commerciale.
+// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
+// Servian (34, Hérault) — CA Béziers Méditerranée, vignoble AOC, ZAC La Baume, A75.
+// Anti-doorway HCU 2024 fix : contenu factuel unique sourcé Wikipedia (2026-05-28).
 
 import type { VilleCopy } from "./types";
 
 export const SERVIAN_COPY: VilleCopy = {
   pitchFr:
-    "Servian (34), commune de l'agglomération de Béziers, au coeur du vignoble héraultais. Zone commerciale active, accès A9/A75. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, commerces zone commerciale. Axion-IA y intervient pour tous types d'activités.",
+    "Servian (34), commune de 5 517 habitants (2023, +11,75 % depuis 2017) sur 40,61 km² dans l'Hérault, à 15 km de Béziers et 63 km de Montpellier. Accès par l'A75 (sortie 62), la RN9 et la RD18. Membre de la Communauté d'agglomération Béziers Méditerranée (17 communes). Tissu local : 126 exploitations agricoles (2020) majoritairement viticoles, cave coopérative « Les Vignerons de l'Occitane », ZAC industrielle de la Baume (TMF Transports, Ame'ric, Savim), commerces et services (26,5 % des établissements). Patrimoine : église Saint-Julien-et-Sainte-Basilisse (XIIᵉ-XIXᵉ), chapelle des Capucins, Jardin de Saint-Adrien (Jardin remarquable sur ancien site minier). Cerf comme animal totémique. Axion-IA y intervient pour TPE et PME servianaises.",
   pitchEn:
-    "Servian (34), commune de l'agglomération de Béziers, au coeur du vignoble héraultais. Zone commerciale active, accès A9/A75. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales, commerces zone commerciale. Axion-IA y intervient pour tous types d'activités.",
+    "Servian (34), commune de 5 517 habitants (2023, +11,75 % depuis 2017) sur 40,61 km² dans l'Hérault, à 15 km de Béziers et 63 km de Montpellier. Accès par l'A75 (sortie 62), la RN9 et la RD18. Membre de la Communauté d'agglomération Béziers Méditerranée (17 communes). Tissu local : 126 exploitations agricoles (2020) majoritairement viticoles, cave coopérative « Les Vignerons de l'Occitane », ZAC industrielle de la Baume (TMF Transports, Ame'ric, Savim), commerces et services (26,5 % des établissements). Patrimoine : église Saint-Julien-et-Sainte-Basilisse (XIIᵉ-XIXᵉ), chapelle des Capucins, Jardin de Saint-Adrien (Jardin remarquable sur ancien site minier). Cerf comme animal totémique. Axion-IA y intervient pour TPE et PME servianaises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Servian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Servian (34) et dans la CA Béziers Méditerranée (17 communes). Consultants depuis Montpellier (1 h A75) ou Béziers (15 min). Nous accompagnons en priorité les TPE locales (commerces, artisans BTP, professions libérales) puis les PME (126 exploitations viticoles AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume — TMF Transports, Ame'ric, Savim). Code custom, pas no-code, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Servian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Servian (34) et dans la CA Béziers Méditerranée (17 communes). Consultants depuis Montpellier (1 h A75) ou Béziers (15 min). Nous accompagnons en priorité les TPE locales (commerces, artisans BTP, professions libérales) puis les PME (126 exploitations viticoles AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume — TMF Transports, Ame'ric, Savim). Code custom, pas no-code, tarifs publics.",
   ecosystemFr:
-    "Servian est une commune de l'agglomération de Béziers au coeur du vignoble héraultais. Zone commerciale active, accès A9 et A75 (Méridienne). Cave coopérative, vignoble AOC Languedoc. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
+    "Servian appartient à la Communauté d'agglomération Béziers Méditerranée (17 communes), à 15 km de Béziers. Économie locale : commerce-transports-restauration en tête (26,5 % des établissements), viticulture historique avec 126 exploitations (recensement 2020) majoritairement AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », ZAC industrielle de la Baume (TMF Transports, Ame'ric, Savim), artisanat BTP et professions libérales. Accès A75 (Méridienne, sortie 62), RN9 et RD18. Patrimoine : église Saint-Julien-et-Sainte-Basilisse (XIIᵉ-XIXᵉ siècles), chapelle des Capucins, Jardin de Saint-Adrien (Jardin remarquable). Communes voisines : Alignan-du-Vent, Tourbes, Valros, Montblanc, Béziers, Boujan-sur-Libron, Bassan, Espondeilhan, Coulobres, Abeilhan.",
   ecosystemEn:
-    "Servian est une commune de l'agglomération de Béziers au coeur du vignoble héraultais. Zone commerciale active, accès A9 et A75 (Méridienne). Cave coopérative, vignoble AOC Languedoc. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
+    "Servian appartient à la Communauté d'agglomération Béziers Méditerranée (17 communes), à 15 km de Béziers. Économie locale : commerce-transports-restauration en tête (26,5 % des établissements), viticulture historique avec 126 exploitations (recensement 2020) majoritairement AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », ZAC industrielle de la Baume (TMF Transports, Ame'ric, Savim), artisanat BTP et professions libérales. Accès A75 (Méridienne, sortie 62), RN9 et RD18. Patrimoine : église Saint-Julien-et-Sainte-Basilisse (XIIᵉ-XIXᵉ siècles), chapelle des Capucins, Jardin de Saint-Adrien (Jardin remarquable). Communes voisines : Alignan-du-Vent, Tourbes, Valros, Montblanc, Béziers, Boujan-sur-Libron, Bassan, Espondeilhan, Coulobres, Abeilhan.",
   distancesFr:
-    "Béziers à 15 min. Pézenas à 15 min. Montpellier à 1h par A75. Accès A9/A75 (échangeur Béziers-Ouest). Aéroport Béziers-Cap d'Agde à 20 min.",
+    "Béziers 15 km (15 min). Pézenas 15 min. Montpellier 63 km (1 h par A75). Agde 20 min. Aéroport Béziers-Cap d'Agde 20 min. Accès A75 sortie 62, RN9, RD18. Boujan-sur-Libron 5 min. Bassan 5 min.",
   distancesEn:
-    "Béziers à 15 min. Pézenas à 15 min. Montpellier à 1h par A75. Accès A9/A75 (échangeur Béziers-Ouest). Aéroport Béziers-Cap d'Agde à 20 min.",
-  seoHook: "vignoble, commerce & agglo Béziers",
+    "Béziers 15 km (15 min). Pézenas 15 min. Montpellier 63 km (1 h par A75). Agde 20 min. Aéroport Béziers-Cap d'Agde 20 min. Accès A75 sortie 62, RN9, RD18. Boujan-sur-Libron 5 min. Bassan 5 min.",
+  seoHook: "vignoble AOC, ZAC La Baume & agglo Béziers Méditerranée",
   topSectorsNaf: [
-    "Viticulture AOC Languedoc & cave coopérative",
-    "Commerce & zone commerciale",
+    "Commerce-transports-restauration (26,5 % des établissements)",
+    "Viticulture AOC Languedoc (126 exploitations 2020 + cave coopérative « Les Vignerons de l'Occitane »)",
+    "ZAC industrielle de la Baume (TMF Transports, Ame'ric, Savim)",
     "Artisanat BTP & rénovation",
-    "Professions libérales",
-    "PME services & transport (A9/A75)",
+    "Professions libérales & services agglo Béziers Méditerranée",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Servian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Servian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash 490 € HT, ROI chiffré, 4 h sur site ou visio.",
+      en: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash 490 € HT, ROI chiffré, 4 h sur site ou visio.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Servian : ateliers adaptés domaine viticole, cave coopérative, commerce ou artisan. Équipes autonomes sur outils IA métier.",
-      en: "Interventions IA sur site à Servian : ateliers adaptés domaine viticole, cave coopérative, commerce ou artisan. Équipes autonomes sur outils IA métier.",
+      fr: "Interventions IA sur site à Servian : ateliers adaptés au format de votre TPE/PME — domaine viticole, cave coopérative « Les Vignerons de l'Occitane », entreprise ZAC La Baume, commerce, atelier artisan. Équipes formées et autonomes après une journée.",
+      en: "Interventions IA sur site à Servian : ateliers adaptés au format de votre TPE/PME — domaine viticole, cave coopérative « Les Vignerons de l'Occitane », entreprise ZAC La Baume, commerce, atelier artisan. Équipes formées et autonomes après une journée.",
     },
     implementation: {
-      fr: "Implémentation IA à Servian : automatisation gestion vignoble et cave coopérative, chatbot client, optimisation commerces zone commerciale, classification documents.",
-      en: "Implémentation IA à Servian : automatisation gestion vignoble et cave coopérative, chatbot client, optimisation commerces zone commerciale, classification documents.",
+      fr: "Implémentation IA à Servian : code custom pour gestion vignoble (parcelles, traçabilité AOC), workflow cave coopérative, optimisation logistique ZAC La Baume, chatbot client commerces, devis artisans. Pas no-code, propriété du code livré.",
+      en: "Implémentation IA à Servian : code custom pour gestion vignoble (parcelles, traçabilité AOC), workflow cave coopérative, optimisation logistique ZAC La Baume, chatbot client commerces, devis artisans. Pas no-code, propriété du code livré.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Servian : sessions sur site ou en visio pour viticulteurs, commerçants, artisans et gérants TPE/PME de l'agglomération biterroise.",
-      en: "Coaching 1-to-1 à Servian : sessions sur site ou en visio pour viticulteurs, commerçants, artisans et gérants TPE/PME de l'agglomération biterroise.",
+      fr: "Coaching 1-to-1 à Servian : sessions sur domaine, cave, bureau ZAC La Baume, atelier ou visio. Viticulteurs AOC Languedoc, commerçants, artisans, professions libérales, dirigeants PME servianais. Format souple compatible saisons viticoles.",
+      en: "Coaching 1-to-1 à Servian : sessions sur domaine, cave, bureau ZAC La Baume, atelier ou visio. Viticulteurs AOC Languedoc, commerçants, artisans, professions libérales, dirigeants PME servianais. Format souple compatible saisons viticoles.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Servian ?",
-      a: "Oui, Axion-IA intervient à Servian et dans toute l'agglomération biterroise (Béziers, Sauvian, Sérignan, Pézenas). Nos consultants viennent depuis Montpellier ou Béziers.",
+      q: "Axion-IA intervient-il à Servian et dans la CA Béziers Méditerranée ?",
+      a: "Oui, Axion-IA intervient à Servian et dans les 17 communes de la CA Béziers Méditerranée (Béziers, Boujan-sur-Libron, Bassan, Espondeilhan, Montblanc, Valros, Tourbes, Alignan-du-Vent, etc.). Consultants depuis Montpellier (1 h A75) ou Béziers (15 min).",
     },
     {
-      q: "Proposez-vous un audit IA pour les caves coopératives ?",
-      a: "Oui, audits IA adaptés aux caves coopératives et domaines viticoles : gestion parcelles, relation client, traçabilité, classification avis, prédiction vendanges. Audit Flash à 490 € HT.",
+      q: "Quels tarifs pour une mission IA à Servian ?",
+      a: "Audit Flash 490 € HT (4 h diagnostic + ROI chiffré). Intervention sur site dès 590 € HT par journée. Coaching 1-to-1 dès 590 € HT par séance. Tarifs publics affichés.",
     },
     {
-      q: "Quels services pour les commerces de zone commerciale ?",
-      a: "Audit IA complet, chatbot client, automatisation stocks et commandes, optimisation tarification, gestion avis en ligne. Audit Flash 490 € HT.",
+      q: "Quels délais d'intervention sur Servian ?",
+      a: "Audit Flash : créneau sous 5 à 10 jours ouvrés. Interventions terrain : planification à 2-3 semaines. Implémentation code custom : démarrage sous 3-4 semaines selon périmètre.",
     },
     {
-      q: "Accompagnez-vous les artisans BTP ?",
-      a: "Oui, audit Flash 490 € HT, formation et coaching. Cas typiques : automatisation devis, classification photos chantier, planification interventions.",
+      q: "Travaillez-vous avec la cave coopérative « Les Vignerons de l'Occitane » ou les 126 exploitations AOC Languedoc ?",
+      a: "Oui, nous accompagnons les structures coopératives (gestion adhérents, traçabilité AOC, prédiction volumes vendanges) et les domaines indépendants (vente directe, fidélisation client, gestion parcelles, classification photos vignes).",
     },
     {
-      q: "Quel est le tarif d'entrée pour une mission IA à Servian ?",
-      a: "L'Audit Flash démarre à 490 € HT. Interventions et coaching sur devis. Tarifs publics, pas de devis opaque.",
+      q: "Accompagnez-vous les entreprises de la ZAC La Baume (TMF Transports, Ame'ric, Savim) ?",
+      a: "Oui, audit Flash 490 € HT puis implémentation : optimisation logistique, classification documents, automatisation devis, planification interventions. Cible PME industrielles et tertiaires.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Servian ?",
+      a: "Code et données hébergés en Union européenne, contrats DPA signés, registre des traitements fourni, formation des équipes. Conformité native, pas d'option payante.",
+    },
+    {
+      q: "Vos consultants se déplacent-ils à Servian ?",
+      a: "Oui, depuis Montpellier (1 h A75 sortie 62) ou Béziers (15 min). Frais de déplacement facturés au réel selon barème URSSAF, tarifs publics. Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
     },
   ],
 };

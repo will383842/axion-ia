@@ -1,72 +1,77 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 65 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
+// Hallucinations LLM supprimées (Areva/Nestlé non documentés à Chalon).
+// Source : Wikipedia FR Chalon-sur-Saône (2026-05-28).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const CHALON_SUR_SAONE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Chalon-sur-Saône, une ville dynamique avec des entreprises comme Areva et Nestlé, pour optimiser vos processus grâce à l'IA. Nos services incluent des audits, interventions et implémentations sur site, adaptés aux besoins des entreprises locales.",
+    "Chalon-sur-Saône (71), sous-préfecture de Saône-et-Loire (45 102 habitants), est un pôle industriel et logistique de Bourgogne-Franche-Comté entre Dijon et Lyon. Tissu historique métallurgie, mécanique et verrerie (Saint-Gobain, Framatome, Pinette Emidecau). Axion-IA accompagne en priorité les TPE et PME chalonnaises — commerce, artisanat, sous-traitance industrielle, services — puis les ETI locales.",
   pitchEn:
-    "Axion-IA intervient à Chalon-sur-Saône, une ville dynamique avec des entreprises comme Areva et Nestlé, pour optimiser vos processus grâce à l'IA. Nos services incluent des audits, interventions et implémentations sur site, adaptés aux besoins des entreprises locales.",
+    "Chalon-sur-Saône (71), sous-préfecture de Saône-et-Loire (45 102 habitants), est un pôle industriel et logistique de Bourgogne-Franche-Comté entre Dijon et Lyon. Tissu historique métallurgie, mécanique et verrerie (Saint-Gobain, Framatome, Pinette Emidecau). Axion-IA accompagne en priorité les TPE et PME chalonnaises — commerce, artisanat, sous-traitance industrielle, services — puis les ETI locales.",
   directAnswerFr:
-    "À Chalon-sur-Saône, Axion-IA propose des solutions IA sur site pour les entreprises de secteurs variés tels que le commerce de détail et l'industrie alimentaire. Avec des groupes comme Areva et Nestlé présents dans la région, nous offrons des audits et des interventions, garantissant un retour sur investissement rapide.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit Flash 490 € HT, intervention 590 € HT, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "À Chalon-sur-Saône, Axion-IA propose des solutions IA sur site pour les entreprises de secteurs variés tels que le commerce de détail et l'industrie alimentaire. Avec des groupes comme Areva et Nestlé présents dans la région, nous offrons des audits et des interventions, garantissant un retour sur investissement rapide.",
-  seoHook: "commerce détail & industrie alimentaire",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit Flash 490 € HT, intervention 590 € HT, code sur mesure — pas de no-code.",
+  seoHook: "sous-traitance mécanique, commerce & services",
   ecosystemFr:
-    "Chalon-sur-Saône accueille des entreprises comme Areva et Nestlé, renforçant son tissu économique. Le Parc d'activités SaôneOr est un pôle clé pour les industries locales, facilitant l'innovation et la croissance.",
+    "Chalon-sur-Saône est structurée autour de deux zones industrielles historiques : Zone Nord (post-1950) et Zone Sud (1974). Le tissu économique mélange mécanique et métallurgie (héritage Kodak Pathé, présence Saint-Gobain, Framatome, Pinette Emidecau Industries), commerce de centre-ville, artisanat et services. Le canal du Centre relie la Saône et l'agglo bénéficie de l'axe A6 Paris-Lyon. Les TPE-PME locales dominent largement le nombre d'établissements.",
   ecosystemEn:
-    "Chalon-sur-Saône accueille des entreprises comme Areva et Nestlé, renforçant son tissu économique. Le Parc d'activités SaôneOr est un pôle clé pour les industries locales, facilitant l'innovation et la croissance.",
+    "Chalon-sur-Saône est structurée autour de deux zones industrielles historiques : Zone Nord (post-1950) et Zone Sud (1974). Le tissu économique mélange mécanique et métallurgie (héritage Kodak Pathé, présence Saint-Gobain, Framatome, Pinette Emidecau Industries), commerce de centre-ville, artisanat et services. Le canal du Centre relie la Saône et l'agglo bénéficie de l'axe A6 Paris-Lyon. Les TPE-PME locales dominent largement le nombre d'établissements.",
   distancesFr:
-    "Chalon-sur-Saône est à 35 km de la Gare TGV Le Creusot et à 130 km de l'Aéroport de Lyon-Saint-Exupéry.",
+    "Gare de Chalon-sur-Saône sur ligne PLM (TGV directs Paris-Gare-de-Lyon ~1h30). Autoroute A6 sortie Chalon-Nord/Chalon-Sud. Gare TGV Le Creusot Montchanin à 35 km. Aéroport Lyon-Saint-Exupéry à 130 km. Dijon à 65 km, Lyon à 130 km, Paris à 296 km.",
   distancesEn:
-    "Chalon-sur-Saône est à 35 km de la Gare TGV Le Creusot et à 130 km de l'Aéroport de Lyon-Saint-Exupéry.",
+    "Gare de Chalon-sur-Saône sur ligne PLM (TGV directs Paris-Gare-de-Lyon ~1h30). Autoroute A6 sortie Chalon-Nord/Chalon-Sud. Gare TGV Le Creusot Montchanin à 35 km. Aéroport Lyon-Saint-Exupéry à 130 km. Dijon à 65 km, Lyon à 130 km, Paris à 296 km.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Industrie alimentaire",
-    "Produits métalliques",
-    "Réparation de machines",
+    "Sous-traitance mécanique & métallurgie",
+    "Commerce de détail centre-ville",
+    "Artisanat BTP",
+    "Logistique & transport Saône/A6",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Chalon-sur-Saône pour identifier les opportunités d'optimisation dans des secteurs tels que l'industrie alimentaire et le commerce de détail.",
-      en: "Réaliser un audit à Chalon-sur-Saône pour identifier les opportunités d'optimisation dans des secteurs tels que l'industrie alimentaire et le commerce de détail.",
+      fr: "Audit IA à Chalon-sur-Saône : diagnostic 4h pour TPE et PME de la sous-traitance mécanique, du commerce, de l'artisanat et des services. ROI chiffré, plan d'action priorisé. Audit Flash 490 € HT.",
+      en: "Audit IA à Chalon-sur-Saône : diagnostic 4h pour TPE et PME de la sous-traitance mécanique, du commerce, de l'artisanat et des services. ROI chiffré, plan d'action priorisé. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Chalon-sur-Saône pour automatiser les processus administratifs, avec un focus sur la fabrication de produits métalliques.",
-      en: "Intervenir à Chalon-sur-Saône pour automatiser les processus administratifs, avec un focus sur la fabrication de produits métalliques.",
+      fr: "Interventions sur site à Chalon-sur-Saône (Zone Nord, Zone Sud, centre) : automatisation devis, gestion qualité atelier, traitement documents fournisseurs, agents IA support client. Intervention Essentielle 590 € HT.",
+      en: "Interventions sur site à Chalon-sur-Saône (Zone Nord, Zone Sud, centre) : automatisation devis, gestion qualité atelier, traitement documents fournisseurs, agents IA support client. Intervention Essentielle 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Chalon-sur-Saône, intégrant les systèmes existants pour améliorer l'efficacité dans la réparation de machines.",
-      en: "Implémenter des solutions IA à Chalon-sur-Saône, intégrant les systèmes existants pour améliorer l'efficacité dans la réparation de machines.",
+      fr: "Implémentation IA chalonnaise : intégration sur mesure aux ERP industriels, automatisation flux logistiques Saône/A6, classification documents conformité, code Python/TypeScript livré. Dès 990 € HT.",
+      en: "Implémentation IA chalonnaise : intégration sur mesure aux ERP industriels, automatisation flux logistiques Saône/A6, classification documents conformité, code Python/TypeScript livré. Dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Chalon-sur-Saône pour une adoption réussie de l'IA, avec des conseils personnalisés.",
-      en: "Accompagner en un-à-un les dirigeants de Chalon-sur-Saône pour une adoption réussie de l'IA, avec des conseils personnalisés.",
+      fr: "Coaching 1-to-1 à Chalon-sur-Saône : sessions sur site ou en visio pour dirigeants TPE-PME, artisans et chefs d'atelier de l'agglo. Cadrage stratégique IA, montée en compétence interne.",
+      en: "Coaching 1-to-1 à Chalon-sur-Saône : sessions sur site ou en visio pour dirigeants TPE-PME, artisans et chefs d'atelier de l'agglo. Cadrage stratégique IA, montée en compétence interne.",
     },
   },
   faqGeolocalisee: [
     {
+      q: "Axion-IA intervient-il à Chalon-sur-Saône et son agglomération ?",
+      a: "Oui, nous intervenons à Chalon-sur-Saône (71) et dans les communes proches : Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère. Nos consultants se déplacent sur site (Zone Nord, Zone Sud, centre-ville) ou interviennent en visio.",
+    },
+    {
       q: "Quels sont les tarifs pour un audit IA à Chalon-sur-Saône ?",
-      a: "L'Audit Flash est proposé à partir de 490 € HT. Nos tarifs publics sont consultables pour plus de détails sur les services disponibles.",
+      a: "L'Audit Flash démarre à 490 € HT (4h sur site ou visio). L'Intervention Essentielle est à 590 € HT. L'Implémentation et le coaching 1-to-1 sont sur devis dès 990 € HT selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Chalon-sur-Saône ?",
-      a: "Nous nous déplaçons sur site pour réaliser des audits, interventions et implémentations, assurant une intégration fluide de l'IA dans vos processus.",
+      q: "Quels délais pour démarrer une mission IA à Chalon-sur-Saône ?",
+      a: "Williams se déplace à Chalon-sur-Saône sous 5 jours ouvrés après confirmation. L'Audit Flash est restitué sous 7 jours. Les interventions sur site démarrent selon planning convenu (généralement 2 à 4 semaines).",
     },
     {
-      q: "Quels délais pour une intervention IA à Chalon-sur-Saône ?",
-      a: "Williams se déplace sur site dans les 5 jours ouvrés pour débuter l'intervention, assurant une mise en œuvre rapide de nos solutions.",
+      q: "Comment Axion-IA garantit la conformité RGPD à Chalon ?",
+      a: "Conformité RGPD intégrée dès l'audit : cartographie données, base légale, durée conservation, sécurité technique. Hébergement UE (OVH/Scaleway France), DPA fourni. Adapté aux exigences industrielles (traçabilité atelier, données clients).",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD à Chalon-sur-Saône ?",
-      a: "Nous intégrons les normes RGPD dès la phase d'audit, garantissant que toutes les solutions IA respectent les réglementations en vigueur.",
+      q: "Quels secteurs chalonnais bénéficient le plus de l'IA ?",
+      a: "À Chalon-sur-Saône : la sous-traitance mécanique (devis, qualité, maintenance prédictive), le commerce de centre-ville (chatbot, gestion stocks), l'artisanat BTP (devis, planning) et les services aux entreprises (traitement documents, agents IA). TPE et PME prioritaires.",
     },
     {
-      q: "Proposez-vous des formations IA pour dirigeants à Chalon-sur-Saône ?",
-      a: "Oui, notre service un-à-un pour dirigeants est disponible à partir de 990 € HT, incluant des sessions personnalisées pour une adoption réussie de l'IA.",
+      q: "Faites-vous du no-code ou du code sur mesure ?",
+      a: "Code sur mesure exclusivement (Python, TypeScript, intégrations API). Pas de no-code générique : nous livrons des briques propres à votre métier, maintenables et indépendantes des plateformes tierces. Approche cabinet d'architectes IA seniors.",
     },
   ],
 };

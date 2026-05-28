@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factuel).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const GRANDE_SYNTHE_COPY: VilleCopy = {
   pitchFr:
-    "À Grande-Synthe, Axion-IA propose des interventions IA opérationnelles adaptées aux secteurs de la métallurgie et des transports terrestres. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Grande-Synthe, commune de 20 239 habitants du département du Nord, située à 6 km à l'ouest de Dunkerque et intégrée au Grand Port Maritime. Nous accompagnons les sous-traitants industriels, prestataires logistiques et PME du tissu portuaire qui gravitent autour d'ArcelorMittal et des activités du port. Notre code custom automatise les flux administratifs, les bons de livraison et les relances client des structures de moins de 50 salariés. Les ETI peuvent également bénéficier de nos services, mais notre cœur de cible reste TPE et PME.",
   pitchEn:
-    "À Grande-Synthe, Axion-IA propose des interventions IA opérationnelles adaptées aux secteurs de la métallurgie et des transports terrestres. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Grande-Synthe, commune de 20 239 habitants du département du Nord, située à 6 km à l'ouest de Dunkerque et intégrée au Grand Port Maritime. Nous accompagnons les sous-traitants industriels, prestataires logistiques et PME du tissu portuaire qui gravitent autour d'ArcelorMittal et des activités du port. Notre code custom automatise les flux administratifs, les bons de livraison et les relances client des structures de moins de 50 salariés. Les ETI peuvent également bénéficier de nos services, mais notre cœur de cible reste TPE et PME.",
   directAnswerFr:
-    "Axion-IA intervient à Grande-Synthe, un centre industriel regroupant ArcelorMittal et d'autres acteurs du secteur métallurgique. adaptés aux besoins des entreprises locales en matière d'automatisation et d'optimisation des processus.",
+    "Axion-IA accompagne les TPE et PME de Grande-Synthe (Nord, 20 239 habitants) — sous-traitants industriels, transporteurs, entrepôts et prestataires de services gravitant autour du Grand Port Maritime de Dunkerque et d'ArcelorMittal. Nous automatisons en code custom (Python, Node.js, pas de no-code) la gestion documentaire, les bons de livraison, les relances client et la qualification de prospects. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
   directAnswerEn:
-    "Axion-IA intervient à Grande-Synthe, un centre industriel regroupant ArcelorMittal et d'autres acteurs du secteur métallurgique. adaptés aux besoins des entreprises locales en matière d'automatisation et d'optimisation des processus.",
-  seoHook: "métallurgie & transports terrestres",
+    "Axion-IA accompagne les TPE et PME de Grande-Synthe (Nord, 20 239 habitants) — sous-traitants industriels, transporteurs, entrepôts et prestataires de services gravitant autour du Grand Port Maritime de Dunkerque et d'ArcelorMittal. Nous automatisons en code custom (Python, Node.js, pas de no-code) la gestion documentaire, les bons de livraison, les relances client et la qualification de prospects. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
+  seoHook: "métallurgie & logistique portuaire",
   ecosystemFr:
-    "Grande-Synthe, située près de Dunkerque, est un pôle industriel majeur avec la présence d'ArcelorMittal. Le secteur des transports terrestres et de l'entreposage y est également bien représenté, offrant un environnement propice aux interventions IA d'Axion-IA.",
+    "Grande-Synthe est intégrée à la Communauté urbaine de Dunkerque et abrite une partie du Grand Port Maritime de Dunkerque, troisième port français. L'écosystème économique local est dominé par la métallurgie (ArcelorMittal), les activités portuaires, la logistique et l'entreposage. Autour de ces grands donneurs d'ordres gravite un dense tissu de sous-traitants industriels, transporteurs et prestataires de services aux entreprises — autant de TPE et PME potentiellement clientes Axion-IA.",
   ecosystemEn:
-    "Grande-Synthe, située près de Dunkerque, est un pôle industriel majeur avec la présence d'ArcelorMittal. Le secteur des transports terrestres et de l'entreposage y est également bien représenté, offrant un environnement propice aux interventions IA d'Axion-IA.",
+    "Grande-Synthe est intégrée à la Communauté urbaine de Dunkerque et abrite une partie du Grand Port Maritime de Dunkerque, troisième port français. L'écosystème économique local est dominé par la métallurgie (ArcelorMittal), les activités portuaires, la logistique et l'entreposage. Autour de ces grands donneurs d'ordres gravite un dense tissu de sous-traitants industriels, transporteurs et prestataires de services aux entreprises — autant de TPE et PME potentiellement clientes Axion-IA.",
   distancesFr:
-    "Grande-Synthe est à 7 km de la gare TGV de Dunkerque et à 85 km de l'aéroport de Lille-Lesquin.",
+    "Grande-Synthe est à 6 km de la gare de Dunkerque (TGV vers Paris en 1 h 30), à 85 km de l'aéroport de Lille-Lesquin, et à 25 km du tunnel sous la Manche via l'A16.",
   distancesEn:
-    "Grande-Synthe est à 7 km de la gare TGV de Dunkerque et à 85 km de l'aéroport de Lille-Lesquin.",
-  topSectorsNaf: ["Métallurgie", "Transports terrestres", "Entreposage", "Commerce de gros"],
+    "Grande-Synthe est à 6 km de la gare de Dunkerque (TGV vers Paris en 1 h 30), à 85 km de l'aéroport de Lille-Lesquin, et à 25 km du tunnel sous la Manche via l'A16.",
+  topSectorsNaf: [
+    "Métallurgie",
+    "Transports terrestres et entreposage",
+    "Services auxiliaires au transport",
+    "Commerce de gros",
+    "Industrie chimique",
+    "Maintenance industrielle",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Grande-Synthe pour identifier les opportunités d'automatisation dans la métallurgie et les transports terrestres.",
-      en: "Réaliser un audit à Grande-Synthe pour identifier les opportunités d'automatisation dans la métallurgie et les transports terrestres.",
+      fr: "Audit Flash IA à Grande-Synthe (4 h sur site) dès 490 € HT : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
+      en: "Audit Flash IA à Grande-Synthe (4 h sur site) dès 490 € HT : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
     },
     interventions: {
-      fr: "Intervenir à Grande-Synthe pour optimiser les processus des entreprises du secteur de l'entreposage et des services auxiliaires.",
-      en: "Intervenir à Grande-Synthe pour optimiser les processus des entreprises du secteur de l'entreposage et des services auxiliaires.",
+      fr: "Interventions à Grande-Synthe dès 590 € HT pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
+      en: "Interventions à Grande-Synthe dès 590 € HT pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Grande-Synthe, facilitant l'intégration dans les systèmes existants des entreprises locales.",
-      en: "Implémenter des solutions IA à Grande-Synthe, facilitant l'intégration dans les systèmes existants des entreprises locales.",
+      fr: "Implémentation IA à Grande-Synthe dès 990 € HT : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
+      en: "Implémentation IA à Grande-Synthe dès 990 € HT : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Grande-Synthe pour maximiser l'impact des outils IA sur leurs opérations.",
-      en: "Accompagner en un-à-un les dirigeants de Grande-Synthe pour maximiser l'impact des outils IA sur leurs opérations.",
+      fr: "Accompagnement un-à-un à Grande-Synthe dès 990 € HT pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
+      en: "Accompagnement un-à-un à Grande-Synthe dès 990 € HT pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Grande-Synthe ?",
-      a: "Les audits IA à Grande-Synthe commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'une intervention IA à Grande-Synthe ?",
+      a: "Les interventions Axion-IA à Grande-Synthe démarrent à 590 € HT (Intervention Essentielle). L'Audit Flash 4 h est à 490 € HT, l'implémentation dès 990 € HT. Tarifs publics et fixes.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Grande-Synthe ?",
-      a: "Nos consultants se déplacent directement sur site à Grande-Synthe, assurant une intervention rapide et efficace dans les locaux de votre entreprise.",
+      q: "Sous quel délai pouvez-vous intervenir à Grande-Synthe ?",
+      a: "Notre équipe se déplace à Grande-Synthe dans un délai de 5 jours ouvrés après validation. Accès depuis Paris par TGV (1 h 30 jusqu'à Dunkerque) puis 6 km en voiture.",
     },
     {
-      q: "Quels délais pour une intervention IA à Grande-Synthe ?",
-      a: "Williams se déplace à Grande-Synthe dans les 5 jours ouvrés pour débuter une intervention IA, selon la disponibilité et la complexité du projet.",
+      q: "Couvrez-vous les communes proches de Grande-Synthe ?",
+      a: "Oui, nous intervenons également à Dunkerque, Armbouts-Cappel, Brouckerque et Spycker — l'ensemble de la périphérie ouest dunkerquoise et la Communauté urbaine de Dunkerque.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD à Grande-Synthe ?",
-      a: "Axion-IA garantit la conformité RGPD lors de ses interventions à Grande-Synthe, en intégrant les meilleures pratiques de protection des données dans chaque projet.",
+      q: "Vos solutions IA sont-elles conformes RGPD à Grande-Synthe ?",
+      a: "Oui, chaque déploiement Axion-IA intègre dès la conception les exigences RGPD : hébergement EU, données chiffrées, droit à l'effacement. Une fiche RGPD est remise à chaque client.",
+    },
+    {
+      q: "Quels secteurs Axion-IA cible-t-elle à Grande-Synthe ?",
+      a: "Nous accompagnons en priorité les TPE et PME de Grande-Synthe : sous-traitants métallurgie, transporteurs, entrepôts, maintenance industrielle, commerce de gros. Les ETI restent marginales.",
+    },
+    {
+      q: "Proposez-vous des solutions no-code à Grande-Synthe ?",
+      a: "Non. Axion-IA développe uniquement du code custom (Python, Node.js, TypeScript). Cette approche garantit la pérennité, la performance et la conformité de vos automatisations sur le long terme.",
     },
   ],
 };

@@ -1,72 +1,78 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// HAND-CORRECTED 2026-05-28 (anti-doorway HCU 2024, Wikipedia facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const SAINT_CLOUD_COPY: VilleCopy = {
   pitchFr:
-    "À Saint-Cloud, Axion-IA propose des interventions IA sur site, adaptées aux besoins des entreprises locales. Avec des acteurs comme Dassault Aviation et des secteurs clés tels que la programmation informatique, nous aidons à automatiser les processus administratifs.",
+    "Saint-Cloud (29 855 habitants, 92210), commune des Hauts-de-Seine intégrée à l'Établissement public territorial Paris Ouest La Défense (POLD) et à la Métropole du Grand Paris, est située à environ 10 km à l'ouest de Paris. Axion-IA, cabinet IA pour TPE et PME francophones, se déplace sur place pour accompagner les cabinets de conseil, professions libérales, agences et PME tertiaires installées notamment dans le complexe de bureaux Les Collines et la ZAC Bords de Seine (Dassault Aviation y occupe des surfaces significatives). Notre code est custom (pas de no-code), avec automatisation devis, relances, reporting et outils internes. Tarifs publics dès 490 € HT.",
   pitchEn:
-    "À Saint-Cloud, Axion-IA propose des interventions IA sur site, adaptées aux besoins des entreprises locales. Avec des acteurs comme Dassault Aviation et des secteurs clés tels que la programmation informatique, nous aidons à automatiser les processus administratifs.",
+    "Saint-Cloud (29 855 habitants, 92210), commune des Hauts-de-Seine intégrée à l'Établissement public territorial Paris Ouest La Défense (POLD) et à la Métropole du Grand Paris, est située à environ 10 km à l'ouest de Paris. Axion-IA, cabinet IA pour TPE et PME francophones, se déplace sur place pour accompagner les cabinets de conseil, professions libérales, agences et PME tertiaires installées notamment dans le complexe de bureaux Les Collines et la ZAC Bords de Seine (Dassault Aviation y occupe des surfaces significatives). Notre code est custom (pas de no-code), avec automatisation devis, relances, reporting et outils internes. Tarifs publics dès 490 € HT.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Cloud pour optimiser les processus des entreprises locales. Le tissu économique de la ville inclut Dassault Aviation et des secteurs comme l'ingénierie et les services financiers. Nous proposons des audits et des interventions, permettant une automatisation rapide et efficace.",
+    "À Saint-Cloud (92210, Hauts-de-Seine, EPT Paris Ouest La Défense), Axion-IA accompagne les TPE et PME tertiaires : cabinets de conseil, professions libérales, agences de communication, PME de services, professionnels de santé installés autour des gares de Saint-Cloud et du Val d'Or. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code SaaS) pour automatiser devis, relances, reporting et outils métier internes. Tarifs publics : Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, implémentation dès 990 € HT. Déplacement sous 5 jours ouvrés depuis Paris (environ 10 km).",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Cloud pour optimiser les processus des entreprises locales. Le tissu économique de la ville inclut Dassault Aviation et des secteurs comme l'ingénierie et les services financiers. Nous proposons des audits et des interventions, permettant une automatisation rapide et efficace.",
-  seoHook: "programmation informatique & sièges sociaux",
+    "À Saint-Cloud (92210, Hauts-de-Seine, EPT Paris Ouest La Défense), Axion-IA accompagne les TPE et PME tertiaires : cabinets de conseil, professions libérales, agences de communication, PME de services, professionnels de santé installés autour des gares de Saint-Cloud et du Val d'Or. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code SaaS) pour automatiser devis, relances, reporting et outils métier internes. Tarifs publics : Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, implémentation dès 990 € HT. Déplacement sous 5 jours ouvrés depuis Paris (environ 10 km).",
+  seoHook: "TPE/PME tertiaires Hauts-de-Seine ouest",
   ecosystemFr:
-    "Saint-Cloud abrite des entreprises influentes comme Dassault Aviation et se distingue par ses secteurs dominants tels que la programmation informatique et l'ingénierie. Ces éléments créent un environnement propice à l'innovation et à l'optimisation des processus par l'IA.",
+    "Saint-Cloud appartient à l'EPT Paris Ouest La Défense et à la Métropole du Grand Paris, dans un environnement résidentiel et tertiaire haut de gamme aux portes de La Défense. Le tissu économique mêle un complexe de bureaux significatif (Les Collines), la ZAC Bords de Seine (Dassault Aviation y occupe des surfaces commerciales importantes), des professions libérales, des agences de communication, des cabinets de conseil et des commerces de centre-ville. Communes limitrophes : Suresnes, Rueil-Malmaison, Garches, Marnes-la-Coquette, Sèvres, Ville-d'Avray et Boulogne-Billancourt.",
   ecosystemEn:
-    "Saint-Cloud abrite des entreprises influentes comme Dassault Aviation et se distingue par ses secteurs dominants tels que la programmation informatique et l'ingénierie. Ces éléments créent un environnement propice à l'innovation et à l'optimisation des processus par l'IA.",
+    "Saint-Cloud appartient à l'EPT Paris Ouest La Défense et à la Métropole du Grand Paris, dans un environnement résidentiel et tertiaire haut de gamme aux portes de La Défense. Le tissu économique mêle un complexe de bureaux significatif (Les Collines), la ZAC Bords de Seine (Dassault Aviation y occupe des surfaces commerciales importantes), des professions libérales, des agences de communication, des cabinets de conseil et des commerces de centre-ville. Communes limitrophes : Suresnes, Rueil-Malmaison, Garches, Marnes-la-Coquette, Sèvres, Ville-d'Avray et Boulogne-Billancourt.",
   distancesFr:
-    "Saint-Cloud est à 10 km de la Gare de Paris-Montparnasse et à 20 km de l'Aéroport de Paris-Orly.",
+    "Saint-Cloud est à environ 10 km à l'ouest du centre de Paris (Notre-Dame). Gares SNCF Saint-Cloud et Val d'Or (Transilien L et U), tramway T2 (quatre stations dans la commune). Métros Boulogne-Pont de Saint-Cloud et Pont de Sèvres à proximité. Future ligne 15 du Grand Paris Express prévue fin 2031. La Défense à environ 5 km au nord-est.",
   distancesEn:
-    "Saint-Cloud est à 10 km de la Gare de Paris-Montparnasse et à 20 km de l'Aéroport de Paris-Orly.",
+    "Saint-Cloud est à environ 10 km à l'ouest du centre de Paris (Notre-Dame). Gares SNCF Saint-Cloud et Val d'Or (Transilien L et U), tramway T2 (quatre stations dans la commune). Métros Boulogne-Pont de Saint-Cloud et Pont de Sèvres à proximité. Future ligne 15 du Grand Paris Express prévue fin 2031. La Défense à environ 5 km au nord-est.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Sièges sociaux",
-    "Services financiers",
-    "Ingénierie",
+    "Activités de conseil de gestion",
+    "Professions libérales (juridiques, comptables, santé)",
+    "Agences de communication et services aux entreprises",
+    "Commerce de détail de centre-ville",
+    "Hébergement et restauration",
+    "Sièges sociaux et services administratifs",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Saint-Cloud pour identifier les opportunités IA dans des secteurs comme l'ingénierie — à partir de 490 € HT.",
-      en: "Réaliser un audit à Saint-Cloud pour identifier les opportunités IA dans des secteurs comme l'ingénierie — à partir de 490 € HT.",
+      fr: "Audit Flash sur site à Saint-Cloud pour identifier les automatisations prioritaires d'un cabinet, d'une agence ou d'une PME tertiaire — dès 490 € HT.",
+      en: "Audit Flash sur site à Saint-Cloud pour identifier les automatisations prioritaires d'un cabinet, d'une agence ou d'une PME tertiaire — dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Saint-Cloud pour automatiser les tâches administratives chez des entreprises comme Dassault Aviation — intervention dès 590 € HT.",
-      en: "Intervenir à Saint-Cloud pour automatiser les tâches administratives chez des entreprises comme Dassault Aviation — intervention dès 590 € HT.",
+      fr: "Intervention sur site à Saint-Cloud pour automatiser devis, relances, reporting et outils internes des TPE/PME — dès 590 € HT.",
+      en: "Intervention sur site à Saint-Cloud pour automatiser devis, relances, reporting et outils internes des TPE/PME — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Saint-Cloud, en tenant compte des infrastructures existantes — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Saint-Cloud, en tenant compte des infrastructures existantes — à partir de 990 € HT.",
+      fr: "Implémentation d'agents IA custom (Node, Python, Postgres) connectés à votre CRM, ERP ou outils SaaS à Saint-Cloud — dès 990 € HT.",
+      en: "Implémentation d'agents IA custom (Node, Python, Postgres) connectés à votre CRM, ERP ou outils SaaS à Saint-Cloud — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Saint-Cloud avec des sessions 1-to-1 pour une adoption rapide de l'IA — dès 990 € HT.",
-      en: "Accompagner les dirigeants de Saint-Cloud avec des sessions 1-to-1 pour une adoption rapide de l'IA — dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 d'un dirigeant TPE/PME à Saint-Cloud pour cadrer un cas d'usage IA prioritaire — dès 990 € HT.",
+      en: "Accompagnement 1-to-1 d'un dirigeant TPE/PME à Saint-Cloud pour cadrer un cas d'usage IA prioritaire — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Saint-Cloud ?",
-      a: "Les audits IA à Saint-Cloud commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Cloud ?",
+      a: "Audit Flash dès 490 € HT (4 heures sur site), intervention dès 590 € HT, implémentation IA dès 990 € HT. Tarifs publics consultables sur axion-ia.com/tarifs, sans coût caché d'abonnement.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Saint-Cloud ?",
-      a: "Nous nous déplaçons directement sur site à Saint-Cloud pour réaliser nos interventions, garantissant une compréhension précise des besoins locaux.",
+      q: "Quels délais pour une intervention IA à Saint-Cloud ?",
+      a: "Nous intervenons à Saint-Cloud sous 5 jours ouvrés après validation. Accès via gare SNCF Saint-Cloud, Val d'Or ou tramway T2 (4 stations dans la commune).",
     },
     {
-      q: "Quel est le délai pour une intervention IA à Saint-Cloud ?",
-      a: "Williams se déplace sur site à Saint-Cloud dans les 5 jours ouvrés suivant la demande d'intervention.",
+      q: "Axion-IA couvre-t-il Suresnes, Boulogne-Billancourt, Garches ou Sèvres ?",
+      a: "Oui, nous couvrons toutes les communes limitrophes de Saint-Cloud : Suresnes, Rueil-Malmaison, Garches, Marnes-la-Coquette, Sèvres, Ville-d'Avray et Boulogne-Billancourt, ainsi que l'ensemble de l'EPT Paris Ouest La Défense.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Saint-Cloud ?",
-      a: "Nous intégrons des pratiques conformes au RGPD dans toutes nos interventions à Saint-Cloud, assurant la protection des données et la conformité légale.",
+      q: "Comment Axion-IA assure-t-il la conformité RGPD à Saint-Cloud ?",
+      a: "Hébergement des données en France, DPA contractuel, minimisation des données collectées, documentation des traitements. Le code étant custom (pas de SaaS no-code US), vous gardez la maîtrise complète de l'infrastructure et des flux.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Saint-Cloud ?",
-      a: "Les secteurs de la programmation informatique et de l'ingénierie à Saint-Cloud profitent particulièrement de l'IA pour optimiser leurs processus et améliorer l'efficacité opérationnelle.",
+      q: "Quels secteurs d'activité accompagnez-vous à Saint-Cloud ?",
+      a: "TPE et PME tertiaires prioritairement : cabinets de conseil, professions libérales (juridiques, comptables, santé), agences de communication, PME de services, commerces de centre-ville et restauration. Les ETI restent un complément, notre cœur de cible étant la TPE et la PME.",
+    },
+    {
+      q: "Axion-IA se déplace-t-il sur site à Saint-Cloud, y compris au siège d'un client ?",
+      a: "Oui, nous nous déplaçons physiquement à Saint-Cloud (environ 10 km depuis Paris) pour audit, interventions et sessions 1-to-1. Implémentation et suivi peuvent ensuite se faire à distance.",
     },
   ],
 };

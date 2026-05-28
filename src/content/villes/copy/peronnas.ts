@@ -1,71 +1,76 @@
-// AUTO-GENERATED 2026-05-27 — T4 batch #15 Claude Code (Will).
-// Péronnas (01, Ain) — banlieue Bourg-en-Bresse, Bresse, péri-urbain.
+// AUTO-GENERATED 2026-05-27 — corrigé manuellement 2026-05-28 (anti-doorway HCU 2024).
+// Péronnas (01) — Communauté d'agglomération du Bassin de Bourg-en-Bresse, Bresse.
+// Source faits : Wikipedia FR Péronnas. EN = mirror FR.
 
 import type { VilleCopy } from "./types";
 
 export const PERONNAS_COPY: VilleCopy = {
   pitchFr:
-    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA accompagne tout le tissu professionnel local bressoises.",
+    "Péronnas (01), 6 444 habitants, commune de l'Ain en banlieue immédiate de Bourg-en-Bresse et membre de la Communauté d'agglomération du Bassin de Bourg-en-Bresse. Voisine de Bourg-en-Bresse, Viriat, Saint-Denis-lès-Bourg, Buellas et Montagnat, elle conjugue zones urbanisées (21 % du sol) et terres agricoles bressoises. Tissu TPE artisans BTP, commerces de proximité, PME tertiaires et industrielles qu'Axion-IA accompagne.",
   pitchEn:
-    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA accompagne tout le tissu professionnel local bressoises.",
+    "Péronnas (01), 6 444 habitants, commune de l'Ain en banlieue immédiate de Bourg-en-Bresse et membre de la Communauté d'agglomération du Bassin de Bourg-en-Bresse. Voisine de Bourg-en-Bresse, Viriat, Saint-Denis-lès-Bourg, Buellas et Montagnat, elle conjugue zones urbanisées (21 % du sol) et terres agricoles bressoises. Tissu TPE artisans BTP, commerces de proximité, PME tertiaires et industrielles qu'Axion-IA accompagne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Péronnas (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Péronnas (01) auprès des TPE/PME du bassin de Bourg-en-Bresse. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs, exploitants agricoles bressois et PME tertiaires ou industrielles installés à Péronnas, Bourg-en-Bresse, Viriat, Saint-Denis-lès-Bourg, Buellas et Montagnat. Audits, interventions et coaching 1-to-1 sur site, depuis Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Péronnas (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
-  seoHook: "tertiaires agglomération & industrielles",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Péronnas (01) auprès des TPE/PME du bassin de Bourg-en-Bresse. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs, exploitants agricoles bressois et PME tertiaires ou industrielles installés à Péronnas, Bourg-en-Bresse, Viriat, Saint-Denis-lès-Bourg, Buellas et Montagnat. Audits, interventions et coaching 1-to-1 sur site, depuis Lyon.",
+  seoHook: "TPE artisans BTP, commerces & PME bassin Bourg-en-Bresse",
   ecosystemFr:
-    "Péronnas est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse, TPE artisanat BTP, commerces.",
+    "Péronnas est intégrée à la Communauté d'agglomération du Bassin de Bourg-en-Bresse et combine zones urbanisées et agricoles hétérogènes (~21 % chacune). Le tissu professionnel local repose sur des TPE artisans BTP, commerces de proximité, exploitations agricoles bressoises et PME tertiaires/industrielles connectées à Bourg-en-Bresse et à Viriat. Réseau de bus Rubis (ligne 3) et Rubis'Vélo desservent la commune.",
   ecosystemEn:
-    "Péronnas est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse, TPE artisanat BTP, commerces.",
+    "Péronnas est intégrée à la Communauté d'agglomération du Bassin de Bourg-en-Bresse et combine zones urbanisées et agricoles hétérogènes (~21 % chacune). Le tissu professionnel local repose sur des TPE artisans BTP, commerces de proximité, exploitations agricoles bressoises et PME tertiaires/industrielles connectées à Bourg-en-Bresse et à Viriat. Réseau de bus Rubis (ligne 3) et Rubis'Vélo desservent la commune.",
   distancesFr:
-    "Bourg-en-Bresse centre à 5 min. Gare Bourg-en-Bresse à 10 min (TGV Paris 2h). Lyon centre à 1h. Aéroport Lyon-Saint-Exupéry à 50 min.",
+    "Bourg-en-Bresse centre à 5 min. Gare de Bourg-en-Bresse à ~10 min (TGV Paris en 2h). Aérodrome de Bourg-Ceyzériat (Jasseron) à proximité. Lyon centre à ~1h, aéroport Lyon-Saint-Exupéry à ~50 min.",
   distancesEn:
-    "Bourg-en-Bresse centre à 5 min. Gare Bourg-en-Bresse à 10 min (TGV Paris 2h). Lyon centre à 1h. Aéroport Lyon-Saint-Exupéry à 50 min.",
+    "Bourg-en-Bresse centre à 5 min. Gare de Bourg-en-Bresse à ~10 min (TGV Paris en 2h). Aérodrome de Bourg-Ceyzériat (Jasseron) à proximité. Lyon centre à ~1h, aéroport Lyon-Saint-Exupéry à ~50 min.",
   topSectorsNaf: [
-    "PME tertiaires agglomération Bourg-en-Bresse",
-    "PME industrielles",
-    "Agriculture Bresse",
-    "TPE artisanat BTP",
-    "Commerce de proximité",
+    "TPE artisans BTP et travaux spécialisés",
+    "Commerce de proximité et restauration",
+    "Agriculture et élevage Bresse",
+    "PME tertiaires bassin de Bourg-en-Bresse",
+    "PME industrielles agglomération burgienne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Péronnas : diagnostic adapté aux PME tertiaires/industrielles Bresse, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Péronnas : diagnostic adapté aux PME tertiaires/industrielles Bresse, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Péronnas : diagnostic processus métiers TPE artisans BTP, commerces, exploitations agricoles et PME bressoises. Audit Flash dès 490 € HT, livrable sous 5 jours.",
+      en: "Audit IA à Péronnas : diagnostic processus métiers TPE artisans BTP, commerces, exploitations agricoles et PME bressoises. Audit Flash dès 490 € HT, livrable sous 5 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Péronnas : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes maîtrisent les outils déployés.",
-      en: "Interventions IA sur site à Péronnas : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes maîtrisent les outils déployés.",
+      fr: "Intervention IA sur site à Péronnas : automatisation devis, relances, classification photos élevage/cultures, traçabilité et workflows pour TPE/PME du bassin de Bourg-en-Bresse. Dès 590 € HT.",
+      en: "Intervention IA sur site à Péronnas : automatisation devis, relances, classification photos élevage/cultures, traçabilité et workflows pour TPE/PME du bassin de Bourg-en-Bresse. Dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémentation IA à Péronnas : agents conversationnels B2B, prédiction maintenance, classification photos élevage/cultures, automatisation workflow. Bresse.",
-      en: "Implémentation IA à Péronnas : agents conversationnels B2B, prédiction maintenance, classification photos élevage/cultures, automatisation workflow. Bresse.",
+      fr: "Implémentation IA à Péronnas : agents conversationnels B2B, maintenance prédictive, gestion exploitation et automatisation back-office pour PME tertiaires, industrielles et agricoles bressoises. Dès 990 € HT.",
+      en: "Implémentation IA à Péronnas : agents conversationnels B2B, maintenance prédictive, gestion exploitation et automatisation back-office pour PME tertiaires, industrielles et agricoles bressoises. Dès 990 € HT.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Péronnas : sessions dans votre bureau, exploitation, commerce ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants TPE/PME péronnassiens.",
-      en: "Coaching 1-to-1 à Péronnas : sessions dans votre bureau, exploitation, commerce ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants TPE/PME péronnassiens.",
+      fr: "Coaching 1-to-1 à Péronnas : sessions dans votre bureau, atelier, exploitation ou commerce, ou en visio, pour dirigeants TPE/PME et exploitants agricoles du bassin burgien. Dès 990 € HT.",
+      en: "Coaching 1-to-1 à Péronnas : sessions dans votre bureau, atelier, exploitation ou commerce, ou en visio, pour dirigeants TPE/PME et exploitants agricoles du bassin burgien. Dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Péronnas et agglomération Bourg-en-Bresse ?",
-      a: "Oui, Axion-IA intervient à Péronnas et toute l'agglomération burgienne (Bourg-en-Bresse à 5 min, Viriat, Saint-Denis-lès-Bourg). Consultants depuis Lyon (1h).",
+      q: "Axion-IA intervient-il à Péronnas et dans l'agglomération de Bourg-en-Bresse ?",
+      a: "Oui, nous intervenons à Péronnas et dans les communes voisines de Bourg-en-Bresse, Viriat, Saint-Denis-lès-Bourg, Buellas, Polliat, Montagnat et Ceyzériat. Consultants depuis Lyon (~1h) ou TGV Paris-Bourg (2h).",
     },
     {
-      q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
-      a: "Oui, agents conversationnels B2B, prédiction maintenance, automatisation workflow, classification documents.",
+      q: "Quels sont vos tarifs pour une intervention IA à Péronnas ?",
+      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Lyon ou Paris.",
     },
     {
-      q: "Accompagnez-vous les agriculteurs Bresse ?",
-      a: "Oui, classification photos élevage/cultures, traçabilité, automatisation gestion exploitation, vente directe.",
+      q: "Accompagnez-vous les exploitants agricoles bressois ?",
+      a: "Oui, classification photos élevage et cultures, traçabilité, automatisation de la gestion d'exploitation et vente directe sont des cas concrets pour les agriculteurs et éleveurs du bassin de Bourg-en-Bresse.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      q: "Quel délai pour une intervention sur site à Péronnas ?",
+      a: "Délai standard : 5 jours ouvrés après cadrage. Intervention rapide possible sous 48-72h en agglomération burgienne selon la disponibilité consultant Lyon.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (1h). TGV Paris gare Bourg 2h. Frais de mission en sus, grille tarifaire publique.",
+      q: "Comment Axion-IA assure-t-il la conformité RGPD à Péronnas ?",
+      a: "Hébergement UE, DPA contractuel, minimisation et anonymisation des données, revue conformité RGPD/AI Act à chaque livrable auprès des TPE/PME péronnassiennes et bressoises.",
+    },
+    {
+      q: "Travaillez-vous avec les artisans BTP et commerçants indépendants ?",
+      a: "Oui, formats TPE : audit ciblé un processus, intervention 1 journée, coaching 1-to-1 dirigeant. Code custom intégré à vos outils existants — pas de solution no-code générique.",
     },
   ],
 };

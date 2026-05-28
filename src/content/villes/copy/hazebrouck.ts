@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
+// MANUAL CORRECTION 2026-05-28 — anti-doorway HCU 2024 (sources factuelles Wikipédia).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,57 +7,67 @@ import type { VilleCopy } from "./types";
 
 export const HAZEBROUCK_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Hazebrouck, au cœur des Hauts-de-France, pour optimiser les opérations des entreprises locales. Avec des références comme Cap Digital et Inria, notre expertise nationale est à votre service pour transformer vos processus.",
+    "Hazebrouck (59, Nord) est une sous-préfecture de Flandre française d'environ 22 000 habitants, située à 35 km de Lille et Dunkerque, à 15 km de la frontière belge. Sa gare TGV (1h50 de Paris-Nord) en fait un nœud ferroviaire majeur du Nord-Pas-de-Calais. Tissu local : santé (Centre hospitalier), commerces de centre-ville, héritage textile reconverti en PME services. Axion-IA accompagne TPE artisans, commerçants et PME flamandes.",
   pitchEn:
-    "Axion-IA intervient à Hazebrouck, au cœur des Hauts-de-France, pour optimiser les opérations des entreprises locales. Avec des références comme Cap Digital et Inria, notre expertise nationale est à votre service pour transformer vos processus.",
+    "Hazebrouck (59, Nord) est une sous-préfecture de Flandre française d'environ 22 000 habitants, située à 35 km de Lille et Dunkerque, à 15 km de la frontière belge. Sa gare TGV (1h50 de Paris-Nord) en fait un nœud ferroviaire majeur du Nord-Pas-de-Calais. Tissu local : santé (Centre hospitalier), commerces de centre-ville, héritage textile reconverti en PME services. Axion-IA accompagne TPE artisans, commerçants et PME flamandes.",
   directAnswerFr:
-    "À Hazebrouck, Axion-IA propose des solutions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche se base sur des interventions sur site, avec des références comme Cap Digital et Inria, pour répondre aux besoins spécifiques des entreprises locales. Nous offrons des audits, interventions et formations pour améliorer vos opérations.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit Flash 590 € HT, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "À Hazebrouck, Axion-IA propose des solutions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche se base sur des interventions sur site, avec des références comme Cap Digital et Inria, pour répondre aux besoins spécifiques des entreprises locales. Nous offrons des audits, interventions et formations pour améliorer vos opérations.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit Flash 590 € HT, code custom, conformité RGPD intégrée.",
+  seoHook: "TPE & PME Flandre française",
   ecosystemFr:
-    "Hazebrouck, avec ses 2 000 établissements actifs, est un centre économique où le commerce de détail et les transports terrestres prédominent. Les entreprises locales bénéficient de la proximité de pôles comme Cap Digital et Inria pour stimuler l'innovation.",
+    "Hazebrouck est le 7e nœud ferroviaire du Nord-Pas-de-Calais et capitale économique du Houtland flamand. Le tissu mêle héritage textile reconverti en PME services, secteur santé porté par le Centre hospitalier d'Hazebrouck, commerce de centre-ville autour de l'église Saint-Éloi (clocher de 1512), agriculture flamande et logistique liée à la gare. Axes A25 et A26 à 15-20 km, frontière belge à 15 km : zone d'influence transfrontalière.",
   ecosystemEn:
-    "Hazebrouck, avec ses 2 000 établissements actifs, est un centre économique où le commerce de détail et les transports terrestres prédominent. Les entreprises locales bénéficient de la proximité de pôles comme Cap Digital et Inria pour stimuler l'innovation.",
+    "Hazebrouck est le 7e nœud ferroviaire du Nord-Pas-de-Calais et capitale économique du Houtland flamand. Le tissu mêle héritage textile reconverti en PME services, secteur santé porté par le Centre hospitalier d'Hazebrouck, commerce de centre-ville autour de l'église Saint-Éloi (clocher de 1512), agriculture flamande et logistique liée à la gare. Axes A25 et A26 à 15-20 km, frontière belge à 15 km : zone d'influence transfrontalière.",
   distancesFr:
-    "Hazebrouck est à 45 km de la Gare TGV Gare de Lille-Europe et à 55 km de l'Aéroport de Lille-Lesquin.",
+    "Lille à 35 km (40 min A25). Dunkerque à 35 km. Frontière belge à 15 km. Gare TGV Hazebrouck — Paris-Nord en 1h50. Aéroport Lille-Lesquin à 45 km.",
   distancesEn:
-    "Hazebrouck est à 45 km de la Gare TGV Gare de Lille-Europe et à 55 km de l'Aéroport de Lille-Lesquin.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Restauration", "Agriculture"],
+    "Lille à 35 km (40 min A25). Dunkerque à 35 km. Frontière belge à 15 km. Gare TGV Hazebrouck — Paris-Nord en 1h50. Aéroport Lille-Lesquin à 45 km.",
+  topSectorsNaf: [
+    "Commerce de centre-ville",
+    "Santé (Centre hospitalier d'Hazebrouck)",
+    "Services aux entreprises (héritage textile)",
+    "Agriculture & agroalimentaire flamands",
+    "Transport & logistique ferroviaire",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Hazebrouck pour identifier les leviers IA dans le commerce de détail — à partir de 490 € HT.",
-      en: "Réaliser un audit à Hazebrouck pour identifier les leviers IA dans le commerce de détail — à partir de 490 € HT.",
+      fr: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit Flash 590 € HT.",
+      en: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit Flash 590 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Hazebrouck pour automatiser les processus des transports terrestres — efficacité accrue et coûts réduits.",
-      en: "Intervenir à Hazebrouck pour automatiser les processus des transports terrestres — efficacité accrue et coûts réduits.",
+      fr: "Interventions IA sur site à Hazebrouck : ateliers adaptés à la PME services, au cabinet médical ou à l'artisan flamand. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Hazebrouck : ateliers adaptés à la PME services, au cabinet médical ou à l'artisan flamand. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Hazebrouck, optimisant la restauration et l'agriculture — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Hazebrouck, optimisant la restauration et l'agriculture — dès 990 € HT.",
+      fr: "Implémentation IA à Hazebrouck : classification documents, agents conversationnels, automatisation administrative, reporting et planning pour TPE-PME du Houtland.",
+      en: "Implémentation IA à Hazebrouck : classification documents, agents conversationnels, automatisation administrative, reporting et planning pour TPE-PME du Houtland.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Hazebrouck avec une session 1-to-1 — stratégie IA personnalisée, à partir de 990 € HT.",
-      en: "Accompagner un dirigeant à Hazebrouck avec une session 1-to-1 — stratégie IA personnalisée, à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Hazebrouck : sessions dirigeants TPE, gérants PME services, professionnels de santé, commerçants. Pédagogie 100 % cas réels.",
+      en: "Coaching 1-to-1 à Hazebrouck : sessions dirigeants TPE, gérants PME services, professionnels de santé, commerçants. Pédagogie 100 % cas réels.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Hazebrouck ?",
-      a: "À Hazebrouck, notre Audit Flash débute à 490 € HT. Pour une intervention, les tarifs commencent à 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Hazebrouck ?",
+      a: "Oui, Axion-IA intervient à Hazebrouck et dans le Houtland (Bailleul, Morbecque, Vieux-Berquin, Caëstre, Wallon-Cappel). Nos consultants se déplacent depuis Lille en 40 min via A25.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention IA à Hazebrouck ?",
-      a: "Nos interventions à Hazebrouck sont planifiées pour débuter dans les 5 jours ouvrés suivant la demande, selon la disponibilité de nos experts.",
+      q: "Quels sont les tarifs d'un audit IA à Hazebrouck ?",
+      a: "L'Audit Flash démarre à 590 € HT pour une TPE. Pour les PME services ou structures de santé, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics consultables.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Hazebrouck ?",
-      a: "Axion-IA s'assure que toutes les solutions IA déployées à Hazebrouck respectent les normes RGPD, en intégrant des audits de conformité dans nos processus.",
+      q: "Quels délais pour une intervention à Hazebrouck ?",
+      a: "Nous planifions les interventions à Hazebrouck sous 5 jours ouvrés après validation. Demi-journée découverte ou journée atelier selon le besoin.",
     },
     {
-      q: "Axion-IA peut-elle se déplacer dans les communes autour de Hazebrouck ?",
-      a: "Oui, nous intervenons également dans les communes voisines de Bailleul, Merville, Steenvoorde et Nieppe pour accompagner les entreprises locales.",
+      q: "Comment Axion-IA gère-t-il la conformité RGPD à Hazebrouck ?",
+      a: "Tous nos déploiements à Hazebrouck intègrent les exigences RGPD : minimisation, hébergement européen, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous à Hazebrouck ?",
+      a: "Nous accompagnons TPE artisans, commerçants du centre, professionnels de santé (en lien avec le Centre hospitalier), PME services issues de la reconversion textile, agriculture flamande et acteurs de la logistique ferroviaire.",
     },
   ],
 };

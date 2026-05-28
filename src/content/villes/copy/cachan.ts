@@ -1,63 +1,78 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024, Wikipedia-sourced facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const CACHAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Cachan, une ville dynamique proche de Paris, pour automatiser vos processus. Notre expertise s'étend à divers secteurs, y compris ceux présents à Cachan comme l'ingénierie et l'enseignement, en lien avec des pôles tels que Cap Digital.",
+    "Axion-IA accompagne les TPE et PME de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
   pitchEn:
-    "Axion-IA intervient à Cachan, une ville dynamique proche de Paris, pour automatiser vos processus. Notre expertise s'étend à divers secteurs, y compris ceux présents à Cachan comme l'ingénierie et l'enseignement, en lien avec des pôles tels que Cap Digital.",
+    "Axion-IA accompagne les TPE et PME de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
   directAnswerFr:
-    "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits et des interventions, avec une approche personnalisée pour chaque entreprise.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit Flash à 490 € HT, une Intervention Essentielle à 590 € HT ou un accompagnement un-à-un à 990 € HT. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   directAnswerEn:
-    "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits et des interventions, avec une approche personnalisée pour chaque entreprise.",
-  seoHook: "programmation informatique & ingénierie",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. Williams se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit Flash à 490 € HT, une Intervention Essentielle à 590 € HT ou un accompagnement un-à-un à 990 € HT. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+  seoHook: "ingénierie & services universitaires",
   ecosystemFr:
-    "Cachan, avec ses secteurs dominants comme la programmation informatique et l'ingénierie, bénéficie de la proximité de l'École normale supérieure Paris-Saclay et du dynamisme de Cap Digital.",
+    "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de TPE et PME locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
   ecosystemEn:
-    "Cachan, avec ses secteurs dominants comme la programmation informatique et l'ingénierie, bénéficie de la proximité de l'École normale supérieure Paris-Saclay et du dynamisme de Cap Digital.",
+    "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de TPE et PME locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
   distancesFr:
-    "Cachan est à 10 km de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant l'accès pour nos interventions.",
+    "Cachan se situe à 7,4 km au sud de Notre-Dame de Paris, à 15 minutes en RER B depuis la gare Arcueil-Cachan, à 9 km de l'aéroport de Paris-Orly et à 28 km de Paris-Charles-de-Gaulle.",
   distancesEn:
-    "Cachan est à 10 km de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant l'accès pour nos interventions.",
-  topSectorsNaf: ["Programmation informatique", "Ingénierie", "Enseignement", "Construction"],
+    "Cachan se situe à 7,4 km au sud de Notre-Dame de Paris, à 15 minutes en RER B depuis la gare Arcueil-Cachan, à 9 km de l'aéroport de Paris-Orly et à 28 km de Paris-Charles-de-Gaulle.",
+  topSectorsNaf: [
+    "Ingénierie et études techniques",
+    "Enseignement supérieur et recherche",
+    "Activités juridiques et comptables",
+    "Commerce de détail",
+    "Restauration",
+    "Construction",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Cachan pour identifier les opportunités IA dans vos processus — dès 490 € HT.",
-      en: "Réaliser un audit à Cachan pour identifier les opportunités IA dans vos processus — dès 490 € HT.",
+      fr: "Audit Flash IA à Cachan dès 490 € HT — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
+      en: "Audit Flash IA à Cachan dès 490 € HT — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
     },
     interventions: {
-      fr: "Intervenir à Cachan pour automatiser vos tâches administratives — intervention à partir de 590 € HT.",
-      en: "Intervenir à Cachan pour automatiser vos tâches administratives — intervention à partir de 590 € HT.",
+      fr: "Intervention Essentielle à Cachan dès 590 € HT — Williams se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
+      en: "Intervention Essentielle à Cachan dès 590 € HT — Williams se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Cachan, en lien avec l'École normale supérieure Paris-Saclay — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Cachan, en lien avec l'École normale supérieure Paris-Saclay — dès 990 € HT.",
+      fr: "Implémentation IA en code custom à Cachan dès 990 € HT — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
+      en: "Implémentation IA en code custom à Cachan dès 990 € HT — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Cachan avec des sessions 1-to-1 pour maîtriser l'IA — à partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Cachan avec des sessions 1-to-1 pour maîtriser l'IA — à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un dirigeant à Cachan dès 990 € HT — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
+      en: "Accompagnement un-à-un dirigeant à Cachan dès 990 € HT — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Cachan ?",
-      a: "Nos interventions à Cachan débutent à 590 € HT. Consultez nos tarifs publics pour plus de détails sur nos services.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Cachan ?",
+      a: "Nos interventions à Cachan débutent à 590 € HT pour une Intervention Essentielle sur site. L'Audit Flash 4 heures démarre à 490 € HT et l'accompagnement un-à-un dirigeant à 990 € HT. Tous nos tarifs sont publics et fermes.",
     },
     {
-      q: "Combien de temps pour une intervention à Cachan ?",
-      a: "Williams se déplace sur site à Cachan dans les 5 jours ouvrés suivant votre demande, selon la disponibilité.",
+      q: "Combien de temps faut-il pour intervenir à Cachan ?",
+      a: "Williams se déplace à Cachan dans un délai de 5 jours ouvrés après confirmation. La gare Arcueil-Cachan est à 15 minutes en RER B de Paris, ce qui permet une intervention demi-journée ou journée sans frais de déplacement.",
+    },
+    {
+      q: "Axion-IA intervient-elle dans les communes proches de Cachan ?",
+      a: "Oui, nous intervenons également dans les communes limitrophes : Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, ainsi que sur l'ensemble du Val-de-Marne et de l'Île-de-France.",
     },
     {
       q: "Comment Axion-IA assure-t-elle la conformité RGPD à Cachan ?",
-      a: "Nous intégrons les exigences RGPD dès la phase d'audit, garantissant que toutes les solutions IA mises en œuvre à Cachan respectent les réglementations en vigueur.",
+      a: "Toutes nos solutions sont développées en code custom avec hébergement Europe et chiffrement au repos. La conformité RGPD est intégrée dès l'audit : registre des traitements, minimisation des données, droit à l'effacement.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Cachan ?",
-      a: "Oui, nous offrons des sessions 1-to-1 pour dirigeants à partir de 990 € HT, adaptées aux besoins spécifiques des entreprises de Cachan.",
+      q: "Quels secteurs accompagnez-vous à Cachan ?",
+      a: "À Cachan, nous accompagnons en priorité les TPE et PME de l'ingénierie, des professions libérales (cabinets juridiques, comptables, médicaux), du commerce de proximité, de la restauration et les structures liées à l'écosystème ENS Paris-Saclay et ESTP.",
+    },
+    {
+      q: "Faites-vous du no-code à Cachan ?",
+      a: "Non. Axion-IA développe exclusivement en code custom (TypeScript, Python, intégrations API natives). Cette approche garantit la pérennité, la performance et la conformité RGPD de vos automatisations, sans dépendance à une plateforme tierce.",
     },
   ],
 };

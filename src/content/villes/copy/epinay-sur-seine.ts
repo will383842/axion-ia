@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024) — facts sourced from Wikipedia FR.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Épinay-sur-Seine, au cœur d'un écosystème comprenant Carrefour et SNCF, pour automatiser les processus administratifs et optimiser les opérations des entreprises locales.",
+    "Épinay-sur-Seine (93), commune de 52 833 habitants au nord-ouest de Paris, est intégrée à Plaine Commune et à la Métropole du Grand Paris. Desservie par les tramways T8 et T11, le RER C et la ligne H du Transilien, à proximité de l'A86 et de l'A15. Tissu de TPE commerçantes, PME de services, artisans BTP et activités historiques liées à la production audiovisuelle. Axion-IA accompagne ces structures dans leurs projets d'intelligence artificielle.",
   pitchEn:
-    "Axion-IA intervient à Épinay-sur-Seine, au cœur d'un écosystème comprenant Carrefour et SNCF, pour automatiser les processus administratifs et optimiser les opérations des entreprises locales.",
+    "Épinay-sur-Seine (93), commune de 52 833 habitants au nord-ouest de Paris, est intégrée à Plaine Commune et à la Métropole du Grand Paris. Desservie par les tramways T8 et T11, le RER C et la ligne H du Transilien, à proximité de l'A86 et de l'A15. Tissu de TPE commerçantes, PME de services, artisans BTP et activités historiques liées à la production audiovisuelle. Axion-IA accompagne ces structures dans leurs projets d'intelligence artificielle.",
   directAnswerFr:
-    "À Épinay-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, comme le commerce de détail et les transports terrestres. Notre équipe nationale se déplace pour réaliser des audits, des implémentations et des formations, garantissant un déploiement IA concret et adapté aux besoins locaux.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit Flash à partir de 490 € HT, interventions à partir de 590 € HT, sur tarifs publics.",
   directAnswerEn:
-    "À Épinay-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, comme le commerce de détail et les transports terrestres. Notre équipe nationale se déplace pour réaliser des audits, des implémentations et des formations, garantissant un déploiement IA concret et adapté aux besoins locaux.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit Flash à partir de 490 € HT, interventions à partir de 590 € HT, sur tarifs publics.",
+  seoHook: "TPE & PME Plaine Commune nord-ouest 93",
   ecosystemFr:
-    "Épinay-sur-Seine, avec ses 3 000 établissements actifs, est un pôle économique où se côtoient des entreprises comme Carrefour et SNCF. Le tissu économique local est renforcé par des secteurs dominants tels que le commerce de détail et la construction.",
+    "Épinay-sur-Seine accueille des activités historiques de cinéma et télévision avec les Laboratoires Éclair (post-production, environ 400 salariés) et conserve une présence industrielle ancienne (Verreries de la gare créées en 1913). La commune fait partie de l'EPT Plaine Commune, qui structure le développement économique du territoire avec Saint-Denis et Villetaneuse. Tissu local : commerce de détail, restauration, services à la personne, BTP et logistique de proximité.",
   ecosystemEn:
-    "Épinay-sur-Seine, avec ses 3 000 établissements actifs, est un pôle économique où se côtoient des entreprises comme Carrefour et SNCF. Le tissu économique local est renforcé par des secteurs dominants tels que le commerce de détail et la construction.",
+    "Épinay-sur-Seine accueille des activités historiques de cinéma et télévision avec les Laboratoires Éclair (post-production, environ 400 salariés) et conserve une présence industrielle ancienne (Verreries de la gare créées en 1913). La commune fait partie de l'EPT Plaine Commune, qui structure le développement économique du territoire avec Saint-Denis et Villetaneuse. Tissu local : commerce de détail, restauration, services à la personne, BTP et logistique de proximité.",
   distancesFr:
-    "Épinay-sur-Seine est située à 10 km de la Gare de Paris-Nord et à 20 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Épinay-sur-Seine est située à environ 10 km au nord de Paris, à proximité immédiate de l'A86 (sortie 5.1) et de l'A15 (sortie 2). Communes limitrophes : Saint-Denis, Villetaneuse, L'Île-Saint-Denis (93), Argenteuil, Saint-Gratien, Enghien-les-Bains, Deuil-la-Barre, Montmagny (95) et Gennevilliers (92). Aéroport Paris-Charles-de-Gaulle à environ 20 km.",
   distancesEn:
-    "Épinay-sur-Seine est située à 10 km de la Gare de Paris-Nord et à 20 km de l'Aéroport de Paris-Charles-de-Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Épinay-sur-Seine est située à environ 10 km au nord de Paris, à proximité immédiate de l'A86 (sortie 5.1) et de l'A15 (sortie 2). Communes limitrophes : Saint-Denis, Villetaneuse, L'Île-Saint-Denis (93), Argenteuil, Saint-Gratien, Enghien-les-Bains, Deuil-la-Barre, Montmagny (95) et Gennevilliers (92). Aéroport Paris-Charles-de-Gaulle à environ 20 km.",
+  topSectorsNaf: [
+    "Commerce de détail & restauration",
+    "Construction & artisanat BTP",
+    "Production audiovisuelle & post-production",
+    "Services à la personne",
+    "Logistique & transports terrestres",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Épinay-sur-Seine pour identifier les processus automatisables — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Épinay-sur-Seine pour identifier les processus automatisables — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit Flash 490 € HT, ROI chiffré.",
+      en: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Intervenir à Épinay-sur-Seine pour optimiser les opérations — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Épinay-sur-Seine pour optimiser les opérations — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Intervention Essentielle dès 590 € HT.",
+      en: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Épinay-sur-Seine pour automatiser les tâches — Implémentation dès 990 € HT.",
-      en: "Implémenter des solutions IA à Épinay-sur-Seine pour automatiser les tâches — Implémentation dès 990 € HT.",
+      fr: "Implémentation IA à Épinay-sur-Seine : code custom Python/TypeScript pour PME locales, intégration outils métier BTP, automatisation back-office. Pas de no-code, code source livré.",
+      en: "Implémentation IA à Épinay-sur-Seine : code custom Python/TypeScript pour PME locales, intégration outils métier BTP, automatisation back-office. Pas de no-code, code source livré.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Épinay-sur-Seine avec des sessions 1-to-1 — À partir de 990 € HT.",
-      en: "Accompagner les dirigeants à Épinay-sur-Seine avec des sessions 1-to-1 — À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Épinay-sur-Seine : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, gérants de commerce et professions libérales du territoire Plaine Commune.",
+      en: "Coaching 1-to-1 à Épinay-sur-Seine : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, gérants de commerce et professions libérales du territoire Plaine Commune.",
     },
   },
   faqGeolocalisee: [
     {
+      q: "Axion-IA intervient-il à Épinay-sur-Seine ?",
+      a: "Oui, nous intervenons à Épinay-sur-Seine et dans tout le territoire de Plaine Commune (Saint-Denis, Villetaneuse, L'Île-Saint-Denis) ainsi que les communes limitrophes du Val-d'Oise (Argenteuil, Saint-Gratien, Enghien-les-Bains).",
+    },
+    {
       q: "Quels sont les tarifs pour une intervention à Épinay-sur-Seine ?",
-      a: "Les tarifs pour une intervention à Épinay-sur-Seine commencent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      a: "Audit Flash à partir de 490 € HT, Intervention Essentielle à partir de 590 € HT. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention sur site à Épinay-sur-Seine ?",
-      a: "Williams se déplace sur site à Épinay-sur-Seine dans un délai de 5 jours ouvrés après la validation de la demande.",
+      q: "Quels secteurs locaux accompagnez-vous à Épinay-sur-Seine ?",
+      a: "Nous accompagnons en priorité les TPE de commerce et restauration, les PME du BTP et artisans, les structures audiovisuelles présentes sur la commune, ainsi que les professions libérales et services à la personne.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Épinay-sur-Seine ?",
-      a: "Axion-IA garantit la conformité RGPD en intégrant des protocoles de sécurité et de confidentialité lors de chaque intervention à Épinay-sur-Seine.",
+      q: "Quels délais pour une intervention sur site à Épinay-sur-Seine ?",
+      a: "Nos consultants se déplacent sur site sous 5 jours ouvrés après validation. Accès direct depuis Paris par le RER C, le tramway T8 ou T11, ou par l'A86 et l'A15.",
     },
     {
-      q: "Proposez-vous des audits spécifiques pour les entreprises de transport à Épinay-sur-Seine ?",
-      a: "Oui, nous réalisons des audits adaptés aux entreprises de transport à Épinay-sur-Seine, en tenant compte des spécificités du secteur.",
+      q: "Comment Axion-IA assure la conformité RGPD à Épinay-sur-Seine ?",
+      a: "Nous intégrons systématiquement les exigences RGPD et AI Act : hébergement UE, contrats de sous-traitance, DPIA si nécessaire, droit à l'effacement opérationnel. Aucune donnée client envoyée hors UE sans clause explicite.",
+    },
+    {
+      q: "Proposez-vous des formations IA pour les artisans BTP à Épinay ?",
+      a: "Oui, formats demi-journée ou journée sur site adaptés aux artisans BTP : automatisation devis, suivi de chantier, relances client. Coaching 1-to-1 disponible pour les gérants.",
     },
   ],
 };

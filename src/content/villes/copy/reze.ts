@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manual fix 2026-05-28 — anti-doorway HCU 2024 (Wikipedia factual rewrite, removed E.Leclerc/Carrefour brand hallucinations).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const REZE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Rezé pour optimiser les processus des entreprises locales. Avec des acteurs tels qu'E.Leclerc et Carrefour, notre expertise IA s'adapte aux besoins spécifiques du tissu économique de la région.",
+    "Axion-IA accompagne les TPE et PME de Rezé, 4ᵉ commune la plus peuplée de Loire-Atlantique (43 556 habitants) en Pays de la Loire, intégrée à Nantes Métropole. Située rive sud de la Loire à 3 km du centre de Nantes, entre la Sèvre Nantaise et l'Ilette, Rezé concentre une activité économique soutenue autour de la zone Atout-Sud (commerciale et industrielle), la ZAC de la Jaguère et la ZAC de la Brosse qui accueille le Marché d'Intérêt National depuis 2019. Notre cabinet IA développe du code custom pour les commerces, services et structures industrielles locales.",
   pitchEn:
-    "Axion-IA intervient à Rezé pour optimiser les processus des entreprises locales. Avec des acteurs tels qu'E.Leclerc et Carrefour, notre expertise IA s'adapte aux besoins spécifiques du tissu économique de la région.",
+    "Axion-IA accompagne les TPE et PME de Rezé, 4ᵉ commune la plus peuplée de Loire-Atlantique (43 556 habitants) en Pays de la Loire, intégrée à Nantes Métropole. Située rive sud de la Loire à 3 km du centre de Nantes, entre la Sèvre Nantaise et l'Ilette, Rezé concentre une activité économique soutenue autour de la zone Atout-Sud (commerciale et industrielle), la ZAC de la Jaguère et la ZAC de la Brosse qui accueille le Marché d'Intérêt National depuis 2019. Notre cabinet IA développe du code custom pour les commerces, services et structures industrielles locales.",
   directAnswerFr:
-    "À Rezé, Axion-IA propose des solutions IA adaptées aux entreprises locales. En collaborant avec des secteurs comme le commerce de détail et la construction, nous aidons nos clients à automatiser leurs processus. La proximité de la Zone d'Activités Atout Sud et de grands groupes tels qu'E.Leclerc et Carrefour renforce l'attractivité de nos interventions.",
+    "À Rezé, Axion-IA propose aux TPE et PME des audits IA flash dès 490 € HT, des interventions terrain dès 590 € HT et des implémentations code custom dès 990 € HT. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
   directAnswerEn:
-    "À Rezé, Axion-IA propose des solutions IA adaptées aux entreprises locales. En collaborant avec des secteurs comme le commerce de détail et la construction, nous aidons nos clients à automatiser leurs processus. La proximité de la Zone d'Activités Atout Sud et de grands groupes tels qu'E.Leclerc et Carrefour renforce l'attractivité de nos interventions.",
-  seoHook: "commerce détail & construction",
+    "À Rezé, Axion-IA propose aux TPE et PME des audits IA flash dès 490 € HT, des interventions terrain dès 590 € HT et des implémentations code custom dès 990 € HT. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
+  seoHook: "Atout-Sud, MIN & rive sud Nantes Métropole",
   ecosystemFr:
-    "Rezé bénéficie de la proximité de la Zone d'Activités Atout Sud et de grands groupes comme E.Leclerc. Ces atouts économiques offrent un cadre propice à l'innovation et à l'optimisation des processus grâce à l'IA.",
+    "Rezé, intégrée à Nantes Métropole (24 communes, 660 000 habitants) et à l'aire urbaine de Nantes (700 000+ habitants), concentre son activité économique sur trois pôles structurants : la zone Atout-Sud (commerciale et industrielle entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse qui héberge le Marché d'Intérêt National depuis mars 2019, et la ZAC de la Jaguère. Le tissu local est dominé par les TPE et PME : commerce de détail, logistique agroalimentaire (MIN), construction, restauration, services aux entreprises et transports terrestres.",
   ecosystemEn:
-    "Rezé bénéficie de la proximité de la Zone d'Activités Atout Sud et de grands groupes comme E.Leclerc. Ces atouts économiques offrent un cadre propice à l'innovation et à l'optimisation des processus grâce à l'IA.",
+    "Rezé, intégrée à Nantes Métropole (24 communes, 660 000 habitants) et à l'aire urbaine de Nantes (700 000+ habitants), concentre son activité économique sur trois pôles structurants : la zone Atout-Sud (commerciale et industrielle entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse qui héberge le Marché d'Intérêt National depuis mars 2019, et la ZAC de la Jaguère. Le tissu local est dominé par les TPE et PME : commerce de détail, logistique agroalimentaire (MIN), construction, restauration, services aux entreprises et transports terrestres.",
   distancesFr:
-    "Rezé est situé à 5 km de la Gare de Nantes et à 8 km de l'Aéroport Nantes Atlantique.",
+    "Rezé est à ~3 km au sud de Nantes (gare TGV Nantes), ~6 km de l'aéroport Nantes-Atlantique (Bouguenais). Desservie par 2 lignes de tramway, 5 lignes de bus, le Navibus fluvial et la gare TER Rezé-Pont-Rousseau (lignes Pornic et Saint-Gilles-Croix-de-Vie).",
   distancesEn:
-    "Rezé est situé à 5 km de la Gare de Nantes et à 8 km de l'Aéroport Nantes Atlantique.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transports terrestres"],
+    "Rezé est à ~3 km au sud de Nantes (gare TGV Nantes), ~6 km de l'aéroport Nantes-Atlantique (Bouguenais). Desservie par 2 lignes de tramway, 5 lignes de bus, le Navibus fluvial et la gare TER Rezé-Pont-Rousseau (lignes Pornic et Saint-Gilles-Croix-de-Vie).",
+  topSectorsNaf: [
+    "Commerce de détail (zone Atout-Sud)",
+    "Logistique agroalimentaire (MIN ZAC de la Brosse)",
+    "Construction & artisanat",
+    "Restauration & services",
+    "Transports terrestres",
+    "Services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Rezé avec Axion-IA permet d'identifier les processus à automatiser pour les entreprises comme celles de la Zone d'Activités Atout Sud.",
-      en: "Réaliser un audit à Rezé avec Axion-IA permet d'identifier les processus à automatiser pour les entreprises comme celles de la Zone d'Activités Atout Sud.",
+      fr: "Audit IA flash 4h à Rezé dès 490 € HT — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
+      en: "Audit IA flash 4h à Rezé dès 490 € HT — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
     },
     interventions: {
-      fr: "Intervenir à Rezé pour automatiser les tâches administratives des entreprises telles qu'E.Leclerc, augmentant ainsi l'efficacité opérationnelle.",
-      en: "Intervenir à Rezé pour automatiser les tâches administratives des entreprises telles qu'E.Leclerc, augmentant ainsi l'efficacité opérationnelle.",
+      fr: "Intervention sur site à Rezé dès 590 € HT — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
+      en: "Intervention sur site à Rezé dès 590 € HT — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Rezé, notamment dans le secteur du commerce de détail, pour optimiser les chaînes d'approvisionnement.",
-      en: "Implémenter des solutions IA à Rezé, notamment dans le secteur du commerce de détail, pour optimiser les chaînes d'approvisionnement.",
+      fr: "Implémentation code custom à Rezé dès 990 € HT — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
+      en: "Implémentation code custom à Rezé dès 990 € HT — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Rezé pour intégrer l'IA dans leurs stratégies, avec des conseils adaptés aux réalités locales.",
-      en: "Accompagner en un-à-un les dirigeants de Rezé pour intégrer l'IA dans leurs stratégies, avec des conseils adaptés aux réalités locales.",
+      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès 990 € HT — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
+      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès 990 € HT — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Rezé ?",
-      a: "Les interventions IA à Rezé commencent à partir de 590 € HT. Nos tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Rezé ?",
+      a: "Audit Flash 4h dès 490 € HT, intervention sur site dès 590 € HT, implémentation code custom dès 990 € HT. Grille publique disponible sur notre page Pricing, sans frais cachés ni abonnement imposé.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Rezé ?",
-      a: "Notre équipe se déplace directement sur site à Rezé, assurant une intervention rapide et efficace, généralement dans les 5 jours ouvrés suivant la demande.",
+      q: "Vos consultants se déplacent-ils sur Atout-Sud, le MIN et les communes voisines ?",
+      a: "Oui. Nous intervenons sur la zone Atout-Sud (Trentemoult / Pont-Rousseau), la ZAC de la Brosse (Marché d'Intérêt National), la ZAC de la Jaguère, et nous déplaçons aussi à Nantes, Vertou, Les Sorinières, Pont-Saint-Martin et Bouguenais.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Rezé ?",
-      a: "Les secteurs du commerce de détail, de la construction et de la restauration à Rezé bénéficient particulièrement de l'IA pour optimiser leurs opérations et réduire les coûts.",
+      q: "Quels délais pour démarrer un projet IA à Rezé ?",
+      a: "Audit Flash réalisable sous 5 jours ouvrés. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon le périmètre cadré lors de l'audit initial.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Rezé ?",
-      a: "Axion-IA veille à ce que toutes les solutions IA mises en œuvre à Rezé respectent strictement le RGPD, en assurant la protection des données personnelles de nos clients.",
+      a: "Nous livrons exclusivement du code custom hébergé en France/UE, pas de no-code envoyant les données à des API étrangères. DPA signé, registre des traitements fourni, conformité RGPD et AI Act 2026.",
+    },
+    {
+      q: "Quels secteurs rezéens bénéficient le plus de l'IA ?",
+      a: "Le commerce de détail (Atout-Sud, gestion stocks et fidélité), la logistique agroalimentaire du MIN (suivi flux, traçabilité), la construction (devis automatisés), la restauration (planning, réservations) et les transporteurs (optimisation tournées).",
+    },
+    {
+      q: "Travaillez-vous avec les TPE de Rezé ou uniquement les PME ?",
+      a: "Axion-IA cible prioritairement les TPE (1-9 salariés), puis les PME (10-249 salariés) de Rezé et Nantes Métropole. Les ETI restent l'exception. Notre forfait 590 € HT est calibré pour artisans, commerçants et petites structures de services.",
     },
   ],
 };

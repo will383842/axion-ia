@@ -7,61 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const ELANCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Élancourt, une ville reconnue pour ses secteurs de fabrication électronique et programmation informatique. Notre cabinet se déplace pour accompagner les entreprises locales dans leur transition vers l'IA, avec des services adaptés à chaque besoin.",
+    "Axion-IA accompagne les TPE et PME d'Élancourt, ville de 26 365 habitants au cœur de Saint-Quentin-en-Yvelines à 29,5 km à l'ouest de Paris. Nous intervenons auprès des sous-traitants défense et aérospatial du quartier de la Clef de Saint-Pierre (Thales/ex-Thomson-CSF, CRMA, Fenwick, Bayer, Matra, Kawasaki), mais aussi auprès des PME des Yvelines en commerce, services et artisanat qui souhaitent automatiser leurs processus métier.",
   pitchEn:
-    "Axion-IA intervient à Élancourt, une ville reconnue pour ses secteurs de fabrication électronique et programmation informatique. Notre cabinet se déplace pour accompagner les entreprises locales dans leur transition vers l'IA, avec des services adaptés à chaque besoin.",
+    "Axion-IA accompagne les TPE et PME d'Élancourt, ville de 26 365 habitants au cœur de Saint-Quentin-en-Yvelines à 29,5 km à l'ouest de Paris. Nous intervenons auprès des sous-traitants défense et aérospatial du quartier de la Clef de Saint-Pierre (Thales/ex-Thomson-CSF, CRMA, Fenwick, Bayer, Matra, Kawasaki), mais aussi auprès des PME des Yvelines en commerce, services et artisanat qui souhaitent automatiser leurs processus métier.",
   directAnswerFr:
-    "Élancourt, située en Île-de-France, est un pôle industriel avec Thales et le Parc d'activités de la Clef de Saint-Pierre. Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, en s'appuyant sur notre expertise nationale. Nos services incluent audit, implémentation et formations personnalisées pour répondre aux besoins spécifiques des entreprises élancourtoises.",
+    "Élancourt fait partie de l'agglomération de Saint-Quentin-en-Yvelines et concentre un pôle industriel défense et aérospatial autour du quartier de la Clef de Saint-Pierre, avec notamment un bâtiment Thales/Airbus Defence and Space de 80 000 m². Axion-IA intervient sur site auprès des TPE/PME élancourtoises et de leurs sous-traitants. Nos audits démarrent à 490 € HT, nos interventions à 590 € HT, nos implémentations à 990 € HT. Code source custom, conformité RGPD et secret défense quand le contexte l'exige.",
   directAnswerEn:
-    "Élancourt, située en Île-de-France, est un pôle industriel avec Thales et le Parc d'activités de la Clef de Saint-Pierre. Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, en s'appuyant sur notre expertise nationale. Nos services incluent audit, implémentation et formations personnalisées pour répondre aux besoins spécifiques des entreprises élancourtoises.",
+    "Élancourt fait partie de l'agglomération de Saint-Quentin-en-Yvelines et concentre un pôle industriel défense et aérospatial autour du quartier de la Clef de Saint-Pierre, avec notamment un bâtiment Thales/Airbus Defence and Space de 80 000 m². Axion-IA intervient sur site auprès des TPE/PME élancourtoises et de leurs sous-traitants. Nos audits démarrent à 490 € HT, nos interventions à 590 € HT, nos implémentations à 990 € HT. Code source custom, conformité RGPD et secret défense quand le contexte l'exige.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
-    "Le tissu économique d'Élancourt est marqué par la présence de Thales et le pôle Systematic Paris-Region. Ces entités renforcent la position de la ville dans les secteurs de la fabrication électronique et de la recherche-développement scientifique.",
+    "Le tissu économique d'Élancourt est structuré autour du quartier de la Clef de Saint-Pierre, qui héberge le bâtiment historique de Thomson-CSF (aujourd'hui Thales / Airbus Defence and Space) de 80 000 m², complété par CRMA, Fenwick, Bayer, Matra et Kawasaki. La ville a connu une croissance massive après 1970 avec sa désignation au sein de la ville nouvelle de Saint-Quentin-en-Yvelines, passant de 598 habitants au début du XXe siècle à plus de 26 000 aujourd'hui. Autour de ces grands donneurs d'ordres gravite un écosystème dense de sous-traitants industriels et de services.",
   ecosystemEn:
-    "Le tissu économique d'Élancourt est marqué par la présence de Thales et le pôle Systematic Paris-Region. Ces entités renforcent la position de la ville dans les secteurs de la fabrication électronique et de la recherche-développement scientifique.",
+    "Le tissu économique d'Élancourt est structuré autour du quartier de la Clef de Saint-Pierre, qui héberge le bâtiment historique de Thomson-CSF (aujourd'hui Thales / Airbus Defence and Space) de 80 000 m², complété par CRMA, Fenwick, Bayer, Matra et Kawasaki. La ville a connu une croissance massive après 1970 avec sa désignation au sein de la ville nouvelle de Saint-Quentin-en-Yvelines, passant de 598 habitants au début du XXe siècle à plus de 26 000 aujourd'hui. Autour de ces grands donneurs d'ordres gravite un écosystème dense de sous-traitants industriels et de services.",
   distancesFr:
-    "Élancourt est située à 30 km de la Gare TGV de Massy et à 40 km de l'Aéroport de Paris-Orly.",
+    "Élancourt est située à 29,5 km à l'ouest de Paris et à 16 km à l'ouest de Versailles. Les gares les plus proches sont celles de La Verrière et de Trappes (Transilien N et U). Accès routier via la RN12, la RN10 et la RD912. L'aéroport de Paris-Orly est à environ 40 km.",
   distancesEn:
-    "Élancourt est située à 30 km de la Gare TGV de Massy et à 40 km de l'Aéroport de Paris-Orly.",
+    "Élancourt est située à 29,5 km à l'ouest de Paris et à 16 km à l'ouest de Versailles. Les gares les plus proches sont celles de La Verrière et de Trappes (Transilien N et U). Accès routier via la RN12, la RN10 et la RD912. L'aéroport de Paris-Orly est à environ 40 km.",
   topSectorsNaf: [
+    "Industrie de la défense et aérospatial",
     "Fabrication électronique",
     "Programmation informatique",
     "Recherche scientifique",
+    "Sous-traitance industrielle",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Élancourt, notamment pour les entreprises du Parc d'activités de la Clef de Saint-Pierre — identifier les processus automatisables.",
-      en: "Réaliser un audit à Élancourt, notamment pour les entreprises du Parc d'activités de la Clef de Saint-Pierre — identifier les processus automatisables.",
+      fr: "Réaliser un audit IA à Élancourt — particulièrement pertinent pour les sous-traitants défense du quartier de la Clef de Saint-Pierre — Audit Flash dès 490 € HT.",
+      en: "Réaliser un audit IA à Élancourt — particulièrement pertinent pour les sous-traitants défense du quartier de la Clef de Saint-Pierre — Audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Élancourt pour les entreprises comme Thales — automatiser les tâches administratives et réduire les coûts opérationnels.",
-      en: "Intervenir à Élancourt pour les entreprises comme Thales — automatiser les tâches administratives et réduire les coûts opérationnels.",
+      fr: "Intervenir à Élancourt pour automatiser les flux administratifs des PME industrielles et fournisseurs Thales — Intervention Essentielle dès 590 € HT.",
+      en: "Intervenir à Élancourt pour automatiser les flux administratifs des PME industrielles et fournisseurs Thales — Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Élancourt — intégrer l'IA dans les systèmes existants pour optimiser la production.",
-      en: "Implémenter des solutions IA à Élancourt — intégrer l'IA dans les systèmes existants pour optimiser la production.",
+      fr: "Implémenter des solutions IA en code source à Élancourt — intégration ERP/MES pour la fabrication électronique et l'aérospatial — dès 990 € HT.",
+      en: "Implémenter des solutions IA en code source à Élancourt — intégration ERP/MES pour la fabrication électronique et l'aérospatial — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants d'Élancourt — formation personnalisée pour une adoption rapide de l'IA.",
-      en: "Accompagner en un-à-un les dirigeants d'Élancourt — formation personnalisée pour une adoption rapide de l'IA.",
+      fr: "Accompagner les dirigeants TPE/PME d'Élancourt — sessions 1-to-1 sur l'IA opérationnelle — à partir de 990 € HT.",
+      en: "Accompagner les dirigeants TPE/PME d'Élancourt — sessions 1-to-1 sur l'IA opérationnelle — à partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Élancourt ?",
-      a: "Nos audits IA à Élancourt commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Élancourt ?",
+      a: "Nos prestations à Élancourt démarrent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une Intervention Essentielle et 990 € HT pour une implémentation IA complète. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Élancourt ?",
-      a: "Nous nous déplaçons directement sur site à Élancourt pour réaliser des interventions personnalisées, adaptées aux besoins spécifiques de chaque entreprise.",
+      q: "Sous quel délai Axion-IA se déplace-t-il à Élancourt ?",
+      a: "Nous intervenons sur site à Élancourt dans un délai de 5 jours ouvrés après contractualisation, avec accès via la RN12 ou les gares de La Verrière et Trappes.",
     },
     {
-      q: "Quels délais pour une intervention IA à Élancourt ?",
-      a: "Williams se déplace à Élancourt dans un délai de 5 jours ouvrés pour débuter les interventions IA sur site.",
+      q: "Axion-IA couvre-t-il les communes voisines d'Élancourt ?",
+      a: "Oui, nous intervenons également à Plaisir, Trappes, Le Mesnil-Saint-Denis, La Verrière, Maurepas et Jouars-Pontchartrain, ainsi qu'à Versailles et plus largement sur Saint-Quentin-en-Yvelines.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Élancourt ?",
-      a: "Lors de nos interventions à Élancourt, nous garantissons que toutes les solutions IA mises en place respectent les normes RGPD en vigueur.",
+      q: "Travaillez-vous avec les sous-traitants défense d'Élancourt ?",
+      a: "Oui, nous accompagnons les TPE et PME du quartier de la Clef de Saint-Pierre qui travaillent pour Thales, Airbus Defence and Space ou Matra. Nous livrons du code source auditable, hébergé en France, et signons NDA / clauses de confidentialité renforcées.",
+    },
+    {
+      q: "Vos solutions IA sont-elles conformes RGPD à Élancourt ?",
+      a: "Oui, toutes nos implémentations respectent le RGPD et, lorsque le contexte industriel l'exige, les exigences de la défense (hébergement souverain, code source livré au client, traçabilité).",
+    },
+    {
+      q: "Proposez-vous des formations IA pour dirigeants à Élancourt ?",
+      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants élancourtois à partir de 990 € HT, ainsi que des formations collectives sur site adaptées aux équipes industrielles et tertiaires.",
     },
   ],
 };

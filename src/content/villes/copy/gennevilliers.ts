@@ -1,67 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Hand-corrected 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factual rewrite).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const GENNEVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Gennevilliers, une ville stratégique avec des entreprises comme Thales et Safran, pour optimiser les processus grâce à l'IA. Notre équipe nationale se déplace sur site pour des solutions concrètes et mesurables.",
+    "Axion-IA accompagne les TPE et PME de Gennevilliers (50 979 habitants, Hauts-de-Seine), commune située à 2,1 km au nord-ouest de Paris. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, transporteurs et industriels installés autour du port de Gennevilliers — premier port fluvial d'Île-de-France et premier employeur portuaire de la commune.",
   pitchEn:
-    "Axion-IA intervient à Gennevilliers, une ville stratégique avec des entreprises comme Thales et Safran, pour optimiser les processus grâce à l'IA. Notre équipe nationale se déplace sur site pour des solutions concrètes et mesurables.",
+    "Axion-IA accompagne les TPE et PME de Gennevilliers (50 979 habitants, Hauts-de-Seine), commune située à 2,1 km au nord-ouest de Paris. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, transporteurs et industriels installés autour du port de Gennevilliers — premier port fluvial d'Île-de-France et premier employeur portuaire de la commune.",
   directAnswerFr:
-    "Gennevilliers, avec ses 5 000 établissements actifs, est un hub industriel clé en Île-de-France. Les grands groupes comme TotalEnergies et Safran y sont implantés, offrant un contexte propice à l'optimisation des processus via l'IA. Axion-IA se déplace pour accompagner ces entreprises dans leur transformation numérique.",
+    "Axion-IA se déplace à Gennevilliers (92230) pour auditer et automatiser les flux des TPE et PME locales : transport, négoce, BTP, industrie. La commune concentre 8 000 emplois directs autour du port fluvial (51 ha de voies d'eau, 220 ha de zone industrielle, 272 ha de zone portuaire) et bénéficie d'une desserte exceptionnelle : RER C, métro 13 (Gabriel Péri, Les Agnettes, Les Courtilles), tramway T1, autoroutes A15 et A86. Audit Flash dès 490 € HT, interventions dès 590 € HT.",
   directAnswerEn:
-    "Gennevilliers, avec ses 5 000 établissements actifs, est un hub industriel clé en Île-de-France. Les grands groupes comme TotalEnergies et Safran y sont implantés, offrant un contexte propice à l'optimisation des processus via l'IA. Axion-IA se déplace pour accompagner ces entreprises dans leur transformation numérique.",
-  seoHook: "transports terrestres & commerce gros",
+    "Axion-IA se déplace à Gennevilliers (92230) pour auditer et automatiser les flux des TPE et PME locales : transport, négoce, BTP, industrie. La commune concentre 8 000 emplois directs autour du port fluvial (51 ha de voies d'eau, 220 ha de zone industrielle, 272 ha de zone portuaire) et bénéficie d'une desserte exceptionnelle : RER C, métro 13 (Gabriel Péri, Les Agnettes, Les Courtilles), tramway T1, autoroutes A15 et A86. Audit Flash dès 490 € HT, interventions dès 590 € HT.",
+  seoHook: "logistique fluviale, négoce & industrie",
   ecosystemFr:
-    "Le Port de Gennevilliers et la présence de Thales illustrent le dynamisme économique local. Axion-IA s'inscrit dans cet environnement pour proposer des solutions IA adaptées aux besoins des entreprises du secteur.",
+    "Gennevilliers est structurée autour du port industriel de Gennevilliers (premier port intérieur d'Île-de-France) qui accueille transporteurs, négociants en matériaux, recycleurs et logisticiens. L'héritage industriel — Gnome et Rhône, Chausson, Chenard et Walcker, Carbone Lorraine, Aciéries Delachaux — a laissé un tissu dense de PME mécaniques, métallurgiques et de sous-traitance. La proximité immédiate de Paris et l'accès direct aux autoroutes A15/A86 en font un nœud logistique stratégique pour les TPE du nord francilien.",
   ecosystemEn:
-    "Le Port de Gennevilliers et la présence de Thales illustrent le dynamisme économique local. Axion-IA s'inscrit dans cet environnement pour proposer des solutions IA adaptées aux besoins des entreprises du secteur.",
+    "Gennevilliers est structurée autour du port industriel de Gennevilliers (premier port intérieur d'Île-de-France) qui accueille transporteurs, négociants en matériaux, recycleurs et logisticiens. L'héritage industriel — Gnome et Rhône, Chausson, Chenard et Walcker, Carbone Lorraine, Aciéries Delachaux — a laissé un tissu dense de PME mécaniques, métallurgiques et de sous-traitance. La proximité immédiate de Paris et l'accès direct aux autoroutes A15/A86 en font un nœud logistique stratégique pour les TPE du nord francilien.",
   distancesFr:
-    "Gennevilliers est située à 10 km de la Gare de Paris-Saint-Lazare et à 25 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Gennevilliers est limitrophe d'Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Épinay-sur-Seine, Saint-Ouen, L'Île-Saint-Denis et Argenteuil. Le centre de Paris est à 2,1 km, la gare Saint-Lazare accessible en 15 min via le RER C et l'aéroport Paris-CDG à 25 km par l'A86.",
   distancesEn:
-    "Gennevilliers est située à 10 km de la Gare de Paris-Saint-Lazare et à 25 km de l'Aéroport de Paris-Charles-de-Gaulle.",
-  topSectorsNaf: ["Transports terrestres", "Commerce de gros", "Construction", "Entreposage"],
+    "Gennevilliers est limitrophe d'Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Épinay-sur-Seine, Saint-Ouen, L'Île-Saint-Denis et Argenteuil. Le centre de Paris est à 2,1 km, la gare Saint-Lazare accessible en 15 min via le RER C et l'aéroport Paris-CDG à 25 km par l'A86.",
+  topSectorsNaf: [
+    "Transports terrestres et fluviaux",
+    "Entreposage et services auxiliaires des transports",
+    "Commerce de gros (négoce, matériaux)",
+    "Construction et second œuvre BTP",
+    "Industrie métallurgique et mécanique",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Gennevilliers avec Axion-IA permet d'identifier les opportunités IA chez des acteurs comme Thales.",
-      en: "Réaliser un audit à Gennevilliers avec Axion-IA permet d'identifier les opportunités IA chez des acteurs comme Thales.",
+      fr: "Audit IA à Gennevilliers pour les TPE/PME du port fluvial, les transporteurs et négociants de matériaux — cartographie des automatisations à 490 € HT.",
+      en: "Audit IA à Gennevilliers pour les TPE/PME du port fluvial, les transporteurs et négociants de matériaux — cartographie des automatisations à 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Gennevilliers pour automatiser les processus dans le secteur du transport et de l'entreposage.",
-      en: "Intervenir à Gennevilliers pour automatiser les processus dans le secteur du transport et de l'entreposage.",
+      fr: "Interventions à Gennevilliers pour automatiser bons de livraison, suivi de flotte et facturation des PME logistiques et BTP — dès 590 € HT.",
+      en: "Interventions à Gennevilliers pour automatiser bons de livraison, suivi de flotte et facturation des PME logistiques et BTP — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Gennevilliers, en tenant compte des spécificités des entreprises comme Safran.",
-      en: "Implémenter des solutions IA à Gennevilliers, en tenant compte des spécificités des entreprises comme Safran.",
+      fr: "Implémentation de solutions IA codées sur mesure à Gennevilliers (pas de no-code) pour les PME mécaniques, métallurgiques et de négoce — dès 990 € HT.",
+      en: "Implémentation de solutions IA codées sur mesure à Gennevilliers (pas de no-code) pour les PME mécaniques, métallurgiques et de négoce — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Gennevilliers pour une adoption réussie de l'IA.",
-      en: "Accompagner en un-à-un les dirigeants de Gennevilliers pour une adoption réussie de l'IA.",
+      fr: "Sessions 1-to-1 à Gennevilliers pour dirigeants de TPE/PME : roadmap IA, priorités opérationnelles, conformité RGPD — dès 990 € HT.",
+      en: "Sessions 1-to-1 à Gennevilliers pour dirigeants de TPE/PME : roadmap IA, priorités opérationnelles, conformité RGPD — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Gennevilliers ?",
-      a: "Les interventions à Gennevilliers débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'une intervention IA à Gennevilliers ?",
+      a: "L'Audit Flash 4 h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT et l'implémentation codée sur mesure à 990 € HT. Tarifs publics consultables sur notre site.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Gennevilliers ?",
-      a: "Nous garantissons la conformité RGPD en intégrant des audits de sécurité et de conformité dans nos prestations à Gennevilliers.",
+      q: "Sous quel délai Axion-IA peut-il intervenir à Gennevilliers ?",
+      a: "Notre équipe se déplace à Gennevilliers sous 5 jours ouvrés. Les accès RER C, métro 13 et autoroutes A15/A86 rendent la commune particulièrement rapide à rejoindre depuis Paris ou la province.",
     },
     {
-      q: "Axion-IA peut-il intervenir rapidement à Gennevilliers ?",
-      a: "Oui, notre équipe nationale se déplace à Gennevilliers dans un délai de 5 jours ouvrés pour débuter les interventions.",
+      q: "Intervenez-vous à Asnières-sur-Seine, Colombes ou Villeneuve-la-Garenne ?",
+      a: "Oui, nous couvrons toutes les communes limitrophes : Asnières-sur-Seine, Colombes, Villeneuve-la-Garenne, Épinay-sur-Seine, Saint-Ouen, L'Île-Saint-Denis et Argenteuil, ainsi que l'ensemble des Hauts-de-Seine.",
     },
     {
-      q: "Proposez-vous des formations IA pour les PME de Gennevilliers ?",
-      a: "Oui, nous offrons des formations IA adaptées aux besoins des PME de Gennevilliers, avec des sessions personnalisées pour les dirigeants.",
+      q: "Comment garantissez-vous la conformité RGPD à Gennevilliers ?",
+      a: "Chaque mission inclut un registre des traitements, une analyse d'impact si nécessaire et une revue AI Act 2024. Pour les transporteurs et logisticiens manipulant des données clients sensibles, nous formalisons en plus les durées de conservation.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Gennevilliers ?",
-      a: "Les secteurs du transport terrestre et de l'entreposage à Gennevilliers bénéficient particulièrement des solutions IA pour optimiser leurs opérations.",
+      q: "Quels secteurs accompagnez-vous le plus à Gennevilliers ?",
+      a: "Principalement les TPE/PME du transport, de la logistique fluviale, du négoce de matériaux et du BTP — les coeurs de métier autour du port. Les artisans et commerçants de proximité sont accompagnés en parallèle, et les ETI en complément.",
+    },
+    {
+      q: "Faites-vous du no-code ou du code sur mesure à Gennevilliers ?",
+      a: "Nous codons toutes nos solutions IA sur mesure (Python, TypeScript, APIs métier). Pas de no-code : c'est notre garantie de pérennité, de réversibilité et d'indépendance vis-à-vis des éditeurs.",
     },
   ],
 };

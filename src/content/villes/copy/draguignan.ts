@@ -1,67 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — anti-doorway HCU 2024 (Wikipedia-sourced).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const DRAGUIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Draguignan, une ville dynamique de Provence-Alpes-Côte d'Azur, pour accompagner les entreprises locales dans l'adoption de l'IA. Avec notre expertise, nous aidons les structures de commerce de détail et de construction à optimiser leurs processus.",
+    "Axion-IA accompagne les TPE et PME de Draguignan, sous-préfecture du Var (40 826 habitants en 2023) et deuxième ville administrative du département après Toulon. Cabinet IA francophone basé en France, nous intervenons sur site auprès des artisans du BTP, commerçants du centre-ville dracénois, professionnels de santé libéraux et acteurs touristiques de la Dracénie. Notre approche développe du code custom — pas de no-code générique — adapté aux contraintes des structures locales situées entre Lorgues, Flayosc et Trans-en-Provence.",
   pitchEn:
-    "Axion-IA intervient à Draguignan, une ville dynamique de Provence-Alpes-Côte d'Azur, pour accompagner les entreprises locales dans l'adoption de l'IA. Avec notre expertise, nous aidons les structures de commerce de détail et de construction à optimiser leurs processus.",
+    "Axion-IA accompagne les TPE et PME de Draguignan, sous-préfecture du Var (40 826 habitants en 2023) et deuxième ville administrative du département après Toulon. Cabinet IA francophone basé en France, nous intervenons sur site auprès des artisans du BTP, commerçants du centre-ville dracénois, professionnels de santé libéraux et acteurs touristiques de la Dracénie. Notre approche développe du code custom — pas de no-code générique — adapté aux contraintes des structures locales situées entre Lorgues, Flayosc et Trans-en-Provence.",
   directAnswerFr:
-    "Axion-IA se déplace à Draguignan pour offrir des solutions IA adaptées aux besoins des entreprises locales. Avec plus de 3 000 établissements actifs, dont de nombreux dans le commerce de détail et la construction, nous aidons à automatiser les tâches administratives. Nos services incluent des audits et des implémentations, avec des tarifs publics consultables sur notre site.",
+    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit Flash à partir de 490 € HT, des interventions sur site à partir de 590 € HT et des sessions un-à-un dirigeant. Tarifs publics consultables.",
   directAnswerEn:
-    "Axion-IA se déplace à Draguignan pour offrir des solutions IA adaptées aux besoins des entreprises locales. Avec plus de 3 000 établissements actifs, dont de nombreux dans le commerce de détail et la construction, nous aidons à automatiser les tâches administratives. Nos services incluent des audits et des implémentations, avec des tarifs publics consultables sur notre site.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit Flash à partir de 490 € HT, des interventions sur site à partir de 590 € HT et des sessions un-à-un dirigeant. Tarifs publics consultables.",
+  seoHook: "TPE PME Dracénie : BTP, commerce, santé, tourisme",
   ecosystemFr:
-    "Draguignan, avec ses 40 826 habitants, est un pôle régional regroupant des activités variées comme le commerce de détail et la santé humaine. Les entreprises locales bénéficient de notre expertise en IA pour améliorer leur efficacité opérationnelle.",
+    "Draguignan, chef-lieu d'arrondissement du Var, structure un bassin économique autour de l'administration sous-préfectorale, du commerce de proximité, du BTP, de la santé libérale et du tourisme de la Dracénie. La ville accueille aussi l'École de l'infanterie et l'École de l'artillerie de l'armée de terre — héritage qui lui vaut le surnom de capitale de l'Artillerie — avec le camp militaire de Canjuers à proximité. Les TPE et PME locales évoluent dans un tissu où dominent les très petites structures de moins de 10 salariés.",
   ecosystemEn:
-    "Draguignan, avec ses 40 826 habitants, est un pôle régional regroupant des activités variées comme le commerce de détail et la santé humaine. Les entreprises locales bénéficient de notre expertise en IA pour améliorer leur efficacité opérationnelle.",
+    "Draguignan, chef-lieu d'arrondissement du Var, structure un bassin économique autour de l'administration sous-préfectorale, du commerce de proximité, du BTP, de la santé libérale et du tourisme de la Dracénie. La ville accueille aussi l'École de l'infanterie et l'École de l'artillerie de l'armée de terre — héritage qui lui vaut le surnom de capitale de l'Artillerie — avec le camp militaire de Canjuers à proximité. Les TPE et PME locales évoluent dans un tissu où dominent les très petites structures de moins de 10 salariés.",
   distancesFr:
-    "La gare TGV des Arcs - Draguignan est à 12 km, et l'aéroport de Nice-Côte d'Azur à 85 km.",
+    "Gare TGV Les Arcs–Draguignan à environ 12 km (correspondance LGV Méditerranée). Fréjus à 30 km, golfe de Saint-Tropez à 35 km, Toulon à 86 km, Nice et son aéroport international à 89 km, Marseille à 141 km. Accès A8 La Provençale via Le Muy.",
   distancesEn:
-    "La gare TGV des Arcs - Draguignan est à 12 km, et l'aéroport de Nice-Côte d'Azur à 85 km.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Santé humaine", "Hébergement"],
+    "Gare TGV Les Arcs–Draguignan à environ 12 km (correspondance LGV Méditerranée). Fréjus à 30 km, golfe de Saint-Tropez à 35 km, Toulon à 86 km, Nice et son aéroport international à 89 km, Marseille à 141 km. Accès A8 La Provençale via Le Muy.",
+  topSectorsNaf: [
+    "Commerce de détail (centre-ville dracénois)",
+    "Construction et BTP (artisans Dracénie)",
+    "Santé humaine (cabinets libéraux)",
+    "Hébergement-restauration (tourisme Var)",
+    "Administration publique (sous-préfecture + écoles militaires)",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Draguignan pour identifier les opportunités d'automatisation dans le commerce de détail.",
-      en: "Réaliser un audit à Draguignan pour identifier les opportunités d'automatisation dans le commerce de détail.",
+      fr: "Audit Flash sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
+      en: "Audit Flash sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
     },
     interventions: {
-      fr: "Intervenir à Draguignan pour mettre en œuvre des solutions IA dans les entreprises de construction.",
-      en: "Intervenir à Draguignan pour mettre en œuvre des solutions IA dans les entreprises de construction.",
+      fr: "Intervention ponctuelle à Draguignan pour déployer un outil IA ciblé chez un artisan du BTP, un commerçant de la rue Cisson ou un professionnel de santé libéral du centre dracénois.",
+      en: "Intervention ponctuelle à Draguignan pour déployer un outil IA ciblé chez un artisan du BTP, un commerçant de la rue Cisson ou un professionnel de santé libéral du centre dracénois.",
     },
     implementation: {
-      fr: "Implémenter des systèmes IA à Draguignan pour optimiser les processus dans le secteur de la santé humaine.",
-      en: "Implémenter des systèmes IA à Draguignan pour optimiser les processus dans le secteur de la santé humaine.",
+      fr: "Implémentation code custom à Draguignan pour les TPE et PME de la Dracénie : agents IA métier intégrés aux logiciels existants, sans dépendance aux plateformes no-code.",
+      en: "Implémentation code custom à Draguignan pour les TPE et PME de la Dracénie : agents IA métier intégrés aux logiciels existants, sans dépendance aux plateformes no-code.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Draguignan avec une session 1-to-1 pour maximiser l'impact de l'IA.",
-      en: "Accompagner un dirigeant à Draguignan avec une session 1-to-1 pour maximiser l'impact de l'IA.",
+      fr: "Session un-à-un dirigeant à Draguignan pour TPE et PME — formation pratique aux usages IA adaptés au quotidien d'un patron dracénois.",
+      en: "Session un-à-un dirigeant à Draguignan pour TPE et PME — formation pratique aux usages IA adaptés au quotidien d'un patron dracénois.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Draguignan ?",
-      a: "L'audit Flash est proposé à partir de 490 € HT. Nos tarifs publics sont disponibles pour consultation sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une mission à Draguignan ?",
+      a: "Audit Flash à partir de 490 € HT, intervention sur site à partir de 590 € HT, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour Draguignan.",
     },
     {
-      q: "Comment se déroule une intervention IA à Draguignan ?",
-      a: "Nos experts se déplacent sur site pour intervenir directement dans vos locaux, assurant une mise en œuvre rapide et efficace des solutions IA.",
+      q: "Sous quel délai Axion-IA peut intervenir à Draguignan ?",
+      a: "Nous nous engageons à intervenir sur site à Draguignan dans un délai de 5 jours ouvrés après validation de la demande. Pour les TPE et PME de la Dracénie, l'accès se fait via la gare TGV Les Arcs–Draguignan ou A8 sortie Le Muy.",
     },
     {
-      q: "Quel est le délai pour une intervention à Draguignan ?",
-      a: "Nous nous engageons à intervenir sur site dans un délai de 5 jours ouvrés après la validation de votre demande.",
+      q: "Quelles communes proches de Draguignan couvrez-vous ?",
+      a: "Nous nous déplaçons dans toute la Dracénie : Trans-en-Provence, Les Arcs, La Motte, Flayosc, Lorgues, Ampus, Châteaudouble, Figanières et Taradeau notamment.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD lors de vos interventions à Draguignan ?",
-      a: "Nous respectons strictement les normes RGPD en vigueur, garantissant la protection des données personnelles tout au long de nos interventions.",
+      q: "Comment Axion-IA assure la conformité RGPD à Draguignan ?",
+      a: "Les solutions IA déployées chez nos clients dracénois respectent le RGPD : hébergement UE, minimisation des données, registre des traitements documenté. Nous fournissons les annexes pour votre DPO ou référent.",
     },
     {
-      q: "Proposez-vous des formations IA à Draguignan ?",
-      a: "Oui, nous proposons des sessions de formation personnalisées pour les dirigeants et équipes sur site, adaptées aux spécificités de votre secteur.",
+      q: "Quels secteurs locaux accompagnez-vous prioritairement à Draguignan ?",
+      a: "Nos TPE et PME clientes en Dracénie se concentrent dans le BTP, le commerce de détail du centre-ville, la santé libérale et l'hébergement-restauration touristique du Var intérieur.",
+    },
+    {
+      q: "Pourquoi Axion-IA fait du code custom et pas du no-code à Draguignan ?",
+      a: "Nous développons des solutions IA en code custom pour garantir aux TPE et PME de Draguignan l'indépendance vis-à-vis des plateformes no-code (coûts récurrents, lock-in, limites techniques). Notre approche pérennise l'investissement local.",
     },
   ],
 };

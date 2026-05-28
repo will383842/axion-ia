@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — T4 batch Claude Code (Will).
+// Auch (32, Gers) — préfecture Gers, capitale historique Gascogne, ~22 428 hab.
 
 import type { VilleCopy } from "./types";
 
 export const AUCH_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Auch pour optimiser les processus des entreprises locales. Avec des références comme Cap Digital et Inria, nous apportons notre expertise IA directement sur site pour les secteurs du commerce de détail et de la santé.",
+    "Auch (32), préfecture du Gers et capitale historique de la Gascogne (~22 400 hab.), à 69 km à l'ouest de Toulouse. Tissu de TPE commerçants, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans et professions libérales. Axion-IA accompagne ces structures sur leurs cas d'usage IA opérationnels, sans no-code, en code custom.",
   pitchEn:
-    "Axion-IA intervient à Auch pour optimiser les processus des entreprises locales. Avec des références comme Cap Digital et Inria, nous apportons notre expertise IA directement sur site pour les secteurs du commerce de détail et de la santé.",
+    "Auch (32), préfecture du Gers et capitale historique de la Gascogne (~22 400 hab.), à 69 km à l'ouest de Toulouse. Tissu de TPE commerçants, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans et professions libérales. Axion-IA accompagne ces structures sur leurs cas d'usage IA opérationnels, sans no-code, en code custom.",
   directAnswerFr:
-    "Auch, bien que petite en taille, est un point d'intervention pour Axion-IA, notamment grâce à son accessibilité depuis Toulouse. Nous y apportons notre expertise IA, reconnue dans des environnements comme Cap Digital et Station F, pour améliorer les opérations des entreprises locales. Notre approche est adaptée aux besoins spécifiques des secteurs présents à Auch, tels que la santé et le commerce de détail.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit Flash à 490 € HT, code custom et conformité RGPD.",
   directAnswerEn:
-    "Auch, bien que petite en taille, est un point d'intervention pour Axion-IA, notamment grâce à son accessibilité depuis Toulouse. Nous y apportons notre expertise IA, reconnue dans des environnements comme Cap Digital et Station F, pour améliorer les opérations des entreprises locales. Notre approche est adaptée aux besoins spécifiques des secteurs présents à Auch, tels que la santé et le commerce de détail.",
-  seoHook: "commerce détail & agriculture",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit Flash à 490 € HT, code custom et conformité RGPD.",
+  seoHook: "Armagnac, agroalimentaire & commerce gascon",
   ecosystemFr:
-    "Le tissu économique d'Auch est marqué par des secteurs variés tels que le commerce de détail et la santé. Les entreprises locales bénéficient de l'intervention d'Axion-IA, comme celles de pôles d'innovation à Paris tels que LVMH et BNP Paribas.",
+    "Auch concentre l'économie du Gers autour de l'Armagnac, de la gastronomie gasconne, de l'agriculture céréalière et viticole, du commerce de proximité et des services. L'intercommunalité Grand Auch Cœur de Gascogne regroupe une majorité de TPE et PME, complétées par des artisans et des professions libérales actifs dans tout le bassin auscitain.",
   ecosystemEn:
-    "Le tissu économique d'Auch est marqué par des secteurs variés tels que le commerce de détail et la santé. Les entreprises locales bénéficient de l'intervention d'Axion-IA, comme celles de pôles d'innovation à Paris tels que LVMH et BNP Paribas.",
+    "Auch concentre l'économie du Gers autour de l'Armagnac, de la gastronomie gasconne, de l'agriculture céréalière et viticole, du commerce de proximité et des services. L'intercommunalité Grand Auch Cœur de Gascogne regroupe une majorité de TPE et PME, complétées par des artisans et des professions libérales actifs dans tout le bassin auscitain.",
   distancesFr:
-    "Auch est situé à 80 km de la gare TGV de Toulouse-Matabiau et à 75 km de l'aéroport de Toulouse-Blagnac.",
+    "Toulouse à 69 km (~1 h). Gare TER Auch reliée à Toulouse-Matabiau. Aéroport Toulouse-Blagnac à ~75 km. Aérodrome Auch-Gers sur place. Liaisons cars liO vers Tarbes, Agen, Montauban, Mont-de-Marsan et Condom.",
   distancesEn:
-    "Auch est situé à 80 km de la gare TGV de Toulouse-Matabiau et à 75 km de l'aéroport de Toulouse-Blagnac.",
-  topSectorsNaf: ["Commerce de détail", "Agriculture", "Restauration", "Santé"],
+    "Toulouse à 69 km (~1 h). Gare TER Auch reliée à Toulouse-Matabiau. Aéroport Toulouse-Blagnac à ~75 km. Aérodrome Auch-Gers sur place. Liaisons cars liO vers Tarbes, Agen, Montauban, Mont-de-Marsan et Condom.",
+  topSectorsNaf: [
+    "Agroalimentaire & Armagnac",
+    "Agriculture céréalière & viticulture",
+    "Commerce de détail",
+    "Restauration & gastronomie",
+    "Professions libérales & services",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Auch permet d'identifier les leviers IA dans le commerce de détail et la santé.",
-      en: "Réaliser un audit à Auch permet d'identifier les leviers IA dans le commerce de détail et la santé.",
+      fr: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit Flash 490 € HT, ROI chiffré, sans no-code.",
+      en: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit Flash 490 € HT, ROI chiffré, sans no-code.",
     },
     interventions: {
-      fr: "Intervenir à Auch pour automatiser les tâches administratives et améliorer la productivité des entreprises.",
-      en: "Intervenir à Auch pour automatiser les tâches administratives et améliorer la productivité des entreprises.",
+      fr: "Interventions IA sur site à Auch : ateliers adaptés au commerce de proximité, au domaine viticole, à l'agroalimentaire et aux cabinets libéraux. Déplacement depuis Toulouse, équipes autonomes en sortie.",
+      en: "Interventions IA sur site à Auch : ateliers adaptés au commerce de proximité, au domaine viticole, à l'agroalimentaire et aux cabinets libéraux. Déplacement depuis Toulouse, équipes autonomes en sortie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Auch pour optimiser les processus des secteurs agricoles et de la restauration.",
-      en: "Implémenter des solutions IA à Auch pour optimiser les processus des secteurs agricoles et de la restauration.",
+      fr: "Implémentation IA à Auch : automatisation devis, gestion stocks commerce, traçabilité Armagnac, classification documents, chatbot client pour TPE et PME du Gers, en code custom.",
+      en: "Implémentation IA à Auch : automatisation devis, gestion stocks commerce, traçabilité Armagnac, classification documents, chatbot client pour TPE et PME du Gers, en code custom.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants d'Auch pour une adoption rapide et efficace de l'IA.",
-      en: "Accompagner en un-à-un les dirigeants d'Auch pour une adoption rapide et efficace de l'IA.",
+      fr: "Coaching 1-to-1 à Auch : sessions sur site ou en visio pour dirigeants TPE, viticulteurs, gérants PME agroalimentaires et professions libérales du Grand Auch Cœur de Gascogne.",
+      en: "Coaching 1-to-1 à Auch : sessions sur site ou en visio pour dirigeants TPE, viticulteurs, gérants PME agroalimentaires et professions libérales du Grand Auch Cœur de Gascogne.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Auch ?",
-      a: "Nos tarifs pour une intervention à Auch commencent à partir de 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Auch et dans le Gers ?",
+      a: "Oui, Axion-IA intervient à Auch et dans l'intercommunalité Grand Auch Cœur de Gascogne (Pavie, Preignan, Duran, Lavardens, Roquelaure…). Nos consultants se déplacent depuis Toulouse (69 km, ~1 h) ou interviennent en visio.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Auch ?",
-      a: "Notre équipe se déplace directement sur site à Auch, en utilisant les infrastructures de transport telles que la gare TGV de Toulouse-Matabiau et l'aéroport de Toulouse-Blagnac.",
+      q: "Quels sont vos tarifs pour une mission à Auch ?",
+      a: "Audit Flash à partir de 490 € HT, Intervention Essentielle à partir de 590 € HT, session 1-to-1 dirigeants à partir de 990 € HT. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Quels délais pour une intervention IA à Auch ?",
-      a: "Nous nous engageons à intervenir à Auch dans un délai de 5 jours ouvrés après la confirmation de votre demande, sous réserve de disponibilité.",
+      q: "Quels secteurs accompagnez-vous à Auch ?",
+      a: "TPE commerçantes du centre-ville, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans BTP, restaurateurs et professions libérales. Tous les secteurs représentés dans le Gers.",
     },
     {
-      q: "Comment Axion-IA gère-t-il la conformité RGPD à Auch ?",
-      a: "Axion-IA intègre les exigences RGPD dans toutes ses interventions à Auch, garantissant la protection des données personnelles tout au long du processus.",
+      q: "Quels délais d'intervention IA à Auch ?",
+      a: "Nous planifions une intervention sur site à Auch sous 5 jours ouvrés après confirmation, et parfois plus rapidement en visio. Devis et calendrier fournis en 48 h.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Auch ?",
+      a: "Toutes nos solutions IA respectent le RGPD et l'AI Act européen : hébergement UE, données chiffrées, registre des traitements, DPO joignable. Pas de transfert hors UE sans base légale.",
+    },
+    {
+      q: "Travaillez-vous avec les viticulteurs Armagnac autour d'Auch ?",
+      a: "Oui, nous accompagnons les domaines viticoles et producteurs d'Armagnac sur la traçabilité parcelles, la gestion commerciale, la classification d'avis client et la prédiction de millésime. Audit Flash à 490 € HT.",
     },
   ],
 };

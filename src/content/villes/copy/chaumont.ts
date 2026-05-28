@@ -1,5 +1,6 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 63 — Model: gpt-4o.
+// Manually corrected 2026-05-28 (HCU 2024 anti-doorway sprint).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,57 +8,72 @@ import type { VilleCopy } from "./types";
 
 export const CHAUMONT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Chaumont, une ville du Grand-Est, pour optimiser les processus des entreprises locales. Avec des acteurs comme LVMH et BNP Paribas dans l'écosystème économique français, nous apportons notre expertise en IA pour automatiser les tâches administratives.",
+    "Axion-IA accompagne les TPE et PME de Chaumont, préfecture de la Haute-Marne (20 827 habitants), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. La ville, marquée historiquement par la ganterie, la bonneterie et la draperie, conserve un tissu industriel actif autour des zones Plein'Est, La Vendue et Dame Huguenotte. Aux côtés des commerçants du centre, des artisans, de l'École de gendarmerie et du 61ᵉ régiment d'artillerie, nous concevons des solutions IA sur mesure en code custom — jamais en no-code — pour libérer du temps administratif sur la facturation, la relance client, la planification ou le reporting. Notre cabinet francophone se déplace sur site pour des audits Flash, des interventions ciblées et des implémentations durables, avec une démarche RGPD-by-design.",
   pitchEn:
-    "Axion-IA intervient à Chaumont, une ville du Grand-Est, pour optimiser les processus des entreprises locales. Avec des acteurs comme LVMH et BNP Paribas dans l'écosystème économique français, nous apportons notre expertise en IA pour automatiser les tâches administratives.",
+    "Axion-IA accompagne les TPE et PME de Chaumont, préfecture de la Haute-Marne (20 827 habitants), dans l'intégration d'agents IA et l'automatisation de leurs processus métier. La ville, marquée historiquement par la ganterie, la bonneterie et la draperie, conserve un tissu industriel actif autour des zones Plein'Est, La Vendue et Dame Huguenotte. Aux côtés des commerçants du centre, des artisans, de l'École de gendarmerie et du 61ᵉ régiment d'artillerie, nous concevons des solutions IA sur mesure en code custom — jamais en no-code — pour libérer du temps administratif sur la facturation, la relance client, la planification ou le reporting. Notre cabinet francophone se déplace sur site pour des audits Flash, des interventions ciblées et des implémentations durables, avec une démarche RGPD-by-design.",
   directAnswerFr:
-    "À Chaumont, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Notre approche s'inspire des meilleures pratiques observées dans des écosystèmes comme ceux de Cap Digital et Station F. Nous offrons des audits, interventions et formations pour répondre aux besoins spécifiques des entreprises chaumontaises.",
+    "À Chaumont (Haute-Marne, Grand Est), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces du centre-ville, artisans, sous-traitants industriels des zones Plein'Est et Dame Huguenotte, professionnels de santé, prestataires gravitant autour de l'École de gendarmerie. Nous codons des agents IA et automatisations sur mesure (facturation, devis, suivi chantier, planning, reporting comptable) en code custom francophone, avec un cadrage clair, un livrable opérationnel et une conformité RGPD intégrée dès la conception. Williams se déplace sur site pour auditer, prototyper puis transférer la solution à votre équipe.",
   directAnswerEn:
-    "À Chaumont, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Notre approche s'inspire des meilleures pratiques observées dans des écosystèmes comme ceux de Cap Digital et Station F. Nous offrons des audits, interventions et formations pour répondre aux besoins spécifiques des entreprises chaumontaises.",
-  seoHook: "commerce détail & transports",
+    "À Chaumont (Haute-Marne, Grand Est), Axion-IA déploie ses interventions IA chez les TPE et PME locales : commerces du centre-ville, artisans, sous-traitants industriels des zones Plein'Est et Dame Huguenotte, professionnels de santé, prestataires gravitant autour de l'École de gendarmerie. Nous codons des agents IA et automatisations sur mesure (facturation, devis, suivi chantier, planning, reporting comptable) en code custom francophone, avec un cadrage clair, un livrable opérationnel et une conformité RGPD intégrée dès la conception. Williams se déplace sur site pour auditer, prototyper puis transférer la solution à votre équipe.",
+  seoHook: "commerce, artisanat & sous-traitance industrielle",
   ecosystemFr:
-    "Le tissu économique de Chaumont est marqué par des secteurs tels que le commerce de détail et les transports terrestres. Les entreprises locales, bien que distantes des pôles comme Inria et Station F, bénéficient d'une proximité avec des infrastructures clés pour leur développement.",
+    "Chaumont concentre son activité économique sur trois zones structurantes : Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME industrielles, logistique et services aux entreprises. Le commerce de centre-ville, l'artisanat, la santé, ainsi que les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie forment un socle économique stable. Le campus de l'Université de Reims Champagne-Ardenne et le Centre national du graphisme ouvrent un pôle tertiaire en croissance lente mais réelle.",
   ecosystemEn:
-    "Le tissu économique de Chaumont est marqué par des secteurs tels que le commerce de détail et les transports terrestres. Les entreprises locales, bien que distantes des pôles comme Inria et Station F, bénéficient d'une proximité avec des infrastructures clés pour leur développement.",
+    "Chaumont concentre son activité économique sur trois zones structurantes : Plein'Est à Croix Coquillon, La Vendue et Dame Huguenotte, où cohabitent PME industrielles, logistique et services aux entreprises. Le commerce de centre-ville, l'artisanat, la santé, ainsi que les services liés à l'École de gendarmerie et au 61ᵉ régiment d'artillerie forment un socle économique stable. Le campus de l'Université de Reims Champagne-Ardenne et le Centre national du graphisme ouvrent un pôle tertiaire en croissance lente mais réelle.",
   distancesFr:
-    "La gare TGV de Chaumont facilite l'accès, tandis que l'aéroport de Paris-Vatry est à 120 km.",
+    "Chaumont est desservie par sa gare SNCF sur la ligne Paris-Est — Mulhouse (Paris en ~2h15 en TER), et par les autoroutes A5 et A31. Communes proches : Chamarandes-Choignes, Condes, Treix, Verbiesles, Jonchery, Biesles.",
   distancesEn:
-    "La gare TGV de Chaumont facilite l'accès, tandis que l'aéroport de Paris-Vatry est à 120 km.",
-  topSectorsNaf: ["Commerce de détail", "Transports", "Construction", "Restauration"],
+    "Chaumont est desservie par sa gare SNCF sur la ligne Paris-Est — Mulhouse (Paris en ~2h15 en TER), et par les autoroutes A5 et A31. Communes proches : Chamarandes-Choignes, Condes, Treix, Verbiesles, Jonchery, Biesles.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Artisanat & BTP",
+    "Sous-traitance industrielle",
+    "Santé humaine",
+    "Services aux entreprises",
+    "Administration publique & défense",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Chaumont pour identifier les opportunités d'automatisation dans le commerce de détail et les transports. Nos audits commencent à partir de 490 € HT.",
-      en: "Réaliser un audit à Chaumont pour identifier les opportunités d'automatisation dans le commerce de détail et les transports. Nos audits commencent à partir de 490 € HT.",
+      fr: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit Flash dès 490 € HT, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit Flash dès 490 € HT, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Chaumont pour implémenter des solutions IA dans les processus de construction et de restauration. Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Chaumont pour implémenter des solutions IA dans les processus de construction et de restauration. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à Chaumont — Williams se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Intervention Essentielle dès 590 € HT.",
+      en: "Intervention sur site à Chaumont — Williams se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des outils IA à Chaumont pour optimiser les opérations des entreprises locales. Tarifs d'implémentation à partir de 990 € HT.",
-      en: "Implémenter des outils IA à Chaumont pour optimiser les opérations des entreprises locales. Tarifs d'implémentation à partir de 990 € HT.",
+      fr: "Implémentation IA pour TPE/PME de Chaumont : agents en code custom (Python, Node) intégrés à vos outils existants (Sage, EBP, Pennylane, Notion, Google Workspace). Forfait d'implémentation dès 990 € HT.",
+      en: "Implémentation IA pour TPE/PME de Chaumont : agents en code custom (Python, Node) intégrés à vos outils existants (Sage, EBP, Pennylane, Notion, Google Workspace). Forfait d'implémentation dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Chaumont avec des sessions 1-to-1 pour une adoption efficace de l'IA. Sessions disponibles dès 990 € HT.",
-      en: "Accompagner les dirigeants de Chaumont avec des sessions 1-to-1 pour une adoption efficace de l'IA. Sessions disponibles dès 990 € HT.",
+      fr: "Sessions un-à-un avec dirigeants de TPE/PME chaumontaises pour bâtir une feuille de route IA réaliste (24 mois), prioriser les cas d'usage et former l'équipe au prompt engineering. Dès 990 € HT.",
+      en: "Sessions un-à-un avec dirigeants de TPE/PME chaumontaises pour bâtir une feuille de route IA réaliste (24 mois), prioriser les cas d'usage et former l'équipe au prompt engineering. Dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Chaumont ?",
-      a: "Les audits IA à Chaumont démarrent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site à Chaumont, livré sous 5 jours ouvrés. Les forfaits Intervention démarrent à 590 € HT et l'implémentation à 990 € HT. Tous nos tarifs sont publics.",
     },
     {
-      q: "Comment se déroule une intervention IA sur site à Chaumont ?",
-      a: "Williams se déplace sur site à Chaumont pour réaliser des interventions IA. Nous analysons vos besoins et mettons en place des solutions adaptées.",
+      q: "Williams se déplace-t-il vraiment à Chaumont depuis Paris ?",
+      a: "Oui. Chaumont est à environ 2h15 en TER depuis Paris-Est, ce qui rend le déplacement sur site régulier et réaliste. Williams intervient directement dans vos locaux du centre-ville, de Plein'Est, La Vendue ou Dame Huguenotte.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Chaumont ?",
-      a: "Les délais pour une implémentation IA à Chaumont varient selon la complexité du projet. Nous nous engageons à intervenir rapidement pour optimiser vos processus.",
+      q: "Quels délais pour une intervention IA à Chaumont ?",
+      a: "Une Intervention Essentielle est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit Flash est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Chaumont ?",
-      a: "Axion-IA garantit la conformité RGPD lors de ses interventions à Chaumont, en respectant les normes de protection des données en vigueur.",
+      q: "Quels secteurs économiques chaumontais ciblez-vous en priorité ?",
+      a: "Nous accompagnons en priorité les TPE et PME du commerce de détail, de l'artisanat (BTP, métallerie), de la sous-traitance industrielle des zones Plein'Est et Dame Huguenotte, de la santé libérale et des services aux entreprises. Les ETI sont accompagnées de façon plus marginale.",
+    },
+    {
+      q: "Intervenez-vous aussi dans les communes proches de Chaumont ?",
+      a: "Oui, nous nous déplaçons également à Chamarandes-Choignes, Condes, Treix, Verbiesles, Jonchery et Biesles. Le déplacement est inclus dans le forfait dans un rayon de 20 km autour de Chaumont.",
+    },
+    {
+      q: "Comment Axion-IA garantit la conformité RGPD à Chaumont ?",
+      a: "Toutes nos automatisations sont conçues RGPD-by-design : hébergement UE, chiffrement au repos et en transit, journalisation des accès, contrat de sous-traitance art. 28 RGPD signé avant tout traitement de données personnelles. Aucun export hors UE par défaut.",
     },
   ],
 };

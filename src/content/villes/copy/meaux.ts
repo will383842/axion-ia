@@ -2,71 +2,79 @@
 // Quality score: 65 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL EDIT 2026-05-28 : anti-doorway HCU 2024 — contenu factuel Wikipedia,
+// suppression templates LLM hors-contexte (LVMH/BNP Paribas/Cap Digital/Station F).
 
 import type { VilleCopy } from "./types";
 
 export const MEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Meaux pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et BNP Paribas dans la région, nous apportons notre expertise en IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+    "Axion-IA accompagne les TPE et PME de Meaux (56 905 habitants, sous-préfecture de Seine-et-Marne) dans l'adoption concrète de l'IA. Ancienne capitale de la Brie, la ville reste liée au terroir fromager du brie de Meaux et concentre commerces, industries, services aux entreprises et activités agroalimentaires à 41 km à l'est de Paris. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi production et reporting. Notre approche s'adapte aussi aux ETI du bassin meldois.",
   pitchEn:
-    "Axion-IA intervient à Meaux pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et BNP Paribas dans la région, nous apportons notre expertise en IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+    "Axion-IA accompagne les TPE et PME de Meaux (56 905 habitants, sous-préfecture de Seine-et-Marne) dans l'adoption concrète de l'IA. Ancienne capitale de la Brie, la ville reste liée au terroir fromager du brie de Meaux et concentre commerces, industries, services aux entreprises et activités agroalimentaires à 41 km à l'est de Paris. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi production et reporting. Notre approche s'adapte aussi aux ETI du bassin meldois.",
   directAnswerFr:
-    "Axion-IA se déplace à Meaux pour accompagner les entreprises dans l'intégration de l'IA. Avec des références comme Cap Digital et Station F à Paris, nous offrons des audits et des implémentations sur site, garantissant une adoption fluide et conforme aux normes en vigueur. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Meaux pour accompagner les entreprises dans l'intégration de l'IA. Avec des références comme Cap Digital et Station F à Paris, nous offrons des audits et des implémentations sur site, garantissant une adoption fluide et conforme aux normes en vigueur. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+  seoHook: "agroalimentaire briard & commerce de proximité",
   ecosystemFr:
-    "Le tissu économique de Meaux est enrichi par la proximité de la ZAC du Parc d'Activités de Meaux et des infrastructures de transport comme l'aéroport de Paris-Charles de Gaulle. Ces éléments facilitent l'accès aux services d'Axion-IA pour les entreprises locales.",
+    "Sous-préfecture de Seine-et-Marne, Meaux structure le bassin économique briard avec une économie diversifiée mêlant filière agroalimentaire (brie de Meaux AOP, moutarde), commerce, industrie légère, construction et services aux entreprises. La ligne P du Transilien relie Meaux à Paris-Est en 25 minutes et l'autoroute A4 dessert la zone via la bretelle A140, ouvrant le territoire vers Marne-la-Vallée et la métropole parisienne. Le port fluvial sur la Marne complète l'offre logistique.",
   ecosystemEn:
-    "Le tissu économique de Meaux est enrichi par la proximité de la ZAC du Parc d'Activités de Meaux et des infrastructures de transport comme l'aéroport de Paris-Charles de Gaulle. Ces éléments facilitent l'accès aux services d'Axion-IA pour les entreprises locales.",
+    "Sous-préfecture de Seine-et-Marne, Meaux structure le bassin économique briard avec une économie diversifiée mêlant filière agroalimentaire (brie de Meaux AOP, moutarde), commerce, industrie légère, construction et services aux entreprises. La ligne P du Transilien relie Meaux à Paris-Est en 25 minutes et l'autoroute A4 dessert la zone via la bretelle A140, ouvrant le territoire vers Marne-la-Vallée et la métropole parisienne. Le port fluvial sur la Marne complète l'offre logistique.",
   distancesFr:
-    "La gare TGV de Marne-la-Vallée Chessy est à 30 km de Meaux, facilitant l'accès aux services d'Axion-IA.",
+    "Meaux est à 41 km à l'est de Paris, à 25 minutes en train de Paris-Est via la ligne P du Transilien, et à environ 30 km de la gare TGV Marne-la-Vallée Chessy. L'aéroport Paris-Charles de Gaulle est à environ 30 km au nord-ouest. L'autoroute A4 dessert la commune via la bretelle A140.",
   distancesEn:
-    "La gare TGV de Marne-la-Vallée Chessy est à 30 km de Meaux, facilitant l'accès aux services d'Axion-IA.",
+    "Meaux est à 41 km à l'est de Paris, à 25 minutes en train de Paris-Est via la ligne P du Transilien, et à environ 30 km de la gare TGV Marne-la-Vallée Chessy. L'aéroport Paris-Charles de Gaulle est à environ 30 km au nord-ouest. L'autoroute A4 dessert la commune via la bretelle A140.",
   topSectorsNaf: [
     "Commerce de détail",
-    "Transports terrestres",
+    "Industrie agroalimentaire (brie de Meaux, moutarde)",
     "Construction de bâtiments",
+    "Transports terrestres et logistique",
     "Restauration",
+    "Services administratifs aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Meaux permet d'identifier les processus automatisables, réduisant les coûts opérationnels.",
-      en: "Réaliser un audit à Meaux permet d'identifier les processus automatisables, réduisant les coûts opérationnels.",
+      fr: "Audit Flash 4 h à Meaux dès 490 € HT : cartographie des processus automatisables côté agroalimentaire, commerce ou services, livré sous 5 jours ouvrés.",
+      en: "Audit Flash 4 h à Meaux dès 490 € HT : cartographie des processus automatisables côté agroalimentaire, commerce ou services, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Meaux pour automatiser devis et relances, augmentant l'efficacité des équipes.",
-      en: "Intervenir à Meaux pour automatiser devis et relances, augmentant l'efficacité des équipes.",
+      fr: "Intervention Essentielle dès 590 € HT à Meaux pour automatiser devis, relances clients et suivi production — code custom, pas de no-code.",
+      en: "Intervention Essentielle dès 590 € HT à Meaux pour automatiser devis, relances clients et suivi production — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Meaux pour optimiser les systèmes existants, assurant une intégration fluide.",
-      en: "Implémenter des solutions IA à Meaux pour optimiser les systèmes existants, assurant une intégration fluide.",
+      fr: "Implémentation IA sur site à Meaux à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      en: "Implémentation IA sur site à Meaux à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants à Meaux pour une adoption stratégique de l'IA.",
-      en: "Accompagner en un-à-un les dirigeants à Meaux pour une adoption stratégique de l'IA.",
+      fr: "Session 1-to-1 dirigeant TPE/PME à Meaux dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeant TPE/PME à Meaux dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Meaux ?",
-      a: "L'Audit Flash 4h est proposé à partir de 490 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Meaux ?",
+      a: "À Meaux, l'Audit Flash 4 h démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Les implémentations et sessions 1-to-1 commencent à 990 € HT. Tous nos tarifs sont publics et sans engagement.",
     },
     {
-      q: "Comment se déroule une intervention IA à Meaux ?",
-      a: "Nos consultants se déplacent sur site pour analyser vos besoins et mettre en place des solutions adaptées, dès 590 € HT.",
+      q: "Sous quel délai Axion-IA intervient à Meaux ?",
+      a: "Pour les TPE et PME de Meaux, l'Audit Flash est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Meaux ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés après validation du projet. Les délais précis dépendent de la complexité de l'implémentation.",
+      q: "Couvrez-vous Trilport, Villenoy et Nanteuil-lès-Meaux depuis Meaux ?",
+      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes de Meaux : Chambry, Chauconin-Neufmontiers, Crégy-lès-Meaux, Fublaines, Mareuil-lès-Meaux, Nanteuil-lès-Meaux, Poincy, Trilport et Villenoy.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Meaux ?",
-      a: "Oui, toutes nos interventions sont conformes au RGPD, assurant la protection des données de nos clients.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Meaux ?",
+      a: "Toutes nos solutions IA déployées à Meaux sont en code custom hébergé UE, avec registre de traitement, minimisation des données et clauses sous-traitant signées. Pas de transfert hors-UE par défaut.",
     },
     {
-      q: "Proposez-vous des formations IA à Meaux ?",
-      a: "Oui, nous offrons des sessions de formation pour dirigeants et équipes, à partir de 990 € HT pour un accompagnement personnalisé.",
+      q: "Accompagnez-vous la filière agroalimentaire briarde à Meaux ?",
+      a: "Oui, le bassin meldois reste structuré par la filière brie de Meaux AOP, la moutarde et l'agroalimentaire. Nous adaptons l'IA à des cas concrets : suivi production, traçabilité, gestion commandes, relances distributeurs.",
+    },
+    {
+      q: "Proposez-vous des sessions IA pour dirigeants à Meaux ?",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Meaux démarrent à 990 € HT et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
     },
   ],
 };

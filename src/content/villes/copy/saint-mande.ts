@@ -2,65 +2,77 @@
 // Quality score: 63 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// 2026-05-28 — Sprint anti-doorway HCU 2024 : réécriture factuelle Wikipedia.
 
 import type { VilleCopy } from "./types";
 
 export const SAINT_MANDE_COPY: VilleCopy = {
   pitchFr:
-    "À Saint-Mandé, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Située en Île-de-France, cette ville bénéficie de la proximité de pôles économiques comme Paris, abritant des entités telles que Cap Digital et Station F.",
+    "Axion-IA accompagne les TPE et PME de Saint-Mandé, commune résidentielle haut de gamme du Val-de-Marne de 21 071 habitants, située en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris. Sur seulement 0,92 km² — l'une des cinq plus petites communes d'Île-de-France — Saint-Mandé concentre des sièges sociaux structurants (IGN, Météo-France, Ubisoft depuis 2021) et un tissu dense de PME de services. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour ce tissu de prestataires intellectuels, commerces de proximité et professions libérales.",
   pitchEn:
-    "À Saint-Mandé, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Située en Île-de-France, cette ville bénéficie de la proximité de pôles économiques comme Paris, abritant des entités telles que Cap Digital et Station F.",
+    "Axion-IA accompagne les TPE et PME de Saint-Mandé, commune résidentielle haut de gamme du Val-de-Marne de 21 071 habitants, située en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris. Sur seulement 0,92 km² — l'une des cinq plus petites communes d'Île-de-France — Saint-Mandé concentre des sièges sociaux structurants (IGN, Météo-France, Ubisoft depuis 2021) et un tissu dense de PME de services. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour ce tissu de prestataires intellectuels, commerces de proximité et professions libérales.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Mandé pour répondre aux besoins des entreprises locales. Avec une proximité de Paris, où se trouvent des acteurs comme LVMH et BNP Paribas, nous offrons des audits, interventions et implémentations IA sur site. Nos services incluent l'automatisation de tâches administratives et la formation des équipes pour une intégration fluide de l'IA.",
+    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé en 10 minutes depuis Paris via le métro ligne 1 (stations Saint-Mandé et Bérault), et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Mandé pour répondre aux besoins des entreprises locales. Avec une proximité de Paris, où se trouvent des acteurs comme LVMH et BNP Paribas, nous offrons des audits, interventions et implémentations IA sur site. Nos services incluent l'automatisation de tâches administratives et la formation des équipes pour une intégration fluide de l'IA.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé en 10 minutes depuis Paris via le métro ligne 1 (stations Saint-Mandé et Bérault), et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
+  seoHook: "sièges sociaux, services & professions libérales",
   ecosystemFr:
-    "Saint-Mandé, avec ses 2 000 établissements actifs, bénéficie de la proximité de Paris, un pôle économique majeur abritant des entreprises comme LVMH et BNP Paribas. Les entreprises locales peuvent ainsi s'inspirer de cet environnement pour intégrer l'IA dans leurs opérations.",
+    "Saint-Mandé concentre sur 0,92 km² un écosystème économique singulier dominé par des sièges sociaux nationaux (IGN — Institut national de l'information géographique et forestière, Météo-France, Ubisoft installé en 2021), un tissu dense de PME de services et de professions libérales, et un commerce de proximité haut de gamme. La commune est desservie par la ligne 1 du métro (stations Saint-Mandé et Bérault), la ligne 8 et le RER A à Vincennes, et bordée par Vincennes, Montreuil, Paris 12e, Paris 20e et le Bois de Vincennes.",
   ecosystemEn:
-    "Saint-Mandé, avec ses 2 000 établissements actifs, bénéficie de la proximité de Paris, un pôle économique majeur abritant des entreprises comme LVMH et BNP Paribas. Les entreprises locales peuvent ainsi s'inspirer de cet environnement pour intégrer l'IA dans leurs opérations.",
-  distancesFr: "Saint-Mandé est à 5 km de la Gare de Lyon et à 15 km de l'aéroport de Paris-Orly.",
-  distancesEn: "Saint-Mandé est à 5 km de la Gare de Lyon et à 15 km de l'aéroport de Paris-Orly.",
+    "Saint-Mandé concentre sur 0,92 km² un écosystème économique singulier dominé par des sièges sociaux nationaux (IGN — Institut national de l'information géographique et forestière, Météo-France, Ubisoft installé en 2021), un tissu dense de PME de services et de professions libérales, et un commerce de proximité haut de gamme. La commune est desservie par la ligne 1 du métro (stations Saint-Mandé et Bérault), la ligne 8 et le RER A à Vincennes, et bordée par Vincennes, Montreuil, Paris 12e, Paris 20e et le Bois de Vincennes.",
+  distancesFr:
+    "Saint-Mandé est limitrophe de Paris (12e et 20e arrondissements), à 10 minutes du Châtelet par le métro ligne 1, et à 15 km de l'aéroport de Paris-Orly.",
+  distancesEn:
+    "Saint-Mandé est limitrophe de Paris (12e et 20e arrondissements), à 10 minutes du Châtelet par le métro ligne 1, et à 15 km de l'aéroport de Paris-Orly.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Sièges sociaux",
-    "Action sociale",
+    "Sièges sociaux (IGN, Météo-France, Ubisoft)",
+    "Programmation informatique et édition logicielle",
+    "Activités juridiques et comptables (professions libérales)",
+    "Commerce de détail de proximité",
+    "Action sociale et santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Saint-Mandé pour identifier les opportunités IA dans les secteurs du commerce et de la programmation informatique.",
-      en: "Réaliser un audit à Saint-Mandé pour identifier les opportunités IA dans les secteurs du commerce et de la programmation informatique.",
+      fr: "À Saint-Mandé, nos audits IA s'adressent aux TPE/PME de services, professions libérales et équipes des sièges sociaux (IGN, Météo-France, Ubisoft) souhaitant prioriser 2 à 3 cas d'usage avant tout investissement.",
+      en: "À Saint-Mandé, nos audits IA s'adressent aux TPE/PME de services, professions libérales et équipes des sièges sociaux (IGN, Météo-France, Ubisoft) souhaitant prioriser 2 à 3 cas d'usage avant tout investissement.",
     },
     interventions: {
-      fr: "Intervenir à Saint-Mandé pour automatiser les processus administratifs, en s'appuyant sur notre expertise nationale.",
-      en: "Intervenir à Saint-Mandé pour automatiser les processus administratifs, en s'appuyant sur notre expertise nationale.",
+      fr: "Nos interventions à Saint-Mandé ciblent les tâches répétitives des PME de services et professions libérales : automatisation documentaire, traitement de courriels clients, ou pré-qualification de dossiers.",
+      en: "Nos interventions à Saint-Mandé ciblent les tâches répétitives des PME de services et professions libérales : automatisation documentaire, traitement de courriels clients, ou pré-qualification de dossiers.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Saint-Mandé, facilitant la gestion des sièges sociaux et des activités informatiques.",
-      en: "Implémenter des solutions IA à Saint-Mandé, facilitant la gestion des sièges sociaux et des activités informatiques.",
+      fr: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Paris en 10 minutes via la ligne 1.",
+      en: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Paris en 10 minutes via la ligne 1.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Saint-Mandé avec des sessions 1-to-1 pour optimiser l'intégration de l'IA dans leurs opérations.",
-      en: "Accompagner les dirigeants de Saint-Mandé avec des sessions 1-to-1 pour optimiser l'intégration de l'IA dans leurs opérations.",
+      fr: "L'accompagnement un-à-un à Saint-Mandé permet aux dirigeants de TPE/PME et professions libérales de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
+      en: "L'accompagnement un-à-un à Saint-Mandé permet aux dirigeants de TPE/PME et professions libérales de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Saint-Mandé ?",
-      a: "Les interventions IA à Saint-Mandé commencent à partir de 590 € HT. Nos tarifs publics sont disponibles sur notre site pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Mandé ?",
+      a: "Nos interventions sur site à Saint-Mandé démarrent à 590 € HT. Les audits flash sont à partir de 490 € HT et les implémentations sur mesure à partir de 990 € HT. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Axion-IA peut-il se déplacer rapidement à Saint-Mandé ?",
-      a: "Oui, nous nous déplaçons sur site à Saint-Mandé dans un délai de 5 jours ouvrés pour répondre à vos besoins en IA.",
+      q: "Sous quel délai Axion-IA peut-il se déplacer à Saint-Mandé ?",
+      a: "Notre équipe se déplace sur site à Saint-Mandé sous 5 jours ouvrés en moyenne, avec un accès direct depuis Paris en 10 minutes via la ligne 1 du métro (stations Saint-Mandé ou Bérault).",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Saint-Mandé ?",
-      a: "Nous garantissons la conformité RGPD en intégrant des pratiques de protection des données dans toutes nos interventions IA à Saint-Mandé.",
+      q: "Couvrez-vous les communes limitrophes de Saint-Mandé ?",
+      a: "Oui, nous intervenons aussi à Vincennes, Montreuil, Paris 12e et Paris 20e arrondissements, ainsi que sur l'ensemble du Val-de-Marne et de l'Île-de-France.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services d'Axion-IA à Saint-Mandé ?",
-      a: "Les secteurs du commerce de détail et de la programmation informatique à Saint-Mandé bénéficient particulièrement de nos services d'automatisation et d'optimisation IA.",
+      q: "Comment garantissez-vous la conformité RGPD à Saint-Mandé ?",
+      a: "Nous documentons systématiquement le traitement des données dans le cadre de chaque mission à Saint-Mandé : registre RGPD, hébergement UE, minimisation des données, et clauses contractuelles types intégrées au devis. Particulièrement adapté aux professions libérales soumises au secret professionnel.",
+    },
+    {
+      q: "Quels secteurs économiques de Saint-Mandé travaillez-vous le plus ?",
+      a: "À Saint-Mandé, nos clients sont majoritairement des TPE et PME des services, des professions libérales, du commerce de proximité et des équipes opérationnelles des sièges sociaux locaux (IGN, Météo-France, Ubisoft). Nous accompagnons plus rarement les ETI du secteur.",
+    },
+    {
+      q: "Proposez-vous du code custom ou du no-code à Saint-Mandé ?",
+      a: "Axion-IA conçoit exclusivement du code IA sur mesure pour les TPE/PME de Saint-Mandé. Pas de plateforme no-code : nos livrables sont des intégrations pérennes auditables et maintenables.",
     },
   ],
 };

@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manual fix 2026-05-28 — anti-doorway HCU 2024 (Wikipedia factual rewrite).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Chemillé-en-Anjou, région des Pays-de-la-Loire, où le Groupe Giffard et la Zone Industrielle de la Bergerie jouent un rôle clé dans l'économie locale.",
+    "Axion-IA accompagne les TPE et PME de Chemillé-en-Anjou, commune nouvelle de 21 999 habitants en Maine-et-Loire (Pays de la Loire). Née en 2015 du regroupement de 13 communes déléguées (Chemillé, Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, etc.), elle figure parmi les plus vastes communes de France métropolitaine (323,98 km²). Membre de Mauges Communauté, dans l'arrondissement de Cholet, son tissu économique repose sur l'horticulture, l'agroalimentaire, l'artisanat et le commerce de proximité. Axion-IA y intervient en cabinet IA pour automatiser tâches répétitives et flux administratifs des structures locales.",
   pitchEn:
-    "Axion-IA intervient à Chemillé-en-Anjou, région des Pays-de-la-Loire, où le Groupe Giffard et la Zone Industrielle de la Bergerie jouent un rôle clé dans l'économie locale.",
+    "Axion-IA accompagne les TPE et PME de Chemillé-en-Anjou, commune nouvelle de 21 999 habitants en Maine-et-Loire (Pays de la Loire). Née en 2015 du regroupement de 13 communes déléguées (Chemillé, Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, etc.), elle figure parmi les plus vastes communes de France métropolitaine (323,98 km²). Membre de Mauges Communauté, dans l'arrondissement de Cholet, son tissu économique repose sur l'horticulture, l'agroalimentaire, l'artisanat et le commerce de proximité. Axion-IA y intervient en cabinet IA pour automatiser tâches répétitives et flux administratifs des structures locales.",
   directAnswerFr:
-    "À Chemillé-en-Anjou, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans l'industrie alimentaire et le commerce de gros. Avec des interventions sur site, nous accompagnons les entreprises du secteur de la culture de plantes tout en respectant les spécificités locales. Nos solutions incluent des audits et implémentations, avec des tarifs publics consultables.",
+    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès 490 € HT. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
   directAnswerEn:
-    "À Chemillé-en-Anjou, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans l'industrie alimentaire et le commerce de gros. Avec des interventions sur site, nous accompagnons les entreprises du secteur de la culture de plantes tout en respectant les spécificités locales. Nos solutions incluent des audits et implémentations, avec des tarifs publics consultables.",
-  seoHook: "culture plantes & commerce gros",
+    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès 490 € HT. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
+  seoHook: "horticulture & agroalimentaire Mauges",
   ecosystemFr:
-    "Chemillé-en-Anjou est un pôle économique avec le Groupe Giffard et la Zone Industrielle de la Bergerie, soutenant des secteurs comme l'industrie alimentaire et le commerce de gros.",
+    "Chemillé-en-Anjou, membre de Mauges Communauté dans l'arrondissement de Cholet, s'étend sur 323,98 km² (4ᵉ plus grande commune de France métropolitaine). Son économie repose sur l'horticulture (la ville est historiquement réputée pour la culture des plantes médicinales et semences), l'agroalimentaire, l'artisanat, le commerce de proximité et la viticulture des AOC Anjou et Coteaux du Layon. Le tissu est dominé par les TPE et PME familiales réparties sur 13 communes déléguées.",
   ecosystemEn:
-    "Chemillé-en-Anjou est un pôle économique avec le Groupe Giffard et la Zone Industrielle de la Bergerie, soutenant des secteurs comme l'industrie alimentaire et le commerce de gros.",
+    "Chemillé-en-Anjou, membre de Mauges Communauté dans l'arrondissement de Cholet, s'étend sur 323,98 km² (4ᵉ plus grande commune de France métropolitaine). Son économie repose sur l'horticulture (la ville est historiquement réputée pour la culture des plantes médicinales et semences), l'agroalimentaire, l'artisanat, le commerce de proximité et la viticulture des AOC Anjou et Coteaux du Layon. Le tissu est dominé par les TPE et PME familiales réparties sur 13 communes déléguées.",
   distancesFr:
-    "Chemillé-en-Anjou est à 30 km de la gare TGV Angers Saint-Laud et à 90 km de l'aéroport de Nantes Atlantique.",
+    "Chemillé-en-Anjou est à ~30 km au sud d'Angers (gare TGV Angers-Saint-Laud), ~25 km au nord de Cholet et ~85 km à l'est de l'aéroport Nantes-Atlantique. Accès A87 (sortie Chemillé) à 5 min.",
   distancesEn:
-    "Chemillé-en-Anjou est à 30 km de la gare TGV Angers Saint-Laud et à 90 km de l'aéroport de Nantes Atlantique.",
-  topSectorsNaf: ["Culture de plantes", "Commerce de gros", "Industrie alimentaire"],
+    "Chemillé-en-Anjou est à ~30 km au sud d'Angers (gare TGV Angers-Saint-Laud), ~25 km au nord de Cholet et ~85 km à l'est de l'aéroport Nantes-Atlantique. Accès A87 (sortie Chemillé) à 5 min.",
+  topSectorsNaf: [
+    "Horticulture & culture de plantes",
+    "Industrie agroalimentaire",
+    "Artisanat & construction",
+    "Commerce de proximité",
+    "Viticulture (AOC Anjou, Coteaux du Layon)",
+    "Services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Chemillé-en-Anjou avec notre Audit Flash 4h dès 490 € HT.",
-      en: "Réaliser un audit à Chemillé-en-Anjou avec notre Audit Flash 4h dès 490 € HT.",
+      fr: "Audit IA flash 4h à Chemillé-en-Anjou dès 490 € HT — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
+      en: "Audit IA flash 4h à Chemillé-en-Anjou dès 490 € HT — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
     },
     interventions: {
-      fr: "Intervenir à Chemillé-en-Anjou pour optimiser vos processus sur site dès 590 € HT.",
-      en: "Intervenir à Chemillé-en-Anjou pour optimiser vos processus sur site dès 590 € HT.",
+      fr: "Intervention sur site à Chemillé-en-Anjou dès 590 € HT — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
+      en: "Intervention sur site à Chemillé-en-Anjou dès 590 € HT — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Chemillé-en-Anjou, en intégrant vos systèmes existants dès 990 € HT.",
-      en: "Implémenter des solutions IA à Chemillé-en-Anjou, en intégrant vos systèmes existants dès 990 € HT.",
+      fr: "Implémentation code custom à Chemillé-en-Anjou dès 990 € HT — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",
+      en: "Implémentation code custom à Chemillé-en-Anjou dès 990 € HT — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Chemillé-en-Anjou avec des sessions 1-to-1 dès 990 € HT.",
-      en: "Accompagner les dirigeants de Chemillé-en-Anjou avec des sessions 1-to-1 dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès 990 € HT — feuille de route IA réaliste, ROI mesurable, formation interne.",
+      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès 990 € HT — feuille de route IA réaliste, ROI mesurable, formation interne.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Chemillé-en-Anjou ?",
-      a: "Les interventions à Chemillé-en-Anjou commencent à partir de 590 € HT pour l'Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Chemillé-en-Anjou ?",
+      a: "Audit Flash 4h dès 490 € HT, intervention sur site dès 590 € HT, implémentation code custom dès 990 € HT. Tarifs publics consultables sur notre page Pricing — aucun forfait caché.",
     },
     {
-      q: "Comment Axion-IA gère-t-il les déplacements à Chemillé-en-Anjou ?",
-      a: "Nos experts se déplacent directement sur site à Chemillé-en-Anjou, garantissant une intervention rapide et efficace, sans frais supplémentaires de déplacement.",
+      q: "Vos consultants se déplacent-ils dans toutes les communes déléguées de Chemillé-en-Anjou ?",
+      a: "Oui. Nous intervenons sur le bourg de Chemillé ainsi que sur les 12 autres communes déléguées : Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, Sainte-Christine, Saint-Georges-des-Gardes, Saint-Lézin, La Salle-de-Vihiers, Neuvy-en-Mauges, La Chapelle-Rousselin.",
     },
     {
-      q: "Quels délais pour une intervention IA à Chemillé-en-Anjou ?",
-      a: "Nous nous engageons à intervenir dans les 5 jours ouvrés suivant votre demande à Chemillé-en-Anjou, afin de répondre rapidement à vos besoins.",
+      q: "Quels délais pour démarrer un projet IA à Chemillé-en-Anjou ?",
+      a: "Audit Flash réalisable sous 5 jours ouvrés après prise de contact. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon périmètre.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Chemillé-en-Anjou ?",
-      a: "Nos solutions sont conçues pour respecter le RGPD, avec une attention particulière aux données des entreprises de Chemillé-en-Anjou, garantissant la confidentialité et la sécurité.",
+      q: "Comment Axion-IA assure-t-il la conformité RGPD pour les entreprises de Chemillé-en-Anjou ?",
+      a: "Nous livrons du code custom hébergé en France (UE), pas de no-code dépendant d'API étrangères. DPA signé, registre des traitements, minimisation des données. Conforme RGPD et AI Act 2026.",
+    },
+    {
+      q: "Quels secteurs locaux bénéficient le plus de l'IA à Chemillé-en-Anjou ?",
+      a: "L'horticulture (gestion stocks plants/semences), l'agroalimentaire (traçabilité, planification production), l'artisanat (devis automatisés) et les exploitations viticoles AOC Anjou / Coteaux du Layon (suivi parcellaire, étiquetage).",
+    },
+    {
+      q: "Travaillez-vous aussi avec les TPE artisanales ou seulement les PME industrielles ?",
+      a: "Axion-IA cible en priorité les TPE (1-9 salariés) puis les PME (10-249 salariés) francophones. Les ETI sont l'exception, pas la cible. Notre forfait 590 € HT est calibré pour les structures artisanales et familiales.",
     },
   ],
 };

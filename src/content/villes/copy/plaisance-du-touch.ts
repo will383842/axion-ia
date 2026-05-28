@@ -1,67 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — anti-doorway HCU 2024 (Wikipedia facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Plaisance-du-Touch, une commune dynamique de l'Occitanie. Avec des entreprises comme LVMH et BNP Paribas dans l'écosystème national, nous apportons notre expertise IA pour optimiser les processus des entreprises locales.",
+    "Axion-IA accompagne les TPE et PME de Plaisance-du-Touch, commune de 21 079 habitants de la Haute-Garonne située à 13 km à l'ouest de Toulouse. Siège du Grand Ouest Toulousain Agglomération, la ville concentre 25,8 % de ses entreprises dans le commerce, le transport et l'hôtellerie-restauration, 18,4 % dans l'administration publique, la santé et l'éducation, et 16,7 % dans les services spécialisés. Nous y intervenons en code custom auprès des TPE et PME locales pour automatiser leurs process métier.",
   pitchEn:
-    "Axion-IA intervient à Plaisance-du-Touch, une commune dynamique de l'Occitanie. Avec des entreprises comme LVMH et BNP Paribas dans l'écosystème national, nous apportons notre expertise IA pour optimiser les processus des entreprises locales.",
+    "Axion-IA accompagne les TPE et PME de Plaisance-du-Touch, commune de 21 079 habitants de la Haute-Garonne située à 13 km à l'ouest de Toulouse. Siège du Grand Ouest Toulousain Agglomération, la ville concentre 25,8 % de ses entreprises dans le commerce, le transport et l'hôtellerie-restauration, 18,4 % dans l'administration publique, la santé et l'éducation, et 16,7 % dans les services spécialisés. Nous y intervenons en code custom auprès des TPE et PME locales pour automatiser leurs process métier.",
   directAnswerFr:
-    "À Plaisance-du-Touch, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme Sanofi et Renault présents dans l'écosystème national, nous offrons des audits, interventions et implémentations pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+    "Axion-IA est un cabinet IA qui se déplace à Plaisance-du-Touch (Haute-Garonne, 21 079 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Siège du Grand Ouest Toulousain Agglomération, la commune compte 4 497 emplois et un tissu dominé par le commerce, les services et la santé. Nous y servons en priorité les TPE et PME du commerce de détail (autour de l'hypermarché Corail), de la restauration, de la construction et des services administratifs, avec un audit Flash dès 490 € HT.",
   directAnswerEn:
-    "À Plaisance-du-Touch, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme Sanofi et Renault présents dans l'écosystème national, nous offrons des audits, interventions et implémentations pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet IA qui se déplace à Plaisance-du-Touch (Haute-Garonne, 21 079 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Siège du Grand Ouest Toulousain Agglomération, la commune compte 4 497 emplois et un tissu dominé par le commerce, les services et la santé. Nous y servons en priorité les TPE et PME du commerce de détail (autour de l'hypermarché Corail), de la restauration, de la construction et des services administratifs, avec un audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME · commerce, services, santé",
   ecosystemFr:
-    "Plaisance-du-Touch bénéficie de la proximité de Toulouse, où des entreprises comme Airbus et Capgemini influencent l'économie locale. Ce contexte offre un terrain fertile pour l'innovation et l'optimisation des processus via l'IA.",
+    "Plaisance-du-Touch siège du Grand Ouest Toulousain Agglomération, à 13 km de Toulouse. Le tissu économique compte 4 497 emplois, un taux de chômage de 7,4 % (inférieur à la moyenne nationale) et un taux d'emploi de 69 %. L'hypermarché Corail est un employeur majeur, et les TPE/PME du commerce, du transport, de la restauration et des services représentent plus de 60 % des établissements actifs de la commune.",
   ecosystemEn:
-    "Plaisance-du-Touch bénéficie de la proximité de Toulouse, où des entreprises comme Airbus et Capgemini influencent l'économie locale. Ce contexte offre un terrain fertile pour l'innovation et l'optimisation des processus via l'IA.",
+    "Plaisance-du-Touch siège du Grand Ouest Toulousain Agglomération, à 13 km de Toulouse. Le tissu économique compte 4 497 emplois, un taux de chômage de 7,4 % (inférieur à la moyenne nationale) et un taux d'emploi de 69 %. L'hypermarché Corail est un employeur majeur, et les TPE/PME du commerce, du transport, de la restauration et des services représentent plus de 60 % des établissements actifs de la commune.",
   distancesFr:
-    "La gare TGV de Toulouse-Matabiau est à 15 km, et l'aéroport de Toulouse-Blagnac à 10 km de Plaisance-du-Touch.",
+    "Plaisance-du-Touch est à 13 km à l'ouest de Toulouse, à environ 15 km de la gare Toulouse-Matabiau et 10 km de l'aéroport Toulouse-Blagnac. La ligne Linéo 3 (bus à haut niveau de service) la relie à la station Arènes ; les lignes 55, 67 et 116 complètent la desserte régionale.",
   distancesEn:
-    "La gare TGV de Toulouse-Matabiau est à 15 km, et l'aéroport de Toulouse-Blagnac à 10 km de Plaisance-du-Touch.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Transports terrestres", "Restauration"],
+    "Plaisance-du-Touch est à 13 km à l'ouest de Toulouse, à environ 15 km de la gare Toulouse-Matabiau et 10 km de l'aéroport Toulouse-Blagnac. La ligne Linéo 3 (bus à haut niveau de service) la relie à la station Arènes ; les lignes 55, 67 et 116 complètent la desserte régionale.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Restauration et hôtellerie",
+    "Construction",
+    "Transports terrestres",
+    "Services aux entreprises",
+    "Santé et action sociale",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Plaisance-du-Touch pour identifier les opportunités d'automatisation — à partir de 490 € HT.",
-      en: "Réaliser un audit à Plaisance-du-Touch pour identifier les opportunités d'automatisation — à partir de 490 € HT.",
+      fr: "Audit Flash chez les TPE et PME de Plaisance-du-Touch dès 490 € HT : diagnostic des process commerce, restauration, construction et services, avec plan d'automatisation priorisé.",
+      en: "Audit Flash chez les TPE et PME de Plaisance-du-Touch dès 490 € HT : diagnostic des process commerce, restauration, construction et services, avec plan d'automatisation priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Plaisance-du-Touch pour optimiser les processus administratifs — intervention dès 590 € HT.",
-      en: "Intervenir à Plaisance-du-Touch pour optimiser les processus administratifs — intervention dès 590 € HT.",
+      fr: "Intervention sur site à Plaisance-du-Touch dès 590 € HT : développement code custom pour automatiser devis, plannings, relances et facturation des TPE/PME locales.",
+      en: "Intervention sur site à Plaisance-du-Touch dès 590 € HT : développement code custom pour automatiser devis, plannings, relances et facturation des TPE/PME locales.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Plaisance-du-Touch pour automatiser devis et relances — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Plaisance-du-Touch pour automatiser devis et relances — dès 990 € HT.",
+      fr: "Implémentation IA à Plaisance-du-Touch : connecteurs code custom entre votre caisse, votre CRM, votre logiciel de gestion et vos outils RH, sans no-code.",
+      en: "Implémentation IA à Plaisance-du-Touch : connecteurs code custom entre votre caisse, votre CRM, votre logiciel de gestion et vos outils RH, sans no-code.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants de Plaisance-du-Touch pour une intégration IA réussie — à partir de 990 € HT.",
-      en: "Accompagner en 1-to-1 les dirigeants de Plaisance-du-Touch pour une intégration IA réussie — à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME de Plaisance-du-Touch : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Grand Ouest Toulousain.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME de Plaisance-du-Touch : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Grand Ouest Toulousain.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Plaisance-du-Touch ?",
-      a: "Les interventions IA à Plaisance-du-Touch commencent à partir de 590 € HT. Pour plus de détails, consultez nos tarifs publics sur le site.",
+      q: "Quels sont les tarifs publics d'Axion-IA à Plaisance-du-Touch ?",
+      a: "L'Audit Flash démarre à 490 € HT (4 h sur site). Les interventions code custom démarrent à 590 € HT. Les sessions un-à-un dirigeants débutent à 990 € HT. Grille complète sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une implémentation IA à Plaisance-du-Touch ?",
-      a: "Nous nous déplaçons sur site pour une implémentation IA complète, en tenant compte des spécificités de votre entreprise et de l'écosystème local.",
+      q: "Sous quels délais intervenez-vous à Plaisance-du-Touch ?",
+      a: "Nous nous engageons à intervenir sur site à Plaisance-du-Touch sous 5 jours ouvrés après validation de votre demande, depuis Toulouse via Linéo 3 ou la rocade ouest.",
     },
     {
-      q: "Axion-IA peut-il intervenir rapidement à Plaisance-du-Touch ?",
-      a: "Oui, nous nous engageons à intervenir sur site à Plaisance-du-Touch dans les 5 jours ouvrés suivant votre demande.",
+      q: "Intervenez-vous dans les communes proches de Plaisance-du-Touch ?",
+      a: "Oui. Nous nous déplaçons à Tournefeuille, Colomiers, Cugnaux, La Salvetat-Saint-Gilles, Léguevin, Pibrac, Fonsorbes, Frouzins, Villeneuve-Tolosane et Fontenilles, ainsi que sur tout le Grand Ouest Toulousain.",
+    },
+    {
+      q: "Quels secteurs locaux accompagnez-vous à Plaisance-du-Touch ?",
+      a: "Principalement les TPE et PME du commerce de détail (25,8 % du tissu local avec transport et hôtellerie), de la restauration, de la construction, des transports terrestres et des services administratifs et de santé.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Plaisance-du-Touch ?",
-      a: "Nous intégrons des pratiques conformes au RGPD dans toutes nos solutions IA, assurant la protection des données personnelles de vos clients.",
+      a: "Toutes nos solutions code custom intègrent le RGPD par conception : hébergement UE, minimisation des données, registre des traitements et clauses DPA fournies au démarrage du projet.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Plaisance-du-Touch ?",
-      a: "Oui, nous offrons des sessions de formation IA pour les dirigeants et équipes opérationnelles à Plaisance-du-Touch, adaptées à vos besoins spécifiques.",
+      q: "Faites-vous du no-code pour les entreprises de Plaisance-du-Touch ?",
+      a: "Non. Axion-IA développe exclusivement en code custom (Python, TypeScript, SQL) pour garantir la maintenabilité, la performance et la portabilité de vos automatisations à long terme.",
     },
   ],
 };

@@ -1,68 +1,74 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — Anti-doorway HCU 2024 (sources Wikipedia FR).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const AUXERRE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Auxerre pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs comme Yoplait et Ciments Calcia, la ville offre un environnement propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME d'Auxerre, préfecture de l'Yonne (35 097 habitants), dans l'adoption d'outils d'intelligence artificielle développés sur mesure. Principal bassin d'emploi du département, la ville concentre commerces, administrations, viticulture (proximité du vignoble de Chablis) et tourisme patrimonial autour de la cathédrale Saint-Étienne et de l'abbaye Saint-Germain. Notre cabinet code des solutions IA sur mesure, sans no-code, pour les dirigeants auxerrois cherchant à automatiser leurs processus métiers.",
   pitchEn:
-    "Axion-IA intervient à Auxerre pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs comme Yoplait et Ciments Calcia, la ville offre un environnement propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME d'Auxerre, préfecture de l'Yonne (35 097 habitants), dans l'adoption d'outils d'intelligence artificielle développés sur mesure. Principal bassin d'emploi du département, la ville concentre commerces, administrations, viticulture (proximité du vignoble de Chablis) et tourisme patrimonial autour de la cathédrale Saint-Étienne et de l'abbaye Saint-Germain. Notre cabinet code des solutions IA sur mesure, sans no-code, pour les dirigeants auxerrois cherchant à automatiser leurs processus métiers.",
   directAnswerFr:
-    "Auxerre, avec ses 3 000 établissements actifs, est un pôle économique en Bourgogne-Franche-Comté. Axion-IA y propose des interventions IA sur site, notamment pour les entreprises du secteur de l'industrie alimentaire comme Yoplait. Nous offrons des audits et des implémentations, adaptés aux besoins spécifiques des entreprises locales.",
+    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès 490 € HT.",
   directAnswerEn:
-    "Auxerre, avec ses 3 000 établissements actifs, est un pôle économique en Bourgogne-Franche-Comté. Axion-IA y propose des interventions IA sur site, notamment pour les entreprises du secteur de l'industrie alimentaire comme Yoplait. Nous offrons des audits et des implémentations, adaptés aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès 490 € HT.",
+  seoHook: "commerce, viticulture & administration publique",
   ecosystemFr:
-    "Le parc d'activités des Clairions à Auxerre accueille des entreprises telles que Yoplait et Ciments Calcia, illustrant la diversité économique de la région. Axion-IA s'inscrit dans cet écosystème en proposant des solutions IA adaptées.",
+    "Auxerre est le principal bassin d'emploi de l'Yonne, structuré autour de la préfecture, du commerce de détail, du tourisme patrimonial et de la viticulture (Chablisien à proximité). Desservie par la gare d'Auxerre-Saint-Gervais (ligne Paris-Bercy/Dijon) et par l'autoroute A6 (sorties 19 et 20), la ville bénéficie de l'aéroport régional d'Auxerre-Branches. Le centre historique attire les visiteurs autour de la cathédrale Saint-Étienne, de l'abbaye Saint-Germain et de la tour de l'Horloge.",
   ecosystemEn:
-    "Le parc d'activités des Clairions à Auxerre accueille des entreprises telles que Yoplait et Ciments Calcia, illustrant la diversité économique de la région. Axion-IA s'inscrit dans cet écosystème en proposant des solutions IA adaptées.",
+    "Auxerre est le principal bassin d'emploi de l'Yonne, structuré autour de la préfecture, du commerce de détail, du tourisme patrimonial et de la viticulture (Chablisien à proximité). Desservie par la gare d'Auxerre-Saint-Gervais (ligne Paris-Bercy/Dijon) et par l'autoroute A6 (sorties 19 et 20), la ville bénéficie de l'aéroport régional d'Auxerre-Branches. Le centre historique attire les visiteurs autour de la cathédrale Saint-Étienne, de l'abbaye Saint-Germain et de la tour de l'Horloge.",
   distancesFr:
-    "Auxerre est située à 20 km de la gare TGV de Laroche-Migennes et à 150 km de l'aéroport de Paris-Orly.",
+    "Auxerre est à 1h35 en train de Paris-Bercy depuis la gare d'Auxerre-Saint-Gervais, à 1h55 de Dijon, et à environ 170 km au sud-est de Paris par l'autoroute A6 (sorties 19 et 20). Communes limitrophes : Monéteau, Perrigny, Saint-Georges-sur-Baulche, Augy, Champs-sur-Yonne, Venoy, Villefargeau, Quenne, Chevannes, Villeneuve-Saint-Salves.",
   distancesEn:
-    "Auxerre est située à 20 km de la gare TGV de Laroche-Migennes et à 150 km de l'aéroport de Paris-Orly.",
+    "Auxerre est à 1h35 en train de Paris-Bercy depuis la gare d'Auxerre-Saint-Gervais, à 1h55 de Dijon, et à environ 170 km au sud-est de Paris par l'autoroute A6 (sorties 19 et 20). Communes limitrophes : Monéteau, Perrigny, Saint-Georges-sur-Baulche, Augy, Champs-sur-Yonne, Venoy, Villefargeau, Quenne, Chevannes, Villeneuve-Saint-Salves.",
   topSectorsNaf: [
     "Commerce de détail",
-    "Transports terrestres",
+    "Administration publique",
+    "Viticulture (Chablisien)",
+    "Tourisme et hébergement",
     "Industrie alimentaire",
-    "Construction",
+    "Transports terrestres",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Auxerre pour identifier les processus automatisables chez Yoplait — dès 490 € HT.",
-      en: "Réaliser un audit à Auxerre pour identifier les processus automatisables chez Yoplait — dès 490 € HT.",
+      fr: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès 490 € HT (Audit Flash 4 h).",
+      en: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès 490 € HT (Audit Flash 4 h).",
     },
     interventions: {
-      fr: "Intervenir à Auxerre pour optimiser les opérations des entreprises du parc des Clairions — efficacité accrue.",
-      en: "Intervenir à Auxerre pour optimiser les opérations des entreprises du parc des Clairions — efficacité accrue.",
+      fr: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Intervention Essentielle dès 590 € HT.",
+      en: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Auxerre dans l'industrie alimentaire — automatisation des tâches répétitives.",
-      en: "Implémenter des solutions IA à Auxerre dans l'industrie alimentaire — automatisation des tâches répétitives.",
+      fr: "Implémentation IA à Auxerre dans le commerce, le tourisme ou l'industrie alimentaire — code custom intégré à vos outils existants, dès 990 € HT.",
+      en: "Implémentation IA à Auxerre dans le commerce, le tourisme ou l'industrie alimentaire — code custom intégré à vos outils existants, dès 990 € HT.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Auxerre pour les dirigeants — stratégie IA personnalisée.",
-      en: "Proposer des sessions 1-to-1 à Auxerre pour les dirigeants — stratégie IA personnalisée.",
+      fr: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès 990 € HT.",
+      en: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Auxerre ?",
-      a: "Les audits IA à Auxerre commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'un audit IA à Auxerre ?",
+      a: "Les audits IA à Auxerre démarrent à 490 € HT pour un Audit Flash de 4 heures sur site, puis 990 € HT pour un Audit Approfondi. Tarifs publics affichés, sans devis caché.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Auxerre ?",
-      a: "Notre équipe se déplace sur site à Auxerre pour réaliser des interventions personnalisées, adaptées aux besoins spécifiques des entreprises locales.",
+      q: "Williams se déplace-t-il à Auxerre depuis Paris ?",
+      a: "Oui, Williams se déplace à Auxerre depuis Paris (1h35 en train depuis Paris-Bercy, ou environ 170 km par l'A6) pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
     },
     {
-      q: "Quels délais pour une intervention IA à Auxerre ?",
-      a: "Nous nous engageons à intervenir à Auxerre dans un délai de 5 jours ouvrés après validation de votre demande.",
+      q: "Quels secteurs auxerrois Axion-IA accompagne-t-il ?",
+      a: "Nous accompagnons en priorité les TPE et PME d'Auxerre dans le commerce de détail, l'administration publique, la viticulture (Chablisien), le tourisme patrimonial et l'industrie alimentaire, secteurs dominants du bassin d'emploi de l'Yonne.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Auxerre ?",
-      a: "Axion-IA garantit la conformité RGPD de ses solutions IA en respectant les réglementations en vigueur et en assurant la sécurité des données traitées.",
+      q: "Intervenez-vous dans les communes proches d'Auxerre ?",
+      a: "Oui, nous intervenons à Monéteau, Perrigny, Saint-Georges-sur-Baulche, Augy, Champs-sur-Yonne, Venoy, Villefargeau, Quenne, Chevannes et Villeneuve-Saint-Salves, sans frais de déplacement supplémentaires depuis Auxerre.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Auxerre ?",
+      a: "Toutes nos solutions IA déployées à Auxerre respectent le RGPD : code custom hébergé en UE, anonymisation des données sensibles, contrats de sous-traitance signés et journalisation des accès conforme aux exigences de la CNIL.",
     },
   ],
 };

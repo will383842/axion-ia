@@ -1,67 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// HCU-2024 fix 2026-05-28 : contenu factuel Wikipédia, anti-doorway.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const DENAIN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Denain, au cœur de la région des Hauts-de-France, pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Nos services sont conçus pour répondre aux besoins spécifiques des secteurs dominants tels que la métallurgie et le commerce de détail.",
+    "Axion-IA accompagne les TPE et PME de Denain, sous-préfecture du Nord rattachée à la Communauté d'agglomération de la Porte du Hainaut (20 665 habitants en 2023). Ancien bassin houiller — quinze fosses ayant produit 34 millions de tonnes de charbon — et berceau sidérurgique des locomotives Derosne et Cail, la commune a tourné la page de l'industrie lourde et accueille désormais la plateforme logistique Maersk ouverte en septembre 2024 sur le site de l'ex-Usinor. Nous outillons les dirigeants locaux avec du code Python et TypeScript hébergé en France, sans no-code, pour automatiser devis, factures, suivi de commandes et reporting d'atelier. Tarifs publics fixes : Audit Flash 4 h à 490 € HT, intervention sur site 590 € HT, implémentation 990 € HT. Les ETI Denaisiennes complètent occasionnellement notre carnet, mais le cœur de cible reste l'artisan, le commerçant et la PME industrielle de moins de 50 salariés.",
   pitchEn:
-    "Axion-IA intervient à Denain, au cœur de la région des Hauts-de-France, pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Nos services sont conçus pour répondre aux besoins spécifiques des secteurs dominants tels que la métallurgie et le commerce de détail.",
+    "Axion-IA accompagne les TPE et PME de Denain, sous-préfecture du Nord rattachée à la Communauté d'agglomération de la Porte du Hainaut (20 665 habitants en 2023). Ancien bassin houiller — quinze fosses ayant produit 34 millions de tonnes de charbon — et berceau sidérurgique des locomotives Derosne et Cail, la commune a tourné la page de l'industrie lourde et accueille désormais la plateforme logistique Maersk ouverte en septembre 2024 sur le site de l'ex-Usinor. Nous outillons les dirigeants locaux avec du code Python et TypeScript hébergé en France, sans no-code, pour automatiser devis, factures, suivi de commandes et reporting d'atelier. Tarifs publics fixes : Audit Flash 4 h à 490 € HT, intervention sur site 590 € HT, implémentation 990 € HT. Les ETI Denaisiennes complètent occasionnellement notre carnet, mais le cœur de cible reste l'artisan, le commerçant et la PME industrielle de moins de 50 salariés.",
   directAnswerFr:
-    "Denain, située dans le département du Nord, est un pôle industriel clé avec la présence d'ArcelorMittal. Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nos audits, permettent d'identifier des solutions IA concrètes et adaptées aux besoins des entreprises locales, notamment dans les secteurs de la métallurgie et de la construction.",
+    "Axion-IA se déplace à Denain (Nord, Hauts-de-France) pour auditer et implémenter des automatisations IA chez les TPE et PME du bassin de la Porte du Hainaut. Notre Audit Flash de 4 heures à 490 € HT cartographie les tâches répétitives (saisie, relances clients, devis, reporting) puis recommande des micro-automatisations en code custom Python/TypeScript hébergées en France. Aucun no-code, aucune boîte noire : tout reste auditable et conforme RGPD. Intervention sur site à 590 € HT sous cinq jours ouvrés, accompagnement individuel 1-to-1 à 990 € HT pour les dirigeants. Les PME industrielles héritières du tissu métallurgique et logistique denaisien tirent un bénéfice rapide des gains de productivité administratifs.",
   directAnswerEn:
-    "Denain, située dans le département du Nord, est un pôle industriel clé avec la présence d'ArcelorMittal. Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nos audits, permettent d'identifier des solutions IA concrètes et adaptées aux besoins des entreprises locales, notamment dans les secteurs de la métallurgie et de la construction.",
-  seoHook: "métallurgie & construction",
+    "Axion-IA se déplace à Denain (Nord, Hauts-de-France) pour auditer et implémenter des automatisations IA chez les TPE et PME du bassin de la Porte du Hainaut. Notre Audit Flash de 4 heures à 490 € HT cartographie les tâches répétitives (saisie, relances clients, devis, reporting) puis recommande des micro-automatisations en code custom Python/TypeScript hébergées en France. Aucun no-code, aucune boîte noire : tout reste auditable et conforme RGPD. Intervention sur site à 590 € HT sous cinq jours ouvrés, accompagnement individuel 1-to-1 à 990 € HT pour les dirigeants. Les PME industrielles héritières du tissu métallurgique et logistique denaisien tirent un bénéfice rapide des gains de productivité administratifs.",
+  seoHook: "logistique & PME industrielles",
   ecosystemFr:
-    "Denain bénéficie d'un tissu économique riche avec des entreprises comme ArcelorMittal. Le secteur de la métallurgie y est particulièrement présent, tout comme à Valenciennes et Douchy-les-Mines, renforçant l'importance de l'innovation technologique dans la région.",
+    "Le tissu économique denaisien s'articule autour de la logistique (plateforme Maersk-Amazon cross-docking sur l'ancien site Usinor depuis 2024), des PME mécaniques et de la sous-traitance automobile (proximité de Toyota Onnaing et de Stellantis à Valenciennes-Trith). Les communes voisines Douchy-les-Mines, Escaudain, Lourches, Haulchin, Haveluy, Wallers, Oisy et Wavrechain-sous-Denain forment un bassin d'emploi continu avec Valenciennes (10 km). Le patrimoine minier UNESCO — Terril Renard, Fosse Mathilde, Cité Chabaud-Latour — irrigue un tourisme industriel naissant.",
   ecosystemEn:
-    "Denain bénéficie d'un tissu économique riche avec des entreprises comme ArcelorMittal. Le secteur de la métallurgie y est particulièrement présent, tout comme à Valenciennes et Douchy-les-Mines, renforçant l'importance de l'innovation technologique dans la région.",
+    "Le tissu économique denaisien s'articule autour de la logistique (plateforme Maersk-Amazon cross-docking sur l'ancien site Usinor depuis 2024), des PME mécaniques et de la sous-traitance automobile (proximité de Toyota Onnaing et de Stellantis à Valenciennes-Trith). Les communes voisines Douchy-les-Mines, Escaudain, Lourches, Haulchin, Haveluy, Wallers, Oisy et Wavrechain-sous-Denain forment un bassin d'emploi continu avec Valenciennes (10 km). Le patrimoine minier UNESCO — Terril Renard, Fosse Mathilde, Cité Chabaud-Latour — irrigue un tourisme industriel naissant.",
   distancesFr:
-    "Denain est située à 10 km de la gare TGV Valenciennes et à 40 km de l'aéroport Lille-Lesquin.",
+    "Denain est à 10 km au sud-ouest de Valenciennes, 25 km de Douai, 45 km de Lille, accessible par l'A2 (E19) sortie 18, la gare SNCF avec TER vers Valenciennes et le tramway T1 valenciennois terminus Espace Villars.",
   distancesEn:
-    "Denain est située à 10 km de la gare TGV Valenciennes et à 40 km de l'aéroport Lille-Lesquin.",
-  topSectorsNaf: ["Métallurgie", "Construction", "Commerce de détail"],
+    "Denain est à 10 km au sud-ouest de Valenciennes, 25 km de Douai, 45 km de Lille, accessible par l'A2 (E19) sortie 18, la gare SNCF avec TER vers Valenciennes et le tramway T1 valenciennois terminus Espace Villars.",
+  topSectorsNaf: [
+    "Logistique et entreposage",
+    "Métallurgie et travail des métaux",
+    "Construction et second œuvre",
+    "Commerce de détail",
+    "Sous-traitance automobile",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Denain pour identifier des opportunités IA dans la métallurgie — à partir de 490 € HT.",
-      en: "Réaliser un audit à Denain pour identifier des opportunités IA dans la métallurgie — à partir de 490 € HT.",
+      fr: "Audit Flash 4 h à Denain (490 € HT) pour cartographier les tâches répétitives des TPE et PME logistiques, mécaniques ou commerciales du bassin de la Porte du Hainaut.",
+      en: "Audit Flash 4 h à Denain (490 € HT) pour cartographier les tâches répétitives des TPE et PME logistiques, mécaniques ou commerciales du bassin de la Porte du Hainaut.",
     },
     interventions: {
-      fr: "Intervenir à Denain pour automatiser les tâches administratives et commerciales — intervention dès 590 € HT.",
-      en: "Intervenir à Denain pour automatiser les tâches administratives et commerciales — intervention dès 590 € HT.",
+      fr: "Intervention sur site à Denain dès 590 € HT en cinq jours ouvrés : automatisation devis, factures, reporting d'atelier, suivi de commandes pour artisans et PME.",
+      en: "Intervention sur site à Denain dès 590 € HT en cinq jours ouvrés : automatisation devis, factures, reporting d'atelier, suivi de commandes pour artisans et PME.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Denain, adaptées aux besoins du commerce de détail — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Denain, adaptées aux besoins du commerce de détail — à partir de 990 € HT.",
+      fr: "Implémentation IA code custom à Denain à partir de 990 € HT pour TPE et PME industrielles ou logistiques voisines de la plateforme Maersk.",
+      en: "Implémentation IA code custom à Denain à partir de 990 € HT pour TPE et PME industrielles ou logistiques voisines de la plateforme Maersk.",
     },
     unAUn: {
-      fr: "Accompagner individuellement les dirigeants de Denain pour une adoption rapide de l'IA — à partir de 990 € HT.",
-      en: "Accompagner individuellement les dirigeants de Denain pour une adoption rapide de l'IA — à partir de 990 € HT.",
+      fr: "Accompagnement 1-to-1 des dirigeants denaisiens à 990 € HT pour adopter l'IA sans dépendre du no-code, avec code auditable hébergé en France.",
+      en: "Accompagnement 1-to-1 des dirigeants denaisiens à 990 € HT pour adopter l'IA sans dépendre du no-code, avec code auditable hébergé en France.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Denain ?",
-      a: "Nos interventions à Denain commencent à partir de 590 € HT. Les tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Denain ?",
+      a: "Audit Flash 4 h à 490 € HT, intervention sur site à 590 € HT, implémentation à 990 € HT, accompagnement 1-to-1 à 990 € HT. Tarifs publics fixes, sans abonnement ni licence no-code.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Denain pour une intervention ?",
-      a: "Nos experts se déplacent sur site à Denain dans un délai de cinq jours ouvrés pour assurer une intervention rapide et efficace.",
+      q: "Quels délais pour une intervention à Denain depuis la commande ?",
+      a: "Nous nous déplaçons à Denain sous cinq jours ouvrés, l'Audit Flash est livré en 4 heures sur site, les implémentations courantes (devis, factures, relances) sont déployées en deux à trois semaines.",
     },
     {
-      q: "Quels sont les délais pour un audit à Denain ?",
-      a: "Un audit Flash de 4 heures peut être réalisé à Denain à partir de 490 € HT, généralement dans les cinq jours ouvrés suivant la demande.",
+      q: "Intervenez-vous dans les communes proches de Denain ?",
+      a: "Oui, nous couvrons sans surcoût Douchy-les-Mines, Escaudain, Lourches, Haulchin, Haveluy, Wallers, Oisy, Wavrechain-sous-Denain ainsi que Valenciennes à 10 km.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Denain ?",
-      a: "Oui, toutes nos interventions à Denain sont conformes au RGPD, garantissant la protection des données de nos clients.",
+      q: "Vos automatisations à Denain sont-elles conformes au RGPD ?",
+      a: "Oui : code Python et TypeScript hébergé en France, aucun transfert hors UE par défaut, registre des traitements fourni, droits d'accès et d'effacement implémentés dès la phase d'audit.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Denain ?",
-      a: "Nous proposons des accompagnements 1-to-1 pour les dirigeants à Denain, à partir de 990 € HT, pour faciliter l'adoption de l'IA.",
+      q: "Quels secteurs denaisiens ciblez-vous en priorité ?",
+      a: "Logistique (proximité plateforme Maersk-Amazon ex-Usinor), métallurgie et mécanique, sous-traitance automobile (Toyota Onnaing, Stellantis Valenciennes), commerce de détail et artisans du bâtiment.",
+    },
+    {
+      q: "Faut-il être une ETI pour travailler avec Axion-IA à Denain ?",
+      a: "Non : notre cœur de cible est la TPE et la PME denaisienne de moins de 50 salariés. Nous accompagnons aussi quelques ETI, mais les tarifs publics 490-990 € HT sont calibrés pour les artisans, commerçants et PME industrielles locales.",
     },
   ],
 };

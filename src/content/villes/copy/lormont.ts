@@ -2,66 +2,77 @@
 // Quality score: 60 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// 2026-05-28 — Sprint anti-doorway HCU 2024 : réécriture factuelle Wikipedia.
 
 import type { VilleCopy } from "./types";
 
 export const LORMONT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Lormont pour optimiser les processus des entreprises locales, en s'appuyant sur notre expertise nationale et des outils éprouvés. Nous aidons les entreprises de Lormont, proches de Bordeaux et de la Zone Industrielle des Quatre Pavillons.",
+    "Axion-IA accompagne les TPE et PME de Lormont, commune de 25 769 habitants située sur la rive droite de la Garonne à 6 km au nord de Bordeaux. Membre de Bordeaux Métropole, Lormont concentre une activité économique structurée autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet et de zones industrielles couvrant environ 59,5 hectares. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, artisans et prestataires de services locaux, avec un accès direct par les tramways A et E.",
   pitchEn:
-    "Axion-IA intervient à Lormont pour optimiser les processus des entreprises locales, en s'appuyant sur notre expertise nationale et des outils éprouvés. Nous aidons les entreprises de Lormont, proches de Bordeaux et de la Zone Industrielle des Quatre Pavillons.",
+    "Axion-IA accompagne les TPE et PME de Lormont, commune de 25 769 habitants située sur la rive droite de la Garonne à 6 km au nord de Bordeaux. Membre de Bordeaux Métropole, Lormont concentre une activité économique structurée autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet et de zones industrielles couvrant environ 59,5 hectares. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, artisans et prestataires de services locaux, avec un accès direct par les tramways A et E.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Lormont, optimisant les opérations des entreprises locales. Avec des services tels que l'Audit Flash sur mesure et l'Intervention Essentielle, nous apportons des solutions concrètes. Nos prestations incluent également l'implémentation IA, pour une transformation rapide et efficace.",
+    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nos équipes couvrent également les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac via le tramway et la rocade A630.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Lormont, optimisant les opérations des entreprises locales. Avec des services tels que l'Audit Flash sur mesure et l'Intervention Essentielle, nous apportons des solutions concrètes. Nos prestations incluent également l'implémentation IA, pour une transformation rapide et efficace.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nos équipes couvrent également les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac via le tramway et la rocade A630.",
+  seoHook: "commerce, logistique portuaire & BTP",
   ecosystemFr:
-    "Lormont bénéficie de la proximité de Bordeaux, un centre économique où se trouvent des entreprises comme Sanofi et Renault. La Zone Industrielle des Quatre Pavillons contribue également à l'activité économique locale.",
+    "Lormont s'appuie sur trois pôles économiques majeurs : les centres commerciaux des 4 Pavillons et de Génicart, la logistique portuaire de Carriet sur la Garonne, et environ 59,5 hectares de zones industrielles. La commune est intégrée à Bordeaux Métropole, traversée par les tramways A et E, et reliée à la rocade A630 par quatre sorties. Le pont d'Aquitaine assure depuis 1967 la liaison rive gauche–rive droite vers Bordeaux.",
   ecosystemEn:
-    "Lormont bénéficie de la proximité de Bordeaux, un centre économique où se trouvent des entreprises comme Sanofi et Renault. La Zone Industrielle des Quatre Pavillons contribue également à l'activité économique locale.",
+    "Lormont s'appuie sur trois pôles économiques majeurs : les centres commerciaux des 4 Pavillons et de Génicart, la logistique portuaire de Carriet sur la Garonne, et environ 59,5 hectares de zones industrielles. La commune est intégrée à Bordeaux Métropole, traversée par les tramways A et E, et reliée à la rocade A630 par quatre sorties. Le pont d'Aquitaine assure depuis 1967 la liaison rive gauche–rive droite vers Bordeaux.",
   distancesFr:
-    "Lormont est situé à 10 km de la Gare de Bordeaux-Saint-Jean et à 20 km de l'Aéroport de Bordeaux-Mérignac.",
+    "Lormont est située à 6 km au nord du centre de Bordeaux, à 15 minutes en tramway A ou E de la place de la Bourse, et à 18 km de l'aéroport de Bordeaux-Mérignac via la rocade A630.",
   distancesEn:
-    "Lormont est situé à 10 km de la Gare de Bordeaux-Saint-Jean et à 20 km de l'Aéroport de Bordeaux-Mérignac.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Lormont est située à 6 km au nord du centre de Bordeaux, à 15 minutes en tramway A ou E de la place de la Bourse, et à 18 km de l'aéroport de Bordeaux-Mérignac via la rocade A630.",
+  topSectorsNaf: [
+    "Commerce de détail (centres 4 Pavillons & Génicart)",
+    "Logistique portuaire et transports",
+    "Travaux de construction (BTP)",
+    "Restauration",
+    "Services aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Lormont permet d'identifier les processus à automatiser, optimisant ainsi les ressources locales.",
-      en: "Réaliser un audit à Lormont permet d'identifier les processus à automatiser, optimisant ainsi les ressources locales.",
+      fr: "À Lormont, nos audits IA ciblent les TPE/PME des centres commerciaux des 4 Pavillons et de Génicart, ainsi que les artisans et logisticiens de la rive droite, pour prioriser 2 à 3 cas d'usage rentables.",
+      en: "À Lormont, nos audits IA ciblent les TPE/PME des centres commerciaux des 4 Pavillons et de Génicart, ainsi que les artisans et logisticiens de la rive droite, pour prioriser 2 à 3 cas d'usage rentables.",
     },
     interventions: {
-      fr: "Intervenir à Lormont pour automatiser les tâches administratives, réduisant les coûts et améliorant l'efficacité.",
-      en: "Intervenir à Lormont pour automatiser les tâches administratives, réduisant les coûts et améliorant l'efficacité.",
+      fr: "Nos interventions à Lormont automatisent typiquement des tâches répétitives de PME locales : devis BTP, suivi commercial centres 4 Pavillons et Génicart, ou réponses clients commerce et restauration.",
+      en: "Nos interventions à Lormont automatisent typiquement des tâches répétitives de PME locales : devis BTP, suivi commercial centres 4 Pavillons et Génicart, ou réponses clients commerce et restauration.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Lormont, intégrant les systèmes existants pour une efficacité accrue.",
-      en: "Implémenter des solutions IA à Lormont, intégrant les systèmes existants pour une efficacité accrue.",
+      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
+      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
     },
     unAUn: {
-      fr: "Accompagner individuellement les dirigeants à Lormont pour une adoption sereine de l'IA dans leur entreprise.",
-      en: "Accompagner individuellement les dirigeants à Lormont pour une adoption sereine de l'IA dans leur entreprise.",
+      fr: "L'accompagnement un-à-un à Lormont permet aux dirigeants de TPE/PME de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
+      en: "L'accompagnement un-à-un à Lormont permet aux dirigeants de TPE/PME de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quel est le coût d'un audit IA à Lormont ?",
-      a: "Le coût d'un audit IA à Lormont commence à 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Lormont ?",
+      a: "Nos interventions sur site à Lormont démarrent à 590 € HT. Les audits flash sont à partir de 490 € HT et les implémentations sur mesure à partir de 990 € HT. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Lormont ?",
-      a: "Nous nous déplaçons directement sur site à Lormont pour réaliser nos interventions, garantissant une compréhension précise des besoins locaux.",
+      q: "Sous quel délai Axion-IA peut-il se déplacer à Lormont ?",
+      a: "Notre équipe se déplace sur site à Lormont sous 5 jours ouvrés en moyenne, avec accès direct depuis Bordeaux centre par les tramways A et E ou via la rocade A630.",
     },
     {
-      q: "Quels sont les délais pour une intervention à Lormont ?",
-      a: "Les interventions à Lormont sont généralement planifiées dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Couvrez-vous les communes limitrophes de Lormont ?",
+      a: "Oui, nous intervenons aussi à Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac, ainsi que sur l'ensemble de Bordeaux Métropole et de la Gironde.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD à Lormont ?",
-      a: "Nous respectons strictement le RGPD lors de nos interventions à Lormont, garantissant la protection des données de nos clients.",
+      q: "Comment garantissez-vous la conformité RGPD à Lormont ?",
+      a: "Nous documentons systématiquement le traitement des données dans le cadre de chaque mission à Lormont : registre RGPD, hébergement UE, minimisation des données, et clauses contractuelles types intégrées au devis.",
     },
     {
-      q: "Proposez-vous des formations IA à Lormont ?",
-      a: "Oui, nous proposons des sessions de formation sur site à Lormont, adaptées aux besoins spécifiques des dirigeants et de leurs équipes.",
+      q: "Quels secteurs économiques de Lormont travaillez-vous le plus ?",
+      a: "À Lormont, nos clients sont majoritairement des TPE et PME du commerce (centres 4 Pavillons et Génicart), de la logistique portuaire (Carriet), du BTP et de la restauration. Nous accompagnons plus rarement les ETI du secteur.",
+    },
+    {
+      q: "Proposez-vous du code custom ou du no-code à Lormont ?",
+      a: "Axion-IA conçoit exclusivement du code IA sur mesure pour les TPE/PME de Lormont. Pas de plateforme no-code : nos livrables sont des intégrations pérennes auditables et maintenables.",
     },
   ],
 };

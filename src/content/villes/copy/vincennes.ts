@@ -1,66 +1,77 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
+// Hallucinations LLM supprimées (LVMH/BNP Paribas pas implantés Vincennes).
+// Source : Wikipedia FR Vincennes (2026-05-28).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const VINCENNES_COPY: VilleCopy = {
   pitchFr:
-    "À Vincennes, Axion-IA propose des interventions IA sur site pour optimiser vos processus métier. L'écosystème local, avec des entreprises comme LVMH et BNP Paribas, offre un cadre propice à l'innovation technologique.",
+    "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de TPE et PME — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les TPE/PME vincennoises et de l'est parisien.",
   pitchEn:
-    "À Vincennes, Axion-IA propose des interventions IA sur site pour optimiser vos processus métier. L'écosystème local, avec des entreprises comme LVMH et BNP Paribas, offre un cadre propice à l'innovation technologique.",
+    "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de TPE et PME — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les TPE/PME vincennoises et de l'est parisien.",
   directAnswerFr:
-    "Axion-IA intervient à Vincennes pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques tels que LVMH et BNP Paribas présents dans la région, Vincennes bénéficie d'un environnement favorable à l'innovation. Nos services incluent des audits, des implémentations et des formations, adaptés aux besoins des TPE, PME et ETI locales.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash 490 € HT, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "Axion-IA intervient à Vincennes pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques tels que LVMH et BNP Paribas présents dans la région, Vincennes bénéficie d'un environnement favorable à l'innovation. Nos services incluent des audits, des implémentations et des formations, adaptés aux besoins des TPE, PME et ETI locales.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash 490 € HT, code sur mesure — pas de no-code.",
+  seoHook: "commerce de centre-ville, professions libérales & services",
   ecosystemFr:
-    "Le tissu économique de Vincennes inclut des secteurs comme le commerce de détail et la programmation informatique. Des entreprises telles que LVMH et BNP Paribas enrichissent cet écosystème diversifié.",
+    "Vincennes occupe un territoire restreint (1,91 km²) avec la 2e densité de population de France (25 232 hab/km²). La population active est dominée par les cadres (15 352 résidents en 2022). Le tissu économique est typique des communes de petite couronne très denses : commerces de proximité dynamiques (avenue de Paris, rue de Fontenay), nombreuses professions libérales et services aux particuliers, restauration, agences immobilières. Patrimoine : Château de Vincennes (ancienne résidence royale) et Bois de Vincennes. Festival America (littérature, années paires).",
   ecosystemEn:
-    "Le tissu économique de Vincennes inclut des secteurs comme le commerce de détail et la programmation informatique. Des entreprises telles que LVMH et BNP Paribas enrichissent cet écosystème diversifié.",
-  distancesFr: "Vincennes est à 7 km de la Gare de Lyon et à 18 km de l'aéroport de Paris-Orly.",
-  distancesEn: "Vincennes est à 7 km de la Gare de Lyon et à 18 km de l'aéroport de Paris-Orly.",
+    "Vincennes occupe un territoire restreint (1,91 km²) avec la 2e densité de population de France (25 232 hab/km²). La population active est dominée par les cadres (15 352 résidents en 2022). Le tissu économique est typique des communes de petite couronne très denses : commerces de proximité dynamiques (avenue de Paris, rue de Fontenay), nombreuses professions libérales et services aux particuliers, restauration, agences immobilières. Patrimoine : Château de Vincennes (ancienne résidence royale) et Bois de Vincennes. Festival America (littérature, années paires).",
+  distancesFr:
+    "Métro ligne 1 : 3 stations à Vincennes (Saint-Mandé, Bérault, Château de Vincennes terminus). RER A : Gare de Vincennes (3 min de Gare de Lyon, 7 min de Châtelet-Les-Halles). Paris centre à 7 km. Aéroport Paris-Orly à 18 km, CDG à 30 km. Gare de Lyon à 7 km.",
+  distancesEn:
+    "Métro ligne 1 : 3 stations à Vincennes (Saint-Mandé, Bérault, Château de Vincennes terminus). RER A : Gare de Vincennes (3 min de Gare de Lyon, 7 min de Châtelet-Les-Halles). Paris centre à 7 km. Aéroport Paris-Orly à 18 km, CDG à 30 km. Gare de Lyon à 7 km.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
-    "Enseignement",
+    "Commerce de détail centre-ville",
+    "Professions libérales (santé, juridique, expertise)",
+    "Restauration & hôtellerie",
+    "Services aux particuliers & entreprises",
+    "Immobilier & gestion patrimoniale",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vincennes pour identifier les opportunités d'automatisation — Audit Flash 4h à partir de 490 € HT.",
-      en: "Réaliser un audit à Vincennes pour identifier les opportunités d'automatisation — Audit Flash 4h à partir de 490 € HT.",
+      fr: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash 490 € HT, ROI chiffré.",
+      en: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Intervenir à Vincennes pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Vincennes pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle 590 € HT.",
+      en: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Vincennes en intégrant vos systèmes existants — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Vincennes en intégrant vos systèmes existants — à partir de 990 € HT.",
+      fr: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès 990 € HT.",
+      en: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Vincennes en sessions 1-to-1 pour une adoption IA réussie — dès 990 € HT.",
-      en: "Accompagner les dirigeants de Vincennes en sessions 1-to-1 pour une adoption IA réussie — dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Vincennes : sessions sur site (RER A, métro 1) ou en visio pour dirigeants TPE-PME, professions libérales et commerçants de centre-ville. Cadrage stratégique IA personnalisé.",
+      en: "Coaching 1-to-1 à Vincennes : sessions sur site (RER A, métro 1) ou en visio pour dirigeants TPE-PME, professions libérales et commerçants de centre-ville. Cadrage stratégique IA personnalisé.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Vincennes ?",
-      a: "Les interventions à Vincennes commencent à partir de 590 € HT pour une Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Vincennes et dans l'est parisien ?",
+      a: "Oui, nous intervenons à Vincennes (94) et dans les communes limitrophes : Saint-Mandé, Fontenay-sous-Bois, Montreuil et Paris (12e et 20e). Accès rapide métro ligne 1, RER A ou en visio.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Vincennes ?",
-      a: "Williams se déplace sur site à Vincennes dans les 5 jours ouvrés pour assurer une intervention rapide et efficace.",
+      q: "Quels sont les tarifs pour une intervention IA à Vincennes ?",
+      a: "Audit Flash 490 € HT (4h). Intervention Essentielle 590 € HT. Implémentation et coaching 1-to-1 sur devis dès 990 € HT. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Quels délais pour un audit IA à Vincennes ?",
-      a: "L'audit Flash 4h est disponible à partir de 490 € HT et peut être réalisé sous 5 jours ouvrés après la prise de contact.",
+      q: "Quels délais pour démarrer une mission IA à Vincennes ?",
+      a: "Williams se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit Flash restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Vincennes ?",
-      a: "Axion-IA garantit la conformité RGPD en intégrant des mesures de protection des données dans toutes nos interventions à Vincennes.",
+      q: "Accompagnez-vous les professions libérales de Vincennes ?",
+      a: "Oui, c'est notre cible principale à Vincennes (population dominée par les cadres) : avocats, médecins, experts-comptables, kinésithérapeutes, architectes. Cas typiques : automatisation facturation, classification dossiers, agenda intelligent, RGPD santé/juridique.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Vincennes ?",
+      a: "Conformité RGPD intégrée dès l'audit : cartographie données, base légale, hébergement UE (OVH/Scaleway France), DPA. Vigilance renforcée pour professions médicales (hébergement HDS si données santé) et juridiques (secret professionnel).",
+    },
+    {
+      q: "Faites-vous du no-code ou du code sur mesure ?",
+      a: "Code sur mesure exclusivement (Python, TypeScript, intégrations API). Pas de no-code générique : nous livrons des briques maintenables et indépendantes des plateformes tierces, adaptées au métier vincennois (cabinet, commerce, restaurant).",
     },
   ],
 };

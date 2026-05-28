@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
+// Anti-doorway HCU 2024 rewrite 2026-05-28 — Wikipedia-sourced factual data.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,57 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const CHELLES_COPY: VilleCopy = {
   pitchFr:
-    "À Chelles, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs tels que LVMH et BNP Paribas présents en Île-de-France, nous apportons notre expertise IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+    "Axion-IA accompagne les TPE et PME de Chelles (54 620 habitants, 77500), deuxième commune de Seine-et-Marne après Meaux et porte est de la métropole parisienne. Située à 18 km de Paris et reliée au RER E (terminus Chelles-Gournay) avec la ligne Transilien P, la ville concentre commerces, logistique et services autour du centre Terre-Ciel. Notre équipe se déplace sur site pour automatiser devis, relances, suivis administratifs et processus métiers avec du code custom (pas de no-code), adapté aux dirigeants chellois.",
   pitchEn:
-    "À Chelles, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs tels que LVMH et BNP Paribas présents en Île-de-France, nous apportons notre expertise IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+    "Axion-IA accompagne les TPE et PME de Chelles (54 620 habitants, 77500), deuxième commune de Seine-et-Marne après Meaux et porte est de la métropole parisienne. Située à 18 km de Paris et reliée au RER E (terminus Chelles-Gournay) avec la ligne Transilien P, la ville concentre commerces, logistique et services autour du centre Terre-Ciel. Notre équipe se déplace sur site pour automatiser devis, relances, suivis administratifs et processus métiers avec du code custom (pas de no-code), adapté aux dirigeants chellois.",
   directAnswerFr:
-    "Axion-IA se déplace à Chelles pour accompagner les entreprises dans l'intégration de l'IA. En Île-de-France, des pôles comme Cap Digital et Station F sont des références en matière d'innovation technologique. Nous proposons des audits et interventions adaptés aux besoins spécifiques des entreprises chelloises, garantissant un retour sur investissement rapide.",
+    "Axion-IA intervient à Chelles (Seine-et-Marne, 77500) pour les TPE et PME locales — commerces du centre-ville et de la zone Terre-Ciel, prestataires logistiques liés au RER E et à la future ligne 16 du Grand Paris Express prévue en 2028, artisans du bâtiment, professions libérales. Nous proposons un Audit Flash 4h dès 490 € HT, une Intervention Essentielle à partir de 590 € HT et un accompagnement un-à-un dirigeant. Code custom uniquement, déplacement sous 5 jours ouvrés depuis notre équipe nationale, conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA se déplace à Chelles pour accompagner les entreprises dans l'intégration de l'IA. En Île-de-France, des pôles comme Cap Digital et Station F sont des références en matière d'innovation technologique. Nous proposons des audits et interventions adaptés aux besoins spécifiques des entreprises chelloises, garantissant un retour sur investissement rapide.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA intervient à Chelles (Seine-et-Marne, 77500) pour les TPE et PME locales — commerces du centre-ville et de la zone Terre-Ciel, prestataires logistiques liés au RER E et à la future ligne 16 du Grand Paris Express prévue en 2028, artisans du bâtiment, professions libérales. Nous proposons un Audit Flash 4h dès 490 € HT, une Intervention Essentielle à partir de 590 € HT et un accompagnement un-à-un dirigeant. Code custom uniquement, déplacement sous 5 jours ouvrés depuis notre équipe nationale, conformité RGPD documentée.",
+  seoHook: "TPE & PME Chelles · commerce, logistique, services",
   ecosystemFr:
-    "Chelles bénéficie d'un tissu économique varié, avec des entreprises dans le commerce de détail et la construction. LVMH et BNP Paribas, présents en Île-de-France, illustrent la diversité et la richesse de l'écosystème régional.",
+    "Chelles appartient à la communauté d'agglomération Paris-Vallée de la Marne (arrondissement de Torcy). Son tissu économique mêle commerces de proximité, centre commercial Terre-Ciel, activités logistiques portées par la position est-parisienne et services aux entreprises. Historiquement marquée par le filage du coton, l'horlogerie et l'extraction du plâtre, la ville a basculé vers une économie tertiaire et résidentielle, avec une part importante de TPE et professions libérales.",
   ecosystemEn:
-    "Chelles bénéficie d'un tissu économique varié, avec des entreprises dans le commerce de détail et la construction. LVMH et BNP Paribas, présents en Île-de-France, illustrent la diversité et la richesse de l'écosystème régional.",
+    "Chelles appartient à la communauté d'agglomération Paris-Vallée de la Marne (arrondissement de Torcy). Son tissu économique mêle commerces de proximité, centre commercial Terre-Ciel, activités logistiques portées par la position est-parisienne et services aux entreprises. Historiquement marquée par le filage du coton, l'horlogerie et l'extraction du plâtre, la ville a basculé vers une économie tertiaire et résidentielle, avec une part importante de TPE et professions libérales.",
   distancesFr:
-    "Chelles est située à 25 km de l'aéroport de Paris-Charles-de-Gaulle et à 20 km de la gare TGV de Marne-la-Vallée - Chessy.",
+    "Chelles est à 18 km à l'est de Paris. La gare de Chelles-Gournay est terminus du RER E (branche E2, 4 à 8 trains/heure) et desservie par la Transilien P. L'aéroport Paris-Charles-de-Gaulle est à environ 25 km. La ligne 16 du Grand Paris Express est prévue en 2028.",
   distancesEn:
-    "Chelles est située à 25 km de l'aéroport de Paris-Charles-de-Gaulle et à 20 km de la gare TGV de Marne-la-Vallée - Chessy.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Chelles est à 18 km à l'est de Paris. La gare de Chelles-Gournay est terminus du RER E (branche E2, 4 à 8 trains/heure) et desservie par la Transilien P. L'aéroport Paris-Charles-de-Gaulle est à environ 25 km. La ligne 16 du Grand Paris Express est prévue en 2028.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Transports terrestres et logistique",
+    "Construction",
+    "Restauration et hébergement",
+    "Services aux entreprises",
+    "Santé humaine et action sociale",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Chelles pour identifier les opportunités d'automatisation — Audit Flash 4h dès 490 € HT.",
-      en: "Réaliser un audit à Chelles pour identifier les opportunités d'automatisation — Audit Flash 4h dès 490 € HT.",
+      fr: "Auditer à Chelles les processus métiers d'un commerce Terre-Ciel, d'un prestataire logistique ou d'une TPE de services — Audit Flash 4h dès 490 € HT.",
+      en: "Auditer à Chelles les processus métiers d'un commerce Terre-Ciel, d'un prestataire logistique ou d'une TPE de services — Audit Flash 4h dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Chelles pour automatiser devis et relances — Intervention Essentielle à partir de 590 € HT.",
-      en: "Intervenir à Chelles pour automatiser devis et relances — Intervention Essentielle à partir de 590 € HT.",
+      fr: "Intervenir à Chelles pour automatiser devis, relances et planning d'une TPE ou PME — Intervention Essentielle à partir de 590 € HT, code custom sans no-code.",
+      en: "Intervenir à Chelles pour automatiser devis, relances et planning d'une TPE ou PME — Intervention Essentielle à partir de 590 € HT, code custom sans no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Chelles pour optimiser les processus — Implémentation dès 990 € HT.",
-      en: "Implémenter des solutions IA à Chelles pour optimiser les processus — Implémentation dès 990 € HT.",
+      fr: "Implémenter à Chelles des outils IA opérationnels (extraction documents, classification clients, reporting) — déploiement sur site dès 990 € HT.",
+      en: "Implémenter à Chelles des outils IA opérationnels (extraction documents, classification clients, reporting) — déploiement sur site dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Chelles en 1-to-1 pour une stratégie IA personnalisée — à partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Chelles en 1-to-1 pour une stratégie IA personnalisée — à partir de 990 € HT.",
+      fr: "Accompagner en un-à-un à Chelles un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de 990 € HT.",
+      en: "Accompagner en un-à-un à Chelles un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Chelles ?",
-      a: "Nos interventions à Chelles débutent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont vos tarifs pour une intervention à Chelles ?",
+      a: "À Chelles (77500), l'Audit Flash 4h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT, et l'Implémentation à 990 € HT. Tarifs publics, sans abonnement, sans frais cachés.",
     },
     {
-      q: "Axion-IA peut-il se déplacer rapidement à Chelles ?",
-      a: "Oui, notre équipe nationale se déplace à Chelles dans un délai de 5 jours ouvrés pour répondre à vos besoins en IA.",
+      q: "Sous quel délai vous déplacez-vous à Chelles ?",
+      a: "Notre équipe nationale intervient à Chelles sous 5 jours ouvrés après validation du devis. La ville étant à 18 km de Paris et desservie par le RER E, le déplacement est inclus sans surcoût.",
     },
     {
-      q: "Proposez-vous des audits IA spécifiques pour les entreprises de Chelles ?",
-      a: "Oui, nous proposons un Audit Flash de 4 heures à partir de 490 € HT, adapté aux spécificités des entreprises chelloises.",
+      q: "Intervenez-vous aussi dans les communes proches de Chelles ?",
+      a: "Oui — nous nous déplaçons à Gagny, Montfermeil, Vaires-sur-Marne, Brou-sur-Chantereine, Courtry, Le Pin, Coubron, Neuilly-sur-Marne, Gournay-sur-Marne, Champs-sur-Marne et Noisiel aux mêmes tarifs publics.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD lors de ses interventions à Chelles ?",
-      a: "Nous garantissons la conformité RGPD en intégrant des pratiques de protection des données dans toutes nos interventions à Chelles.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Chelles ?",
+      a: "Nous appliquons les principes RGPD (minimisation, base légale, registre des traitements, sous-traitance documentée) à chaque mission. Les données restent hébergées en UE et un DPA est signé avant tout traitement.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous principalement à Chelles ?",
+      a: "Commerces du centre-ville et de Terre-Ciel, prestataires logistiques liés au RER E, artisans du bâtiment, restaurateurs, professions libérales (santé, droit, comptabilité) et services aux entreprises — l'IA est ajustée à l'usage TPE/PME, pas un produit standardisé.",
+    },
+    {
+      q: "Faites-vous du no-code à Chelles ?",
+      a: "Non. Axion-IA livre uniquement du code custom (Python, TypeScript, intégrations API), maintenable et auditable. Pas de plateforme no-code propriétaire qui vous enferme.",
     },
   ],
 };

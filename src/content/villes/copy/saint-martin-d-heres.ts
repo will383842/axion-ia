@@ -7,62 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
   pitchFr:
-    "À Saint-Martin-d'Hères, Axion-IA intervient auprès des entreprises locales telles que STMicroelectronics et Schneider Electric pour optimiser leurs processus grâce à l'IA.",
+    "Axion-IA accompagne à Saint-Martin-d'Hères, deuxième ville de l'Isère après Grenoble, les TPE et PME du domaine universitaire et des zones commerciales de l'avenue Gabriel-Péri. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des artisans, des cabinets de services, des structures liées au campus universitaire et des viticulteurs IGP Isère. Quelques ETI martinéroises sollicitent également nos services en complément.",
   pitchEn:
-    "À Saint-Martin-d'Hères, Axion-IA intervient auprès des entreprises locales telles que STMicroelectronics et Schneider Electric pour optimiser leurs processus grâce à l'IA.",
+    "Axion-IA accompagne à Saint-Martin-d'Hères, deuxième ville de l'Isère après Grenoble, les TPE et PME du domaine universitaire et des zones commerciales de l'avenue Gabriel-Péri. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des artisans, des cabinets de services, des structures liées au campus universitaire et des viticulteurs IGP Isère. Quelques ETI martinéroises sollicitent également nos services en complément.",
   directAnswerFr:
-    "Axion-IA se déplace à Saint-Martin-d'Hères pour accompagner les entreprises dans l'optimisation de leurs processus. Avec la proximité de l'Université Grenoble Alpes et du Laboratoire d'Informatique de Grenoble, nous intervenons sur des projets variés, du développement de solutions IA sur mesure à l'audit de systèmes existants, en garantissant un retour sur investissement rapide.",
+    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès 590 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à Saint-Martin-d'Hères pour accompagner les entreprises dans l'optimisation de leurs processus. Avec la proximité de l'Université Grenoble Alpes et du Laboratoire d'Informatique de Grenoble, nous intervenons sur des projets variés, du développement de solutions IA sur mesure à l'audit de systèmes existants, en garantissant un retour sur investissement rapide.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès 590 € HT.",
+  seoHook: "campus universitaire & zones commerciales",
   ecosystemFr:
-    "Saint-Martin-d'Hères est un pôle technologique avec STMicroelectronics et Schneider Electric. L'Université Grenoble Alpes et le Laboratoire d'Informatique de Grenoble renforcent cet environnement propice à l'innovation.",
+    "Saint-Martin-d'Hères, 37 695 habitants, accueille la majeure partie du domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), une concentration commerciale notable sur l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre) et une activité viticole IGP Isère. Le Bois de Chartreuse, première AOC de la filière bois en France, couvre partiellement la commune.",
   ecosystemEn:
-    "Saint-Martin-d'Hères est un pôle technologique avec STMicroelectronics et Schneider Electric. L'Université Grenoble Alpes et le Laboratoire d'Informatique de Grenoble renforcent cet environnement propice à l'innovation.",
+    "Saint-Martin-d'Hères, 37 695 habitants, accueille la majeure partie du domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), une concentration commerciale notable sur l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre) et une activité viticole IGP Isère. Le Bois de Chartreuse, première AOC de la filière bois en France, couvre partiellement la commune.",
   distancesFr:
-    "Saint-Martin-d'Hères est à 5 km de la Gare TGV de Grenoble et à 50 km de l'Aéroport de Grenoble Alpes Isère.",
+    "Saint-Martin-d'Hères est desservie par les lignes de tramway B, C et D (D reliant le centre-ville, le parc Jo-Blanchon, le CHU et la gare de Grenoble). La rocade sud dessert la commune par trois sorties, et la RN87 la traverse. La gare de Grenoble est à environ 5 km, l'aéroport de Grenoble Alpes Isère à environ 45 km.",
   distancesEn:
-    "Saint-Martin-d'Hères est à 5 km de la Gare TGV de Grenoble et à 50 km de l'Aéroport de Grenoble Alpes Isère.",
+    "Saint-Martin-d'Hères est desservie par les lignes de tramway B, C et D (D reliant le centre-ville, le parc Jo-Blanchon, le CHU et la gare de Grenoble). La rocade sud dessert la commune par trois sorties, et la RN87 la traverse. La gare de Grenoble est à environ 5 km, l'aéroport de Grenoble Alpes Isère à environ 45 km.",
   topSectorsNaf: [
-    "Recherche-développement",
-    "Enseignement supérieur",
-    "Programmation informatique",
-    "Commerce de gros",
+    "Commerce de détail et grande distribution",
+    "Enseignement supérieur et recherche",
+    "Services aux entreprises et professions libérales",
+    "Viticulture IGP Isère",
+    "Filière bois (AOC Bois de Chartreuse)",
+    "Construction et artisanat",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Saint-Martin-d'Hères avec une analyse précise des besoins en IA, dès 490 € HT.",
-      en: "Réaliser un audit à Saint-Martin-d'Hères avec une analyse précise des besoins en IA, dès 490 € HT.",
+      fr: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès 490 € HT.",
+      en: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Saint-Martin-d'Hères pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
-      en: "Intervenir à Saint-Martin-d'Hères pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+      fr: "Intervenir sur site à Saint-Martin-d'Hères pour automatiser devis, suivi client, gestion stock et tâches administratives des TPE/PME.",
+      en: "Intervenir sur site à Saint-Martin-d'Hères pour automatiser devis, suivi client, gestion stock et tâches administratives des TPE/PME.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Saint-Martin-d'Hères, en intégrant les systèmes existants pour une transition fluide.",
-      en: "Implémenter des solutions IA à Saint-Martin-d'Hères, en intégrant les systèmes existants pour une transition fluide.",
+      fr: "Implémenter des outils IA en code source propriétaire à Saint-Martin-d'Hères, livrés au client final, intégrables aux logiciels métier existants.",
+      en: "Implémenter des outils IA en code source propriétaire à Saint-Martin-d'Hères, livrés au client final, intégrables aux logiciels métier existants.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Saint-Martin-d'Hères avec des sessions personnalisées pour maîtriser l'IA, à partir de 990 € HT.",
-      en: "Accompagner les dirigeants à Saint-Martin-d'Hères avec des sessions personnalisées pour maîtriser l'IA, à partir de 990 € HT.",
+      fr: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
+      en: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Saint-Martin-d'Hères ?",
-      a: "Les tarifs pour une intervention à Saint-Martin-d'Hères commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Martin-d'Hères ?",
+      a: "Nos audits flash débutent à 490 € HT, nos interventions essentielles à 590 € HT et nos sessions 1-to-1 à 990 € HT. Tarifs publics consultables sur notre site.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention sur site à Saint-Martin-d'Hères ?",
-      a: "Nous nous déplaçons à Saint-Martin-d'Hères dans un délai de 5 jours ouvrés pour débuter nos interventions sur site.",
+      q: "Sous quel délai Axion-IA se déplace-t-il à Saint-Martin-d'Hères ?",
+      a: "Williams se déplace sur Saint-Martin-d'Hères sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Saint-Martin-d'Hères ?",
-      a: "Axion-IA s'assure que toutes les solutions déployées à Saint-Martin-d'Hères respectent les normes RGPD, en intégrant des audits de conformité dans nos processus.",
+      q: "Quelles communes autour de Saint-Martin-d'Hères sont couvertes ?",
+      a: "Nous intervenons à Grenoble, La Tronche, Meylan, Gières, Poisat et Eybens, ainsi que dans l'ensemble de Grenoble-Alpes Métropole.",
     },
     {
-      q: "Proposez-vous des formations IA pour les PME de Saint-Martin-d'Hères ?",
-      a: "Oui, nous offrons des sessions de formation IA personnalisées pour les PME de Saint-Martin-d'Hères, adaptées à leurs besoins spécifiques.",
+      q: "Axion-IA respecte-t-il le RGPD à Saint-Martin-d'Hères ?",
+      a: "Oui. Chaque livrable intègre une analyse de conformité RGPD et AI Act, avec hébergement des données en France ou UE et contrôle direct par le client.",
+    },
+    {
+      q: "Quels secteurs Axion-IA accompagne-t-il à Saint-Martin-d'Hères ?",
+      a: "Nous priorisons les TPE et PME du commerce et de la grande distribution (avenue Gabriel-Péri), des services liés au campus universitaire, des professions libérales, de la viticulture IGP Isère et de la construction. Quelques ETI martinéroises sollicitent également nos services.",
+    },
+    {
+      q: "Proposez-vous des formations IA pour les équipes martinéroises ?",
+      a: "Oui, nous animons à Saint-Martin-d'Hères des formations en présentiel ou visio pour dirigeants et collaborateurs de TPE/PME, calibrées sur les besoins locaux (commerce, services, viticulture).",
     },
   ],
 };

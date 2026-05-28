@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
+// Patched 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factuel).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,62 +7,71 @@ import type { VilleCopy } from "./types";
 
 export const MONTAIGU_VENDEE_COPY: VilleCopy = {
   pitchFr:
-    "À Montaigu-Vendée, Axion-IA intervient pour optimiser les processus des entreprises locales. Fleury Michon et Groupe Atlantic illustrent la vitalité économique de cette région des Pays-de-la-Loire.",
+    "Axion-IA accompagne les TPE et PME de Montaigu-Vendée (85600, Vendée, 21 134 habitants en 2023), commune nouvelle créée le 1er janvier 2019 par la fusion de Boufféré, La Guyonnière, Montaigu, Saint-Georges-de-Montaigu et Saint-Hilaire-de-Loulay. Pôle agroalimentaire et industriel majeur de Vendée, le territoire concentre des entreprises emblématiques : Sodebo (plus de 2 000 salariés), Haworth France (mobilier de bureau), Microcar (véhicules électriques à Boufféré), la Laiterie de Montaigu et le siège transport national DB Schenker.",
   pitchEn:
-    "À Montaigu-Vendée, Axion-IA intervient pour optimiser les processus des entreprises locales. Fleury Michon et Groupe Atlantic illustrent la vitalité économique de cette région des Pays-de-la-Loire.",
+    "Axion-IA accompagne les TPE et PME de Montaigu-Vendée (85600, Vendée, 21 134 habitants en 2023), commune nouvelle créée le 1er janvier 2019 par la fusion de Boufféré, La Guyonnière, Montaigu, Saint-Georges-de-Montaigu et Saint-Hilaire-de-Loulay. Pôle agroalimentaire et industriel majeur de Vendée, le territoire concentre des entreprises emblématiques : Sodebo (plus de 2 000 salariés), Haworth France (mobilier de bureau), Microcar (véhicules électriques à Boufféré), la Laiterie de Montaigu et le siège transport national DB Schenker.",
   directAnswerFr:
-    "Axion-IA accompagne les entreprises de Montaigu-Vendée dans l'optimisation de leurs processus grâce à l'IA. Avec un tissu économique comprenant Fleury Michon et la Zone Industrielle de la Bretonnière, nous réalisons des audits précis et des implémentations efficaces pour répondre aux besoins spécifiques de chaque secteur, comme l'industrie agroalimentaire et la fabrication de produits métalliques.",
+    "Axion-IA se déplace à Montaigu-Vendée pour accompagner les TPE, PME et plus ponctuellement ETI agroalimentaires, industrielles et tertiaires. Nos consultants arrivent par la gare de Montaigu (ligne Nantes-Bordeaux) ou par l'A83 (sortie 4 à Boufféré). Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation dès 990 € HT. Nous priorisons les sous-traitants et fournisseurs des grands employeurs locaux : Sodebo, Haworth France, Microcar, Laiterie de Montaigu, DB Schenker. Tous nos livrables sont en code custom, conformes RGPD et documentés pour l'audit CNIL.",
   directAnswerEn:
-    "Axion-IA accompagne les entreprises de Montaigu-Vendée dans l'optimisation de leurs processus grâce à l'IA. Avec un tissu économique comprenant Fleury Michon et la Zone Industrielle de la Bretonnière, nous réalisons des audits précis et des implémentations efficaces pour répondre aux besoins spécifiques de chaque secteur, comme l'industrie agroalimentaire et la fabrication de produits métalliques.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA se déplace à Montaigu-Vendée pour accompagner les TPE, PME et plus ponctuellement ETI agroalimentaires, industrielles et tertiaires. Nos consultants arrivent par la gare de Montaigu (ligne Nantes-Bordeaux) ou par l'A83 (sortie 4 à Boufféré). Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation dès 990 € HT. Nous priorisons les sous-traitants et fournisseurs des grands employeurs locaux : Sodebo, Haworth France, Microcar, Laiterie de Montaigu, DB Schenker. Tous nos livrables sont en code custom, conformes RGPD et documentés pour l'audit CNIL.",
+  seoHook: "agroalimentaire & industrie Vendée",
   ecosystemFr:
-    "Le tissu économique de Montaigu-Vendée inclut des acteurs comme Fleury Michon et le Groupe Atlantic. La Zone Industrielle de la Bretonnière est un pôle clé pour l'industrie locale.",
+    "Montaigu-Vendée est un pôle économique majeur du nord Vendée, structuré autour de l'agroalimentaire (Sodebo, Laiterie de Montaigu), du mobilier (Haworth France), de la mobilité électrique (Microcar à Boufféré) et du transport-logistique (siège national DB Schenker). La commune nouvelle bénéficie de sa position sur l'A83 (sortie 4 Boufféré) reliant Nantes à Bordeaux, et d'une gare TGV Paris-Montparnasse en environ 2h30. Le tissu local est dominé par les TPE et PME sous-traitantes des grands donneurs d'ordres agroalimentaires et industriels, ainsi que par les commerces de détail et les services aux entreprises.",
   ecosystemEn:
-    "Le tissu économique de Montaigu-Vendée inclut des acteurs comme Fleury Michon et le Groupe Atlantic. La Zone Industrielle de la Bretonnière est un pôle clé pour l'industrie locale.",
+    "Montaigu-Vendée est un pôle économique majeur du nord Vendée, structuré autour de l'agroalimentaire (Sodebo, Laiterie de Montaigu), du mobilier (Haworth France), de la mobilité électrique (Microcar à Boufféré) et du transport-logistique (siège national DB Schenker). La commune nouvelle bénéficie de sa position sur l'A83 (sortie 4 Boufféré) reliant Nantes à Bordeaux, et d'une gare TGV Paris-Montparnasse en environ 2h30. Le tissu local est dominé par les TPE et PME sous-traitantes des grands donneurs d'ordres agroalimentaires et industriels, ainsi que par les commerces de détail et les services aux entreprises.",
   distancesFr:
-    "La gare TGV de Nantes est à 40 km de Montaigu-Vendée, facilitant l'accès à nos interventions.",
+    "Montaigu-Vendée est à environ 40 km de l'aéroport Nantes-Atlantique, desservie par la gare de Montaigu (ligne Nantes-Bordeaux, Paris-Montparnasse en TGV ~2h30) et par l'A83 (sortie 4 Boufféré), les D137, D753 et D763.",
   distancesEn:
-    "La gare TGV de Nantes est à 40 km de Montaigu-Vendée, facilitant l'accès à nos interventions.",
+    "Montaigu-Vendée est à environ 40 km de l'aéroport Nantes-Atlantique, desservie par la gare de Montaigu (ligne Nantes-Bordeaux, Paris-Montparnasse en TGV ~2h30) et par l'A83 (sortie 4 Boufféré), les D137, D753 et D763.",
   topSectorsNaf: [
     "Industrie agroalimentaire",
-    "Produits métalliques",
+    "Fabrication de mobilier et produits industriels",
+    "Transport et logistique",
     "Commerce de détail",
-    "Transports terrestres",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Montaigu-Vendée avec nos experts pour identifier les leviers d'optimisation dans des secteurs clés comme l'agroalimentaire.",
-      en: "Réaliser un audit à Montaigu-Vendée avec nos experts pour identifier les leviers d'optimisation dans des secteurs clés comme l'agroalimentaire.",
+      fr: "Audit Flash à Montaigu-Vendée pour les TPE/PME agroalimentaires sous-traitantes de Sodebo, Laiterie de Montaigu ou Haworth, dès 490 € HT.",
+      en: "Audit Flash à Montaigu-Vendée pour les TPE/PME agroalimentaires sous-traitantes de Sodebo, Laiterie de Montaigu ou Haworth, dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Montaigu-Vendée pour automatiser les tâches administratives et optimiser les processus grâce à l'IA.",
-      en: "Intervenir à Montaigu-Vendée pour automatiser les tâches administratives et optimiser les processus grâce à l'IA.",
+      fr: "Intervention Essentielle à Montaigu-Vendée pour automatiser bons de livraison, traçabilité et facturation des PME industrielles, dès 590 € HT.",
+      en: "Intervention Essentielle à Montaigu-Vendée pour automatiser bons de livraison, traçabilité et facturation des PME industrielles, dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Montaigu-Vendée pour améliorer l'efficacité opérationnelle, notamment dans les produits métalliques.",
-      en: "Implémenter des solutions IA à Montaigu-Vendée pour améliorer l'efficacité opérationnelle, notamment dans les produits métalliques.",
+      fr: "Implémentation à Montaigu-Vendée d'agents IA en code custom pour la qualité, le contrôle production et la logistique, dès 990 € HT.",
+      en: "Implémentation à Montaigu-Vendée d'agents IA en code custom pour la qualité, le contrôle production et la logistique, dès 990 € HT.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Montaigu-Vendée pour les dirigeants souhaitant intégrer l'IA dans leur stratégie d'entreprise.",
-      en: "Proposer des sessions 1-to-1 à Montaigu-Vendée pour les dirigeants souhaitant intégrer l'IA dans leur stratégie d'entreprise.",
+      fr: "Sessions 1-to-1 à Montaigu-Vendée pour dirigeants de TPE/PME agroalimentaires et industrielles : feuille de route IA et arbitrages, dès 990 € HT.",
+      en: "Sessions 1-to-1 à Montaigu-Vendée pour dirigeants de TPE/PME agroalimentaires et industrielles : feuille de route IA et arbitrages, dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Montaigu-Vendée ?",
-      a: "Les tarifs pour une intervention à Montaigu-Vendée commencent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA à Montaigu-Vendée (85600) ?",
+      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et 1-to-1 dirigeant dès 990 € HT. Tarifs publics fixes, sans engagement.",
     },
     {
-      q: "Comment se déroule un audit IA à Montaigu-Vendée ?",
-      a: "Un audit IA à Montaigu-Vendée démarre par une évaluation sur site, avec des tarifs à partir de 490 € HT pour un Audit Flash de 4 heures.",
+      q: "Quels délais pour une intervention à Montaigu-Vendée ?",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Montaigu-Vendée. La sortie 4 Boufféré de l'A83 et la gare de Montaigu facilitent un accès rapide depuis Nantes ou Paris (TGV ~2h30).",
     },
     {
-      q: "Axion-IA se déplace-t-il à Montaigu-Vendée pour des sessions 1-to-1 ?",
-      a: "Oui, Axion-IA propose des sessions 1-to-1 à Montaigu-Vendée pour les dirigeants, à partir de 990 € HT. Nos experts se déplacent sur site pour des conseils personnalisés.",
+      q: "Intervenez-vous dans les communes proches de Montaigu-Vendée ?",
+      a: "Oui, nous nous déplaçons aussi à La Bernardière, L'Herbergement, Treize-Septiers, Saint-Hilaire-de-Clisson, Remouillé et Vieillevigne, au même tarif.",
     },
     {
-      q: "Quelle est la disponibilité d'Axion-IA pour une intervention à Montaigu-Vendée ?",
-      a: "Nos experts peuvent se déplacer à Montaigu-Vendée dans un délai de 5 jours ouvrés pour débuter une intervention.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Montaigu-Vendée ?",
+      a: "Chaque mission inclut une cartographie des traitements, un plan d'hébergement UE et une documentation prête pour audit CNIL. Notre code custom évite tout enfermement no-code propriétaire.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous en priorité à Montaigu-Vendée ?",
+      a: "Agroalimentaire (sous-traitants de Sodebo et Laiterie de Montaigu), fabrication industrielle (sous-traitants Haworth, Microcar), transport et logistique (autour de DB Schenker), commerce et services.",
+    },
+    {
+      q: "Vous déplacez-vous sur site à Montaigu-Vendée ?",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Montaigu, Boufféré, La Guyonnière, Saint-Georges-de-Montaigu ou Saint-Hilaire-de-Loulay, sans frais de déplacement supplémentaires en Vendée.",
     },
   ],
 };

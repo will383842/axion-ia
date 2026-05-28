@@ -1,68 +1,82 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 sprint).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
-export const ILLKIRCH_GRAFFENSTADEN_COPY: VilleCopy = {
-  pitchFr:
-    "Axion-IA intervient à Illkirch-Graffenstaden, une ville dynamique du Grand Est, pour aider les entreprises locales à intégrer l'IA dans leurs processus. Avec des acteurs comme Soprema et Adidas, nous apportons notre expertise nationale pour optimiser vos opérations.",
-  pitchEn:
-    "Axion-IA intervient à Illkirch-Graffenstaden, une ville dynamique du Grand Est, pour aider les entreprises locales à intégrer l'IA dans leurs processus. Avec des acteurs comme Soprema et Adidas, nous apportons notre expertise nationale pour optimiser vos opérations.",
-  directAnswerFr:
-    "À Illkirch-Graffenstaden, Axion-IA propose des interventions sur site pour les entreprises, notamment dans des secteurs comme la recherche-développement scientifique et l'industrie pharmaceutique. Le Parc d'Innovation d'Illkirch et l'Université de Strasbourg enrichissent l'écosystème local, facilitant l'intégration de solutions IA pour les entreprises de la région.",
-  directAnswerEn:
-    "À Illkirch-Graffenstaden, Axion-IA propose des interventions sur site pour les entreprises, notamment dans des secteurs comme la recherche-développement scientifique et l'industrie pharmaceutique. Le Parc d'Innovation d'Illkirch et l'Université de Strasbourg enrichissent l'écosystème local, facilitant l'intégration de solutions IA pour les entreprises de la région.",
-  seoHook: "agglomération est",
-  ecosystemFr:
-    "Illkirch-Graffenstaden accueille le Parc d'Innovation et des entreprises comme Soprema. La proximité de l'Université de Strasbourg et de l'Institut de Biologie Moléculaire et Cellulaire renforce l'écosystème scientifique et technologique.",
-  ecosystemEn:
-    "Illkirch-Graffenstaden accueille le Parc d'Innovation et des entreprises comme Soprema. La proximité de l'Université de Strasbourg et de l'Institut de Biologie Moléculaire et Cellulaire renforce l'écosystème scientifique et technologique.",
+const PITCH_FR =
+  "Axion-IA accompagne les TPE et PME d'Illkirch-Graffenstaden, troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants. Williams se déplace sur site auprès des entreprises du Parc d'Innovation, des artisans du sud strasbourgeois et des PME bas-rhinoises pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
+
+const DIRECT_ANSWER_FR =
+  "Axion-IA intervient à Illkirch-Graffenstaden pour les TPE et PME bas-rhinoises : entreprises biotech et logicielles du Parc d'Innovation, artisans et commerçants du centre, sous-traitants industriels gravitant autour de Flender-Graffenstaden et du tissu mécanique alsacien, professions libérales et cabinets de la Krimmeri à Graffenstaden. Williams se déplace via la gare TGV de Strasbourg (10 km, tram A direct) pour cadrer les besoins, livrer du code custom et former l'équipe. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, 1-à-1 990 € HT.";
+
+const ECOSYSTEM_FR =
+  "Illkirch-Graffenstaden est la troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants (Insee 2023, densité 1 255 hab/km²). L'économie locale repose sur le Parc d'Innovation d'Illkirch (biotech, IT, cluster Alsace BioValley), des employeurs industriels historiques comme Flender-Graffenstaden (mécanique) et un tissu de TPE-PME en R&D, ingénierie et services. La proximité de l'Université de Strasbourg, de l'École nationale supérieure de physique et de l'IUT Robert-Schuman alimente le bassin de talents.";
+
+const VILLE_COPY: VilleCopy = {
+  pitchFr: PITCH_FR,
+  pitchEn: PITCH_FR,
+  directAnswerFr: DIRECT_ANSWER_FR,
+  directAnswerEn: DIRECT_ANSWER_FR,
+  seoHook: "Parc d'Innovation, biotech & sous-traitance industrielle",
+  ecosystemFr: ECOSYSTEM_FR,
+  ecosystemEn: ECOSYSTEM_FR,
   distancesFr:
-    "La Gare TGV de Strasbourg est à 10 km d'Illkirch-Graffenstaden, facilitant l'accès aux entreprises locales.",
+    "Illkirch-Graffenstaden est à 7 km du centre de Strasbourg (15 min en tram A ou E), 10 km de la gare TGV de Strasbourg, 12 km de l'aéroport Strasbourg-Entzheim et 130 km de Mulhouse. L'A35 traverse la commune et dessert Colmar et la frontière allemande.",
   distancesEn:
-    "La Gare TGV de Strasbourg est à 10 km d'Illkirch-Graffenstaden, facilitant l'accès aux entreprises locales.",
+    "Illkirch-Graffenstaden est à 7 km du centre de Strasbourg (15 min en tram A ou E), 10 km de la gare TGV de Strasbourg, 12 km de l'aéroport Strasbourg-Entzheim et 130 km de Mulhouse. L'A35 traverse la commune et dessert Colmar et la frontière allemande.",
   topSectorsNaf: [
-    "Recherche-développement scientifique",
-    "Programmation informatique",
-    "Industrie pharmaceutique",
-    "Fabrication de produits électroniques",
+    "Recherche-développement scientifique (biotech)",
+    "Programmation informatique et services IT",
+    "Fabrication d'équipements mécaniques",
+    "Industrie pharmaceutique et dispositifs médicaux",
+    "Activités d'ingénierie et études techniques",
+    "Commerce de détail et services aux particuliers",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Illkirch-Graffenstaden, en tenant compte des spécificités du Parc d'Innovation, permet d'identifier des opportunités d'optimisation IA.",
-      en: "Réaliser un audit à Illkirch-Graffenstaden, en tenant compte des spécificités du Parc d'Innovation, permet d'identifier des opportunités d'optimisation IA.",
+      fr: "Audit Flash à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. 490 € HT.",
+      en: "Audit Flash à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Illkirch-Graffenstaden, auprès d'entreprises comme celles du secteur pharmaceutique, pour automatiser les processus administratifs.",
-      en: "Intervenir à Illkirch-Graffenstaden, auprès d'entreprises comme celles du secteur pharmaceutique, pour automatiser les processus administratifs.",
+      fr: "Intervention Essentielle à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès 590 € HT.",
+      en: "Intervention Essentielle à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Illkirch-Graffenstaden, en s'appuyant sur l'écosystème du Parc d'Innovation, pour améliorer l'efficacité opérationnelle.",
-      en: "Implémenter des solutions IA à Illkirch-Graffenstaden, en s'appuyant sur l'écosystème du Parc d'Innovation, pour améliorer l'efficacité opérationnelle.",
+      fr: "Implémentation d'agents IA à Illkirch-Graffenstaden pour PME-ETI bas-rhinoises : tri automatique des emails clients multilingues, génération de comptes rendus R&D, intégration ERP-CRM existant. Tarifs publics, devis sur cadrage.",
+      en: "Implémentation d'agents IA à Illkirch-Graffenstaden pour PME-ETI bas-rhinoises : tri automatique des emails clients multilingues, génération de comptes rendus R&D, intégration ERP-CRM existant. Tarifs publics, devis sur cadrage.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants d'Illkirch-Graffenstaden, pour une intégration IA alignée avec les objectifs stratégiques de l'entreprise.",
-      en: "Accompagner en un-à-un les dirigeants d'Illkirch-Graffenstaden, pour une intégration IA alignée avec les objectifs stratégiques de l'entreprise.",
+      fr: "Accompagnement 1-à-1 à Illkirch-Graffenstaden pour dirigeants de TPE et PME du Parc d'Innovation ou de la sous-traitance industrielle : 4 sessions appliquées à votre métier. À partir de 990 € HT.",
+      en: "Accompagnement 1-à-1 à Illkirch-Graffenstaden pour dirigeants de TPE et PME du Parc d'Innovation ou de la sous-traitance industrielle : 4 sessions appliquées à votre métier. À partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Illkirch-Graffenstaden ?",
-      a: "Nos tarifs commencent à 590 € HT pour une Intervention Essentielle. Pour plus de détails, consultez nos tarifs publics sur le site.",
+      q: "Quels tarifs Axion-IA pratique-t-il à Illkirch-Graffenstaden ?",
+      a: "Audit Flash 490 € HT (4 h sur site), Intervention Essentielle 590 € HT (cadrage + livraison d'un automatisme), accompagnement 1-à-1 990 € HT. Tarifs publics, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Illkirch-Graffenstaden ?",
-      a: "Williams se déplace sur site à Illkirch-Graffenstaden, en utilisant les infrastructures de transport comme la Gare TGV de Strasbourg.",
+      q: "Williams se déplace-t-il vraiment à Illkirch-Graffenstaden ?",
+      a: "Oui. Williams arrive en TGV à Strasbourg (gare centrale) puis rejoint Illkirch-Graffenstaden en tram A ou E (15 min). Pour les missions au Parc d'Innovation, station « Parc d'Innovation » directe sur la ligne A. Frais de déplacement intégrés.",
     },
     {
-      q: "Quel est le délai pour une intervention IA à Illkirch-Graffenstaden ?",
-      a: "Nous nous engageons à intervenir sur site dans un délai de 5 jours ouvrés après la validation de votre demande.",
+      q: "Quels secteurs locaux Axion-IA accompagne-t-il à Illkirch-Graffenstaden ?",
+      a: "Principalement les TPE-PME du Parc d'Innovation (biotech, IT, ingénierie), la sous-traitance mécanique du sud strasbourgeois, les artisans et commerces de la Krimmeri à Graffenstaden, les cabinets libéraux. Pas de spécialisation grands groupes.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Illkirch-Graffenstaden ?",
-      a: "Nous intégrons des mesures de conformité RGPD dans toutes nos interventions, en nous adaptant aux spécificités réglementaires locales et sectorielles.",
+      q: "Quel délai pour démarrer une mission à Illkirch-Graffenstaden ?",
+      a: "Audit Flash bookable sous 5 à 10 jours ouvrés. Intervention Essentielle livrée en 2 à 4 semaines selon complexité. Axion-IA peut intervenir dès la semaine suivante pour cadrer un besoin urgent (panne de process, automatisation à fenêtre courte).",
+    },
+    {
+      q: "Quelles communes proches couvrez-vous depuis Illkirch-Graffenstaden ?",
+      a: "Axion-IA intervient aussi sur Strasbourg, Ostwald, Geispolsheim, Eschau, Fegersheim et plus largement l'Eurométropole. Frais de déplacement intra-Eurométropole intégrés au tarif public, sans surcoût.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Illkirch-Graffenstaden ?",
+      a: "Hébergement par défaut sur cloud UE (OVHcloud, Scaleway) ou on-premise selon contraintes biotech/pharma. Registre des traitements fourni, DPA signé, données R&D et clients jamais utilisées pour entraîner un modèle tiers. Multilingue FR-DE pour partenariats transfrontaliers.",
     },
   ],
 };
+
+export const ILLKIRCH_GRAFFENSTADEN_COPY = VILLE_COPY;

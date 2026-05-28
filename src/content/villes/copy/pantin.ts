@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — anti-doorway HCU pass (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const PANTIN_COPY: VilleCopy = {
   pitchFr:
-    "Pantin, avec ses 61 929 habitants, est un centre économique dynamique en Île-de-France. Axion-IA intervient ici pour optimiser les processus des entreprises locales, en s'appuyant sur des acteurs comme Hermès et BNP Paribas pour un déploiement IA concret.",
+    "Pantin (61 929 habitants en 2023, Seine-Saint-Denis) est une commune de la première couronne parisienne, située à environ 6,4 km de Notre-Dame. Connue pour sa transformation rapide le long du canal de l'Ourcq, elle accueille à la fois de grandes implantations (BNP Paribas aux Grands Moulins de Pantin, Hermès, Chanel) et un tissu dense de TPE et PME locales — commerces, ateliers, agences, créateurs. Axion-IA y intervient en priorité auprès des petites structures, en code custom, sans no-code.",
   pitchEn:
-    "Pantin, avec ses 61 929 habitants, est un centre économique dynamique en Île-de-France. Axion-IA intervient ici pour optimiser les processus des entreprises locales, en s'appuyant sur des acteurs comme Hermès et BNP Paribas pour un déploiement IA concret.",
+    "Pantin (61 929 habitants en 2023, Seine-Saint-Denis) est une commune de la première couronne parisienne, située à environ 6,4 km de Notre-Dame. Connue pour sa transformation rapide le long du canal de l'Ourcq, elle accueille à la fois de grandes implantations (BNP Paribas aux Grands Moulins de Pantin, Hermès, Chanel) et un tissu dense de TPE et PME locales — commerces, ateliers, agences, créateurs. Axion-IA y intervient en priorité auprès des petites structures, en code custom, sans no-code.",
   directAnswerFr:
-    "Axion-IA se déplace à Pantin pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques tels que Hermès et BNP Paribas présents dans la région, nous proposons des audits et des interventions, pour des résultats mesurables et concrets.",
+    "Axion-IA se déplace à Pantin (Seine-Saint-Denis, 61 929 habitants) pour accompagner les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. Si la commune est connue pour le siège BNP Paribas (Grands Moulins de Pantin) et la présence d'Hermès et Chanel, notre cœur de cible reste les petites structures du canal de l'Ourcq : commerces, ateliers d'artisans, agences créatives, cabinets, prestataires B2B. Les ETI sont accompagnées plus marginalement. Interventions sur site planifiées sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA se déplace à Pantin pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques tels que Hermès et BNP Paribas présents dans la région, nous proposons des audits et des interventions, pour des résultats mesurables et concrets.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA se déplace à Pantin (Seine-Saint-Denis, 61 929 habitants) pour accompagner les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. Si la commune est connue pour le siège BNP Paribas (Grands Moulins de Pantin) et la présence d'Hermès et Chanel, notre cœur de cible reste les petites structures du canal de l'Ourcq : commerces, ateliers d'artisans, agences créatives, cabinets, prestataires B2B. Les ETI sont accompagnées plus marginalement. Interventions sur site planifiées sous 5 jours ouvrés.",
+  seoHook: "TPE PME canal Ourcq & reconversion tertiaire",
   ecosystemFr:
-    "Pantin abrite des entreprises de renom telles que Hermès et BNP Paribas. La ZAC du Port est un pôle d'activité important, renforçant le tissu économique local. Axion-IA intervient pour automatiser les processus et améliorer l'efficacité des entreprises.",
+    "Pantin (5,01 km²) connaît depuis les années 1990 une transformation accélérée, particulièrement marquée dans les années 2020. Les anciennes zones industrielles le long du canal de l'Ourcq se sont reconverties en pôles tertiaires et créatifs : BNP Paribas a installé son centre des Grands Moulins, Hermès et Chanel y ont des opérations. Autour de ces ancres, le tissu local reste majoritairement composé de TPE et PME — commerces de proximité, restaurants, ateliers d'art et de mode, agences, prestataires B2B — qui constituent notre cible principale d'accompagnement IA.",
   ecosystemEn:
-    "Pantin abrite des entreprises de renom telles que Hermès et BNP Paribas. La ZAC du Port est un pôle d'activité important, renforçant le tissu économique local. Axion-IA intervient pour automatiser les processus et améliorer l'efficacité des entreprises.",
+    "Pantin (5,01 km²) connaît depuis les années 1990 une transformation accélérée, particulièrement marquée dans les années 2020. Les anciennes zones industrielles le long du canal de l'Ourcq se sont reconverties en pôles tertiaires et créatifs : BNP Paribas a installé son centre des Grands Moulins, Hermès et Chanel y ont des opérations. Autour de ces ancres, le tissu local reste majoritairement composé de TPE et PME — commerces de proximité, restaurants, ateliers d'art et de mode, agences, prestataires B2B — qui constituent notre cible principale d'accompagnement IA.",
   distancesFr:
-    "Pantin est à 5 km de la Gare de Paris-Est et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Pantin est desservie par les lignes 5 et 7 du métro, le RER E (gare de Pantin), le tramway T3b à proximité immédiate, ainsi que les RD 932 (ex-RN2) et RD 933 (ex-RN3). Notre-Dame est à environ 6,4 km, l'aéroport Paris-Charles-de-Gaulle à environ 20 km.",
   distancesEn:
-    "Pantin est à 5 km de la Gare de Paris-Est et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Pantin est desservie par les lignes 5 et 7 du métro, le RER E (gare de Pantin), le tramway T3b à proximité immédiate, ainsi que les RD 932 (ex-RN2) et RD 933 (ex-RN3). Notre-Dame est à environ 6,4 km, l'aéroport Paris-Charles-de-Gaulle à environ 20 km.",
   topSectorsNaf: [
     "Commerce de détail",
-    "Programmation informatique",
-    "Services financiers",
-    "Transports terrestres",
+    "Activités de services administratifs et de soutien",
+    "Activités informatiques et services d'information",
+    "Hébergement et restauration",
+    "Industrie manufacturière (mode, artisanat d'art)",
+    "Activités financières et d'assurance",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Pantin pour identifier les opportunités d'automatisation chez Hermès et BNP Paribas — résultats concrets dès 490 € HT.",
-      en: "Réaliser un audit à Pantin pour identifier les opportunités d'automatisation chez Hermès et BNP Paribas — résultats concrets dès 490 € HT.",
+      fr: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit Flash 4h dès 490 € HT.",
+      en: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit Flash 4h dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Pantin pour optimiser les processus des entreprises locales — automatisations concrètes dès 590 € HT.",
-      en: "Intervenir à Pantin pour optimiser les processus des entreprises locales — automatisations concrètes dès 590 € HT.",
+      fr: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Intervention Essentielle dès 590 € HT.",
+      en: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Pantin, en tenant compte des infrastructures existantes — déploiement à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Pantin, en tenant compte des infrastructures existantes — déploiement à partir de 990 € HT.",
+      fr: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès 990 € HT.",
+      en: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Pantin avec des sessions 1-to-1 — conseils personnalisés dès 990 € HT.",
-      en: "Accompagner les dirigeants à Pantin avec des sessions 1-to-1 — conseils personnalisés dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès 990 € HT.",
+      en: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Pantin ?",
-      a: "Les audits à Pantin commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
-    },
-    {
-      q: "Comment Axion-IA intervient-elle à Pantin ?",
-      a: "Nos consultants se déplacent sur site à Pantin pour réaliser des interventions et audits, garantissant une approche personnalisée et adaptée aux besoins locaux.",
+      q: "Quels sont les tarifs Axion-IA à Pantin ?",
+      a: "Tarifs publics : Audit Flash 4h dès 490 € HT, Intervention Essentielle dès 590 € HT, implémentation ou accompagnement 1-to-1 dès 990 € HT. Grille identique partout en France, sans frais de déplacement caché.",
     },
     {
       q: "Quels délais pour une intervention à Pantin ?",
-      a: "Nous nous engageons à intervenir à Pantin dans un délai de 5 jours ouvrés après validation de la mission, pour une réactivité optimale.",
+      a: "Nous intervenons sur site à Pantin dans les 5 jours ouvrés après validation. La desserte par les lignes 5 et 7 du métro et le RER E rend l'accès rapide depuis Paris intra-muros.",
+    },
+    {
+      q: "Quelles communes proches couvrez-vous depuis Pantin ?",
+      a: "Depuis Pantin, nous couvrons les communes limitrophes : Paris (19e arrondissement), Aubervilliers, Bobigny, La Courneuve, Les Lilas, Noisy-le-Sec, Le Pré-Saint-Gervais et Romainville.",
+    },
+    {
+      q: "Quels secteurs locaux accompagnez-vous à Pantin ?",
+      a: "Priorité aux TPE et PME du commerce, des services, des ateliers de mode et d'artisanat d'art (héritage du canal de l'Ourcq), du numérique et des agences créatives. Les PME du secteur financier autour des Grands Moulins sont également accompagnées. Les ETI restent marginales dans notre activité.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Pantin ?",
-      a: "Axion-IA garantit la conformité RGPD lors de ses interventions à Pantin, en intégrant des pratiques de protection des données dès la conception de nos solutions.",
+      a: "Toutes nos solutions IA déployées à Pantin respectent le RGPD : hébergement européen, minimisation des données, traçabilité des accès, clauses de sous-traitance adaptées. La conformité est intégrée dès la conception (privacy by design).",
+    },
+    {
+      q: "Vous déplacez-vous sur site à Pantin ?",
+      a: "Oui, notre équipe se déplace directement à Pantin pour audits, interventions et implémentations. Le métro 5 et 7 et le RER E rendent l'accès très simple depuis tout Paris et sa première couronne.",
     },
   ],
 };

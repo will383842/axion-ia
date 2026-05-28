@@ -2,66 +2,79 @@
 // Quality score: 50 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL EDIT 2026-05-28 : anti-doorway HCU 2024 — contenu factuel Wikipedia,
+// suppression templates LLM hors-contexte (Cap Digital/Inria/Station F).
 
 import type { VilleCopy } from "./types";
 
 export const SARCELLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sarcelles pour optimiser les processus des entreprises locales. Avec des acteurs comme Cap Digital et Inria en Ile-de-France, nous apportons notre expertise IA directement sur site.",
+    "Axion-IA accompagne les TPE et PME de Sarcelles (59 173 habitants, Val-d'Oise) dans l'adoption concrète de l'IA. Chef-lieu d'arrondissement à 15 km au nord de Paris, la commune combine commerces de proximité, services aux entreprises, santé, action sociale et enseignement, avec une densité élevée de 7 003 hab/km². Nous intervenons sur site, en code custom, pour automatiser devis, relances, gestion administrative et reporting. Notre approche s'adapte aussi aux ETI du nord francilien.",
   pitchEn:
-    "Axion-IA intervient à Sarcelles pour optimiser les processus des entreprises locales. Avec des acteurs comme Cap Digital et Inria en Ile-de-France, nous apportons notre expertise IA directement sur site.",
+    "Axion-IA accompagne les TPE et PME de Sarcelles (59 173 habitants, Val-d'Oise) dans l'adoption concrète de l'IA. Chef-lieu d'arrondissement à 15 km au nord de Paris, la commune combine commerces de proximité, services aux entreprises, santé, action sociale et enseignement, avec une densité élevée de 7 003 hab/km². Nous intervenons sur site, en code custom, pour automatiser devis, relances, gestion administrative et reporting. Notre approche s'adapte aussi aux ETI du nord francilien.",
   directAnswerFr:
-    "À Sarcelles, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. La proximité de pôles comme Cap Digital et Station F à Paris renforce l'écosystème technologique régional. Nos services incluent des audits, des implémentations et des formations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "À Sarcelles, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. La proximité de pôles comme Cap Digital et Station F à Paris renforce l'écosystème technologique régional. Nos services incluent des audits, des implémentations et des formations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+  seoHook: "commerce détail & services à la population",
   ecosystemFr:
-    "Sarcelles bénéficie de la proximité de Paris, abritant des pôles comme Cap Digital et Station F, favorisant l'innovation technologique. Les entreprises locales peuvent ainsi s'appuyer sur un environnement propice au développement de solutions IA.",
+    "Chef-lieu d'arrondissement du Val-d'Oise depuis 2000, Sarcelles dispose d'un tissu économique dense lié à sa population : commerces de proximité, restauration, santé humaine, action sociale, enseignement et services administratifs. L'urbanisation autour du grand ensemble construit entre 1955 et 1970 structure encore l'organisation économique de la commune. Deux gares (Sarcelles-Saint-Brice et Garges-Sarcelles) et le tramway T5 depuis 2013 ouvrent le bassin d'emploi vers Paris et Roissy.",
   ecosystemEn:
-    "Sarcelles bénéficie de la proximité de Paris, abritant des pôles comme Cap Digital et Station F, favorisant l'innovation technologique. Les entreprises locales peuvent ainsi s'appuyer sur un environnement propice au développement de solutions IA.",
+    "Chef-lieu d'arrondissement du Val-d'Oise depuis 2000, Sarcelles dispose d'un tissu économique dense lié à sa population : commerces de proximité, restauration, santé humaine, action sociale, enseignement et services administratifs. L'urbanisation autour du grand ensemble construit entre 1955 et 1970 structure encore l'organisation économique de la commune. Deux gares (Sarcelles-Saint-Brice et Garges-Sarcelles) et le tramway T5 depuis 2013 ouvrent le bassin d'emploi vers Paris et Roissy.",
   distancesFr:
-    "Sarcelles est à 15 km de la Gare de Paris-Nord et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Sarcelles est à 15 km au nord de Paris, à environ 12 km de l'aéroport Paris-Charles de Gaulle (Roissy) et à 20 minutes de la gare de Paris-Nord via le RER D (gare de Garges-Sarcelles). Le tramway T5 dessert cinq stations sur la commune depuis 2013.",
   distancesEn:
-    "Sarcelles est à 15 km de la Gare de Paris-Nord et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Enseignement", "Santé humaine"],
+    "Sarcelles est à 15 km au nord de Paris, à environ 12 km de l'aéroport Paris-Charles de Gaulle (Roissy) et à 20 minutes de la gare de Paris-Nord via le RER D (gare de Garges-Sarcelles). Le tramway T5 dessert cinq stations sur la commune depuis 2013.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Santé humaine et action sociale",
+    "Enseignement",
+    "Restauration",
+    "Transports terrestres",
+    "Services administratifs aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Sarcelles permet d'identifier les opportunités IA dans le commerce de détail et la santé humaine.",
-      en: "Réaliser un audit à Sarcelles permet d'identifier les opportunités IA dans le commerce de détail et la santé humaine.",
+      fr: "Audit Flash 4 h à Sarcelles dès 490 € HT : cartographie des processus automatisables côté commerce, santé, enseignement ou services, livré sous 5 jours ouvrés.",
+      en: "Audit Flash 4 h à Sarcelles dès 490 € HT : cartographie des processus automatisables côté commerce, santé, enseignement ou services, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Sarcelles pour automatiser les processus administratifs des entreprises locales.",
-      en: "Intervenir à Sarcelles pour automatiser les processus administratifs des entreprises locales.",
+      fr: "Intervention Essentielle dès 590 € HT à Sarcelles pour automatiser devis, relances clients et suivi administratif — code custom, pas de no-code.",
+      en: "Intervention Essentielle dès 590 € HT à Sarcelles pour automatiser devis, relances clients et suivi administratif — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Sarcelles pour optimiser les transports terrestres et l'enseignement.",
-      en: "Implémenter des solutions IA à Sarcelles pour optimiser les transports terrestres et l'enseignement.",
+      fr: "Implémentation IA sur site à Sarcelles à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      en: "Implémentation IA sur site à Sarcelles à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Sarcelles avec des sessions 1-to-1 pour une adoption IA réussie.",
-      en: "Accompagner les dirigeants à Sarcelles avec des sessions 1-to-1 pour une adoption IA réussie.",
+      fr: "Session 1-to-1 dirigeant TPE/PME à Sarcelles dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeant TPE/PME à Sarcelles dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Sarcelles ?",
-      a: "L'Audit Flash est proposé à partir de 490 € HT. Nos tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Sarcelles ?",
+      a: "À Sarcelles, l'Audit Flash 4 h démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Les implémentations et sessions 1-to-1 commencent à 990 € HT. Tous nos tarifs sont publics et sans engagement.",
     },
     {
-      q: "Comment se déroule une intervention IA à Sarcelles ?",
-      a: "Nos consultants se déplacent sur site pour analyser et optimiser vos processus. L'intervention Essentielle débute à 590 € HT.",
+      q: "Sous quel délai Axion-IA intervient à Sarcelles ?",
+      a: "Pour les TPE et PME de Sarcelles, l'Audit Flash est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Sarcelles ?",
-      a: "Nous garantissons une intervention rapide, généralement sous 5 jours ouvrés après la validation du projet.",
+      q: "Couvrez-vous Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt depuis Sarcelles ?",
+      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes de Sarcelles : Garges-lès-Gonesse, Villiers-le-Bel, Arnouville, Saint-Brice-sous-Forêt, Groslay, Montmagny, Écouen, Stains et Saint-Denis.",
     },
     {
-      q: "Proposez-vous des formations IA à Sarcelles ?",
-      a: "Oui, nous offrons des sessions 1-to-1 pour dirigeants à partir de 990 € HT, adaptées à vos besoins spécifiques.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Sarcelles ?",
+      a: "Toutes nos solutions IA déployées à Sarcelles sont en code custom hébergé UE, avec registre de traitement, minimisation des données et clauses sous-traitant signées. Pas de transfert hors-UE par défaut.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD lors de vos interventions à Sarcelles ?",
-      a: "Nous intégrons les normes RGPD dans toutes nos solutions IA pour garantir la protection des données personnelles.",
+      q: "Travaillez-vous avec les acteurs du commerce et de la santé à Sarcelles ?",
+      a: "Oui, Sarcelles concentre commerces de proximité, structures de santé, action sociale et établissements d'enseignement. Nous adaptons l'IA à des cas concrets : prise de rendez-vous, suivi dossiers, relances administratives, reporting.",
+    },
+    {
+      q: "Proposez-vous des sessions IA pour dirigeants à Sarcelles ?",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Sarcelles démarrent à 990 € HT et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
     },
   ],
 };

@@ -1,67 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — anti-doorway HCU 2024, Wikipedia-grounded.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const MONTGERON_COPY: VilleCopy = {
   pitchFr:
-    "À Montgeron, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des partenaires comme Cap Digital et Inria, nous apportons notre expertise IA aux secteurs du commerce de détail et de la construction.",
+    "Axion-IA intervient à Montgeron (24 022 habitants, Essonne), commune située à 19 km au sud-est de Paris, intégrée à la Communauté d'agglomération Val d'Yerres Val de Seine. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu de commerces de proximité, services aux particuliers, professions libérales et artisans du sud-est francilien, dans une commune dont une partie du territoire est couverte par la forêt de Sénart et bordée à l'est par l'Yerres.",
   pitchEn:
-    "À Montgeron, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des partenaires comme Cap Digital et Inria, nous apportons notre expertise IA aux secteurs du commerce de détail et de la construction.",
+    "Axion-IA intervient à Montgeron (24 022 habitants, Essonne), commune située à 19 km au sud-est de Paris, intégrée à la Communauté d'agglomération Val d'Yerres Val de Seine. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu de commerces de proximité, services aux particuliers, professions libérales et artisans du sud-est francilien, dans une commune dont une partie du territoire est couverte par la forêt de Sénart et bordée à l'est par l'Yerres.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Montgeron, s'appuyant sur l'écosystème technologique de l'Île-de-France, incluant Cap Digital et Station F. Notre approche sur site permet de répondre aux besoins spécifiques des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé. Nous offrons des audits et des interventions.",
+    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit Flash dès 490 € HT, intervention dès 590 € HT, implémentation dès 990 € HT, sans devis caché.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Montgeron, s'appuyant sur l'écosystème technologique de l'Île-de-France, incluant Cap Digital et Station F. Notre approche sur site permet de répondre aux besoins spécifiques des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé. Nous offrons des audits et des interventions.",
-  seoHook: "commerce détail & construction",
+    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit Flash dès 490 € HT, intervention dès 590 € HT, implémentation dès 990 € HT, sans devis caché.",
+  seoHook: "commerces de proximité & services franciliens",
   ecosystemFr:
-    "Montgeron bénéficie de la proximité de Paris, abritant des entités comme LVMH et BNP Paribas, ce qui enrichit son tissu économique local. Les entreprises de Montgeron peuvent ainsi s'inspirer de cet environnement stimulant.",
+    "Le tissu économique de Montgeron est principalement résidentiel et tertiaire de proximité : commerces de centre-ville le long de la RN6, professions libérales (santé, juridique, expertise comptable), agences immobilières et artisans BTP. La Communauté d'agglomération Val d'Yerres Val de Seine fédère plusieurs communes du sud-est francilien (Yerres, Crosne, Brunoy, Vigneux-sur-Seine, Draveil). Le restaurant historique \"Au réveil matin\" a accueilli en 1903 le départ du premier Tour de France, marquant une identité patrimoniale forte.",
   ecosystemEn:
-    "Montgeron bénéficie de la proximité de Paris, abritant des entités comme LVMH et BNP Paribas, ce qui enrichit son tissu économique local. Les entreprises de Montgeron peuvent ainsi s'inspirer de cet environnement stimulant.",
+    "Le tissu économique de Montgeron est principalement résidentiel et tertiaire de proximité : commerces de centre-ville le long de la RN6, professions libérales (santé, juridique, expertise comptable), agences immobilières et artisans BTP. La Communauté d'agglomération Val d'Yerres Val de Seine fédère plusieurs communes du sud-est francilien (Yerres, Crosne, Brunoy, Vigneux-sur-Seine, Draveil). Le restaurant historique \"Au réveil matin\" a accueilli en 1903 le départ du premier Tour de France, marquant une identité patrimoniale forte.",
   distancesFr:
-    "Montgeron se situe à 20 km de la gare TGV Gare de Lyon et à 15 km de l'aéroport de Paris-Orly.",
+    "Montgeron est desservie par la gare RER D Montgeron-Crosne (terminus possible Melun ou Paris Gare de Lyon), la RN6 (avec contournement), et se situe à 19 km au sud-est de Paris et 8 km de l'aéroport Paris-Orly. Lignes de bus A, E, P, V, IV, 501, 91-09, 191-100.",
   distancesEn:
-    "Montgeron se situe à 20 km de la gare TGV Gare de Lyon et à 15 km de l'aéroport de Paris-Orly.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Santé humaine"],
+    "Montgeron est desservie par la gare RER D Montgeron-Crosne (terminus possible Melun ou Paris Gare de Lyon), la RN6 (avec contournement), et se situe à 19 km au sud-est de Paris et 8 km de l'aéroport Paris-Orly. Lignes de bus A, E, P, V, IV, 501, 91-09, 191-100.",
+  topSectorsNaf: [
+    "Commerce de détail de proximité",
+    "Santé & professions libérales",
+    "Activités immobilières",
+    "Construction & artisanat BTP",
+    "Services aux particuliers",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Montgeron pour identifier les opportunités IA dans le commerce de détail et la construction.",
-      en: "Réaliser un audit à Montgeron pour identifier les opportunités IA dans le commerce de détail et la construction.",
+      fr: "Audit Flash IA sur site à Montgeron dès 490 € HT : nous identifions chez les TPE/PME locales (commerces RN6, cabinets santé, agences immo) 3 à 5 cas d'usage IA prioritaires, en code custom, sans dépendance no-code.",
+      en: "Audit Flash IA sur site à Montgeron dès 490 € HT : nous identifions chez les TPE/PME locales (commerces RN6, cabinets santé, agences immo) 3 à 5 cas d'usage IA prioritaires, en code custom, sans dépendance no-code.",
     },
     interventions: {
-      fr: "Intervenir à Montgeron pour automatiser les processus administratifs des entreprises locales.",
-      en: "Intervenir à Montgeron pour automatiser les processus administratifs des entreprises locales.",
+      fr: "Interventions IA à Montgeron dès 590 € HT : automatisation devis-relances pour artisans BTP, agendas et rappels pour professions libérales, qualification de leads pour agences immobilières du Val d'Yerres Val de Seine.",
+      en: "Interventions IA à Montgeron dès 590 € HT : automatisation devis-relances pour artisans BTP, agendas et rappels pour professions libérales, qualification de leads pour agences immobilières du Val d'Yerres Val de Seine.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Montgeron, facilitant la gestion des devis et relances.",
-      en: "Implémenter des solutions IA à Montgeron, facilitant la gestion des devis et relances.",
+      fr: "Implémentation IA à Montgeron dès 990 € HT : intégration d'assistants codés sur mesure chez les TPE/PME franciliennes, connectés à leurs outils existants (CRM, agendas, comptabilité), 8 km de Paris-Orly.",
+      en: "Implémentation IA à Montgeron dès 990 € HT : intégration d'assistants codés sur mesure chez les TPE/PME franciliennes, connectés à leurs outils existants (CRM, agendas, comptabilité), 8 km de Paris-Orly.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Montgeron avec des sessions 1-to-1 pour une adoption IA ciblée.",
-      en: "Accompagner les dirigeants à Montgeron avec des sessions 1-to-1 pour une adoption IA ciblée.",
+      fr: "Accompagnement 1-à-1 à Montgeron dès 990 € HT pour dirigeants de TPE et PME franciliennes : montée en compétences IA appliquée à leur métier réel, sur site ou en hybride via RER D.",
+      en: "Accompagnement 1-à-1 à Montgeron dès 990 € HT pour dirigeants de TPE et PME franciliennes : montée en compétences IA appliquée à leur métier réel, sur site ou en hybride via RER D.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs des audits IA à Montgeron ?",
-      a: "Les audits IA à Montgeron débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Nos tarifs sont publics et consultables en ligne.",
+      q: "Quels sont les tarifs pour une intervention IA à Montgeron ?",
+      a: "Les interventions IA à Montgeron démarrent à 590 € HT. L'Audit Flash débute à 490 € HT et l'implémentation à 990 € HT. Tous nos tarifs sont publics et consultables en ligne.",
     },
     {
-      q: "Axion-IA peut-elle se déplacer directement à Montgeron ?",
-      a: "Oui, notre équipe nationale se déplace sur site à Montgeron pour réaliser des audits et des interventions personnalisées.",
+      q: "Quels délais pour une mission à Montgeron ?",
+      a: "Williams se déplace à Montgeron sous 5 à 7 jours ouvrés (RER D Montgeron-Crosne, RN6 ou Paris-Orly à 8 km). Audit Flash livré en 4 heures sur site, implémentations entre 2 et 6 semaines.",
     },
     {
-      q: "Quels délais pour une intervention IA à Montgeron ?",
-      a: "Williams se déplace sur site à Montgeron dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Axion-IA intervient-elle dans les communes proches de Montgeron ?",
+      a: "Oui, nous couvrons toute la Communauté d'agglomération Val d'Yerres Val de Seine, notamment Yerres, Crosne, Brunoy, Vigneux-sur-Seine, Draveil, Soisy-sur-Seine et Villeneuve-Saint-Georges.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Montgeron ?",
-      a: "Axion-IA intègre la conformité RGPD dès la phase d'audit, garantissant que toutes les solutions IA mises en place respectent les réglementations en vigueur.",
+      q: "Comment Axion-IA garantit la conformité RGPD à Montgeron ?",
+      a: "Hébergement données en UE, registre des traitements complet, clause DPA fournie avant tout démarrage. L'approche code custom est particulièrement adaptée aux professions libérales (santé, juridique) très sensibles au RGPD.",
     },
     {
-      q: "Quels formats d'intervention proposez-vous pour les PME à Montgeron ?",
-      a: "Nous proposons des interventions adaptées aux besoins des PME de Montgeron, incluant des audits, des implémentations et des formations 1-to-1, avec des tarifs débutant à 590 € HT.",
+      q: "Quels secteurs locaux profitent le plus de l'IA à Montgeron ?",
+      a: "Les TPE et PME des commerces de proximité (RN6, centre-ville), les cabinets de santé et professions libérales, les agences immobilières et les artisans BTP du Val d'Yerres Val de Seine tirent un bénéfice direct des automatisations IA en code custom.",
+    },
+    {
+      q: "Williams se déplace-t-il vraiment sur site à Montgeron ?",
+      a: "Oui, déplacement systématique sur site à Montgeron via RER D (gare Montgeron-Crosne) ou véhicule (19 km depuis Paris). Aucune mission initiale en distanciel : observation des processus réels dans vos locaux.",
     },
   ],
 };

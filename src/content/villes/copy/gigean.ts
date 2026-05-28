@@ -1,71 +1,75 @@
-﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
-// Gigean (34, Hérault) — agglo Sète, abbaye Saint-Félix-de-Montceau, garrigue.
+// AUTO-GENERATED 2026-05-27 — corrigé anti-doorway HCU 2024 (T4 sprint).
+// Gigean (34, Hérault) — 6 639 hab. (2023), Sète Agglopôle, abbaye Saint-Félix-de-Montceau Xᵉ.
 
 import type { VilleCopy } from "./types";
 
 export const GIGEAN_COPY: VilleCopy = {
   pitchFr:
-    "Gigean (34), commune de l'agglomération de Sète, entre garrigue et étang de Thau. Abbaye Saint-Félix-de-Montceau, accès A9. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Gigean (34), 6 639 habitants, commune de l'Hérault rattachée à Sète Agglopôle Méditerranée, à 14 km de Sète et 18 km de Montpellier. Entre l'étang de Thau à l'ouest et le massif de la Gardiole au sud, environnée de vignobles. Abbaye Saint-Félix-de-Montceau (Xᵉ siècle), église Saint-Géniès (XIIIᵉ), trois zones ZNIEFF. Tissu TPE commerce (32 % des entreprises locales), PME services, artisans BTP, viticulture, professions libérales. Axion-IA y accompagne TPE et PME du bassin de Thau avec des solutions IA codées sur mesure.",
   pitchEn:
-    "Gigean (34), commune de l'agglomération de Sète, entre garrigue et étang de Thau. Abbaye Saint-Félix-de-Montceau, accès A9. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Gigean (34), 6 639 habitants, commune de l'Hérault rattachée à Sète Agglopôle Méditerranée, à 14 km de Sète et 18 km de Montpellier. Entre l'étang de Thau à l'ouest et le massif de la Gardiole au sud, environnée de vignobles. Abbaye Saint-Félix-de-Montceau (Xᵉ siècle), église Saint-Géniès (XIIIᵉ), trois zones ZNIEFF. Tissu TPE commerce (32 % des entreprises locales), PME services, artisans BTP, viticulture, professions libérales. Axion-IA y accompagne TPE et PME du bassin de Thau avec des solutions IA codées sur mesure.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gigean (34). Nous accompagnons TPE commerçants, PME de services, artisans BTP, professions libérales et entreprises du bassin de Thau-Sète.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Gigean (34) pour accompagner TPE commerçants (32 % du tissu local), PME de services, artisans BTP, exploitants viticoles et professions libérales du bassin de Thau-Sète. Présence sur Sète, Balaruc-les-Bains, Poussan, Frontignan et Montpellier à proximité. Employeurs locaux notables : Maison Tino (plats préparés), Auriac (grossiste surgelé). Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gigean (34). Nous accompagnons TPE commerçants, PME de services, artisans BTP, professions libérales et entreprises du bassin de Thau-Sète.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Gigean (34) pour accompagner TPE commerçants (32 % du tissu local), PME de services, artisans BTP, exploitants viticoles et professions libérales du bassin de Thau-Sète. Présence sur Sète, Balaruc-les-Bains, Poussan, Frontignan et Montpellier à proximité. Employeurs locaux notables : Maison Tino (plats préparés), Auriac (grossiste surgelé). Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
   ecosystemFr:
-    "Gigean est une commune de l'agglomération de Sète, entre garrigue (abbaye Saint-Félix-de-Montceau, site classé) et étang de Thau. Accès direct A9, zones d'activités. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Forte croissance résidentielle.",
+    "Gigean est une commune de 6 639 habitants de l'Hérault (Sète Agglopôle Méditerranée), entre garrigue du massif de la Gardiole (abbaye Saint-Félix-de-Montceau, Xᵉ siècle, site classé) et étang de Thau, dans l'aire urbaine de Sète et la zone d'influence de Montpellier. Accès direct A9, vignobles environnants, trois zones ZNIEFF. Commerce dominant (32,2 % des entreprises, au-dessus de la moyenne départementale 28 %). Employeurs majeurs : Maison Tino (plats préparés), Auriac (grossiste surgelé). Tissu TPE commerce, PME services, artisans BTP, viticulture, professions libérales. Croissance résidentielle marquée depuis 1962.",
   ecosystemEn:
-    "Gigean est une commune de l'agglomération de Sète, entre garrigue (abbaye Saint-Félix-de-Montceau, site classé) et étang de Thau. Accès direct A9, zones d'activités. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Forte croissance résidentielle.",
+    "Gigean est une commune de 6 639 habitants de l'Hérault (Sète Agglopôle Méditerranée), entre garrigue du massif de la Gardiole (abbaye Saint-Félix-de-Montceau, Xᵉ siècle, site classé) et étang de Thau, dans l'aire urbaine de Sète et la zone d'influence de Montpellier. Accès direct A9, vignobles environnants, trois zones ZNIEFF. Commerce dominant (32,2 % des entreprises, au-dessus de la moyenne départementale 28 %). Employeurs majeurs : Maison Tino (plats préparés), Auriac (grossiste surgelé). Tissu TPE commerce, PME services, artisans BTP, viticulture, professions libérales. Croissance résidentielle marquée depuis 1962.",
   distancesFr:
-    "Sète à 15 min. Montpellier à 25 min par A9. Balaruc-les-Bains à 5 min. Gare SNCF Sète à 15 min. Aéroport Montpellier-Méditerranée à 20 min.",
+    "Sète à 14 km (15 min). Montpellier à 18 km (25 min par A9). Balaruc-les-Bains à 5 min. Poussan limitrophe à 5 min. Frontignan à 12 min. Gare SNCF Sète à 15 min. Aéroport Montpellier-Méditerranée à 20 min. Marseille à 2 h par A9.",
   distancesEn:
-    "Sète à 15 min. Montpellier à 25 min par A9. Balaruc-les-Bains à 5 min. Gare SNCF Sète à 15 min. Aéroport Montpellier-Méditerranée à 20 min.",
-  seoHook: "services, artisanat & bassin de Thau",
+    "Sète à 14 km (15 min). Montpellier à 18 km (25 min par A9). Balaruc-les-Bains à 5 min. Poussan limitrophe à 5 min. Frontignan à 12 min. Gare SNCF Sète à 15 min. Aéroport Montpellier-Méditerranée à 20 min. Marseille à 2 h par A9.",
+  seoHook: "TPE commerce, viticulture & bassin de Thau",
   topSectorsNaf: [
+    "TPE commerce de proximité (32,2 % des entreprises)",
     "PME services & tertiaire",
     "Artisanat BTP & rénovation",
-    "Commerce de proximité",
-    "Professions libérales",
-    "Transport & logistique (A9)",
+    "Viticulture & agroalimentaire (Maison Tino, Auriac)",
+    "Professions libérales & transport-logistique A9",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gigean : diagnostic pour PME services, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Gigean : diagnostic pour PME services, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Gigean : diagnostic pour TPE commerçants (32 % du tissu), PME services, artisans BTP, exploitants viticoles et professions libérales du bassin de Thau. Audit Flash 4 h à 490 € HT, livrable ROI chiffré.",
+      en: "Audit IA à Gigean : diagnostic pour TPE commerçants (32 % du tissu), PME services, artisans BTP, exploitants viticoles et professions libérales du bassin de Thau. Audit Flash 4 h à 490 € HT, livrable ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gigean : ateliers adaptés PME services, commerce, cabinet libéral ou artisan. Équipes autonomes sur outils IA métier.",
-      en: "Interventions IA sur site à Gigean : ateliers adaptés PME services, commerce, cabinet libéral ou artisan. Équipes autonomes sur outils IA métier.",
+      fr: "Interventions IA sur site à Gigean : ateliers adaptés TPE commerce, PME services, cabinets libéraux, artisans BTP et exploitants viticoles. Équipes autonomes sur outils IA métier. Intervention Essentielle à 590 € HT.",
+      en: "Interventions IA sur site à Gigean : ateliers adaptés TPE commerce, PME services, cabinets libéraux, artisans BTP et exploitants viticoles. Équipes autonomes sur outils IA métier. Intervention Essentielle à 590 € HT.",
     },
     implementation: {
-      fr: "Implémentation IA à Gigean : automatisation gestion PME, chatbot client, classification documents, optimisation processus artisans et commerces bassin de Thau.",
-      en: "Implémentation IA à Gigean : automatisation gestion PME, chatbot client, classification documents, optimisation processus artisans et commerces bassin de Thau.",
+      fr: "Implémentation IA à Gigean : automatisation gestion PME, chatbot client, classification documents, optimisation processus artisans, commerces et exploitations viticoles du bassin de Thau. À partir de 990 € HT.",
+      en: "Implémentation IA à Gigean : automatisation gestion PME, chatbot client, classification documents, optimisation processus artisans, commerces et exploitations viticoles du bassin de Thau. À partir de 990 € HT.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gigean : sessions sur site ou en visio pour dirigeants PME, professions libérales, artisans et gérants du bassin de Thau.",
-      en: "Coaching 1-to-1 à Gigean : sessions sur site ou en visio pour dirigeants PME, professions libérales, artisans et gérants du bassin de Thau.",
+      fr: "Coaching 1-to-1 à Gigean : sessions sur site ou en visio pour dirigeants TPE, gérants PME, professions libérales, artisans et exploitants viticoles du bassin de Thau. À partir de 990 € HT.",
+      en: "Coaching 1-to-1 à Gigean : sessions sur site ou en visio pour dirigeants TPE, gérants PME, professions libérales, artisans et exploitants viticoles du bassin de Thau. À partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gigean ?",
-      a: "Oui, Axion-IA intervient à Gigean et dans tout le bassin de Thau (Sète, Balaruc, Poussan, Frontignan). Nos consultants viennent depuis Montpellier en 25 min.",
+      a: "Oui, Axion-IA intervient à Gigean et dans tout le bassin de Thau-Sète Agglopôle Méditerranée. Nous nous déplaçons aussi à Sète (14 km), Balaruc-les-Bains, Poussan (limitrophe), Frontignan et Montpellier (25 min par A9).",
     },
     {
-      q: "Proposez-vous des audits IA pour les PME de services ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux PME de services : automatisation processus, chatbot client, classification emails, optimisation CRM. Audit Flash à 490 € HT.",
+      q: "Proposez-vous des audits IA pour les PME de services et TPE commerce ?",
+      a: "Oui. À Gigean, où le commerce représente 32,2 % du tissu (au-dessus de la moyenne 34), nous adaptons l'Audit Flash 4 h à 490 € HT aux TPE commerce et PME services : automatisation processus, chatbot client, classification emails, optimisation CRM.",
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les artisans BTP à Gigean, audit Flash 490 € HT, intervention formation et coaching 1-to-1. Cas typiques : automatisation devis, classification photos chantier, planification interventions.",
+      a: "Pour les artisans BTP à Gigean, Audit Flash 490 € HT, Intervention Essentielle 590 € HT et coaching 1-to-1. Cas typiques : automatisation devis, classification photos chantier, planification interventions, suivi clients résidentiels.",
     },
     {
-      q: "Accompagnez-vous les commerces ?",
-      a: "Oui, pour les commerces à Gigean, audit Flash 490 € HT, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      q: "Accompagnez-vous les exploitants viticoles ?",
+      a: "Oui, autour de Gigean (vignobles AOC du bassin de Thau, proximité Côtes-de-Thau), nous accompagnons les exploitants viticoles : automatisation gestion ventes en direct, traçabilité documentaire, marketing oenotourisme, classification photos parcelles.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Gigean ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash 4 h démarre à 490 € HT. Intervention Essentielle sur site à 590 € HT. Implémentation et coaching 1-to-1 dès 990 € HT. Tarifs publics identiques partout en France, pas de devis opaque.",
+    },
+    {
+      q: "Axion-IA respecte-t-il le RGPD à Gigean ?",
+      a: "Oui. Toutes nos interventions à Gigean sont conformes RGPD : hébergement EU, registre des traitements, DPA contractuel, code IA propriétaire client (pas de SaaS qui exfiltre vos données vers des tiers).",
     },
   ],
 };

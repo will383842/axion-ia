@@ -1,63 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Hand-corrected 2026-05-28 (anti-doorway HCU sprint) — sourced fr.wikipedia.org/wiki/Le_Grand-Quevilly.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Le Grand-Quevilly, une ville normande où le secteur du transport terrestre est prédominant. Nous proposons des solutions IA concrètes pour optimiser vos processus métier et réduire les coûts opérationnels.",
+    "Axion-IA intervient au Grand-Quevilly, commune de 25 789 habitants en Seine-Maritime, dans la métropole rouennaise. Le tissu local mêle pétrochimie (site Borealis/GPN), grands équipements culturels (Zénith de Rouen, Théâtre Charles-Dullin, multiplexe Pathé, médiathèque François-Mitterrand) et zones commerciales. Le tramway Georges-Braque relie le centre de Rouen en 20 minutes, et la route nationale 338 (Sud III) connecte directement à l'A13. Nous accompagnons en priorité les TPE et PME locales — sous-traitants industriels, services aux entreprises, commerces — sur leurs cas d'usage IA opérationnels, avec un code custom auditable, sans solution no-code propriétaire.",
   pitchEn:
-    "Axion-IA intervient à Le Grand-Quevilly, une ville normande où le secteur du transport terrestre est prédominant. Nous proposons des solutions IA concrètes pour optimiser vos processus métier et réduire les coûts opérationnels.",
+    "Axion-IA intervient au Grand-Quevilly, commune de 25 789 habitants en Seine-Maritime, dans la métropole rouennaise. Le tissu local mêle pétrochimie (site Borealis/GPN), grands équipements culturels (Zénith de Rouen, Théâtre Charles-Dullin, multiplexe Pathé, médiathèque François-Mitterrand) et zones commerciales. Le tramway Georges-Braque relie le centre de Rouen en 20 minutes, et la route nationale 338 (Sud III) connecte directement à l'A13. Nous accompagnons en priorité les TPE et PME locales — sous-traitants industriels, services aux entreprises, commerces — sur leurs cas d'usage IA opérationnels, avec un code custom auditable, sans solution no-code propriétaire.",
   directAnswerFr:
-    "Le Grand-Quevilly, avec ses 25 789 habitants, est un pôle économique dynamique en Normandie. La ville abrite des entreprises de renom comme TotalEnergies et Renault, offrant un terreau fertile pour l'innovation. Axion-IA se déplace sur site pour accompagner les entreprises locales dans l'automatisation de leurs processus et l'implémentation de solutions IA adaptées.",
+    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
   directAnswerEn:
-    "Le Grand-Quevilly, avec ses 25 789 habitants, est un pôle économique dynamique en Normandie. La ville abrite des entreprises de renom comme TotalEnergies et Renault, offrant un terreau fertile pour l'innovation. Axion-IA se déplace sur site pour accompagner les entreprises locales dans l'automatisation de leurs processus et l'implémentation de solutions IA adaptées.",
-  seoHook: "transport terrestre & commerce gros",
+    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
+  seoHook: "pétrochimie & services aux entreprises",
   ecosystemFr:
-    "Le tissu économique de Le Grand-Quevilly est marqué par la présence de TotalEnergies et Renault. Ces grands groupes contribuent à la vitalité économique locale, notamment dans les secteurs du transport terrestre et du commerce de gros.",
+    "Le Grand-Quevilly est marqué par un héritage industriel fort. Le site pétrochimique Borealis (anciennement GPN) reste un employeur structurant. La commune a abrité les Chantiers de Normandie (fermés en 1986) et une ancienne centrale électrique au charbon. Le tissu actuel mêle pétrochimie, sous-traitance industrielle, logistique fluviale (proximité de la Seine), zones commerciales (multiplexe Pathé du Bois Cany ouvert en 1999) et grands équipements culturels (Zénith de Rouen ouvert en 2001, Théâtre Charles-Dullin, médiathèque François-Mitterrand). La proximité immédiate de Rouen ouvre l'accès à un bassin d'emploi métropolitain.",
   ecosystemEn:
-    "Le tissu économique de Le Grand-Quevilly est marqué par la présence de TotalEnergies et Renault. Ces grands groupes contribuent à la vitalité économique locale, notamment dans les secteurs du transport terrestre et du commerce de gros.",
+    "Le Grand-Quevilly est marqué par un héritage industriel fort. Le site pétrochimique Borealis (anciennement GPN) reste un employeur structurant. La commune a abrité les Chantiers de Normandie (fermés en 1986) et une ancienne centrale électrique au charbon. Le tissu actuel mêle pétrochimie, sous-traitance industrielle, logistique fluviale (proximité de la Seine), zones commerciales (multiplexe Pathé du Bois Cany ouvert en 1999) et grands équipements culturels (Zénith de Rouen ouvert en 2001, Théâtre Charles-Dullin, médiathèque François-Mitterrand). La proximité immédiate de Rouen ouvre l'accès à un bassin d'emploi métropolitain.",
   distancesFr:
-    "La gare TGV de Rouen Rive Droite est à 7 km, et l'aéroport de Rouen Vallée de Seine à 13 km.",
+    "Le Grand-Quevilly est limitrophe de Rouen, Canteleu, Le Petit-Quevilly, Sotteville-lès-Rouen, Petit-Couronne et Saint-Étienne-du-Rouvray. Le tramway Georges-Braque dessert la commune et rejoint le centre de Rouen en 20 minutes. La route nationale 338 (Sud III) donne accès à l'autoroute A13 (Paris–Caen). Lignes de bus T4, F6, F9, 27 et 42. Bac fluvial vers Canteleu.",
   distancesEn:
-    "La gare TGV de Rouen Rive Droite est à 7 km, et l'aéroport de Rouen Vallée de Seine à 13 km.",
-  topSectorsNaf: ["Transport terrestre", "Commerce de gros", "Entreposage", "Services auxiliaires"],
+    "Le Grand-Quevilly est limitrophe de Rouen, Canteleu, Le Petit-Quevilly, Sotteville-lès-Rouen, Petit-Couronne et Saint-Étienne-du-Rouvray. Le tramway Georges-Braque dessert la commune et rejoint le centre de Rouen en 20 minutes. La route nationale 338 (Sud III) donne accès à l'autoroute A13 (Paris–Caen). Lignes de bus T4, F6, F9, 27 et 42. Bac fluvial vers Canteleu.",
+  topSectorsNaf: [
+    "Industrie pétrochimique et sous-traitance",
+    "Logistique et transports terrestres",
+    "Commerce de gros",
+    "Services aux entreprises",
+    "Activités culturelles et événementielles",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Le Grand-Quevilly permet d'identifier les opportunités d'automatisation dans les secteurs du transport et du commerce.",
-      en: "Réaliser un audit à Le Grand-Quevilly permet d'identifier les opportunités d'automatisation dans les secteurs du transport et du commerce.",
+      fr: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de 490 € HT.",
+      en: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Le Grand-Quevilly pour optimiser les processus logistiques avec des solutions IA concrètes et mesurables.",
-      en: "Intervenir à Le Grand-Quevilly pour optimiser les processus logistiques avec des solutions IA concrètes et mesurables.",
+      fr: "Interventions sur site au Grand-Quevilly pour automatiser flux logistiques, suivi qualité, facturation et devis — code custom auditable. Dès 590 € HT.",
+      en: "Interventions sur site au Grand-Quevilly pour automatiser flux logistiques, suivi qualité, facturation et devis — code custom auditable. Dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des outils IA à Le Grand-Quevilly pour améliorer l'efficacité des services auxiliaires et réduire les coûts opérationnels.",
-      en: "Implémenter des outils IA à Le Grand-Quevilly pour améliorer l'efficacité des services auxiliaires et réduire les coûts opérationnels.",
+      fr: "Implémentation de solutions IA mesurées au Grand-Quevilly pour les sous-traitants industriels et services aux entreprises — outils internes sur-mesure, conformes RGPD.",
+      en: "Implémentation de solutions IA mesurées au Grand-Quevilly pour les sous-traitants industriels et services aux entreprises — outils internes sur-mesure, conformes RGPD.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Le Grand-Quevilly en sessions 1-to-1 pour une adoption réussie de l'IA dans leurs entreprises.",
-      en: "Accompagner les dirigeants de Le Grand-Quevilly en sessions 1-to-1 pour une adoption réussie de l'IA dans leurs entreprises.",
+      fr: "Sessions un-à-un avec les dirigeants de TPE/PME du Grand-Quevilly — montée en compétences IA pragmatique, orientée cas concrets locaux.",
+      en: "Sessions un-à-un avec les dirigeants de TPE/PME du Grand-Quevilly — montée en compétences IA pragmatique, orientée cas concrets locaux.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Le Grand-Quevilly ?",
-      a: "Nos tarifs débutent à 590 € HT pour une intervention essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention au Grand-Quevilly ?",
+      a: "Audit Flash dès 490 € HT (4 heures), intervention sur site dès 590 € HT. Tarifs publics sur axion-ia.com — pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Le Grand-Quevilly ?",
-      a: "Williams et notre équipe se déplacent sur site à Le Grand-Quevilly pour assurer un service personnalisé et adapté à vos besoins.",
+      q: "Comment Axion-IA se déplace-t-il au Grand-Quevilly ?",
+      a: "Nous venons sur site via la route nationale 338 (Sud III) reliée à l'A13, ou par le tramway Georges-Braque depuis le centre de Rouen (20 minutes). Lignes de bus T4, F6, F9, 27, 42 également disponibles.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Le Grand-Quevilly ?",
-      a: "Nous intervenons généralement dans un délai de 5 jours ouvrés pour débuter une implémentation IA sur site.",
+      q: "Quels délais pour démarrer une mission IA au Grand-Quevilly ?",
+      a: "Délai indicatif de 5 jours ouvrés après validation de la mission, selon nos disponibilités. Les audits Flash peuvent souvent être planifiés plus rapidement.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD à Le Grand-Quevilly ?",
-      a: "Nous intégrons des pratiques de conformité RGPD dans toutes nos solutions IA, garantissant la protection des données personnelles.",
+      q: "Vous déplacez-vous dans les communes proches comme Rouen, Petit-Quevilly ou Sotteville-lès-Rouen ?",
+      a: "Oui, nous intervenons dans toutes les communes limitrophes : Rouen, Canteleu, Le Petit-Quevilly, Sotteville-lès-Rouen, Petit-Couronne et Saint-Étienne-du-Rouvray.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD au Grand-Quevilly ?",
+      a: "Code propre sur-mesure (pas de plateforme no-code propriétaire), hébergement France ou UE, registre des traitements documenté à chaque mission. Particulièrement adapté aux contraintes des sous-traitants industriels.",
+    },
+    {
+      q: "Pourquoi un cabinet IA pour les TPE/PME industrielles du Grand-Quevilly ?",
+      a: "Le tissu pétrochimique et logistique local génère beaucoup de tâches administratives répétitives (suivi qualité, traçabilité, devis, facturation) — terrain idéal pour des automatisations IA mesurables. Nous priorisons TPE puis PME ; les ETI restent un complément.",
     },
   ],
 };

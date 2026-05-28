@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 sprint).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const ETAMPES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Étampes pour accompagner les entreprises locales dans leur adoption de l'IA. Paris, avec des pôles comme Cap Digital et Station F, inspire nos méthodes pour répondre aux besoins spécifiques des acteurs économiques d'Étampes.",
+    "Axion-IA accompagne les TPE et PME d'Étampes, sous-préfecture historique de l'Essonne située à 50 km au sud-ouest de Paris. Notre cabinet conçoit du code IA custom (pas de no-code) pour les commerçants du centre médiéval, les artisans, les logisticiens implantés le long de la RN20, les exploitations agricoles de la Beauce francilienne et les PME de services administratifs du sud-Essonne. Les ETI peuvent aussi nous solliciter en complément, mais notre cœur de cible reste les TPE et PME qui veulent un retour sur investissement rapide sans dépendance à des plateformes propriétaires.",
   pitchEn:
-    "Axion-IA intervient à Étampes pour accompagner les entreprises locales dans leur adoption de l'IA. Paris, avec des pôles comme Cap Digital et Station F, inspire nos méthodes pour répondre aux besoins spécifiques des acteurs économiques d'Étampes.",
+    "Axion-IA accompagne les TPE et PME d'Étampes, sous-préfecture historique de l'Essonne située à 50 km au sud-ouest de Paris. Notre cabinet conçoit du code IA custom (pas de no-code) pour les commerçants du centre médiéval, les artisans, les logisticiens implantés le long de la RN20, les exploitations agricoles de la Beauce francilienne et les PME de services administratifs du sud-Essonne. Les ETI peuvent aussi nous solliciter en complément, mais notre cœur de cible reste les TPE et PME qui veulent un retour sur investissement rapide sans dépendance à des plateformes propriétaires.",
   directAnswerFr:
-    "Axion-IA se déplace à Étampes pour offrir des services d'IA opérationnelle. Avec des inspirations de Cap Digital et Inria, nous proposons des audits, interventions et implémentations adaptés aux entreprises du secteur Commerce de détail et Transports terrestres. Nos solutions visent à optimiser les processus métier tout en respectant les normes en vigueur.",
+    "Axion-IA se déplace à Étampes (Essonne, Île-de-France, 27 000 habitants) pour auditer, former et implémenter des solutions IA sur mesure auprès des TPE et PME du sud-Essonne. Nous arrivons depuis Paris par le RER C (terminus Étampes, ~45 min depuis Bibliothèque-François-Mitterrand) ou par la RN20. Notre offre couvre l'audit flash, l'implémentation de code custom, la formation un-à-un des dirigeants et les sites web augmentés, à partir de 490 € HT. Les ETI franciliennes peuvent aussi nous consulter, mais le tissu étampois est dominé par les TPE et les commerces de proximité.",
   directAnswerEn:
-    "Axion-IA se déplace à Étampes pour offrir des services d'IA opérationnelle. Avec des inspirations de Cap Digital et Inria, nous proposons des audits, interventions et implémentations adaptés aux entreprises du secteur Commerce de détail et Transports terrestres. Nos solutions visent à optimiser les processus métier tout en respectant les normes en vigueur.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA se déplace à Étampes (Essonne, Île-de-France, 27 000 habitants) pour auditer, former et implémenter des solutions IA sur mesure auprès des TPE et PME du sud-Essonne. Nous arrivons depuis Paris par le RER C (terminus Étampes, ~45 min depuis Bibliothèque-François-Mitterrand) ou par la RN20. Notre offre couvre l'audit flash, l'implémentation de code custom, la formation un-à-un des dirigeants et les sites web augmentés, à partir de 490 € HT. Les ETI franciliennes peuvent aussi nous consulter, mais le tissu étampois est dominé par les TPE et les commerces de proximité.",
+  seoHook: "sous-préfecture sud-Essonne & TPE rurales-urbaines",
   ecosystemFr:
-    "Étampes, avec sa zone d'activités du Bois Bourdon, est un centre économique où le Commerce de détail et la Construction prédominent. Des entreprises locales bénéficient de l'expertise d'Axion-IA pour intégrer des solutions d'IA inspirées par des pôles comme Station F.",
+    "L'économie étampoise associe le commerce de détail du centre médiéval, l'artisanat du bâtiment, la logistique de la RN20, les services administratifs (sous-préfecture, hôpital) et l'agriculture céréalière de la Beauce. La meunerie et le travail du cuir, qui faisaient vivre une trentaine de moulins jusqu'au XIXe siècle, ont laissé place à un bassin de TPE et PME tertiaires. Étampes rayonne vers La Ferté-Alais (15 km), Dourdan (15 km), Guillerval et toute la frange sud du département de l'Essonne.",
   ecosystemEn:
-    "Étampes, avec sa zone d'activités du Bois Bourdon, est un centre économique où le Commerce de détail et la Construction prédominent. Des entreprises locales bénéficient de l'expertise d'Axion-IA pour intégrer des solutions d'IA inspirées par des pôles comme Station F.",
+    "L'économie étampoise associe le commerce de détail du centre médiéval, l'artisanat du bâtiment, la logistique de la RN20, les services administratifs (sous-préfecture, hôpital) et l'agriculture céréalière de la Beauce. La meunerie et le travail du cuir, qui faisaient vivre une trentaine de moulins jusqu'au XIXe siècle, ont laissé place à un bassin de TPE et PME tertiaires. Étampes rayonne vers La Ferté-Alais (15 km), Dourdan (15 km), Guillerval et toute la frange sud du département de l'Essonne.",
   distancesFr:
-    "Étampes est à 45 km de la Gare de Massy TGV et à 40 km de l'Aéroport de Paris-Orly.",
+    "Étampes est desservie par sa propre gare RER C (terminus, ~45 min depuis Paris) et par les TER Centre-Val de Loire vers Paris-Austerlitz. La RN20 traverse la ville du nord au sud et la RD191 d'est en ouest. L'aéroport de Paris-Orly est à 36 km au nord-est, et l'aérodrome d'Étampes-Mondésir se situe à Guillerval, commune limitrophe.",
   distancesEn:
-    "Étampes est à 45 km de la Gare de Massy TGV et à 40 km de l'Aéroport de Paris-Orly.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Étampes est desservie par sa propre gare RER C (terminus, ~45 min depuis Paris) et par les TER Centre-Val de Loire vers Paris-Austerlitz. La RN20 traverse la ville du nord au sud et la RD191 d'est en ouest. L'aéroport de Paris-Orly est à 36 km au nord-est, et l'aérodrome d'Étampes-Mondésir se situe à Guillerval, commune limitrophe.",
+  topSectorsNaf: [
+    "Commerce de détail (centre médiéval)",
+    "Artisanat du bâtiment et construction",
+    "Logistique et transport routier (RN20)",
+    "Services administratifs et de santé (sous-préfecture, hôpital)",
+    "Agriculture céréalière (Beauce francilienne)",
+    "Restauration et hôtellerie de proximité",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Étampes permet d'identifier les processus optimisables dans des secteurs comme le Commerce de détail.",
-      en: "Réaliser un audit à Étampes permet d'identifier les processus optimisables dans des secteurs comme le Commerce de détail.",
+      fr: "Nos audits IA flash à Étampes ciblent en priorité les TPE et PME du commerce de détail, de l'artisanat et de la logistique RN20, secteurs représentatifs du bassin sud-Essonne.",
+      en: "Nos audits IA flash à Étampes ciblent en priorité les TPE et PME du commerce de détail, de l'artisanat et de la logistique RN20, secteurs représentatifs du bassin sud-Essonne.",
     },
     interventions: {
-      fr: "Intervenir à Étampes dans la zone du Bois Bourdon pour automatiser des tâches administratives et réduire les coûts.",
-      en: "Intervenir à Étampes dans la zone du Bois Bourdon pour automatiser des tâches administratives et réduire les coûts.",
+      fr: "Nous intervenons sur site à Étampes et alentours (La Ferté-Alais, Dourdan, Guillerval) pour automatiser devis, facturation, suivi client et reporting des TPE/PME locales.",
+      en: "Nous intervenons sur site à Étampes et alentours (La Ferté-Alais, Dourdan, Guillerval) pour automatiser devis, facturation, suivi client et reporting des TPE/PME locales.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Étampes pour les entreprises de Transports terrestres, améliorant l'efficacité des opérations.",
-      en: "Implémenter des solutions IA à Étampes pour les entreprises de Transports terrestres, améliorant l'efficacité des opérations.",
+      fr: "Nos implémentations IA sur mesure à Étampes s'adressent aux PME logistiques de la RN20 et aux services administratifs locaux : code custom, pas de no-code.",
+      en: "Nos implémentations IA sur mesure à Étampes s'adressent aux PME logistiques de la RN20 et aux services administratifs locaux : code custom, pas de no-code.",
     },
     unAUn: {
-      fr: "Proposer des sessions un-à-un à Étampes pour les dirigeants, facilitant l'adoption de l'IA dans la gestion quotidienne.",
-      en: "Proposer des sessions un-à-un à Étampes pour les dirigeants, facilitant l'adoption de l'IA dans la gestion quotidienne.",
+      fr: "Nos formations un-à-un à Étampes accompagnent les dirigeants de TPE et PME franciliennes dans la maîtrise pratique de l'IA générative au quotidien.",
+      en: "Nos formations un-à-un à Étampes accompagnent les dirigeants de TPE et PME franciliennes dans la maîtrise pratique de l'IA générative au quotidien.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Étampes ?",
-      a: "Nous proposons un Audit Flash à partir de 490 € HT. Nos tarifs publics sont disponibles sur notre site pour plus de détails.",
+      q: "Quels sont les tarifs d'Axion-IA pour une intervention à Étampes ?",
+      a: "Nos prestations à Étampes démarrent à 490 € HT pour un audit flash 4h et à 590 € HT pour une intervention sur site. L'intégralité de la grille est publique sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une intervention à Étampes ?",
-      a: "Nos consultants se déplacent directement sur site à Étampes pour analyser et optimiser vos processus, avec des interventions dès 590 € HT.",
+      q: "Sous quel délai Axion-IA peut-il intervenir à Étampes ?",
+      a: "Notre délai standard à Étampes est de 5 jours ouvrés après validation de la commande. Pour les TPE en situation d'urgence, un créneau prioritaire est possible sous 48 h.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Étampes ?",
-      a: "Oui, toutes nos interventions à Étampes sont conformes au RGPD, garantissant la protection des données personnelles de nos clients.",
+      q: "Quelles communes du sud-Essonne sont couvertes par Axion-IA depuis Étampes ?",
+      a: "Nous nous déplaçons depuis Étampes vers La Ferté-Alais, Dourdan, Guillerval et l'ensemble du sud-Essonne, ainsi que vers Paris via le RER C ou la RN20 si besoin.",
     },
     {
-      q: "Quel est le délai pour une implémentation à Étampes ?",
-      a: "Le délai dépend de la complexité du projet, mais nous nous efforçons de débuter les implémentations dans les plus brefs délais après l'audit initial.",
+      q: "Quels secteurs locaux Axion-IA accompagne-t-il à Étampes ?",
+      a: "Nous travaillons principalement avec les TPE et PME du commerce de détail du centre médiéval, de l'artisanat du bâtiment, de la logistique RN20, des services administratifs et de l'agriculture beauceronne.",
+    },
+    {
+      q: "Axion-IA respecte-t-il le RGPD à Étampes ?",
+      a: "Oui, l'ensemble de nos prestations à Étampes est conforme au RGPD : hébergement UE, registre de traitement remis au client et clauses de sous-traitance signées en amont.",
+    },
+    {
+      q: "Axion-IA utilise-t-il des outils no-code pour les TPE étampoises ?",
+      a: "Non. Nous écrivons du code custom maintenable, conçu pour durer plusieurs années. Nous évitons les plateformes no-code propriétaires qui enferment les TPE dans une dépendance technique.",
     },
   ],
 };

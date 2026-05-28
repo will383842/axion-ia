@@ -2,71 +2,79 @@
 // Quality score: 55 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL EDIT 2026-05-28 : anti-doorway HCU 2024 — contenu factuel Wikipedia,
+// suppression templates LLM hors-contexte (Cap Digital, Station F).
 
 import type { VilleCopy } from "./types";
 
 export const EYSINES_COPY: VilleCopy = {
   pitchFr:
-    "À Eysines, Axion-IA intervient pour optimiser les processus des entreprises locales. L'écosystème comprend des secteurs variés comme le commerce de détail et les transports terrestres, à l'image de Cap Digital à Paris.",
+    "Axion-IA accompagne les TPE et PME d'Eysines (24 825 habitants, Gironde) dans l'adoption concrète de l'IA. Surnommée historiquement « le potager de Bordeaux » et toujours marquée par le maraîchage (pomme de terre, citrouille, une vingtaine d'exploitations), la commune combine aujourd'hui agriculture spécialisée, commerces, artisanat et services à 8 km au nord-ouest de Bordeaux. Nous intervenons sur site, en code custom, pour automatiser devis, suivi commandes, planification et reporting. L'approche couvre aussi les ETI implantées dans Bordeaux Métropole.",
   pitchEn:
-    "À Eysines, Axion-IA intervient pour optimiser les processus des entreprises locales. L'écosystème comprend des secteurs variés comme le commerce de détail et les transports terrestres, à l'image de Cap Digital à Paris.",
+    "Axion-IA accompagne les TPE et PME d'Eysines (24 825 habitants, Gironde) dans l'adoption concrète de l'IA. Surnommée historiquement « le potager de Bordeaux » et toujours marquée par le maraîchage (pomme de terre, citrouille, une vingtaine d'exploitations), la commune combine aujourd'hui agriculture spécialisée, commerces, artisanat et services à 8 km au nord-ouest de Bordeaux. Nous intervenons sur site, en code custom, pour automatiser devis, suivi commandes, planification et reporting. L'approche couvre aussi les ETI implantées dans Bordeaux Métropole.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Eysines, une ville bénéficiant de l'influence économique des communes voisines comme Bordeaux et Mérignac. Avec notre Audit Flash sur mesure, nous aidons les entreprises à identifier rapidement des axes d'amélioration. Nos services incluent également des interventions essentielles, adaptées aux besoins spécifiques des TPE et PME.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Eysines, une ville bénéficiant de l'influence économique des communes voisines comme Bordeaux et Mérignac. Avec notre Audit Flash sur mesure, nous aidons les entreprises à identifier rapidement des axes d'amélioration. Nos services incluent également des interventions essentielles, adaptées aux besoins spécifiques des TPE et PME.",
-  seoHook: "commerce détail & travaux construction",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+  seoHook: "maraîchage & artisanat de proximité",
   ecosystemFr:
-    "Eysines, proche de Bordeaux, partage un tissu économique diversifié avec des secteurs comme le commerce de détail et la construction. L'influence de grandes villes comme Paris, abritant Cap Digital et Station F, inspire le développement local.",
+    "Eysines s'étend sur 12,01 km² au sein de Bordeaux Métropole et conserve une identité agricole forte : héritage maraîcher dit « potager de Bordeaux », avec environ vingt exploitations encore actives en pomme de terre et citrouille. Le tissu économique mêle commerces de proximité, construction, artisanat et services tertiaires. Le Domaine du Pinsan (50 hectares) accueille équipements sportifs et culturels intercommunaux, structurant la vie économique locale.",
   ecosystemEn:
-    "Eysines, proche de Bordeaux, partage un tissu économique diversifié avec des secteurs comme le commerce de détail et la construction. L'influence de grandes villes comme Paris, abritant Cap Digital et Station F, inspire le développement local.",
+    "Eysines s'étend sur 12,01 km² au sein de Bordeaux Métropole et conserve une identité agricole forte : héritage maraîcher dit « potager de Bordeaux », avec environ vingt exploitations encore actives en pomme de terre et citrouille. Le tissu économique mêle commerces de proximité, construction, artisanat et services tertiaires. Le Domaine du Pinsan (50 hectares) accueille équipements sportifs et culturels intercommunaux, structurant la vie économique locale.",
   distancesFr:
-    "Eysines est à 10 km de la Gare de Bordeaux-Saint-Jean et à 8 km de l'Aéroport de Bordeaux-Mérignac.",
+    "Eysines est à 8 km au nord-ouest de Bordeaux et à environ 8 km de l'aéroport de Bordeaux-Mérignac. La gare de Bordeaux-Saint-Jean (TGV) est à environ 12 km. La ligne D du tramway TBM relie Eysines-Cantinolle au centre de Bordeaux et la rocade A630 traverse la commune avec trois sorties.",
   distancesEn:
-    "Eysines est à 10 km de la Gare de Bordeaux-Saint-Jean et à 8 km de l'Aéroport de Bordeaux-Mérignac.",
+    "Eysines est à 8 km au nord-ouest de Bordeaux et à environ 8 km de l'aéroport de Bordeaux-Mérignac. La gare de Bordeaux-Saint-Jean (TGV) est à environ 12 km. La ligne D du tramway TBM relie Eysines-Cantinolle au centre de Bordeaux et la rocade A630 traverse la commune avec trois sorties.",
   topSectorsNaf: [
+    "Maraîchage et cultures spécialisées",
     "Commerce de détail",
     "Travaux de construction",
     "Restauration",
+    "Artisanat et services aux particuliers",
     "Transports terrestres",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Eysines pour identifier les processus inefficaces — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Eysines pour identifier les processus inefficaces — Audit Flash dès 490 € HT.",
+      fr: "Audit Flash 4 h à Eysines dès 490 € HT : cartographie des processus automatisables côté maraîchage, artisanat ou commerce, livré sous 5 jours ouvrés.",
+      en: "Audit Flash 4 h à Eysines dès 490 € HT : cartographie des processus automatisables côté maraîchage, artisanat ou commerce, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Eysines pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Eysines pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention Essentielle dès 590 € HT à Eysines pour automatiser devis, suivi clients et planning équipes — code custom, pas de no-code.",
+      en: "Intervention Essentielle dès 590 € HT à Eysines pour automatiser devis, suivi clients et planning équipes — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Eysines pour optimiser les opérations — Déploiement à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Eysines pour optimiser les opérations — Déploiement à partir de 990 € HT.",
+      fr: "Implémentation IA sur site à Eysines à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      en: "Implémentation IA sur site à Eysines à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Eysines pour une adoption fluide de l'IA — Session dès 990 € HT.",
-      en: "Accompagner en un-à-un à Eysines pour une adoption fluide de l'IA — Session dès 990 € HT.",
+      fr: "Session 1-to-1 dirigeant TPE/PME à Eysines dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeant TPE/PME à Eysines dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Eysines ?",
-      a: "Les tarifs pour une intervention à Eysines commencent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Eysines ?",
+      a: "À Eysines, l'Audit Flash 4 h démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Les implémentations et sessions 1-to-1 commencent à 990 € HT. Tous nos tarifs sont publics et sans engagement.",
     },
     {
-      q: "Axion-IA se déplace-t-il sur site à Eysines ?",
-      a: "Oui, Axion-IA intervient directement sur site à Eysines pour une analyse précise et personnalisée des besoins de votre entreprise.",
+      q: "Sous quel délai Axion-IA intervient à Eysines ?",
+      a: "Pour les TPE et PME d'Eysines, l'Audit Flash est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
-      q: "Quels délais pour une intervention à Eysines ?",
-      a: "Nous nous engageons à intervenir à Eysines dans un délai de 5 jours ouvrés après la validation de votre demande.",
+      q: "Couvrez-vous Bordeaux, Le Bouscat et Mérignac depuis Eysines ?",
+      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes d'Eysines : Bordeaux, Le Bouscat, Bruges, Le Haillan, Mérignac, Le Taillan-Médoc et Blanquefort.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Eysines ?",
-      a: "Axion-IA garantit que toutes les solutions mises en place à Eysines respectent les normes RGPD, assurant la protection des données de votre entreprise.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Eysines ?",
+      a: "Toutes nos solutions IA déployées à Eysines sont en code custom hébergé UE, avec registre de traitement, minimisation des données et clauses sous-traitant signées. Pas de transfert hors-UE par défaut.",
     },
     {
-      q: "Proposez-vous des audits spécifiques pour les TPE à Eysines ?",
-      a: "Oui, nous proposons des audits adaptés aux TPE à Eysines, avec un Audit Flash à partir de 490 € HT pour identifier rapidement des axes d'amélioration.",
+      q: "Accompagnez-vous les maraîchers et artisans d'Eysines ?",
+      a: "Oui, Eysines conserve environ vingt exploitations maraîchères (pomme de terre, citrouille) et un tissu artisanal dense. Nous adaptons l'IA à des cas concrets : suivi récoltes, traçabilité, devis artisans, relances clients.",
+    },
+    {
+      q: "Proposez-vous des sessions IA pour dirigeants à Eysines ?",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Eysines démarrent à 990 € HT et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
     },
   ],
 };

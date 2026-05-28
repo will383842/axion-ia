@@ -7,57 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const LUNEL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Lunel, optimisant les processus des entreprises locales. Paris abrite Cap Digital et Station F, deux pôles d'innovation inspirants pour nos méthodes.",
+    "Axion-IA accompagne à Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, les TPE et PME du Pays de Lunel. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des hypermarchés, des artisans du bâtiment, des exploitants agricoles et des sociétés de transport. Les sept zones d'activité lunelloises et leurs 450 entreprises constituent notre cœur de cible. Quelques ETI font également appel à nos services en complément.",
   pitchEn:
-    "Axion-IA intervient à Lunel, optimisant les processus des entreprises locales. Paris abrite Cap Digital et Station F, deux pôles d'innovation inspirants pour nos méthodes.",
+    "Axion-IA accompagne à Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, les TPE et PME du Pays de Lunel. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des hypermarchés, des artisans du bâtiment, des exploitants agricoles et des sociétés de transport. Les sept zones d'activité lunelloises et leurs 450 entreprises constituent notre cœur de cible. Quelques ETI font également appel à nos services en complément.",
   directAnswerFr:
-    "Axion-IA, cabinet IA opérationnel, propose des interventions à Lunel pour automatiser les tâches administratives et commerciales. L'écosystème économique de Lunel est marqué par 3 000 établissements actifs, principalement dans le commerce de détail et la construction. À Paris, des entités comme Cap Digital et Station F illustrent l'innovation que nous mettons en œuvre pour nos clients.",
+    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès 590 € HT pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA, cabinet IA opérationnel, propose des interventions à Lunel pour automatiser les tâches administratives et commerciales. L'écosystème économique de Lunel est marqué par 3 000 établissements actifs, principalement dans le commerce de détail et la construction. À Paris, des entités comme Cap Digital et Station F illustrent l'innovation que nous mettons en œuvre pour nos clients.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès 590 € HT pour une intervention essentielle.",
+  seoHook: "commerce, construction & agriculture",
   ecosystemFr:
-    "Lunel, avec ses 3 000 établissements actifs, est un centre économique où le commerce de détail et la construction prédominent. Cap Digital et Station F à Paris sont des exemples d'innovation que nous intégrons dans nos interventions.",
+    "Lunel concentre son économie autour du commerce-transport-hébergement (30,3 % des établissements), de la construction (18,2 %) et des services spécialisés (15 %). Sept zones d'activité commerciales et artisanales s'étendent sur 53 hectares et accueillent environ 450 entreprises. Les hypermarchés Arpel et Preal dominent la distribution locale, tandis que LRM exploite les ressources en granulats et argile. L'agriculture, en repli (582 ha en 2020), reste un employeur de niche.",
   ecosystemEn:
-    "Lunel, avec ses 3 000 établissements actifs, est un centre économique où le commerce de détail et la construction prédominent. Cap Digital et Station F à Paris sont des exemples d'innovation que nous intégrons dans nos interventions.",
+    "Lunel concentre son économie autour du commerce-transport-hébergement (30,3 % des établissements), de la construction (18,2 %) et des services spécialisés (15 %). Sept zones d'activité commerciales et artisanales s'étendent sur 53 hectares et accueillent environ 450 entreprises. Les hypermarchés Arpel et Preal dominent la distribution locale, tandis que LRM exploite les ressources en granulats et argile. L'agriculture, en repli (582 ha en 2020), reste un employeur de niche.",
   distancesFr:
-    "Lunel est à 30 km de la Gare TGV de Montpellier Sud de France et à 25 km de l'Aéroport de Montpellier-Méditerranée.",
+    "Lunel est située à 21 km à l'est de Montpellier et à 28 km au sud-ouest de Nîmes, via la RN113. La gare de Lunel est desservie par la ligne Tarascon-Sète (TER). Les aéroports de Montpellier-Méditerranée (≈25 km) et Nîmes-Garons (≈30 km) sont les plus proches.",
   distancesEn:
-    "Lunel est à 30 km de la Gare TGV de Montpellier Sud de France et à 25 km de l'Aéroport de Montpellier-Méditerranée.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transports terrestres"],
+    "Lunel est située à 21 km à l'est de Montpellier et à 28 km au sud-ouest de Nîmes, via la RN113. La gare de Lunel est desservie par la ligne Tarascon-Sète (TER). Les aéroports de Montpellier-Méditerranée (≈25 km) et Nîmes-Garons (≈30 km) sont les plus proches.",
+  topSectorsNaf: [
+    "Commerce de détail (hypermarchés inclus)",
+    "Construction",
+    "Transports terrestres et logistique",
+    "Services spécialisés aux entreprises",
+    "Extraction de granulats et matériaux",
+    "Agriculture et viticulture",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Lunel pour identifier les opportunités d'automatisation dans le commerce de détail — à partir de 490 € HT.",
-      en: "Réaliser un audit à Lunel pour identifier les opportunités d'automatisation dans le commerce de détail — à partir de 490 € HT.",
+      fr: "Auditer un commerce, un artisan du bâtiment ou un transporteur lunellois pour cartographier les automatisations IA prioritaires — dès 490 € HT.",
+      en: "Auditer un commerce, un artisan du bâtiment ou un transporteur lunellois pour cartographier les automatisations IA prioritaires — dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Lunel pour optimiser les processus de construction — intervention dès 590 € HT.",
-      en: "Intervenir à Lunel pour optimiser les processus de construction — intervention dès 590 € HT.",
+      fr: "Intervenir sur site à Lunel auprès des TPE/PME du commerce, de la construction et des transports — dès 590 € HT.",
+      en: "Intervenir sur site à Lunel auprès des TPE/PME du commerce, de la construction et des transports — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Lunel pour les transports terrestres — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Lunel pour les transports terrestres — dès 990 € HT.",
+      fr: "Implémenter des outils IA en code source propriétaire à Lunel, livrés au client, sans dépendance plateforme tierce — dès 990 € HT.",
+      en: "Implémenter des outils IA en code source propriétaire à Lunel, livrés au client, sans dépendance plateforme tierce — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Lunel dans l'adoption de l'IA — sessions 1-to-1 dès 990 € HT.",
-      en: "Accompagner les dirigeants de Lunel dans l'adoption de l'IA — sessions 1-to-1 dès 990 € HT.",
+      fr: "Accompagner les dirigeants de TPE/PME lunelloises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
+      en: "Accompagner les dirigeants de TPE/PME lunelloises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Lunel ?",
-      a: "Axion-IA propose un Audit Flash à partir de 490 € HT. Les tarifs publics sont disponibles sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Lunel ?",
+      a: "Nos audits flash débutent à 490 € HT, nos interventions essentielles à 590 € HT et nos sessions 1-to-1 à 990 € HT. Tarifs publics consultables sur notre site.",
     },
     {
-      q: "Comment se déroule une intervention IA à Lunel ?",
-      a: "Notre équipe nationale se déplace sur site à Lunel pour une intervention personnalisée, dès 590 € HT.",
+      q: "Sous quel délai Axion-IA peut-il intervenir à Lunel ?",
+      a: "Williams se déplace sur Lunel sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes (audit, formation) peuvent démarrer plus rapidement.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Lunel ?",
-      a: "Les délais d'implémentation à Lunel varient selon le projet, mais nous nous engageons à intervenir rapidement après validation.",
+      q: "Quelles communes autour de Lunel sont couvertes ?",
+      a: "Nous intervenons à Lunel-Viel, Saint-Just, Saint-Nazaire-de-Pézan, ainsi que dans le reste de la Communauté de Communes du Pays de Lunel.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Lunel ?",
-      a: "Oui, Axion-IA garantit le respect des normes RGPD dans toutes ses interventions, y compris à Lunel.",
+      q: "Axion-IA respecte-t-il le RGPD à Lunel ?",
+      a: "Oui. Chaque livrable intègre une analyse de conformité RGPD et AI Act, avec hébergement des données en France ou UE et contrôle direct par le client.",
+    },
+    {
+      q: "Quels secteurs locaux Axion-IA accompagne-t-il à Lunel ?",
+      a: "Nous priorisons les TPE et PME du commerce, de la construction, des transports terrestres, des services aux entreprises et de l'agriculture résiduelle. Quelques ETI lunelloises sollicitent également nos services.",
+    },
+    {
+      q: "Proposez-vous des formations IA pour les équipes lunelloises ?",
+      a: "Oui, nous animons à Lunel des formations en présentiel ou visio pour dirigeants et collaborateurs de TPE/PME, calibrées sur les enjeux locaux (commerce de proximité, BTP, logistique).",
     },
   ],
 };

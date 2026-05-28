@@ -1,72 +1,73 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUALLY EDITED 2026-05-28 — anti-doorway HCU 2024 (sources : fr.wikipedia.org/wiki/Le_Plessis-Trévise).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   pitchFr:
-    "Le Plessis-Trévise, situé en Île-de-France, bénéficie d'une proximité stratégique avec des pôles économiques tels que Cap Digital et Station F à Paris. Axion-IA intervient dans cette région pour optimiser les processus des entreprises locales grâce à l'IA.",
+    "Le Plessis-Trévise (21 112 habitants, Val-de-Marne) est une commune urbaine dense (4 887 hab/km²) du Grand Paris Sud Est Avenir (GPSEA), urbanisée depuis les années 1950. Située à 18 km à l'est de Paris, elle est desservie par le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) et bordée par l'A4 au nord. Axion-IA accompagne les TPE et PME locales (commerce de proximité, services, BTP) avec des interventions code custom sur site.",
   pitchEn:
-    "Le Plessis-Trévise, situé en Île-de-France, bénéficie d'une proximité stratégique avec des pôles économiques tels que Cap Digital et Station F à Paris. Axion-IA intervient dans cette région pour optimiser les processus des entreprises locales grâce à l'IA.",
+    "Le Plessis-Trévise (21 112 habitants, Val-de-Marne) est une commune urbaine dense (4 887 hab/km²) du Grand Paris Sud Est Avenir (GPSEA), urbanisée depuis les années 1950. Située à 18 km à l'est de Paris, elle est desservie par le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) et bordée par l'A4 au nord. Axion-IA accompagne les TPE et PME locales (commerce de proximité, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Le Plessis-Trévise, ciblant les secteurs du commerce de détail et des travaux de construction. Nos consultants se déplacent sur site pour automatiser les tâches administratives et améliorer l'efficacité. Avec des entités comme LVMH et BNP Paribas à proximité, nous apportons une expertise nationale pour répondre aux besoins spécifiques des entreprises locales.",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Le Plessis-Trévise, ciblant les secteurs du commerce de détail et des travaux de construction. Nos consultants se déplacent sur site pour automatiser les tâches administratives et améliorer l'efficacité. Avec des entités comme LVMH et BNP Paribas à proximité, nous apportons une expertise nationale pour répondre aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & travaux construction",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
+  seoHook: "commerce proximité & artisanat GPSEA",
   ecosystemFr:
-    "Le Plessis-Trévise est entouré de communes dynamiques comme Villiers-sur-Marne et Noisy-le-Grand. Le tissu économique local est marqué par des secteurs tels que le commerce de détail et la restauration, offrant un cadre propice aux interventions d'Axion-IA.",
+    "Le Plessis-Trévise s'inscrit dans le territoire Grand Paris Sud Est Avenir (GPSEA), aux côtés de Champigny-sur-Marne, Chennevières-sur-Marne, Noisy-le-Grand, Pontault-Combault, La Queue-en-Brie et Villiers-sur-Marne. Le tissu économique de cette commune urbaine de peuplement récent (existence administrative depuis 1899, urbanisation post-1950) repose sur le commerce de proximité, les services aux entreprises et les professions libérales, avec un taux de propriétaires de 56,8 %.",
   ecosystemEn:
-    "Le Plessis-Trévise est entouré de communes dynamiques comme Villiers-sur-Marne et Noisy-le-Grand. Le tissu économique local est marqué par des secteurs tels que le commerce de détail et la restauration, offrant un cadre propice aux interventions d'Axion-IA.",
+    "Le Plessis-Trévise s'inscrit dans le territoire Grand Paris Sud Est Avenir (GPSEA), aux côtés de Champigny-sur-Marne, Chennevières-sur-Marne, Noisy-le-Grand, Pontault-Combault, La Queue-en-Brie et Villiers-sur-Marne. Le tissu économique de cette commune urbaine de peuplement récent (existence administrative depuis 1899, urbanisation post-1950) repose sur le commerce de proximité, les services aux entreprises et les professions libérales, avec un taux de propriétaires de 56,8 %.",
   distancesFr:
-    "Le Plessis-Trévise est à 20 km de la Gare de Lyon et à 25 km de l'aéroport de Paris-Orly.",
+    "Le Plessis-Trévise est à 18 km à l'est de Paris, accessible par le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise), l'autoroute A4 au nord, la N4 au sud et la N104 Francilienne à l'est.",
   distancesEn:
-    "Le Plessis-Trévise est à 20 km de la Gare de Lyon et à 25 km de l'aéroport de Paris-Orly.",
+    "Le Plessis-Trévise est à 18 km à l'est de Paris, accessible par le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise), l'autoroute A4 au nord, la N4 au sud et la N104 Francilienne à l'est.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Travaux de construction",
-    "Restauration",
-    "Transports terrestres",
+    "Commerce de détail (proximité, centre-ville dense)",
+    "Services aux entreprises et professions libérales",
+    "Travaux de construction et artisanat BTP",
+    "Restauration et services aux particuliers",
+    "Santé et services à la personne",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Le Plessis-Trévise, ciblant les secteurs du commerce et de la construction — identifier des opportunités d'automatisation.",
-      en: "Réaliser un audit à Le Plessis-Trévise, ciblant les secteurs du commerce et de la construction — identifier des opportunités d'automatisation.",
+      fr: "Réaliser un audit IA au Plessis-Trévise pour les TPE et PME du centre urbain dense (4 887 hab/km²) — identifier les automatisations prioritaires pour commerçants, artisans et professions libérales.",
+      en: "Réaliser un audit IA au Plessis-Trévise pour les TPE et PME du centre urbain dense (4 887 hab/km²) — identifier les automatisations prioritaires pour commerçants, artisans et professions libérales.",
     },
     interventions: {
-      fr: "Intervenir à Le Plessis-Trévise pour automatiser les processus administratifs — réduire les coûts opérationnels mesurés.",
-      en: "Intervenir à Le Plessis-Trévise pour automatiser les processus administratifs — réduire les coûts opérationnels mesurés.",
+      fr: "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
+      en: "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Le Plessis-Trévise, adaptées aux besoins des entreprises locales — améliorer l'efficacité opérationnelle.",
-      en: "Implémenter des solutions IA à Le Plessis-Trévise, adaptées aux besoins des entreprises locales — améliorer l'efficacité opérationnelle.",
+      fr: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services, avec accompagnement post-livraison.",
+      en: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services, avec accompagnement post-livraison.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants à Le Plessis-Trévise — maximiser l'impact de l'IA sur la gestion quotidienne.",
-      en: "Accompagner en un-à-un les dirigeants à Le Plessis-Trévise — maximiser l'impact de l'IA sur la gestion quotidienne.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE et PME au Plessis-Trévise pour une adoption IA stratégique et durable.",
+      en: "Accompagner en un-à-un les dirigeants de TPE et PME au Plessis-Trévise pour une adoption IA stratégique et durable.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Le Plessis-Trévise ?",
-      a: "Nos audits à Le Plessis-Trévise commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs pour un audit IA au Plessis-Trévise ?",
+      a: "Les audits IA au Plessis-Trévise débutent à 590 € HT pour un Audit Flash de 4 heures sur site, déplacement Williams depuis Paris via RER E inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une intervention IA à Le Plessis-Trévise ?",
-      a: "Williams se déplace sur site à Le Plessis-Trévise pour réaliser des interventions ciblées, avec un début à partir de 590 € HT. Nous nous concentrons sur l'automatisation des processus clés.",
+      q: "Comment se déroule une intervention IA au Plessis-Trévise ?",
+      a: "Williams se déplace sur site au Plessis-Trévise (18 km de Paris via RER E ou A4) pour des interventions à partir de 590 € HT. Nous développons du code custom (pas de no-code) adapté aux besoins des TPE et PME locales.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Le Plessis-Trévise ?",
-      a: "Les délais d'implémentation varient selon le projet, mais nous nous engageons à intervenir rapidement pour optimiser vos processus. Consultez nos tarifs pour plus de détails.",
+      q: "Quels délais pour une implémentation IA au Plessis-Trévise ?",
+      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés au Plessis-Trévise. Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines pour une PME locale.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions ?",
-      a: "Oui, Axion-IA s'assure que toutes les interventions à Le Plessis-Trévise respectent strictement les réglementations RGPD, garantissant la confidentialité et la sécurité des données.",
+      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions au Plessis-Trévise ?",
+      a: "Oui. Axion-IA développe du code custom hébergé en Europe, sans no-code ni outils opaques. Les données des TPE et PME du Plessis-Trévise restent souveraines et conformes au RGPD.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises du Plessis-Trévise ?",
-      a: "Nous offrons des sessions 1-to-1 pour dirigeants à partir de 990 € HT, axées sur l'intégration de l'IA dans la gestion quotidienne des entreprises du Plessis-Trévise.",
+      q: "Axion-IA intervient-il dans les communes autour du Plessis-Trévise ?",
+      a: "Oui, nous intervenons également dans les communes limitrophes du territoire GPSEA : Champigny-sur-Marne, Chennevières-sur-Marne, Noisy-le-Grand, Pontault-Combault, La Queue-en-Brie et Villiers-sur-Marne.",
     },
   ],
 };

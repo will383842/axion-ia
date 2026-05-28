@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — anti-doorway HCU pass (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Castelnau-le-Lez, où le secteur de la programmation informatique est en plein essor, pour optimiser vos processus grâce à l'IA. Nos solutions s'adaptent aux besoins spécifiques des entreprises locales, garantissant des résultats concrets et mesurables.",
+    "Castelnau-le-Lez (26 058 habitants en 2023, Hérault) est la deuxième commune la plus peuplée de la métropole de Montpellier, séparée de cette dernière par la rivière du Lez. Axion-IA accompagne les TPE et PME locales — commerces, cabinets de services, studios — dans l'intégration concrète de l'IA opérationnelle. Notre approche code custom, sans no-code, s'adapte au tissu de 3 319 établissements recensés fin 2019, dominé par les services spécialisés et le commerce.",
   pitchEn:
-    "Axion-IA intervient à Castelnau-le-Lez, où le secteur de la programmation informatique est en plein essor, pour optimiser vos processus grâce à l'IA. Nos solutions s'adaptent aux besoins spécifiques des entreprises locales, garantissant des résultats concrets et mesurables.",
+    "Castelnau-le-Lez (26 058 habitants en 2023, Hérault) est la deuxième commune la plus peuplée de la métropole de Montpellier, séparée de cette dernière par la rivière du Lez. Axion-IA accompagne les TPE et PME locales — commerces, cabinets de services, studios — dans l'intégration concrète de l'IA opérationnelle. Notre approche code custom, sans no-code, s'adapte au tissu de 3 319 établissements recensés fin 2019, dominé par les services spécialisés et le commerce.",
   directAnswerFr:
-    "À Castelnau-le-Lez, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec une proximité stratégique de Montpellier et des infrastructures comme la Gare de Montpellier Saint-Roch et l'Aéroport de Montpellier-Méditerranée, nous assurons un déploiement rapide et efficace. Nos services incluent des audits, des implémentations et des formations personnalisées.",
+    "Axion-IA intervient à Castelnau-le-Lez (Hérault, 26 058 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. La commune accueille le studio Ubisoft Montpellier, ainsi que des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, mais notre cœur de cible reste les petites structures du tissu local : commerces, cabinets, artisans. La ligne 2 du tramway de Montpellier (8 stations sur la commune depuis décembre 2006) facilite nos déplacements sur site depuis la gare Saint-Roch.",
   directAnswerEn:
-    "À Castelnau-le-Lez, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec une proximité stratégique de Montpellier et des infrastructures comme la Gare de Montpellier Saint-Roch et l'Aéroport de Montpellier-Méditerranée, nous assurons un déploiement rapide et efficace. Nos services incluent des audits, des implémentations et des formations personnalisées.",
-  seoHook: "programmation informatique & commerce détail",
+    "Axion-IA intervient à Castelnau-le-Lez (Hérault, 26 058 habitants) pour accompagner principalement les TPE et PME locales dans l'adoption d'une IA opérationnelle réellement utile. La commune accueille le studio Ubisoft Montpellier, ainsi que des employeurs comme Logitrade, Sud Service SAS ou Eiffage Construction, mais notre cœur de cible reste les petites structures du tissu local : commerces, cabinets, artisans. La ligne 2 du tramway de Montpellier (8 stations sur la commune depuis décembre 2006) facilite nos déplacements sur site depuis la gare Saint-Roch.",
+  seoHook: "services spécialisés & commerce détail",
   ecosystemFr:
-    "Castelnau-le-Lez bénéficie d'une proximité avec Montpellier, qui abrite des acteurs économiques clés dans les secteurs de la santé et du commerce de détail. Cette localisation stratégique facilite l'accès aux ressources et aux infrastructures nécessaires pour le développement des entreprises.",
+    "Le tissu économique de Castelnau-le-Lez s'articule autour de 3 319 établissements (fin 2019), dominé par les services spécialisés et activités administratives (23,6 %) et le commerce-hôtellerie-restauration (21,4 %). Le secteur Eurêka concentre des activités tertiaires, santé et technologie. La commune est aussi connue pour la présence du studio Ubisoft Montpellier (jeu vidéo). Les TPE et PME locales — commerces de proximité avenue de l'Europe, cabinets libéraux, artisans, petites agences — constituent l'essentiel de notre clientèle cible à Castelnau-le-Lez.",
   ecosystemEn:
-    "Castelnau-le-Lez bénéficie d'une proximité avec Montpellier, qui abrite des acteurs économiques clés dans les secteurs de la santé et du commerce de détail. Cette localisation stratégique facilite l'accès aux ressources et aux infrastructures nécessaires pour le développement des entreprises.",
+    "Le tissu économique de Castelnau-le-Lez s'articule autour de 3 319 établissements (fin 2019), dominé par les services spécialisés et activités administratives (23,6 %) et le commerce-hôtellerie-restauration (21,4 %). Le secteur Eurêka concentre des activités tertiaires, santé et technologie. La commune est aussi connue pour la présence du studio Ubisoft Montpellier (jeu vidéo). Les TPE et PME locales — commerces de proximité avenue de l'Europe, cabinets libéraux, artisans, petites agences — constituent l'essentiel de notre clientèle cible à Castelnau-le-Lez.",
   distancesFr:
-    "La Gare de Montpellier Saint-Roch est à 5 km, et l'Aéroport de Montpellier-Méditerranée à 10 km.",
+    "Castelnau-le-Lez est desservie par 8 stations de la ligne 2 du tramway de Montpellier. La gare de Montpellier Saint-Roch est à environ 5 km, et l'aéroport Montpellier-Méditerranée à environ 10 km.",
   distancesEn:
-    "La Gare de Montpellier Saint-Roch est à 5 km, et l'Aéroport de Montpellier-Méditerranée à 10 km.",
+    "Castelnau-le-Lez est desservie par 8 stations de la ligne 2 du tramway de Montpellier. La gare de Montpellier Saint-Roch est à environ 5 km, et l'aéroport Montpellier-Méditerranée à environ 10 km.",
   topSectorsNaf: [
-    "Programmation informatique",
+    "Activités de services administratifs et de soutien",
     "Commerce de détail",
-    "Activités des sièges sociaux",
-    "Santé humaine",
+    "Hébergement et restauration",
+    "Activités spécialisées scientifiques et techniques",
+    "Construction",
+    "Activités informatiques et services d'information",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Castelnau-le-Lez pour identifier les processus optimisables grâce à l'IA — Audit Flash 4h dès 490 € HT.",
-      en: "Réaliser un audit à Castelnau-le-Lez pour identifier les processus optimisables grâce à l'IA — Audit Flash 4h dès 490 € HT.",
+      fr: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit Flash 4h dès 490 € HT.",
+      en: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit Flash 4h dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Castelnau-le-Lez pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Castelnau-le-Lez pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Intervention Essentielle dès 590 € HT.",
+      en: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Castelnau-le-Lez pour améliorer l'efficacité opérationnelle — Implémentation dès 990 € HT.",
-      en: "Implémenter des solutions IA à Castelnau-le-Lez pour améliorer l'efficacité opérationnelle — Implémentation dès 990 € HT.",
+      fr: "Implémentation IA à Castelnau-le-Lez : intégration sur-mesure dans vos outils existants (sans no-code), pour TPE et PME du commerce, des services ou de la santé — dès 990 € HT.",
+      en: "Implémentation IA à Castelnau-le-Lez : intégration sur-mesure dans vos outils existants (sans no-code), pour TPE et PME du commerce, des services ou de la santé — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Former les dirigeants à Castelnau-le-Lez avec des sessions 1-to-1 personnalisées — À partir de 990 € HT.",
-      en: "Former les dirigeants à Castelnau-le-Lez avec des sessions 1-to-1 personnalisées — À partir de 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Castelnau-le-Lez : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur feuille de route IA — dès 990 € HT.",
+      en: "Accompagnement 1-to-1 à Castelnau-le-Lez : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur feuille de route IA — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Castelnau-le-Lez ?",
-      a: "Nos audits à Castelnau-le-Lez commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs sont publics et consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA à Castelnau-le-Lez ?",
+      a: "Nos tarifs publics commencent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour l'Intervention Essentielle et 990 € HT pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de la même grille tarifaire que partout en France.",
     },
     {
-      q: "Comment se déroule une intervention IA à Castelnau-le-Lez ?",
-      a: "Nos interventions à Castelnau-le-Lez sont réalisées sur site par notre équipe nationale, avec un démarrage rapide pour répondre aux besoins spécifiques des entreprises locales.",
+      q: "Quels délais pour une intervention IA à Castelnau-le-Lez ?",
+      a: "Nous nous engageons à intervenir sur site à Castelnau-le-Lez dans les 5 jours ouvrés après validation de la mission. La proximité de la gare Saint-Roch et de l'aéroport Montpellier-Méditerranée facilite la planification.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Castelnau-le-Lez ?",
-      a: "Les délais pour une implémentation IA à Castelnau-le-Lez varient selon le projet, mais nous nous engageons à intervenir rapidement grâce à notre proximité avec Montpellier.",
+      q: "Quelles communes proches couvrez-vous depuis Castelnau-le-Lez ?",
+      a: "Depuis Castelnau-le-Lez, nous intervenons aussi dans les communes limitrophes : Montpellier, Clapiers, Le Crès, Jacou et Saint-Aunès. La ligne 2 du tramway relie directement la commune au centre de Montpellier.",
+    },
+    {
+      q: "Quels secteurs locaux accompagnez-vous à Castelnau-le-Lez ?",
+      a: "Nous accompagnons en priorité les TPE et PME des services spécialisés (23,6 % des établissements locaux), du commerce de détail et de l'hôtellerie-restauration (21,4 %), ainsi que les acteurs du numérique présents dans le secteur Eurêka. Les ETI sont accompagnées plus marginalement.",
     },
     {
       q: "Comment Axion-IA respecte-t-il le RGPD à Castelnau-le-Lez ?",
-      a: "Axion-IA intègre les principes du RGPD dans toutes ses interventions à Castelnau-le-Lez, assurant la conformité des solutions IA mises en place.",
+      a: "Toutes nos solutions IA déployées à Castelnau-le-Lez sont conformes RGPD : hébergement européen, minimisation des données, journalisation des accès et clauses contractuelles adaptées. La conformité est intégrée dès la conception (privacy by design).",
+    },
+    {
+      q: "Vous déplacez-vous sur site à Castelnau-le-Lez ?",
+      a: "Oui, notre équipe se déplace directement sur site à Castelnau-le-Lez pour les audits, interventions et implémentations. Le tramway ligne 2 et la proximité de Montpellier rendent le déplacement simple, sans surcoût caché.",
     },
   ],
 };

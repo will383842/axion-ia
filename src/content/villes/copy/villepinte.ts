@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024) — Wikipedia-sourced facts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const VILLEPINTE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Villepinte, une ville stratégique avec le Parc des Expositions de Paris Nord Villepinte et des entreprises comme DHL. Nous proposons des services IA pour optimiser vos processus.",
+    "Villepinte, 41 470 habitants (2023), commune de Seine-Saint-Denis située à 18 km au nord-est de Paris, fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol. La ville héberge le Parc des Expositions Paris-Nord Villepinte (246 000 m² ouvert en 1982) et le Parc d'activités Paris-Nord 2, hub logistique majeur d'Île-de-France à proximité immédiate de l'aéroport Paris-Charles de Gaulle. Axion-IA, cabinet IA en code custom, accompagne les TPE et PME locales — logistique, commerce de gros, événementiel, services aux entreprises — avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   pitchEn:
-    "Axion-IA intervient à Villepinte, une ville stratégique avec le Parc des Expositions de Paris Nord Villepinte et des entreprises comme DHL. Nous proposons des services IA pour optimiser vos processus.",
+    "Villepinte, 41 470 habitants (2023), commune de Seine-Saint-Denis située à 18 km au nord-est de Paris, fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol. La ville héberge le Parc des Expositions Paris-Nord Villepinte (246 000 m² ouvert en 1982) et le Parc d'activités Paris-Nord 2, hub logistique majeur d'Île-de-France à proximité immédiate de l'aéroport Paris-Charles de Gaulle. Axion-IA, cabinet IA en code custom, accompagne les TPE et PME locales — logistique, commerce de gros, événementiel, services aux entreprises — avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   directAnswerFr:
-    "À Villepinte, Axion-IA offre des interventions sur site pour les entreprises du secteur du commerce de gros et des transports terrestres. Nous permettons une intégration efficace de l'IA, en tenant compte des besoins spécifiques des grands groupes comme DHL et Geodis. Nos services incluent des audits, des implémentations et des formations personnalisées pour garantir un retour sur investissement rapide.",
+    "Axion-IA intervient à Villepinte (Seine-Saint-Denis, 93420) auprès des TPE, PME puis ETI implantées dans le Parc d'activités Paris-Nord 2, autour du Parc des Expositions Paris-Nord Villepinte et le long de la RER B. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour transporteurs, prestataires événementiels, commerçants de gros, sous-traitants aéroportuaires et services aux entreprises. Audit Flash 4 h à 490 € HT, intervention sur site à 590 € HT, accès direct depuis Roissy-CDG.",
   directAnswerEn:
-    "À Villepinte, Axion-IA offre des interventions sur site pour les entreprises du secteur du commerce de gros et des transports terrestres. Nous permettons une intégration efficace de l'IA, en tenant compte des besoins spécifiques des grands groupes comme DHL et Geodis. Nos services incluent des audits, des implémentations et des formations personnalisées pour garantir un retour sur investissement rapide.",
-  seoHook: "commerce gros & transports terrestres",
+    "Axion-IA intervient à Villepinte (Seine-Saint-Denis, 93420) auprès des TPE, PME puis ETI implantées dans le Parc d'activités Paris-Nord 2, autour du Parc des Expositions Paris-Nord Villepinte et le long de la RER B. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour transporteurs, prestataires événementiels, commerçants de gros, sous-traitants aéroportuaires et services aux entreprises. Audit Flash 4 h à 490 € HT, intervention sur site à 590 € HT, accès direct depuis Roissy-CDG.",
+  seoHook: "logistique Paris-Nord 2 & événementiel Parc Expositions",
   ecosystemFr:
-    "Villepinte est un centre économique dynamique avec le Parc des Expositions de Paris Nord Villepinte et des entreprises comme Geodis. Cet environnement est propice à l'adoption de solutions IA pour améliorer l'efficacité opérationnelle.",
+    "Villepinte est l'un des principaux pôles économiques du nord-est francilien. Le Parc des Expositions Paris-Nord Villepinte (246 000 m², 1982) et le Parc d'activités Paris-Nord 2 concentrent logistique aéroportuaire, commerce de gros, prestataires événementiels et services aux entreprises. La proximité de Paris-Charles de Gaulle structure le tissu de TPE/PME — sous-traitants aéroportuaires, transitaires, transporteurs routiers, hôteliers d'affaires. Le territoire de 10,37 km² mêle zones d'activités, forêts/parcs et zones résidentielles. EPT Paris Terres d'Envol fédère huit communes.",
   ecosystemEn:
-    "Villepinte est un centre économique dynamique avec le Parc des Expositions de Paris Nord Villepinte et des entreprises comme Geodis. Cet environnement est propice à l'adoption de solutions IA pour améliorer l'efficacité opérationnelle.",
+    "Villepinte est l'un des principaux pôles économiques du nord-est francilien. Le Parc des Expositions Paris-Nord Villepinte (246 000 m², 1982) et le Parc d'activités Paris-Nord 2 concentrent logistique aéroportuaire, commerce de gros, prestataires événementiels et services aux entreprises. La proximité de Paris-Charles de Gaulle structure le tissu de TPE/PME — sous-traitants aéroportuaires, transitaires, transporteurs routiers, hôteliers d'affaires. Le territoire de 10,37 km² mêle zones d'activités, forêts/parcs et zones résidentielles. EPT Paris Terres d'Envol fédère huit communes.",
   distancesFr:
-    "Villepinte est située à 10 km de l'Aéroport Paris-Charles de Gaulle, facilitant l'accès pour nos interventions sur site.",
+    "Villepinte est à 18 km au nord-est de Paris, et à environ 7 km de l'aéroport Paris-Charles de Gaulle. Trois gares RER B desservent la commune : Villepinte, Parc des Expositions et Vert-Galant (Paris Châtelet-Les Halles en ~30 min). Autoroute A170 (ex-A104, Francilienne) et A1 à proximité. Gare TGV Paris Nord à environ 18 km, gare TGV Aéroport CDG 2-TGV à environ 8 km.",
   distancesEn:
-    "Villepinte est située à 10 km de l'Aéroport Paris-Charles de Gaulle, facilitant l'accès pour nos interventions sur site.",
+    "Villepinte est à 18 km au nord-est de Paris, et à environ 7 km de l'aéroport Paris-Charles de Gaulle. Trois gares RER B desservent la commune : Villepinte, Parc des Expositions et Vert-Galant (Paris Châtelet-Les Halles en ~30 min). Autoroute A170 (ex-A104, Francilienne) et A1 à proximité. Gare TGV Paris Nord à environ 18 km, gare TGV Aéroport CDG 2-TGV à environ 8 km.",
   topSectorsNaf: [
-    "Commerce de gros",
-    "Transports terrestres",
-    "Entreposage",
-    "Activités administratives",
+    "Transports et entreposage (logistique aéroportuaire)",
+    "Commerce de gros (B2B Paris-Nord 2)",
+    "Organisation d'événements (Parc des Expositions)",
+    "Hébergement (hôtels d'affaires)",
+    "Activités administratives et de soutien",
+    "Construction et travaux spécialisés",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Villepinte pour identifier les opportunités IA dans le commerce de gros — à partir de 490 € HT.",
-      en: "Réaliser un audit à Villepinte pour identifier les opportunités IA dans le commerce de gros — à partir de 490 € HT.",
+      fr: "Audit Flash IA à Villepinte (4 h, 490 € HT) pour TPE/PME du Parc d'activités Paris-Nord 2 et de la logistique aéroportuaire — diagnostic ROI et conformité RGPD.",
+      en: "Audit Flash IA à Villepinte (4 h, 490 € HT) pour TPE/PME du Parc d'activités Paris-Nord 2 et de la logistique aéroportuaire — diagnostic ROI et conformité RGPD.",
     },
     interventions: {
-      fr: "Intervenir à Villepinte pour optimiser les processus logistiques chez Geodis — intervention dès 590 € HT.",
-      en: "Intervenir à Villepinte pour optimiser les processus logistiques chez Geodis — intervention dès 590 € HT.",
+      fr: "Intervention sur site à Villepinte dès 590 € HT pour TPE et PME — automatisation traçabilité colis, planification événementielle, devis prestataires, reporting transitaires.",
+      en: "Intervention sur site à Villepinte dès 590 € HT pour TPE et PME — automatisation traçabilité colis, planification événementielle, devis prestataires, reporting transitaires.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Villepinte, en intégrant les systèmes existants — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Villepinte, en intégrant les systèmes existants — à partir de 990 € HT.",
+      fr: "Implémentation IA à Villepinte dès 990 € HT en code custom (TypeScript/Python) pour transporteurs, prestataires événementiels et sous-traitants aéroportuaires.",
+      en: "Implémentation IA à Villepinte dès 990 € HT en code custom (TypeScript/Python) pour transporteurs, prestataires événementiels et sous-traitants aéroportuaires.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Villepinte avec des sessions 1-to-1 — intervention à partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Villepinte avec des sessions 1-to-1 — intervention à partir de 990 € HT.",
+      fr: "Coaching un-à-un dirigeants TPE/PME de Villepinte dès 990 € HT — stratégie IA pour acteurs de la logistique, du commerce de gros et de l'événementiel.",
+      en: "Coaching un-à-un dirigeants TPE/PME de Villepinte dès 990 € HT — stratégie IA pour acteurs de la logistique, du commerce de gros et de l'événementiel.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Villepinte ?",
-      a: "Nos audits IA à Villepinte commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics complets sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Villepinte ?",
+      a: "Audit Flash 4 h à 490 € HT, intervention sur site à partir de 590 € HT, implémentation et coaching un-à-un dès 990 € HT. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention IA à Villepinte ?",
-      a: "Nos interventions à Villepinte peuvent débuter dans les 5 jours ouvrés suivant la demande. Nous nous déplaçons sur site pour une efficacité maximale.",
+      q: "Sous quels délais Axion-IA intervient-il à Villepinte ?",
+      a: "Nous nous déplaçons à Villepinte sous 5 jours ouvrés. L'accès RER B (3 gares) et la proximité de Paris-CDG facilitent les interventions courtes ou itératives, y compris pendant les salons du Parc des Expositions.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Villepinte ?",
-      a: "Oui, toutes nos interventions à Villepinte respectent strictement le RGPD. Nous assurons la conformité de vos données lors de l'intégration de solutions IA.",
+      q: "Axion-IA couvre-t-il les communes autour de Villepinte ?",
+      a: "Oui, nous intervenons à Aulnay-sous-Bois, Tremblay-en-France, Sevran, Vaujours, Gonesse, ainsi qu'à Roissy-en-France, et plus largement sur l'EPT Paris Terres d'Envol et le nord-est de la Seine-Saint-Denis.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services IA à Villepinte ?",
-      a: "Les secteurs du commerce de gros, des transports terrestres et de l'entreposage à Villepinte bénéficient particulièrement de nos services IA pour améliorer l'efficacité et réduire les coûts.",
+      q: "Quels secteurs locaux à Villepinte bénéficient le plus de l'IA ?",
+      a: "La logistique aéroportuaire (transitaires, transporteurs), le commerce de gros B2B du Parc d'activités Paris-Nord 2, les prestataires événementiels du Parc des Expositions (246 000 m²) et les hôtels d'affaires sont nos cibles prioritaires — traçabilité, planification, reporting, relances.",
+    },
+    {
+      q: "Comment Axion-IA garantit-elle la conformité RGPD et AI Act à Villepinte ?",
+      a: "Code custom hébergé en Union européenne, registre des traitements, DPIA et journal d'audit IA conformes RGPD et AI Act. Particulièrement important pour les sous-traitants aéroportuaires soumis à des obligations de sécurité et de traçabilité renforcées.",
+    },
+    {
+      q: "Axion-IA propose-t-il du no-code à Villepinte ?",
+      a: "Non. Axion-IA développe en code custom (TypeScript, Python, Next.js) pour garantir propriété intellectuelle, portabilité et conformité — essentielles pour les TPE/PME logistiques, événementielles et aéroportuaires de Villepinte.",
     },
   ],
 };

@@ -1,5 +1,6 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 63 — Model: gpt-4o.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 + Wikipedia facts).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,62 +8,72 @@ import type { VilleCopy } from "./types";
 
 export const CHOLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Cholet pour optimiser les processus des entreprises locales. Avec des acteurs comme Jallatte et Nicoll, nous proposons des solutions IA adaptées aux besoins spécifiques du commerce de détail et de l'industrie alimentaire.",
+    "Axion-IA accompagne les TPE et PME du Choletais dans l'automatisation de leurs opérations. Sous-préfecture de Maine-et-Loire (54 404 habitants en 2023, deuxième ville du département après Angers), Cholet rassemble un tissu industriel diversifié : chaussure, textile (mouchoirs, prêt-à-porter), électronique, équipement automobile, agroalimentaire. Notre équipe se déplace sur site pour cadrer chaque chantier IA avec les dirigeants locaux, dans une logique de code custom — sans no-code — et de mise en production rapide.",
   pitchEn:
-    "Axion-IA intervient à Cholet pour optimiser les processus des entreprises locales. Avec des acteurs comme Jallatte et Nicoll, nous proposons des solutions IA adaptées aux besoins spécifiques du commerce de détail et de l'industrie alimentaire.",
+    "Axion-IA accompagne les TPE et PME du Choletais dans l'automatisation de leurs opérations. Sous-préfecture de Maine-et-Loire (54 404 habitants en 2023, deuxième ville du département après Angers), Cholet rassemble un tissu industriel diversifié : chaussure, textile (mouchoirs, prêt-à-porter), électronique, équipement automobile, agroalimentaire. Notre équipe se déplace sur site pour cadrer chaque chantier IA avec les dirigeants locaux, dans une logique de code custom — sans no-code — et de mise en production rapide.",
   directAnswerFr:
-    "Axion-IA se déplace à Cholet pour accompagner les entreprises dans leur transformation IA. Avec un tissu économique comprenant Jallatte et le Groupe Ridoret, nous offrons des audits et des interventions. Nos services incluent l'implémentation de solutions IA dans des secteurs tels que la fabrication de produits métalliques.",
+    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès 490 € HT), des interventions ciblées (dès 590 € HT) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
   directAnswerEn:
-    "Axion-IA se déplace à Cholet pour accompagner les entreprises dans leur transformation IA. Avec un tissu économique comprenant Jallatte et le Groupe Ridoret, nous offrons des audits et des interventions. Nos services incluent l'implémentation de solutions IA dans des secteurs tels que la fabrication de produits métalliques.",
-  seoHook: "commerce détail & industrie alimentaire",
+    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès 490 € HT), des interventions ciblées (dès 590 € HT) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
+  seoHook: "chaussure, textile & équipement automobile",
   ecosystemFr:
-    "Cholet est un pôle industriel avec des entreprises comme Jallatte et Nicoll. La Zone Industrielle du Cormier est un centre clé pour la fabrication de produits en caoutchouc et plastique, renforçant le dynamisme économique de la région.",
+    "Le Choletais, situé aux confins du Maine-et-Loire, de la Vendée, de la Loire-Atlantique et des Deux-Sèvres, constitue un bassin industriel dense. Historiquement spécialisé dans le mouchoir et le tissage, il s'est diversifié vers la chaussure, l'électronique, l'équipement automobile et l'agroalimentaire. L'A87 et deux liaisons SNCF (vers Nantes et Angers) structurent les flux logistiques de ce deuxième bassin d'emploi des Pays de la Loire.",
   ecosystemEn:
-    "Cholet est un pôle industriel avec des entreprises comme Jallatte et Nicoll. La Zone Industrielle du Cormier est un centre clé pour la fabrication de produits en caoutchouc et plastique, renforçant le dynamisme économique de la région.",
+    "Le Choletais, situé aux confins du Maine-et-Loire, de la Vendée, de la Loire-Atlantique et des Deux-Sèvres, constitue un bassin industriel dense. Historiquement spécialisé dans le mouchoir et le tissage, il s'est diversifié vers la chaussure, l'électronique, l'équipement automobile et l'agroalimentaire. L'A87 et deux liaisons SNCF (vers Nantes et Angers) structurent les flux logistiques de ce deuxième bassin d'emploi des Pays de la Loire.",
   distancesFr:
-    "La gare TGV de Cholet est à 0 km du centre-ville, facilitant l'accès pour nos interventions.",
+    "Cholet est à 51,6 km au sud-ouest d'Angers, environ 65 km au sud-est de Nantes, accessible via l'A87. La gare SNCF de Cholet dessert Nantes et Angers ; nos consultants rejoignent le site depuis Paris-Montparnasse via Angers ou Nantes.",
   distancesEn:
-    "La gare TGV de Cholet est à 0 km du centre-ville, facilitant l'accès pour nos interventions.",
+    "Cholet est à 51,6 km au sud-ouest d'Angers, environ 65 km au sud-est de Nantes, accessible via l'A87. La gare SNCF de Cholet dessert Nantes et Angers ; nos consultants rejoignent le site depuis Paris-Montparnasse via Angers ou Nantes.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Industrie alimentaire",
-    "Produits en caoutchouc",
-    "Produits métalliques",
+    "Industrie de la chaussure",
+    "Textile-habillement",
+    "Fabrication d'équipements automobiles",
+    "Électronique",
+    "Industrie agroalimentaire",
+    "Commerce de gros",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Cholet pour identifier les opportunités IA dans le commerce de détail.",
-      en: "Réaliser un audit à Cholet pour identifier les opportunités IA dans le commerce de détail.",
+      fr: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès 490 € HT, livrable PDF + plan d'action.",
+      en: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès 490 € HT, livrable PDF + plan d'action.",
     },
     interventions: {
-      fr: "Intervenir à Cholet pour automatiser les processus dans l'industrie alimentaire.",
-      en: "Intervenir à Cholet pour automatiser les processus dans l'industrie alimentaire.",
+      fr: "Intervention sur site à Cholet pour automatiser un goulot précis (devis, ordonnancement atelier, contrôle qualité, reporting) — dès 590 € HT, code custom remis au client.",
+      en: "Intervention sur site à Cholet pour automatiser un goulot précis (devis, ordonnancement atelier, contrôle qualité, reporting) — dès 590 € HT, code custom remis au client.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Cholet dans la fabrication de produits métalliques.",
-      en: "Implémenter des solutions IA à Cholet dans la fabrication de produits métalliques.",
+      fr: "Implémentation IA sur mesure à Cholet pour les PME industrielles du Choletais : intégration ERP, suivi production, prévision de la demande — dès 990 € HT.",
+      en: "Implémentation IA sur mesure à Cholet pour les PME industrielles du Choletais : intégration ERP, suivi production, prévision de la demande — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Cholet avec un coaching IA personnalisé.",
-      en: "Accompagner un dirigeant à Cholet avec un coaching IA personnalisé.",
+      fr: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès 990 € HT, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès 990 € HT, sessions sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Cholet ?",
-      a: "Les interventions IA à Cholet commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Cholet ?",
+      a: "Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour une Intervention Essentielle et 990 € HT pour une Implémentation ou un accompagnement un-à-un. Le déplacement à Cholet depuis Paris est inclus pour ces formats.",
     },
     {
-      q: "Comment se déroule un audit IA à Cholet ?",
-      a: "Un audit IA à Cholet débute par une analyse de vos processus actuels. Nous identifions les opportunités d'automatisation dès 490 € HT.",
+      q: "Quels délais pour une intervention IA à Cholet après prise de contact ?",
+      a: "L'Audit Flash est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est généralement cadrée sous 2 à 3 semaines. Les implémentations plus lourdes (intégration ERP, automatisation atelier) s'étalent sur 4 à 8 semaines selon la complexité.",
     },
     {
-      q: "Combien de temps faut-il pour une implémentation IA à Cholet ?",
-      a: "Le temps d'implémentation dépend de la complexité du projet. Nous intervenons rapidement pour garantir un déploiement efficace.",
+      q: "Axion-IA intervient-elle dans les communes proches de Cholet ?",
+      a: "Oui. Nous couvrons sans surcoût les communes du Choletais : La Séguinière, Nuaillé, Le May-sur-Èvre, Saint-Léger-sous-Cholet, La Tessoualle, Mazières-en-Mauges et Saint-Christophe-du-Bois, ainsi que le reste du bassin d'emploi.",
     },
     {
-      q: "Axion-IA intervient-elle dans les communes autour de Cholet ?",
-      a: "Oui, nous intervenons également dans les communes du bassin de Cholet, telles que La Séguinière et Nuaillé.",
+      q: "Comment Axion-IA garantit-elle le respect du RGPD lors d'une mission à Cholet ?",
+      a: "Toutes nos interventions appliquent un cadre RGPD strict : DPA signé avant collecte, hébergement UE, minimisation des données, traçabilité des accès. Nous livrons le code applicatif au client et n'utilisons aucune solution no-code propriétaire.",
+    },
+    {
+      q: "Quels secteurs choletais sont prioritaires pour Axion-IA ?",
+      a: "Nous accompagnons en priorité l'industrie de la chaussure, le textile-habillement, l'équipement automobile, l'électronique et l'agroalimentaire — les filières historiques du deuxième bassin d'emploi des Pays de la Loire.",
+    },
+    {
+      q: "Vos consultants se déplacent-ils réellement à Cholet ou tout est-il fait à distance ?",
+      a: "Nos consultants se déplacent physiquement à Cholet pour les phases de cadrage et d'ateliers utilisateurs. Le développement est ensuite effectué à distance, avec des points hebdomadaires en visio et un retour sur site pour la mise en production.",
     },
   ],
 };

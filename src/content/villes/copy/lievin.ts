@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// HCU-2024 fix 2026-05-28 : contenu factuel Wikipédia, anti-doorway.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const LIEVIN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Liévin pour optimiser les processus des entreprises locales. Avec des structures comme Cap Digital et Inria en France, nous offrons des solutions IA adaptées aux besoins spécifiques des TPE, PME et ETI de la région.",
+    "Axion-IA accompagne les TPE et PME de Liévin, ville du Pas-de-Calais membre de la Communauté d'agglomération de Lens-Liévin (30 063 habitants en 2023, 12,83 km²). Ancien fleuron du bassin minier ouvert en 1857 et marqué par la catastrophe de 1974 qui a précipité la fermeture du dernier puits, la commune s'est reconvertie autour du tertiaire, du technopôle Vivalley et de l'Arena Stade Couvert régional. Nous outillons les dirigeants liévinois avec du code Python et TypeScript hébergé en France, sans no-code ni boîte noire SaaS opaque, pour automatiser administration, relation client, devis et reporting. Tarifs publics fixes : Audit Flash 4 h à 490 € HT, intervention sur site 590 € HT, implémentation 990 € HT, accompagnement 1-to-1 à 990 € HT. Les TPE et PME locales — artisans, commerçants, sous-traitants industriels — sont notre cœur de cible ; les ETI restent ponctuelles.",
   pitchEn:
-    "Axion-IA intervient à Liévin pour optimiser les processus des entreprises locales. Avec des structures comme Cap Digital et Inria en France, nous offrons des solutions IA adaptées aux besoins spécifiques des TPE, PME et ETI de la région.",
+    "Axion-IA accompagne les TPE et PME de Liévin, ville du Pas-de-Calais membre de la Communauté d'agglomération de Lens-Liévin (30 063 habitants en 2023, 12,83 km²). Ancien fleuron du bassin minier ouvert en 1857 et marqué par la catastrophe de 1974 qui a précipité la fermeture du dernier puits, la commune s'est reconvertie autour du tertiaire, du technopôle Vivalley et de l'Arena Stade Couvert régional. Nous outillons les dirigeants liévinois avec du code Python et TypeScript hébergé en France, sans no-code ni boîte noire SaaS opaque, pour automatiser administration, relation client, devis et reporting. Tarifs publics fixes : Audit Flash 4 h à 490 € HT, intervention sur site 590 € HT, implémentation 990 € HT, accompagnement 1-to-1 à 990 € HT. Les TPE et PME locales — artisans, commerçants, sous-traitants industriels — sont notre cœur de cible ; les ETI restent ponctuelles.",
   directAnswerFr:
-    "À Liévin, Axion-IA propose des interventions sur site pour les entreprises cherchant à intégrer l'IA dans leurs opérations. Notre expertise, reconnue à l'échelle nationale, s'appuie sur des références comme Cap Digital et Inria pour garantir des résultats concrets. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs et transparents.",
+    "Axion-IA se déplace à Liévin (Pas-de-Calais, Hauts-de-France) pour auditer et automatiser les processus des TPE et PME de l'agglomération Lens-Liévin. L'Audit Flash de 4 heures à 490 € HT identifie les tâches chronophages (saisie, devis, factures, relances, reporting) puis nous livrons des micro-automatisations en code custom Python ou TypeScript, hébergées en France et auditables ligne par ligne. Pas de no-code, pas d'abonnement caché. Intervention sur site à 590 € HT sous cinq jours ouvrés, implémentation à 990 € HT et accompagnement 1-to-1 des dirigeants à 990 € HT. Le tissu tertiaire post-mines et les sous-traitants du technopôle Vivalley tirent un retour rapide sur les automatisations administratives.",
   directAnswerEn:
-    "À Liévin, Axion-IA propose des interventions sur site pour les entreprises cherchant à intégrer l'IA dans leurs opérations. Notre expertise, reconnue à l'échelle nationale, s'appuie sur des références comme Cap Digital et Inria pour garantir des résultats concrets. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs et transparents.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA se déplace à Liévin (Pas-de-Calais, Hauts-de-France) pour auditer et automatiser les processus des TPE et PME de l'agglomération Lens-Liévin. L'Audit Flash de 4 heures à 490 € HT identifie les tâches chronophages (saisie, devis, factures, relances, reporting) puis nous livrons des micro-automatisations en code custom Python ou TypeScript, hébergées en France et auditables ligne par ligne. Pas de no-code, pas d'abonnement caché. Intervention sur site à 590 € HT sous cinq jours ouvrés, implémentation à 990 € HT et accompagnement 1-to-1 des dirigeants à 990 € HT. Le tissu tertiaire post-mines et les sous-traitants du technopôle Vivalley tirent un retour rapide sur les automatisations administratives.",
+  seoHook: "tertiaire post-minier & sous-traitance",
   ecosystemFr:
-    "Le tissu économique de Liévin, avec des secteurs comme le commerce de détail et la construction, bénéficie de notre expertise en IA. Les entreprises locales peuvent s'inspirer de pôles d'innovation tels qu'Inria pour progresser.",
+    "Le tissu liévinois s'est restructuré autour du tertiaire, du technopôle Vivalley et de pôles événementiels comme l'Arena Stade Couvert régional, après la fermeture des derniers puits de mine en 1974. La proximité de Lens (Louvre-Lens) et du bassin minier UNESCO génère une activité touristique et de services. Les communes limitrophes — Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay et Loos-en-Gohelle — partagent un bassin d'emploi continu, à 30 km de Lille et 15 km d'Arras.",
   ecosystemEn:
-    "Le tissu économique de Liévin, avec des secteurs comme le commerce de détail et la construction, bénéficie de notre expertise en IA. Les entreprises locales peuvent s'inspirer de pôles d'innovation tels qu'Inria pour progresser.",
+    "Le tissu liévinois s'est restructuré autour du tertiaire, du technopôle Vivalley et de pôles événementiels comme l'Arena Stade Couvert régional, après la fermeture des derniers puits de mine en 1974. La proximité de Lens (Louvre-Lens) et du bassin minier UNESCO génère une activité touristique et de services. Les communes limitrophes — Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay et Loos-en-Gohelle — partagent un bassin d'emploi continu, à 30 km de Lille et 15 km d'Arras.",
   distancesFr:
-    "Liévin est situé à 35 km de la gare TGV de Lille-Europe et à 40 km de l'aéroport de Lille-Lesquin.",
+    "Liévin est à 30 km au sud-ouest de Lille, 15 km au nord d'Arras, 15 km au sud-est de Béthune, 22 km à l'ouest de Douai, desservie par la gare SNCF de Liévin (TER ligne Arras-Dunkerque), l'A21 Rocade Minière, l'A26 et le réseau de bus Tadao.",
   distancesEn:
-    "Liévin est situé à 35 km de la gare TGV de Lille-Europe et à 40 km de l'aéroport de Lille-Lesquin.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transports terrestres"],
+    "Liévin est à 30 km au sud-ouest de Lille, 15 km au nord d'Arras, 15 km au sud-est de Béthune, 22 km à l'ouest de Douai, desservie par la gare SNCF de Liévin (TER ligne Arras-Dunkerque), l'A21 Rocade Minière, l'A26 et le réseau de bus Tadao.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Construction et second œuvre",
+    "Services aux entreprises",
+    "Hôtellerie-restauration",
+    "Transports terrestres et logistique",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Liévin permet d'identifier les opportunités d'optimisation IA dans le commerce et la construction.",
-      en: "Réaliser un audit à Liévin permet d'identifier les opportunités d'optimisation IA dans le commerce et la construction.",
+      fr: "Audit Flash 4 h à Liévin (490 € HT) pour identifier les automatisations IA prioritaires des TPE et PME tertiaires, commerciales et de la construction du bassin Lens-Liévin.",
+      en: "Audit Flash 4 h à Liévin (490 € HT) pour identifier les automatisations IA prioritaires des TPE et PME tertiaires, commerciales et de la construction du bassin Lens-Liévin.",
     },
     interventions: {
-      fr: "Intervenir à Liévin pour automatiser les tâches administratives et améliorer l'efficacité des entreprises locales.",
-      en: "Intervenir à Liévin pour automatiser les tâches administratives et améliorer l'efficacité des entreprises locales.",
+      fr: "Intervention sur site à Liévin dès 590 € HT en cinq jours ouvrés : devis, factures, relances clients, reporting et tableaux de bord pour artisans et PME.",
+      en: "Intervention sur site à Liévin dès 590 € HT en cinq jours ouvrés : devis, factures, relances clients, reporting et tableaux de bord pour artisans et PME.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Liévin, en s'appuyant sur notre savoir-faire pour des résultats rapides.",
-      en: "Implémenter des solutions IA à Liévin, en s'appuyant sur notre savoir-faire pour des résultats rapides.",
+      fr: "Implémentation IA code custom à Liévin à partir de 990 € HT pour TPE et PME du technopôle Vivalley et du tissu tertiaire post-minier.",
+      en: "Implémentation IA code custom à Liévin à partir de 990 € HT pour TPE et PME du technopôle Vivalley et du tissu tertiaire post-minier.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Liévin pour accompagner les dirigeants dans la compréhension et l'utilisation de l'IA.",
-      en: "Proposer des sessions 1-to-1 à Liévin pour accompagner les dirigeants dans la compréhension et l'utilisation de l'IA.",
+      fr: "Accompagnement 1-to-1 des dirigeants liévinois à 990 € HT pour adopter l'IA en code auditable, sans no-code ni dépendance SaaS opaque.",
+      en: "Accompagnement 1-to-1 des dirigeants liévinois à 990 € HT pour adopter l'IA en code auditable, sans no-code ni dépendance SaaS opaque.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Liévin ?",
-      a: "Nos audits, tels que l'Audit Flash, débutent à 490 € HT. Les tarifs pour les interventions commencent à 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Liévin ?",
+      a: "Audit Flash 4 h à 490 € HT, intervention sur site à 590 € HT, implémentation à 990 € HT, accompagnement 1-to-1 à 990 € HT. Tarifs publics fixes sur axion-ia.com, sans licence no-code à payer en plus.",
     },
     {
-      q: "Comment se déroule une intervention IA à Liévin ?",
-      a: "Nous nous déplaçons sur site pour analyser vos besoins spécifiques et proposer des solutions IA adaptées. Nos interventions sont conçues pour s'intégrer facilement à vos processus existants.",
+      q: "Quels délais pour une intervention à Liévin ?",
+      a: "Déplacement sur site sous cinq jours ouvrés depuis la signature, Audit Flash livré en 4 heures, implémentations courantes (factures, relances, reporting) déployées en deux à trois semaines.",
     },
     {
-      q: "Quels sont les délais pour une implémentation IA à Liévin ?",
-      a: "Les délais varient selon la complexité du projet, mais nous nous engageons à débuter les interventions dans les 5 jours ouvrés après validation du projet.",
+      q: "Intervenez-vous dans les communes voisines de Liévin ?",
+      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes sans surcoût, ainsi qu'Arras (15 km) et Lille (30 km).",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Liévin ?",
-      a: "Oui, toutes nos interventions sont conformes au RGPD. Nous veillons à la protection des données personnelles et à la confidentialité des informations traitées.",
+      q: "Vos automatisations à Liévin respectent-elles le RGPD ?",
+      a: "Oui : code Python et TypeScript hébergé en France, aucun transfert de données personnelles hors UE par défaut, registre des traitements et droits RGPD intégrés à la livraison.",
+    },
+    {
+      q: "Quels secteurs liévinois travaillez-vous le plus ?",
+      a: "Commerce de détail, construction et second œuvre, services aux entreprises post-tertiarisation, hôtellerie-restauration autour du Louvre-Lens et de l'Arena, transports terrestres et logistique de l'A21.",
+    },
+    {
+      q: "Faut-il être une ETI pour solliciter Axion-IA à Liévin ?",
+      a: "Non : notre cible prioritaire est la TPE et la PME liévinoise de moins de 50 salariés. Les ETI nous sollicitent ponctuellement, mais les tarifs 490-990 € HT sont calibrés pour artisans, commerçants et PME locales.",
     },
   ],
 };

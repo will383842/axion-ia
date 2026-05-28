@@ -7,57 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const DUNKERQUE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Dunkerque, une ville clé des Hauts-de-France avec des secteurs comme la métallurgie et la cokéfaction. Notre expertise nationale se déplace pour optimiser vos processus grâce à l'IA, en s'adaptant aux besoins spécifiques des entreprises locales.",
+    "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des TPE et PME du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
   pitchEn:
-    "Axion-IA intervient à Dunkerque, une ville clé des Hauts-de-France avec des secteurs comme la métallurgie et la cokéfaction. Notre expertise nationale se déplace pour optimiser vos processus grâce à l'IA, en s'adaptant aux besoins spécifiques des entreprises locales.",
+    "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des TPE et PME du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
   directAnswerFr:
-    "À Dunkerque, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. La ville abrite des géants industriels tels qu'ArcelorMittal et TotalEnergies, et bénéficie de pôles de compétitivité comme i-Trans et Team2. Nos interventions sur site permettent de répondre aux enjeux spécifiques de ce tissu économique unique.",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès 590 € HT pour une intervention essentielle.",
   directAnswerEn:
-    "À Dunkerque, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. La ville abrite des géants industriels tels qu'ArcelorMittal et TotalEnergies, et bénéficie de pôles de compétitivité comme i-Trans et Team2. Nos interventions sur site permettent de répondre aux enjeux spécifiques de ce tissu économique unique.",
-  seoHook: "métallurgie & cokéfaction",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès 590 € HT pour une intervention essentielle.",
+  seoHook: "port, métallurgie & sous-traitance",
   ecosystemFr:
-    "Dunkerque est un centre industriel majeur avec ArcelorMittal et Dunkerque LNG. Les pôles i-Trans et Team2 renforcent l'innovation dans les transports et le recyclage.",
+    "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de TPE et PME de sous-traitance, logistique, maintenance et services.",
   ecosystemEn:
-    "Dunkerque est un centre industriel majeur avec ArcelorMittal et Dunkerque LNG. Les pôles i-Trans et Team2 renforcent l'innovation dans les transports et le recyclage.",
+    "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de TPE et PME de sous-traitance, logistique, maintenance et services.",
   distancesFr:
-    "La Gare TGV de Lille-Europe est à 80 km de Dunkerque, facilitant l'accès à nos services.",
+    "La gare TGV de Dunkerque relie Paris-Nord en 1h45 à 2h30 et Lille-Europe en 35 minutes. L'A16/E40 et l'A25 desservent l'agglomération. L'aéroport de Lille-Lesquin est à 89 km, et le port assure des liaisons maritimes directes vers Douvres et Rosslare.",
   distancesEn:
-    "La Gare TGV de Lille-Europe est à 80 km de Dunkerque, facilitant l'accès à nos services.",
-  topSectorsNaf: ["Métallurgie", "Cokéfaction", "Raffinage", "Électricité", "Entreposage"],
+    "La gare TGV de Dunkerque relie Paris-Nord en 1h45 à 2h30 et Lille-Europe en 35 minutes. L'A16/E40 et l'A25 desservent l'agglomération. L'aéroport de Lille-Lesquin est à 89 km, et le port assure des liaisons maritimes directes vers Douvres et Rosslare.",
+  topSectorsNaf: [
+    "Activités portuaires et logistique maritime",
+    "Métallurgie et sidérurgie",
+    "Pétrochimie et gaz industriels",
+    "Grande distribution",
+    "Entreposage et transport",
+    "Maintenance industrielle",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Dunkerque avec Axion-IA permet d'identifier les leviers d'optimisation dans des secteurs comme la métallurgie.",
-      en: "Réaliser un audit à Dunkerque avec Axion-IA permet d'identifier les leviers d'optimisation dans des secteurs comme la métallurgie.",
+      fr: "Auditer une TPE ou PME dunkerquoise (sous-traitance portuaire, logistique, services) pour cartographier les automatisations IA prioritaires.",
+      en: "Auditer une TPE ou PME dunkerquoise (sous-traitance portuaire, logistique, services) pour cartographier les automatisations IA prioritaires.",
     },
     interventions: {
-      fr: "Intervenir à Dunkerque dans la Zone Industrielle de Petite-Synthe pour automatiser les tâches administratives.",
-      en: "Intervenir à Dunkerque dans la Zone Industrielle de Petite-Synthe pour automatiser les tâches administratives.",
+      fr: "Intervenir sur site à Dunkerque pour automatiser devis, suivi commandes, planning maintenance et tâches administratives.",
+      en: "Intervenir sur site à Dunkerque pour automatiser devis, suivi commandes, planning maintenance et tâches administratives.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Dunkerque, adaptées aux besoins des entreprises comme TotalEnergies.",
-      en: "Implémenter des solutions IA à Dunkerque, adaptées aux besoins des entreprises comme TotalEnergies.",
+      fr: "Implémenter des outils IA en code source propriétaire à Dunkerque, livrés au client, intégrables aux ERP et logiciels métier existants.",
+      en: "Implémenter des outils IA en code source propriétaire à Dunkerque, livrés au client, intégrables aux ERP et logiciels métier existants.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Dunkerque pour les dirigeants souhaitant intégrer l'IA dans leurs opérations.",
-      en: "Proposer des sessions 1-to-1 à Dunkerque pour les dirigeants souhaitant intégrer l'IA dans leurs opérations.",
+      fr: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
+      en: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Dunkerque ?",
-      a: "Nos interventions à Dunkerque commencent à partir de 590 € HT pour une Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Dunkerque ?",
+      a: "Nos interventions essentielles débutent à 590 € HT, les audits flash à 490 € HT et les sessions 1-to-1 à 990 € HT. Les tarifs publics sont consultables sur notre site.",
     },
     {
-      q: "Comment se déroule le déplacement d'Axion-IA à Dunkerque ?",
-      a: "Williams se déplace sur site à Dunkerque dans un délai de 5 jours ouvrés pour assurer une intervention rapide et efficace.",
+      q: "Sous quel délai Axion-IA se déplace-t-il à Dunkerque ?",
+      a: "Williams se déplace sur Dunkerque sous 5 jours ouvrés en moyenne après validation du devis. Les missions de formation ou d'audit peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de vos services à Dunkerque ?",
-      a: "Les secteurs de la métallurgie, de la cokéfaction et du raffinage, ainsi que l'entreposage, tirent parti de nos solutions IA pour optimiser leurs processus.",
+      q: "Quelles communes autour de Dunkerque sont couvertes ?",
+      a: "Nous intervenons à Grande-Synthe, Coudekerque-Branche et Leffrinckoucke, ainsi que dans l'ensemble de la Communauté Urbaine de Dunkerque.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Dunkerque ?",
-      a: "Nous assurons la conformité RGPD en intégrant des pratiques de gouvernance IA rigoureuses, adaptées aux spécificités des entreprises dunkerquoises.",
+      q: "Axion-IA garantit-il la conformité RGPD à Dunkerque ?",
+      a: "Oui. Chaque livrable intègre une analyse RGPD et AI Act, avec hébergement des données en France ou UE et contrôle direct par le client.",
+    },
+    {
+      q: "Quels secteurs dunkerquois Axion-IA accompagne-t-il en priorité ?",
+      a: "Nous priorisons les TPE et PME de sous-traitance portuaire, logistique, maintenance industrielle, grande distribution et services aux entreprises. Quelques ETI font également appel à nos services.",
+    },
+    {
+      q: "Proposez-vous des formations IA pour les équipes dunkerquoises ?",
+      a: "Oui, nous animons à Dunkerque des formations sur mesure (présentiel ou visio) pour dirigeants et collaborateurs de TPE/PME, calibrées sur les enjeux portuaires et industriels locaux.",
     },
   ],
 };

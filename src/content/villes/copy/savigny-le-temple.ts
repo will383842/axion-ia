@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
+// Patched 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factuel, suppression LVMH/BNP/Cap Digital/Station F hors-contexte).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,57 +7,71 @@ import type { VilleCopy } from "./types";
 
 export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Savigny-le-Temple pour accompagner les entreprises locales dans leur transformation numérique. L'écosystème de l'Île-de-France, incluant des pôles comme Cap Digital et Station F, offre un cadre propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME de Savigny-le-Temple (77176, Seine-et-Marne, 31 148 habitants en 2023), cinquième ville la plus peuplée du département et l'une des plus jeunes de France (36,2 % de moins de 20 ans). Issue du développement de la ville nouvelle de Sénart à partir des années 1970, la commune accueille des zones industrielles, logistiques et tertiaires structurées autour de la gare RER D Savigny-le-Temple-Nandy. Le tissu local est dominé à près de 79 % par les services (commerce, hôtellerie, services aux entreprises).",
   pitchEn:
-    "Axion-IA intervient à Savigny-le-Temple pour accompagner les entreprises locales dans leur transformation numérique. L'écosystème de l'Île-de-France, incluant des pôles comme Cap Digital et Station F, offre un cadre propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME de Savigny-le-Temple (77176, Seine-et-Marne, 31 148 habitants en 2023), cinquième ville la plus peuplée du département et l'une des plus jeunes de France (36,2 % de moins de 20 ans). Issue du développement de la ville nouvelle de Sénart à partir des années 1970, la commune accueille des zones industrielles, logistiques et tertiaires structurées autour de la gare RER D Savigny-le-Temple-Nandy. Le tissu local est dominé à près de 79 % par les services (commerce, hôtellerie, services aux entreprises).",
   directAnswerFr:
-    "À Savigny-le-Temple, Axion-IA propose des interventions sur site adaptées aux besoins spécifiques des entreprises locales. Grâce à notre expertise, nous aidons à intégrer des solutions IA performantes. Le tissu économique régional, comprenant des acteurs comme LVMH et BNP Paribas, bénéficie d'un environnement stimulant pour l'innovation. Nos interventions visent à optimiser les processus internes et à améliorer l'efficacité opérationnelle.",
+    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation dès 990 € HT. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
   directAnswerEn:
-    "À Savigny-le-Temple, Axion-IA propose des interventions sur site adaptées aux besoins spécifiques des entreprises locales. Grâce à notre expertise, nous aidons à intégrer des solutions IA performantes. Le tissu économique régional, comprenant des acteurs comme LVMH et BNP Paribas, bénéficie d'un environnement stimulant pour l'innovation. Nos interventions visent à optimiser les processus internes et à améliorer l'efficacité opérationnelle.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation dès 990 € HT. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
+  seoHook: "logistique Sénart & services PME",
   ecosystemFr:
-    "Savigny-le-Temple est entourée d'un riche tissu économique, avec des entreprises telles que LVMH et BNP Paribas dans la région. Cet environnement offre de nombreuses opportunités pour l'innovation et le développement technologique.",
+    "Savigny-le-Temple est intégrée à la ville nouvelle de Sénart, ce qui en a fait un pôle logistique et tertiaire majeur du sud de l'Île-de-France depuis les années 1970 (la population est passée de 828 habitants en 1968 à plus de 31 000 aujourd'hui). Les zones d'activités locales mélangent logistique, industrie légère et services aux entreprises. Près de 79 % du tissu économique repose sur les services, en particulier le commerce de détail, l'hôtellerie-restauration et les services aux entreprises. La commune fait partie de la communauté d'agglomération Grand Paris Sud Seine-Essonne-Sénart.",
   ecosystemEn:
-    "Savigny-le-Temple est entourée d'un riche tissu économique, avec des entreprises telles que LVMH et BNP Paribas dans la région. Cet environnement offre de nombreuses opportunités pour l'innovation et le développement technologique.",
+    "Savigny-le-Temple est intégrée à la ville nouvelle de Sénart, ce qui en a fait un pôle logistique et tertiaire majeur du sud de l'Île-de-France depuis les années 1970 (la population est passée de 828 habitants en 1968 à plus de 31 000 aujourd'hui). Les zones d'activités locales mélangent logistique, industrie légère et services aux entreprises. Près de 79 % du tissu économique repose sur les services, en particulier le commerce de détail, l'hôtellerie-restauration et les services aux entreprises. La commune fait partie de la communauté d'agglomération Grand Paris Sud Seine-Essonne-Sénart.",
   distancesFr:
-    "Savigny-le-Temple est située à 35 km de la Gare de Lyon et à 30 km de l'Aéroport de Paris-Orly.",
+    "Savigny-le-Temple est à environ 30 km au sud-est de Paris, desservie par le RER D (gare Savigny-le-Temple-Nandy, Châtelet-Les Halles en ~35 min, Melun en ~10 min), l'A5 et la Francilienne N104. L'aéroport Paris-Orly est à environ 30 km.",
   distancesEn:
-    "Savigny-le-Temple est située à 35 km de la Gare de Lyon et à 30 km de l'Aéroport de Paris-Orly.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Transports terrestres", "Restauration"],
+    "Savigny-le-Temple est à environ 30 km au sud-est de Paris, desservie par le RER D (gare Savigny-le-Temple-Nandy, Châtelet-Les Halles en ~35 min, Melun en ~10 min), l'A5 et la Francilienne N104. L'aéroport Paris-Orly est à environ 30 km.",
+  topSectorsNaf: [
+    "Logistique et entreposage",
+    "Commerce de détail",
+    "Hôtellerie-restauration",
+    "Services aux entreprises",
+    "Construction et BTP",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser des audits à Savigny-le-Temple permet d'identifier les opportunités d'optimisation grâce à l'IA. Audit Flash dès 490 € HT.",
-      en: "Réaliser des audits à Savigny-le-Temple permet d'identifier les opportunités d'optimisation grâce à l'IA. Audit Flash dès 490 € HT.",
+      fr: "Audit Flash à Savigny-le-Temple pour les TPE/PME logistiques et tertiaires de la ville nouvelle de Sénart, dès 490 € HT.",
+      en: "Audit Flash à Savigny-le-Temple pour les TPE/PME logistiques et tertiaires de la ville nouvelle de Sénart, dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Savigny-le-Temple pour automatiser les tâches administratives et améliorer l'efficacité. Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Savigny-le-Temple pour automatiser les tâches administratives et améliorer l'efficacité. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention Essentielle à Savigny-le-Temple pour automatiser planning, devis, facturation et relances des TPE/PME locales, dès 590 € HT.",
+      en: "Intervention Essentielle à Savigny-le-Temple pour automatiser planning, devis, facturation et relances des TPE/PME locales, dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Savigny-le-Temple pour intégrer de nouvelles technologies dans les processus existants. Implémentation dès 990 € HT.",
-      en: "Implémenter des solutions IA à Savigny-le-Temple pour intégrer de nouvelles technologies dans les processus existants. Implémentation dès 990 € HT.",
+      fr: "Implémentation à Savigny-le-Temple d'agents IA en code custom reliés à vos outils logistiques, e-commerce ou CRM, dès 990 € HT.",
+      en: "Implémentation à Savigny-le-Temple d'agents IA en code custom reliés à vos outils logistiques, e-commerce ou CRM, dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Savigny-le-Temple pour une adoption réussie de l'IA. Session à partir de 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants de Savigny-le-Temple pour une adoption réussie de l'IA. Session à partir de 990 € HT.",
+      fr: "Sessions 1-to-1 à Savigny-le-Temple pour dirigeants de TPE/PME : feuille de route IA priorisée et plan RGPD, dès 990 € HT.",
+      en: "Sessions 1-to-1 à Savigny-le-Temple pour dirigeants de TPE/PME : feuille de route IA priorisée et plan RGPD, dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Savigny-le-Temple ?",
-      a: "Nos interventions à Savigny-le-Temple commencent à partir de 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA à Savigny-le-Temple (77176) ?",
+      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et 1-to-1 dirigeant dès 990 € HT. Tarifs publics fixes, sans engagement.",
     },
     {
-      q: "Comment Axion-IA assure-t-il le respect du RGPD lors des interventions à Savigny-le-Temple ?",
-      a: "Axion-IA garantit la conformité au RGPD en intégrant des protocoles de sécurité rigoureux et en assurant la protection des données à chaque étape de l'intervention.",
+      q: "Quels délais pour intervenir à Savigny-le-Temple ?",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Savigny-le-Temple. Le RER D et l'A5 / Francilienne assurent un accès rapide depuis Paris (~35 min) ou Melun (~10 min).",
     },
     {
-      q: "Combien de temps faut-il pour qu'Axion-IA intervienne à Savigny-le-Temple ?",
-      a: "Nous nous engageons à intervenir sur site à Savigny-le-Temple dans un délai de 5 jours ouvrés après la validation de la demande.",
+      q: "Intervenez-vous dans les communes proches de Savigny-le-Temple ?",
+      a: "Oui, nous nous déplaçons aussi à Nandy, Vert-Saint-Denis, Cesson, Combs-la-Ville, Lieusaint, Moissy-Cramayel et Réau, au même tarif.",
     },
     {
-      q: "Quels secteurs bénéficient le plus des services d'Axion-IA à Savigny-le-Temple ?",
-      a: "Les secteurs tels que le commerce de détail, la construction et les transports terrestres bénéficient particulièrement de nos services d'optimisation par l'IA à Savigny-le-Temple.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Savigny-le-Temple ?",
+      a: "Chaque mission inclut une cartographie des traitements, un choix d'hébergement UE et une documentation prête pour audit CNIL. Notre code custom (pas de no-code) facilite la maintenance et l'audit.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous en priorité à Savigny-le-Temple ?",
+      a: "Logistique et entreposage (zones de Sénart), commerce de détail, hôtellerie-restauration, services aux entreprises et BTP — environ 79 % du tissu local est tertiaire.",
+    },
+    {
+      q: "Vous déplacez-vous sur site à Savigny-le-Temple ?",
+      a: "Oui, nos consultants se rendent directement dans vos locaux à Savigny-le-Temple, sans frais de déplacement supplémentaires pour l'Île-de-France, via le RER D ou l'A5.",
     },
   ],
 };

@@ -1,63 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — T4 batch fix Claude Code (Will).
+// Châtenay-Malabry (92, Hauts-de-Seine) — sud Paris, ex-École Centrale, AFLD, Cité-jardin Butte-Rouge.
 
 import type { VilleCopy } from "./types";
 
 export const CHATENAY_MALABRY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Châtenay-Malabry, au cœur de l'écosystème francilien, pour aider les entreprises à intégrer l'IA dans leurs opérations, en tirant parti de la proximité avec l'Université Paris-Saclay.",
+    "Châtenay-Malabry (92, Hauts-de-Seine), 35 825 habitants, commune résidentielle au sud de Paris à 10 km. Ancienne implantation de l'École Centrale Paris (transférée à Saclay en 2018) reconvertie en éco-quartier LaVallée. Siège de l'Agence Française de Lutte contre le Dopage (AFLD). Cité-jardin de la Butte-Rouge (4 000 logements sociaux, patrimoine remarquable). Desservie par le tramway T10 depuis 2023. Axion-IA accompagne TPE, PME et professions libérales locales.",
   pitchEn:
-    "Axion-IA intervient à Châtenay-Malabry, au cœur de l'écosystème francilien, pour aider les entreprises à intégrer l'IA dans leurs opérations, en tirant parti de la proximité avec l'Université Paris-Saclay.",
+    "Châtenay-Malabry (92, Hauts-de-Seine), 35 825 habitants, commune résidentielle au sud de Paris à 10 km. Ancienne implantation de l'École Centrale Paris (transférée à Saclay en 2018) reconvertie en éco-quartier LaVallée. Siège de l'Agence Française de Lutte contre le Dopage (AFLD). Cité-jardin de la Butte-Rouge (4 000 logements sociaux, patrimoine remarquable). Desservie par le tramway T10 depuis 2023. Axion-IA accompagne TPE, PME et professions libérales locales.",
   directAnswerFr:
-    "À Châtenay-Malabry, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expertise, nous accompagnons les entreprises dans des secteurs tels que la recherche-développement scientifique et le commerce de détail. Les infrastructures de transport, comme la gare de Massy TGV et l'aéroport de Paris-Orly, facilitent nos interventions sur site pour une mise en œuvre rapide et efficace.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit Flash à 490 € HT, interventions sur devis. Code custom, pas no-code.",
   directAnswerEn:
-    "À Châtenay-Malabry, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expertise, nous accompagnons les entreprises dans des secteurs tels que la recherche-développement scientifique et le commerce de détail. Les infrastructures de transport, comme la gare de Massy TGV et l'aéroport de Paris-Orly, facilitent nos interventions sur site pour une mise en œuvre rapide et efficace.",
-  seoHook: "recherche-développement & enseignement",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit Flash à 490 € HT, interventions sur devis. Code custom, pas no-code.",
+  seoHook: "TPE/PME résidentielles & professions libérales sud Paris",
   ecosystemFr:
-    "Châtenay-Malabry bénéficie de la proximité de l'Université Paris-Saclay et de l'École Centrale Paris, renforçant son secteur de la recherche-développement scientifique.",
+    "Tissu économique de Châtenay-Malabry dominé par les services aux entreprises, professions libérales (santé, conseil), commerces de proximité du centre-ville et de la rue Jean Longuet, artisanat et BTP. Présence institutionnelle forte (AFLD, CREPS Île-de-France). L'éco-quartier LaVallée (ex-Centrale) ouvre une nouvelle dynamique tertiaire. Proximité du pôle d'affaires d'Antony et du plateau de Saclay.",
   ecosystemEn:
-    "Châtenay-Malabry bénéficie de la proximité de l'Université Paris-Saclay et de l'École Centrale Paris, renforçant son secteur de la recherche-développement scientifique.",
+    "Tissu économique de Châtenay-Malabry dominé par les services aux entreprises, professions libérales (santé, conseil), commerces de proximité du centre-ville et de la rue Jean Longuet, artisanat et BTP. Présence institutionnelle forte (AFLD, CREPS Île-de-France). L'éco-quartier LaVallée (ex-Centrale) ouvre une nouvelle dynamique tertiaire. Proximité du pôle d'affaires d'Antony et du plateau de Saclay.",
   distancesFr:
-    "Châtenay-Malabry est à 10 km de la gare de Massy TGV et à 12 km de l'aéroport de Paris-Orly.",
+    "Paris centre à 10 km. Antony à 3 km. Sceaux à 2 km. Clamart à 4 km. Tramway T10 (depuis 2023). RER B Robinson et La Croix de Berny à proximité. A86 (deux échangeurs). Aéroport Paris-Orly à 12 km.",
   distancesEn:
-    "Châtenay-Malabry est à 10 km de la gare de Massy TGV et à 12 km de l'aéroport de Paris-Orly.",
-  topSectorsNaf: ["Recherche-développement", "Enseignement", "Santé humaine", "Commerce de détail"],
+    "Paris centre à 10 km. Antony à 3 km. Sceaux à 2 km. Clamart à 4 km. Tramway T10 (depuis 2023). RER B Robinson et La Croix de Berny à proximité. A86 (deux échangeurs). Aéroport Paris-Orly à 12 km.",
+  topSectorsNaf: [
+    "Professions libérales (santé, conseil)",
+    "Services aux entreprises",
+    "Commerce de proximité",
+    "Artisanat & BTP",
+    "Administration & institutions (AFLD, CREPS)",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Châtenay-Malabry permet d'identifier les opportunités IA dans les secteurs de la santé et du commerce.",
-      en: "Réaliser un audit à Châtenay-Malabry permet d'identifier les opportunités IA dans les secteurs de la santé et du commerce.",
+      fr: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit Flash 490 € HT, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit Flash 490 € HT, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
-      fr: "Intervenir à Châtenay-Malabry pour automatiser les processus dans les entreprises de recherche et développement.",
-      en: "Intervenir à Châtenay-Malabry pour automatiser les processus dans les entreprises de recherche et développement.",
+      fr: "Interventions IA sur site à Châtenay-Malabry : ateliers adaptés cabinet libéral, PME services, artisan ou commerce. Équipes formées et autonomes sur outils IA métier.",
+      en: "Interventions IA sur site à Châtenay-Malabry : ateliers adaptés cabinet libéral, PME services, artisan ou commerce. Équipes formées et autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter à Châtenay-Malabry des solutions IA dans le secteur éducatif, optimisant les ressources.",
-      en: "Implémenter à Châtenay-Malabry des solutions IA dans le secteur éducatif, optimisant les ressources.",
+      fr: "Implémentation IA à Châtenay-Malabry : automatisation prise de RDV, chatbot client, classification de dossiers, optimisation administrative pour TPE et PME du 92 sud.",
+      en: "Implémentation IA à Châtenay-Malabry : automatisation prise de RDV, chatbot client, classification de dossiers, optimisation administrative pour TPE et PME du 92 sud.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Châtenay-Malabry avec des sessions 1-to-1 pour maximiser l'impact de l'IA.",
-      en: "Accompagner les dirigeants de Châtenay-Malabry avec des sessions 1-to-1 pour maximiser l'impact de l'IA.",
+      fr: "Coaching 1-to-1 à Châtenay-Malabry : sessions sur site ou en visio pour dirigeants TPE/PME, professions libérales, artisans et commerçants du sud parisien.",
+      en: "Coaching 1-to-1 à Châtenay-Malabry : sessions sur site ou en visio pour dirigeants TPE/PME, professions libérales, artisans et commerçants du sud parisien.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Châtenay-Malabry ?",
-      a: "Les tarifs pour une intervention à Châtenay-Malabry commencent à partir de 590 € HT. Pour un audit, comptez à partir de 490 € HT. Tous nos tarifs sont publics et consultables sur notre site.",
+      q: "Axion-IA intervient-il à Châtenay-Malabry ?",
+      a: "Oui, Axion-IA intervient à Châtenay-Malabry et dans les communes limitrophes : Antony, Sceaux, Clamart, Le Plessis-Robinson, Verrières-le-Buisson. Déplacement sur site possible depuis Paris via T10 ou A86.",
     },
     {
-      q: "Comment se déroule une intervention IA à Châtenay-Malabry ?",
-      a: "Nos interventions à Châtenay-Malabry se déroulent sur site, où nous analysons vos besoins spécifiques et mettons en place des solutions IA adaptées à votre secteur d'activité.",
+      q: "Quels sont les tarifs pour une mission IA à Châtenay-Malabry ?",
+      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon le périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Châtenay-Malabry ?",
-      a: "Oui, Axion-IA s'assure que toutes ses interventions à Châtenay-Malabry sont conformes au RGPD, garantissant la protection des données personnelles de nos clients.",
+      q: "Accompagnez-vous les professions libérales de Châtenay-Malabry ?",
+      a: "Oui, nous accompagnons cabinets médicaux, conseils et professions libérales : automatisation plannings, classification dossiers, agents IA réponse patient. Audit Flash 490 € HT.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Châtenay-Malabry ?",
-      a: "Les délais pour une implémentation IA à Châtenay-Malabry varient selon le projet, mais nous nous efforçons de les réduire au maximum grâce à notre présence rapide sur site.",
+      q: "Axion-IA respecte-t-il le RGPD à Châtenay-Malabry ?",
+      a: "Oui, toutes nos implémentations IA respectent strictement le RGPD : hébergement UE, anonymisation, registre de traitements, AIPD si nécessaire. Code custom, pas de no-code opaque.",
+    },
+    {
+      q: "Quels délais pour une intervention à Châtenay-Malabry ?",
+      a: "Audit Flash livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 semaines. Implémentations selon périmètre, généralement 4 à 8 semaines.",
+    },
+    {
+      q: "Quels secteurs locaux accompagnez-vous à Châtenay-Malabry ?",
+      a: "Professions libérales (santé, conseil), services aux entreprises, commerces de proximité (centre-ville, rue Jean Longuet), artisanat BTP, et structures liées au tertiaire de l'éco-quartier LaVallée.",
     },
   ],
 };

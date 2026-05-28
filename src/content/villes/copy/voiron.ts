@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — anti-doorway HCU 2024 (Wikipedia facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const VOIRON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Voiron pour optimiser les processus métier des entreprises locales. Avec des acteurs comme Chartreuse Diffusion et Rossignol, notre expertise en IA s'adapte aux besoins spécifiques de la région.",
+    "Axion-IA se déplace à Voiron, sous-préfecture de l'Isère de 21 847 habitants et ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Située à 29 km au nord-ouest de Grenoble en bordure du parc naturel régional de Chartreuse, Voiron accueille la production des liqueurs de Chartreuse, la chocolaterie Bonnat, les tissages Denantes et un centre hospitalier de référence. Nous y accompagnons les TPE et PME locales en code custom pour automatiser leurs processus métier.",
   pitchEn:
-    "Axion-IA intervient à Voiron pour optimiser les processus métier des entreprises locales. Avec des acteurs comme Chartreuse Diffusion et Rossignol, notre expertise en IA s'adapte aux besoins spécifiques de la région.",
+    "Axion-IA se déplace à Voiron, sous-préfecture de l'Isère de 21 847 habitants et ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Située à 29 km au nord-ouest de Grenoble en bordure du parc naturel régional de Chartreuse, Voiron accueille la production des liqueurs de Chartreuse, la chocolaterie Bonnat, les tissages Denantes et un centre hospitalier de référence. Nous y accompagnons les TPE et PME locales en code custom pour automatiser leurs processus métier.",
   directAnswerFr:
-    "À Voiron, Axion-IA se concentre sur l'amélioration des processus grâce à l'IA. Avec des secteurs dominants tels que l'industrie agroalimentaire et la fabrication de produits métalliques, nous apportons notre savoir-faire pour automatiser les tâches administratives. Chartreuse Diffusion et Rossignol sont des exemples d'entreprises présentes dans la région, illustrant la diversité économique locale.",
+    "Axion-IA est un cabinet IA qui intervient à Voiron (Isère, 21 847 habitants, unité urbaine de 64 814 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Ville-centre de la Communauté d'agglomération du Pays Voironnais (34 communes), Voiron concentre des acteurs comme la chocolaterie Bonnat, les tissages Denantes, la production des liqueurs de Chartreuse, le tourisme lié au massif de Chartreuse et son centre hospitalier. L'audit Flash démarre à 490 € HT et les interventions à 590 € HT.",
   directAnswerEn:
-    "À Voiron, Axion-IA se concentre sur l'amélioration des processus grâce à l'IA. Avec des secteurs dominants tels que l'industrie agroalimentaire et la fabrication de produits métalliques, nous apportons notre savoir-faire pour automatiser les tâches administratives. Chartreuse Diffusion et Rossignol sont des exemples d'entreprises présentes dans la région, illustrant la diversité économique locale.",
-  seoHook: "industrie agroalimentaire & commerce détail",
+    "Axion-IA est un cabinet IA qui intervient à Voiron (Isère, 21 847 habitants, unité urbaine de 64 814 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Ville-centre de la Communauté d'agglomération du Pays Voironnais (34 communes), Voiron concentre des acteurs comme la chocolaterie Bonnat, les tissages Denantes, la production des liqueurs de Chartreuse, le tourisme lié au massif de Chartreuse et son centre hospitalier. L'audit Flash démarre à 490 € HT et les interventions à 590 € HT.",
+  seoHook: "TPE & PME · agroalimentaire, textile, tourisme, santé",
   ecosystemFr:
-    "Voiron est un pôle industriel incluant Chartreuse Diffusion et Rossignol. L'industrie agroalimentaire et la fabrication de produits métalliques y sont prépondérantes.",
+    "Voiron est la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Le tissu local mêle l'industrie agroalimentaire (chocolaterie Bonnat, production des liqueurs de Chartreuse), le textile historique (tissages Denantes), l'artisanat de petite et moyenne manufacture, le centre hospitalier et un secteur touristique porté par la proximité immédiate du parc naturel régional de Chartreuse et du monastère de la Grande Chartreuse.",
   ecosystemEn:
-    "Voiron est un pôle industriel incluant Chartreuse Diffusion et Rossignol. L'industrie agroalimentaire et la fabrication de produits métalliques y sont prépondérantes.",
+    "Voiron est la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Le tissu local mêle l'industrie agroalimentaire (chocolaterie Bonnat, production des liqueurs de Chartreuse), le textile historique (tissages Denantes), l'artisanat de petite et moyenne manufacture, le centre hospitalier et un secteur touristique porté par la proximité immédiate du parc naturel régional de Chartreuse et du monastère de la Grande Chartreuse.",
   distancesFr:
-    "Voiron est à 25 km de la gare TGV de Grenoble et à 20 km de l'aéroport de Grenoble-Alpes-Isère.",
+    "Voiron est à 29 km par la route au nord-ouest de Grenoble via l'autoroute A48 (sorties Champfeuillet et Moirans). La gare de Voiron, sur la ligne Lyon-Marseille, propose un TER cadencé toutes les 20 minutes en heures de pointe vers Grenoble (env. 25 min) et Lyon (env. 1 h). Quatre lignes urbaines desservent la ville, complétées par les Cars Région Isère.",
   distancesEn:
-    "Voiron est à 25 km de la gare TGV de Grenoble et à 20 km de l'aéroport de Grenoble-Alpes-Isère.",
+    "Voiron est à 29 km par la route au nord-ouest de Grenoble via l'autoroute A48 (sorties Champfeuillet et Moirans). La gare de Voiron, sur la ligne Lyon-Marseille, propose un TER cadencé toutes les 20 minutes en heures de pointe vers Grenoble (env. 25 min) et Lyon (env. 1 h). Quatre lignes urbaines desservent la ville, complétées par les Cars Région Isère.",
   topSectorsNaf: [
     "Industrie agroalimentaire",
+    "Industrie textile",
+    "Tourisme et hôtellerie",
     "Commerce de détail",
-    "Produits métalliques",
-    "Transports terrestres",
+    "Santé et action sociale",
+    "Artisanat manufacturier",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Voiron pour identifier les opportunités d'automatisation chez des entreprises comme Rossignol.",
-      en: "Réaliser un audit à Voiron pour identifier les opportunités d'automatisation chez des entreprises comme Rossignol.",
+      fr: "Audit Flash chez les TPE et PME du Pays Voironnais dès 490 € HT : diagnostic des process agroalimentaires, textiles, touristiques et de santé, avec plan d'automatisation priorisé.",
+      en: "Audit Flash chez les TPE et PME du Pays Voironnais dès 490 € HT : diagnostic des process agroalimentaires, textiles, touristiques et de santé, avec plan d'automatisation priorisé.",
     },
     interventions: {
-      fr: "Intervenir à Voiron pour optimiser les processus des entreprises agroalimentaires et métallurgiques.",
-      en: "Intervenir à Voiron pour optimiser les processus des entreprises agroalimentaires et métallurgiques.",
+      fr: "Intervention sur site à Voiron dès 590 € HT : développement code custom pour automatiser devis, plannings, suivis de production et reportings des TPE/PME locales.",
+      en: "Intervention sur site à Voiron dès 590 € HT : développement code custom pour automatiser devis, plannings, suivis de production et reportings des TPE/PME locales.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Voiron pour les entreprises du secteur des transports terrestres.",
-      en: "Implémenter des solutions IA à Voiron pour les entreprises du secteur des transports terrestres.",
+      fr: "Implémentation IA à Voiron : connecteurs code custom entre ERP industriels, outils de gestion hôtelière, logiciels métiers santé et CRM, sans recours au no-code.",
+      en: "Implémentation IA à Voiron : connecteurs code custom entre ERP industriels, outils de gestion hôtelière, logiciels métiers santé et CRM, sans recours au no-code.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Voiron pour intégrer l'IA dans leurs opérations quotidiennes.",
-      en: "Accompagner en un-à-un les dirigeants de Voiron pour intégrer l'IA dans leurs opérations quotidiennes.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME voironnaises : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Pays Voironnais.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME voironnaises : sessions de cadrage IA en face-à-face dans vos bureaux ou au siège du Pays Voironnais.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Voiron ?",
-      a: "L'Audit Flash commence à partir de 490 € HT. Nos tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs publics d'Axion-IA à Voiron ?",
+      a: "L'Audit Flash démarre à 490 € HT (4 h sur site). Les interventions de développement code custom démarrent à 590 € HT. Les sessions un-à-un dirigeants débutent à 990 € HT. Grille publiée sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une intervention IA à Voiron ?",
-      a: "Nos experts se déplacent directement sur site pour analyser vos besoins et mettre en œuvre des solutions adaptées.",
+      q: "Sous quels délais Axion-IA intervient-il à Voiron ?",
+      a: "Nous nous engageons à intervenir sur site à Voiron sous 5 jours ouvrés après validation de votre demande, en TER depuis Grenoble ou Lyon (cadencé 20 min) ou par l'autoroute A48.",
     },
     {
-      q: "Quels délais pour une implémentation à Voiron ?",
-      a: "Nous garantissons une intervention rapide, généralement dans un délai de quelques semaines après la validation du projet.",
+      q: "Intervenez-vous dans les communes proches de Voiron ?",
+      a: "Oui. Nous nous déplaçons à Coublevie, Moirans, Saint-Jean-de-Moirans, La Murette, Chirens, Saint-Cassien, Saint-Étienne-de-Crossey et Saint-Nicolas-de-Macherin, ainsi que sur les 34 communes du Pays Voironnais.",
     },
     {
-      q: "Respectez-vous le RGPD lors de vos interventions à Voiron ?",
-      a: "Oui, toutes nos interventions respectent scrupuleusement les normes RGPD en vigueur.",
+      q: "Quels secteurs locaux accompagnez-vous le plus à Voiron ?",
+      a: "Principalement les TPE et PME de l'industrie agroalimentaire (héritage Chartreuse, Bonnat), de l'industrie textile (Denantes), du tourisme lié au parc naturel régional de Chartreuse, du commerce de détail, de la santé et de l'artisanat manufacturier.",
+    },
+    {
+      q: "Comment Axion-IA assure-t-il la conformité RGPD à Voiron ?",
+      a: "Toutes nos solutions code custom intègrent le RGPD par conception : hébergement UE, minimisation des données, registre des traitements et clauses DPA fournies au démarrage du projet.",
+    },
+    {
+      q: "Faites-vous du no-code pour les entreprises voironnaises ?",
+      a: "Non. Axion-IA développe exclusivement en code custom (Python, TypeScript, SQL) pour garantir la maintenabilité, la performance et l'intégration fine avec vos ERP et logiciels métiers existants.",
     },
   ],
 };

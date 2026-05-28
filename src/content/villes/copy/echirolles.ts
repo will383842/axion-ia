@@ -7,62 +7,71 @@ import type { VilleCopy } from "./types";
 
 export const ECHIROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Échirolles, au cœur de la région Auvergne-Rhône-Alpes, pour accompagner les entreprises dans l'adoption de l'IA. Avec des acteurs comme Atos et Schneider Electric, nous proposons des services adaptés aux besoins locaux.",
+    "Axion-IA accompagne les TPE et PME d'Échirolles, deuxième commune de la métropole grenobloise avec 37 491 habitants, située 7 km au sud de Grenoble en Isère. Notre cabinet intervient sur site dans les zones d'activités ZA des Essarts, Sud Galaxie et autour des centres Grand'Place et Espace Comboire pour automatiser les processus des commerces, PME industrielles et acteurs de la santé locaux.",
   pitchEn:
-    "Axion-IA intervient à Échirolles, au cœur de la région Auvergne-Rhône-Alpes, pour accompagner les entreprises dans l'adoption de l'IA. Avec des acteurs comme Atos et Schneider Electric, nous proposons des services adaptés aux besoins locaux.",
+    "Axion-IA accompagne les TPE et PME d'Échirolles, deuxième commune de la métropole grenobloise avec 37 491 habitants, située 7 km au sud de Grenoble en Isère. Notre cabinet intervient sur site dans les zones d'activités ZA des Essarts, Sud Galaxie et autour des centres Grand'Place et Espace Comboire pour automatiser les processus des commerces, PME industrielles et acteurs de la santé locaux.",
   directAnswerFr:
-    "À Échirolles, Axion-IA s'engage à fournir des interventions sur site pour optimiser vos processus grâce à l'IA. Avec des pôles comme Minalogic et Tenerrdis, notre équipe nationale se déplace pour automatiser vos tâches administratives. Nos services incluent audits, implémentations, et formations personnalisées pour assurer une adoption réussie de l'IA.",
+    "Axion-IA se déplace à Échirolles (Isère, 37 491 habitants) pour auditer et automatiser les processus des TPE et PME locales. La commune accueille un héritage industriel actif avec des employeurs comme Caterpillar et Bull Grenoble (Atos), ainsi qu'un pôle santé structuré autour de l'Hôpital Sud (340 lits) et de la Clinique des Cèdres (200 lits). Nos interventions intègrent la conformité RGPD et reposent sur du code source sur-mesure, jamais sur des outils no-code.",
   directAnswerEn:
-    "À Échirolles, Axion-IA s'engage à fournir des interventions sur site pour optimiser vos processus grâce à l'IA. Avec des pôles comme Minalogic et Tenerrdis, notre équipe nationale se déplace pour automatiser vos tâches administratives. Nos services incluent audits, implémentations, et formations personnalisées pour assurer une adoption réussie de l'IA.",
+    "Axion-IA se déplace à Échirolles (Isère, 37 491 habitants) pour auditer et automatiser les processus des TPE et PME locales. La commune accueille un héritage industriel actif avec des employeurs comme Caterpillar et Bull Grenoble (Atos), ainsi qu'un pôle santé structuré autour de l'Hôpital Sud (340 lits) et de la Clinique des Cèdres (200 lits). Nos interventions intègrent la conformité RGPD et reposent sur du code source sur-mesure, jamais sur des outils no-code.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
-    "Échirolles bénéficie d'un écosystème riche avec le Parc d'activités Sud Galaxie et des entreprises comme Schneider Electric. Les pôles Minalogic et Tenerrdis renforcent l'innovation dans les secteurs technologiques et énergétiques.",
+    "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de Grenoble-Alpes Métropole et de la proximité immédiate des activités technologiques grenobloises.",
   ecosystemEn:
-    "Échirolles bénéficie d'un écosystème riche avec le Parc d'activités Sud Galaxie et des entreprises comme Schneider Electric. Les pôles Minalogic et Tenerrdis renforcent l'innovation dans les secteurs technologiques et énergétiques.",
+    "Le tissu économique d'Échirolles combine industrie historique (héritage viscose depuis les années 1920), commerce de détail concentré sur Grand'Place et Espace Comboire, services de santé (Hôpital Sud, Clinique des Cèdres) et PME tertiaires installées dans la ZA des Essarts et Sud Galaxie. La commune profite de la dynamique de Grenoble-Alpes Métropole et de la proximité immédiate des activités technologiques grenobloises.",
   distancesFr:
-    "La gare TGV de Grenoble est située à seulement 5 km d'Échirolles, facilitant l'accès à nos services.",
+    "Échirolles est à 7 km au sud de Grenoble, accessible via la ligne A du tramway, la liaison TER et l'autoroute A480. La gare de Grenoble (TGV Paris ~3 h) est à environ 7 km, et l'aéroport Grenoble-Alpes-Isère est accessible en 45 min par l'A48.",
   distancesEn:
-    "La gare TGV de Grenoble est située à seulement 5 km d'Échirolles, facilitant l'accès à nos services.",
+    "Échirolles est à 7 km au sud de Grenoble, accessible via la ligne A du tramway, la liaison TER et l'autoroute A480. La gare de Grenoble (TGV Paris ~3 h) est à environ 7 km, et l'aéroport Grenoble-Alpes-Isère est accessible en 45 min par l'A48.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Recherche-développement",
+    "Industrie mécanique et équipements",
     "Commerce de détail",
     "Santé humaine",
+    "Services aux entreprises",
+    "Construction et BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Échirolles pour identifier les opportunités d'IA chez Atos — à partir de 490 € HT.",
-      en: "Réaliser un audit à Échirolles pour identifier les opportunités d'IA chez Atos — à partir de 490 € HT.",
+      fr: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
+      en: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Échirolles pour automatiser les processus dans les commerces de détail — intervention dès 590 € HT.",
-      en: "Intervenir à Échirolles pour automatiser les processus dans les commerces de détail — intervention dès 590 € HT.",
+      fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès 590 € HT, déplacement sous 5 jours ouvrés.",
+      en: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès 590 € HT, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Échirolles, notamment pour Schneider Electric — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Échirolles, notamment pour Schneider Electric — à partir de 990 € HT.",
+      fr: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de 990 € HT, hébergement RGPD France.",
+      en: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de 990 € HT, hébergement RGPD France.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Échirolles pour dirigeants souhaitant intégrer l'IA — dès 990 € HT.",
-      en: "Proposer des sessions 1-to-1 à Échirolles pour dirigeants souhaitant intégrer l'IA — dès 990 € HT.",
+      fr: "Sessions 1-to-1 à Échirolles pour dirigeants de TPE et PME industrielles ou de service : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de 990 € HT.",
+      en: "Sessions 1-to-1 à Échirolles pour dirigeants de TPE et PME industrielles ou de service : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Échirolles ?",
-      a: "Nos interventions à Échirolles commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'une intervention IA à Échirolles ?",
+      a: "Les interventions Axion-IA à Échirolles démarrent à 590 € HT, l'Audit Flash 4h à 490 € HT, et l'implémentation à 990 € HT. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
-      q: "Combien de temps faut-il pour démarrer un projet IA à Échirolles ?",
-      a: "Nous nous déplaçons à Échirolles sous 5 jours ouvrés pour débuter votre projet IA, garantissant une réactivité optimale.",
+      q: "Sous quel délai Axion-IA se déplace-t-il à Échirolles ?",
+      a: "Notre équipe se déplace sur site à Échirolles sous 5 jours ouvrés après signature du devis. Pour les demandes urgentes, un cadrage en visioconférence est proposé sous 48 h.",
     },
     {
-      q: "Axion-IA respecte-t-il les normes RGPD à Échirolles ?",
-      a: "Oui, Axion-IA s'assure que toutes les interventions à Échirolles respectent strictement les réglementations RGPD en vigueur.",
+      q: "Axion-IA intervient-il dans les communes proches d'Échirolles ?",
+      a: "Oui, nous couvrons Grenoble, Eybens, Pont-de-Claix, Seyssins, Seyssinet-Pariset et l'ensemble de la métropole grenobloise depuis Échirolles, sans frais de déplacement supplémentaires.",
     },
     {
-      q: "Proposez-vous des formations IA à Échirolles ?",
-      a: "Oui, nous offrons des formations sur site à Échirolles pour garantir une compréhension approfondie de l'IA par vos équipes.",
+      q: "Comment Axion-IA respecte-t-il le RGPD pour les PME industrielles d'Échirolles ?",
+      a: "Toutes les solutions livrées à Échirolles sont hébergées en France, documentées (registre des traitements, durées de conservation, analyse d'impact si nécessaire) et compatibles avec les obligations RGPD du secteur industriel et de la santé.",
+    },
+    {
+      q: "Quels secteurs Axion-IA accompagne-t-il à Échirolles ?",
+      a: "Nous accompagnons les TPE et PME de l'industrie mécanique, du commerce de détail (Grand'Place, Espace Comboire), des services de santé (Hôpital Sud, Clinique des Cèdres), du BTP et des services aux entreprises.",
+    },
+    {
+      q: "Proposez-vous des formations IA sur site à Échirolles ?",
+      a: "Oui, nous animons des ateliers en présentiel à Échirolles (demi-journée ou journée complète) pour les équipes des TPE et PME, ainsi que des sessions 1-to-1 pour dirigeants à partir de 990 € HT.",
     },
   ],
 };

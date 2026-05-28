@@ -1,67 +1,71 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — T4 anti-doorway rewrite Claude Code (Will).
+// Bègles (33, Gironde) — 31 831 hab, Bordeaux Métropole, sud de Bordeaux rive gauche.
 
 import type { VilleCopy } from "./types";
 
 export const BEGLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bègles pour accompagner les entreprises locales dans l'adoption de l'IA. Avec des acteurs économiques comme LVMH et Cap Digital en France, nous proposons des solutions adaptées aux besoins des TPE et PME de la région.",
+    "Bègles (33, Gironde), 31 831 habitants, commune de Bordeaux Métropole en limite sud de Bordeaux rive gauche de la Garonne. Tissu TPE/PME mixte : économie créative et numérique (parc des Terres Neuves), artisans BTP, commerces de proximité, restauration et héritage aéronautique. Axion-IA accompagne les structures économiques béglaises et de l'agglo bordelaise.",
   pitchEn:
-    "Axion-IA intervient à Bègles pour accompagner les entreprises locales dans l'adoption de l'IA. Avec des acteurs économiques comme LVMH et Cap Digital en France, nous proposons des solutions adaptées aux besoins des TPE et PME de la région.",
+    "Bègles (33, Gironde), 31 831 habitants, commune de Bordeaux Métropole en limite sud de Bordeaux rive gauche de la Garonne. Tissu TPE/PME mixte : économie créative et numérique (parc des Terres Neuves), artisans BTP, commerces de proximité, restauration et héritage aéronautique. Axion-IA accompagne les structures économiques béglaises et de l'agglo bordelaise.",
   directAnswerFr:
-    "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash sur mesure, nous garantissons une intervention rapide et efficace.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit Flash 490 € HT, tarifs publics.",
   directAnswerEn:
-    "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash sur mesure, nous garantissons une intervention rapide et efficace.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit Flash 490 € HT, tarifs publics.",
+  seoHook: "économie créative & artisanat Bordeaux Métropole",
   ecosystemFr:
-    "Bègles bénéficie de la proximité de Bordeaux, un centre économique où se trouvent des entreprises comme Sanofi et Hermès. La ZAC de Bègles accueille de nombreuses entreprises, renforçant le dynamisme économique local.",
+    "Bègles est une commune dense de Bordeaux Métropole (3 196 hab/km²), située en limite sud de Bordeaux rive gauche, à la confluence du projet d'aménagement Euratlantique. Économie locale tournée vers le numérique et la création (parc d'activités des Terres Neuves), l'artisanat BTP, le commerce de proximité, la restauration et la rénovation urbaine. Héritage industriel (ancienne raffinerie, sécherie de morue) reconverti en quartiers mixtes le long de la Garonne.",
   ecosystemEn:
-    "Bègles bénéficie de la proximité de Bordeaux, un centre économique où se trouvent des entreprises comme Sanofi et Hermès. La ZAC de Bègles accueille de nombreuses entreprises, renforçant le dynamisme économique local.",
+    "Bègles est une commune dense de Bordeaux Métropole (3 196 hab/km²), située en limite sud de Bordeaux rive gauche, à la confluence du projet d'aménagement Euratlantique. Économie locale tournée vers le numérique et la création (parc d'activités des Terres Neuves), l'artisanat BTP, le commerce de proximité, la restauration et la rénovation urbaine. Héritage industriel (ancienne raffinerie, sécherie de morue) reconverti en quartiers mixtes le long de la Garonne.",
   distancesFr:
-    "La gare de Bordeaux-Saint-Jean est à 5 km de Bègles, facilitant l'accès aux services d'Axion-IA.",
+    "Bordeaux centre à 5 min voiture. Gare de Bègles (TER Bordeaux-Sète) en commune. Gare TGV Bordeaux-Saint-Jean à 10 min. Accès A630 (rocade, sortie 20 Rives d'Arcins) et A631. Tramway TBM lignes C et F. Aéroport Bordeaux-Mérignac à 25 min.",
   distancesEn:
-    "La gare de Bordeaux-Saint-Jean est à 5 km de Bègles, facilitant l'accès aux services d'Axion-IA.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Transports terrestres"],
+    "Bordeaux centre à 5 min voiture. Gare de Bègles (TER Bordeaux-Sète) en commune. Gare TGV Bordeaux-Saint-Jean à 10 min. Accès A630 (rocade, sortie 20 Rives d'Arcins) et A631. Tramway TBM lignes C et F. Aéroport Bordeaux-Mérignac à 25 min.",
+  topSectorsNaf: [
+    "Économie créative & numérique (Terres Neuves)",
+    "Artisanat BTP & rénovation",
+    "Commerce de proximité",
+    "Restauration & services",
+    "Technologies environnementales",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bègles dans des secteurs comme le commerce de détail pour identifier des opportunités d'automatisation.",
-      en: "Réaliser un audit à Bègles dans des secteurs comme le commerce de détail pour identifier des opportunités d'automatisation.",
+      fr: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit Flash 490 € HT, ROI chiffré.",
+      en: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Intervenir à Bègles pour optimiser les processus dans la construction, réduisant ainsi les coûts opérationnels.",
-      en: "Intervenir à Bègles pour optimiser les processus dans la construction, réduisant ainsi les coûts opérationnels.",
+      fr: "Interventions IA sur site à Bègles : ateliers et déploiement outils IA dans vos locaux du parc Terres Neuves, sur chantiers BTP ou en boutique. Code custom, pas no-code.",
+      en: "Interventions IA sur site à Bègles : ateliers et déploiement outils IA dans vos locaux du parc Terres Neuves, sur chantiers BTP ou en boutique. Code custom, pas no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bègles, facilitant la gestion des devis et relances dans le secteur des transports terrestres.",
-      en: "Implémenter des solutions IA à Bègles, facilitant la gestion des devis et relances dans le secteur des transports terrestres.",
+      fr: "Implémentation IA à Bègles : automatisation devis-facturation BTP, gestion projets studios créatifs, agents IA prise de RDV restauration, optimisation stocks commerces de proximité.",
+      en: "Implémentation IA à Bègles : automatisation devis-facturation BTP, gestion projets studios créatifs, agents IA prise de RDV restauration, optimisation stocks commerces de proximité.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Bègles pour une adoption rapide et efficace de l'IA dans leur entreprise.",
-      en: "Accompagner en un-à-un les dirigeants de Bègles pour une adoption rapide et efficace de l'IA dans leur entreprise.",
+      fr: "Coaching 1-to-1 à Bègles : sessions dans vos locaux Terres Neuves, en boutique ou en visio. Dirigeants TPE/PME du quartier Euratlantique et de l'agglo bordelaise.",
+      en: "Coaching 1-to-1 à Bègles : sessions dans vos locaux Terres Neuves, en boutique ou en visio. Dirigeants TPE/PME du quartier Euratlantique et de l'agglo bordelaise.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Bègles ?",
-      a: "Nos tarifs pour une intervention à Bègles commencent à 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Bègles et dans Bordeaux Métropole ?",
+      a: "Oui, Axion-IA intervient à Bègles et dans toute Bordeaux Métropole (Bordeaux, Talence, Villenave-d'Ornon, Floirac, Bouliac, Latresne). Accès gare Bordeaux-Saint-Jean (TGV) à 10 min.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention sur site à Bègles ?",
-      a: "Williams se déplace sur site à Bègles généralement dans les 5 jours ouvrés suivant la demande, selon la disponibilité.",
+      q: "Quel est le tarif d'un audit IA à Bègles ?",
+      a: "L'Audit Flash IA à Bègles démarre à 490 € HT. Diagnostic complet de vos processus, identification cas d'usage IA prioritaires et plan d'action ROI chiffré. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Bègles ?",
-      a: "Nous intégrons des pratiques conformes au RGPD dans toutes nos interventions à Bègles, garantissant la protection des données.",
+      q: "Quels secteurs accompagnez-vous à Bègles ?",
+      a: "À Bègles, nous accompagnons en priorité les TPE et PME : artisans BTP, studios créatifs et numériques du parc Terres Neuves, commerces de proximité, restauration. Les ETI sont également accompagnées en complément.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Bègles ?",
-      a: "Les secteurs du commerce de détail et de la construction à Bègles bénéficient particulièrement de nos solutions IA.",
+      q: "Comment Axion-IA garantit la conformité RGPD à Bègles ?",
+      a: "Toutes nos missions à Bègles intègrent un audit trail RGPD complet : cartographie des données, base légale, durées de conservation, registre des traitements. Code custom hébergé en UE.",
     },
     {
-      q: "Axion-IA propose-t-il des formations IA à Bègles ?",
-      a: "Oui, nous proposons des sessions de formation IA pour les dirigeants à Bègles, à partir de 990 € HT pour un accompagnement personnalisé.",
+      q: "Quels sont les délais d'intervention à Bègles ?",
+      a: "Williams se déplace à Bègles sous 5 jours ouvrés en moyenne. Mission sur site dans vos locaux Terres Neuves, sur chantier BTP ou en boutique. Accès via A630 rocade sortie 20 ou tramway TBM lignes C et F.",
     },
   ],
 };

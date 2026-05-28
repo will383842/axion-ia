@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
+// MANUAL CORRECTION 2026-05-28 — anti-doorway HCU 2024 (sources factuelles Wikipédia).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,57 +7,67 @@ import type { VilleCopy } from "./types";
 
 export const NOISY_LE_SEC_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Noisy-le-Sec pour accompagner les entreprises locales dans leur transformation numérique. Proche de Paris et de ses pôles d'innovation comme Station F et Inria, Noisy-le-Sec bénéficie d'un accès privilégié aux technologies de pointe.",
+    "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de TPE artisans, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
   pitchEn:
-    "Axion-IA intervient à Noisy-le-Sec pour accompagner les entreprises locales dans leur transformation numérique. Proche de Paris et de ses pôles d'innovation comme Station F et Inria, Noisy-le-Sec bénéficie d'un accès privilégié aux technologies de pointe.",
+    "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de TPE artisans, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
   directAnswerFr:
-    "Axion-IA se déplace à Noisy-le-Sec pour aider les entreprises à intégrer l'IA dans leurs opérations quotidiennes. Proche de Paris, ville qui abrite des leaders comme LVMH et BNP Paribas, Noisy-le-Sec offre un environnement propice à l'innovation. Nos services incluent des audits, des interventions sur site et des formations personnalisées pour optimiser vos processus.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit Flash 590 € HT, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA se déplace à Noisy-le-Sec pour aider les entreprises à intégrer l'IA dans leurs opérations quotidiennes. Proche de Paris, ville qui abrite des leaders comme LVMH et BNP Paribas, Noisy-le-Sec offre un environnement propice à l'innovation. Nos services incluent des audits, des interventions sur site et des formations personnalisées pour optimiser vos processus.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit Flash 590 € HT, code custom, conformité RGPD intégrée.",
+  seoHook: "TPE & PME Est parisien",
   ecosystemFr:
-    "Noisy-le-Sec est entourée de communes dynamiques comme Bobigny et Pantin, et bénéficie de la proximité de Paris, où se trouvent des acteurs clés tels que Cap Digital et Station F.",
+    "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle TPE artisans, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
   ecosystemEn:
-    "Noisy-le-Sec est entourée de communes dynamiques comme Bobigny et Pantin, et bénéficie de la proximité de Paris, où se trouvent des acteurs clés tels que Cap Digital et Station F.",
+    "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle TPE artisans, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
   distancesFr:
-    "Noisy-le-Sec est à 10 km de la Gare de Paris-Est et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Paris à 5 km (20 min RER E ou A3). Bobigny limitrophe, Bondy à 2 km, Rosny-sous-Bois et Montreuil à 3 km, Romainville limitrophe. Aéroport Paris-CDG à 20 km via A3.",
   distancesEn:
-    "Noisy-le-Sec est à 10 km de la Gare de Paris-Est et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Transports terrestres", "Restauration"],
+    "Paris à 5 km (20 min RER E ou A3). Bobigny limitrophe, Bondy à 2 km, Rosny-sous-Bois et Montreuil à 3 km, Romainville limitrophe. Aéroport Paris-CDG à 20 km via A3.",
+  topSectorsNaf: [
+    "Commerce de proximité",
+    "BTP & artisanat",
+    "Services aux entreprises",
+    "Transport & logistique (héritage ferroviaire SNCF)",
+    "Professions libérales & santé",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Noisy-le-Sec pour identifier les opportunités IA dans les secteurs du commerce de détail et de la construction.",
-      en: "Réaliser un audit à Noisy-le-Sec pour identifier les opportunités IA dans les secteurs du commerce de détail et de la construction.",
+      fr: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit Flash 590 € HT.",
+      en: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit Flash 590 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Noisy-le-Sec pour automatiser les tâches administratives et optimiser les processus de transport terrestre.",
-      en: "Intervenir à Noisy-le-Sec pour automatiser les tâches administratives et optimiser les processus de transport terrestre.",
+      fr: "Interventions IA sur site à Noisy-le-Sec : ateliers adaptés à la PME services, l'artisan BTP, le commerce de proximité ou la profession libérale. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Noisy-le-Sec : ateliers adaptés à la PME services, l'artisan BTP, le commerce de proximité ou la profession libérale. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Noisy-le-Sec pour améliorer l'efficacité dans la restauration et la construction.",
-      en: "Implémenter des solutions IA à Noisy-le-Sec pour améliorer l'efficacité dans la restauration et la construction.",
+      fr: "Implémentation IA à Noisy-le-Sec : agents conversationnels, automatisation administrative, classification documents, reporting et planning chantier pour TPE-PME de l'Est parisien.",
+      en: "Implémentation IA à Noisy-le-Sec : agents conversationnels, automatisation administrative, classification documents, reporting et planning chantier pour TPE-PME de l'Est parisien.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Noisy-le-Sec pour intégrer l'IA dans leurs opérations quotidiennes.",
-      en: "Accompagner en un-à-un les dirigeants de Noisy-le-Sec pour intégrer l'IA dans leurs opérations quotidiennes.",
+      fr: "Coaching 1-to-1 à Noisy-le-Sec : sessions dirigeants TPE, gérants PME services, artisans BTP, commerçants et professionnels libéraux de Seine-Saint-Denis.",
+      en: "Coaching 1-to-1 à Noisy-le-Sec : sessions dirigeants TPE, gérants PME services, artisans BTP, commerçants et professionnels libéraux de Seine-Saint-Denis.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Noisy-le-Sec ?",
-      a: "Nos audits à Noisy-le-Sec commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Noisy-le-Sec ?",
+      a: "Oui, Axion-IA intervient à Noisy-le-Sec et dans tout l'Est parisien (Bobigny, Bondy, Rosny-sous-Bois, Montreuil, Romainville, Pantin). Nos consultants se déplacent depuis Paris en 20 min via RER E ou A3.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Noisy-le-Sec ?",
-      a: "Notre équipe nationale se déplace à Noisy-le-Sec pour réaliser des interventions sur site, garantissant une proximité avec vos équipes et vos besoins spécifiques.",
+      q: "Quels sont les tarifs d'un audit IA à Noisy-le-Sec ?",
+      a: "L'Audit Flash démarre à 590 € HT pour une TPE. Pour les PME services ou BTP de Seine-Saint-Denis, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics consultables.",
     },
     {
-      q: "Quels secteurs bénéficient le plus de l'IA à Noisy-le-Sec ?",
-      a: "Les secteurs du commerce de détail, de la construction et des transports terrestres à Noisy-le-Sec bénéficient particulièrement de l'IA pour optimiser leurs processus et améliorer leur efficacité.",
+      q: "Quels délais pour une intervention à Noisy-le-Sec ?",
+      a: "Nous planifions les interventions à Noisy-le-Sec sous 5 jours ouvrés après validation. Demi-journée découverte ou journée atelier selon le besoin.",
     },
     {
-      q: "Quels délais pour une intervention IA à Noisy-le-Sec ?",
-      a: "Nous nous engageons à intervenir à Noisy-le-Sec dans un délai de 5 jours ouvrés après validation de votre demande, pour des prestations rapides et efficaces.",
+      q: "Comment Axion-IA gère-t-il la conformité RGPD à Noisy-le-Sec ?",
+      a: "Tous nos déploiements à Noisy-le-Sec intègrent les exigences RGPD : minimisation, hébergement européen, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous à Noisy-le-Sec ?",
+      a: "Nous accompagnons TPE artisans BTP, commerçants de proximité, PME services, professions libérales (santé, juridique, conseil) et acteurs de la logistique urbaine et ferroviaire héritée de l'histoire SNCF locale.",
     },
   ],
 };

@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
+// Patched 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factuel).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,62 +7,71 @@ import type { VilleCopy } from "./types";
 
 export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "À Aulnay-sous-Bois, Axion-IA intervient auprès des entreprises pour optimiser leurs processus grâce à l'IA. Avec des acteurs comme PSA Peugeot Citroën et Airbus, la ville est un pôle industriel clé en Île-de-France.",
+    "Axion-IA accompagne les TPE et PME d'Aulnay-sous-Bois (93600, Seine-Saint-Denis, 87 599 habitants en 2023) dans leur transition vers une IA opérationnelle, code custom et conforme RGPD. Quatrième ville du département, Aulnay concentre un tissu mixte de PME logistiques autour de Garonor et Parinor, de commerces de gros, d'artisans du BTP et de prestataires de services tertiaires. Le Centre hospitalier Robert-Ballanger emploie plus de 2 240 personnes. La fermeture en 2014 de l'usine PSA a réorienté le territoire vers la logistique (entrepôts SEGRO) et le Grand Paris Express ligne 16.",
   pitchEn:
-    "À Aulnay-sous-Bois, Axion-IA intervient auprès des entreprises pour optimiser leurs processus grâce à l'IA. Avec des acteurs comme PSA Peugeot Citroën et Airbus, la ville est un pôle industriel clé en Île-de-France.",
+    "Axion-IA accompagne les TPE et PME d'Aulnay-sous-Bois (93600, Seine-Saint-Denis, 87 599 habitants en 2023) dans leur transition vers une IA opérationnelle, code custom et conforme RGPD. Quatrième ville du département, Aulnay concentre un tissu mixte de PME logistiques autour de Garonor et Parinor, de commerces de gros, d'artisans du BTP et de prestataires de services tertiaires. Le Centre hospitalier Robert-Ballanger emploie plus de 2 240 personnes. La fermeture en 2014 de l'usine PSA a réorienté le territoire vers la logistique (entrepôts SEGRO) et le Grand Paris Express ligne 16.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Aulnay-sous-Bois pour automatiser les tâches administratives et améliorer l'efficacité des entreprises locales. Avec des secteurs dominants tels que la construction automobile et le commerce de gros, notre expertise s'adapte aux besoins spécifiques des entreprises de la région. Nos services incluent des audits, des implémentations et des formations personnalisées.",
+    "Axion-IA intervient à Aulnay-sous-Bois auprès des TPE, PME et plus ponctuellement ETI pour cadrer, prototyper et industrialiser des cas d'usage IA en code custom (pas de no-code). Nos consultants se déplacent sur site depuis Paris (14 km) ou via le RER B en gare d'Aulnay-sous-Bois. Audit Flash à partir de 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation dès 990 € HT. Cibles prioritaires : entrepôts logistiques de Garonor et Parinor, commerces de gros, cabinets dentaires et médicaux du secteur Robert-Ballanger, artisans BTP. Tous nos livrables intègrent un plan RGPD documenté.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Aulnay-sous-Bois pour automatiser les tâches administratives et améliorer l'efficacité des entreprises locales. Avec des secteurs dominants tels que la construction automobile et le commerce de gros, notre expertise s'adapte aux besoins spécifiques des entreprises de la région. Nos services incluent des audits, des implémentations et des formations personnalisées.",
-  seoHook: "construction automobile & commerce gros",
+    "Axion-IA intervient à Aulnay-sous-Bois auprès des TPE, PME et plus ponctuellement ETI pour cadrer, prototyper et industrialiser des cas d'usage IA en code custom (pas de no-code). Nos consultants se déplacent sur site depuis Paris (14 km) ou via le RER B en gare d'Aulnay-sous-Bois. Audit Flash à partir de 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation dès 990 € HT. Cibles prioritaires : entrepôts logistiques de Garonor et Parinor, commerces de gros, cabinets dentaires et médicaux du secteur Robert-Ballanger, artisans BTP. Tous nos livrables intègrent un plan RGPD documenté.",
+  seoHook: "logistique Garonor & commerce gros",
   ecosystemFr:
-    "Aulnay-sous-Bois est un centre industriel avec PSA Peugeot Citroën et Airbus. Le Parc d'activités de la Garenne renforce l'attractivité économique de la ville, offrant un environnement propice aux entreprises cherchant à intégrer l'IA.",
+    "Aulnay-sous-Bois s'est restructurée après la fermeture de l'usine PSA en 2014 (160 hectares reconvertis). Le territoire est aujourd'hui marqué par les zones logistiques Garonor et Parinor (parmi les plus importantes d'Europe), des entrepôts SEGRO sur l'ancien site PSA, et la future gare du Grand Paris Express ligne 16 (mise en service prévue fin 2027). Le tissu local est constitué majoritairement de TPE et PME de services, de logistique et de commerce de gros, complété par le Centre hospitalier Robert-Ballanger (2 240 salariés). La ville fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol.",
   ecosystemEn:
-    "Aulnay-sous-Bois est un centre industriel avec PSA Peugeot Citroën et Airbus. Le Parc d'activités de la Garenne renforce l'attractivité économique de la ville, offrant un environnement propice aux entreprises cherchant à intégrer l'IA.",
+    "Aulnay-sous-Bois s'est restructurée après la fermeture de l'usine PSA en 2014 (160 hectares reconvertis). Le territoire est aujourd'hui marqué par les zones logistiques Garonor et Parinor (parmi les plus importantes d'Europe), des entrepôts SEGRO sur l'ancien site PSA, et la future gare du Grand Paris Express ligne 16 (mise en service prévue fin 2027). Le tissu local est constitué majoritairement de TPE et PME de services, de logistique et de commerce de gros, complété par le Centre hospitalier Robert-Ballanger (2 240 salariés). La ville fait partie de la Métropole du Grand Paris et de l'EPT Paris Terres d'Envol.",
   distancesFr:
-    "Aulnay-sous-Bois est à 10 km de l'aéroport de Paris-Charles de Gaulle et à 15 km de la Gare de Paris-Nord.",
+    "Aulnay-sous-Bois est à 14 km de Notre-Dame de Paris, 8 km de l'aéroport Paris-Charles-de-Gaulle, accessible directement par le RER B (gare d'Aulnay-sous-Bois), le Transilien K, le tramway T4 et les autoroutes A1, A3 et A104 (Francilienne).",
   distancesEn:
-    "Aulnay-sous-Bois est à 10 km de l'aéroport de Paris-Charles de Gaulle et à 15 km de la Gare de Paris-Nord.",
+    "Aulnay-sous-Bois est à 14 km de Notre-Dame de Paris, 8 km de l'aéroport Paris-Charles-de-Gaulle, accessible directement par le RER B (gare d'Aulnay-sous-Bois), le Transilien K, le tramway T4 et les autoroutes A1, A3 et A104 (Francilienne).",
   topSectorsNaf: [
-    "Construction automobile",
+    "Entreposage et logistique",
     "Commerce de gros",
-    "Transports terrestres",
-    "Entreposage",
+    "Santé et services médicaux",
+    "Construction et BTP",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Aulnay-sous-Bois permet d'identifier les opportunités d'automatisation dans les secteurs comme l'automobile.",
-      en: "Réaliser un audit à Aulnay-sous-Bois permet d'identifier les opportunités d'automatisation dans les secteurs comme l'automobile.",
+      fr: "Audit Flash à Aulnay-sous-Bois pour les TPE/PME logistiques de Garonor et Parinor : identification des goulots d'étranglement administratifs et opérationnels, dès 490 € HT.",
+      en: "Audit Flash à Aulnay-sous-Bois pour les TPE/PME logistiques de Garonor et Parinor : identification des goulots d'étranglement administratifs et opérationnels, dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Aulnay-sous-Bois pour optimiser les processus des entreprises, notamment dans le commerce de gros.",
-      en: "Intervenir à Aulnay-sous-Bois pour optimiser les processus des entreprises, notamment dans le commerce de gros.",
+      fr: "Intervention Essentielle à Aulnay-sous-Bois pour automatiser devis, BL et facturation des PME de commerce de gros et de BTP, dès 590 € HT.",
+      en: "Intervention Essentielle à Aulnay-sous-Bois pour automatiser devis, BL et facturation des PME de commerce de gros et de BTP, dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Aulnay-sous-Bois pour améliorer l'efficacité des services de transport.",
-      en: "Implémenter des solutions IA à Aulnay-sous-Bois pour améliorer l'efficacité des services de transport.",
+      fr: "Implémentation à Aulnay-sous-Bois d'agents IA reliés à vos WMS/ERP pour les entrepôts SEGRO, Garonor et Parinor, dès 990 € HT.",
+      en: "Implémentation à Aulnay-sous-Bois d'agents IA reliés à vos WMS/ERP pour les entrepôts SEGRO, Garonor et Parinor, dès 990 € HT.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Aulnay-sous-Bois pour accompagner les dirigeants dans l'adoption de l'IA.",
-      en: "Proposer des sessions 1-to-1 à Aulnay-sous-Bois pour accompagner les dirigeants dans l'adoption de l'IA.",
+      fr: "Sessions 1-to-1 à Aulnay-sous-Bois pour dirigeants de TPE/PME : feuille de route IA priorisée, conforme RGPD, dès 990 € HT.",
+      en: "Sessions 1-to-1 à Aulnay-sous-Bois pour dirigeants de TPE/PME : feuille de route IA priorisée, conforme RGPD, dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Aulnay-sous-Bois ?",
-      a: "L'Audit Flash est proposé à partir de 490 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA à Aulnay-sous-Bois ?",
+      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et 1-to-1 dirigeant dès 990 € HT. Tarifs publics fixes, sans engagement.",
     },
     {
-      q: "Comment se déroule une intervention à Aulnay-sous-Bois ?",
-      a: "Nos consultants se déplacent sur site pour évaluer et optimiser vos processus, en tenant compte des spécificités locales.",
+      q: "Quels délais pour une intervention à Aulnay-sous-Bois (93600) ?",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Aulnay-sous-Bois. Le RER B (14 km de Paris) et l'A1/A3 facilitent un déplacement rapide sur Garonor ou Parinor.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Aulnay-sous-Bois ?",
-      a: "Les délais varient selon le projet, mais nous nous engageons à une mise en œuvre rapide et efficace.",
+      q: "Intervenez-vous dans les communes proches d'Aulnay-sous-Bois ?",
+      a: "Oui, nous nous déplaçons aussi à Sevran, Le Blanc-Mesnil, Villepinte, Gonesse, Bondy, Livry-Gargan et Les Pavillons-sous-Bois, au même tarif.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Aulnay-sous-Bois ?",
-      a: "Nous intégrons les exigences RGPD dans toutes nos solutions, garantissant la protection des données personnelles.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Aulnay-sous-Bois ?",
+      a: "Chaque mission inclut une analyse des traitements, une cartographie des données et une recommandation d'hébergement UE. Le code custom évite l'enfermement no-code et facilite l'audit CNIL.",
+    },
+    {
+      q: "Quels secteurs locaux à Aulnay accompagnez-vous en priorité ?",
+      a: "Logistique (Garonor, Parinor, entrepôts SEGRO), commerce de gros, santé (autour du CH Robert-Ballanger, 2 240 salariés), BTP et services aux entreprises.",
+    },
+    {
+      q: "Vous déplacez-vous sur site à Aulnay-sous-Bois ?",
+      a: "Oui. Nos consultants se rendent directement dans vos locaux à Aulnay, depuis Paris via le RER B ou en voiture par l'A3, sans frais de déplacement supplémentaires pour l'Île-de-France.",
     },
   ],
 };

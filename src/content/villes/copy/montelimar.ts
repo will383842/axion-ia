@@ -1,72 +1,71 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-28 — T4 anti-doorway fix Claude Code (Will).
+// Montélimar (26, Drôme) — porte de la Provence, capitale du nougat.
 
 import type { VilleCopy } from "./types";
 
 export const MONTELIMAR_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Montélimar pour optimiser les processus des entreprises locales. Avec des acteurs tels que Nougat Chabert & Guillot et EDF, Montélimar offre un terrain propice à l'innovation IA.",
+    "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu TPE commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
   pitchEn:
-    "Axion-IA intervient à Montélimar pour optimiser les processus des entreprises locales. Avec des acteurs tels que Nougat Chabert & Guillot et EDF, Montélimar offre un terrain propice à l'innovation IA.",
+    "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu TPE commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
   directAnswerFr:
-    "Axion-IA se déplace à Montélimar pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec des secteurs dominants comme l'industrie alimentaire et le commerce de détail, Montélimar est un lieu stratégique pour nos interventions. Nos services incluent des audits, des implémentations IA et des formations adaptées aux besoins spécifiques des entreprises.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash sur mesure dès 490 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à Montélimar pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec des secteurs dominants comme l'industrie alimentaire et le commerce de détail, Montélimar est un lieu stratégique pour nos interventions. Nos services incluent des audits, des implémentations IA et des formations adaptées aux besoins spécifiques des entreprises.",
-  seoHook: "commerce détail & industrie alimentaire",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash sur mesure dès 490 € HT.",
+  seoHook: "agroalimentaire nougat & commerce détail",
   ecosystemFr:
-    "Montélimar abrite des entreprises comme Nougat Chabert & Guillot et EDF, reflétant un tissu économique diversifié. La Zone d'Activités de Fortuneau est un centre d'activité clé.",
+    "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu TPE commerces, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",
   ecosystemEn:
-    "Montélimar abrite des entreprises comme Nougat Chabert & Guillot et EDF, reflétant un tissu économique diversifié. La Zone d'Activités de Fortuneau est un centre d'activité clé.",
+    "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu TPE commerces, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",
   distancesFr:
-    "La Gare TGV de Valence est à 50 km de Montélimar, facilitant l'accès aux entreprises locales.",
+    "Valence à 43 km (nord, A7). Gare SNCF Montélimar (TER + accès TGV Valence). Autoroute A7 sorties Montélimar-Nord et Sud. Aérodrome Montélimar-Ancône. Communes voisines : Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Espeluche, Montboucher-sur-Jabron, Le Teil, Rochemaure.",
   distancesEn:
-    "La Gare TGV de Valence est à 50 km de Montélimar, facilitant l'accès aux entreprises locales.",
+    "Valence à 43 km (nord, A7). Gare SNCF Montélimar (TER + accès TGV Valence). Autoroute A7 sorties Montélimar-Nord et Sud. Aérodrome Montélimar-Ancône. Communes voisines : Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Espeluche, Montboucher-sur-Jabron, Le Teil, Rochemaure.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Industrie alimentaire",
-    "Transports terrestres",
-    "Construction",
+    "Agroalimentaire & filière nougat",
+    "Commerce de détail & restauration",
+    "Logistique & transport (axe A7)",
+    "Artisanat & construction",
+    "Tourisme & services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Montélimar pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Montélimar pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash 490 € HT.",
+      en: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Montélimar pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Montélimar pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Montélimar : formats adaptés à l'agroalimentaire, au commerce, à la logistique et aux services. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Montélimar : formats adaptés à l'agroalimentaire, au commerce, à la logistique et aux services. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Montélimar pour les processus métiers — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Montélimar pour les processus métiers — à partir de 990 € HT.",
+      fr: "Implémentation IA à Montélimar : traçabilité agroalimentaire, gestion stocks et production nougat, CRM tourisme, automatisation facturation logistique, agents conversationnels clients pour TPE et PME montiliennes.",
+      en: "Implémentation IA à Montélimar : traçabilité agroalimentaire, gestion stocks et production nougat, CRM tourisme, automatisation facturation logistique, agents conversationnels clients pour TPE et PME montiliennes.",
     },
     unAUn: {
-      fr: "Former en un-à-un à Montélimar pour maximiser l'utilisation de l'IA — sessions dès 990 € HT.",
-      en: "Former en un-à-un à Montélimar pour maximiser l'utilisation de l'IA — sessions dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Montélimar : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et logistiques, professions libérales souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Montélimar : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et logistiques, professions libérales souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Montélimar ?",
-      a: "Les interventions IA à Montélimar commencent à partir de 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Montélimar et dans le sud-drômois ?",
+      a: "Oui, Axion-IA intervient à Montélimar et dans les communes voisines (Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Le Teil, Rochemaure). Déplacement depuis Valence (43 min A7) ou Lyon (1h30).",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Montélimar ?",
-      a: "Williams se déplace à Montélimar dans les 5 jours ouvrés, facilitant l'accès aux entreprises locales grâce à la proximité de la Gare TGV de Valence.",
+      q: "Quel est le tarif d'un audit IA pour une TPE nougatière à Montélimar ?",
+      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE et PME montiliennes. Diagnostic complet des processus, cartographie IA (production, traçabilité, commerce, logistique) et plan d'action ROI chiffré.",
     },
     {
-      q: "Quelles entreprises de Montélimar peuvent bénéficier de l'IA ?",
-      a: "Les entreprises de l'industrie alimentaire, du commerce de détail et des transports terrestres à Montélimar peuvent bénéficier de l'IA pour optimiser leurs processus.",
+      q: "Accompagnez-vous la filière agroalimentaire et nougatière de Montélimar ?",
+      a: "Oui, nous accompagnons TPE artisans nougatiers et PME agroalimentaires sur leurs projets IA : traçabilité, gestion stocks et production, prévision demande, CRM B2B et boutique, automatisation facturation.",
     },
     {
-      q: "Quelle est la durée d'un audit IA à Montélimar ?",
-      a: "Un audit IA à Montélimar, comme l'Audit Flash, dure 4 heures et est proposé à partir de 490 € HT.",
+      q: "Quel délai pour une intervention IA à Montélimar ?",
+      a: "Nous nous engageons à intervenir sur site à Montélimar dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF ou l'A7 (sorties Montélimar-Nord et Sud).",
     },
     {
-      q: "Axion-IA propose-t-il des formations IA sur site à Montélimar ?",
-      a: "Oui, Axion-IA propose des formations IA sur site à Montélimar, adaptées aux besoins spécifiques des entreprises locales.",
+      q: "Comment Axion-IA garantit-elle la conformité RGPD à Montélimar ?",
+      a: "Nos interventions à Montélimar respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux TPE et PME drômoises.",
     },
   ],
 };

@@ -1,71 +1,76 @@
-﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
-// Carbonne (31, Haute-Garonne) — Sud Toulouse, bords Garonne.
+// AUTO-GENERATED 2026-05-27 — corrigé anti-doorway HCU 2026-05-28 (Wikipedia).
+// Carbonne (31, Haute-Garonne) — bastide médiévale 1256, bords Garonne, sud Toulouse.
 
 import type { VilleCopy } from "./types";
 
 export const CARBONNE_COPY: VilleCopy = {
   pitchFr:
-    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA collabore avec toutes les structures locales du sud de la Haute-Garonne.",
+    "Carbonne (31), bastide médiévale fondée en 1256 dans un méandre protecteur de la Garonne, 5 563 habitants (Carbonnais), au sud de Toulouse en Haute-Garonne. Tissu économique équilibré dominé par le commerce et la restauration (25 % des actifs), l'administration-éducation-santé (16 %), la construction (15 %) et les services spécialisés (15 %). On y trouve plusieurs entreprises notables : Agronutrition (fertilisants spécialisés), Carbonne Distribution (hypermarché) et Cazorro Matériaux (négoce BTP). Axion-IA y accompagne les TPE, PME et commerces du Volvestre et du sud Haute-Garonne.",
   pitchEn:
-    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA collabore avec toutes les structures locales du sud de la Haute-Garonne.",
+    "Carbonne (31), bastide médiévale fondée en 1256 dans un méandre protecteur de la Garonne, 5 563 habitants (Carbonnais), au sud de Toulouse en Haute-Garonne. Tissu économique équilibré dominé par le commerce et la restauration (25 % des actifs), l'administration-éducation-santé (16 %), la construction (15 %) et les services spécialisés (15 %). On y trouve plusieurs entreprises notables : Agronutrition (fertilisants spécialisés), Carbonne Distribution (hypermarché) et Cazorro Matériaux (négoce BTP). Axion-IA y accompagne les TPE, PME et commerces du Volvestre et du sud Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du Volvestre, ainsi que les PME locales (négoce BTP, agroalimentaire, fabrication) et les exploitations agricoles. Audit Flash dès 490 € HT, code custom (jamais de no-code). Nos consultants se déplacent en 40 min depuis Toulouse via l'A64, ou par train sur la ligne Toulouse–Tarbes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash sur mesure.",
-  seoHook: "industrie fabrication & artisanat",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du Volvestre, ainsi que les PME locales (négoce BTP, agroalimentaire, fabrication) et les exploitations agricoles. Audit Flash dès 490 € HT, code custom (jamais de no-code). Nos consultants se déplacent en 40 min depuis Toulouse via l'A64, ou par train sur la ligne Toulouse–Tarbes.",
+  seoHook: "commerce, négoce BTP & agroalimentaire",
   ecosystemFr:
-    "Carbonne est un bourg structurant du sud de la Haute-Garonne, sur les bords de la Garonne. PME industrielles, artisans BTP, commerces de centre-ville, professions libérales, exploitations agricoles. Axe A64 vers les Pyrénées.",
+    "Carbonne est un pôle structurant du Volvestre, héritage de sa fondation en bastide royale de 1256 dans un méandre défensif de la Garonne (le Barrage de Mancies, premier barrage en amont de Toulouse, est implanté ici). Le tissu économique se répartit entre commerce-restauration (25 %), services publics et de santé (16 %), construction (15 %) et services spécialisés (15 %). Quelques PME marquantes structurent le bassin : Agronutrition (fertilisants spécialisés, leader régional), Carbonne Distribution (grande distribution), Cazorro Matériaux (négoce BTP), accompagnées de nombreuses TPE artisanales, exploitations agricoles et professions libérales. La proximité de Toulouse via l'A64 nourrit aussi une économie résidentielle.",
   ecosystemEn:
-    "Carbonne est un bourg structurant du sud de la Haute-Garonne, sur les bords de la Garonne. PME industrielles, artisans BTP, commerces de centre-ville, professions libérales, exploitations agricoles. Axe A64 vers les Pyrénées.",
+    "Carbonne est un pôle structurant du Volvestre, héritage de sa fondation en bastide royale de 1256 dans un méandre défensif de la Garonne (le Barrage de Mancies, premier barrage en amont de Toulouse, est implanté ici). Le tissu économique se répartit entre commerce-restauration (25 %), services publics et de santé (16 %), construction (15 %) et services spécialisés (15 %). Quelques PME marquantes structurent le bassin : Agronutrition (fertilisants spécialisés, leader régional), Carbonne Distribution (grande distribution), Cazorro Matériaux (négoce BTP), accompagnées de nombreuses TPE artisanales, exploitations agricoles et professions libérales. La proximité de Toulouse via l'A64 nourrit aussi une économie résidentielle.",
   distancesFr:
-    "Toulouse centre à 40 min (A64). Gare SNCF Carbonne sur ligne Toulouse-Tarbes. Muret à 15 min. Saint-Gaudens à 40 min.",
+    "Toulouse centre à 40 min (A64, 39 km à vol d'oiseau). Gare SNCF Carbonne sur ligne Toulouse–Tarbes. Muret à 15 min. Saint-Gaudens à 40 min. Rieux-Volvestre à 5 min. Cazères à 15 min. Aéroport Toulouse-Blagnac à 45 min.",
   distancesEn:
-    "Toulouse centre à 40 min (A64). Gare SNCF Carbonne sur ligne Toulouse-Tarbes. Muret à 15 min. Saint-Gaudens à 40 min.",
+    "Toulouse centre à 40 min (A64, 39 km à vol d'oiseau). Gare SNCF Carbonne sur ligne Toulouse–Tarbes. Muret à 15 min. Saint-Gaudens à 40 min. Rieux-Volvestre à 5 min. Cazères à 15 min. Aéroport Toulouse-Blagnac à 45 min.",
   topSectorsNaf: [
-    "Industrie & fabrication",
-    "Artisanat & BTP",
-    "Commerce de centre-ville",
-    "Agriculture & agroalimentaire",
-    "Professions libérales & santé",
+    "Commerce de détail, hôtellerie & restauration",
+    "Construction & artisanat BTP",
+    "Services spécialisés (libéral, conseil, santé)",
+    "Administration, éducation & santé publique",
+    "Agroalimentaire & fertilisants",
+    "Agriculture & exploitations rurales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carbonne : diagnostic adapté aux TPE artisans, PME industrielles et commerçants du sud Haute-Garonne. Audit Flash 490 € HT.",
-      en: "Audit IA à Carbonne : diagnostic adapté aux TPE artisans, PME industrielles et commerçants du sud Haute-Garonne. Audit Flash 490 € HT.",
+      fr: "Audit IA à Carbonne : diagnostic 4 heures adapté aux TPE artisans, commerçants du centre-bourg, PME du négoce BTP, agroalimentaire et exploitants agricoles du Volvestre. Audit Flash dès 490 € HT, livrable écrit avec 3 cas d'usage prioritaires.",
+      en: "Audit IA à Carbonne : diagnostic 4 heures adapté aux TPE artisans, commerçants du centre-bourg, PME du négoce BTP, agroalimentaire et exploitants agricoles du Volvestre. Audit Flash dès 490 € HT, livrable écrit avec 3 cas d'usage prioritaires.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Carbonne : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
-      en: "Interventions IA sur site à Carbonne : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
+      fr: "Interventions IA sur site à Carbonne : ateliers pratiques chez vous, format adapté à l'artisan, au commerce, à la PME industrielle ou à l'exploitant agricole. Intervention dès 590 € HT. Vos collaborateurs maîtrisent les outils déployés en autonomie.",
+      en: "Interventions IA sur site à Carbonne : ateliers pratiques chez vous, format adapté à l'artisan, au commerce, à la PME industrielle ou à l'exploitant agricole. Intervention dès 590 € HT. Vos collaborateurs maîtrisent les outils déployés en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Carbonne : automatisation contrôle qualité, gestion stocks, classification documents, agents conversationnels pour PME du sud Haute-Garonne.",
-      en: "Implémentation IA à Carbonne : automatisation contrôle qualité, gestion stocks, classification documents, agents conversationnels pour PME du sud Haute-Garonne.",
+      fr: "Implémentation IA à Carbonne : automatisation devis-relances négoce, gestion stocks matériaux, OCR factures fournisseurs agroalimentaires, classification documents techniques, agents conversationnels SAV. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès 990 € HT.",
+      en: "Implémentation IA à Carbonne : automatisation devis-relances négoce, gestion stocks matériaux, OCR factures fournisseurs agroalimentaires, classification documents techniques, agents conversationnels SAV. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès 990 € HT.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Carbonne : sessions dirigeants TPE artisans, gérants PME industrielles, commerçants du sud Haute-Garonne.",
-      en: "Coaching 1-to-1 à Carbonne : sessions dirigeants TPE artisans, gérants PME industrielles, commerçants du sud Haute-Garonne.",
+      fr: "Coaching 1-to-1 à Carbonne : sessions dirigeants TPE artisans, gérants commerces, exploitants agricoles, gérants PME négoce du Volvestre. Format adapté aux structures familiales du sud Haute-Garonne.",
+      en: "Coaching 1-to-1 à Carbonne : sessions dirigeants TPE artisans, gérants commerces, exploitants agricoles, gérants PME négoce du Volvestre. Format adapté aux structures familiales du sud Haute-Garonne.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carbonne ?",
-      a: "Oui, Axion-IA intervient à Carbonne et dans tout le sud de la Haute-Garonne (Muret, Cazères, Rieux-Volvestre). Nos consultants se déplacent en 40 min depuis Toulouse via l'A64.",
+      a: "Oui, Axion-IA intervient à Carbonne et dans tout le Volvestre : Marquefave, Salles-sur-Garonne, Peyssies, Lacaugne, Lafitte-Vigordane, Rieux-Volvestre, Capens, Mailholas, ainsi que Cazères, Muret et Saint-Gaudens. Nos consultants se déplacent en 40 min depuis Toulouse via l'A64.",
+    },
+    {
+      q: "Combien coûte un audit IA à Carbonne ?",
+      a: "L'Audit Flash démarre à 490 € HT (4 heures, livrable écrit, 3 cas d'usage prioritaires). Pour une PME du négoce ou de l'agroalimentaire, audit approfondi entre 1 900 et 3 900 € HT. Implémentation dès 990 € HT. Tarifs publics affichés.",
+    },
+    {
+      q: "Quels délais pour une intervention IA à Carbonne ?",
+      a: "Première intervention sous 5 à 10 jours ouvrés après validation. Pour les implémentations longues, planning défini lors de l'audit. Nos consultants se déplacent en 40 min depuis Toulouse, intervention 1 journée minimum dans vos locaux.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Carbonne ?",
-      a: "Nous accompagnons tous types d'activités : PME industrielles, artisans, commerces, agriculture, professions libérales. Aucun secteur exclu.",
+      a: "Nous accompagnons en priorité les TPE artisans (BTP, métiers de bouche, services), les commerces du centre-bourg, les PME du négoce BTP et de l'agroalimentaire, les exploitations agricoles et les professions libérales (santé, conseil, juridique). Aucun secteur exclu.",
     },
     {
-      q: "Combien coûte un audit IA à Carbonne  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      q: "Comment Axion-IA gère-t-il la conformité RGPD à Carbonne ?",
+      a: "Tous nos déploiements respectent le RGPD : hébergement Union européenne, registre des traitements, formation aux risques de fuite de données clients ou techniques. Nous évitons les outils US grand public pour les données sensibles (clients agricoles, dossiers santé, données fournisseurs).",
     },
     {
-      q: "Comment se déroule une intervention IA à Carbonne ?",
-      a: "Nos consultants se déplacent à Carbonne (40 min A64 depuis Toulouse). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
-    },
-    {
-      q: "L'IA peut-elle aider une PME industrielle à Carbonne ?",
-      a: "Oui, l'IA optimise contrôle qualité, planification production, gestion stocks, maintenance prédictive et classification documents techniques.",
+      q: "L'IA peut-elle aider une PME agroalimentaire ou un négoce BTP à Carbonne ?",
+      a: "Oui : automatisation des devis sur cahier des charges, OCR factures fournisseurs, classification documents techniques, prédiction des stocks, agents conversationnels pour SAV, contrôle qualité visuel en chaîne de production. Cas d'usage concrets adaptés aux PME locales du Volvestre.",
     },
   ],
 };

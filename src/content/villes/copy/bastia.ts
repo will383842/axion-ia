@@ -1,68 +1,71 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-28 — T4 anti-doorway fix Claude Code (Will).
+// Bastia (2B, Haute-Corse) — préfecture, premier port méditerranéen passagers.
 
 import type { VilleCopy } from "./types";
 
 export const BASTIA_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bastia, optimisant les processus IA pour les entreprises locales. Paris, avec ses pôles comme Cap Digital, est une référence en innovation, inspirant nos méthodes appliquées à Bastia.",
+    "Bastia (2B), préfecture de Haute-Corse avec 46 867 habitants, premier port de Méditerranée pour le trafic passagers. Tissu TPE commerce et restauration de centre-ville et de la marina, PME maritimes, transport, logistique portuaire, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et de la plaine orientale.",
   pitchEn:
-    "Axion-IA intervient à Bastia, optimisant les processus IA pour les entreprises locales. Paris, avec ses pôles comme Cap Digital, est une référence en innovation, inspirant nos méthodes appliquées à Bastia.",
+    "Bastia (2B), préfecture de Haute-Corse avec 46 867 habitants, premier port de Méditerranée pour le trafic passagers. Tissu TPE commerce et restauration de centre-ville et de la marina, PME maritimes, transport, logistique portuaire, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et de la plaine orientale.",
   directAnswerFr:
-    "Axion-IA se déplace à Bastia pour accompagner les entreprises dans l'intégration de solutions IA. Avec l'influence de l'écosystème parisien, comprenant Inria et Station F, nous apportons une expertise nationale pour automatiser les devis, relances et reporting, répondant aux besoins spécifiques du commerce de détail et de la restauration bastiais.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit Flash sur mesure dès 490 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à Bastia pour accompagner les entreprises dans l'intégration de solutions IA. Avec l'influence de l'écosystème parisien, comprenant Inria et Station F, nous apportons une expertise nationale pour automatiser les devis, relances et reporting, répondant aux besoins spécifiques du commerce de détail et de la restauration bastiais.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bastia (2B). Nous accompagnons TPE commerçantes et restaurateurs, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit Flash sur mesure dès 490 € HT.",
+  seoHook: "commerce détail restauration & logistique portuaire",
   ecosystemFr:
-    "Bastia, avec ses 4 000 établissements actifs, est un centre économique dynamique. Le commerce de détail et la restauration y sont prédominants, tandis que Paris, abritant LVMH et Hermès, sert de modèle pour l'innovation.",
+    "Bastia (46 867 hab) est la préfecture de Haute-Corse et le premier port méditerranéen pour le trafic passagers (Corsica Ferries, liaisons continent et Italie). Économie structurée autour du commerce de détail, de la restauration, du tourisme, du transport maritime et de la logistique. Zone industrielle au sud de l'agglomération, secteur Toga reconverti en mixte. Tissu TPE commerces et restaurants, PME maritimes, artisans, professions libérales.",
   ecosystemEn:
-    "Bastia, avec ses 4 000 établissements actifs, est un centre économique dynamique. Le commerce de détail et la restauration y sont prédominants, tandis que Paris, abritant LVMH et Hermès, sert de modèle pour l'innovation.",
+    "Bastia (46 867 hab) est la préfecture de Haute-Corse et le premier port méditerranéen pour le trafic passagers (Corsica Ferries, liaisons continent et Italie). Économie structurée autour du commerce de détail, de la restauration, du tourisme, du transport maritime et de la logistique. Zone industrielle au sud de l'agglomération, secteur Toga reconverti en mixte. Tissu TPE commerces et restaurants, PME maritimes, artisans, professions libérales.",
   distancesFr:
-    "L'aéroport de Bastia-Poretta est situé à 20 km de Bastia, facilitant l'accès aux interventions sur site.",
+    "Aéroport Bastia-Poretta à 16 km (Lucciana). Port de commerce et passagers au centre-ville. Corte à 69 min. Calvi à 91 km. Ajaccio à 149 km. Communes voisines : Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio.",
   distancesEn:
-    "L'aéroport de Bastia-Poretta est situé à 20 km de Bastia, facilitant l'accès aux interventions sur site.",
+    "Aéroport Bastia-Poretta à 16 km (Lucciana). Port de commerce et passagers au centre-ville. Corte à 69 min. Calvi à 91 km. Ajaccio à 149 km. Communes voisines : Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Restauration",
-    "Transports terrestres",
-    "Activités immobilières",
+    "Commerce de détail & restauration",
+    "Transport maritime & logistique portuaire",
+    "Tourisme & hôtellerie",
+    "Construction & artisanat",
+    "Services aux entreprises & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bastia permet d'identifier les opportunités IA dans le commerce de détail, dès 490 € HT.",
-      en: "Réaliser un audit à Bastia permet d'identifier les opportunités IA dans le commerce de détail, dès 490 € HT.",
+      fr: "Audit IA à Bastia : diagnostic adapté aux TPE commerces et restaurants de centre-ville, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit Flash 490 € HT.",
+      en: "Audit IA à Bastia : diagnostic adapté aux TPE commerces et restaurants de centre-ville, PME maritimes et logistiques, artisans et professions libérales bastiais. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Bastia pour automatiser les processus administratifs des entreprises locales, dès 590 € HT.",
-      en: "Intervenir à Bastia pour automatiser les processus administratifs des entreprises locales, dès 590 € HT.",
+      fr: "Interventions IA sur site à Bastia : formats adaptés au commerce de détail, à la restauration, au transport maritime et à la logistique portuaire. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Bastia : formats adaptés au commerce de détail, à la restauration, au transport maritime et à la logistique portuaire. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bastia, optimisant les opérations dans le secteur de la restauration, dès 990 € HT.",
-      en: "Implémenter des solutions IA à Bastia, optimisant les opérations dans le secteur de la restauration, dès 990 € HT.",
+      fr: "Implémentation IA à Bastia : gestion stocks commerce, CRM tourisme et hôtellerie, automatisation facturation maritime, suivi logistique portuaire, agents conversationnels clients pour TPE et PME bastiais.",
+      en: "Implémentation IA à Bastia : gestion stocks commerce, CRM tourisme et hôtellerie, automatisation facturation maritime, suivi logistique portuaire, agents conversationnels clients pour TPE et PME bastiais.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Bastia dans l'adoption IA, avec des sessions personnalisées à partir de 990 € HT.",
-      en: "Accompagner un dirigeant à Bastia dans l'adoption IA, avec des sessions personnalisées à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Bastia : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants restaurants et hôtels, responsables PME maritimes et logistiques souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Bastia : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants restaurants et hôtels, responsables PME maritimes et logistiques souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Bastia ?",
-      a: "Les interventions à Bastia débutent à partir de 590 € HT pour l'Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Bastia et en Haute-Corse ?",
+      a: "Oui, Axion-IA intervient à Bastia et dans les communes voisines (Furiani, Ville-di-Pietrabugno, Barbaggio, Patrimonio) ainsi que sur la plaine orientale. Déplacement sur site organisé via l'aéroport Bastia-Poretta.",
     },
     {
-      q: "Comment se déroule une intervention IA à Bastia ?",
-      a: "Williams se déplace sur site à Bastia pour une intervention personnalisée, adaptée aux besoins spécifiques de votre entreprise dans les secteurs locaux dominants.",
+      q: "Quel est le tarif d'un audit IA pour une TPE à Bastia ?",
+      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE bastiaises. Diagnostic complet des processus, cartographie IA (commerce, restauration, tourisme, maritime) et plan d'action ROI chiffré.",
     },
     {
-      q: "Quels délais pour une intervention IA à Bastia ?",
-      a: "Nous nous engageons à intervenir sur site à Bastia dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Quel délai pour une intervention IA à Bastia ?",
+      a: "Nous nous engageons à intervenir sur site à Bastia dans un délai de 5 à 10 jours ouvrés après prise de contact, en fonction des liaisons aériennes Bastia-Poretta.",
+    },
+    {
+      q: "Accompagnez-vous le secteur maritime et logistique portuaire bastiais ?",
+      a: "Oui, nous accompagnons PME maritimes, transitaires et acteurs de la logistique portuaire : suivi expéditions, automatisation facturation, CRM clients, optimisation planning et conformité documentaire.",
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD à Bastia ?",
-      a: "Nos interventions à Bastia respectent strictement le RGPD, assurant la protection des données personnelles dans tous les processus automatisés.",
+      a: "Nos interventions à Bastia respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux TPE et PME locales.",
     },
   ],
 };

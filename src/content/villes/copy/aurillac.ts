@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024, Wikipedia facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const AURILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Aurillac pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et Cap Digital en France, nous apportons notre expertise nationale en IA aux acteurs économiques aurillacois.",
+    "Axion-IA accompagne les TPE et PME d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
   pitchEn:
-    "Axion-IA intervient à Aurillac pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et Cap Digital en France, nous apportons notre expertise nationale en IA aux acteurs économiques aurillacois.",
+    "Axion-IA accompagne les TPE et PME d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Aurillac, permettant aux entreprises de bénéficier de notre expertise en IA. Avec des références nationales comme Inria et Station F, nous aidons les entreprises aurillacoises à automatiser leurs processus administratifs et à améliorer leur efficacité opérationnelle.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. Williams intervient sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Aurillac, permettant aux entreprises de bénéficier de notre expertise en IA. Avec des références nationales comme Inria et Station F, nous aidons les entreprises aurillacoises à automatiser leurs processus administratifs et à améliorer leur efficacité opérationnelle.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. Williams intervient sous 5 jours ouvrés.",
+  seoHook: "agroalimentaire & commerce détail",
   ecosystemFr:
-    "Aurillac, avec ses 2 000 établissements actifs, bénéficie d'un tissu économique diversifié. Les entreprises locales peuvent s'inspirer de l'écosystème français qui inclut des entités comme LVMH et Cap Digital.",
+    "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les TPE et PME aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
   ecosystemEn:
-    "Aurillac, avec ses 2 000 établissements actifs, bénéficie d'un tissu économique diversifié. Les entreprises locales peuvent s'inspirer de l'écosystème français qui inclut des entités comme LVMH et Cap Digital.",
+    "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les TPE et PME aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
   distancesFr:
-    "Aurillac est à 150 km de la gare TGV de Clermont-Ferrand et à 110 km de l'aéroport de Clermont-Ferrand Auvergne.",
+    "Aurillac dispose d'une gare SNCF sur la ligne Figeac-Arvant (TER vers Toulouse, Clermont-Ferrand, Brive-la-Gaillarde) et d'un aéroport municipal avec liaison régulière vers Paris-Orly via Chalair Aviation. La RN 122 relie la ville à l'A75. Distance routière approximative à Clermont-Ferrand : 160 km.",
   distancesEn:
-    "Aurillac est à 150 km de la gare TGV de Clermont-Ferrand et à 110 km de l'aéroport de Clermont-Ferrand Auvergne.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Administration publique", "Santé humaine"],
+    "Aurillac dispose d'une gare SNCF sur la ligne Figeac-Arvant (TER vers Toulouse, Clermont-Ferrand, Brive-la-Gaillarde) et d'un aéroport municipal avec liaison régulière vers Paris-Orly via Chalair Aviation. La RN 122 relie la ville à l'A75. Distance routière approximative à Clermont-Ferrand : 160 km.",
+  topSectorsNaf: [
+    "Industries alimentaires (fromage, charcuterie, distilleries)",
+    "Commerce de détail",
+    "Santé humaine (Centre Hospitalier Henri-Mondor)",
+    "Administration publique (préfecture du Cantal)",
+    "Restauration",
+    "Construction",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Aurillac avec Axion-IA permet d'identifier les processus à automatiser. Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Aurillac avec Axion-IA permet d'identifier les processus à automatiser. Audit Flash dès 490 € HT.",
+      fr: "Audit Flash 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de 490 € HT, livrable sous 5 jours ouvrés.",
+      en: "Audit Flash 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de 490 € HT, livrable sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Aurillac pour implémenter des solutions IA adaptées aux besoins locaux. Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Aurillac pour implémenter des solutions IA adaptées aux besoins locaux. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement Williams sous 5 jours.",
+      en: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement Williams sous 5 jours.",
     },
     implementation: {
-      fr: "Implémenter des outils IA à Aurillac pour optimiser les tâches administratives. Tarifs à partir de 990 € HT.",
-      en: "Implémenter des outils IA à Aurillac pour optimiser les tâches administratives. Tarifs à partir de 990 € HT.",
+      fr: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de 990 € HT.",
+      en: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants à Aurillac pour une adoption rapide de l'IA. Sessions dès 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants à Aurillac pour une adoption rapide de l'IA. Sessions dès 990 € HT.",
+      fr: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de 990 € HT.",
+      en: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Aurillac ?",
-      a: "Les interventions IA à Aurillac commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'Axion-IA pour une intervention à Aurillac ?",
+      a: "Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour l'Intervention Essentielle et 990 € HT pour l'implémentation ou les sessions un-à-un. Frais de déplacement à Aurillac (Cantal) inclus dans le devis.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il pour des audits à Aurillac ?",
-      a: "Notre équipe nationale se déplace sur site à Aurillac pour réaliser des audits. Williams intervient généralement sous 5 jours ouvrés.",
+      q: "Quels délais pour une intervention sur site à Aurillac ?",
+      a: "Williams se déplace à Aurillac sous 5 jours ouvrés après validation du devis. Pour un Audit Flash, le livrable est remis sous 5 jours après la visite. Une implémentation complète dure de 2 à 6 semaines selon le périmètre.",
     },
     {
-      q: "Quelles sont les garanties de conformité RGPD à Aurillac ?",
-      a: "Axion-IA assure la conformité RGPD des solutions IA déployées à Aurillac, en respectant les normes européennes en vigueur.",
+      q: "Intervenez-vous dans les communes proches d'Aurillac ?",
+      a: "Oui, nous nous déplaçons également à Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou et plus largement dans l'aire urbaine aurillacoise et le bassin du Cantal.",
     },
     {
-      q: "Quel est le délai pour implémenter une solution IA à Aurillac ?",
-      a: "Le délai d'implémentation d'une solution IA à Aurillac dépend de la complexité du projet, mais nous visons une mise en œuvre rapide.",
+      q: "Comment Axion-IA garantit-elle la conformité RGPD à Aurillac ?",
+      a: "Nous concevons du code IA sur mesure hébergé sur des infrastructures conformes RGPD (UE), avec contrat DPA, journalisation des traitements et minimisation des données. Pas de SaaS no-code opaque exposant vos données clients.",
+    },
+    {
+      q: "Quels secteurs locaux d'Aurillac accompagnez-vous ?",
+      a: "Nous travaillons avec les TPE et PME de l'agroalimentaire (producteurs laitiers, fromagers, charcutiers, distilleries), du commerce de détail, de la restauration, de la construction et des services à la santé du bassin aurillacois.",
+    },
+    {
+      q: "Pourquoi du code IA sur mesure plutôt qu'un outil no-code à Aurillac ?",
+      a: "Le code custom Axion-IA s'intègre durablement à vos logiciels métier existants (ERP, caisse, comptabilité), reste votre propriété, évite la dépendance à un éditeur SaaS et garantit un contrôle RGPD complet — adapté aux TPE et PME aurillacoises qui veulent capitaliser, pas louer.",
     },
   ],
 };

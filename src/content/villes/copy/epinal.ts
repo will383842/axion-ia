@@ -7,61 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const EPINAL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Épinal pour optimiser les processus des entreprises locales. Dans une région où l'Université de Lorraine forme les futurs talents, notre expertise en IA s'adresse à tous les secteurs, du commerce de détail à la santé humaine.",
+    "Axion-IA accompagne les TPE et PME d'Épinal, préfecture des Vosges et premier pôle économique et commercial du département. La ville s'est construite autour de la papeterie alimentée par la Moselle, de l'imagerie d'Épinal (1796) et d'une tradition textile héritée des industriels alsaciens installés après 1870. Aujourd'hui, le tissu local rassemble PME du bois, de l'imprimerie, du commerce, du tourisme et de la santé. Notre cabinet déploie des outils d'intelligence artificielle pragmatiques au service des dirigeants vosgiens.",
   pitchEn:
-    "Axion-IA intervient à Épinal pour optimiser les processus des entreprises locales. Dans une région où l'Université de Lorraine forme les futurs talents, notre expertise en IA s'adresse à tous les secteurs, du commerce de détail à la santé humaine.",
+    "Axion-IA accompagne les TPE et PME d'Épinal, préfecture des Vosges et premier pôle économique et commercial du département. La ville s'est construite autour de la papeterie alimentée par la Moselle, de l'imagerie d'Épinal (1796) et d'une tradition textile héritée des industriels alsaciens installés après 1870. Aujourd'hui, le tissu local rassemble PME du bois, de l'imprimerie, du commerce, du tourisme et de la santé. Notre cabinet déploie des outils d'intelligence artificielle pragmatiques au service des dirigeants vosgiens.",
   directAnswerFr:
-    "À Épinal, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Dans un bassin économique comprenant des entreprises des secteurs du commerce de détail et des transports terrestres, nous aidons à intégrer l'IA de manière pragmatique. Nos services sont adaptés aux besoins spécifiques des entreprises, avec des audits et des implémentations.",
+    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à 490 € HT pour un Audit Flash de 4 heures et à 590 € HT pour une intervention. Williams et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
   directAnswerEn:
-    "À Épinal, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Dans un bassin économique comprenant des entreprises des secteurs du commerce de détail et des transports terrestres, nous aidons à intégrer l'IA de manière pragmatique. Nos services sont adaptés aux besoins spécifiques des entreprises, avec des audits et des implémentations.",
+    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à 490 € HT pour un Audit Flash de 4 heures et à 590 € HT pour une intervention. Williams et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
-    "Le tissu économique d'Épinal est marqué par la présence de l'Université de Lorraine et des secteurs comme le commerce de détail et la santé humaine. Les entreprises locales bénéficient d'un environnement propice à l'innovation.",
+    "Le tissu économique d'Épinal repose sur la papeterie historique (force motrice de la Moselle), l'imagerie d'Épinal toujours active depuis 1796, la filière bois caractéristique des Vosges, et un commerce de détail de centre-ville dynamique. L'Université de Lorraine y maintient un campus délocalisé qui alimente le bassin de compétences. La communauté d'agglomération d'Épinal regroupe une douzaine de communes, dont Golbey, Chantraine, Dinozé, Jeuxey et Thaon-les-Vosges, soit environ 60 000 habitants.",
   ecosystemEn:
-    "Le tissu économique d'Épinal est marqué par la présence de l'Université de Lorraine et des secteurs comme le commerce de détail et la santé humaine. Les entreprises locales bénéficient d'un environnement propice à l'innovation.",
+    "Le tissu économique d'Épinal repose sur la papeterie historique (force motrice de la Moselle), l'imagerie d'Épinal toujours active depuis 1796, la filière bois caractéristique des Vosges, et un commerce de détail de centre-ville dynamique. L'Université de Lorraine y maintient un campus délocalisé qui alimente le bassin de compétences. La communauté d'agglomération d'Épinal regroupe une douzaine de communes, dont Golbey, Chantraine, Dinozé, Jeuxey et Thaon-les-Vosges, soit environ 60 000 habitants.",
   distancesFr:
-    "Épinal est à 70 km de la Gare TGV de Nancy et à 110 km de l'Aéroport de Metz-Nancy-Lorraine.",
+    "Épinal est reliée à Paris en TGV en 2h20 depuis 2007 via la gare d'Épinal, et se trouve à 61 km au sud de Nancy et 311 km à l'est de Paris. L'autoroute RN57 / E23 traverse la ville selon un axe nord-sud, offrant un accès direct au Luxembourg, à l'Allemagne et à la Suisse. L'aéroport régional Metz-Nancy-Lorraine est à environ 110 km au nord.",
   distancesEn:
-    "Épinal est à 70 km de la Gare TGV de Nancy et à 110 km de l'Aéroport de Metz-Nancy-Lorraine.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Hébergement", "Santé humaine"],
+    "Épinal est reliée à Paris en TGV en 2h20 depuis 2007 via la gare d'Épinal, et se trouve à 61 km au sud de Nancy et 311 km à l'est de Paris. L'autoroute RN57 / E23 traverse la ville selon un axe nord-sud, offrant un accès direct au Luxembourg, à l'Allemagne et à la Suisse. L'aéroport régional Metz-Nancy-Lorraine est à environ 110 km au nord.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Filière bois et industrie du papier",
+    "Imprimerie et imagerie",
+    "Hébergement et tourisme",
+    "Santé humaine",
+    "Transports terrestres",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Épinal pour identifier les opportunités IA dans les secteurs comme le commerce de détail — à partir de 490 € HT.",
-      en: "Réaliser un audit à Épinal pour identifier les opportunités IA dans les secteurs comme le commerce de détail — à partir de 490 € HT.",
+      fr: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de 490 € HT pour un Audit Flash de 4 heures.",
+      en: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de 490 € HT pour un Audit Flash de 4 heures.",
     },
     interventions: {
-      fr: "Intervenir à Épinal pour automatiser les tâches administratives — amélioration rapide des processus internes.",
-      en: "Intervenir à Épinal pour automatiser les tâches administratives — amélioration rapide des processus internes.",
+      fr: "Interventions sur site à Épinal et dans l'agglomération : automatisation administrative, traitement de devis, gestion documentaire, dès 590 € HT par demi-journée.",
+      en: "Interventions sur site à Épinal et dans l'agglomération : automatisation administrative, traitement de devis, gestion documentaire, dès 590 € HT par demi-journée.",
     },
     implementation: {
-      fr: "Implémenter à Épinal des solutions IA dans les entreprises locales — intégration fluide des nouveaux outils.",
-      en: "Implémenter à Épinal des solutions IA dans les entreprises locales — intégration fluide des nouveaux outils.",
+      fr: "Implémentation IA en code custom à Épinal : intégration à vos outils métier (ERP bois, caisse commerce, planning santé), tests et mise en production avec documentation complète.",
+      en: "Implémentation IA en code custom à Épinal : intégration à vos outils métier (ERP bois, caisse commerce, planning santé), tests et mise en production avec documentation complète.",
     },
     unAUn: {
-      fr: "Coacher un dirigeant à Épinal pour maîtriser l'IA — sessions personnalisées à partir de 990 € HT.",
-      en: "Coacher un dirigeant à Épinal pour maîtriser l'IA — sessions personnalisées à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès 990 € HT.",
+      en: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Épinal ?",
-      a: "Les tarifs pour une intervention IA à Épinal commencent à partir de 590 € HT. Nos services incluent également des audits dès 490 € HT et des implémentations à partir de 990 € HT.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Épinal ?",
+      a: "À Épinal, nos tarifs publics démarrent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une intervention sur site et 990 € HT pour un accompagnement un-à-un dédié aux dirigeants de TPE et PME.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour d'Épinal ?",
-      a: "Oui, Axion-IA intervient dans les communes environnantes d'Épinal telles que Golbey, Chantraine, Thaon-les-Vosges, Charmes et Remiremont.",
+      a: "Oui, nous couvrons l'agglomération d'Épinal et notamment Golbey, Chantraine, Dinozé, Jeuxey, Thaon-les-Vosges, Charmes et Remiremont, en déplacement depuis Épinal.",
     },
     {
       q: "Quel est le délai d'intervention d'Axion-IA à Épinal ?",
-      a: "Williams se déplace sur site à Épinal dans un délai de 5 jours ouvrés après la validation de la demande.",
+      a: "Williams et l'équipe Axion-IA se déplacent sur site à Épinal sous 5 jours ouvrés en moyenne après validation du devis, et plus rapidement pour les Audits Flash de 4 heures.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Épinal ?",
-      a: "Axion-IA garantit la conformité RGPD en intégrant les normes de protection des données dans toutes nos interventions à Épinal, assurant ainsi la sécurité et la confidentialité des informations traitées.",
+      q: "Comment Axion-IA assure la conformité RGPD à Épinal ?",
+      a: "Toutes nos missions à Épinal intègrent les exigences RGPD : hébergement européen, minimisation des données, registre des traitements et clauses contractuelles dédiées entre Axion-IA et le client vosgien.",
+    },
+    {
+      q: "Quels secteurs locaux servez-vous à Épinal ?",
+      a: "Nous accompagnons en priorité les TPE et PME du commerce de détail, de la filière bois et papier, de l'imprimerie, du tourisme, de la santé et des services professionnels présents à Épinal et dans les Vosges.",
     },
     {
       q: "Quels formats de formation propose Axion-IA à Épinal ?",
-      a: "Axion-IA propose des formations sur site et en ligne à Épinal, adaptées aux besoins des dirigeants et des équipes, pour une intégration efficace de l'IA.",
+      a: "Nous proposons des formations IA sur site à Épinal et en distanciel, en demi-journées ou journées complètes, avec ateliers pratiques sur outils réels pour dirigeants et équipes opérationnelles.",
     },
   ],
 };

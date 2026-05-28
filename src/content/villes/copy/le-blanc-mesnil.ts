@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (Sprint anti-doorway HCU 2024) — sources Wikipedia.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const LE_BLANC_MESNIL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Le Blanc-Mesnil, au cœur de l'Île-de-France, pour optimiser les processus des entreprises locales. Avec des acteurs comme Air France Industries et SNCF Réseau, nous apportons notre expertise IA pour automatiser et améliorer l'efficacité opérationnelle.",
+    "Axion-IA accompagne les TPE et PME du Blanc-Mesnil (Seine-Saint-Denis, 62 376 habitants en 2023), commune membre de la métropole du Grand Paris et de l'établissement public territorial Paris Terres d'Envol depuis 2016. Située à 7 km de Paris, entre l'aéroport de Roissy-Charles-de-Gaulle et le Stade de France, la ville héberge un tissu varié de PME commerçantes, artisanales et de services. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une commune dense d'Île-de-France.",
   pitchEn:
-    "Axion-IA intervient à Le Blanc-Mesnil, au cœur de l'Île-de-France, pour optimiser les processus des entreprises locales. Avec des acteurs comme Air France Industries et SNCF Réseau, nous apportons notre expertise IA pour automatiser et améliorer l'efficacité opérationnelle.",
+    "Axion-IA accompagne les TPE et PME du Blanc-Mesnil (Seine-Saint-Denis, 62 376 habitants en 2023), commune membre de la métropole du Grand Paris et de l'établissement public territorial Paris Terres d'Envol depuis 2016. Située à 7 km de Paris, entre l'aéroport de Roissy-Charles-de-Gaulle et le Stade de France, la ville héberge un tissu varié de PME commerçantes, artisanales et de services. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une commune dense d'Île-de-France.",
   directAnswerFr:
-    "Axion-IA se déplace à Le Blanc-Mesnil pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Air France Industries et le Parc d'activités du Coudray, nous proposons des audits et des interventions. Nos services incluent également des implémentations et des formations personnalisées.",
+    "Axion-IA se déplace au Blanc-Mesnil pour accompagner en priorité les TPE et PME locales, puis les ETI, dans la conception de solutions IA codées sur mesure. Située en Seine-Saint-Denis, dans l'établissement public territorial Paris Terres d'Envol, la commune compte 62 376 habitants en 2023 et bénéficie d'un positionnement stratégique entre Paris, Roissy-CDG et Le Bourget. Nos prestations (Audit Flash 590 € HT, interventions ciblées, implémentation, sessions un-à-un) sont calibrées pour le tissu local : commerce, artisanat, logistique légère et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA se déplace à Le Blanc-Mesnil pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Air France Industries et le Parc d'activités du Coudray, nous proposons des audits et des interventions. Nos services incluent également des implémentations et des formations personnalisées.",
-  seoHook: "transport terrestre & commerce gros",
+    "Axion-IA se déplace au Blanc-Mesnil pour accompagner en priorité les TPE et PME locales, puis les ETI, dans la conception de solutions IA codées sur mesure. Située en Seine-Saint-Denis, dans l'établissement public territorial Paris Terres d'Envol, la commune compte 62 376 habitants en 2023 et bénéficie d'un positionnement stratégique entre Paris, Roissy-CDG et Le Bourget. Nos prestations (Audit Flash 590 € HT, interventions ciblées, implémentation, sessions un-à-un) sont calibrées pour le tissu local : commerce, artisanat, logistique légère et services aux entreprises.",
+  seoHook: "commerce, artisanat & services Grand Paris",
   ecosystemFr:
-    "Le Blanc-Mesnil est un pôle industriel avec des entreprises comme Air France Industries et SNCF Réseau. Le Parc d'activités du Coudray renforce l'attractivité économique de la région, offrant un terreau fertile pour nos interventions IA.",
+    "Le Blanc-Mesnil appartient à la métropole du Grand Paris et à l'établissement public territorial Paris Terres d'Envol. La commune a connu une historique d'industrialisation autour de la zone de la Molette (créée en 1858), puis une transition vers les services et le commerce après 1973. Le tissu économique actuel s'appuie sur les TPE/PME commerçantes, artisanales, logistiques et de services aux entreprises, avec une connexion forte aux pôles voisins (Le Bourget, Aulnay-sous-Bois, Drancy, Bondy, Dugny, Gonesse, Bonneuil-en-France).",
   ecosystemEn:
-    "Le Blanc-Mesnil est un pôle industriel avec des entreprises comme Air France Industries et SNCF Réseau. Le Parc d'activités du Coudray renforce l'attractivité économique de la région, offrant un terreau fertile pour nos interventions IA.",
+    "Le Blanc-Mesnil appartient à la métropole du Grand Paris et à l'établissement public territorial Paris Terres d'Envol. La commune a connu une historique d'industrialisation autour de la zone de la Molette (créée en 1858), puis une transition vers les services et le commerce après 1973. Le tissu économique actuel s'appuie sur les TPE/PME commerçantes, artisanales, logistiques et de services aux entreprises, avec une connexion forte aux pôles voisins (Le Bourget, Aulnay-sous-Bois, Drancy, Bondy, Dugny, Gonesse, Bonneuil-en-France).",
   distancesFr:
-    "Le Blanc-Mesnil est situé à 10 km de l'Aéroport de Paris-Charles de Gaulle et à 12 km de la Gare de Paris-Nord.",
+    "Le Blanc-Mesnil est à environ 7 km de Paris, desservi par la gare du Blanc-Mesnil (RER B) et les autoroutes A1 et A3 ; la future station de la ligne 16 du Grand Paris Express est attendue en 2026. La commune se situe à mi-chemin entre l'aéroport de Paris-Charles-de-Gaulle et le Stade de France, à proximité immédiate de Le Bourget.",
   distancesEn:
-    "Le Blanc-Mesnil est situé à 10 km de l'Aéroport de Paris-Charles de Gaulle et à 12 km de la Gare de Paris-Nord.",
-  topSectorsNaf: ["Transport terrestre", "Commerce de gros", "Construction", "Entreposage"],
+    "Le Blanc-Mesnil est à environ 7 km de Paris, desservi par la gare du Blanc-Mesnil (RER B) et les autoroutes A1 et A3 ; la future station de la ligne 16 du Grand Paris Express est attendue en 2026. La commune se situe à mi-chemin entre l'aéroport de Paris-Charles-de-Gaulle et le Stade de France, à proximité immédiate de Le Bourget.",
+  topSectorsNaf: [
+    "Commerce de détail et de gros",
+    "Artisanat et BTP",
+    "Logistique et entreposage",
+    "Services aux entreprises",
+    "Restauration",
+    "Transport terrestre",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Le Blanc-Mesnil, notamment pour les entreprises du Parc d'activités du Coudray — identifier les opportunités IA.",
-      en: "Réaliser un audit à Le Blanc-Mesnil, notamment pour les entreprises du Parc d'activités du Coudray — identifier les opportunités IA.",
+      fr: "Audit Flash IA au Blanc-Mesnil (590 € HT) pour TPE/PME — diagnostic ciblé pour un commerce de proximité, un artisan du BTP ou un prestataire de services aux entreprises situé en Seine-Saint-Denis.",
+      en: "Audit Flash IA au Blanc-Mesnil (590 € HT) pour TPE/PME — diagnostic ciblé pour un commerce de proximité, un artisan du BTP ou un prestataire de services aux entreprises situé en Seine-Saint-Denis.",
     },
     interventions: {
-      fr: "Intervenir à Le Blanc-Mesnil auprès de sociétés comme Air France Industries — automatiser les tâches répétitives.",
-      en: "Intervenir à Le Blanc-Mesnil auprès de sociétés comme Air France Industries — automatiser les tâches répétitives.",
+      fr: "Interventions ciblées au Blanc-Mesnil pour TPE/PME — automatisation des devis, relances clients, suivi logistique pour les acteurs du commerce, de l'artisanat ou de la logistique légère.",
+      en: "Interventions ciblées au Blanc-Mesnil pour TPE/PME — automatisation des devis, relances clients, suivi logistique pour les acteurs du commerce, de l'artisanat ou de la logistique légère.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Le Blanc-Mesnil pour les entreprises de transport — améliorer l'efficacité opérationnelle.",
-      en: "Implémenter des solutions IA à Le Blanc-Mesnil pour les entreprises de transport — améliorer l'efficacité opérationnelle.",
+      fr: "Implémentation IA sur mesure au Blanc-Mesnil — déploiement d'agents internes codés en propre pour les PME du territoire Paris Terres d'Envol, sans dépendance à une plateforme no-code.",
+      en: "Implémentation IA sur mesure au Blanc-Mesnil — déploiement d'agents internes codés en propre pour les PME du territoire Paris Terres d'Envol, sans dépendance à une plateforme no-code.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Le Blanc-Mesnil pour dirigeants — comprendre et intégrer l'IA dans leur stratégie.",
-      en: "Proposer des sessions 1-to-1 à Le Blanc-Mesnil pour dirigeants — comprendre et intégrer l'IA dans leur stratégie.",
+      fr: "Sessions un-à-un au Blanc-Mesnil pour dirigeants TPE/PME — déplacement sur site pour structurer la trajectoire IA d'une entreprise francilienne dense.",
+      en: "Sessions un-à-un au Blanc-Mesnil pour dirigeants TPE/PME — déplacement sur site pour structurer la trajectoire IA d'une entreprise francilienne dense.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Le Blanc-Mesnil ?",
-      a: "Nos audits IA à Le Blanc-Mesnil commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs détaillés sont disponibles sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention IA au Blanc-Mesnil ?",
+      a: "Nos tarifs publics démarrent à 590 € HT pour une Intervention Essentielle et 590 € HT pour un Audit Flash IA. La grille complète (audit, interventions, implémentation, un-à-un) est publiée sur la page tarifs du site Axion-IA.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Le Blanc-Mesnil ?",
-      a: "Nous nous déplaçons directement sur site à Le Blanc-Mesnil pour réaliser nos interventions, garantissant une compréhension précise des besoins locaux.",
+      q: "Quels délais pour une intervention IA au Blanc-Mesnil ?",
+      a: "Une fois la mission validée, nous intervenons sur site au Blanc-Mesnil sous 5 jours ouvrés en moyenne, en fonction de la disponibilité de notre équipe et de la complexité du besoin.",
     },
     {
-      q: "Quels délais pour une intervention IA à Le Blanc-Mesnil ?",
-      a: "Nous nous engageons à intervenir à Le Blanc-Mesnil dans un délai de 5 jours ouvrés après la validation de votre demande.",
+      q: "Axion-IA intervient-il dans les communes voisines du Blanc-Mesnil ?",
+      a: "Oui. Nous nous déplaçons également dans les communes limitrophes : Aulnay-sous-Bois, Bondy, Drancy, Le Bourget, Dugny, Gonesse et Bonneuil-en-France, soit l'ensemble du territoire Paris Terres d'Envol et au-delà.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Le Blanc-Mesnil ?",
-      a: "Nous intégrons des pratiques conformes au RGPD dans toutes nos interventions à Le Blanc-Mesnil, assurant la protection des données personnelles.",
+      q: "Comment Axion-IA assure-t-elle la conformité RGPD au Blanc-Mesnil ?",
+      a: "Toutes les missions menées au Blanc-Mesnil respectent le RGPD : minimisation des données, hébergement européen par défaut, traçabilité des traitements, contrats conformes au droit européen.",
+    },
+    {
+      q: "Quels secteurs Axion-IA accompagne-t-elle en priorité au Blanc-Mesnil ?",
+      a: "Nous accompagnons en priorité les TPE et PME du commerce, de l'artisanat, du BTP, de la logistique légère, des services aux entreprises, de la restauration et du transport terrestre. Les ETI sont accompagnées en complément.",
+    },
+    {
+      q: "Axion-IA propose-t-elle du no-code au Blanc-Mesnil ?",
+      a: "Non. Nous concevons du code IA sur mesure pour les TPE/PME du Blanc-Mesnil. Cette approche garantit la propriété des solutions, leur maintenabilité et l'absence d'enfermement dans une plateforme tierce.",
     },
   ],
 };

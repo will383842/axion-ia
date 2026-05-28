@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
+// Anti-doorway HCU 2024 rewrite 2026-05-28 — Wikipedia-sourced factual data.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,60 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const LAVAL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Laval, au cœur de la Technopole Laval Mayenne, pour optimiser les processus des entreprises locales. Nous accompagnons les acteurs de l'industrie agroalimentaire et de la fabrication d'équipements électriques.",
+    "Axion-IA accompagne les TPE et PME de Laval (49 400 habitants, 53000), préfecture de la Mayenne en Pays de la Loire. À 1h10 de Paris en TGV Atlantique (huit liaisons quotidiennes via la LGV Bretagne-Pays de la Loire) et 65 km de Rennes, Le Mans et Angers, Laval s'appuie sur un bassin de vie de 144 000 personnes. Notre équipe se déplace pour automatiser les processus métiers des entreprises locales — agroalimentaire, plasturgie, automobile — avec du code custom maintenable, pas de plateforme no-code.",
   pitchEn:
-    "Axion-IA intervient à Laval, au cœur de la Technopole Laval Mayenne, pour optimiser les processus des entreprises locales. Nous accompagnons les acteurs de l'industrie agroalimentaire et de la fabrication d'équipements électriques.",
+    "Axion-IA accompagne les TPE et PME de Laval (49 400 habitants, 53000), préfecture de la Mayenne en Pays de la Loire. À 1h10 de Paris en TGV Atlantique (huit liaisons quotidiennes via la LGV Bretagne-Pays de la Loire) et 65 km de Rennes, Le Mans et Angers, Laval s'appuie sur un bassin de vie de 144 000 personnes. Notre équipe se déplace pour automatiser les processus métiers des entreprises locales — agroalimentaire, plasturgie, automobile — avec du code custom maintenable, pas de plateforme no-code.",
   directAnswerFr:
-    "Axion-IA propose des services d'IA à Laval, où des entreprises comme Lactalis et Valéo sont implantées. Notre équipe nationale se déplace pour réaliser des audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales. Les tarifs publics, tels que l'Audit Flash sur mesure, sont consultables sur notre site. Notre approche vise à intégrer l'IA de manière opérationnelle et mesurable.",
+    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit Flash 4h dès 490 € HT, une Intervention Essentielle à partir de 590 € HT et un accompagnement un-à-un dirigeant à 990 € HT. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA propose des services d'IA à Laval, où des entreprises comme Lactalis et Valéo sont implantées. Notre équipe nationale se déplace pour réaliser des audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales. Les tarifs publics, tels que l'Audit Flash sur mesure, sont consultables sur notre site. Notre approche vise à intégrer l'IA de manière opérationnelle et mesurable.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit Flash 4h dès 490 € HT, une Intervention Essentielle à partir de 590 € HT et un accompagnement un-à-un dirigeant à 990 € HT. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
+  seoHook: "TPE & PME Laval · agroalimentaire, plasturgie, automobile",
   ecosystemFr:
-    "Laval abrite des entreprises majeures comme Lactalis et Valéo. La Technopole Laval Mayenne est un centre d'innovation où se croisent l'industrie agroalimentaire et la programmation informatique.",
+    "Laval, préfecture de la Mayenne, dispose d'une aire d'attraction de 144 373 habitants sur 66 communes. Le tissu économique, historiquement textile (lin), s'est restructuré autour de l'agroalimentaire (production laitière), de la plasturgie et de la sous-traitance automobile. La ville accueille aussi des activités de services, des commerces et un écosystème universitaire et numérique structuré autour de la technopole locale, avec une forte densité de TPE et PME.",
   ecosystemEn:
-    "Laval abrite des entreprises majeures comme Lactalis et Valéo. La Technopole Laval Mayenne est un centre d'innovation où se croisent l'industrie agroalimentaire et la programmation informatique.",
-  distancesFr: "La gare TGV de Laval facilite l'accès rapide à notre équipe nationale.",
-  distancesEn: "La gare TGV de Laval facilite l'accès rapide à notre équipe nationale.",
+    "Laval, préfecture de la Mayenne, dispose d'une aire d'attraction de 144 373 habitants sur 66 communes. Le tissu économique, historiquement textile (lin), s'est restructuré autour de l'agroalimentaire (production laitière), de la plasturgie et de la sous-traitance automobile. La ville accueille aussi des activités de services, des commerces et un écosystème universitaire et numérique structuré autour de la technopole locale, avec une forte densité de TPE et PME.",
+  distancesFr:
+    "Laval est à 300 km de Paris (1h10 en TGV Atlantique, 8 liaisons quotidiennes via la LGV Bretagne-Pays de la Loire ; 2h50 par l'A81). Rennes, Le Mans et Angers sont à environ 65 km. L'aéroport de Laval-Entrammes assure des vols privés et tourisme.",
+  distancesEn:
+    "Laval est à 300 km de Paris (1h10 en TGV Atlantique, 8 liaisons quotidiennes via la LGV Bretagne-Pays de la Loire ; 2h50 par l'A81). Rennes, Le Mans et Angers sont à environ 65 km. L'aéroport de Laval-Entrammes assure des vols privés et tourisme.",
   topSectorsNaf: [
-    "Industrie agroalimentaire",
-    "Équipements électriques",
-    "Programmation informatique",
+    "Industrie agroalimentaire (laitier)",
+    "Plasturgie et caoutchouc",
+    "Industrie automobile et sous-traitance",
     "Commerce de détail",
+    "Services aux entreprises",
+    "Santé humaine et action sociale",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Laval au sein de la Technopole Laval Mayenne — identifier les opportunités IA.",
-      en: "Réaliser un audit à Laval au sein de la Technopole Laval Mayenne — identifier les opportunités IA.",
+      fr: "Auditer à Laval les flux d'un sous-traitant agroalimentaire, d'un atelier plasturgie ou d'une PME tertiaire — Audit Flash 4h dès 490 € HT.",
+      en: "Auditer à Laval les flux d'un sous-traitant agroalimentaire, d'un atelier plasturgie ou d'une PME tertiaire — Audit Flash 4h dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Laval chez Lactalis ou Valéo — automatiser les processus métiers.",
-      en: "Intervenir à Laval chez Lactalis ou Valéo — automatiser les processus métiers.",
+      fr: "Intervenir à Laval pour automatiser devis, ordonnancement et reporting d'une TPE/PME industrielle ou de services — Intervention Essentielle à partir de 590 € HT.",
+      en: "Intervenir à Laval pour automatiser devis, ordonnancement et reporting d'une TPE/PME industrielle ou de services — Intervention Essentielle à partir de 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter à Laval avec l'Université du Maine — intégrer l'IA dans vos systèmes.",
-      en: "Implémenter à Laval avec l'Université du Maine — intégrer l'IA dans vos systèmes.",
+      fr: "Implémenter à Laval des modules IA opérationnels (extraction documents fournisseurs, classification SAV, prévision stock) — déploiement sur site dès 990 € HT.",
+      en: "Implémenter à Laval des modules IA opérationnels (extraction documents fournisseurs, classification SAV, prévision stock) — déploiement sur site dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Laval — former dirigeants et managers à l'IA.",
-      en: "Accompagner en un-à-un à Laval — former dirigeants et managers à l'IA.",
+      fr: "Accompagner en un-à-un à Laval un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste sans dépendance no-code — à partir de 990 € HT.",
+      en: "Accompagner en un-à-un à Laval un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste sans dépendance no-code — à partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Laval ?",
-      a: "Les interventions à Laval commencent à partir de 590 € HT. Les tarifs publics pour nos services sont disponibles sur notre site, incluant l'Audit Flash à partir de 490 € HT.",
+      q: "Quels sont vos tarifs pour une intervention à Laval ?",
+      a: "À Laval (53000), l'Audit Flash 4h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT et l'Implémentation à 990 € HT. Tarifs publics, sans abonnement, déplacement TGV ou A81 inclus.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Laval ?",
-      a: "Notre équipe nationale se rend à Laval via la gare TGV de Laval, assurant une intervention rapide et efficace sur site.",
+      q: "Sous quel délai vous déplacez-vous à Laval ?",
+      a: "Notre équipe nationale intervient à Laval sous 5 jours ouvrés après validation. Nous arrivons en 1h10 depuis Paris-Montparnasse via la gare TGV de Laval ou par l'A81.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Laval ?",
-      a: "Les délais pour une implémentation IA à Laval varient selon le projet. Notre équipe s'engage à intervenir sur site dans les 5 jours ouvrés.",
+      q: "Intervenez-vous aussi dans les communes proches de Laval ?",
+      a: "Oui — nous nous déplaçons à Changé, Saint-Berthevin, Bonchamp-lès-Laval, Montigné-le-Brillant, L'Huisserie et Entrammes aux mêmes tarifs publics, sans surcoût kilométrique.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Laval ?",
-      a: "Oui, Axion-IA garantit la conformité RGPD lors de toutes ses interventions à Laval, assurant la protection des données personnelles.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Laval ?",
+      a: "Nous appliquons les principes RGPD (minimisation, base légale, registre des traitements, sous-traitance documentée) sur chaque mission. Les données restent hébergées en UE et un DPA est signé avant tout traitement.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous principalement à Laval ?",
+      a: "TPE et PME de l'agroalimentaire (sous-traitance laitière), plasturgie, sous-traitance automobile, commerces, professions libérales et services aux entreprises — l'IA est calibrée à la taille et au métier, pas un produit standardisé ETI.",
+    },
+    {
+      q: "Faites-vous du no-code à Laval ?",
+      a: "Non. Axion-IA livre uniquement du code custom (Python, TypeScript, intégrations API), maintenable et auditable. Pas de plateforme no-code propriétaire qui crée une dépendance long terme.",
     },
   ],
 };

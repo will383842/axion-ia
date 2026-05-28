@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manual anti-doorway rewrite 2026-05-28 (HCU 2024 thresholds + factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const LA_MADELEINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à La Madeleine pour optimiser les processus des entreprises locales. Avec des voisins tels que Lille et Marcq-en-Barœul, cette ville bénéficie d'un écosystème riche en commerce de détail et en programmation informatique.",
+    "Axion-IA accompagne les TPE et PME de La Madeleine, commune de 21 790 habitants (2023) située à environ 3 km au nord de Lille, au sein de la Métropole européenne de Lille (MEL). Le tissu économique local, longtemps industriel (textile, chimie), s'est reconverti vers les services, la banque-assurance, le commerce de détail et les sièges sociaux — dont celui de Supermarchés Match implanté sur la commune. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   pitchEn:
-    "Axion-IA intervient à La Madeleine pour optimiser les processus des entreprises locales. Avec des voisins tels que Lille et Marcq-en-Barœul, cette ville bénéficie d'un écosystème riche en commerce de détail et en programmation informatique.",
+    "Axion-IA accompagne les TPE et PME de La Madeleine, commune de 21 790 habitants (2023) située à environ 3 km au nord de Lille, au sein de la Métropole européenne de Lille (MEL). Le tissu économique local, longtemps industriel (textile, chimie), s'est reconverti vers les services, la banque-assurance, le commerce de détail et les sièges sociaux — dont celui de Supermarchés Match implanté sur la commune. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   directAnswerFr:
-    "Axion-IA se déplace à La Madeleine pour auditer et implémenter des solutions IA adaptées aux besoins spécifiques des entreprises locales. Nous proposons des audits et des interventions. Notre équipe nationale intervient sur site, garantissant un accompagnement sur mesure et une intégration fluide au sein des structures existantes.",
+    "Axion-IA intervient à La Madeleine pour les TPE et PME de la métropole lilloise, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Lille-Europe (~1 h en TGV puis 10 minutes en tramway le long de l'avenue de la République) pour des audits Flash, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit Flash 4 h à 490 € HT, Intervention Essentielle à 590 € HT, accompagnement un-à-un dès 990 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à La Madeleine pour auditer et implémenter des solutions IA adaptées aux besoins spécifiques des entreprises locales. Nous proposons des audits et des interventions. Notre équipe nationale intervient sur site, garantissant un accompagnement sur mesure et une intégration fluide au sein des structures existantes.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA intervient à La Madeleine pour les TPE et PME de la métropole lilloise, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Lille-Europe (~1 h en TGV puis 10 minutes en tramway le long de l'avenue de la République) pour des audits Flash, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit Flash 4 h à 490 € HT, Intervention Essentielle à 590 € HT, accompagnement un-à-un dès 990 € HT.",
+  seoHook: "TPE & PME · Métropole de Lille · IA opérationnelle code custom",
   ecosystemFr:
-    "La Madeleine fait partie d'un bassin économique dynamique comprenant Lille et Saint-André-lez-Lille. Les entreprises locales bénéficient de la proximité de secteurs variés tels que le commerce de détail et la programmation informatique, enrichissant l'écosystème économique.",
+    "La Madeleine appartient au bassin économique de la Métropole européenne de Lille (MEL), à la jonction de Lille, Marcq-en-Barœul, Marquette-lez-Lille et Saint-André-lez-Lille. Le tissu local mélange sièges sociaux (Supermarchés Match), commerces de détail, services financiers, agences d'assurance et PME spécialisées issues de la reconversion des anciennes friches textiles et chimiques. Le secteur du conseil et des services aux entreprises y est particulièrement développé.",
   ecosystemEn:
-    "La Madeleine fait partie d'un bassin économique dynamique comprenant Lille et Saint-André-lez-Lille. Les entreprises locales bénéficient de la proximité de secteurs variés tels que le commerce de détail et la programmation informatique, enrichissant l'écosystème économique.",
+    "La Madeleine appartient au bassin économique de la Métropole européenne de Lille (MEL), à la jonction de Lille, Marcq-en-Barœul, Marquette-lez-Lille et Saint-André-lez-Lille. Le tissu local mélange sièges sociaux (Supermarchés Match), commerces de détail, services financiers, agences d'assurance et PME spécialisées issues de la reconversion des anciennes friches textiles et chimiques. Le secteur du conseil et des services aux entreprises y est particulièrement développé.",
   distancesFr:
-    "La Madeleine est à 5 km de la gare TGV Lille Europe et à 15 km de l'aéroport de Lille.",
+    "La Madeleine est à environ 3 km au nord de Lille-Centre. La gare de La Madeleine (ligne TER Lille-Flandres ↔ Hazebrouck) dessert Lille-Flandres en 4 minutes. La gare TGV Lille-Europe est à ~3 km, l'aéroport Lille-Lesquin à environ 15 km via la rocade.",
   distancesEn:
-    "La Madeleine est à 5 km de la gare TGV Lille Europe et à 15 km de l'aéroport de Lille.",
+    "La Madeleine est à environ 3 km au nord de Lille-Centre. La gare de La Madeleine (ligne TER Lille-Flandres ↔ Hazebrouck) dessert Lille-Flandres en 4 minutes. La gare TGV Lille-Europe est à ~3 km, l'aéroport Lille-Lesquin à environ 15 km via la rocade.",
   topSectorsNaf: [
     "Commerce de détail",
-    "Programmation informatique",
-    "Services financiers",
     "Activités des sièges sociaux",
+    "Services financiers, banque et assurance",
+    "Conseil pour les affaires et autres conseils de gestion",
+    "Activités juridiques et comptables",
+    "Programmation et conseil en systèmes informatiques",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à La Madeleine permet de détecter les inefficacités dans les processus, avec un Audit Flash à partir de 490 € HT.",
-      en: "Réaliser un audit à La Madeleine permet de détecter les inefficacités dans les processus, avec un Audit Flash à partir de 490 € HT.",
+      fr: "À La Madeleine, un Audit Flash sur site (490 € HT, 4 h) cartographie les processus chronophages d'une TPE ou PME du commerce, de la banque-assurance ou des services — et chiffre les automatisations à fort retour avant tout engagement.",
+      en: "À La Madeleine, un Audit Flash sur site (490 € HT, 4 h) cartographie les processus chronophages d'une TPE ou PME du commerce, de la banque-assurance ou des services — et chiffre les automatisations à fort retour avant tout engagement.",
     },
     interventions: {
-      fr: "Intervenir à La Madeleine pour automatiser les tâches administratives, optimisant ainsi le temps des équipes locales.",
-      en: "Intervenir à La Madeleine pour automatiser les tâches administratives, optimisant ainsi le temps des équipes locales.",
+      fr: "Nos interventions à La Madeleine (à partir de 590 € HT) automatisent les flux administratifs récurrents : traitement des emails entrants, génération de devis, reporting client, ou agents internes branchés sur les outils existants.",
+      en: "Nos interventions à La Madeleine (à partir de 590 € HT) automatisent les flux administratifs récurrents : traitement des emails entrants, génération de devis, reporting client, ou agents internes branchés sur les outils existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à La Madeleine pour intégrer des outils modernes et efficaces dans les entreprises locales.",
-      en: "Implémenter des solutions IA à La Madeleine pour intégrer des outils modernes et efficaces dans les entreprises locales.",
+      fr: "Sur les projets d'implémentation à La Madeleine, Axion-IA code en TypeScript, Python ou Node.js et raccorde les briques IA aux ERP, CRM et back-offices des PME locales, sans verrouillage par une plateforme no-code tierce.",
+      en: "Sur les projets d'implémentation à La Madeleine, Axion-IA code en TypeScript, Python ou Node.js et raccorde les briques IA aux ERP, CRM et back-offices des PME locales, sans verrouillage par une plateforme no-code tierce.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à La Madeleine pour former les dirigeants à l'utilisation stratégique de l'IA, dès 990 € HT.",
-      en: "Accompagner en un-à-un à La Madeleine pour former les dirigeants à l'utilisation stratégique de l'IA, dès 990 € HT.",
+      fr: "L'accompagnement un-à-un à La Madeleine (dès 990 € HT) s'adresse aux dirigeants de TPE et PME de la métropole lilloise qui veulent arbitrer en connaissance de cause leurs investissements IA sans déléguer la décision à un prestataire.",
+      en: "L'accompagnement un-à-un à La Madeleine (dès 990 € HT) s'adresse aux dirigeants de TPE et PME de la métropole lilloise qui veulent arbitrer en connaissance de cause leurs investissements IA sans déléguer la décision à un prestataire.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à La Madeleine ?",
-      a: "Les interventions IA à La Madeleine commencent à partir de 590 € HT pour l'Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à La Madeleine ?",
+      a: "Nos tarifs publics s'appliquent à La Madeleine comme partout en France : Audit Flash 4 h à 490 € HT, Intervention Essentielle à 590 € HT, accompagnement un-à-un dès 990 € HT. Devis envoyé sous 48 h, pas de forfait caché.",
     },
     {
-      q: "Comment se déroule un audit IA sur site à La Madeleine ?",
-      a: "Un expert Axion-IA se déplace sur site à La Madeleine pour réaliser un audit complet, débutant à partir de 490 € HT, afin d'identifier les opportunités d'amélioration.",
+      q: "Sous quel délai un consultant Axion-IA peut-il se déplacer à La Madeleine ?",
+      a: "Depuis Paris, nous rejoignons La Madeleine via la gare TGV Lille-Europe (~1 h de TGV puis 10 minutes en tramway). Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
     },
     {
-      q: "Axion-IA propose-t-il des formations IA pour les dirigeants de La Madeleine ?",
-      a: "Oui, nous proposons des sessions un-à-un à partir de 990 € HT pour former les dirigeants de La Madeleine à l'usage stratégique de l'IA dans leur entreprise.",
+      q: "Intervenez-vous aussi dans les communes voisines de La Madeleine ?",
+      a: "Oui. Nous intervenons à Lille, Marcq-en-Barœul, Marquette-lez-Lille et Saint-André-lez-Lille au sein de la Métropole européenne de Lille, sans frais de déplacement supplémentaires intra-MEL.",
     },
     {
-      q: "Quels sont les délais d'intervention d'Axion-IA à La Madeleine ?",
-      a: "Axion-IA garantit une intervention sur site à La Madeleine dans un délai de 5 jours ouvrés après la confirmation de la commande.",
+      q: "Comment Axion-IA garantit-elle la conformité RGPD à La Madeleine ?",
+      a: "Nous codons des solutions hébergées en UE, sans envoi de données personnelles vers des APIs hors-UE non conformes, et documentons chaque traitement (registre, base légale, durée de conservation) pour vos délégués à la protection des données.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous à La Madeleine ?",
+      a: "Nos clients à La Madeleine et dans la métropole lilloise sont majoritairement des PME du commerce de détail, des cabinets de conseil, des sièges sociaux régionaux (type Supermarchés Match), des agences bancaires et assurance, ainsi que des structures de services aux entreprises.",
+    },
+    {
+      q: "Travaillez-vous avec des plateformes no-code à La Madeleine ?",
+      a: "Non. Nous codons en TypeScript, Python ou Node.js et raccordons les briques IA aux outils existants de nos clients. Cela évite la dépendance à un éditeur tiers et garantit la portabilité des automatismes livrés.",
     },
   ],
 };

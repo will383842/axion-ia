@@ -1,63 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — HCU 2024 anti-doorway pass + Wikipedia facts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const LIMEIL_BREVANNES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Limeil-Brévannes, un bassin industriel dynamique proche de Paris. Nos services s'adressent aux entreprises locales, notamment dans les secteurs du commerce de gros et des transports terrestres.",
+    "Axion-IA accompagne les TPE et PME de Limeil-Brévannes, commune de 27 406 habitants du Val-de-Marne située à 16 km au sud-est de Paris. Notre cabinet intervient sur site auprès des entreprises du tissu local et des établissements de santé, notamment autour de l'hôpital Émile-Roux (AP-HP, gériatrie). Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées aux PME industrielles, services et commerces du secteur. Les ETI viennent en complément.",
   pitchEn:
-    "Axion-IA intervient à Limeil-Brévannes, un bassin industriel dynamique proche de Paris. Nos services s'adressent aux entreprises locales, notamment dans les secteurs du commerce de gros et des transports terrestres.",
+    "Axion-IA accompagne les TPE et PME de Limeil-Brévannes, commune de 27 406 habitants du Val-de-Marne située à 16 km au sud-est de Paris. Notre cabinet intervient sur site auprès des entreprises du tissu local et des établissements de santé, notamment autour de l'hôpital Émile-Roux (AP-HP, gériatrie). Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées aux PME industrielles, services et commerces du secteur. Les ETI viennent en complément.",
   directAnswerFr:
-    "À Limeil-Brévannes, Axion-IA déploie son expertise en IA pour optimiser les processus métiers. Avec des voisins économiques comme Créteil et Bonneuil-sur-Marne, la région offre un environnement propice à l'innovation. Nous proposons des audits et interventions sur site, s'adaptant aux spécificités de chaque entreprise, sans lien direct avec des entités comme Cap Digital ou Station F.",
+    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nos consultants se déplacent sur site depuis Paris (16 km, accès RER A via Boissy-Saint-Léger ou RER D via Créteil-Pompadour) pour auditer, automatiser et implémenter des solutions IA en code custom. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
   directAnswerEn:
-    "À Limeil-Brévannes, Axion-IA déploie son expertise en IA pour optimiser les processus métiers. Avec des voisins économiques comme Créteil et Bonneuil-sur-Marne, la région offre un environnement propice à l'innovation. Nous proposons des audits et interventions sur site, s'adaptant aux spécificités de chaque entreprise, sans lien direct avec des entités comme Cap Digital ou Station F.",
-  seoHook: "commerce gros & transports terrestres",
+    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nos consultants se déplacent sur site depuis Paris (16 km, accès RER A via Boissy-Saint-Léger ou RER D via Créteil-Pompadour) pour auditer, automatiser et implémenter des solutions IA en code custom. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
+  seoHook: "PME services & santé",
   ecosystemFr:
-    "Limeil-Brévannes est entourée de communes comme Villeneuve-Saint-Georges et Boissy-Saint-Léger. Le commerce de gros et les transports terrestres dominent l'économie locale.",
+    "Limeil-Brévannes s'insère dans le bassin sud-est francilien, à 16 km de Paris. La commune accueille l'hôpital Émile-Roux de l'AP-HP (spécialisé en gériatrie) et plusieurs employeurs industriels comme Sodern, Philips et Ommic SAS. Le bassin est connecté par les RN 19 et 406, le RER A (Boissy-Saint-Léger), le RER D (Créteil-Pompadour, Villeneuve-Saint-Georges), la ligne 8 du métro via Pointe du Lac et le téléphérique Câble 1. Communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Yerres et Villecresnes.",
   ecosystemEn:
-    "Limeil-Brévannes est entourée de communes comme Villeneuve-Saint-Georges et Boissy-Saint-Léger. Le commerce de gros et les transports terrestres dominent l'économie locale.",
+    "Limeil-Brévannes s'insère dans le bassin sud-est francilien, à 16 km de Paris. La commune accueille l'hôpital Émile-Roux de l'AP-HP (spécialisé en gériatrie) et plusieurs employeurs industriels comme Sodern, Philips et Ommic SAS. Le bassin est connecté par les RN 19 et 406, le RER A (Boissy-Saint-Léger), le RER D (Créteil-Pompadour, Villeneuve-Saint-Georges), la ligne 8 du métro via Pointe du Lac et le téléphérique Câble 1. Communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Yerres et Villecresnes.",
   distancesFr:
-    "Limeil-Brévannes est à 12 km de l'aéroport de Paris-Orly et à 15 km de la gare de Lyon.",
+    "Limeil-Brévannes est à 16 km au sud-est de Paris. Accès RER A via Boissy-Saint-Léger, RER D via Créteil-Pompadour ou Villeneuve-Saint-Georges, et ligne 8 du métro via Pointe du Lac. Aéroport Paris-Orly à environ 12 km.",
   distancesEn:
-    "Limeil-Brévannes est à 12 km de l'aéroport de Paris-Orly et à 15 km de la gare de Lyon.",
-  topSectorsNaf: ["Commerce de gros", "Transports terrestres", "Travaux de construction"],
+    "Limeil-Brévannes est à 16 km au sud-est de Paris. Accès RER A via Boissy-Saint-Léger, RER D via Créteil-Pompadour ou Villeneuve-Saint-Georges, et ligne 8 du métro via Pointe du Lac. Aéroport Paris-Orly à environ 12 km.",
+  topSectorsNaf: [
+    "Activités pour la santé humaine",
+    "Industrie électronique",
+    "Commerce de détail",
+    "Transports terrestres",
+    "Travaux de construction spécialisés",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Limeil-Brévannes permet d'identifier des améliorations immédiates. L'audit Flash est tarifé selon vos enjeux.",
-      en: "Réaliser un audit à Limeil-Brévannes permet d'identifier des améliorations immédiates. L'audit Flash est tarifé selon vos enjeux.",
+      fr: "Audit IA Flash à Limeil-Brévannes (490 € HT, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
+      en: "Audit IA Flash à Limeil-Brévannes (490 € HT, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
     },
     interventions: {
-      fr: "Intervenir à Limeil-Brévannes optimise vos processus métiers. Nos interventions commencent à 590 € HT.",
-      en: "Intervenir à Limeil-Brévannes optimise vos processus métiers. Nos interventions commencent à 590 € HT.",
+      fr: "Interventions à Limeil-Brévannes dès 590 € HT : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
+      en: "Interventions à Limeil-Brévannes dès 590 € HT : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Limeil-Brévannes transforme vos opérations. Nos services débutent à 990 € HT.",
-      en: "Implémenter des solutions IA à Limeil-Brévannes transforme vos opérations. Nos services débutent à 990 € HT.",
+      fr: "Implémentation IA à Limeil-Brévannes dès 990 € HT : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
+      en: "Implémentation IA à Limeil-Brévannes dès 990 € HT : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Limeil-Brévannes garantit un suivi personnalisé pour les dirigeants dès 990 € HT.",
-      en: "Accompagner en un-à-un à Limeil-Brévannes garantit un suivi personnalisé pour les dirigeants dès 990 € HT.",
+      fr: "Sessions 1-to-1 à Limeil-Brévannes dès 990 € HT : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
+      en: "Sessions 1-to-1 à Limeil-Brévannes dès 990 € HT : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Limeil-Brévannes ?",
-      a: "Nos audits à Limeil-Brévannes commencent à partir de 490 € HT pour un audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'Axion-IA à Limeil-Brévannes ?",
+      a: "Audit Flash dès 490 € HT (4 h sur site), interventions dès 590 € HT, implémentations et sessions 1-to-1 dès 990 € HT. Tarifs publics détaillés sur la page Tarifs.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Limeil-Brévannes ?",
-      a: "Nos consultants se déplacent directement sur site à Limeil-Brévannes, assurant une intervention rapide et adaptée aux besoins de votre entreprise.",
+      q: "Quel est le délai pour une intervention à Limeil-Brévannes ?",
+      a: "Déplacement sur site dans les 5 jours ouvrés suivant la confirmation. Accès rapide par RER A (Boissy-Saint-Léger) ou RER D (Créteil-Pompadour) depuis Paris.",
     },
     {
-      q: "Quels délais pour une intervention à Limeil-Brévannes ?",
-      a: "Nous nous engageons à intervenir sur site à Limeil-Brévannes dans un délai de 5 jours ouvrés après confirmation.",
+      q: "Quelles communes proches sont couvertes depuis Limeil-Brévannes ?",
+      a: "Nous couvrons les communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres, sans frais de déplacement supplémentaires.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Limeil-Brévannes ?",
-      a: "Nous garantissons que toutes nos solutions respectent les normes RGPD en vigueur, assurant la protection des données de votre entreprise à Limeil-Brévannes.",
+      q: "Comment Axion-IA respecte-t-il le RGPD à Limeil-Brévannes ?",
+      a: "Hébergement européen, chiffrement, registre des traitements et clauses contractuelles conformes au RGPD. Particulièrement adapté aux établissements de santé du bassin (dont l'hôpital Émile-Roux AP-HP).",
+    },
+    {
+      q: "Quels secteurs locaux sont prioritaires à Limeil-Brévannes ?",
+      a: "TPE et PME en santé, services, commerce et sous-traitance industrielle (autour de Sodern, Philips, Ommic SAS) sont prioritaires. Les ETI viennent en complément.",
+    },
+    {
+      q: "Axion-IA propose-t-il du no-code à Limeil-Brévannes ?",
+      a: "Non. Nous développons exclusivement en code custom : maîtrise du code source, indépendance vis-à-vis des plateformes propriétaires et conformité RGPD renforcée pour nos clients TPE et PME.",
     },
   ],
 };

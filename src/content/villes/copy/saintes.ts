@@ -1,67 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 — Wikipedia-sourced).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const SAINTES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Saintes, optimisant les processus des entreprises locales. Avec des entités comme Cap Digital et Inria en France, nous apportons notre expertise en IA aux secteurs du commerce de détail et de la construction.",
+    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   pitchEn:
-    "Axion-IA intervient à Saintes, optimisant les processus des entreprises locales. Avec des entités comme Cap Digital et Inria en France, nous apportons notre expertise en IA aux secteurs du commerce de détail et de la construction.",
+    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   directAnswerFr:
-    "Axion-IA se déplace à Saintes pour accompagner les entreprises dans leur transformation numérique. En s'appuyant sur des références nationales telles que LVMH et BNP Paribas, nous proposons des audits, interventions et implémentations adaptés aux besoins locaux. Notre approche garantit une intégration fluide de l'IA dans les processus existants, tout en respectant les contraintes économiques et structurelles de chaque entreprise.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
   directAnswerEn:
-    "Axion-IA se déplace à Saintes pour accompagner les entreprises dans leur transformation numérique. En s'appuyant sur des références nationales telles que LVMH et BNP Paribas, nous proposons des audits, interventions et implémentations adaptés aux besoins locaux. Notre approche garantit une intégration fluide de l'IA dans les processus existants, tout en respectant les contraintes économiques et structurelles de chaque entreprise.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
+  seoHook: "tertiaire & coopératif Charente-Maritime",
   ecosystemFr:
-    "Saintes se distingue par un tissu économique dominé par le commerce de détail et la construction. À l'image de pôles comme Cap Digital et Station F, les entreprises locales bénéficient d'un environnement propice à l'innovation et à l'adoption de l'IA.",
+    "Saintes est sous-préfecture de Charente-Maritime et deuxième pôle urbain du département. L'économie repose sur le tertiaire (administration, justice, banques, éducation, santé), le commerce régional, le siège de Coop Atlantique (première coopérative de consommateurs de France), un dépôt ferroviaire SNCF et quelques industries de niche (électronique, équipements de levage). Le patrimoine gallo-romain et médiéval soutient un tissu touristique structurant.",
   ecosystemEn:
-    "Saintes se distingue par un tissu économique dominé par le commerce de détail et la construction. À l'image de pôles comme Cap Digital et Station F, les entreprises locales bénéficient d'un environnement propice à l'innovation et à l'adoption de l'IA.",
+    "Saintes est sous-préfecture de Charente-Maritime et deuxième pôle urbain du département. L'économie repose sur le tertiaire (administration, justice, banques, éducation, santé), le commerce régional, le siège de Coop Atlantique (première coopérative de consommateurs de France), un dépôt ferroviaire SNCF et quelques industries de niche (électronique, équipements de levage). Le patrimoine gallo-romain et médiéval soutient un tissu touristique structurant.",
   distancesFr:
-    "Saintes est située à 70 km de la Gare TGV de La Rochelle et à 80 km de l'Aéroport de La Rochelle-Île de Ré.",
+    "Saintes est située à 60 km au sud-est de La Rochelle (préfecture), 25 km à l'ouest de Cognac et 100 km au nord de Bordeaux. Desserte autoroutière par l'A10 (Bordeaux-Poitiers-Paris) et l'A837 (Rochefort). Gare SNCF de Saintes connectée au réseau régional. Aéroport La Rochelle-Île de Ré à environ 75 km, Bordeaux-Mérignac à 110 km.",
   distancesEn:
-    "Saintes est située à 70 km de la Gare TGV de La Rochelle et à 80 km de l'Aéroport de La Rochelle-Île de Ré.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Santé humaine"],
+    "Saintes est située à 60 km au sud-est de La Rochelle (préfecture), 25 km à l'ouest de Cognac et 100 km au nord de Bordeaux. Desserte autoroutière par l'A10 (Bordeaux-Poitiers-Paris) et l'A837 (Rochefort). Gare SNCF de Saintes connectée au réseau régional. Aéroport La Rochelle-Île de Ré à environ 75 km, Bordeaux-Mérignac à 110 km.",
+  topSectorsNaf: [
+    "Administration publique & justice (sous-préfecture)",
+    "Banques & services financiers",
+    "Commerce de détail & grande distribution coopérative",
+    "Santé humaine & action sociale",
+    "Transports ferroviaires (dépôt SNCF)",
+    "Tourisme patrimonial",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Saintes pour identifier les leviers IA dans le commerce de détail.",
-      en: "Réaliser un audit à Saintes pour identifier les leviers IA dans le commerce de détail.",
+      fr: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
+      en: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
     },
     interventions: {
-      fr: "Intervenir à Saintes pour automatiser les processus dans le secteur de la construction.",
-      en: "Intervenir à Saintes pour automatiser les processus dans le secteur de la construction.",
+      fr: "Interventions ponctuelles à Saintes pour PME tertiaires, agences bancaires régionales, acteurs du tourisme patrimonial. Refonte prompts, intégration LLM via APIs, debug de pipelines IA existants.",
+      en: "Interventions ponctuelles à Saintes pour PME tertiaires, agences bancaires régionales, acteurs du tourisme patrimonial. Refonte prompts, intégration LLM via APIs, debug de pipelines IA existants.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Saintes pour optimiser les services de restauration.",
-      en: "Implémenter des solutions IA à Saintes pour optimiser les services de restauration.",
+      fr: "Implémentation IA à Saintes en code custom (Python/TypeScript) : assistants administratifs, automatisation back-office services, outils métiers pour le commerce coopératif et le tourisme.",
+      en: "Implémentation IA à Saintes en code custom (Python/TypeScript) : assistants administratifs, automatisation back-office services, outils métiers pour le commerce coopératif et le tourisme.",
     },
     unAUn: {
-      fr: "Accompagner un dirigeant à Saintes pour intégrer l'IA dans les tâches administratives.",
-      en: "Accompagner un dirigeant à Saintes pour intégrer l'IA dans les tâches administratives.",
+      fr: "Coaching un-à-un à Saintes pour dirigeants TPE/PME : feuille de route IA, choix des outils, anticipation des coûts. 1h30 à 990 € HT, sur site Charente-Maritime ou en visio.",
+      en: "Coaching un-à-un à Saintes pour dirigeants TPE/PME : feuille de route IA, choix des outils, anticipation des coûts. 1h30 à 990 € HT, sur site Charente-Maritime ou en visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Saintes ?",
-      a: "Nos audits à Saintes débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      a: "Audits Flash à partir de 590 € HT pour 4 heures sur site à Saintes. Tarifs publics sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour missions plus longues.",
     },
     {
-      q: "Comment se déroule une intervention IA à Saintes ?",
-      a: "Nous nous déplaçons à Saintes pour effectuer des interventions sur site, garantissant une intégration optimale de l'IA dans vos processus.",
+      q: "Williams se déplace-t-il à Saintes pour intervenir sur site ?",
+      a: "Oui. Williams se déplace à Saintes (17100) et dans les communes limitrophes : Chaniers, Chermignac, Fontcouverte, Bussac-sur-Charente. Couvre également Cognac (25 km) et le département de Charente-Maritime, sans frais kilométriques additionnels dans un rayon de 50 km.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Saintes ?",
-      a: "Nos délais d'intervention à Saintes sont rapides. Williams se déplace sur site dans les 5 jours ouvrés pour débuter l'implémentation.",
+      q: "Quels délais pour démarrer une mission IA à Saintes ?",
+      a: "Williams se déplace à Saintes dans les 5 à 7 jours ouvrés après signature du devis (distance Paris-Saintes prise en compte). L'Audit Flash débouche sur un rendu écrit sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Comment Axion-IA assure-t-elle la conformité RGPD à Saintes ?",
-      a: "Axion-IA garantit que toutes les solutions IA mises en place à Saintes respectent les normes RGPD, assurant la protection des données personnelles.",
+      a: "Toutes nos implémentations IA à Saintes respectent le RGPD (hébergement UE, registre des traitements) et anticipent l'AI Act 2026. Vigilance particulière pour les structures bancaires, santé et coopératives traitant données personnelles et financières.",
     },
     {
-      q: "Proposez-vous des formations IA pour dirigeants à Saintes ?",
-      a: "Oui, nous offrons des sessions 1-to-1 pour dirigeants à Saintes, à partir de 990 € HT, pour intégrer efficacement l'IA dans leurs opérations.",
+      q: "Quels secteurs économiques accompagnez-vous à Saintes ?",
+      a: "Tertiaire administratif et bancaire, santé de proximité, grande distribution coopérative (écosystème Coop Atlantique), commerce de centre-ville, tourisme patrimonial (vestiges gallo-romains, abbaye aux Dames) et PME industrielles de niche du bassin saintais.",
+    },
+    {
+      q: "Proposez-vous des sessions 1-to-1 pour dirigeants saintais ?",
+      a: "Oui. Sessions un-à-un à Saintes à 990 € HT (1h30), sur site ou visio. Cible : dirigeants de TPE/PME du tertiaire, du commerce coopératif ou du tourisme souhaitant cadrer leur stratégie IA en code custom.",
     },
   ],
 };

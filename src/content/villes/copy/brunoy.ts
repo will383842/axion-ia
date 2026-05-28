@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factuel).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const BRUNOY_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Brunoy, ville proche de Paris, pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et Cap Digital à proximité, nous apportons notre expertise nationale directement sur site.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Brunoy, commune résidentielle de 25 643 habitants en Essonne, à 21 km au sud-est de Paris. Notre équipe se déplace sur site auprès des commerces de détail, cabinets de professions libérales et petites structures de services qui constituent le tissu économique local. Nous automatisons les tâches administratives, les relances clients et la qualification de prospects avec du code custom — pas de no-code. Desservie par la gare RER D, Brunoy bénéficie d'un accès direct à Paris-Gare-de-Lyon, ce qui facilite nos interventions ponctuelles.",
   pitchEn:
-    "Axion-IA intervient à Brunoy, ville proche de Paris, pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et Cap Digital à proximité, nous apportons notre expertise nationale directement sur site.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Brunoy, commune résidentielle de 25 643 habitants en Essonne, à 21 km au sud-est de Paris. Notre équipe se déplace sur site auprès des commerces de détail, cabinets de professions libérales et petites structures de services qui constituent le tissu économique local. Nous automatisons les tâches administratives, les relances clients et la qualification de prospects avec du code custom — pas de no-code. Desservie par la gare RER D, Brunoy bénéficie d'un accès direct à Paris-Gare-de-Lyon, ce qui facilite nos interventions ponctuelles.",
   directAnswerFr:
-    "À Brunoy, Axion-IA propose des interventions sur site pour les entreprises locales. Bien que nous ne collaborions pas directement avec des entités comme Station F ou Inria, notre approche s'appuie sur une expertise éprouvée pour automatiser et optimiser les tâches administratives et commerciales. Nous proposons des services adaptés aux besoins spécifiques des TPE, PME et ETI de Brunoy.",
+    "Axion-IA accompagne les TPE et PME de Brunoy (Essonne, 25 643 habitants) dans l'automatisation IA de leurs processus métier : devis, relances, suivi clients, qualification de leads. Nous intervenons sur site pour les commerces de détail, professionnels libéraux, artisans et petites structures de services du Val d'Yerres. Notre approche repose sur du code custom (Python, Node.js) et non sur des plateformes no-code, ce qui garantit la pérennité et la conformité RGPD de chaque déploiement. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
   directAnswerEn:
-    "À Brunoy, Axion-IA propose des interventions sur site pour les entreprises locales. Bien que nous ne collaborions pas directement avec des entités comme Station F ou Inria, notre approche s'appuie sur une expertise éprouvée pour automatiser et optimiser les tâches administratives et commerciales. Nous proposons des services adaptés aux besoins spécifiques des TPE, PME et ETI de Brunoy.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA accompagne les TPE et PME de Brunoy (Essonne, 25 643 habitants) dans l'automatisation IA de leurs processus métier : devis, relances, suivi clients, qualification de leads. Nous intervenons sur site pour les commerces de détail, professionnels libéraux, artisans et petites structures de services du Val d'Yerres. Notre approche repose sur du code custom (Python, Node.js) et non sur des plateformes no-code, ce qui garantit la pérennité et la conformité RGPD de chaque déploiement. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
+  seoHook: "commerce détail & services aux particuliers",
   ecosystemFr:
-    "Brunoy, située en Île-de-France, bénéficie de la proximité d'acteurs économiques comme LVMH et BNP Paribas. Cet environnement économique dynamique offre des opportunités pour les entreprises locales souhaitant intégrer des solutions IA.",
+    "Brunoy est une commune résidentielle de l'Essonne, intégrée à la communauté d'agglomération Val d'Yerres Val de Seine. Le tissu économique local est dominé par les commerces de détail du centre-ville, les services à la personne, les professions libérales (santé, juridique) et l'artisanat. La proximité de la forêt de Sénart et l'accès direct à Paris via le RER D en font un pôle pour entrepreneurs indépendants et petites structures tertiaires.",
   ecosystemEn:
-    "Brunoy, située en Île-de-France, bénéficie de la proximité d'acteurs économiques comme LVMH et BNP Paribas. Cet environnement économique dynamique offre des opportunités pour les entreprises locales souhaitant intégrer des solutions IA.",
+    "Brunoy est une commune résidentielle de l'Essonne, intégrée à la communauté d'agglomération Val d'Yerres Val de Seine. Le tissu économique local est dominé par les commerces de détail du centre-ville, les services à la personne, les professions libérales (santé, juridique) et l'artisanat. La proximité de la forêt de Sénart et l'accès direct à Paris via le RER D en font un pôle pour entrepreneurs indépendants et petites structures tertiaires.",
   distancesFr:
-    "Brunoy se situe à 25 km de la Gare TGV Gare de Lyon et à 20 km de l'Aéroport de Paris-Orly.",
+    "Brunoy est desservie par la gare RER D (ligne directe Paris-Gare-de-Lyon en 30 min), à 21 km au sud-est de Paris et environ 25 km de l'aéroport de Paris-Orly.",
   distancesEn:
-    "Brunoy se situe à 25 km de la Gare TGV Gare de Lyon et à 20 km de l'Aéroport de Paris-Orly.",
+    "Brunoy est desservie par la gare RER D (ligne directe Paris-Gare-de-Lyon en 30 min), à 21 km au sud-est de Paris et environ 25 km de l'aéroport de Paris-Orly.",
   topSectorsNaf: [
     "Commerce de détail",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
+    "Services à la personne",
+    "Professions libérales (santé, juridique)",
+    "Artisanat du bâtiment",
+    "Restauration",
     "Action sociale",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Brunoy permet d'identifier les processus à optimiser dans les entreprises locales, avec des tarifs à partir de 490 € HT.",
-      en: "Réaliser un audit à Brunoy permet d'identifier les processus à optimiser dans les entreprises locales, avec des tarifs à partir de 490 € HT.",
+      fr: "Audit Flash IA à Brunoy (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
+      en: "Audit Flash IA à Brunoy (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
     },
     interventions: {
-      fr: "Intervenir à Brunoy pour automatiser les tâches administratives et commerciales, en s'appuyant sur notre expertise nationale.",
-      en: "Intervenir à Brunoy pour automatiser les tâches administratives et commerciales, en s'appuyant sur notre expertise nationale.",
+      fr: "Interventions à Brunoy dès 590 € HT pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
+      en: "Interventions à Brunoy dès 590 € HT pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Brunoy, facilitant l'intégration dans les systèmes existants dès 990 € HT.",
-      en: "Implémenter des solutions IA à Brunoy, facilitant l'intégration dans les systèmes existants dès 990 € HT.",
+      fr: "Implémentation IA à Brunoy dès 990 € HT : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
+      en: "Implémentation IA à Brunoy dès 990 € HT : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Brunoy avec des sessions 1-to-1, pour une adoption efficace de l'IA au sein de leur entreprise.",
-      en: "Accompagner les dirigeants de Brunoy avec des sessions 1-to-1, pour une adoption efficace de l'IA au sein de leur entreprise.",
+      fr: "Accompagnement un-à-un à Brunoy dès 990 € HT pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
+      en: "Accompagnement un-à-un à Brunoy dès 990 € HT pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Brunoy ?",
-      a: "Les interventions IA à Brunoy débutent à partir de 590 € HT. Pour plus de détails, consultez nos tarifs publics disponibles sur notre site.",
+      q: "Quels sont les tarifs d'une intervention IA à Brunoy ?",
+      a: "Les interventions Axion-IA à Brunoy démarrent à 590 € HT (Intervention Essentielle). L'Audit Flash 4 h est à 490 € HT, l'implémentation dès 990 € HT. Tous nos tarifs sont publics et fixes.",
     },
     {
-      q: "Axion-IA peut-elle se déplacer à Brunoy pour une consultation ?",
-      a: "Oui, notre équipe nationale se déplace à Brunoy pour réaliser des consultations sur site, dans un délai de cinq jours ouvrés.",
+      q: "Sous quel délai pouvez-vous intervenir à Brunoy ?",
+      a: "Notre équipe se déplace à Brunoy dans un délai de 5 jours ouvrés après validation de la mission. Brunoy est accessible en 30 min depuis Paris-Gare-de-Lyon via le RER D.",
     },
     {
-      q: "Comment Axion-IA garantit-elle la conformité RGPD à Brunoy ?",
-      a: "Nous intégrons les exigences RGPD dans toutes nos solutions IA, assurant ainsi la protection des données pour nos clients à Brunoy.",
+      q: "Couvrez-vous les communes proches de Brunoy ?",
+      a: "Oui, nous intervenons également à Yerres, Montgeron, Épinay-sous-Sénart, Villecresnes, Mandres-les-Roses et Soisy-sur-Seine — l'ensemble du Val d'Yerres et des communes limitrophes du Val-de-Marne.",
     },
     {
-      q: "Proposez-vous des audits rapides pour les PME de Brunoy ?",
-      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de 490 € HT, idéal pour les PME de Brunoy souhaitant un diagnostic rapide.",
+      q: "Vos solutions IA respectent-elles le RGPD à Brunoy ?",
+      a: "Oui, chaque déploiement Axion-IA intègre dès la conception les exigences RGPD : hébergement EU, données chiffrées, droit à l'effacement, registre des traitements. Nous remettons une fiche RGPD à chaque client.",
+    },
+    {
+      q: "Quels secteurs Axion-IA cible-t-elle à Brunoy ?",
+      a: "Nous accompagnons en priorité les TPE et PME de Brunoy : commerces de détail, professions libérales (santé, juridique), artisans du bâtiment, services à la personne, restauration. Les ETI restent un cas marginal.",
+    },
+    {
+      q: "Proposez-vous des solutions no-code à Brunoy ?",
+      a: "Non. Axion-IA développe uniquement du code custom (Python, Node.js, TypeScript). Cette approche garantit la pérennité, la performance et la conformité de vos automatisations IA sur le long terme.",
     },
   ],
 };

@@ -1,72 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — corrigé anti-doorway HCU 2024 (T4 sprint).
+// Montrouge (92, Hauts-de-Seine) — 46 324 hab. (2023), siège Crédit Agricole SA, métro M4 + M13.
 
 import type { VilleCopy } from "./types";
 
 export const MONTROUGE_COPY: VilleCopy = {
   pitchFr:
-    "À Montrouge, Axion-IA intervient pour optimiser les processus des entreprises locales, notamment celles du secteur des services financiers. Notre approche s'appuie sur une expertise reconnue, comme celle de Cap Digital et Inria.",
+    "Montrouge (92), commune de 46 324 habitants au sud-ouest de Paris, limitrophe du 14ᵉ arrondissement. Densité 22 379 hab/km² sur 2,07 km², desservie par M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Siège social du Crédit Agricole SA, présence d'Orange et de nombreuses ETI, PME et TPE tertiaires. Axion-IA, cabinet d'architectes IA seniors, y accompagne dirigeants TPE, gérants PME et cabinets libéraux du Grand Paris avec des solutions IA codées sur mesure.",
   pitchEn:
-    "À Montrouge, Axion-IA intervient pour optimiser les processus des entreprises locales, notamment celles du secteur des services financiers. Notre approche s'appuie sur une expertise reconnue, comme celle de Cap Digital et Inria.",
+    "Montrouge (92), commune de 46 324 habitants au sud-ouest de Paris, limitrophe du 14ᵉ arrondissement. Densité 22 379 hab/km² sur 2,07 km², desservie par M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Siège social du Crédit Agricole SA, présence d'Orange et de nombreuses ETI, PME et TPE tertiaires. Axion-IA, cabinet d'architectes IA seniors, y accompagne dirigeants TPE, gérants PME et cabinets libéraux du Grand Paris avec des solutions IA codées sur mesure.",
   directAnswerFr:
-    "Axion-IA se déplace à Montrouge pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques comme Crédit Agricole et Orange présents dans la région, notre cabinet propose des solutions adaptées aux besoins spécifiques de chaque secteur. Nos tarifs débutent à pour un Audit Flash de 4 heures, permettant une évaluation rapide et efficace.",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA se déplace à Montrouge pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques comme Crédit Agricole et Orange présents dans la région, notre cabinet propose des solutions adaptées aux besoins spécifiques de chaque secteur. Nos tarifs débutent à pour un Audit Flash de 4 heures, permettant une évaluation rapide et efficace.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
+  seoHook: "TPE & PME tertiaires · sud Grand Paris",
   ecosystemFr:
-    "Montrouge est un pôle économique avec des entreprises comme Crédit Agricole et Orange. Axion-IA y intervient pour soutenir les entreprises dans leur transformation IA, en tenant compte des spécificités locales.",
+    "Montrouge est une commune dense (46 324 hab. sur 2,07 km²) des Hauts-de-Seine, sud-ouest de Paris, limitrophe du 14ᵉ arrondissement, d'Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Métropole du Grand Paris depuis 2016. Tissu économique riche : siège social du Crédit Agricole SA (Évergreen Campus), siège historique d'Orange (Bridge Campus à Châtillon-Montrouge), nombreuses agences de services, cabinets de conseil, TPE commerce et professions libérales. Desserte exceptionnelle métro M4 (terminus Mairie de Montrouge depuis 2013, prolongement Bagneux 2022) et M13 (Châtillon-Montrouge), tramway T6 à proximité.",
   ecosystemEn:
-    "Montrouge est un pôle économique avec des entreprises comme Crédit Agricole et Orange. Axion-IA y intervient pour soutenir les entreprises dans leur transformation IA, en tenant compte des spécificités locales.",
+    "Montrouge est une commune dense (46 324 hab. sur 2,07 km²) des Hauts-de-Seine, sud-ouest de Paris, limitrophe du 14ᵉ arrondissement, d'Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Métropole du Grand Paris depuis 2016. Tissu économique riche : siège social du Crédit Agricole SA (Évergreen Campus), siège historique d'Orange (Bridge Campus à Châtillon-Montrouge), nombreuses agences de services, cabinets de conseil, TPE commerce et professions libérales. Desserte exceptionnelle métro M4 (terminus Mairie de Montrouge depuis 2013, prolongement Bagneux 2022) et M13 (Châtillon-Montrouge), tramway T6 à proximité.",
   distancesFr:
-    "Montrouge est situé à 5 km de la Gare Montparnasse et à 12 km de l'Aéroport Paris-Orly.",
+    "Paris Châtelet à 15 min en métro M4. Paris Saint-Lazare via M13 à 20 min. Gare Montparnasse à 5 km (10 min). Aéroport Paris-Orly à 12 km par A6a. Limitrophe du 14ᵉ arrondissement de Paris, Arcueil, Bagneux, Châtillon, Gentilly et Malakoff.",
   distancesEn:
-    "Montrouge est situé à 5 km de la Gare Montparnasse et à 12 km de l'Aéroport Paris-Orly.",
+    "Paris Châtelet à 15 min en métro M4. Paris Saint-Lazare via M13 à 20 min. Gare Montparnasse à 5 km (10 min). Aéroport Paris-Orly à 12 km par A6a. Limitrophe du 14ᵉ arrondissement de Paris, Arcueil, Bagneux, Châtillon, Gentilly et Malakoff.",
   topSectorsNaf: [
-    "Services financiers",
-    "Programmation informatique",
-    "Sièges sociaux",
-    "Commerce de détail",
+    "Services financiers & banque (siège Crédit Agricole SA)",
+    "Télécommunications & numérique (proximité Orange)",
+    "Sièges sociaux & activités de support tertiaires",
+    "Professions libérales (conseil, droit, santé, comptabilité)",
+    "Commerce de proximité & restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Montrouge pour identifier les opportunités IA dans les services financiers — à partir de 490 € HT.",
-      en: "Réaliser un audit à Montrouge pour identifier les opportunités IA dans les services financiers — à partir de 490 € HT.",
+      fr: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit Flash 4 h à 490 € HT, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
+      en: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit Flash 4 h à 490 € HT, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
     },
     interventions: {
-      fr: "Intervenir à Montrouge pour automatiser les tâches administratives des entreprises — gain de temps et efficacité.",
-      en: "Intervenir à Montrouge pour automatiser les tâches administratives des entreprises — gain de temps et efficacité.",
+      fr: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Intervention Essentielle à 590 € HT.",
+      en: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Intervention Essentielle à 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Montrouge, en tenant compte des infrastructures existantes — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Montrouge, en tenant compte des infrastructures existantes — à partir de 990 € HT.",
+      fr: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
+      en: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Montrouge avec des sessions 1-to-1 — conseils personnalisés dès 990 € HT.",
-      en: "Accompagner les dirigeants de Montrouge avec des sessions 1-to-1 — conseils personnalisés dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de 990 € HT.",
+      en: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Montrouge ?",
-      a: "Axion-IA propose des interventions à partir de 590 € HT. Nos tarifs publics sont consultables sur notre site pour plus de détails.",
+      q: "Axion-IA intervient-il à Montrouge ?",
+      a: "Oui, Axion-IA intervient à Montrouge et dans tout le sud du Grand Paris. Accès direct métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Nous nous déplaçons aussi à Arcueil, Bagneux, Châtillon, Gentilly et Malakoff, communes limitrophes.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Montrouge ?",
-      a: "Notre équipe nationale se rend sur site à Montrouge dans les 5 jours ouvrés, assurant une intervention rapide et efficace.",
+      q: "Quels sont les tarifs Axion-IA à Montrouge ?",
+      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à 490 € HT, Intervention Essentielle sur site à 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
     },
     {
-      q: "Quels délais pour un audit à Montrouge ?",
-      a: "Un Audit Flash de 4 heures est disponible à partir de 490 € HT, permettant une évaluation rapide des besoins IA.",
+      q: "Quels délais d'intervention sur Montrouge ?",
+      a: "Nous nous déplaçons sur site à Montrouge sous 5 jours ouvrés pour démarrer une mission. L'Audit Flash 4 h est planifiable en moins d'une semaine. Les implémentations IA s'étalent généralement sur 4 à 8 semaines selon le périmètre fonctionnel.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Montrouge ?",
-      a: "Oui, toutes nos interventions à Montrouge sont conformes au RGPD, garantissant la protection des données de nos clients.",
+      q: "Axion-IA respecte-t-il le RGPD à Montrouge ?",
+      a: "Oui. Toutes nos interventions à Montrouge sont conformes RGPD : hébergement EU, registre des traitements, DPA contractuel. Particulièrement adapté à un écosystème dense en services financiers, télécoms et cabinets de conseil où la confidentialité données est critique.",
     },
     {
-      q: "Quels secteurs sont couverts par Axion-IA à Montrouge ?",
-      a: "Nous intervenons principalement dans les services financiers, la programmation informatique et le commerce de détail à Montrouge.",
+      q: "Quels secteurs Axion-IA accompagne à Montrouge ?",
+      a: "Cœur de cible à Montrouge : TPE commerce et restauration de proximité, PME tertiaires (conseil, services aux entreprises), professions libérales (droit, comptabilité, santé), structures gravitant autour de l'écosystème financier et télécoms local.",
+    },
+    {
+      q: "Faut-il être basé à Montrouge pour travailler avec Axion-IA ?",
+      a: "Non. Nous intervenons aussi à Paris 14ᵉ, Arcueil, Bagneux, Châtillon, Gentilly, Malakoff et sur l'ensemble du Grand Paris. Coaching 1-to-1 disponible en visio si vous préférez le distanciel.",
     },
   ],
 };

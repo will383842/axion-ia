@@ -1,67 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 50 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUAL EDIT 2026-05-28 — anti-doorway HCU 2024 fix (Wikipedia factuel).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const BEZONS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Bezons, ville où Atos est implanté, pour optimiser vos processus grâce à l'IA. Notre équipe nationale se déplace pour vous accompagner dans votre transformation numérique.",
+    "Axion-IA accompagne les TPE et PME de Bezons (36 434 habitants, Val-d'Oise) dans leur transformation par l'intelligence artificielle. Située sur la rive droite de la Seine, à la frontière des Hauts-de-Seine et des Yvelines, Bezons abrite le siège mondial d'Atos ainsi que des implantations SFR et Darty, héritages d'un tissu industriel historique (Rhône-Poulenc, Hispano-Suiza). Nos consultants se déplacent depuis Paris via le tramway T2 pour mener audits, automatisations et implémentations sur mesure, avec un code custom adapté aux dirigeants locaux.",
   pitchEn:
-    "Axion-IA intervient à Bezons, ville où Atos est implanté, pour optimiser vos processus grâce à l'IA. Notre équipe nationale se déplace pour vous accompagner dans votre transformation numérique.",
+    "Axion-IA accompagne les TPE et PME de Bezons (36 434 habitants, Val-d'Oise) dans leur transformation par l'intelligence artificielle. Située sur la rive droite de la Seine, à la frontière des Hauts-de-Seine et des Yvelines, Bezons abrite le siège mondial d'Atos ainsi que des implantations SFR et Darty, héritages d'un tissu industriel historique (Rhône-Poulenc, Hispano-Suiza). Nos consultants se déplacent depuis Paris via le tramway T2 pour mener audits, automatisations et implémentations sur mesure, avec un code custom adapté aux dirigeants locaux.",
   directAnswerFr:
-    "À Bezons, Axion-IA propose des interventions sur site pour les entreprises locales, incluant des audits et des implémentations. Avec des acteurs comme Atos et un accès rapide à Paris via la Gare de Paris-Saint-Lazare, nous facilitons l'intégration de solutions IA adaptées à votre secteur, qu'il s'agisse de programmation informatique ou d'activités des sièges sociaux.",
+    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Notre cabinet national se déplace via le tramway T2 reliant La Défense en douze minutes, ou par les autoroutes A14, A15 et A86. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Bezons, Axion-IA propose des interventions sur site pour les entreprises locales, incluant des audits et des implémentations. Avec des acteurs comme Atos et un accès rapide à Paris via la Gare de Paris-Saint-Lazare, nous facilitons l'intégration de solutions IA adaptées à votre secteur, qu'il s'agisse de programmation informatique ou d'activités des sièges sociaux.",
-  seoHook: "programmation informatique & activités des",
+    "À Bezons (95870, Val-d'Oise, 36 434 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI implantées localement comme Atos, SFR ou Darty. Notre cabinet national se déplace via le tramway T2 reliant La Défense en douze minutes, ou par les autoroutes A14, A15 et A86. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
+  seoHook: "Atos, SFR, Darty & tramway T2 La Défense",
   ecosystemFr:
-    "Bezons, avec Atos et un secteur de programmation informatique en plein essor, offre un environnement propice aux interventions IA. Nous aidons les entreprises à naviguer cet écosystème pour maximiser leur efficacité.",
+    "Bezons est marquée par un héritage industriel fort (anciennement Rhône-Poulenc, Hispano-Suiza, Le Joint français) reconverti en pôle tertiaire de premier plan : Atos y maintient son siège mondial, aux côtés de SFR et Darty. La commune borde Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, ce qui place les TPE et PME locales dans l'aire d'influence directe de La Défense, accessible en douze minutes par le tramway T2.",
   ecosystemEn:
-    "Bezons, avec Atos et un secteur de programmation informatique en plein essor, offre un environnement propice aux interventions IA. Nous aidons les entreprises à naviguer cet écosystème pour maximiser leur efficacité.",
+    "Bezons est marquée par un héritage industriel fort (anciennement Rhône-Poulenc, Hispano-Suiza, Le Joint français) reconverti en pôle tertiaire de premier plan : Atos y maintient son siège mondial, aux côtés de SFR et Darty. La commune borde Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, ce qui place les TPE et PME locales dans l'aire d'influence directe de La Défense, accessible en douze minutes par le tramway T2.",
   distancesFr:
-    "Bezons est à 12 km de la Gare de Paris-Saint-Lazare et à 30 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Bezons est à 10 km au nord-ouest de Paris, à 12 minutes de La Défense par le tramway T2, et desservie par les autoroutes A14, A15 et A86 ; l'aéroport de Paris-Charles-de-Gaulle est à environ 30 km.",
   distancesEn:
-    "Bezons est à 12 km de la Gare de Paris-Saint-Lazare et à 30 km de l'Aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Programmation informatique", "Activités des sièges sociaux", "Génie civil"],
+    "Bezons est à 10 km au nord-ouest de Paris, à 12 minutes de La Défense par le tramway T2, et desservie par les autoroutes A14, A15 et A86 ; l'aéroport de Paris-Charles-de-Gaulle est à environ 30 km.",
+  topSectorsNaf: [
+    "Programmation, conseil et autres activités informatiques",
+    "Activités des sièges sociaux",
+    "Télécommunications",
+    "Commerce de détail",
+    "Génie civil et construction",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bezons pour identifier les opportunités IA chez Atos et autres entreprises locales.",
-      en: "Réaliser un audit à Bezons pour identifier les opportunités IA chez Atos et autres entreprises locales.",
+      fr: "Audit IA sur site à Bezons pour les TPE et PME du tissu tertiaire local (sous-traitants Atos, SFR, Darty) — Audit Flash dès 490 € HT.",
+      en: "Audit IA sur site à Bezons pour les TPE et PME du tissu tertiaire local (sous-traitants Atos, SFR, Darty) — Audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Bezons pour automatiser les processus métiers dans les secteurs de programmation informatique.",
-      en: "Intervenir à Bezons pour automatiser les processus métiers dans les secteurs de programmation informatique.",
+      fr: "Interventions à Bezons pour automatiser les processus métiers des TPE et PME (relances, devis, reporting) en code custom — dès 590 € HT.",
+      en: "Interventions à Bezons pour automatiser les processus métiers des TPE et PME (relances, devis, reporting) en code custom — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bezons, facilitant l'intégration au sein des activités des sièges sociaux.",
-      en: "Implémenter des solutions IA à Bezons, facilitant l'intégration au sein des activités des sièges sociaux.",
+      fr: "Implémentation de solutions IA à Bezons pour PME et ETI, adaptées aux SI existants (Atos, SFR, Darty et leur écosystème) — dès 990 € HT.",
+      en: "Implémentation de solutions IA à Bezons pour PME et ETI, adaptées aux SI existants (Atos, SFR, Darty et leur écosystème) — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Bezons pour une adoption sereine des technologies IA.",
-      en: "Accompagner en un-à-un les dirigeants de Bezons pour une adoption sereine des technologies IA.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME bezonnaises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME bezonnaises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Bezons ?",
-      a: "Les interventions IA à Bezons débutent à partir de 590 € HT. Consultez nos tarifs publics sur notre site pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention IA à Bezons ?",
+      a: "Nos tarifs publics démarrent à 490 € HT pour un Audit Flash et 590 € HT pour une Intervention Essentielle à Bezons. L'implémentation et l'accompagnement un-à-un débutent à 990 € HT, sans frais cachés.",
     },
     {
-      q: "Comment Axion-IA gère-t-il les déplacements à Bezons ?",
-      a: "Notre équipe nationale se déplace directement sur site à Bezons pour assurer un service personnalisé et adapté à vos besoins.",
+      q: "Axion-IA se déplace-t-il sur site à Bezons (Val-d'Oise) ?",
+      a: "Oui, nos consultants se rendent à Bezons via le tramway T2 depuis La Défense (12 minutes) ou les autoroutes A14, A15 et A86. Aucun frais de déplacement n'est facturé en Île-de-France.",
     },
     {
-      q: "Quels délais pour une intervention IA à Bezons ?",
-      a: "Nous nous engageons à intervenir à Bezons dans un délai de 5 jours ouvrés après la validation de votre demande.",
+      q: "Quels délais pour démarrer un projet IA à Bezons ?",
+      a: "Nous intervenons à Bezons dans un délai de 5 jours ouvrés après validation. L'Audit Flash se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
+    },
+    {
+      q: "Intervenez-vous dans les communes voisines de Bezons ?",
+      a: "Oui, nous couvrons Argenteuil, Sartrouville, Houilles, Carrières-sur-Seine, Colombes et Nanterre, qui bordent Bezons et concentrent un tissu de TPE et PME similaire.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Bezons ?",
-      a: "Axion-IA garantit que toutes les solutions IA déployées à Bezons respectent les normes RGPD, assurant ainsi la protection des données.",
+      a: "Nous codons toutes les automatisations en code custom hébergé sur infrastructure européenne, avec registre des traitements, DPA et minimisation des données — conforme RGPD et AI Act.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Bezons ?",
-      a: "Oui, nous offrons des sessions de formation pour les managers et opérateurs à Bezons, adaptées aux besoins spécifiques de votre secteur.",
+      q: "Quels secteurs locaux de Bezons accompagnez-vous en priorité ?",
+      a: "Nous priorisons les TPE et PME de la programmation informatique, du commerce de détail, des télécommunications et de la construction — soit l'écosystème direct d'Atos, SFR et Darty.",
     },
   ],
 };

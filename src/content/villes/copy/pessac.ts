@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manual anti-doorway rewrite 2026-05-28 (HCU 2024 thresholds + factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const PESSAC_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Pessac, au cœur de la Nouvelle-Aquitaine, pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs comme Thales et Sanofi, la ville offre un environnement propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME de Pessac, commune de 67 339 habitants (2023) au sud-ouest de Bordeaux, au sein de Bordeaux Métropole. La ville abrite une part majeure du domaine universitaire régional — Université Bordeaux Montaigne, Université de Bordeaux (droit, économie), Institut Polytechnique de Bordeaux et Sciences Po Bordeaux — ainsi qu'un tissu de PME tertiaires, viticoles (AOC Pessac-Léognan) et de santé (CHU). Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   pitchEn:
-    "Axion-IA intervient à Pessac, au cœur de la Nouvelle-Aquitaine, pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs comme Thales et Sanofi, la ville offre un environnement propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME de Pessac, commune de 67 339 habitants (2023) au sud-ouest de Bordeaux, au sein de Bordeaux Métropole. La ville abrite une part majeure du domaine universitaire régional — Université Bordeaux Montaigne, Université de Bordeaux (droit, économie), Institut Polytechnique de Bordeaux et Sciences Po Bordeaux — ainsi qu'un tissu de PME tertiaires, viticoles (AOC Pessac-Léognan) et de santé (CHU). Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   directAnswerFr:
-    "À Pessac, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des pôles comme Aerospace Valley et Digital Aquitaine, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos interventions incluent des audits, des implémentations et des formations sur site pour garantir un retour sur investissement rapide.",
+    "Axion-IA intervient à Pessac auprès des TPE et PME de Bordeaux Métropole, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV), puis le tramway B (terminus Pessac-Centre ou France Alouette), pour des audits Flash, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit Flash 4 h à 490 € HT, Intervention Essentielle à 590 € HT, accompagnement un-à-un dès 990 € HT.",
   directAnswerEn:
-    "À Pessac, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des pôles comme Aerospace Valley et Digital Aquitaine, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos interventions incluent des audits, des implémentations et des formations sur site pour garantir un retour sur investissement rapide.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "Axion-IA intervient à Pessac auprès des TPE et PME de Bordeaux Métropole, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV), puis le tramway B (terminus Pessac-Centre ou France Alouette), pour des audits Flash, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit Flash 4 h à 490 € HT, Intervention Essentielle à 590 € HT, accompagnement un-à-un dès 990 € HT.",
+  seoHook: "TPE & PME · Bordeaux Métropole · IA opérationnelle code custom",
   ecosystemFr:
-    "Pessac bénéficie de la proximité de l'Université de Bordeaux et de KEDGE Business School, renforçant son potentiel en recherche et développement. Le technopôle Euratlantique et l'incubateur Technowest soutiennent l'innovation locale.",
+    "Pessac concentre un écosystème universitaire et tertiaire dense, structuré autour du domaine universitaire de Bordeaux Montaigne, Bordeaux (droit, économie), Bordeaux INP et Sciences Po Bordeaux. La ville est entourée par Bordeaux, Mérignac, Talence, Gradignan, Canéjan, Cestas et Saint-Jean-d'Illac au sein de Bordeaux Métropole. Le bassin combine PME de services aux entreprises, recherche, viticulture AOC Pessac-Léognan, santé (CHU) et patrimoine UNESCO (Cité Frugès, Le Corbusier).",
   ecosystemEn:
-    "Pessac bénéficie de la proximité de l'Université de Bordeaux et de KEDGE Business School, renforçant son potentiel en recherche et développement. Le technopôle Euratlantique et l'incubateur Technowest soutiennent l'innovation locale.",
+    "Pessac concentre un écosystème universitaire et tertiaire dense, structuré autour du domaine universitaire de Bordeaux Montaigne, Bordeaux (droit, économie), Bordeaux INP et Sciences Po Bordeaux. La ville est entourée par Bordeaux, Mérignac, Talence, Gradignan, Canéjan, Cestas et Saint-Jean-d'Illac au sein de Bordeaux Métropole. Le bassin combine PME de services aux entreprises, recherche, viticulture AOC Pessac-Léognan, santé (CHU) et patrimoine UNESCO (Cité Frugès, Le Corbusier).",
   distancesFr:
-    "La gare TGV de Bordeaux-Saint-Jean est à 10 km de Pessac, facilitant l'accès aux entreprises locales.",
+    "Pessac est à ~10-15 minutes du centre de Bordeaux par le tramway B (terminus Pessac-Centre et France Alouette). La gare TGV Bordeaux-Saint-Jean est à environ 10 km, l'aéroport Bordeaux-Mérignac à ~8 km par la rocade A630.",
   distancesEn:
-    "La gare TGV de Bordeaux-Saint-Jean est à 10 km de Pessac, facilitant l'accès aux entreprises locales.",
+    "Pessac est à ~10-15 minutes du centre de Bordeaux par le tramway B (terminus Pessac-Centre et France Alouette). La gare TGV Bordeaux-Saint-Jean est à environ 10 km, l'aéroport Bordeaux-Mérignac à ~8 km par la rocade A630.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Recherche scientifique",
+    "Enseignement supérieur et recherche scientifique",
+    "Activités juridiques, comptables et de conseil de gestion",
+    "Programmation et conseil en systèmes informatiques",
+    "Santé humaine (CHU et établissements associés)",
+    "Culture de la vigne et viticulture (AOC Pessac-Léognan)",
     "Commerce de détail",
-    "Santé humaine",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Pessac avec Axion-IA permet d'identifier les opportunités d'optimisation grâce à l'IA.",
-      en: "Réaliser un audit à Pessac avec Axion-IA permet d'identifier les opportunités d'optimisation grâce à l'IA.",
+      fr: "À Pessac, un Audit Flash sur site (490 € HT, 4 h) permet à un dirigeant de TPE ou PME d'identifier les processus métier automatisables — gestion documentaire, reporting, support client, traitement de candidatures — et de chiffrer un plan d'action concret.",
+      en: "À Pessac, un Audit Flash sur site (490 € HT, 4 h) permet à un dirigeant de TPE ou PME d'identifier les processus métier automatisables — gestion documentaire, reporting, support client, traitement de candidatures — et de chiffrer un plan d'action concret.",
     },
     interventions: {
-      fr: "Intervenir à Pessac pour automatiser les processus administratifs et améliorer l'efficacité.",
-      en: "Intervenir à Pessac pour automatiser les processus administratifs et améliorer l'efficacité.",
+      fr: "Nos interventions à Pessac (à partir de 590 € HT) automatisent les flux récurrents : extraction de données depuis emails ou PDF, génération de devis, suivi qualité ou agents internes branchés sur les outils existants (CRM, ERP, ATS).",
+      en: "Nos interventions à Pessac (à partir de 590 € HT) automatisent les flux récurrents : extraction de données depuis emails ou PDF, génération de devis, suivi qualité ou agents internes branchés sur les outils existants (CRM, ERP, ATS).",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Pessac pour une intégration fluide dans vos systèmes existants.",
-      en: "Implémenter des solutions IA à Pessac pour une intégration fluide dans vos systèmes existants.",
+      fr: "Sur les projets d'implémentation à Pessac, Axion-IA code en TypeScript, Python ou Node.js et raccorde les briques IA aux back-offices universitaires, viticoles, médicaux ou tertiaires des PME locales, sans verrouillage par une plateforme tierce.",
+      en: "Sur les projets d'implémentation à Pessac, Axion-IA code en TypeScript, Python ou Node.js et raccorde les briques IA aux back-offices universitaires, viticoles, médicaux ou tertiaires des PME locales, sans verrouillage par une plateforme tierce.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Pessac avec des sessions 1-to-1 pour une adoption réussie de l'IA.",
-      en: "Accompagner les dirigeants de Pessac avec des sessions 1-to-1 pour une adoption réussie de l'IA.",
+      fr: "L'accompagnement un-à-un à Pessac (dès 990 € HT) s'adresse aux dirigeants de TPE et PME, responsables de laboratoires de recherche ou propriétaires de domaines viticoles qui veulent arbitrer leurs usages IA sans déléguer la décision.",
+      en: "L'accompagnement un-à-un à Pessac (dès 990 € HT) s'adresse aux dirigeants de TPE et PME, responsables de laboratoires de recherche ou propriétaires de domaines viticoles qui veulent arbitrer leurs usages IA sans déléguer la décision.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Pessac ?",
-      a: "Les tarifs pour une intervention IA à Pessac commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails sur les services proposés.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Pessac ?",
+      a: "Nos tarifs publics s'appliquent à Pessac comme partout en France : Audit Flash 4 h à 490 € HT, Intervention Essentielle à 590 € HT, accompagnement un-à-un dès 990 € HT. Devis envoyé sous 48 h, pas de forfait caché.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Pessac ?",
-      a: "Notre équipe nationale se déplace sur site à Pessac, assurant une intervention rapide et efficace, généralement dans les 5 jours ouvrés.",
+      q: "Sous quel délai un consultant Axion-IA peut-il se déplacer à Pessac ?",
+      a: "Depuis Paris, nous rejoignons Pessac via la gare TGV Bordeaux-Saint-Jean (~2 h 10 min de TGV) puis le tramway B. Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
     },
     {
-      q: "Quels délais pour un audit IA à Pessac ?",
-      a: "Un audit IA à Pessac peut être réalisé rapidement, avec notre Audit Flash de 4 heures à partir de 490 € HT, pour une évaluation initiale.",
+      q: "Intervenez-vous aussi dans les communes voisines de Pessac ?",
+      a: "Oui. Nous intervenons à Bordeaux, Mérignac, Talence, Gradignan, Canéjan, Cestas et Saint-Jean-d'Illac au sein de Bordeaux Métropole, sans frais de déplacement supplémentaires intra-métropole.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Pessac ?",
-      a: "Axion-IA intègre les exigences RGPD dans toutes ses interventions à Pessac, garantissant la protection des données personnelles et la conformité réglementaire.",
+      q: "Comment Axion-IA garantit-elle la conformité RGPD à Pessac ?",
+      a: "Nous codons des solutions hébergées en UE, sans envoi de données personnelles vers des APIs hors-UE non conformes, et documentons chaque traitement (registre, base légale, durée de conservation) pour vos délégués à la protection des données.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous à Pessac ?",
+      a: "Nos clients à Pessac et en Bordeaux Métropole sont majoritairement des PME de services aux entreprises, des cabinets de conseil, des structures liées à l'enseignement supérieur et à la recherche (Bordeaux Montaigne, Bordeaux INP, Sciences Po Bordeaux), des domaines viticoles AOC Pessac-Léognan et des structures de santé.",
+    },
+    {
+      q: "Travaillez-vous avec des plateformes no-code à Pessac ?",
+      a: "Non. Nous codons en TypeScript, Python ou Node.js et raccordons les briques IA aux outils existants de nos clients. Cela évite la dépendance à un éditeur tiers et garantit la portabilité des automatismes livrés.",
     },
   ],
 };

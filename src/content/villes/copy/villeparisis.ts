@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// Re-edited 2026-05-28 anti-doorway HCU 2024 — données Wikipédia.
+// Villeparisis (77270, Seine-et-Marne) — 26 946 hab. (2023), CA Roissy Pays de France.
 
 import type { VilleCopy } from "./types";
 
 export const VILLEPARISIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Villeparisis, en Île-de-France, pour accompagner les entreprises locales dans l'adoption de l'IA. Paris, avec ses pôles comme Cap Digital et Station F, inspire nos méthodes pour optimiser les processus métier.",
+    "Villeparisis (77270), commune de 26 946 habitants (2023) située au nord-ouest de la Seine-et-Marne, à la frontière du Val-d'Oise et de la Seine-Saint-Denis. Intégrée à la Communauté d'agglomération Roissy Pays de France, elle bénéficie d'une desserte RER B (gare Villeparisis - Mitry-le-Neuf) et d'une proximité directe avec l'aéroport Paris-Charles-de-Gaulle. Le tissu économique repose sur plusieurs parcs d'activité (ZAC de l'Ambrésis, zone Salengro) regroupant commerces, restauration, transports terrestres, construction et grandes enseignes. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France. Axion-IA accompagne TPE/PME et ETI locales.",
   pitchEn:
-    "Axion-IA intervient à Villeparisis, en Île-de-France, pour accompagner les entreprises locales dans l'adoption de l'IA. Paris, avec ses pôles comme Cap Digital et Station F, inspire nos méthodes pour optimiser les processus métier.",
+    "Villeparisis (77270), commune de 26 946 habitants (2023) située au nord-ouest de la Seine-et-Marne, à la frontière du Val-d'Oise et de la Seine-Saint-Denis. Intégrée à la Communauté d'agglomération Roissy Pays de France, elle bénéficie d'une desserte RER B (gare Villeparisis - Mitry-le-Neuf) et d'une proximité directe avec l'aéroport Paris-Charles-de-Gaulle. Le tissu économique repose sur plusieurs parcs d'activité (ZAC de l'Ambrésis, zone Salengro) regroupant commerces, restauration, transports terrestres, construction et grandes enseignes. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France. Axion-IA accompagne TPE/PME et ETI locales.",
   directAnswerFr:
-    "Villeparisis, située en Île-de-France, bénéficie d'une proximité avec des infrastructures majeures comme l'aéroport de Paris-Charles-de-Gaulle et la gare TGV de Marne-la-Vallée - Chessy. Axion-IA propose des interventions sur site pour les entreprises locales, en s'inspirant des écosystèmes parisiens tels que ceux de Cap Digital et Station F, afin de faciliter l'intégration de l'IA dans leurs opérations quotidiennes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, Implémentation et Coaching 1-to-1 dès 990 € HT. Déplacement consultant sous 5 jours ouvrés (RER B direct depuis Paris, ou A104). Conformité RGPD documentée.",
   directAnswerEn:
-    "Villeparisis, située en Île-de-France, bénéficie d'une proximité avec des infrastructures majeures comme l'aéroport de Paris-Charles-de-Gaulle et la gare TGV de Marne-la-Vallée - Chessy. Axion-IA propose des interventions sur site pour les entreprises locales, en s'inspirant des écosystèmes parisiens tels que ceux de Cap Digital et Station F, afin de faciliter l'intégration de l'IA dans leurs opérations quotidiennes.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, Implémentation et Coaching 1-to-1 dès 990 € HT. Déplacement consultant sous 5 jours ouvrés (RER B direct depuis Paris, ou A104). Conformité RGPD documentée.",
+  seoHook: "RER B, parcs d'activité & proximité CDG",
   ecosystemFr:
-    "Le tissu économique de Villeparisis est enrichi par des secteurs comme le commerce de détail et les transports terrestres. Les entreprises locales peuvent s'inspirer d'entités telles que LVMH et BNP Paribas présentes à Paris.",
+    "Villeparisis appartient à la Communauté d'agglomération Roissy Pays de France, structurée autour de l'aéroport Paris-Charles-de-Gaulle. Le tissu local concentre commerces (grandes enseignes en zones d'activité), restauration, transports terrestres (proximité plateforme CDG et A104), construction et BTP, professions libérales et PME services. Les principaux parcs d'activité — ZAC de l'Ambrésis et zone Salengro — accueillent entreprises de logistique, distribution et services. Les bus Roissy Est et Apolo 7 complètent la desserte RER B. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France (siège de l'aéroport CDG).",
   ecosystemEn:
-    "Le tissu économique de Villeparisis est enrichi par des secteurs comme le commerce de détail et les transports terrestres. Les entreprises locales peuvent s'inspirer d'entités telles que LVMH et BNP Paribas présentes à Paris.",
+    "Villeparisis appartient à la Communauté d'agglomération Roissy Pays de France, structurée autour de l'aéroport Paris-Charles-de-Gaulle. Le tissu local concentre commerces (grandes enseignes en zones d'activité), restauration, transports terrestres (proximité plateforme CDG et A104), construction et BTP, professions libérales et PME services. Les principaux parcs d'activité — ZAC de l'Ambrésis et zone Salengro — accueillent entreprises de logistique, distribution et services. Les bus Roissy Est et Apolo 7 complètent la desserte RER B. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France (siège de l'aéroport CDG).",
   distancesFr:
-    "Villeparisis est à 15 km de l'aéroport de Paris-Charles-de-Gaulle et à 20 km de la gare TGV de Marne-la-Vallée - Chessy.",
+    "Gare Villeparisis - Mitry-le-Neuf (RER B) à 35 min de Paris Gare du Nord et 15 min de l'aéroport Paris-Charles-de-Gaulle. CDG à 15 km. Marne-la-Vallée Chessy TGV/Disneyland à 20 km. Paris centre à 25 km via A3 et A104. Mitry-Mory à 5 min, Claye-Souilly à 7 min, Tremblay-en-France à 8 min.",
   distancesEn:
-    "Villeparisis est à 15 km de l'aéroport de Paris-Charles-de-Gaulle et à 20 km de la gare TGV de Marne-la-Vallée - Chessy.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Gare Villeparisis - Mitry-le-Neuf (RER B) à 35 min de Paris Gare du Nord et 15 min de l'aéroport Paris-Charles-de-Gaulle. CDG à 15 km. Marne-la-Vallée Chessy TGV/Disneyland à 20 km. Paris centre à 25 km via A3 et A104. Mitry-Mory à 5 min, Claye-Souilly à 7 min, Tremblay-en-France à 8 min.",
+  topSectorsNaf: [
+    "Commerce de détail (grandes enseignes ZAC Ambrésis, Salengro)",
+    "Transports terrestres & logistique (proximité CDG)",
+    "Construction & BTP",
+    "Restauration & hôtellerie (axe CDG)",
+    "PME services aux entreprises",
+    "Professions libérales & artisanat",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Villeparisis pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Villeparisis pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Villeparisis : diagnostic pour TPE (artisans BTP, commerces, restauration) et PME logistique/transport proches CDG. Audit Flash 490 € HT, ROI chiffré sous 7 jours.",
+      en: "Audit IA à Villeparisis : diagnostic pour TPE (artisans BTP, commerces, restauration) et PME logistique/transport proches CDG. Audit Flash 490 € HT, ROI chiffré sous 7 jours.",
     },
     interventions: {
-      fr: "Intervenir à Villeparisis pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Villeparisis pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
+      fr: "Interventions IA sur site à Villeparisis : ateliers adaptés TPE (commerce ZAC, artisan, restaurant) ou PME logistique. Vos équipes repartent autonomes. Intervention Essentielle dès 590 € HT.",
+      en: "Interventions IA sur site à Villeparisis : ateliers adaptés TPE (commerce ZAC, artisan, restaurant) ou PME logistique. Vos équipes repartent autonomes. Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Villeparisis pour optimiser les processus — Implémentation dès 990 € HT.",
-      en: "Implémenter des solutions IA à Villeparisis pour optimiser les processus — Implémentation dès 990 € HT.",
+      fr: "Implémentation IA à Villeparisis en code custom : automatisation devis artisan BTP, chatbot client commerce, suivi commande restaurant/hôtel proche CDG, optimisation tournées logistique, classification documents transport.",
+      en: "Implémentation IA à Villeparisis en code custom : automatisation devis artisan BTP, chatbot client commerce, suivi commande restaurant/hôtel proche CDG, optimisation tournées logistique, classification documents transport.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Villeparisis en sessions 1-to-1 — Coaching dès 990 € HT.",
-      en: "Accompagner les dirigeants de Villeparisis en sessions 1-to-1 — Coaching dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Villeparisis : sessions sur site (accès RER B direct) ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès 990 € HT.",
+      en: "Coaching 1-to-1 à Villeparisis : sessions sur site (accès RER B direct) ou en visio pour dirigeants TPE/PME, artisans et responsables logistique. Dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Villeparisis ?",
-      a: "Les interventions IA à Villeparisis commencent à partir de 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Villeparisis et dans les communes limitrophes ?",
+      a: "Oui. Nous intervenons à Villeparisis (77270) et dans les communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France. Accès depuis Paris via RER B (35 min Gare du Nord) ou A104.",
     },
     {
-      q: "Comment se déroule un audit IA à Villeparisis ?",
-      a: "Un audit IA à Villeparisis débute par un Audit Flash de 4 heures à partir de 490 € HT, permettant d'identifier les opportunités d'automatisation.",
+      q: "Quels sont vos tarifs pour une intervention IA à Villeparisis ?",
+      a: "Audit Flash 490 € HT (diagnostic et plan d'action sous 7 jours), Intervention Essentielle 590 € HT (atelier sur site), Implémentation et Coaching 1-to-1 dès 990 € HT. Tarifs publics affichés, pas de devis opaque.",
     },
     {
-      q: "Axion-IA intervient-elle sur site à Villeparisis ?",
-      a: "Oui, Axion-IA se déplace sur site à Villeparisis pour réaliser des interventions et audits directement chez nos clients.",
+      q: "Quels délais pour une intervention sur site à Villeparisis ?",
+      a: "Déplacement de nos consultants sous 5 jours ouvrés. Pour les TPE/PME pressées (commerce, restaurant, logistique CDG), audit visio sous 48 h. RER B direct évite les contraintes de stationnement.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Villeparisis ?",
-      a: "Les délais pour une implémentation IA à Villeparisis varient selon le projet, mais nous nous engageons à intervenir rapidement après validation.",
+      q: "Quelles garanties RGPD pour les données traitées à Villeparisis ?",
+      a: "Axion-IA documente chaque traitement IA (registre RGPD, finalité, base légale, durée de conservation, sous-traitants). Aucune donnée client/salarié n'est envoyée à un LLM externe sans pseudonymisation. Cabinet conforme AI Act 2024/1689.",
+    },
+    {
+      q: "Quels secteurs locaux accompagnez-vous à Villeparisis ?",
+      a: "Commerces des ZAC Ambrésis et Salengro (grandes enseignes), restauration et hôtellerie axe CDG, transports terrestres et logistique, construction et BTP, artisans, cabinets libéraux. Cas typiques : automatisation devis BTP, chatbot e-commerce, suivi commandes restaurant, optimisation tournées.",
+    },
+    {
+      q: "Accompagnez-vous les PME logistique et transport autour de Paris-CDG ?",
+      a: "Oui. Villeparisis est à 15 km de Paris-Charles-de-Gaulle et 5 min de Tremblay-en-France (plateforme CDG). Nous travaillons avec PME transport routier, logistique entrepôt et prestataires aéroportuaires. Cas typiques : RAG documents douane, classification incidents, agents IA suivi flotte.",
     },
   ],
 };

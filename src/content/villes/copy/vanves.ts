@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUALLY CORRECTED 2026-05-28 — Sprint anti-doorway HCU 2024 (faits Wikipedia).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const VANVES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Vanves, une ville dynamique de l'Île-de-France, pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs économiques comme Orange et Hachette Livre, Vanves offre un contexte propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME de Vanves, commune des Hauts-de-Seine de 28 622 habitants intégrée à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest. Frontalière du 15e arrondissement de Paris, avec une densité de 18 347 hab/km², la ville accueille notamment le siège du groupe Hachette Livre et la mutuelle Audiens, rue Jean-Bleuzen. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, OCR, knowledge base, relances), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   pitchEn:
-    "Axion-IA intervient à Vanves, une ville dynamique de l'Île-de-France, pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs économiques comme Orange et Hachette Livre, Vanves offre un contexte propice à l'innovation technologique.",
+    "Axion-IA accompagne les TPE et PME de Vanves, commune des Hauts-de-Seine de 28 622 habitants intégrée à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest. Frontalière du 15e arrondissement de Paris, avec une densité de 18 347 hab/km², la ville accueille notamment le siège du groupe Hachette Livre et la mutuelle Audiens, rue Jean-Bleuzen. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, OCR, knowledge base, relances), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   directAnswerFr:
-    "Vanves, avec ses 3 000 établissements actifs, est un terrain fertile pour l'IA. Axion-IA propose des interventions sur site pour automatiser les processus métiers. Proche de Paris, la ville bénéficie de la présence de grands groupes comme Orange et Hachette Livre, renforçant son attractivité économique.",
+    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site (métro ligne 13 station Plateau de Vanves, gare SNCF Vanves-Malakoff) pour un Audit Flash 4h à 490 € HT, une intervention ciblée à 590 € HT ou une implémentation complète à partir de 990 € HT, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   directAnswerEn:
-    "Vanves, avec ses 3 000 établissements actifs, est un terrain fertile pour l'IA. Axion-IA propose des interventions sur site pour automatiser les processus métiers. Proche de Paris, la ville bénéficie de la présence de grands groupes comme Orange et Hachette Livre, renforçant son attractivité économique.",
-  seoHook: "programmation informatique & activités des",
+    "Axion-IA intervient à Vanves (Hauts-de-Seine, EPT Grand Paris Seine Ouest) auprès des TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site (métro ligne 13 station Plateau de Vanves, gare SNCF Vanves-Malakoff) pour un Audit Flash 4h à 490 € HT, une intervention ciblée à 590 € HT ou une implémentation complète à partir de 990 € HT, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+  seoHook: "édition, services & PME sud-ouest parisien",
   ecosystemFr:
-    "Le tissu économique de Vanves est enrichi par des entreprises comme Orange et Hachette Livre. La proximité avec des hubs technologiques parisiens offre aux entreprises locales un accès privilégié à l'innovation et aux nouvelles technologies.",
+    "Vanves combine un tissu de TPE-PME dense (commerce de proximité, services aux entreprises, professions libérales, agences) et l'effet d'entraînement d'un grand voisin éditorial — le groupe Hachette Livre (filiale Lagardère) et la mutuelle Audiens sont implantés rue Jean-Bleuzen. La proximité immédiate du Parc des Expositions de la Porte de Versailles, des bureaux d'Issy-les-Moulineaux et du 15e arrondissement parisien crée un bassin d'opportunités B2B pour les entreprises vanvéennes.",
   ecosystemEn:
-    "Le tissu économique de Vanves est enrichi par des entreprises comme Orange et Hachette Livre. La proximité avec des hubs technologiques parisiens offre aux entreprises locales un accès privilégié à l'innovation et aux nouvelles technologies.",
+    "Vanves combine un tissu de TPE-PME dense (commerce de proximité, services aux entreprises, professions libérales, agences) et l'effet d'entraînement d'un grand voisin éditorial — le groupe Hachette Livre (filiale Lagardère) et la mutuelle Audiens sont implantés rue Jean-Bleuzen. La proximité immédiate du Parc des Expositions de la Porte de Versailles, des bureaux d'Issy-les-Moulineaux et du 15e arrondissement parisien crée un bassin d'opportunités B2B pour les entreprises vanvéennes.",
   distancesFr:
-    "Vanves est située à 5 km de la Gare Montparnasse et à 15 km de l'Aéroport de Paris-Orly.",
+    "Vanves est desservie par la ligne 13 du métro (Plateau de Vanves – Malakoff) et la gare SNCF Vanves-Malakoff (Transilien N). La gare Montparnasse est à 5 km, le centre de Paris à 6 km, l'aéroport de Paris-Orly à 12 km via l'A86.",
   distancesEn:
-    "Vanves est située à 5 km de la Gare Montparnasse et à 15 km de l'Aéroport de Paris-Orly.",
+    "Vanves est desservie par la ligne 13 du métro (Plateau de Vanves – Malakoff) et la gare SNCF Vanves-Malakoff (Transilien N). La gare Montparnasse est à 5 km, le centre de Paris à 6 km, l'aéroport de Paris-Orly à 12 km via l'A86.",
   topSectorsNaf: [
-    "Programmation informatique",
-    "Activités des sièges sociaux",
+    "Édition et activités des médias",
+    "Activités de conseil pour les affaires",
     "Commerce de détail",
-    "Enseignement",
+    "Activités juridiques et comptables",
+    "Activités pour la santé humaine",
+    "Hébergement-restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vanves pour identifier les opportunités IA dans les secteurs dominants comme la programmation informatique.",
-      en: "Réaliser un audit à Vanves pour identifier les opportunités IA dans les secteurs dominants comme la programmation informatique.",
+      fr: "Audit Flash 4h à Vanves pour TPE-PME de l'édition, du conseil, du commerce et des services — 490 € HT, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
+      en: "Audit Flash 4h à Vanves pour TPE-PME de l'édition, du conseil, du commerce et des services — 490 € HT, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
     },
     interventions: {
-      fr: "Intervenir à Vanves pour automatiser les tâches administratives et optimiser les processus métiers.",
-      en: "Intervenir à Vanves pour automatiser les tâches administratives et optimiser les processus métiers.",
+      fr: "Intervention sur site à Vanves dès 590 € HT : prototype automatisation devis, relances clients, OCR factures, knowledge base éditoriale ou assistant interne sur LLM.",
+      en: "Intervention sur site à Vanves dès 590 € HT : prototype automatisation devis, relances clients, OCR factures, knowledge base éditoriale ou assistant interne sur LLM.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Vanves, en s'appuyant sur l'écosystème local des entreprises comme Orange.",
-      en: "Implémenter des solutions IA à Vanves, en s'appuyant sur l'écosystème local des entreprises comme Orange.",
+      fr: "Implémentation complète à Vanves à partir de 990 € HT : code custom Python/Node intégré à votre SI (CRM, ERP, outils éditoriaux), tests recette et transfert de compétences équipe.",
+      en: "Implémentation complète à Vanves à partir de 990 € HT : code custom Python/Node intégré à votre SI (CRM, ERP, outils éditoriaux), tests recette et transfert de compétences équipe.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Vanves pour intégrer l'IA dans leurs stratégies d'entreprise.",
-      en: "Accompagner en un-à-un les dirigeants de Vanves pour intégrer l'IA dans leurs stratégies d'entreprise.",
+      fr: "Coaching 1-to-1 dirigeant à Vanves dès 990 € HT : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      en: "Coaching 1-to-1 dirigeant à Vanves dès 990 € HT : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Vanves ?",
-      a: "Les tarifs pour une intervention à Vanves commencent à 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour un audit IA à Vanves ?",
+      a: "L'Audit Flash 4h sur site à Vanves démarre à 490 € HT. Une intervention ciblée est facturée 590 € HT, une implémentation complète à partir de 990 € HT. Tarifs publics fixes, devis signé avant démarrage, aucun abonnement.",
     },
     {
-      q: "Comment se déroule un audit IA à Vanves ?",
-      a: "Un audit IA à Vanves démarre par une analyse sur site des processus actuels, suivie de recommandations concrètes. L'Audit Flash 4h est proposé à partir de 490 € HT.",
+      q: "Williams se déplace-t-il à Vanves ?",
+      a: "Oui, Williams se déplace sur site à Vanves sous 5 jours ouvrés (souvent moins, étant basé à Paris). L'accès s'effectue par la ligne 13 du métro (Plateau de Vanves), la gare SNCF Vanves-Malakoff ou la sortie A86.",
     },
     {
-      q: "Quels délais pour une intervention IA à Vanves ?",
-      a: "Williams se déplace à Vanves dans les 5 jours ouvrés suivant la demande. Nos interventions sont planifiées pour minimiser les interruptions d'activité.",
+      q: "Quelles communes proches de Vanves couvrez-vous ?",
+      a: "Lors d'un déplacement à Vanves, nous couvrons aussi Malakoff, Issy-les-Moulineaux, Clamart, Châtillon, Montrouge et Paris 15e — toutes à moins de 15 minutes via la ligne 13 ou l'A86.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Vanves ?",
-      a: "Axion-IA s'engage à respecter les normes RGPD lors de ses interventions à Vanves, garantissant la protection des données personnelles tout au long du processus.",
+      q: "Quels secteurs vanvéens Axion-IA accompagne-t-il en priorité ?",
+      a: "Nos cas d'usage les plus fréquents à Vanves concernent les TPE-PME de l'édition et des médias (héritage Hachette Livre), du conseil aux entreprises, du commerce de proximité, des cabinets juridiques-comptables et des professions de santé libérales.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Vanves ?",
+      a: "Toutes les automatisations livrées à Vanves reposent sur du code custom (Python, Node, n8n self-host) hébergé en Europe, avec minimisation des données, registre des traitements, AIPD si nécessaire et clauses sous-traitance RGPD signées avant tout démarrage.",
+    },
+    {
+      q: "Axion-IA propose-t-il du no-code aux entreprises de Vanves ?",
+      a: "Non. Notre cabinet livre exclusivement du code custom (Python, Node.js, n8n self-host) — vos automatisations vous appartiennent, sans abonnement plateforme imposé ni risque de migration forcée si l'éditeur change ses conditions.",
     },
   ],
 };

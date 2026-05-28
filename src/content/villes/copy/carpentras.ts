@@ -1,63 +1,82 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 sprint).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
-export const CARPENTRAS_COPY: VilleCopy = {
-  pitchFr:
-    "Axion-IA intervient à Carpentras, optimisant les processus pour les secteurs dominants tels que le commerce de détail et la construction. Notre expertise nationale s'appuie sur des méthodologies éprouvées, inspirées par des pôles comme Cap Digital et Inria.",
-  pitchEn:
-    "Axion-IA intervient à Carpentras, optimisant les processus pour les secteurs dominants tels que le commerce de détail et la construction. Notre expertise nationale s'appuie sur des méthodologies éprouvées, inspirées par des pôles comme Cap Digital et Inria.",
-  directAnswerFr:
-    "À Carpentras, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Nous nous inspirons de l'écosystème parisien, où Cap Digital et Station F jouent un rôle clé dans l'innovation. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, sans partenariat direct avec ces entités.",
-  directAnswerEn:
-    "À Carpentras, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Nous nous inspirons de l'écosystème parisien, où Cap Digital et Station F jouent un rôle clé dans l'innovation. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, sans partenariat direct avec ces entités.",
-  seoHook: "commerce détail & agriculture",
-  ecosystemFr:
-    "Carpentras bénéficie d'une proximité avec des infrastructures de transport comme la Gare d'Avignon TGV et l'Aéroport de Marseille Provence, facilitant l'accès aux services d'Axion-IA.",
-  ecosystemEn:
-    "Carpentras bénéficie d'une proximité avec des infrastructures de transport comme la Gare d'Avignon TGV et l'Aéroport de Marseille Provence, facilitant l'accès aux services d'Axion-IA.",
+const PITCH_FR =
+  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
+
+const DIRECT_ANSWER_FR =
+  "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. Williams se déplace depuis le réseau Avignon-TGV (30 km, 38 min de train) pour cadrer le besoin sur place, livrer du code custom Python ou TypeScript, et former l'équipe. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, accompagnement 1-à-1 990 € HT — tarifs publics, pas de licence cachée.";
+
+const ECOSYSTEM_FR =
+  "Carpentras est la 4e commune du Vaucluse avec 31 619 habitants (Insee 2023, +11,69 % depuis 2017). Le tissu économique repose sur la viticulture (22,8 % de la surface communale en vignes AOC Ventoux et Côtes-du-Rhône-Villages), l'agroalimentaire (berlingot de Carpentras, truffe noire du Vaucluse, marché aux truffes hivernal), le commerce indépendant (marché hebdomadaire du vendredi matin, environ 350 forains) et les services aux entreprises. La sous-préfecture concentre administrations, professions libérales et un hôpital de bassin.";
+
+const VILLE_COPY: VilleCopy = {
+  pitchFr: PITCH_FR,
+  pitchEn: PITCH_FR,
+  directAnswerFr: DIRECT_ANSWER_FR,
+  directAnswerEn: DIRECT_ANSWER_FR,
+  seoHook: "viticulture, marché provençal & artisanat",
+  ecosystemFr: ECOSYSTEM_FR,
+  ecosystemEn: ECOSYSTEM_FR,
   distancesFr:
-    "La Gare d'Avignon TGV est à 30 km de Carpentras, et l'Aéroport de Marseille Provence à 90 km.",
+    "Carpentras est à 30 km d'Avignon (gare TGV Avignon, 38 min en TER), 24 km d'Orange, 50 km d'Aix-en-Provence et 90 km de l'aéroport Marseille-Provence. La D942 et l'A7 (sortie Avignon-Nord, 25 km) assurent l'accès routier.",
   distancesEn:
-    "La Gare d'Avignon TGV est à 30 km de Carpentras, et l'Aéroport de Marseille Provence à 90 km.",
-  topSectorsNaf: ["Commerce de détail", "Agriculture", "Construction", "Restauration"],
+    "Carpentras est à 30 km d'Avignon (gare TGV Avignon, 38 min en TER), 24 km d'Orange, 50 km d'Aix-en-Provence et 90 km de l'aéroport Marseille-Provence. La D942 et l'A7 (sortie Avignon-Nord, 25 km) assurent l'accès routier.",
+  topSectorsNaf: [
+    "Culture de la vigne (AOC Ventoux)",
+    "Commerce de détail alimentaire et marchés",
+    "Construction et travaux spécialisés",
+    "Hébergement-restauration touristique",
+    "Activités juridiques et comptables",
+    "Services administratifs et soutien aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Carpentras pour identifier les processus à automatiser dans le commerce de détail. Audit Flash à partir de 490 € HT.",
-      en: "Réaliser un audit à Carpentras pour identifier les processus à automatiser dans le commerce de détail. Audit Flash à partir de 490 € HT.",
+      fr: "Audit Flash à Carpentras pour TPE viticoles, commerçants du marché ou artisans BTP : 4 heures sur site, cartographie des tâches répétitives (saisie compta, devis manuels, relances), plan d'action chiffré. 490 € HT.",
+      en: "Audit Flash à Carpentras pour TPE viticoles, commerçants du marché ou artisans BTP : 4 heures sur site, cartographie des tâches répétitives (saisie compta, devis manuels, relances), plan d'action chiffré. 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Carpentras pour automatiser les relances et devis dans la construction. Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Carpentras pour automatiser les relances et devis dans la construction. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention Essentielle à Carpentras pour PME du Comtat : automatisation devis-relances pour artisans, synchronisation caisse-compta pour commerces, suivi récolte pour caves coopératives. Code custom livré. Dès 590 € HT.",
+      en: "Intervention Essentielle à Carpentras pour PME du Comtat : automatisation devis-relances pour artisans, synchronisation caisse-compta pour commerces, suivi récolte pour caves coopératives. Code custom livré. Dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Carpentras, facilitant la gestion des tâches dans l'agriculture. Tarifs publics consultables.",
-      en: "Implémenter des solutions IA à Carpentras, facilitant la gestion des tâches dans l'agriculture. Tarifs publics consultables.",
+      fr: "Implémentation d'agents IA à Carpentras pour PME et ETI locales : tri automatique des emails clients, génération de fiches techniques produit, OCR factures fournisseurs. Tarifs publics, devis sur cadrage.",
+      en: "Implémentation d'agents IA à Carpentras pour PME et ETI locales : tri automatique des emails clients, génération de fiches techniques produit, OCR factures fournisseurs. Tarifs publics, devis sur cadrage.",
     },
     unAUn: {
-      fr: "Proposer un accompagnement 1-to-1 à Carpentras pour les dirigeants souhaitant intégrer l'IA. À partir de 990 € HT.",
-      en: "Proposer un accompagnement 1-to-1 à Carpentras pour les dirigeants souhaitant intégrer l'IA. À partir de 990 € HT.",
+      fr: "Accompagnement 1-à-1 à Carpentras pour dirigeants de TPE-PME : 4 sessions de coaching IA appliquées à votre métier (négoce viticole, commerce, BTP, libéral). À partir de 990 € HT.",
+      en: "Accompagnement 1-à-1 à Carpentras pour dirigeants de TPE-PME : 4 sessions de coaching IA appliquées à votre métier (négoce viticole, commerce, BTP, libéral). À partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Carpentras ?",
-      a: "Nos tarifs pour une intervention IA à Carpentras débutent à 590 € HT pour une Intervention Essentielle. Les tarifs détaillés sont disponibles sur notre site.",
+      q: "Quels tarifs Axion-IA pratique-t-il à Carpentras ?",
+      a: "Audit Flash 490 € HT (4 h sur site), Intervention Essentielle 590 € HT (cadrage + livraison d'un automatisme), accompagnement 1-à-1 990 € HT. Tarifs publics consultables, pas de licence SaaS récurrente : vous êtes propriétaire du code livré.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Carpentras ?",
-      a: "Nos experts se déplacent directement sur site à Carpentras, grâce à la proximité de la Gare d'Avignon TGV et de l'Aéroport de Marseille Provence.",
+      q: "Williams se déplace-t-il vraiment à Carpentras ?",
+      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin. Frais de déplacement intégrés dans les forfaits publics.",
     },
     {
-      q: "Quels délais pour une intervention IA à Carpentras ?",
-      a: "Nous nous engageons à intervenir à Carpentras dans un délai de 5 jours ouvrés après la validation du projet.",
+      q: "Quels secteurs locaux Axion-IA accompagne-t-il à Carpentras ?",
+      a: "Principalement les TPE-PME viticoles (AOC Ventoux, Côtes-du-Rhône-Villages), les commerçants du marché du vendredi, les artisans BTP, l'agroalimentaire (truffe, fruits confits, berlingot) et les professions libérales. Pas de spécialisation grands comptes.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Carpentras ?",
-      a: "Nous garantissons la conformité RGPD lors de nos interventions à Carpentras, en appliquant des standards stricts et des audits réguliers.",
+      q: "Quel délai pour démarrer une mission à Carpentras ?",
+      a: "Audit Flash bookable sous 5 à 10 jours ouvrés selon disponibilités. Intervention Essentielle livrée en 2 à 4 semaines selon complexité du cadrage. Pour les caves en pleine vendange, Axion-IA s'adapte au calendrier agricole.",
+    },
+    {
+      q: "Quelles communes proches couvrez-vous depuis Carpentras ?",
+      a: "Axion-IA intervient aussi sur Monteux, Pernes-les-Fontaines, Aubignan, Mazan, Caromb, Loriol-du-Comtat et plus largement le Comtat Venaissin. Frais de déplacement intra-bassin négligeables, pas de surcoût par rapport au tarif public.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Carpentras ?",
+      a: "Le code custom est hébergé soit chez vous, soit sur un cloud UE (OVHcloud, Scaleway) — pas de transfert hors UE par défaut. Registre des traitements fourni, DPA signé, données clients viticoles ou commerciales jamais utilisées pour entraîner un modèle externe.",
     },
   ],
 };
+
+export const CARPENTRAS_COPY = VILLE_COPY;

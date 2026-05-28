@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024, Wikipedia facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const FORBACH_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Forbach, ville où ArcelorMittal est implanté, pour optimiser les processus des entreprises locales grâce à l'IA. Nos services s'adaptent aux besoins spécifiques des structures de la région.",
+    "Axion-IA accompagne les TPE et PME de Forbach, sous-préfecture de Moselle en Grand Est, dans l'automatisation de leurs processus grâce à du code IA sur mesure. La ville compte 20 493 habitants (2023) et concentre 818 entreprises actives — 434 commerces de détail, 269 services et 115 unités industrielles — réparties notamment sur le Carrefour de l'Europe et le Technopôle Forbach Sud. Frontalière de Sarrebruck (Allemagne), Forbach s'inscrit dans une agglomération transfrontalière d'environ 1 million d'habitants. Nous intervenons sur site pour auditer et déployer des solutions IA.",
   pitchEn:
-    "Axion-IA intervient à Forbach, ville où ArcelorMittal est implanté, pour optimiser les processus des entreprises locales grâce à l'IA. Nos services s'adaptent aux besoins spécifiques des structures de la région.",
+    "Axion-IA accompagne les TPE et PME de Forbach, sous-préfecture de Moselle en Grand Est, dans l'automatisation de leurs processus grâce à du code IA sur mesure. La ville compte 20 493 habitants (2023) et concentre 818 entreprises actives — 434 commerces de détail, 269 services et 115 unités industrielles — réparties notamment sur le Carrefour de l'Europe et le Technopôle Forbach Sud. Frontalière de Sarrebruck (Allemagne), Forbach s'inscrit dans une agglomération transfrontalière d'environ 1 million d'habitants. Nous intervenons sur site pour auditer et déployer des solutions IA.",
   directAnswerFr:
-    "Axion-IA se déplace à Forbach pour accompagner les entreprises locales dans leur adoption de l'IA. Avec des acteurs économiques tels qu'ArcelorMittal et la Zone Industrielle de Forbach Ouest, nous proposons des audits et interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle de nos clients.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Forbach (Moselle, Grand Est) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu commercial (434 commerces de détail), industriel (115 unités, dont activité historique liée au charbon et à la sidérurgie) et tertiaire local. Le contexte transfrontalier avec Sarrebruck implique souvent des besoins multilingues FR/DE que nos solutions peuvent prendre en charge. Tarifs publics : Audit Flash 490 € HT, Intervention 590 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à Forbach pour accompagner les entreprises locales dans leur adoption de l'IA. Avec des acteurs économiques tels qu'ArcelorMittal et la Zone Industrielle de Forbach Ouest, nous proposons des audits et interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle de nos clients.",
-  seoHook: "commerce détail & transports",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Forbach (Moselle, Grand Est) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu commercial (434 commerces de détail), industriel (115 unités, dont activité historique liée au charbon et à la sidérurgie) et tertiaire local. Le contexte transfrontalier avec Sarrebruck implique souvent des besoins multilingues FR/DE que nos solutions peuvent prendre en charge. Tarifs publics : Audit Flash 490 € HT, Intervention 590 € HT.",
+  seoHook: "commerce frontalier & industrie",
   ecosystemFr:
-    "Forbach, avec ArcelorMittal et sa Zone Industrielle de Forbach Ouest, constitue un environnement propice à l'innovation industrielle. Axion-IA y intervient pour apporter son expertise en IA aux entreprises locales.",
+    "Forbach concentre 818 entreprises actives : 434 commerces de détail, 269 sociétés de services et 115 unités industrielles. Les zones d'activité Carrefour de l'Europe et Technopôle Forbach Sud structurent l'offre foncière. La proximité immédiate de Sarrebruck (Allemagne) place les entreprises forbachoises dans un bassin d'environ 1 million d'habitants, avec des flux commerciaux transfrontaliers quotidiens. Les communes limitrophes incluent Behren-lès-Forbach, Petite-Rosselle, Schœneck, Spicheren, Stiring-Wendel et Etzling.",
   ecosystemEn:
-    "Forbach, avec ArcelorMittal et sa Zone Industrielle de Forbach Ouest, constitue un environnement propice à l'innovation industrielle. Axion-IA y intervient pour apporter son expertise en IA aux entreprises locales.",
+    "Forbach concentre 818 entreprises actives : 434 commerces de détail, 269 sociétés de services et 115 unités industrielles. Les zones d'activité Carrefour de l'Europe et Technopôle Forbach Sud structurent l'offre foncière. La proximité immédiate de Sarrebruck (Allemagne) place les entreprises forbachoises dans un bassin d'environ 1 million d'habitants, avec des flux commerciaux transfrontaliers quotidiens. Les communes limitrophes incluent Behren-lès-Forbach, Petite-Rosselle, Schœneck, Spicheren, Stiring-Wendel et Etzling.",
   distancesFr:
-    "La gare TGV de Forbach facilite nos déplacements pour des interventions rapides dans la région.",
+    "La gare de Forbach est desservie par le TGV depuis 2007, avec Paris en 1h45. L'autoroute A320 dessert la ville par quatre échangeurs. Distance routière approximative : Metz 45 min, Strasbourg 1h15, Sarrebruck adjacente.",
   distancesEn:
-    "La gare TGV de Forbach facilite nos déplacements pour des interventions rapides dans la région.",
-  topSectorsNaf: ["Commerce de détail", "Transports", "Construction", "Restauration"],
+    "La gare de Forbach est desservie par le TGV depuis 2007, avec Paris en 1h45. L'autoroute A320 dessert la ville par quatre échangeurs. Distance routière approximative : Metz 45 min, Strasbourg 1h15, Sarrebruck adjacente.",
+  topSectorsNaf: [
+    "Commerce de détail (434 établissements)",
+    "Services aux entreprises (269 établissements)",
+    "Industrie (115 établissements)",
+    "Transports et logistique transfrontalière",
+    "Construction",
+    "Restauration",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Forbach, par exemple chez ArcelorMittal, permet d'identifier les opportunités d'automatisation.",
-      en: "Réaliser un audit à Forbach, par exemple chez ArcelorMittal, permet d'identifier les opportunités d'automatisation.",
+      fr: "Audit Flash 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de 490 € HT.",
+      en: "Audit Flash 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Forbach dans la Zone Industrielle de Forbach Ouest pour optimiser les processus métiers.",
-      en: "Intervenir à Forbach dans la Zone Industrielle de Forbach Ouest pour optimiser les processus métiers.",
+      fr: "Intervention Essentielle sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public 590 € HT, déplacement sous 5 jours ouvrés.",
+      en: "Intervention Essentielle sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public 590 € HT, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Forbach pour améliorer la productivité des entreprises locales.",
-      en: "Implémenter des solutions IA à Forbach pour améliorer la productivité des entreprises locales.",
+      fr: "Implémentation IA code-first à Forbach : intégrations API métier, agents internes multilingues FR/DE, automatisations pour commerces, industries et services. À partir de 990 € HT.",
+      en: "Implémentation IA code-first à Forbach : intégrations API métier, agents internes multilingues FR/DE, automatisations pour commerces, industries et services. À partir de 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Forbach avec des sessions 1-to-1 pour une adoption efficace de l'IA.",
-      en: "Accompagner les dirigeants de Forbach avec des sessions 1-to-1 pour une adoption efficace de l'IA.",
+      fr: "Sessions un-à-un avec dirigeants forbachois pour bâtir la feuille de route IA : priorisation, ROI, conformité RGPD côté FR et données transfrontalières. À partir de 990 € HT.",
+      en: "Sessions un-à-un avec dirigeants forbachois pour bâtir la feuille de route IA : priorisation, ROI, conformité RGPD côté FR et données transfrontalières. À partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Forbach ?",
-      a: "Les audits à Forbach débutent à partir de 490 € HT pour l'Audit Flash 4h. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs d'Axion-IA pour une intervention à Forbach ?",
+      a: "Audit Flash 4h dès 490 € HT, Intervention Essentielle dès 590 € HT, implémentation et sessions un-à-un dès 990 € HT. Frais de déplacement à Forbach (Moselle) inclus dans le devis. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une intervention à Forbach ?",
-      a: "Nos interventions à Forbach sont planifiées avec un déplacement sur site dans les 5 jours ouvrés, selon vos disponibilités.",
+      q: "Quels délais pour une intervention sur site à Forbach ?",
+      a: "Williams se déplace à Forbach sous 5 jours ouvrés après validation du devis (TGV Paris-Forbach 1h45 disponible). Audit livrable sous 5 jours après visite. Implémentation : 2 à 6 semaines selon périmètre.",
     },
     {
-      q: "Proposez-vous des formations pour les entreprises de Forbach ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour les dirigeants à partir de 990 € HT, adaptées aux besoins spécifiques des entreprises de Forbach.",
+      q: "Intervenez-vous dans les communes proches de Forbach ?",
+      a: "Oui, nous nous déplaçons également à Behren-lès-Forbach, Petite-Rosselle, Schœneck, Spicheren, Stiring-Wendel, Etzling, et plus largement dans l'agglomération frontalière Forbach-Sarrebruck.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Forbach ?",
-      a: "Les délais d'implémentation à Forbach varient selon le projet, mais nous visons une mise en œuvre rapide pour assurer un retour sur investissement optimal.",
+      q: "Gérez-vous le multilingue FR/DE pour les entreprises transfrontalières de Forbach ?",
+      a: "Oui, nos solutions IA code-first prennent en charge le bilinguisme FR/DE (devis, factures, emails, support client) — utile pour les commerces et industries forbachois travaillant avec Sarrebruck et la Sarre.",
+    },
+    {
+      q: "Comment Axion-IA garantit-elle la conformité RGPD à Forbach ?",
+      a: "Code IA hébergé sur infrastructures UE conformes RGPD, contrat DPA, minimisation des données et journalisation. Attention particulière aux flux transfrontaliers FR/DE qui restent dans l'EEE.",
+    },
+    {
+      q: "Quels secteurs locaux de Forbach accompagnez-vous ?",
+      a: "Les TPE et PME du commerce de détail (434 établissements locaux), des services aux entreprises, de l'industrie, de la logistique transfrontalière, de la construction et de la restauration du bassin houiller mosellan.",
     },
   ],
 };

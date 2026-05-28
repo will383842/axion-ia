@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUALLY CORRECTED 2026-05-28 — Sprint anti-doorway HCU 2024 (faits Wikipedia).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Neuilly-sur-Seine, ville abritant Publicis Groupe et Thales, pour optimiser les processus des entreprises locales grâce à l'IA.",
+    "Axion-IA accompagne les TPE et PME de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   pitchEn:
-    "Axion-IA intervient à Neuilly-sur-Seine, ville abritant Publicis Groupe et Thales, pour optimiser les processus des entreprises locales grâce à l'IA.",
+    "Axion-IA accompagne les TPE et PME de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   directAnswerFr:
-    "À Neuilly-sur-Seine, Axion-IA propose des services adaptés aux entreprises de tous secteurs, notamment ceux des services financiers et des sièges sociaux. Nous intervenons sur site pour automatiser les tâches administratives, optimiser les processus métier et former les équipes. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales, incluant Publicis Groupe et JCDecaux.",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit Flash 4h à 490 € HT, une intervention ciblée à 590 € HT ou une implémentation complète à partir de 990 € HT, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   directAnswerEn:
-    "À Neuilly-sur-Seine, Axion-IA propose des services adaptés aux entreprises de tous secteurs, notamment ceux des services financiers et des sièges sociaux. Nous intervenons sur site pour automatiser les tâches administratives, optimiser les processus métier et former les équipes. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales, incluant Publicis Groupe et JCDecaux.",
-  seoHook: "services financiers & sièges sociaux",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit Flash 4h à 490 € HT, une intervention ciblée à 590 € HT ou une implémentation complète à partir de 990 € HT, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+  seoHook: "conseil, sièges sociaux & professions libérales",
   ecosystemFr:
-    "Neuilly-sur-Seine est un pôle économique regroupant des entreprises comme Publicis Groupe et Thales. Ces entités contribuent à un environnement propice aux services financiers et aux sièges sociaux.",
+    "Neuilly-sur-Seine s'est imposée comme prolongement résidentiel et tertiaire de l'axe Champs-Élysées / La Défense via la RN 13 (Avenue Charles-de-Gaulle). La commune se classe troisième nationale en concentration de richesse parmi les communes de plus de 20 000 habitants. Le tissu local est dominé par les cabinets de conseil, agences de communication, services financiers, professions libérales (avocats, notaires, médecins) et sièges sociaux, dans un cadre bordé par le Bois de Boulogne et l'Île de la Jatte.",
   ecosystemEn:
-    "Neuilly-sur-Seine est un pôle économique regroupant des entreprises comme Publicis Groupe et Thales. Ces entités contribuent à un environnement propice aux services financiers et aux sièges sociaux.",
+    "Neuilly-sur-Seine s'est imposée comme prolongement résidentiel et tertiaire de l'axe Champs-Élysées / La Défense via la RN 13 (Avenue Charles-de-Gaulle). La commune se classe troisième nationale en concentration de richesse parmi les communes de plus de 20 000 habitants. Le tissu local est dominé par les cabinets de conseil, agences de communication, services financiers, professions libérales (avocats, notaires, médecins) et sièges sociaux, dans un cadre bordé par le Bois de Boulogne et l'Île de la Jatte.",
   distancesFr:
-    "Neuilly-sur-Seine est située à 5 km de la Gare de Paris-Saint-Lazare et à 30 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Neuilly-sur-Seine est desservie par la ligne 1 du métro (Porte Maillot, Les Sablons, Pont de Neuilly), le tramway T3b et le RER C/E à Porte Maillot. La Défense est à 2 km, le centre de Paris à 5 km, l'aéroport de Paris-Charles-de-Gaulle à 25 km via l'A14/A86.",
   distancesEn:
-    "Neuilly-sur-Seine est située à 5 km de la Gare de Paris-Saint-Lazare et à 30 km de l'Aéroport de Paris-Charles-de-Gaulle.",
+    "Neuilly-sur-Seine est desservie par la ligne 1 du métro (Porte Maillot, Les Sablons, Pont de Neuilly), le tramway T3b et le RER C/E à Porte Maillot. La Défense est à 2 km, le centre de Paris à 5 km, l'aéroport de Paris-Charles-de-Gaulle à 25 km via l'A14/A86.",
   topSectorsNaf: [
+    "Activités de conseil pour les affaires",
+    "Activités juridiques et comptables",
+    "Activités des sièges sociaux",
     "Services financiers",
-    "Sièges sociaux",
-    "Activités juridiques",
-    "Programmation informatique",
+    "Publicité et communication",
+    "Activités pour la santé humaine",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Neuilly-sur-Seine, incluant Publicis Groupe, pour identifier les opportunités d'automatisation.",
-      en: "Réaliser un audit à Neuilly-sur-Seine, incluant Publicis Groupe, pour identifier les opportunités d'automatisation.",
+      fr: "Audit Flash 4h à Neuilly-sur-Seine pour TPE-PME de conseil, avocats, agences et cabinets — 490 € HT, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
+      en: "Audit Flash 4h à Neuilly-sur-Seine pour TPE-PME de conseil, avocats, agences et cabinets — 490 € HT, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
     },
     interventions: {
-      fr: "Intervenir à Neuilly-sur-Seine pour automatiser les devis et relances chez nos clients locaux.",
-      en: "Intervenir à Neuilly-sur-Seine pour automatiser les devis et relances chez nos clients locaux.",
+      fr: "Intervention sur site à Neuilly-sur-Seine dès 590 € HT : prototype knowledge base juridique, automatisation devis/relances, OCR factures, scoring leads ou assistant interne sur LLM.",
+      en: "Intervention sur site à Neuilly-sur-Seine dès 590 € HT : prototype knowledge base juridique, automatisation devis/relances, OCR factures, scoring leads ou assistant interne sur LLM.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Neuilly-sur-Seine, en tenant compte des infrastructures de Thales.",
-      en: "Implémenter des solutions IA à Neuilly-sur-Seine, en tenant compte des infrastructures de Thales.",
+      fr: "Implémentation complète à Neuilly-sur-Seine à partir de 990 € HT : code custom Python/Node intégré à votre SI (Salesforce, HubSpot, ERP), tests recette et transfert de compétences équipe.",
+      en: "Implémentation complète à Neuilly-sur-Seine à partir de 990 € HT : code custom Python/Node intégré à votre SI (Salesforce, HubSpot, ERP), tests recette et transfert de compétences équipe.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Neuilly-sur-Seine pour une adoption réussie de l'IA.",
-      en: "Accompagner en un-à-un les dirigeants de Neuilly-sur-Seine pour une adoption réussie de l'IA.",
+      fr: "Coaching 1-to-1 dirigeant à Neuilly-sur-Seine dès 990 € HT : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      en: "Coaching 1-to-1 dirigeant à Neuilly-sur-Seine dès 990 € HT : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Neuilly-sur-Seine ?",
-      a: "Nos audits à Neuilly-sur-Seine commencent à partir de 490 € HT pour un Audit Flash de 4 heures.",
+      q: "Quels sont les tarifs Axion-IA pour un audit IA à Neuilly-sur-Seine ?",
+      a: "L'Audit Flash 4h sur site à Neuilly-sur-Seine démarre à 490 € HT. Une intervention ciblée est facturée 590 € HT, une implémentation complète à partir de 990 € HT. Tarifs publics fixes, devis signé avant démarrage, aucun abonnement.",
     },
     {
-      q: "Comment se déroule une intervention à Neuilly-sur-Seine ?",
-      a: "Nous nous déplaçons sur site à Neuilly-sur-Seine pour réaliser des interventions ciblées, avec des tarifs à partir de 590 € HT.",
+      q: "Williams se déplace-t-il à Neuilly-sur-Seine ?",
+      a: "Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés (souvent moins, étant basé à Paris). L'accès s'effectue par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot), le tramway T3b ou la RN 13.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Neuilly-sur-Seine ?",
-      a: "Les délais pour une implémentation IA à Neuilly-sur-Seine dépendent de la complexité du projet, mais nous intervenons généralement sous 5 jours ouvrés.",
+      q: "Quelles communes proches de Neuilly-sur-Seine couvrez-vous ?",
+      a: "Lors d'un déplacement à Neuilly-sur-Seine, nous couvrons aussi Levallois-Perret, Courbevoie, Puteaux, La Défense, Paris 16e et Paris 17e — toutes à moins de 15 minutes en transport.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD à Neuilly-sur-Seine ?",
-      a: "Nous garantissons la conformité RGPD lors de nos interventions à Neuilly-sur-Seine en intégrant des audits de conformité dans nos processus.",
+      q: "Quels secteurs neuilléens Axion-IA accompagne-t-il en priorité ?",
+      a: "Nos cas d'usage les plus fréquents à Neuilly-sur-Seine concernent les cabinets de conseil, agences de communication et publicité, cabinets d'avocats et notaires, sièges sociaux d'ETI, services financiers et cabinets médicaux libéraux.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Neuilly-sur-Seine ?",
+      a: "Toutes les implémentations livrées à Neuilly-sur-Seine reposent sur du code custom hébergé en Europe, avec minimisation des données, registre des traitements, AIPD si nécessaire et clauses sous-traitance RGPD signées avant démarrage — essentiel pour avocats et professions de santé.",
+    },
+    {
+      q: "Axion-IA propose-t-il du no-code aux entreprises de Neuilly-sur-Seine ?",
+      a: "Non. Nous livrons exclusivement du code custom (Python, Node.js, n8n self-host) — vous restez propriétaire des automatisations, sans abonnement plateforme imposé, ce qui est critique pour les cabinets gérant des données sensibles client.",
     },
   ],
 };

@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUAL EDIT 2026-05-28 — anti-doorway HCU 2024 fix (Wikipedia factuel).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
   pitchFr:
-    "À Montigny-lès-Cormeilles, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des références comme LVMH et Cap Digital, nous apportons notre expertise IA sur site.",
+    "Axion-IA accompagne les TPE et PME de Montigny-lès-Cormeilles (22 457 habitants, Val-d'Oise), commune située à 25 km au nord-ouest de Paris et membre de la communauté d'agglomération Val Parisis depuis 2016. Desservie par deux gares SNCF (Montigny-Beauchamp sur le RER C et Transilien H, La Frette-Montigny sur le Transilien J), la ville offre un cadre d'intervention rapide depuis Paris. Notre cabinet national y mène audits IA et automatisations en code custom pour les dirigeants locaux.",
   pitchEn:
-    "À Montigny-lès-Cormeilles, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des références comme LVMH et Cap Digital, nous apportons notre expertise IA sur site.",
+    "Axion-IA accompagne les TPE et PME de Montigny-lès-Cormeilles (22 457 habitants, Val-d'Oise), commune située à 25 km au nord-ouest de Paris et membre de la communauté d'agglomération Val Parisis depuis 2016. Desservie par deux gares SNCF (Montigny-Beauchamp sur le RER C et Transilien H, La Frette-Montigny sur le Transilien J), la ville offre un cadre d'intervention rapide depuis Paris. Notre cabinet national y mène audits IA et automatisations en code custom pour les dirigeants locaux.",
   directAnswerFr:
-    "Axion-IA se déplace à Montigny-lès-Cormeilles pour accompagner les entreprises dans leur transformation IA. Notre équipe nationale intervient sur site, permettant aux entreprises de bénéficier de notre savoir-faire, comme celui reconnu par LVMH et Inria, sans besoin de déplacement de leur part. Nos services incluent audit, implémentation et formation, adaptés aux spécificités locales.",
+    "À Montigny-lès-Cormeilles (95370, Val-d'Oise, 22 457 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI de l'agglomération Val Parisis. Nos consultants accèdent à la commune via les gares Montigny-Beauchamp (RER C, Transilien H) et La Frette-Montigny (Transilien J) ou par l'autoroute A15. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "Axion-IA se déplace à Montigny-lès-Cormeilles pour accompagner les entreprises dans leur transformation IA. Notre équipe nationale intervient sur site, permettant aux entreprises de bénéficier de notre savoir-faire, comme celui reconnu par LVMH et Inria, sans besoin de déplacement de leur part. Nos services incluent audit, implémentation et formation, adaptés aux spécificités locales.",
-  seoHook: "commerce détail & transports terrestres",
+    "À Montigny-lès-Cormeilles (95370, Val-d'Oise, 22 457 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI de l'agglomération Val Parisis. Nos consultants accèdent à la commune via les gares Montigny-Beauchamp (RER C, Transilien H) et La Frette-Montigny (Transilien J) ou par l'autoroute A15. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
+  seoHook: "RER C, Transilien H & J — agglomération Val Parisis",
   ecosystemFr:
-    "Montigny-lès-Cormeilles bénéficie d'un accès à l'écosystème parisien, incluant Cap Digital et Station F, facilitant l'innovation pour les entreprises locales.",
+    "Montigny-lès-Cormeilles s'inscrit dans la communauté d'agglomération Val Parisis créée en 2016, sur 4,07 km² entre 61 et 168 mètres d'altitude. Le tissu local est porté par environ 10 469 actifs résidents (15-64 ans) et un revenu médian de 21 970 €. La commune borde Cormeilles-en-Parisis, La Frette-sur-Seine, Franconville, Herblay-sur-Seine, Pierrelaye, Beauchamp et Le Plessis-Bouchard — un bassin de TPE et PME du commerce, du BTP et du transport propice à l'IA.",
   ecosystemEn:
-    "Montigny-lès-Cormeilles bénéficie d'un accès à l'écosystème parisien, incluant Cap Digital et Station F, facilitant l'innovation pour les entreprises locales.",
+    "Montigny-lès-Cormeilles s'inscrit dans la communauté d'agglomération Val Parisis créée en 2016, sur 4,07 km² entre 61 et 168 mètres d'altitude. Le tissu local est porté par environ 10 469 actifs résidents (15-64 ans) et un revenu médian de 21 970 €. La commune borde Cormeilles-en-Parisis, La Frette-sur-Seine, Franconville, Herblay-sur-Seine, Pierrelaye, Beauchamp et Le Plessis-Bouchard — un bassin de TPE et PME du commerce, du BTP et du transport propice à l'IA.",
   distancesFr:
-    "Montigny-lès-Cormeilles est à 20 km de la Gare de Paris Saint-Lazare et à 35 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Montigny-lès-Cormeilles est à 25 km au nord-ouest de Paris, à 20 km de la Gare Paris-Saint-Lazare et à 35 km de l'aéroport Paris-Charles-de-Gaulle ; deux gares (Montigny-Beauchamp, La Frette-Montigny) et l'autoroute A15 desservent la commune.",
   distancesEn:
-    "Montigny-lès-Cormeilles est à 20 km de la Gare de Paris Saint-Lazare et à 35 km de l'Aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Travaux de construction"],
+    "Montigny-lès-Cormeilles est à 25 km au nord-ouest de Paris, à 20 km de la Gare Paris-Saint-Lazare et à 35 km de l'aéroport Paris-Charles-de-Gaulle ; deux gares (Montigny-Beauchamp, La Frette-Montigny) et l'autoroute A15 desservent la commune.",
+  topSectorsNaf: [
+    "Commerce de détail (hors automobiles)",
+    "Transports terrestres et logistique",
+    "Travaux de construction spécialisés",
+    "Restauration",
+    "Services aux entreprises et artisanat",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Montigny-lès-Cormeilles pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Montigny-lès-Cormeilles pour identifier les opportunités IA — Audit Flash dès 490 € HT.",
+      fr: "Audit IA sur site à Montigny-lès-Cormeilles pour les TPE et PME du Val Parisis — Audit Flash dès 490 € HT, livré sous 5 jours ouvrés.",
+      en: "Audit IA sur site à Montigny-lès-Cormeilles pour les TPE et PME du Val Parisis — Audit Flash dès 490 € HT, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Montigny-lès-Cormeilles pour automatiser les tâches — Intervention Essentielle à partir de 590 € HT.",
-      en: "Intervenir à Montigny-lès-Cormeilles pour automatiser les tâches — Intervention Essentielle à partir de 590 € HT.",
+      fr: "Interventions à Montigny-lès-Cormeilles pour automatiser les tâches répétitives des TPE et PME (relances, devis, planning) en code custom — dès 590 € HT.",
+      en: "Interventions à Montigny-lès-Cormeilles pour automatiser les tâches répétitives des TPE et PME (relances, devis, planning) en code custom — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Montigny-lès-Cormeilles pour optimiser les processus — Dès 990 € HT.",
-      en: "Implémenter des solutions IA à Montigny-lès-Cormeilles pour optimiser les processus — Dès 990 € HT.",
+      fr: "Implémentation de solutions IA à Montigny-lès-Cormeilles pour PME et ETI locales (commerce, BTP, transport) — dès 990 € HT.",
+      en: "Implémentation de solutions IA à Montigny-lès-Cormeilles pour PME et ETI locales (commerce, BTP, transport) — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Montigny-lès-Cormeilles avec des sessions 1-to-1 — À partir de 990 € HT.",
-      en: "Accompagner les dirigeants à Montigny-lès-Cormeilles avec des sessions 1-to-1 — À partir de 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME ignymontaines pour cadrer leur stratégie IA — sessions dès 990 € HT.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME ignymontaines pour cadrer leur stratégie IA — sessions dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Montigny-lès-Cormeilles ?",
-      a: "Nos interventions à Montigny-lès-Cormeilles commencent à partir de 590 € HT pour une Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention IA à Montigny-lès-Cormeilles ?",
+      a: "Nos tarifs publics démarrent à 490 € HT pour un Audit Flash et 590 € HT pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à 990 € HT, sans frais cachés.",
     },
     {
-      q: "Axion-IA se déplace-t-il à Montigny-lès-Cormeilles pour des audits ?",
-      a: "Oui, notre équipe se déplace sur site à Montigny-lès-Cormeilles pour réaliser des audits, à partir de 490 € HT pour un Audit Flash de 4 heures.",
+      q: "Axion-IA se déplace-t-il sur site à Montigny-lès-Cormeilles (95370) ?",
+      a: "Oui, nos consultants prennent le RER C ou le Transilien H jusqu'à Montigny-Beauchamp, ou le Transilien J jusqu'à La Frette-Montigny. Aucun frais de déplacement n'est facturé en Île-de-France.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Montigny-lès-Cormeilles ?",
-      a: "Nous intégrons la conformité RGPD dans toutes nos interventions à Montigny-lès-Cormeilles, en assurant que toutes les solutions IA respectent les réglementations en vigueur.",
+      q: "Quels délais pour démarrer un projet IA à Montigny-lès-Cormeilles ?",
+      a: "Nous intervenons à Montigny-lès-Cormeilles dans un délai de 5 jours ouvrés après validation. L'Audit Flash se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
     },
     {
-      q: "Quels délais pour une intervention IA à Montigny-lès-Cormeilles ?",
-      a: "Nous nous engageons à intervenir à Montigny-lès-Cormeilles dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Intervenez-vous dans les communes voisines de Montigny-lès-Cormeilles ?",
+      a: "Oui, nous couvrons Cormeilles-en-Parisis, La Frette-sur-Seine, Franconville, Herblay-sur-Seine, Pierrelaye, Beauchamp et Le Plessis-Bouchard — l'ensemble de l'agglomération Val Parisis.",
+    },
+    {
+      q: "Comment Axion-IA assure-t-il la conformité RGPD à Montigny-lès-Cormeilles ?",
+      a: "Nous codons toutes les automatisations en code custom hébergé sur infrastructure européenne, avec registre des traitements, DPA et minimisation des données — conforme RGPD et AI Act.",
+    },
+    {
+      q: "Quels secteurs locaux de Montigny-lès-Cormeilles accompagnez-vous en priorité ?",
+      a: "Nous priorisons les TPE et PME du commerce de détail, du transport, des travaux de construction spécialisés, de la restauration et des services aux entreprises — secteurs majoritaires du Val Parisis.",
     },
   ],
 };

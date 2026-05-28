@@ -1,68 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Hand-corrected 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factual rewrite).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const SEVRES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sèvres, au cœur de l'Île-de-France, pour accompagner les entreprises locales dans l'adoption de l'IA. Avec des acteurs comme LVMH et BNP Paribas à proximité, nous facilitons l'intégration de solutions IA adaptées aux besoins spécifiques des entreprises de la région.",
+    "Axion-IA accompagne les TPE et PME de Sèvres (22 303 habitants, Hauts-de-Seine), commune située à 12 km à l'ouest de Paris, au coeur du sud-ouest francilien. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, commerçants, professions libérales et PME tertiaires installés entre la Manufacture nationale de Sèvres, Strate École de Design et le pôle Boulogne-Billancourt – Issy-les-Moulineaux.",
   pitchEn:
-    "Axion-IA intervient à Sèvres, au cœur de l'Île-de-France, pour accompagner les entreprises locales dans l'adoption de l'IA. Avec des acteurs comme LVMH et BNP Paribas à proximité, nous facilitons l'intégration de solutions IA adaptées aux besoins spécifiques des entreprises de la région.",
+    "Axion-IA accompagne les TPE et PME de Sèvres (22 303 habitants, Hauts-de-Seine), commune située à 12 km à l'ouest de Paris, au coeur du sud-ouest francilien. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, commerçants, professions libérales et PME tertiaires installés entre la Manufacture nationale de Sèvres, Strate École de Design et le pôle Boulogne-Billancourt – Issy-les-Moulineaux.",
   directAnswerFr:
-    "Axion-IA se déplace à Sèvres pour proposer des solutions IA opérationnelles aux entreprises locales. Avec un tissu économique comprenant des secteurs comme le commerce de détail et la programmation informatique, Sèvres est un lieu propice à l'innovation. Nos interventions incluent des audits et des implémentations. Nous assurons un déploiement rapide et efficace pour optimiser vos processus métiers.",
+    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès 490 € HT, interventions dès 590 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à Sèvres pour proposer des solutions IA opérationnelles aux entreprises locales. Avec un tissu économique comprenant des secteurs comme le commerce de détail et la programmation informatique, Sèvres est un lieu propice à l'innovation. Nos interventions incluent des audits et des implémentations. Nous assurons un déploiement rapide et efficace pour optimiser vos processus métiers.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès 490 € HT, interventions dès 590 € HT.",
+  seoHook: "artisanat d'art, design & PME tertiaires",
   ecosystemFr:
-    "Sèvres, entourée de communes comme Boulogne-Billancourt et Issy-les-Moulineaux, bénéficie d'un écosystème économique riche. Avec 2 000 établissements actifs, la ville est un pôle pour des secteurs tels que le commerce de détail et l'enseignement.",
+    "Sèvres est marquée par la Manufacture nationale de Sèvres (porcelaine, héritage de 1756) et le Musée national de la Céramique, qui structurent un écosystème rare d'artisans d'art, de céramistes et de métiers de patrimoine. La présence de Strate École de Design et de l'ESFF (École supérieure de fonderie et forge) attire un tissu de PME d'ingénierie et de design produit. La proximité immédiate de Boulogne-Billancourt, Issy-les-Moulineaux, Meudon, Chaville, Saint-Cloud et Ville-d'Avray ouvre l'accès à un bassin de PME tertiaires denses.",
   ecosystemEn:
-    "Sèvres, entourée de communes comme Boulogne-Billancourt et Issy-les-Moulineaux, bénéficie d'un écosystème économique riche. Avec 2 000 établissements actifs, la ville est un pôle pour des secteurs tels que le commerce de détail et l'enseignement.",
+    "Sèvres est marquée par la Manufacture nationale de Sèvres (porcelaine, héritage de 1756) et le Musée national de la Céramique, qui structurent un écosystème rare d'artisans d'art, de céramistes et de métiers de patrimoine. La présence de Strate École de Design et de l'ESFF (École supérieure de fonderie et forge) attire un tissu de PME d'ingénierie et de design produit. La proximité immédiate de Boulogne-Billancourt, Issy-les-Moulineaux, Meudon, Chaville, Saint-Cloud et Ville-d'Avray ouvre l'accès à un bassin de PME tertiaires denses.",
   distancesFr:
-    "Sèvres est située à 10 km de la Gare de Paris-Montparnasse et à 20 km de l'Aéroport de Paris-Orly.",
+    "Sèvres est limitrophe de Chaville, Meudon, Ville-d'Avray et Saint-Cloud, et fait face à Boulogne-Billancourt (séparée par la Seine). Paris est à 12 km, la gare Montparnasse accessible en 15 min via le Transilien Sèvres-Rive-Gauche, et l'aéroport Paris-Orly à environ 20 km.",
   distancesEn:
-    "Sèvres est située à 10 km de la Gare de Paris-Montparnasse et à 20 km de l'Aéroport de Paris-Orly.",
+    "Sèvres est limitrophe de Chaville, Meudon, Ville-d'Avray et Saint-Cloud, et fait face à Boulogne-Billancourt (séparée par la Seine). Paris est à 12 km, la gare Montparnasse accessible en 15 min via le Transilien Sèvres-Rive-Gauche, et l'aéroport Paris-Orly à environ 20 km.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
-    "Enseignement",
+    "Artisanat d'art et métiers de la céramique",
+    "Design industriel et conseil en innovation",
+    "Commerce de détail spécialisé",
+    "Activités juridiques, comptables et de conseil",
+    "Enseignement supérieur et culturel",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Sèvres permet d'identifier les opportunités IA dans des secteurs comme le commerce de détail — dès 490 € HT.",
-      en: "Réaliser un audit à Sèvres permet d'identifier les opportunités IA dans des secteurs comme le commerce de détail — dès 490 € HT.",
+      fr: "Audit IA à Sèvres pour les artisans d'art, les cabinets de design et les TPE tertiaires — cartographie des automatisations à 490 € HT.",
+      en: "Audit IA à Sèvres pour les artisans d'art, les cabinets de design et les TPE tertiaires — cartographie des automatisations à 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Sèvres pour automatiser les tâches administratives dans les entreprises locales — intervention dès 590 € HT.",
-      en: "Intervenir à Sèvres pour automatiser les tâches administratives dans les entreprises locales — intervention dès 590 € HT.",
+      fr: "Interventions à Sèvres pour automatiser devis, factures et relances des PME tertiaires et des artisans locaux — dès 590 € HT.",
+      en: "Interventions à Sèvres pour automatiser devis, factures et relances des PME tertiaires et des artisans locaux — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Sèvres dans des domaines comme la programmation informatique — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Sèvres dans des domaines comme la programmation informatique — à partir de 990 € HT.",
+      fr: "Implémentation de solutions IA codées sur mesure à Sèvres (pas de no-code) pour les PME de design, d'ingénierie et de conseil — dès 990 € HT.",
+      en: "Implémentation de solutions IA codées sur mesure à Sèvres (pas de no-code) pour les PME de design, d'ingénierie et de conseil — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 à Sèvres pour une adoption IA personnalisée — sessions à partir de 990 € HT.",
-      en: "Accompagner en 1-to-1 à Sèvres pour une adoption IA personnalisée — sessions à partir de 990 € HT.",
+      fr: "Sessions 1-to-1 à Sèvres pour dirigeants de TPE/PME : roadmap IA, priorisation des cas d'usage, conformité RGPD — dès 990 € HT.",
+      en: "Sessions 1-to-1 à Sèvres pour dirigeants de TPE/PME : roadmap IA, priorisation des cas d'usage, conformité RGPD — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Sèvres ?",
-      a: "Les tarifs pour une intervention IA à Sèvres débutent à 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'une intervention IA à Sèvres ?",
+      a: "L'Audit Flash 4 h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT et l'implémentation sur mesure à 990 € HT. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
-      q: "Comment se déroule un audit IA à Sèvres ?",
-      a: "Un audit IA à Sèvres commence par une analyse de vos processus métiers. L'Audit Flash de 4 heures est proposé à partir de 490 € HT.",
+      q: "Sous quel délai Axion-IA peut-il intervenir à Sèvres ?",
+      a: "Nous nous déplaçons à Sèvres sous 5 jours ouvrés en moyenne. Le Transilien (Montparnasse en 15 min), le tramway T2 et la ligne 9 du métro à Pont de Sèvres facilitent l'accès depuis Paris ou la province.",
     },
     {
-      q: "Axion-IA peut-il se déplacer à Sèvres rapidement ?",
-      a: "Oui, Axion-IA se déplace à Sèvres généralement dans les 5 jours ouvrés pour commencer les interventions sur site.",
+      q: "Intervenez-vous aussi à Boulogne-Billancourt, Meudon ou Saint-Cloud ?",
+      a: "Oui, nous couvrons l'ensemble des communes limitrophes : Chaville, Boulogne-Billancourt, Meudon, Ville-d'Avray et Saint-Cloud, ainsi que tout le département des Hauts-de-Seine.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Sèvres ?",
-      a: "Axion-IA assure la conformité RGPD à Sèvres en intégrant des pratiques de gouvernance IA rigoureuses et en formant vos équipes sur les meilleures pratiques.",
+      q: "Comment garantissez-vous la conformité RGPD à Sèvres ?",
+      a: "Chaque mission inclut un registre des traitements et une revue AI Act 2024. Pour les cabinets de design et artisans d'art qui gèrent des données clients premium, nous formalisons les durées de conservation et les engagements de confidentialité.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous le plus à Sèvres ?",
+      a: "Principalement les TPE/PME d'artisanat d'art (céramique, métiers du patrimoine), les cabinets de design (sphère Strate École), les professions libérales et les PME tertiaires du commerce spécialisé. Les ETI sont accompagnées en complément.",
+    },
+    {
+      q: "Faites-vous du no-code ou du code sur mesure à Sèvres ?",
+      a: "Nous codons toutes nos solutions IA sur mesure (Python, TypeScript, APIs métier). Pas de no-code : c'est notre garantie de pérennité, de réversibilité et d'indépendance vis-à-vis des éditeurs.",
     },
   ],
 };

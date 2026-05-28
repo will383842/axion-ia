@@ -1,63 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Hand-corrected 2026-05-28 — anti-doorway HCU 2024 (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const CAHORS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Cahors pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et Cap Digital en France, nous apportons notre expertise nationale pour automatiser les tâches administratives, les relances et les devis.",
+    "Axion-IA accompagne les TPE et PME de Cahors, préfecture du Lot (20 050 habitants, 2023) installée sur une presqu'île formée par un méandre du Lot. L'écosystème local mêle viticulture AOC Cahors, commerce de centre-ville, restauration touristique (UNESCO : pont Valentré, cathédrale Saint-Étienne) et services administratifs liés au statut de préfecture. Williams intervient depuis Paris pour automatiser devis, relances clients, suivi de stock et reporting comptable, avec du code Python/TypeScript sur mesure — pas de no-code à l'année. La gratuité des transports urbains depuis novembre 2019 facilite les rendez-vous in situ chez les commerçants du Vieux-Cahors.",
   pitchEn:
-    "Axion-IA intervient à Cahors pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et Cap Digital en France, nous apportons notre expertise nationale pour automatiser les tâches administratives, les relances et les devis.",
+    "Axion-IA accompagne les TPE et PME de Cahors, préfecture du Lot (20 050 habitants, 2023) installée sur une presqu'île formée par un méandre du Lot. L'écosystème local mêle viticulture AOC Cahors, commerce de centre-ville, restauration touristique (UNESCO : pont Valentré, cathédrale Saint-Étienne) et services administratifs liés au statut de préfecture. Williams intervient depuis Paris pour automatiser devis, relances clients, suivi de stock et reporting comptable, avec du code Python/TypeScript sur mesure — pas de no-code à l'année. La gratuité des transports urbains depuis novembre 2019 facilite les rendez-vous in situ chez les commerçants du Vieux-Cahors.",
   directAnswerFr:
-    "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
+    "Axion-IA est un cabinet IA basé en France qui sert les TPE et PME de Cahors et du Grand Cahors (24 478 habitants sur l'agglomération). Williams se déplace sur site dans le Lot pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : devis viticoles, relances restauration, reporting commerce) et Implémentation longue (intégration code dans la stack existante). Tous les tarifs sont publics. Conformité RGPD assurée par contrat DPA, données hébergées en UE.",
   directAnswerEn:
-    "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA est un cabinet IA basé en France qui sert les TPE et PME de Cahors et du Grand Cahors (24 478 habitants sur l'agglomération). Williams se déplace sur site dans le Lot pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : devis viticoles, relances restauration, reporting commerce) et Implémentation longue (intégration code dans la stack existante). Tous les tarifs sont publics. Conformité RGPD assurée par contrat DPA, données hébergées en UE.",
+  seoHook: "viticulture AOC, commerce et restauration touristique",
   ecosystemFr:
-    "Le tissu économique de Cahors est marqué par des secteurs comme le commerce de détail et la construction. En France, des pôles comme Cap Digital et Station F illustrent l'importance de l'innovation. Les entreprises de Cahors peuvent bénéficier de notre expertise nationale pour se développer.",
+    "Cahors structure son économie autour de l'AOC Cahors (vin rouge historique exporté depuis le Moyen Âge), du commerce de proximité dans le secteur sauvegardé UNESCO, de la restauration alimentée par le tourisme estival, et des services publics liés à la préfecture du Lot. L'aérodrome Cahors-Lalbenque dessert l'aviation d'affaires ; l'A20 connecte la ville à Toulouse (1h30) et Brive (1h). Les domaines viticoles du vignoble de Cahors (Côtes du Lot) sont des PME-cibles classiques pour des automatisations de gestion de cave et de e-commerce.",
   ecosystemEn:
-    "Le tissu économique de Cahors est marqué par des secteurs comme le commerce de détail et la construction. En France, des pôles comme Cap Digital et Station F illustrent l'importance de l'innovation. Les entreprises de Cahors peuvent bénéficier de notre expertise nationale pour se développer.",
+    "Cahors structure son économie autour de l'AOC Cahors (vin rouge historique exporté depuis le Moyen Âge), du commerce de proximité dans le secteur sauvegardé UNESCO, de la restauration alimentée par le tourisme estival, et des services publics liés à la préfecture du Lot. L'aérodrome Cahors-Lalbenque dessert l'aviation d'affaires ; l'A20 connecte la ville à Toulouse (1h30) et Brive (1h). Les domaines viticoles du vignoble de Cahors (Côtes du Lot) sont des PME-cibles classiques pour des automatisations de gestion de cave et de e-commerce.",
   distancesFr:
-    "Cahors est situé à 80 km de la gare TGV de Montauban-Ville-Bourbon et à 110 km de l'aéroport de Toulouse-Blagnac.",
+    "Cahors est desservie par la ligne Paris-Orléans-Limoges-Toulouse (gare SNCF en centre-ville) et l'A20 sortie 57. Aéroports : Toulouse-Blagnac à 1h30 par autoroute, Brive-Vallée de la Dordogne à 1h.",
   distancesEn:
-    "Cahors est situé à 80 km de la gare TGV de Montauban-Ville-Bourbon et à 110 km de l'aéroport de Toulouse-Blagnac.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Construction", "Transports terrestres"],
+    "Cahors est desservie par la ligne Paris-Orléans-Limoges-Toulouse (gare SNCF en centre-ville) et l'A20 sortie 57. Aéroports : Toulouse-Blagnac à 1h30 par autoroute, Brive-Vallée de la Dordogne à 1h.",
+  topSectorsNaf: [
+    "Culture de la vigne (AOC Cahors)",
+    "Commerce de détail centre-ville UNESCO",
+    "Restauration touristique",
+    "Administration publique (préfecture du Lot)",
+    "Construction et artisanat",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Cahors permet d'identifier les processus à automatiser, réduisant ainsi les coûts opérationnels mesurés.",
-      en: "Réaliser un audit à Cahors permet d'identifier les processus à automatiser, réduisant ainsi les coûts opérationnels mesurés.",
+      fr: "L'Audit Flash 4h à Cahors cartographie les processus métier d'un domaine viticole, d'un restaurant du centre historique ou d'un commerce de la rue du Maréchal-Joffre, et chiffre les heures récupérables par automatisation.",
+      en: "L'Audit Flash 4h à Cahors cartographie les processus métier d'un domaine viticole, d'un restaurant du centre historique ou d'un commerce de la rue du Maréchal-Joffre, et chiffre les heures récupérables par automatisation.",
     },
     interventions: {
-      fr: "Intervenir à Cahors pour automatiser les devis et relances améliore l'efficacité des entreprises locales.",
-      en: "Intervenir à Cahors pour automatiser les devis et relances améliore l'efficacité des entreprises locales.",
+      fr: "Les Interventions Essentielles à Cahors ciblent la facturation viticole, les relances clients dans le commerce de proximité et la prise de réservation restauration — livrées avec du code Python/TypeScript versionné.",
+      en: "Les Interventions Essentielles à Cahors ciblent la facturation viticole, les relances clients dans le commerce de proximité et la prise de réservation restauration — livrées avec du code Python/TypeScript versionné.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Cahors aide à intégrer des outils adaptés à votre stack existante.",
-      en: "Implémenter des solutions IA à Cahors aide à intégrer des outils adaptés à votre stack existante.",
+      fr: "L'implémentation à Cahors raccorde les outils IA à la stack existante d'une PME du Lot (Sage, EBP, Shopify viticole, caisse Lightspeed) sans dépendance à un éditeur SaaS no-code.",
+      en: "L'implémentation à Cahors raccorde les outils IA à la stack existante d'une PME du Lot (Sage, EBP, Shopify viticole, caisse Lightspeed) sans dépendance à un éditeur SaaS no-code.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Cahors avec des sessions 1-to-1 pour une adoption efficace de l'IA.",
-      en: "Accompagner les dirigeants à Cahors avec des sessions 1-to-1 pour une adoption efficace de l'IA.",
+      fr: "L'accompagnement un-à-un à Cahors s'adresse aux dirigeants TPE/PME du Grand Cahors qui souhaitent monter en compétence sur les usages IA opérationnels avant de déployer en interne.",
+      en: "L'accompagnement un-à-un à Cahors s'adresse aux dirigeants TPE/PME du Grand Cahors qui souhaitent monter en compétence sur les usages IA opérationnels avant de déployer en interne.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Cahors ?",
-      a: "Nos audits à Cahors commencent à partir de 490 € HT pour l'Audit Flash 4h. Tous nos tarifs sont publics et consultables sur notre site.",
+      q: "Quels sont les tarifs pour une mission Axion-IA à Cahors ?",
+      a: "Audit Flash 4h à 490 € HT, Intervention Essentielle à 590 € HT, Implémentation sur devis. Tous les tarifs sont publics sur axion-ia.com — pas de package opaque ni d'abonnement caché.",
     },
     {
-      q: "Comment se déroule une intervention IA à Cahors ?",
-      a: "Williams se déplace à Cahors pour réaliser des interventions sur site, permettant une intégration directe dans vos processus existants.",
+      q: "Quels délais d'intervention sur Cahors et le Grand Cahors ?",
+      a: "Williams se déplace à Cahors sous 5 à 10 jours ouvrés après signature. Pour les domaines viticoles éloignés (Luzech, Puy-l'Évêque), prévoir un créneau aller-retour groupé pour optimiser le déplacement.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Cahors ?",
-      a: "Nous nous engageons à intervenir à Cahors dans un délai de 5 jours ouvrés après validation de votre projet.",
+      q: "Axion-IA intervient-il dans le vignoble de Cahors et les communes du Lot proches ?",
+      a: "Oui — outre Cahors intra-muros, nous couvrons Pradines, Mercuès, Cabrerets, Saint-Cirq-Lapopie et l'ensemble du Grand Cahors. Au-delà, les frais de déplacement sont chiffrés transparemment dans le devis.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Cahors ?",
-      a: "Nous garantissons que toutes nos solutions IA respectent les normes RGPD, assurant ainsi la protection des données de nos clients à Cahors.",
+      q: "Comment Axion-IA assure la conformité RGPD pour une PME viticole de Cahors ?",
+      a: "Contrat DPA signé avant toute mission, données hébergées en Union européenne (OVHcloud, Scaleway), traitement minimisé et journalisé. Aucune donnée client n'alimente d'entraînement de modèle tiers.",
+    },
+    {
+      q: "Pour quels secteurs locaux Axion-IA est-il pertinent à Cahors ?",
+      a: "Domaines viticoles AOC Cahors (e-commerce, gestion de cave, allocations), restauration touristique (réservations, gestion menu), commerce de centre-ville UNESCO (fidélisation), et professions libérales (comptables, notaires, avocats) du Lot.",
+    },
+    {
+      q: "Williams se déplace-t-il vraiment sur site à Cahors ou tout se fait à distance ?",
+      a: "Williams se déplace physiquement à Cahors pour les phases Audit et Implémentation. Les phases de développement code sont remote, mais chaque mission inclut au moins une journée sur site pour la prise de besoin et la recette.",
     },
   ],
 };

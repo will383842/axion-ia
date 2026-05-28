@@ -1,63 +1,76 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL FIX 2026-05-28 — anti-doorway HCU 2024.
+// Wikipedia-sourced facts. EN = mirror FR (Will rule 2026-05-22).
 
 import type { VilleCopy } from "./types";
 
 export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Morsang-sur-Orge, une ville dynamique de l'Île-de-France, pour optimiser les processus des entreprises locales. Paris, avec ses pôles comme Cap Digital et Station F, inspire nos méthodes d'audit et d'implémentation IA.",
+    "Morsang-sur-Orge (91), 21 667 habitants, commune résidentielle dense de l'Essonne située à 23 km au sud de Paris, à 7 km à l'ouest d'Évry et à 7 km au sud d'Orly. Tissu économique fortement tertiaire (64 %) avec deux zones d'activités principales (Buisson foireux et route de Corbeil), densité 4 936 hab/km². Desservie depuis décembre 2023 par le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes. Axion-IA accompagne les TPE, PME de services et artisans de la rive ouest de l'Orge.",
   pitchEn:
-    "Axion-IA intervient à Morsang-sur-Orge, une ville dynamique de l'Île-de-France, pour optimiser les processus des entreprises locales. Paris, avec ses pôles comme Cap Digital et Station F, inspire nos méthodes d'audit et d'implémentation IA.",
+    "Morsang-sur-Orge (91), 21 667 habitants, commune résidentielle dense de l'Essonne située à 23 km au sud de Paris, à 7 km à l'ouest d'Évry et à 7 km au sud d'Orly. Tissu économique fortement tertiaire (64 %) avec deux zones d'activités principales (Buisson foireux et route de Corbeil), densité 4 936 hab/km². Desservie depuis décembre 2023 par le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes. Axion-IA accompagne les TPE, PME de services et artisans de la rive ouest de l'Orge.",
   directAnswerFr:
-    "À Morsang-sur-Orge, Axion-IA propose des audits et interventions sur site, en s'inspirant des méthodologies éprouvées de Paris, où se trouvent des pôles comme Inria et Station F. Nos services incluent l'automatisation des tâches administratives et la mise en œuvre de solutions IA, adaptées aux besoins spécifiques des entreprises locales.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
   directAnswerEn:
-    "À Morsang-sur-Orge, Axion-IA propose des audits et interventions sur site, en s'inspirant des méthodologies éprouvées de Paris, où se trouvent des pôles comme Inria et Station F. Nos services incluent l'automatisation des tâches administratives et la mise en œuvre de solutions IA, adaptées aux besoins spécifiques des entreprises locales.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
+  seoHook: "services tertiaires & professions libérales",
   ecosystemFr:
-    "Morsang-sur-Orge bénéficie de la proximité de Paris, abritant des entités comme LVMH et BNP Paribas, qui influencent le tissu économique régional. Les entreprises locales peuvent ainsi s'inspirer de ces leaders pour leur propre développement.",
+    "Morsang-sur-Orge est une commune dense de l'Essonne, intégrée à l'unité urbaine de Paris. Économie résidentielle et tertiaire : 64 % des établissements relèvent du secteur tertiaire en 2010, 15 % de l'administration publique. Deux zones d'activités (Buisson foireux et route de Corbeil) accueillent TPE de services, commerces, artisans BTP et professions libérales. La proximité d'Évry (préfecture, université Paris-Saclay) et d'Orly (zone aéroportuaire) structure un bassin d'emploi mixte. Le tramway T12 (depuis 2023) renforce la connexion vers le pôle Massy-Saclay.",
   ecosystemEn:
-    "Morsang-sur-Orge bénéficie de la proximité de Paris, abritant des entités comme LVMH et BNP Paribas, qui influencent le tissu économique régional. Les entreprises locales peuvent ainsi s'inspirer de ces leaders pour leur propre développement.",
+    "Morsang-sur-Orge est une commune dense de l'Essonne, intégrée à l'unité urbaine de Paris. Économie résidentielle et tertiaire : 64 % des établissements relèvent du secteur tertiaire en 2010, 15 % de l'administration publique. Deux zones d'activités (Buisson foireux et route de Corbeil) accueillent TPE de services, commerces, artisans BTP et professions libérales. La proximité d'Évry (préfecture, université Paris-Saclay) et d'Orly (zone aéroportuaire) structure un bassin d'emploi mixte. Le tramway T12 (depuis 2023) renforce la connexion vers le pôle Massy-Saclay.",
   distancesFr:
-    "Morsang-sur-Orge est située à 15 km de l'aéroport de Paris-Orly et de la gare TGV de Massy, facilitant l'accès pour nos interventions.",
+    "Paris à 23 km, Évry à 7 km, Orly à 7 km, Massy-Palaiseau à 12 km. RER C (gares Savigny-sur-Orge, Sainte-Geneviève-des-Bois) à 5 min, tramway T12 depuis décembre 2023 vers Massy et Évry. Aéroport Paris-Orly à 15 min, gare TGV Massy-Palaiseau à 20 min.",
   distancesEn:
-    "Morsang-sur-Orge est située à 15 km de l'aéroport de Paris-Orly et de la gare TGV de Massy, facilitant l'accès pour nos interventions.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Restauration", "Santé humaine"],
+    "Paris à 23 km, Évry à 7 km, Orly à 7 km, Massy-Palaiseau à 12 km. RER C (gares Savigny-sur-Orge, Sainte-Geneviève-des-Bois) à 5 min, tramway T12 depuis décembre 2023 vers Massy et Évry. Aéroport Paris-Orly à 15 min, gare TGV Massy-Palaiseau à 20 min.",
+  topSectorsNaf: [
+    "Services tertiaires (conseil, finance, assurance)",
+    "Professions libérales (santé, juridique)",
+    "Commerce de détail",
+    "Construction & artisanat BTP",
+    "Administration publique & services collectifs",
+    "Restauration & hébergement",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Morsang-sur-Orge pour identifier les points d'amélioration dans vos processus — dès 490 € HT.",
-      en: "Réaliser un audit à Morsang-sur-Orge pour identifier les points d'amélioration dans vos processus — dès 490 € HT.",
+      fr: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Morsang-sur-Orge pour automatiser les tâches administratives et optimiser le temps de vos équipes.",
-      en: "Intervenir à Morsang-sur-Orge pour automatiser les tâches administratives et optimiser le temps de vos équipes.",
+      fr: "Interventions IA sur site à Morsang-sur-Orge : ateliers TPE/PME locales sur cas concrets (automatisation CRM, classification emails, agents IA service client, génération devis).",
+      en: "Interventions IA sur site à Morsang-sur-Orge : ateliers TPE/PME locales sur cas concrets (automatisation CRM, classification emails, agents IA service client, génération devis).",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Morsang-sur-Orge pour améliorer l'efficacité opérationnelle — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Morsang-sur-Orge pour améliorer l'efficacité opérationnelle — dès 990 € HT.",
+      fr: "Implémentation IA à Morsang-sur-Orge : code custom pour cabinets libéraux, PME services, artisans BTP. Automatisation prise de RDV, facturation, classification dossiers, chatbot client.",
+      en: "Implémentation IA à Morsang-sur-Orge : code custom pour cabinets libéraux, PME services, artisans BTP. Automatisation prise de RDV, facturation, classification dossiers, chatbot client.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Morsang-sur-Orge avec des sessions 1-to-1 pour une prise de décision éclairée — à partir de 990 € HT.",
-      en: "Accompagner les dirigeants à Morsang-sur-Orge avec des sessions 1-to-1 pour une prise de décision éclairée — à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de 990 € HT, format 2 h.",
+      en: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de 990 € HT, format 2 h.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs d'un audit à Morsang-sur-Orge ?",
-      a: "Les audits à Morsang-sur-Orge commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Nos tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs pour une intervention IA à Morsang-sur-Orge ?",
+      a: "Audit Flash 490 € HT (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de 590 € HT la demi-journée, coaching 1-to-1 dirigeant à partir de 990 € HT. Tarifs publics consultables.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Morsang-sur-Orge ?",
-      a: "Nos consultants se déplacent directement sur site à Morsang-sur-Orge, facilitant ainsi une intervention rapide et efficace au sein de votre entreprise.",
+      q: "Axion-IA se déplace-t-il à Morsang-sur-Orge depuis Paris ?",
+      a: "Oui, nos consultants se déplacent à Morsang-sur-Orge depuis Paris (23 km, 30 min via N20 ou A6, ou tramway T12 depuis décembre 2023). Délai d'intervention sous 5 jours ouvrés.",
     },
     {
-      q: "Quels délais pour une intervention à Morsang-sur-Orge ?",
-      a: "Williams se déplace sur site dans les 5 jours ouvrés suivant la demande pour une intervention à Morsang-sur-Orge.",
+      q: "Quelles communes proches couvrez-vous autour de Morsang-sur-Orge ?",
+      a: "Nous intervenons à Morsang-sur-Orge et dans les communes limitrophes : Savigny-sur-Orge, Viry-Châtillon, Fleury-Mérogis, Sainte-Geneviève-des-Bois, Villemoisson-sur-Orge, ainsi qu'à Évry-Courcouronnes et Massy.",
+    },
+    {
+      q: "Travaillez-vous avec les professions libérales et PME services de l'Essonne ?",
+      a: "Oui, cœur de cible. Cas IA fréquents : automatisation prise de RDV cabinet, classification dossiers, génération comptes-rendus, agents IA réponse client/patient, optimisation facturation CRM.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Morsang-sur-Orge ?",
-      a: "Nous veillons à ce que toutes nos solutions IA respectent strictement les réglementations RGPD, assurant ainsi la protection des données personnelles de votre entreprise.",
+      a: "Conformité RGPD intégrée dès la conception : hébergement UE, anonymisation, registre des traitements, DPA fourni. Code custom auditable, pas de dépendance SaaS US opaque. Conforme AI Act EU applicable 2026.",
+    },
+    {
+      q: "Quel est le délai d'intervention à Morsang-sur-Orge ?",
+      a: "Audit Flash livré sous 5 jours ouvrés après commande. Les interventions sur site et l'implémentation sont planifiées selon disponibilités, généralement sous 2 à 4 semaines.",
     },
   ],
 };

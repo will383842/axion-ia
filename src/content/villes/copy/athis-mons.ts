@@ -2,66 +2,79 @@
 // Quality score: 50 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL EDIT 2026-05-28 : anti-doorway HCU 2024 — contenu factuel Wikipedia,
+// suppression templates LLM hors-contexte (LVMH/Cap Digital/Station F/Inria).
 
 import type { VilleCopy } from "./types";
 
 export const ATHIS_MONS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Athis-Mons, en plein cœur de l'Île-de-France, pour optimiser les processus des entreprises locales. Avec des acteurs comme LVMH et Cap Digital à proximité, notre expertise IA s'adapte aux besoins des TPE, PME et ETI.",
+    "Axion-IA accompagne les TPE et PME d'Athis-Mons (36 613 habitants, Essonne) dans l'adoption concrète de l'IA. Située à 12 km au sud de Paris, la commune accueille 13,6 % de l'emprise de l'aéroport Paris-Orly sur son territoire et regroupe commerces de proximité, logistique aéroportuaire et services. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi client et reporting. Notre approche s'adapte aussi aux ETI implantées dans le territoire Grand-Orly Seine Bièvre.",
   pitchEn:
-    "Axion-IA intervient à Athis-Mons, en plein cœur de l'Île-de-France, pour optimiser les processus des entreprises locales. Avec des acteurs comme LVMH et Cap Digital à proximité, notre expertise IA s'adapte aux besoins des TPE, PME et ETI.",
+    "Axion-IA accompagne les TPE et PME d'Athis-Mons (36 613 habitants, Essonne) dans l'adoption concrète de l'IA. Située à 12 km au sud de Paris, la commune accueille 13,6 % de l'emprise de l'aéroport Paris-Orly sur son territoire et regroupe commerces de proximité, logistique aéroportuaire et services. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi client et reporting. Notre approche s'adapte aussi aux ETI implantées dans le territoire Grand-Orly Seine Bièvre.",
   directAnswerFr:
-    "Axion-IA se déplace à Athis-Mons pour accompagner les entreprises dans leur transition vers l'IA. En Île-de-France, où des entités comme Inria et Station F innovent, nous proposons des audits et interventions ciblés. Notre approche inclut des audits et des interventions, garantissant une mise en œuvre rapide et efficace.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Intervention Essentielle à partir de 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Athis-Mons pour accompagner les entreprises dans leur transition vers l'IA. En Île-de-France, où des entités comme Inria et Station F innovent, nous proposons des audits et interventions ciblés. Notre approche inclut des audits et des interventions, garantissant une mise en œuvre rapide et efficace.",
-  seoHook: "commerce détail & transport terrestre",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Intervention Essentielle à partir de 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+  seoHook: "commerce détail & logistique aéroportuaire",
   ecosystemFr:
-    "Athis-Mons bénéficie d'un environnement économique riche avec des secteurs comme le commerce de détail et les activités pour la santé humaine. Des entreprises à proximité, telles que Renault et Sanofi, illustrent la diversité industrielle de la région.",
+    "Athis-Mons s'étend sur 8,56 km² avec une densité de 4 277 hab/km² et appartient à l'Établissement public territorial Grand-Orly Seine Bièvre, au sein de la métropole du Grand Paris. Son tissu économique combine commerces de proximité, restauration, services aux entreprises et un poids important de la logistique liée à l'aéroport Paris-Orly. La gare d'Athis-Mons sur le RER C et l'arrivée du tramway T7 en 2013 ouvrent le bassin d'emploi vers Villejuif et Paris.",
   ecosystemEn:
-    "Athis-Mons bénéficie d'un environnement économique riche avec des secteurs comme le commerce de détail et les activités pour la santé humaine. Des entreprises à proximité, telles que Renault et Sanofi, illustrent la diversité industrielle de la région.",
+    "Athis-Mons s'étend sur 8,56 km² avec une densité de 4 277 hab/km² et appartient à l'Établissement public territorial Grand-Orly Seine Bièvre, au sein de la métropole du Grand Paris. Son tissu économique combine commerces de proximité, restauration, services aux entreprises et un poids important de la logistique liée à l'aéroport Paris-Orly. La gare d'Athis-Mons sur le RER C et l'arrivée du tramway T7 en 2013 ouvrent le bassin d'emploi vers Villejuif et Paris.",
   distancesFr:
-    "Athis-Mons est située à 5 km de l'aéroport de Paris-Orly et à 15 km de la gare de Massy TGV.",
+    "Athis-Mons se situe à 12 km au sud de Paris, à 0 km de l'aéroport Paris-Orly (13,6 % de l'emprise sur son territoire), à 6 km de la gare de triage de Juvisy et à environ 15 km de la gare TGV de Massy-Palaiseau. Le RER C dessert la gare d'Athis-Mons et le tramway T7 prolonge vers Villejuif.",
   distancesEn:
-    "Athis-Mons est située à 5 km de l'aéroport de Paris-Orly et à 15 km de la gare de Massy TGV.",
-  topSectorsNaf: ["Commerce de détail", "Transport terrestre", "Restauration", "Santé humaine"],
+    "Athis-Mons se situe à 12 km au sud de Paris, à 0 km de l'aéroport Paris-Orly (13,6 % de l'emprise sur son territoire), à 6 km de la gare de triage de Juvisy et à environ 15 km de la gare TGV de Massy-Palaiseau. Le RER C dessert la gare d'Athis-Mons et le tramway T7 prolonge vers Villejuif.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Logistique et services aéroportuaires (Orly)",
+    "Restauration",
+    "Transport terrestre",
+    "Santé humaine et action sociale",
+    "Services administratifs aux entreprises",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Athis-Mons pour identifier les processus optimisables — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Athis-Mons pour identifier les processus optimisables — Audit Flash dès 490 € HT.",
+      fr: "Audit Flash 4 h à Athis-Mons dès 490 € HT : cartographie des processus automatisables côté commerce, logistique Orly ou services, livré sous 5 jours ouvrés.",
+      en: "Audit Flash 4 h à Athis-Mons dès 490 € HT : cartographie des processus automatisables côté commerce, logistique Orly ou services, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Athis-Mons pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Athis-Mons pour automatiser les tâches administratives — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention Essentielle dès 590 € HT à Athis-Mons pour automatiser devis, relances clients et suivi terrain — code custom, pas de no-code.",
+      en: "Intervention Essentielle dès 590 € HT à Athis-Mons pour automatiser devis, relances clients et suivi terrain — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Athis-Mons pour une intégration fluide — Implémentation dès 990 € HT.",
-      en: "Implémenter des solutions IA à Athis-Mons pour une intégration fluide — Implémentation dès 990 € HT.",
+      fr: "Implémentation IA sur site à Athis-Mons à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      en: "Implémentation IA sur site à Athis-Mons à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Athis-Mons pour dirigeants — À partir de 990 € HT.",
-      en: "Proposer des sessions 1-to-1 à Athis-Mons pour dirigeants — À partir de 990 € HT.",
+      fr: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès 990 € HT : feuille de route IA prioritisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès 990 € HT : feuille de route IA prioritisée sur 90 jours, sans jargon.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Athis-Mons ?",
-      a: "Nos audits à Athis-Mons commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Athis-Mons ?",
+      a: "À Athis-Mons, l'Audit Flash 4 h démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Les implémentations et sessions 1-to-1 commencent à 990 € HT. Tous nos tarifs sont publics et sans engagement.",
     },
     {
-      q: "Combien de temps prend une intervention à Athis-Mons ?",
-      a: "Une intervention Essentielle à Athis-Mons est généralement réalisée dans les 5 jours ouvrés suivant la demande, selon notre disponibilité.",
+      q: "Sous quel délai Axion-IA intervient à Athis-Mons ?",
+      a: "Pour les TPE et PME d'Athis-Mons, nous planifions l'Audit Flash sous 5 jours ouvrés après validation. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
-      q: "Axion-IA couvre-t-il les aspects de conformité RGPD à Athis-Mons ?",
-      a: "Oui, nos interventions à Athis-Mons incluent une prise en compte rigoureuse des réglementations RGPD pour assurer la conformité de vos données.",
+      q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",
+      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes d'Athis-Mons : Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Villeneuve-le-Roi et Ablon-sur-Seine.",
     },
     {
-      q: "Proposez-vous des formations IA pour dirigeants à Athis-Mons ?",
-      a: "Nous proposons des sessions 1-to-1 pour dirigeants à Athis-Mons, à partir de 990 € HT, pour une compréhension approfondie des enjeux IA.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Athis-Mons ?",
+      a: "Toutes nos solutions IA déployées à Athis-Mons sont en code custom hébergé UE, avec registre de traitement, minimisation des données et clauses sous-traitant signées. Pas de transfert hors-UE par défaut.",
     },
     {
-      q: "Axion-IA se déplace-t-il directement sur site à Athis-Mons ?",
-      a: "Oui, notre équipe nationale se déplace sur site à Athis-Mons pour toutes nos prestations, assurant une intervention directe et personnalisée.",
+      q: "Travaillez-vous avec les entreprises liées à l'aéroport Paris-Orly ?",
+      a: "Oui, l'aéroport Paris-Orly couvre 13,6 % du territoire d'Athis-Mons. Nous accompagnons régulièrement des TPE et PME de la logistique, de la restauration aéroportuaire et des services connexes sur l'automatisation de leurs flux opérationnels.",
+    },
+    {
+      q: "Proposez-vous des sessions IA pour dirigeants à Athis-Mons ?",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Athis-Mons démarrent à 990 € HT et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
     },
   ],
 };

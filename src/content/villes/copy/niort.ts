@@ -1,68 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Hand-corrected 2026-05-28 — anti-doorway HCU 2024 (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const NIORT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Niort, ville abritant MAIF et MACIF, pour optimiser vos processus grâce à l'IA. Nos solutions sont adaptées aux besoins spécifiques des entreprises niortaises.",
+    "Axion-IA accompagne les TPE et PME de Niort, préfecture des Deux-Sèvres (59 854 habitants en 2023) et quatrième place financière française en termes d'échanges de flux. La ville concentre les sièges des principales mutuelles d'assurance (MAIF, MACIF, MAAF, IMA), ce qui irrigue un écosystème dense de sous-traitants : courtiers, agences de communication, prestataires IT, expertise comptable, formation, traitement documentaire. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes ACPR, Solvabilité II et RGPD du secteur assurantiel niortais.",
   pitchEn:
-    "Axion-IA intervient à Niort, ville abritant MAIF et MACIF, pour optimiser vos processus grâce à l'IA. Nos solutions sont adaptées aux besoins spécifiques des entreprises niortaises.",
+    "Axion-IA accompagne les TPE et PME de Niort, préfecture des Deux-Sèvres (59 854 habitants en 2023) et quatrième place financière française en termes d'échanges de flux. La ville concentre les sièges des principales mutuelles d'assurance (MAIF, MACIF, MAAF, IMA), ce qui irrigue un écosystème dense de sous-traitants : courtiers, agences de communication, prestataires IT, expertise comptable, formation, traitement documentaire. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes ACPR, Solvabilité II et RGPD du secteur assurantiel niortais.",
   directAnswerFr:
-    "À Niort, Axion-IA propose des interventions sur site pour les entreprises locales, notamment celles du secteur financier comme MAIF et MACIF. Nous offrons des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise. Nos services sont conçus pour améliorer l'efficacité opérationnelle et réduire les coûts, avec des tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Niort et du bassin niortais. Williams se déplace sur site en Deux-Sèvres pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris workflows liés aux donneurs d'ordre mutualistes), Intervention Essentielle à 590 € HT (automatisation d'un workflow : traitement de sinistres documentaires, relances courtiers, reporting réglementaire) et Implémentation longue (intégration aux ERP/CRM/GED existants). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   directAnswerEn:
-    "À Niort, Axion-IA propose des interventions sur site pour les entreprises locales, notamment celles du secteur financier comme MAIF et MACIF. Nous offrons des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise. Nos services sont conçus pour améliorer l'efficacité opérationnelle et réduire les coûts, avec des tarifs publics consultables en ligne.",
-  seoHook: "services financiers & auxiliaires financiers",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Niort et du bassin niortais. Williams se déplace sur site en Deux-Sèvres pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris workflows liés aux donneurs d'ordre mutualistes), Intervention Essentielle à 590 € HT (automatisation d'un workflow : traitement de sinistres documentaires, relances courtiers, reporting réglementaire) et Implémentation longue (intégration aux ERP/CRM/GED existants). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+  seoHook: "mutuelles d'assurance, services financiers et sous-traitance",
   ecosystemFr:
-    "Niort est un pôle important pour les services financiers avec des entreprises comme MAIF et MACIF. La ville bénéficie également de l'incubateur Niort Tech, qui soutient l'innovation locale.",
+    "Niort structure son économie autour du tertiaire mutualiste (MAIF, MACIF, MAAF, IMA, Inter Mutuelles Assistance) qui en fait un pôle assurantiel de référence nationale. À ces sièges s'ajoutent Safran (aéronautique), Kraton Chemical (chimie), un écosystème logistique facilité par l'A10 et l'A83, et un tissu de TPE/PME sous-traitantes très orientées B2B. La pépinière Niort Tech accompagne les jeunes pousses numériques locales. Pour un cabinet IA, Niort combine clients-cibles à fort volume documentaire et exigences réglementaires fortes.",
   ecosystemEn:
-    "Niort est un pôle important pour les services financiers avec des entreprises comme MAIF et MACIF. La ville bénéficie également de l'incubateur Niort Tech, qui soutient l'innovation locale.",
+    "Niort structure son économie autour du tertiaire mutualiste (MAIF, MACIF, MAAF, IMA, Inter Mutuelles Assistance) qui en fait un pôle assurantiel de référence nationale. À ces sièges s'ajoutent Safran (aéronautique), Kraton Chemical (chimie), un écosystème logistique facilité par l'A10 et l'A83, et un tissu de TPE/PME sous-traitantes très orientées B2B. La pépinière Niort Tech accompagne les jeunes pousses numériques locales. Pour un cabinet IA, Niort combine clients-cibles à fort volume documentaire et exigences réglementaires fortes.",
   distancesFr:
-    "La gare TGV de Niort est située au cœur de la ville, facilitant l'accès aux entreprises locales.",
+    "Niort est desservie par la gare SNCF en centre-ville (TGV Paris-Montparnasse en 2h via Poitiers, connexions vers La Rochelle et Royan), l'A10 (sortie 33) et l'A83. L'aéroport de Niort-Souché est dédié à l'aviation générale ; l'aéroport international le plus proche est La Rochelle-Île de Ré à 70 km.",
   distancesEn:
-    "La gare TGV de Niort est située au cœur de la ville, facilitant l'accès aux entreprises locales.",
+    "Niort est desservie par la gare SNCF en centre-ville (TGV Paris-Montparnasse en 2h via Poitiers, connexions vers La Rochelle et Royan), l'A10 (sortie 33) et l'A83. L'aéroport de Niort-Souché est dédié à l'aviation générale ; l'aéroport international le plus proche est La Rochelle-Île de Ré à 70 km.",
   topSectorsNaf: [
-    "Services financiers",
-    "Auxiliaires financiers",
-    "Commerce de détail",
-    "Sièges sociaux",
+    "Assurances et mutuelles (sièges sociaux)",
+    "Auxiliaires financiers et de l'assurance",
+    "Activités de services administratifs et de soutien",
+    "Construction aéronautique et spatiale (Safran)",
+    "Commerce de détail et logistique A10/A83",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Niort pour les entreprises du secteur financier — identifier les opportunités d'automatisation.",
-      en: "Réaliser un audit à Niort pour les entreprises du secteur financier — identifier les opportunités d'automatisation.",
+      fr: "L'Audit Flash 4h à Niort cartographie les processus d'un courtier, d'une PME sous-traitante d'une mutuelle, ou d'un cabinet d'expertise comptable, et chiffre les heures récupérables sur les workflows documentaires lourds du secteur assurantiel.",
+      en: "L'Audit Flash 4h à Niort cartographie les processus d'un courtier, d'une PME sous-traitante d'une mutuelle, ou d'un cabinet d'expertise comptable, et chiffre les heures récupérables sur les workflows documentaires lourds du secteur assurantiel.",
     },
     interventions: {
-      fr: "Intervenir à Niort, notamment dans la ZAC de Chauray — optimiser les processus internes.",
-      en: "Intervenir à Niort, notamment dans la ZAC de Chauray — optimiser les processus internes.",
+      fr: "Les Interventions Essentielles à Niort ciblent le traitement de documents sinistres, la qualification de leads B2B, la production de reportings réglementaires (ACPR, Solvabilité II) et la pré-rédaction de courriers gestion — code Python/TypeScript versionné.",
+      en: "Les Interventions Essentielles à Niort ciblent le traitement de documents sinistres, la qualification de leads B2B, la production de reportings réglementaires (ACPR, Solvabilité II) et la pré-rédaction de courriers gestion — code Python/TypeScript versionné.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Niort pour les entreprises comme celles de la ZAC de Chauray — améliorer l'efficacité.",
-      en: "Implémenter des solutions IA à Niort pour les entreprises comme celles de la ZAC de Chauray — améliorer l'efficacité.",
+      fr: "L'implémentation à Niort raccorde les briques IA aux ERP/CRM/GED existants (Salesforce, MS Dynamics, Mega, Documentum, GED maison) avec respect strict des règles ACPR et RGPD. Aucune dépendance no-code.",
+      en: "L'implémentation à Niort raccorde les briques IA aux ERP/CRM/GED existants (Salesforce, MS Dynamics, Mega, Documentum, GED maison) avec respect strict des règles ACPR et RGPD. Aucune dépendance no-code.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Niort, avec des dirigeants de la région — maximiser l'impact de l'IA.",
-      en: "Accompagner en un-à-un à Niort, avec des dirigeants de la région — maximiser l'impact de l'IA.",
+      fr: "L'accompagnement un-à-un à Niort s'adresse aux dirigeants TPE/PME du bassin niortais qui veulent objectiver le ROI IA avant d'engager un budget — focus assurance, mutualité et sous-traitance B2B.",
+      en: "L'accompagnement un-à-un à Niort s'adresse aux dirigeants TPE/PME du bassin niortais qui veulent objectiver le ROI IA avant d'engager un budget — focus assurance, mutualité et sous-traitance B2B.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Niort ?",
-      a: "Nos audits à Niort commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs complets sont disponibles sur notre site.",
+      q: "Quels sont les tarifs pour une mission Axion-IA à Niort ?",
+      a: "Audit Flash 4h à 490 € HT, Intervention Essentielle à 590 € HT, Implémentation sur devis. Tous les tarifs sont publics sur axion-ia.com — pas de package opaque, pas d'engagement annuel imposé.",
     },
     {
-      q: "Comment se déroule une intervention à Niort ?",
-      a: "Williams se déplace à Niort pour réaliser des interventions sur site, adaptées aux besoins spécifiques de votre entreprise, avec un démarrage rapide.",
+      q: "Quels délais d'intervention sur Niort et le bassin niortais ?",
+      a: "Williams se déplace à Niort sous 5 à 10 jours ouvrés après signature. Les missions chez les sous-traitants mutualistes peuvent nécessiter un onboarding sécurité préalable (NDA, ACPR, schéma directeur SI) — délai ajusté en conséquence.",
     },
     {
-      q: "Quels délais pour une implémentation à Niort ?",
-      a: "Les délais d'implémentation à Niort varient selon le projet, mais nous nous engageons à une mise en œuvre rapide et efficace.",
+      q: "Axion-IA intervient-il dans les communes proches de Niort ?",
+      a: "Oui — nous couvrons Chauray, Aiffres, Bessines, Magné, Coulon, Échiré, Saint-Gelais, Vouillé et l'ensemble de la Communauté d'Agglomération du Niortais. Au-delà, frais de déplacement chiffrés transparemment.",
     },
     {
-      q: "Comment Axion-IA gère-t-il la conformité RGPD à Niort ?",
-      a: "Axion-IA garantit que toutes les solutions déployées à Niort respectent les normes RGPD, assurant la protection des données personnelles.",
+      q: "Comment Axion-IA assure la conformité RGPD pour un acteur assurantiel à Niort ?",
+      a: "Contrat DPA signé, hébergement UE (OVHcloud, Scaleway), traitement minimisé et journalisé. Nous documentons les bases légales RGPD et, sur demande, alignons la mission sur les exigences ACPR (DORA, externalisation critique).",
+    },
+    {
+      q: "Pour quels secteurs locaux Axion-IA est-il pertinent à Niort ?",
+      a: "Mutuelles et assurances (et leurs sous-traitants), courtage, expertise comptable, formation continue, agences de communication B2B, sous-traitance aéronautique Safran, et PME logistiques de l'A10/A83.",
+    },
+    {
+      q: "Williams se déplace-t-il vraiment sur site à Niort ou tout se fait à distance ?",
+      a: "Williams se déplace physiquement à Niort (TGV Paris-Niort 2h) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site, y compris dans la ZAC de Chauray ou au siège d'une mutuelle.",
     },
   ],
 };

@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — corrigé anti-doorway HCU 2024 (T4 sprint).
+// Bourg-la-Reine (92, Hauts-de-Seine) — 21 019 hab. (2023), RER B, ex-faïencerie.
 
 import type { VilleCopy } from "./types";
 
 export const BOURG_LA_REINE_COPY: VilleCopy = {
   pitchFr:
-    "À Bourg-la-Reine, Axion-IA intervient pour automatiser les processus administratifs des entreprises locales. L'écosystème francilien, avec des pôles comme Cap Digital et Inria, offre un terreau propice à l'innovation technologique.",
+    "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et TPE-PME des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes IA seniors, y accompagne dirigeants TPE, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
   pitchEn:
-    "À Bourg-la-Reine, Axion-IA intervient pour automatiser les processus administratifs des entreprises locales. L'écosystème francilien, avec des pôles comme Cap Digital et Inria, offre un terreau propice à l'innovation technologique.",
+    "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et TPE-PME des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes IA seniors, y accompagne dirigeants TPE, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
   directAnswerFr:
-    "Axion-IA se déplace à Bourg-la-Reine pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec la proximité de pôles comme Cap Digital et Station F, les entreprises bénéficient d'un environnement stimulant pour intégrer des solutions d'automatisation concrètes et efficaces.",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit Flash 4 h à 490 € HT, Intervention Essentielle 590 € HT et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA se déplace à Bourg-la-Reine pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec la proximité de pôles comme Cap Digital et Station F, les entreprises bénéficient d'un environnement stimulant pour intégrer des solutions d'automatisation concrètes et efficaces.",
-  seoHook: "commerce détail & programmation informatique",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit Flash 4 h à 490 € HT, Intervention Essentielle 590 € HT et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
+  seoHook: "professions libérales, commerce & PME services",
   ecosystemFr:
-    "Bourg-la-Reine, entourée par des communes dynamiques comme Antony et Sceaux, bénéficie de la proximité de pôles économiques et technologiques tels que Cap Digital et Inria, favorisant l'innovation et la croissance des entreprises locales.",
+    "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), TPE de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
   ecosystemEn:
-    "Bourg-la-Reine, entourée par des communes dynamiques comme Antony et Sceaux, bénéficie de la proximité de pôles économiques et technologiques tels que Cap Digital et Inria, favorisant l'innovation et la croissance des entreprises locales.",
+    "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), TPE de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
   distancesFr:
-    "Bourg-la-Reine est située à 10 km de la Gare de Massy TGV et de l'Aéroport de Paris-Orly.",
+    "Paris Denfert-Rochereau à 15 min en RER B. Massy-Palaiseau TGV à 12 min. Aéroport Paris-Orly à 10 km. Antony à 5 min, Sceaux à 3 min, Cachan à 5 min, L'Haÿ-les-Roses et Bagneux limitrophes. Accès D920 (ex-RN20) direct.",
   distancesEn:
-    "Bourg-la-Reine est située à 10 km de la Gare de Massy TGV et de l'Aéroport de Paris-Orly.",
+    "Paris Denfert-Rochereau à 15 min en RER B. Massy-Palaiseau TGV à 12 min. Aéroport Paris-Orly à 10 km. Antony à 5 min, Sceaux à 3 min, Cachan à 5 min, L'Haÿ-les-Roses et Bagneux limitrophes. Accès D920 (ex-RN20) direct.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
-    "Enseignement",
+    "Professions libérales (santé, droit, conseil)",
+    "Commerce de proximité",
+    "Services aux entreprises & TPE tertiaires",
+    "Enseignement & formation",
+    "Activités immobilières & résidentielles",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bourg-la-Reine permet d'identifier les processus à automatiser, en tenant compte de l'écosystème local, pour une optimisation rapide.",
-      en: "Réaliser un audit à Bourg-la-Reine permet d'identifier les processus à automatiser, en tenant compte de l'écosystème local, pour une optimisation rapide.",
+      fr: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit Flash 4 h à 490 € HT, livrable ROI chiffré.",
+      en: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit Flash 4 h à 490 € HT, livrable ROI chiffré.",
     },
     interventions: {
-      fr: "Intervenir à Bourg-la-Reine pour automatiser les tâches administratives et commerciales, en s'appuyant sur des technologies éprouvées, réduit les coûts opérationnels.",
-      en: "Intervenir à Bourg-la-Reine pour automatiser les tâches administratives et commerciales, en s'appuyant sur des technologies éprouvées, réduit les coûts opérationnels.",
+      fr: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Intervention Essentielle à 590 € HT.",
+      en: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Intervention Essentielle à 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bourg-la-Reine, en intégrant les outils existants, garantit une adoption fluide et une efficacité accrue.",
-      en: "Implémenter des solutions IA à Bourg-la-Reine, en intégrant les outils existants, garantit une adoption fluide et une efficacité accrue.",
+      fr: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
+      en: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Bourg-la-Reine pour les dirigeants, afin de maximiser l'impact de l'IA sur leur stratégie d'entreprise.",
-      en: "Proposer des sessions 1-to-1 à Bourg-la-Reine pour les dirigeants, afin de maximiser l'impact de l'IA sur leur stratégie d'entreprise.",
+      fr: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de 990 € HT.",
+      en: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Bourg-la-Reine ?",
-      a: "Les tarifs pour une intervention IA à Bourg-la-Reine commencent à partir de 590 € HT pour l'Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Bourg-la-Reine ?",
+      a: "Oui, Axion-IA intervient à Bourg-la-Reine et dans tout le sud des Hauts-de-Seine. Accès direct depuis Paris en RER B (ligne B station Bourg-la-Reine), nous nous déplaçons aussi à Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses, communes limitrophes.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Bourg-la-Reine ?",
-      a: "Axion-IA garantit la conformité RGPD en intégrant des protocoles de sécurité et de confidentialité rigoureux lors de nos interventions à Bourg-la-Reine, assurant ainsi la protection des données.",
+      q: "Quels sont les tarifs Axion-IA à Bourg-la-Reine ?",
+      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à 490 € HT, Intervention Essentielle sur site à 590 € HT, Implémentation et coaching 1-to-1 à partir de 990 € HT. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
     },
     {
-      q: "Quel est le délai d'intervention d'Axion-IA à Bourg-la-Reine ?",
-      a: "Williams se déplace sur site à Bourg-la-Reine dans un délai de 5 jours ouvrés pour débuter les interventions IA, assurant une réactivité optimale.",
+      q: "Quels délais d'intervention sur Bourg-la-Reine ?",
+      a: "Nous nous déplaçons sur site à Bourg-la-Reine sous 5 jours ouvrés pour démarrer une mission. L'Audit Flash 4 h est planifiable en moins d'une semaine. Les implémentations IA sur mesure s'étalent généralement sur 4 à 8 semaines selon le périmètre.",
     },
     {
-      q: "Axion-IA propose-t-elle des formations IA à Bourg-la-Reine ?",
-      a: "Oui, Axion-IA propose des formations IA personnalisées à Bourg-la-Reine, adaptées aux besoins spécifiques des entreprises locales pour une intégration réussie.",
+      q: "Axion-IA respecte-t-il le RGPD à Bourg-la-Reine ?",
+      a: "Oui. Toutes nos interventions à Bourg-la-Reine sont conformes RGPD : hébergement EU, registre des traitements, DPA contractuel, et IA codée en propriétaire client (pas de SaaS tiers qui exfiltre vos données). Particulièrement adapté aux cabinets médicaux, juridiques et comptables.",
+    },
+    {
+      q: "Quels secteurs Axion-IA accompagne à Bourg-la-Reine ?",
+      a: "Notre cœur de cible à Bourg-la-Reine : professions libérales (médecins, avocats, experts-comptables, notaires), commerces de proximité, agences de services aux entreprises, PME tertiaires et résidentielles, structures d'enseignement et de formation.",
+    },
+    {
+      q: "Faut-il être basé à Bourg-la-Reine pour travailler avec Axion-IA ?",
+      a: "Non. Nous intervenons aussi sur tout l'axe RER B sud (Antony, Sceaux, Massy, Cachan, L'Haÿ-les-Roses) et l'ensemble du Grand Paris. Coaching 1-to-1 disponible en visio si vous préférez le distanciel.",
     },
   ],
 };

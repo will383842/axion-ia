@@ -1,68 +1,71 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-28 — T4 anti-doorway fix Claude Code (Will).
+// Sens (89, Yonne) — deuxième ville de l'Yonne, porte sud de l'Île-de-France.
 
 import type { VilleCopy } from "./types";
 
 export const SENS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Sens pour accompagner les entreprises locales dans leur transition numérique. L'écosystème industriel inclut des acteurs comme Nestlé et Lactalis, facilitant l'implantation de solutions IA efficaces.",
+    "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu TPE commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
   pitchEn:
-    "Axion-IA intervient à Sens pour accompagner les entreprises locales dans leur transition numérique. L'écosystème industriel inclut des acteurs comme Nestlé et Lactalis, facilitant l'implantation de solutions IA efficaces.",
+    "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu TPE commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
   directAnswerFr:
-    "Axion-IA se déplace à Sens pour proposer des services IA adaptés aux entreprises locales. Avec des groupes tels que Nestlé et Lactalis présents dans la région, nous aidons à automatiser les processus administratifs et industriels. Notre offre inclut audit, intervention et implémentation, avec des tarifs publics consultables en ligne. Nous garantissons des résultats rapides et mesurables.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit Flash sur mesure dès 490 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à Sens pour proposer des services IA adaptés aux entreprises locales. Avec des groupes tels que Nestlé et Lactalis présents dans la région, nous aidons à automatiser les processus administratifs et industriels. Notre offre inclut audit, intervention et implémentation, avec des tarifs publics consultables en ligne. Nous garantissons des résultats rapides et mesurables.",
-  seoHook: "commerce détail & industrie alimentaire",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit Flash sur mesure dès 490 € HT.",
+  seoHook: "commerce détail agroalimentaire & logistique",
   ecosystemFr:
-    "Sens abrite un tissu économique diversifié avec des entreprises comme Nestlé et Lactalis. La Zone Industrielle des Vauguillettes est un pôle clé pour le commerce de gros et l'industrie alimentaire.",
+    "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu TPE commerces et artisans, PME agroalimentaires et industrielles, professions libérales.",
   ecosystemEn:
-    "Sens abrite un tissu économique diversifié avec des entreprises comme Nestlé et Lactalis. La Zone Industrielle des Vauguillettes est un pôle clé pour le commerce de gros et l'industrie alimentaire.",
+    "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu TPE commerces et artisans, PME agroalimentaires et industrielles, professions libérales.",
   distancesFr:
-    "Sens est à 45 km de la Gare TGV Gare de Laroche-Migennes et à 120 km de l'Aéroport de Paris-Orly.",
+    "Paris-Bercy à 55 min en TER direct. Paris à 100 km. Autoroute A19 dessert Sens, A5 et A6 à proximité. Gare SNCF Sens (TER Paris-Auxerre-Dijon). Communes voisines : Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny.",
   distancesEn:
-    "Sens est à 45 km de la Gare TGV Gare de Laroche-Migennes et à 120 km de l'Aéroport de Paris-Orly.",
+    "Paris-Bercy à 55 min en TER direct. Paris à 100 km. Autoroute A19 dessert Sens, A5 et A6 à proximité. Gare SNCF Sens (TER Paris-Auxerre-Dijon). Communes voisines : Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Industrie alimentaire",
-    "Transports terrestres",
-    "Commerce de gros",
+    "Commerce de détail & restauration",
+    "Agroalimentaire & industrie",
+    "Logistique & transport (A5/A6/A19)",
+    "Commerce de gros & négoce",
+    "Artisanat & services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Sens pour identifier les opportunités IA dans des secteurs comme le commerce de gros — résultats concrets.",
-      en: "Réaliser un audit à Sens pour identifier les opportunités IA dans des secteurs comme le commerce de gros — résultats concrets.",
+      fr: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit Flash 490 € HT.",
+      en: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Sens dans l'industrie alimentaire avec Nestlé — automatisation des tâches administratives.",
-      en: "Intervenir à Sens dans l'industrie alimentaire avec Nestlé — automatisation des tâches administratives.",
+      fr: "Interventions IA sur site à Sens : formats adaptés au commerce, à l'agroalimentaire, à l'industrie et à la logistique. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Sens : formats adaptés au commerce, à l'agroalimentaire, à l'industrie et à la logistique. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Sens dans la Zone Industrielle des Vauguillettes — optimisation des processus.",
-      en: "Implémenter des solutions IA à Sens dans la Zone Industrielle des Vauguillettes — optimisation des processus.",
+      fr: "Implémentation IA à Sens : traçabilité agroalimentaire, gestion stocks et production industrielle, CRM commerce et négoce, automatisation facturation logistique, agents conversationnels clients pour TPE et PME sénonaises.",
+      en: "Implémentation IA à Sens : traçabilité agroalimentaire, gestion stocks et production industrielle, CRM commerce et négoce, automatisation facturation logistique, agents conversationnels clients pour TPE et PME sénonaises.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Sens pour les dirigeants du secteur des transports terrestres — prise de décision éclairée.",
-      en: "Accompagner en un-à-un à Sens pour les dirigeants du secteur des transports terrestres — prise de décision éclairée.",
+      fr: "Coaching 1-to-1 à Sens : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et industrielles, professions libérales souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Sens : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants et artisans, gérants PME agroalimentaires et industrielles, professions libérales souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Sens ?",
-      a: "Les audits IA à Sens commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Les tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Sens et dans le Sénonais ?",
+      a: "Oui, Axion-IA intervient à Sens et dans les communes voisines (Paron, Saint-Clément, Maillot, Gron, Saint-Denis-lès-Sens, Saint-Martin-du-Tertre, Malay-le-Grand, Rosoy, Saligny). Déplacement depuis Paris en 55 min TER direct.",
     },
     {
-      q: "Comment Axion-IA intervient-elle à Sens ?",
-      a: "Nous nous déplaçons directement sur site à Sens pour réaliser nos interventions, garantissant une compréhension précise des besoins locaux.",
+      q: "Quel est le tarif d'un audit IA pour une TPE à Sens ?",
+      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE et PME sénonaises. Diagnostic complet des processus, cartographie IA (commerce, agroalimentaire, logistique) et plan d'action ROI chiffré.",
     },
     {
-      q: "Quel est le délai pour une intervention IA à Sens ?",
-      a: "Nous nous engageons à intervenir à Sens dans un délai de 5 jours ouvrés après la validation de la mission.",
+      q: "Accompagnez-vous les PME agroalimentaires et industrielles du Sénonais ?",
+      a: "Oui, nous accompagnons PME agroalimentaires et industrielles sur leurs projets IA : traçabilité, gestion qualité, prévision production, CRM B2B, automatisation facturation et logistique sur l'axe A5/A19.",
     },
     {
-      q: "Comment gérez-vous la conformité RGPD à Sens ?",
-      a: "Axion-IA assure la conformité RGPD pour toutes les solutions IA déployées à Sens, en respectant les réglementations en vigueur.",
+      q: "Quel délai pour une intervention IA à Sens ?",
+      a: "Nous nous engageons à intervenir sur site à Sens dans un délai de 5 à 8 jours ouvrés après prise de contact, via la gare SNCF (TER 55 min depuis Paris-Bercy) ou l'A19.",
+    },
+    {
+      q: "Comment Axion-IA garantit-elle la conformité RGPD à Sens ?",
+      a: "Nos interventions à Sens respectent strictement le RGPD : hébergement UE, minimisation des données, registre des traitements et clauses contractuelles types adaptées aux TPE et PME icaunaises.",
     },
   ],
 };

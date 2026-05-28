@@ -1,5 +1,5 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 55 — Model: gpt-4o.
+// MANUAL CORRECTION 2026-05-28 — anti-doorway HCU 2024 (sources factuelles Wikipédia).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,66 +7,67 @@ import type { VilleCopy } from "./types";
 
 export const CAMBRAI_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Cambrai pour optimiser les processus des entreprises locales. Avec des acteurs comme Bonduelle et Nestlé, nous apportons notre expertise en IA pour transformer vos opérations.",
+    "Cambrai (59, Nord) est une sous-préfecture du Cambrésis d'environ 31 000 habitants, située au carrefour des autoroutes A2 et A26. Son tissu économique mêle agroalimentaire (sucrerie Tereos à Escaudœuvres), logistique avec la zone e-Valley en plein développement, commerce de centre-ville et BTP. Axion-IA accompagne TPE artisans, commerçants et PME industrielles ou logistiques du Cambrésis.",
   pitchEn:
-    "Axion-IA intervient à Cambrai pour optimiser les processus des entreprises locales. Avec des acteurs comme Bonduelle et Nestlé, nous apportons notre expertise en IA pour transformer vos opérations.",
+    "Cambrai (59, Nord) est une sous-préfecture du Cambrésis d'environ 31 000 habitants, située au carrefour des autoroutes A2 et A26. Son tissu économique mêle agroalimentaire (sucrerie Tereos à Escaudœuvres), logistique avec la zone e-Valley en plein développement, commerce de centre-ville et BTP. Axion-IA accompagne TPE artisans, commerçants et PME industrielles ou logistiques du Cambrésis.",
   directAnswerFr:
-    "À Cambrai, Axion-IA propose des services adaptés aux entreprises des secteurs dominants tels que l'industrie alimentaire et le commerce de détail. Nous intervenons directement sur site pour offrir des audits, des implémentations et des formations, afin d'améliorer l'efficacité opérationnelle. Notre approche est conçue pour répondre aux besoins spécifiques des entreprises locales, y compris celles de la Zone Industrielle Actipôle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambrai (59) auprès des TPE et PME du Cambrésis : artisans, commerçants du centre-ville, PME agroalimentaires, acteurs de la logistique e-Valley, BTP et professions libérales. Nos consultants se déplacent depuis Lille en 50 min via A1/A2. Audit Flash 590 € HT, code custom (pas no-code), conformité RGPD intégrée.",
   directAnswerEn:
-    "À Cambrai, Axion-IA propose des services adaptés aux entreprises des secteurs dominants tels que l'industrie alimentaire et le commerce de détail. Nous intervenons directement sur site pour offrir des audits, des implémentations et des formations, afin d'améliorer l'efficacité opérationnelle. Notre approche est conçue pour répondre aux besoins spécifiques des entreprises locales, y compris celles de la Zone Industrielle Actipôle.",
-  seoHook: "industrie alimentaire & commerce détail",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambrai (59) auprès des TPE et PME du Cambrésis : artisans, commerçants du centre-ville, PME agroalimentaires, acteurs de la logistique e-Valley, BTP et professions libérales. Nos consultants se déplacent depuis Lille en 50 min via A1/A2. Audit Flash 590 € HT, code custom (pas no-code), conformité RGPD intégrée.",
+  seoHook: "TPE & PME Cambrésis",
   ecosystemFr:
-    "Le tissu économique de Cambrai est marqué par la présence de Bonduelle et Nestlé. La Zone Industrielle Actipôle joue un rôle clé dans le développement industriel local.",
+    "Cambrai se trouve au carrefour des autoroutes A2 (Paris-Bruxelles) et A26 (Calais-Reims), à 24 km de Douai et 52 km de Lille. Le tissu local est porté par la sucrerie Tereos d'Escaudœuvres, la zone logistique e-Valley, la construction résidentielle et les commerces du centre patrimonial (cathédrale, beffroi). Le projet Canal Seine-Nord Europe renforce le pôle logistique. TPE artisanat, commerces, professions libérales et PME industrielles dominent.",
   ecosystemEn:
-    "Le tissu économique de Cambrai est marqué par la présence de Bonduelle et Nestlé. La Zone Industrielle Actipôle joue un rôle clé dans le développement industriel local.",
+    "Cambrai se trouve au carrefour des autoroutes A2 (Paris-Bruxelles) et A26 (Calais-Reims), à 24 km de Douai et 52 km de Lille. Le tissu local est porté par la sucrerie Tereos d'Escaudœuvres, la zone logistique e-Valley, la construction résidentielle et les commerces du centre patrimonial (cathédrale, beffroi). Le projet Canal Seine-Nord Europe renforce le pôle logistique. TPE artisanat, commerces, professions libérales et PME industrielles dominent.",
   distancesFr:
-    "Cambrai est à 60 km de la Gare TGV de Lille-Europe et à 70 km de l'Aéroport de Lille-Lesquin.",
+    "Lille à 52 km (50 min A1/A2). Douai à 24 km, Valenciennes à 29 km, Arras à 36 km. Gare de Cambrai-Ville (TER vers Lille, Douai, Saint-Quentin, Paris). Aéroport Lille-Lesquin à 60 km.",
   distancesEn:
-    "Cambrai est à 60 km de la Gare TGV de Lille-Europe et à 70 km de l'Aéroport de Lille-Lesquin.",
+    "Lille à 52 km (50 min A1/A2). Douai à 24 km, Valenciennes à 29 km, Arras à 36 km. Gare de Cambrai-Ville (TER vers Lille, Douai, Saint-Quentin, Paris). Aéroport Lille-Lesquin à 60 km.",
   topSectorsNaf: [
-    "Industrie alimentaire",
-    "Commerce de détail",
-    "Transport terrestre",
-    "Construction",
+    "Agroalimentaire (sucrerie, transformation)",
+    "Logistique & transport (zone e-Valley)",
+    "Commerce de centre-ville",
+    "Artisanat & BTP",
+    "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Cambrai avec Axion-IA permet d'identifier les leviers d'optimisation chez Bonduelle.",
-      en: "Réaliser un audit à Cambrai avec Axion-IA permet d'identifier les leviers d'optimisation chez Bonduelle.",
+      fr: "Audit IA à Cambrai : diagnostic adapté aux TPE artisans, commerçants du centre patrimonial et PME agroalimentaires ou logistiques du Cambrésis. Audit Flash 590 € HT.",
+      en: "Audit IA à Cambrai : diagnostic adapté aux TPE artisans, commerçants du centre patrimonial et PME agroalimentaires ou logistiques du Cambrésis. Audit Flash 590 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Cambrai pour automatiser les tâches administratives des entreprises locales.",
-      en: "Intervenir à Cambrai pour automatiser les tâches administratives des entreprises locales.",
+      fr: "Interventions IA sur site à Cambrai : ateliers adaptés à la PME industrielle, au commerce ou à l'artisan. Vos équipes repartent autonomes sur des cas d'usage concrets.",
+      en: "Interventions IA sur site à Cambrai : ateliers adaptés à la PME industrielle, au commerce ou à l'artisan. Vos équipes repartent autonomes sur des cas d'usage concrets.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Cambrai pour améliorer les processus de production chez Nestlé.",
-      en: "Implémenter des solutions IA à Cambrai pour améliorer les processus de production chez Nestlé.",
+      fr: "Implémentation IA à Cambrai : automatisation pilotage stocks, traçabilité agroalimentaire, classification documents, agents conversationnels et reporting pour TPE-PME du Cambrésis.",
+      en: "Implémentation IA à Cambrai : automatisation pilotage stocks, traçabilité agroalimentaire, classification documents, agents conversationnels et reporting pour TPE-PME du Cambrésis.",
     },
     unAUn: {
-      fr: "Proposer un accompagnement personnalisé à Cambrai pour les dirigeants souhaitant intégrer l'IA.",
-      en: "Proposer un accompagnement personnalisé à Cambrai pour les dirigeants souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Cambrai : sessions dirigeants TPE, gérants PME agroalimentaires ou logistiques, commerçants du centre-ville. Pédagogie 100 % cas réels.",
+      en: "Coaching 1-to-1 à Cambrai : sessions dirigeants TPE, gérants PME agroalimentaires ou logistiques, commerçants du centre-ville. Pédagogie 100 % cas réels.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Cambrai ?",
-      a: "Axion-IA propose un Audit Flash à partir de 490 € HT à Cambrai. Nos tarifs publics sont consultables sur notre site.",
+      q: "Axion-IA intervient-il à Cambrai ?",
+      a: "Oui, Axion-IA intervient à Cambrai et dans tout le Cambrésis (Caudry, Escaudœuvres, Marcoing, Iwuy). Nos consultants se déplacent depuis Lille en 50 min via A1/A2.",
     },
     {
-      q: "Intervenez-vous directement sur site à Cambrai ?",
-      a: "Oui, notre équipe nationale se déplace à Cambrai pour intervenir directement sur site chez nos clients.",
+      q: "Quels sont les tarifs d'un audit IA à Cambrai ?",
+      a: "L'Audit Flash démarre à 590 € HT pour une TPE. Pour les PME agroalimentaires ou logistiques du Cambrésis, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics consultables.",
     },
     {
       q: "Quels délais pour une intervention à Cambrai ?",
-      a: "Nous nous engageons à intervenir sur site à Cambrai dans un délai de 5 jours ouvrés après la validation de votre demande.",
+      a: "Nous planifions les interventions à Cambrai sous 5 jours ouvrés après validation. Demi-journée découverte ou journée atelier selon le besoin.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Cambrai ?",
-      a: "Axion-IA intègre des pratiques conformes au RGPD dans toutes ses interventions à Cambrai, assurant la protection des données personnelles.",
+      q: "Comment Axion-IA gère-t-il la conformité RGPD à Cambrai ?",
+      a: "Tous nos déploiements à Cambrai intègrent les exigences RGPD : minimisation des données, hébergement européen, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque.",
     },
     {
-      q: "Proposez-vous des formations IA pour les PME de Cambrai ?",
-      a: "Oui, nous offrons des formations IA adaptées aux besoins des PME de Cambrai, avec des sessions sur site pour une meilleure intégration.",
+      q: "Quels secteurs accompagnez-vous à Cambrai ?",
+      a: "Nous accompagnons TPE artisans, commerçants du centre patrimonial, PME agroalimentaires (filière sucrière, transformation), acteurs de la logistique e-Valley, BTP et professions libérales du Cambrésis.",
     },
   ],
 };

@@ -1,68 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (Sprint anti-doorway HCU 2024) — sources Wikipedia.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const ROANNE_COPY: VilleCopy = {
   pitchFr:
-    "À Roanne, Axion-IA intervient pour optimiser les processus des entreprises locales, en lien avec des acteurs tels qu'Eramet et Casino. Nos services s'adaptent aux besoins spécifiques de chaque secteur.",
+    "Axion-IA accompagne les TPE et PME de Roanne (Loire, 35 409 habitants en 2023), troisième ville du département après Saint-Étienne et Saint-Chamond et sous-préfecture aux côtés de Montbrison. Ville centre de Roannais Agglomération (81 364 habitants sur 15 communes), Roanne s'appuie sur un tissu industriel mécanique et textile, une activité commerciale de centre-ville et un écosystème PME dense. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une ville à l'heure de Lyon, Saint-Étienne et Clermont-Ferrand.",
   pitchEn:
-    "À Roanne, Axion-IA intervient pour optimiser les processus des entreprises locales, en lien avec des acteurs tels qu'Eramet et Casino. Nos services s'adaptent aux besoins spécifiques de chaque secteur.",
+    "Axion-IA accompagne les TPE et PME de Roanne (Loire, 35 409 habitants en 2023), troisième ville du département après Saint-Étienne et Saint-Chamond et sous-préfecture aux côtés de Montbrison. Ville centre de Roannais Agglomération (81 364 habitants sur 15 communes), Roanne s'appuie sur un tissu industriel mécanique et textile, une activité commerciale de centre-ville et un écosystème PME dense. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une ville à l'heure de Lyon, Saint-Étienne et Clermont-Ferrand.",
   directAnswerFr:
-    "Axion-IA se déplace à Roanne pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local comprenant Eramet et le Parc d'activités de Bonvert. Nos interventions, comme l'audit Flash, sont conçues pour répondre aux besoins spécifiques des secteurs dominants tels que l'industrie alimentaire et la fabrication de produits métalliques.",
+    "Axion-IA se déplace à Roanne pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure. Roanne, sous-préfecture de la Loire et ville centre de Roannais Agglomération, héberge un tissu industriel (mécanique, textile), commercial (centre-ville et zones périphériques) et tertiaire structuré autour des PME. Nos prestations (Audit Flash 590 € HT, interventions, implémentation, sessions un-à-un) sont calibrées pour les acteurs locaux installés à Roanne ou dans les communes voisines de Mably, Riorges, Le Coteau, Villerest ou Commelle-Vernay.",
   directAnswerEn:
-    "Axion-IA se déplace à Roanne pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local comprenant Eramet et le Parc d'activités de Bonvert. Nos interventions, comme l'audit Flash, sont conçues pour répondre aux besoins spécifiques des secteurs dominants tels que l'industrie alimentaire et la fabrication de produits métalliques.",
-  seoHook: "industrie alimentaire & produits métalliques",
+    "Axion-IA se déplace à Roanne pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure. Roanne, sous-préfecture de la Loire et ville centre de Roannais Agglomération, héberge un tissu industriel (mécanique, textile), commercial (centre-ville et zones périphériques) et tertiaire structuré autour des PME. Nos prestations (Audit Flash 590 € HT, interventions, implémentation, sessions un-à-un) sont calibrées pour les acteurs locaux installés à Roanne ou dans les communes voisines de Mably, Riorges, Le Coteau, Villerest ou Commelle-Vernay.",
+  seoHook: "mécanique, textile & commerce ligérien",
   ecosystemFr:
-    "Roanne, avec des entreprises comme Eramet et le Parc d'activités de Bonvert, offre un environnement propice à l'optimisation industrielle. Axion-IA s'intègre dans cet écosystème pour apporter des solutions IA sur site.",
+    "Roanne, troisième ville de la Loire, structure son économie autour de l'industrie mécanique, du textile (héritage historique), du commerce de centre-ville et des services aux entreprises. Sous-préfecture et ville centre de Roannais Agglomération, la commune a hérité d'un passé portuaire fluvial (port sur la Loire, transit charbon et textiles jusqu'en 1992) qui a laissé place à un tissu PME industriel et tertiaire. L'aire urbaine couvre 81 364 habitants sur 15 communes, dont Mably, Riorges, Le Coteau, Villerest et Commelle-Vernay.",
   ecosystemEn:
-    "Roanne, avec des entreprises comme Eramet et le Parc d'activités de Bonvert, offre un environnement propice à l'optimisation industrielle. Axion-IA s'intègre dans cet écosystème pour apporter des solutions IA sur site.",
+    "Roanne, troisième ville de la Loire, structure son économie autour de l'industrie mécanique, du textile (héritage historique), du commerce de centre-ville et des services aux entreprises. Sous-préfecture et ville centre de Roannais Agglomération, la commune a hérité d'un passé portuaire fluvial (port sur la Loire, transit charbon et textiles jusqu'en 1992) qui a laissé place à un tissu PME industriel et tertiaire. L'aire urbaine couvre 81 364 habitants sur 15 communes, dont Mably, Riorges, Le Coteau, Villerest et Commelle-Vernay.",
   distancesFr:
-    "Roanne est situé à 100 km de la Gare TGV Gare de Lyon Part-Dieu et à 110 km de l'Aéroport de Lyon-Saint-Exupéry.",
+    "Roanne est située à environ une heure de Lyon, Saint-Étienne et Clermont-Ferrand. L'autoroute A89 (mise en service en 2013 pour la section concernant Roanne) a renforcé la connectivité régionale ; la gare de Roanne assure des liaisons TER et des correspondances vers les grands axes ferroviaires.",
   distancesEn:
-    "Roanne est situé à 100 km de la Gare TGV Gare de Lyon Part-Dieu et à 110 km de l'Aéroport de Lyon-Saint-Exupéry.",
+    "Roanne est située à environ une heure de Lyon, Saint-Étienne et Clermont-Ferrand. L'autoroute A89 (mise en service en 2013 pour la section concernant Roanne) a renforcé la connectivité régionale ; la gare de Roanne assure des liaisons TER et des correspondances vers les grands axes ferroviaires.",
   topSectorsNaf: [
-    "Industrie alimentaire",
-    "Produits métalliques",
+    "Industrie mécanique",
+    "Industrie textile",
     "Commerce de détail",
+    "Commerce de gros",
+    "Services aux entreprises",
     "Transports terrestres",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Roanne pour identifier les opportunités IA, en tenant compte des spécificités locales comme celles du Parc d'activités de Bonvert.",
-      en: "Réaliser un audit à Roanne pour identifier les opportunités IA, en tenant compte des spécificités locales comme celles du Parc d'activités de Bonvert.",
+      fr: "Audit Flash IA à Roanne (590 € HT) pour TPE/PME — diagnostic ciblé pour un industriel de la mécanique, un acteur textile, un commerce du centre-ville ou un prestataire de services aux entreprises de Roannais Agglomération.",
+      en: "Audit Flash IA à Roanne (590 € HT) pour TPE/PME — diagnostic ciblé pour un industriel de la mécanique, un acteur textile, un commerce du centre-ville ou un prestataire de services aux entreprises de Roannais Agglomération.",
     },
     interventions: {
-      fr: "Intervenir à Roanne pour automatiser les tâches administratives dans des entreprises comme celles du secteur alimentaire.",
-      en: "Intervenir à Roanne pour automatiser les tâches administratives dans des entreprises comme celles du secteur alimentaire.",
+      fr: "Interventions ciblées à Roanne pour TPE/PME — automatisation des devis, suivi de production, relances commerciales pour les industriels mécaniques, textiles ou les commerces ligériens.",
+      en: "Interventions ciblées à Roanne pour TPE/PME — automatisation des devis, suivi de production, relances commerciales pour les industriels mécaniques, textiles ou les commerces ligériens.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Roanne pour améliorer les processus dans les entreprises de fabrication de produits métalliques.",
-      en: "Implémenter des solutions IA à Roanne pour améliorer les processus dans les entreprises de fabrication de produits métalliques.",
+      fr: "Implémentation IA sur mesure à Roanne — déploiement d'agents codés en propre pour les PME industrielles et tertiaires de Roannais Agglomération, sans dépendance à une plateforme no-code.",
+      en: "Implémentation IA sur mesure à Roanne — déploiement d'agents codés en propre pour les PME industrielles et tertiaires de Roannais Agglomération, sans dépendance à une plateforme no-code.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Roanne pour guider les dirigeants dans l'adoption de l'IA, notamment dans le commerce de détail.",
-      en: "Accompagner en un-à-un à Roanne pour guider les dirigeants dans l'adoption de l'IA, notamment dans le commerce de détail.",
+      fr: "Sessions un-à-un à Roanne pour dirigeants TPE/PME — déplacement sur site (Roanne, Mably, Riorges, Le Coteau, Villerest) pour structurer une trajectoire IA progressive.",
+      en: "Sessions un-à-un à Roanne pour dirigeants TPE/PME — déplacement sur site (Roanne, Mably, Riorges, Le Coteau, Villerest) pour structurer une trajectoire IA progressive.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Roanne ?",
-      a: "Nos tarifs pour une intervention IA à Roanne commencent à 590 € HT pour une Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention IA à Roanne ?",
+      a: "Nos tarifs publics démarrent à 590 € HT pour une Intervention Essentielle et 590 € HT pour un Audit Flash IA. La grille complète (audit, interventions, implémentation, un-à-un) est publiée sur la page tarifs du site Axion-IA.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Roanne ?",
-      a: "Axion-IA s'engage à respecter le RGPD lors de ses interventions à Roanne, en assurant que toutes les solutions IA mises en place sont conformes aux régulations européennes.",
+      q: "Quels délais pour une intervention IA à Roanne ?",
+      a: "Une fois la mission validée, nous intervenons sur site à Roanne dans un délai de 5 jours ouvrés en moyenne, en fonction de la disponibilité de notre équipe et de la complexité du besoin.",
     },
     {
-      q: "Combien de temps faut-il pour une intervention IA à Roanne ?",
-      a: "Une intervention IA à Roanne peut être planifiée dans un délai de 5 jours ouvrés après la validation du projet, selon la disponibilité de nos experts.",
+      q: "Axion-IA intervient-il dans les communes voisines de Roanne ?",
+      a: "Oui. Nous nous déplaçons également dans les communes proches de Mably, Riorges, Le Coteau, Villerest et Commelle-Vernay, soit l'aire urbaine de Roannais Agglomération (81 364 habitants sur 15 communes).",
     },
     {
-      q: "Axion-IA se déplace-t-il dans les communes autour de Roanne ?",
-      a: "Oui, Axion-IA intervient également dans les communes voisines telles que Mably, Riorges, Le Coteau et Villerest pour répondre aux besoins des entreprises locales.",
+      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Roanne ?",
+      a: "Toutes les missions menées à Roanne respectent le RGPD : minimisation des données, hébergement européen par défaut, traçabilité des traitements et clauses contractuelles conformes au droit européen.",
+    },
+    {
+      q: "Quels secteurs Axion-IA accompagne-t-elle en priorité à Roanne ?",
+      a: "Nous accompagnons en priorité les TPE et PME de l'industrie mécanique, du textile, du commerce de détail et de gros, des services aux entreprises et du transport terrestre. Les ETI sont accompagnées en complément.",
+    },
+    {
+      q: "Axion-IA propose-t-elle du no-code aux entreprises de Roanne ?",
+      a: "Non. Nous concevons du code IA sur mesure pour les TPE/PME roannaises. Cette approche garantit la propriété des solutions, leur maintenabilité dans le temps et l'absence d'enfermement dans une plateforme tierce.",
     },
   ],
 };

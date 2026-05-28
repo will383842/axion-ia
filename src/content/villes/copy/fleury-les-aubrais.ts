@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — T4 batch Claude Code (Will).
+// Fleury-les-Aubrais (45, Loiret) — agglo Orléans, hub ferroviaire, ~21 800 hab.
 
 import type { VilleCopy } from "./types";
 
 export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   pitchFr:
-    "À Fleury-les-Aubrais, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs comme Keolis et La Poste, nous apportons notre expertise en IA pour améliorer l'efficacité opérationnelle.",
+    "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu TPE, PME, artisans. Axion-IA accompagne en code custom.",
   pitchEn:
-    "À Fleury-les-Aubrais, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs comme Keolis et La Poste, nous apportons notre expertise en IA pour améliorer l'efficacité opérationnelle.",
+    "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu TPE, PME, artisans. Axion-IA accompagne en code custom.",
   directAnswerFr:
-    "Axion-IA se déplace à Fleury-les-Aubrais pour accompagner les entreprises dans leur transformation numérique. Grâce à notre intervention, les entreprises locales, qu'elles soient dans le commerce de détail ou les transports terrestres, peuvent bénéficier d'une automatisation efficace. Nous proposons des audits et des implémentations sur site, adaptés aux besoins spécifiques de chaque secteur.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit Flash 490 € HT, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Fleury-les-Aubrais pour accompagner les entreprises dans leur transformation numérique. Grâce à notre intervention, les entreprises locales, qu'elles soient dans le commerce de détail ou les transports terrestres, peuvent bénéficier d'une automatisation efficace. Nous proposons des audits et des implémentations sur site, adaptés aux besoins spécifiques de chaque secteur.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit Flash 490 € HT, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
+  seoHook: "agglo Orléans, ferroviaire & industrie",
   ecosystemFr:
-    "Fleury-les-Aubrais bénéficie d'une proximité avec Orléans et accueille des entreprises comme Keolis et La Poste. Le commerce de détail et les transports terrestres dominent l'économie locale, offrant un cadre propice aux interventions IA.",
+    "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement TPE et PME, artisanat, services.",
   ecosystemEn:
-    "Fleury-les-Aubrais bénéficie d'une proximité avec Orléans et accueille des entreprises comme Keolis et La Poste. Le commerce de détail et les transports terrestres dominent l'économie locale, offrant un cadre propice aux interventions IA.",
+    "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement TPE et PME, artisanat, services.",
   distancesFr:
-    "La gare TGV d'Orléans est à 5 km de Fleury-les-Aubrais, facilitant l'accès aux entreprises locales.",
+    "Orléans (limitrophe, centre à 5 km). Gare des Aubrais sur place (Intercités Paris Austerlitz ~1 h). Paris à 129 km (A10, ~1 h 30). Aéroport Paris-Orly à ~110 km. Communes limitrophes : Orléans, Saran, Semoy, Chanteau, Cercottes.",
   distancesEn:
-    "La gare TGV d'Orléans est à 5 km de Fleury-les-Aubrais, facilitant l'accès aux entreprises locales.",
+    "Orléans (limitrophe, centre à 5 km). Gare des Aubrais sur place (Intercités Paris Austerlitz ~1 h). Paris à 129 km (A10, ~1 h 30). Aéroport Paris-Orly à ~110 km. Communes limitrophes : Orléans, Saran, Semoy, Chanteau, Cercottes.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Transports terrestres",
-    "Commerce de gros",
-    "Construction",
+    "Industrie & sous-traitance",
+    "Transports terrestres & logistique",
+    "Commerce de gros & détail",
+    "Artisanat BTP",
+    "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Fleury-les-Aubrais pour identifier les opportunités IA dans le commerce de détail et les transports terrestres.",
-      en: "Réaliser un audit à Fleury-les-Aubrais pour identifier les opportunités IA dans le commerce de détail et les transports terrestres.",
+      fr: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit Flash 490 € HT, ROI chiffré.",
+      en: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Intervenir à Fleury-les-Aubrais pour automatiser les processus des entreprises, notamment dans le secteur des transports.",
-      en: "Intervenir à Fleury-les-Aubrais pour automatiser les processus des entreprises, notamment dans le secteur des transports.",
+      fr: "Interventions IA sur site à Fleury-les-Aubrais : ateliers adaptés à l'industrie, la logistique ferroviaire, l'artisanat BTP et le commerce de proximité. Équipes autonomes sur outils IA métier.",
+      en: "Interventions IA sur site à Fleury-les-Aubrais : ateliers adaptés à l'industrie, la logistique ferroviaire, l'artisanat BTP et le commerce de proximité. Équipes autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Fleury-les-Aubrais pour optimiser les opérations dans le commerce de gros.",
-      en: "Implémenter des solutions IA à Fleury-les-Aubrais pour optimiser les opérations dans le commerce de gros.",
+      fr: "Implémentation IA à Fleury-les-Aubrais : automatisation devis, classification documents, prédiction maintenance industrielle, chatbot client B2B pour TPE et PME d'Orléans Métropole, en code custom.",
+      en: "Implémentation IA à Fleury-les-Aubrais : automatisation devis, classification documents, prédiction maintenance industrielle, chatbot client B2B pour TPE et PME d'Orléans Métropole, en code custom.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Fleury-les-Aubrais avec des sessions 1-to-1 pour maximiser l'impact de l'IA sur leur entreprise.",
-      en: "Accompagner les dirigeants à Fleury-les-Aubrais avec des sessions 1-to-1 pour maximiser l'impact de l'IA sur leur entreprise.",
+      fr: "Coaching 1-to-1 à Fleury-les-Aubrais : sessions sur site ou en visio pour dirigeants TPE, gérants PME industrielles et chefs d'entreprises artisanales d'Orléans Métropole.",
+      en: "Coaching 1-to-1 à Fleury-les-Aubrais : sessions sur site ou en visio pour dirigeants TPE, gérants PME industrielles et chefs d'entreprises artisanales d'Orléans Métropole.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit à Fleury-les-Aubrais ?",
-      a: "Les audits à Fleury-les-Aubrais commencent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Fleury-les-Aubrais et dans Orléans Métropole ?",
+      a: "Oui, nous intervenons à Fleury-les-Aubrais et dans toute Orléans Métropole (Orléans, Saran, Semoy, Chanteau, Cercottes, Olivet, Saint-Jean-de-Braye). Déplacement depuis Paris (1 h Intercités) ou Orléans.",
     },
     {
-      q: "Comment se déroule une intervention IA sur site à Fleury-les-Aubrais ?",
-      a: "Nos interventions sur site à Fleury-les-Aubrais sont planifiées dans les 5 jours ouvrés et adaptées aux besoins spécifiques de chaque entreprise.",
+      q: "Quels sont vos tarifs à Fleury-les-Aubrais ?",
+      a: "Audit Flash à partir de 490 € HT, Intervention Essentielle à partir de 590 € HT, session 1-to-1 dirigeants à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Proposez-vous des formations IA pour les dirigeants à Fleury-les-Aubrais ?",
-      a: "Oui, nous offrons des sessions 1-to-1 pour dirigeants à partir de 990 € HT, adaptées aux enjeux spécifiques de votre entreprise.",
+      q: "Quels secteurs accompagnez-vous à Fleury-les-Aubrais ?",
+      a: "Prioritairement les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux/Fleury-Saran/Lignerolles, et les ETI implantées localement (dont l'industrie de pointe).",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD lors de ses interventions à Fleury-les-Aubrais ?",
-      a: "Nous garantissons que toutes nos solutions IA respectent les normes RGPD, assurant ainsi la protection des données de nos clients.",
+      q: "Quels délais d'intervention IA à Fleury-les-Aubrais ?",
+      a: "Nous planifions une intervention sur site à Fleury-les-Aubrais sous 5 jours ouvrés après confirmation, en visio sous 48 h. Devis et calendrier fournis en 48 h.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Fleury-les-Aubrais ?",
+      a: "Toutes nos solutions respectent le RGPD et l'AI Act : hébergement UE, données chiffrées au repos et en transit, registre des traitements, DPO joignable. Aucun transfert hors UE sans base légale.",
+    },
+    {
+      q: "Pouvez-vous aider une PME industrielle des Aubrais ?",
+      a: "Oui, nous accompagnons les PME industrielles et sous-traitants sur la maintenance prédictive, la classification documentaire, l'automatisation de devis et la qualification de leads B2B. Audit Flash 490 € HT.",
     },
   ],
 };

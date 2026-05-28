@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUAL EDIT 2026-05-28 — anti-doorway HCU 2024 fix (Wikipedia factuel).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const GARGES_LES_GONESSE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Garges-lès-Gonesse, une ville proche de Paris, où des entreprises comme LVMH et BNP Paribas façonnent l'économie locale. Nous proposons des solutions IA adaptées aux besoins des entreprises locales.",
+    "Axion-IA accompagne les TPE et PME de Garges-lès-Gonesse (41 791 habitants, Val-d'Oise), quatrième ville française de plus de 20 000 habitants pour la jeunesse de sa population. Située à 15 km au nord de Paris, membre de la communauté d'agglomération Roissy Pays de France depuis 2016, la commune est desservie par la gare Garges-Sarcelles (RER D et terminus du tramway T5). Notre cabinet national y intervient pour mener audits IA et automatisations en code custom, adaptés aux dirigeants locaux.",
   pitchEn:
-    "Axion-IA intervient à Garges-lès-Gonesse, une ville proche de Paris, où des entreprises comme LVMH et BNP Paribas façonnent l'économie locale. Nous proposons des solutions IA adaptées aux besoins des entreprises locales.",
+    "Axion-IA accompagne les TPE et PME de Garges-lès-Gonesse (41 791 habitants, Val-d'Oise), quatrième ville française de plus de 20 000 habitants pour la jeunesse de sa population. Située à 15 km au nord de Paris, membre de la communauté d'agglomération Roissy Pays de France depuis 2016, la commune est desservie par la gare Garges-Sarcelles (RER D et terminus du tramway T5). Notre cabinet national y intervient pour mener audits IA et automatisations en code custom, adaptés aux dirigeants locaux.",
   directAnswerFr:
-    "À Garges-lès-Gonesse, Axion-IA propose des interventions pour optimiser les processus des entreprises. Proches de pôles économiques tels que LVMH et BNP Paribas, nous offrons des audits et des interventions. Notre approche permet une intégration fluide de l'IA dans des secteurs variés sans dépendre de partenariats locaux.",
+    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Garges-lès-Gonesse, Axion-IA propose des interventions pour optimiser les processus des entreprises. Proches de pôles économiques tels que LVMH et BNP Paribas, nous offrons des audits et des interventions. Notre approche permet une intégration fluide de l'IA dans des secteurs variés sans dépendre de partenariats locaux.",
-  seoHook: "commerce détail & transports terrestres",
+    "À Garges-lès-Gonesse (95140, Val-d'Oise, 41 791 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI proches de la plateforme Paris-Le Bourget. Nos consultants accèdent à la ville via le RER D (gare Garges-Sarcelles) et le tramway T5. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
+  seoHook: "RER D, tramway T5 & aéroport Paris-Le Bourget",
   ecosystemFr:
-    "Garges-lès-Gonesse bénéficie de la proximité avec Paris, abritant des acteurs économiques majeurs comme LVMH et BNP Paribas. Les entreprises locales peuvent ainsi s'inspirer de cet environnement pour intégrer l'IA.",
+    "Garges-lès-Gonesse appartient à l'agglomération Roissy Pays de France, à proximité immédiate de l'aéroport Paris-Le Bourget et de la zone aéroportuaire de Roissy-Charles-de-Gaulle. Le tissu économique local mêle commerce de détail (hypermarché Cora historique de 1969), services logistiques et artisanat. La commune borde Sarcelles, Arnouville, Bonneuil-en-France ainsi que Dugny et Stains en Seine-Saint-Denis — autant de TPE et PME éligibles à nos accompagnements IA.",
   ecosystemEn:
-    "Garges-lès-Gonesse bénéficie de la proximité avec Paris, abritant des acteurs économiques majeurs comme LVMH et BNP Paribas. Les entreprises locales peuvent ainsi s'inspirer de cet environnement pour intégrer l'IA.",
+    "Garges-lès-Gonesse appartient à l'agglomération Roissy Pays de France, à proximité immédiate de l'aéroport Paris-Le Bourget et de la zone aéroportuaire de Roissy-Charles-de-Gaulle. Le tissu économique local mêle commerce de détail (hypermarché Cora historique de 1969), services logistiques et artisanat. La commune borde Sarcelles, Arnouville, Bonneuil-en-France ainsi que Dugny et Stains en Seine-Saint-Denis — autant de TPE et PME éligibles à nos accompagnements IA.",
   distancesFr:
-    "Garges-lès-Gonesse est à 12 km de l'aéroport de Paris-Charles de Gaulle et à 15 km de la gare de Paris-Nord.",
+    "Garges-lès-Gonesse est à 15 km au nord de Paris, à 12 km de l'aéroport Paris-Charles-de-Gaulle et borde l'aéroport Paris-Le Bourget ; la gare Garges-Sarcelles (RER D) relie la Gare du Nord en 18 minutes.",
   distancesEn:
-    "Garges-lès-Gonesse est à 12 km de l'aéroport de Paris-Charles de Gaulle et à 15 km de la gare de Paris-Nord.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Construction", "Restauration"],
+    "Garges-lès-Gonesse est à 15 km au nord de Paris, à 12 km de l'aéroport Paris-Charles-de-Gaulle et borde l'aéroport Paris-Le Bourget ; la gare Garges-Sarcelles (RER D) relie la Gare du Nord en 18 minutes.",
+  topSectorsNaf: [
+    "Commerce de détail (hors automobiles)",
+    "Transports terrestres et logistique",
+    "Construction et travaux spécialisés",
+    "Restauration",
+    "Services administratifs et de soutien",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Garges-lès-Gonesse permet d'identifier les opportunités IA adaptées aux entreprises locales, dès 490 € HT.",
-      en: "Réaliser un audit à Garges-lès-Gonesse permet d'identifier les opportunités IA adaptées aux entreprises locales, dès 490 € HT.",
+      fr: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit Flash dès 490 € HT.",
+      en: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Garges-lès-Gonesse pour automatiser les processus métiers, en s'appuyant sur l'écosystème économique local.",
-      en: "Intervenir à Garges-lès-Gonesse pour automatiser les processus métiers, en s'appuyant sur l'écosystème économique local.",
+      fr: "Interventions à Garges-lès-Gonesse pour automatiser relances, devis et suivi logistique des TPE et PME en code custom — dès 590 € HT.",
+      en: "Interventions à Garges-lès-Gonesse pour automatiser relances, devis et suivi logistique des TPE et PME en code custom — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Garges-lès-Gonesse pour optimiser les opérations, dès 990 € HT, sans perturber l'activité.",
-      en: "Implémenter des solutions IA à Garges-lès-Gonesse pour optimiser les opérations, dès 990 € HT, sans perturber l'activité.",
+      fr: "Implémentation de solutions IA à Garges-lès-Gonesse pour PME et ETI logistiques liées à Roissy et Le Bourget — dès 990 € HT.",
+      en: "Implémentation de solutions IA à Garges-lès-Gonesse pour PME et ETI logistiques liées à Roissy et Le Bourget — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Garges-lès-Gonesse pour une adoption sereine de l'IA, avec des sessions à partir de 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants de Garges-lès-Gonesse pour une adoption sereine de l'IA, avec des sessions à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME gargeoises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME gargeoises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Garges-lès-Gonesse ?",
-      a: "Les interventions IA à Garges-lès-Gonesse débutent à 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention IA à Garges-lès-Gonesse ?",
+      a: "Nos tarifs publics démarrent à 490 € HT pour un Audit Flash et 590 € HT pour une Intervention Essentielle à Garges-lès-Gonesse. L'implémentation et l'accompagnement un-à-un débutent à 990 € HT.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Garges-lès-Gonesse ?",
-      a: "Nos experts se déplacent directement sur site à Garges-lès-Gonesse, assurant une intervention rapide et efficace.",
+      q: "Axion-IA se déplace-t-il sur site à Garges-lès-Gonesse (95140) ?",
+      a: "Oui, nos consultants prennent le RER D jusqu'à la gare Garges-Sarcelles ou le tramway T5. Aucun frais de déplacement n'est facturé en Île-de-France.",
     },
     {
-      q: "Quels délais pour une intervention IA à Garges-lès-Gonesse ?",
-      a: "Nous intervenons à Garges-lès-Gonesse dans les 5 jours ouvrés suivant la demande, selon la disponibilité de nos experts.",
+      q: "Quels délais pour démarrer un projet IA à Garges-lès-Gonesse ?",
+      a: "Nous intervenons à Garges-lès-Gonesse dans un délai de 5 jours ouvrés après validation. L'Audit Flash se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Garges-lès-Gonesse ?",
-      a: "Axion-IA s'assure que toutes les solutions IA déployées à Garges-lès-Gonesse respectent les régulations RGPD en vigueur.",
+      q: "Intervenez-vous dans les communes voisines de Garges-lès-Gonesse ?",
+      a: "Oui, nous couvrons Sarcelles, Arnouville, Bonneuil-en-France (Val-d'Oise) ainsi que Dugny et Stains (Seine-Saint-Denis), qui bordent Garges-lès-Gonesse et partagent le tissu Roissy Pays de France.",
+    },
+    {
+      q: "Comment Axion-IA assure-t-il la conformité RGPD à Garges-lès-Gonesse ?",
+      a: "Nous codons toutes les automatisations en code custom hébergé sur infrastructure européenne, avec registre des traitements, DPA et minimisation des données — conforme RGPD et AI Act.",
+    },
+    {
+      q: "Quels secteurs locaux de Garges-lès-Gonesse accompagnez-vous en priorité ?",
+      a: "Nous priorisons les TPE et PME du commerce de détail, du transport et de la logistique péri-aéroportuaire (Le Bourget, Roissy), de la construction et de la restauration.",
     },
   ],
 };

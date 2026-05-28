@@ -7,57 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const ANGOULEME_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Angoulême, un pôle d'édition et d'imprimerie avec des acteurs comme Imprimerie Pollina. Nous accompagnons les entreprises locales dans l'intégration de l'IA.",
+    "Axion-IA accompagne les TPE et PME d'Angoulême, préfecture de la Charente et cœur de la communauté d'agglomération GrandAngoulême (38 communes, environ 140 000 habitants). La ville bénéficie d'un tissu économique structuré autour de la papeterie historique, de l'imprimerie, de la filière image (Cité internationale de la bande dessinée et de l'image, Festival international de la BD) et des services administratifs. Notre cabinet intervient sur site pour auditer, former et déployer des outils d'intelligence artificielle pragmatiques au service des dirigeants charentais.",
   pitchEn:
-    "Axion-IA intervient à Angoulême, un pôle d'édition et d'imprimerie avec des acteurs comme Imprimerie Pollina. Nous accompagnons les entreprises locales dans l'intégration de l'IA.",
+    "Axion-IA accompagne les TPE et PME d'Angoulême, préfecture de la Charente et cœur de la communauté d'agglomération GrandAngoulême (38 communes, environ 140 000 habitants). La ville bénéficie d'un tissu économique structuré autour de la papeterie historique, de l'imprimerie, de la filière image (Cité internationale de la bande dessinée et de l'image, Festival international de la BD) et des services administratifs. Notre cabinet intervient sur site pour auditer, former et déployer des outils d'intelligence artificielle pragmatiques au service des dirigeants charentais.",
   directAnswerFr:
-    "À Angoulême, Axion-IA offre des services d'IA adaptés aux entreprises de secteurs variés, tels que l'imprimerie avec Imprimerie Pollina et l'édition. Notre approche inclut des audits, interventions et implémentations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers. Nous sommes présents pour répondre aux besoins spécifiques des entreprises locales.",
+    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à 590 € HT pour une intervention et à 490 € HT pour un Audit Flash de 4 heures, en français et avec un seul interlocuteur référent.",
   directAnswerEn:
-    "À Angoulême, Axion-IA offre des services d'IA adaptés aux entreprises de secteurs variés, tels que l'imprimerie avec Imprimerie Pollina et l'édition. Notre approche inclut des audits, interventions et implémentations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers. Nous sommes présents pour répondre aux besoins spécifiques des entreprises locales.",
+    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à 590 € HT pour une intervention et à 490 € HT pour un Audit Flash de 4 heures, en français et avec un seul interlocuteur référent.",
   seoHook: "imprimerie & édition",
   ecosystemFr:
-    "Angoulême se distingue par ses secteurs d'imprimerie et d'édition, avec des entreprises comme Papeteries de Charente et Imprimerie Pollina. Ces acteurs contribuent au dynamisme économique local.",
+    "L'écosystème économique d'Angoulême s'appuie sur une tradition papetière remontant au XVIe siècle, une filière imprimerie-édition active, et un pôle image internationalement reconnu autour de la Cité internationale de la bande dessinée et du Festival international de la BD. La ville accueille également un centre universitaire, des services administratifs préfectoraux et des PME industrielles réparties entre Angoulême, La Couronne, Soyaux et Gond-Pontouvre. Les TPE et PME de l'agglomération opèrent dans un environnement à taille humaine, avec un accès direct à Paris et Bordeaux par la LGV Sud Europe Atlantique.",
   ecosystemEn:
-    "Angoulême se distingue par ses secteurs d'imprimerie et d'édition, avec des entreprises comme Papeteries de Charente et Imprimerie Pollina. Ces acteurs contribuent au dynamisme économique local.",
+    "L'écosystème économique d'Angoulême s'appuie sur une tradition papetière remontant au XVIe siècle, une filière imprimerie-édition active, et un pôle image internationalement reconnu autour de la Cité internationale de la bande dessinée et du Festival international de la BD. La ville accueille également un centre universitaire, des services administratifs préfectoraux et des PME industrielles réparties entre Angoulême, La Couronne, Soyaux et Gond-Pontouvre. Les TPE et PME de l'agglomération opèrent dans un environnement à taille humaine, avec un accès direct à Paris et Bordeaux par la LGV Sud Europe Atlantique.",
   distancesFr:
-    "La Gare TGV d'Angoulême facilite l'accès, tandis que l'Aéroport de Bordeaux-Mérignac est à 120 km.",
+    "Angoulême est desservie par la LGV Sud Europe Atlantique (Paris en 1h45, Bordeaux en 35 min) depuis la gare d'Angoulême. L'aéroport d'Angoulême-Cognac se trouve à environ 10 km au nord, à Brie-Champniers, et l'aéroport de Bordeaux-Mérignac à 120 km. La ville est positionnée à l'intersection des routes N10 (Paris-Bayonne) et N141 (Limoges-Saintes).",
   distancesEn:
-    "La Gare TGV d'Angoulême facilite l'accès, tandis que l'Aéroport de Bordeaux-Mérignac est à 120 km.",
-  topSectorsNaf: ["Imprimerie", "Édition", "Programmation informatique", "Commerce de détail"],
+    "Angoulême est desservie par la LGV Sud Europe Atlantique (Paris en 1h45, Bordeaux en 35 min) depuis la gare d'Angoulême. L'aéroport d'Angoulême-Cognac se trouve à environ 10 km au nord, à Brie-Champniers, et l'aéroport de Bordeaux-Mérignac à 120 km. La ville est positionnée à l'intersection des routes N10 (Paris-Bayonne) et N141 (Limoges-Saintes).",
+  topSectorsNaf: [
+    "Imprimerie et reproduction",
+    "Édition",
+    "Industrie du papier et du carton",
+    "Activités créatives et image (BD, animation)",
+    "Commerce de détail",
+    "Services administratifs et universitaires",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Angoulême, notamment pour des entreprises d'édition, permet d'identifier des opportunités d'optimisation.",
-      en: "Réaliser un audit à Angoulême, notamment pour des entreprises d'édition, permet d'identifier des opportunités d'optimisation.",
+      fr: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de 490 € HT.",
+      en: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Angoulême dans des secteurs comme l'imprimerie pour automatiser les processus administratifs.",
-      en: "Intervenir à Angoulême dans des secteurs comme l'imprimerie pour automatiser les processus administratifs.",
+      fr: "Interventions sur site à Angoulême et dans GrandAngoulême : automatisation administrative, traitement documentaire, devis intelligent, dès 590 € HT par demi-journée.",
+      en: "Interventions sur site à Angoulême et dans GrandAngoulême : automatisation administrative, traitement documentaire, devis intelligent, dès 590 € HT par demi-journée.",
     },
     implementation: {
-      fr: "Implémenter à Angoulême des solutions IA dans les entreprises de la Zone Industrielle de L'Isle d'Espagnac.",
-      en: "Implémenter à Angoulême des solutions IA dans les entreprises de la Zone Industrielle de L'Isle d'Espagnac.",
+      fr: "Implémentation de solutions IA en code custom à Angoulême : intégration aux outils existants (ERP, CRM, gestion d'impression), tests, mise en production et documentation.",
+      en: "Implémentation de solutions IA en code custom à Angoulême : intégration aux outils existants (ERP, CRM, gestion d'impression), tests, mise en production et documentation.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 pour dirigeants à Angoulême, adaptés aux besoins des petites entreprises locales.",
-      en: "Proposer des sessions 1-to-1 pour dirigeants à Angoulême, adaptés aux besoins des petites entreprises locales.",
+      fr: "Accompagnement un-à-un pour dirigeants à Angoulême : sessions personnalisées sur la stratégie IA, le choix des outils et la conduite du changement, dès 990 € HT.",
+      en: "Accompagnement un-à-un pour dirigeants à Angoulême : sessions personnalisées sur la stratégie IA, le choix des outils et la conduite du changement, dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour un audit IA à Angoulême ?",
-      a: "Nos audits IA à Angoulême débutent à partir de 490 € HT pour un Audit Flash de 4 heures, avec des tarifs publics disponibles sur notre site.",
+      q: "Quels sont les tarifs Axion-IA à Angoulême ?",
+      a: "À Angoulême, nos tarifs publics démarrent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une intervention sur site et 990 € HT pour un accompagnement un-à-un destiné aux dirigeants de TPE et PME.",
     },
     {
-      q: "Comment se déroule une intervention IA à Angoulême ?",
-      a: "Nos interventions à Angoulême sont réalisées sur site, avec un début de prestation généralement dans les 5 jours ouvrés suivant la demande.",
+      q: "Sous quel délai Axion-IA intervient-il à Angoulême ?",
+      a: "Après validation du devis, Williams et l'équipe Axion-IA se déplacent à Angoulême sous 5 jours ouvrés en moyenne pour les missions standard, et plus rapidement pour les Audits Flash.",
     },
     {
-      q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Angoulême ?",
-      a: "Oui, Axion-IA veille à ce que toutes ses interventions à Angoulême soient conformes au RGPD, garantissant la protection des données personnelles.",
+      q: "Axion-IA couvre-t-il les communes autour d'Angoulême ?",
+      a: "Oui, nous intervenons dans l'ensemble de GrandAngoulême et notamment à La Couronne, Soyaux, Gond-Pontouvre, L'Isle-d'Espagnac, Saint-Yrieix-sur-Charente et Ruelle-sur-Touvre.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises à Angoulême ?",
-      a: "Oui, nous offrons des formations IA personnalisées pour les entreprises d'Angoulême, incluant des sessions 1-to-1 pour dirigeants à partir de 990 € HT.",
+      q: "Vos prestations IA à Angoulême sont-elles conformes RGPD ?",
+      a: "Oui, toutes nos interventions à Angoulême respectent le RGPD : hébergement européen, minimisation des données, registre de traitements et clauses contractuelles dédiées sont systématiquement mis en place.",
+    },
+    {
+      q: "Quels secteurs locaux servez-vous à Angoulême ?",
+      a: "Nous accompagnons en priorité les TPE et PME charentaises de l'imprimerie, de l'édition, de la filière image (BD, animation), du commerce de détail, des services professionnels et de l'industrie papier-carton.",
+    },
+    {
+      q: "Proposez-vous des formations IA à Angoulême ?",
+      a: "Oui, nous animons des formations IA sur site à Angoulême et en distanciel, adaptées aux dirigeants, équipes commerciales et équipes opérationnelles, avec des ateliers pratiques sur outils réels.",
     },
   ],
 };

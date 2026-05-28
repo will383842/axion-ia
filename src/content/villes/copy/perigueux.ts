@@ -1,63 +1,77 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024) — Wikipedia-sourced facts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const PERIGUEUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Périgueux, au cœur d'un écosystème comprenant Boulazac Isle Manoire. Nos services s'adressent aux entreprises locales souhaitant optimiser leurs processus grâce à l'IA.",
+    "Périgueux, 29 055 habitants (2023), préfecture de la Dordogne en Nouvelle-Aquitaine, est la ville la plus peuplée du Périgord et siège de la communauté d'agglomération Le Grand Périgueux. Sa cathédrale Saint-Front est classée au patrimoine mondial de l'UNESCO (chemins de Saint-Jacques). Le Technicentre SNCF du Toulon (~600 salariés) ancre le pôle ferroviaire. Axion-IA, cabinet IA en code custom, accompagne ici les TPE et PME du tourisme patrimonial, du commerce de détail, de la santé et de la construction avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   pitchEn:
-    "Axion-IA intervient à Périgueux, au cœur d'un écosystème comprenant Boulazac Isle Manoire. Nos services s'adressent aux entreprises locales souhaitant optimiser leurs processus grâce à l'IA.",
+    "Périgueux, 29 055 habitants (2023), préfecture de la Dordogne en Nouvelle-Aquitaine, est la ville la plus peuplée du Périgord et siège de la communauté d'agglomération Le Grand Périgueux. Sa cathédrale Saint-Front est classée au patrimoine mondial de l'UNESCO (chemins de Saint-Jacques). Le Technicentre SNCF du Toulon (~600 salariés) ancre le pôle ferroviaire. Axion-IA, cabinet IA en code custom, accompagne ici les TPE et PME du tourisme patrimonial, du commerce de détail, de la santé et de la construction avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   directAnswerFr:
-    "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit et l'intervention.",
+    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit Flash 4 h à 490 € HT, intervention sur site à 590 € HT, accès A89 et liaison TER/Intercités.",
   directAnswerEn:
-    "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit et l'intervention.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit Flash 4 h à 490 € HT, intervention sur site à 590 € HT, accès A89 et liaison TER/Intercités.",
+  seoHook: "tourisme UNESCO & filière ferroviaire Périgord",
   ecosystemFr:
-    "Périgueux et ses environs, comme Notre-Dame-de-Sanilhac, bénéficient d'un tissu économique actif. Les secteurs dominants incluent le commerce de détail et la restauration, soutenus par des établissements comme ceux de Boulazac Isle Manoire.",
+    "Périgueux concentre l'emploi du Périgord central : Technicentre SNCF du Toulon (~600 salariés), administration préfectorale, hôpital, tribunal, université. Le tourisme patrimonial (cathédrale Saint-Front UNESCO, secteur sauvegardé médiéval et Renaissance) génère un tissu dense de TPE — hôtels, restaurants, commerces d'artisanat, guides. Le Grand Périgueux fédère 43 communes. L'agglomération compte également des artisans BTP, professions médicales et services administratifs typiques d'un chef-lieu départemental.",
   ecosystemEn:
-    "Périgueux et ses environs, comme Notre-Dame-de-Sanilhac, bénéficient d'un tissu économique actif. Les secteurs dominants incluent le commerce de détail et la restauration, soutenus par des établissements comme ceux de Boulazac Isle Manoire.",
+    "Périgueux concentre l'emploi du Périgord central : Technicentre SNCF du Toulon (~600 salariés), administration préfectorale, hôpital, tribunal, université. Le tourisme patrimonial (cathédrale Saint-Front UNESCO, secteur sauvegardé médiéval et Renaissance) génère un tissu dense de TPE — hôtels, restaurants, commerces d'artisanat, guides. Le Grand Périgueux fédère 43 communes. L'agglomération compte également des artisans BTP, professions médicales et services administratifs typiques d'un chef-lieu départemental.",
   distancesFr:
-    "Périgueux est à 130 km de la Gare de Bordeaux-Saint-Jean et à 145 km de l'Aéroport de Bordeaux-Mérignac.",
+    "Périgueux est à 109 km de Bordeaux (gare TGV Bordeaux-Saint-Jean, aéroport Bordeaux-Mérignac à ~120 km), 83 km de Limoges et 68 km d'Angoulême. Aéroport de Périgueux-Bassillac à 9 km. Autoroute A89 (trois échangeurs). Liaisons TER et Intercités vers Paris, Bordeaux, Limoges et Lyon. Transport urbain Péribus avec ligne BHNS en service depuis décembre 2019.",
   distancesEn:
-    "Périgueux est à 130 km de la Gare de Bordeaux-Saint-Jean et à 145 km de l'Aéroport de Bordeaux-Mérignac.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Santé humaine", "Construction"],
+    "Périgueux est à 109 km de Bordeaux (gare TGV Bordeaux-Saint-Jean, aéroport Bordeaux-Mérignac à ~120 km), 83 km de Limoges et 68 km d'Angoulême. Aéroport de Périgueux-Bassillac à 9 km. Autoroute A89 (trois échangeurs). Liaisons TER et Intercités vers Paris, Bordeaux, Limoges et Lyon. Transport urbain Péribus avec ligne BHNS en service depuis décembre 2019.",
+  topSectorsNaf: [
+    "Hébergement et restauration (tourisme UNESCO)",
+    "Commerce de détail et artisanat",
+    "Santé humaine et action sociale",
+    "Construction et travaux du bâtiment",
+    "Transport ferroviaire (Technicentre SNCF)",
+    "Administration publique et services",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Périgueux, notamment dans le secteur de la santé humaine, pour identifier les opportunités IA.",
-      en: "Réaliser un audit à Périgueux, notamment dans le secteur de la santé humaine, pour identifier les opportunités IA.",
+      fr: "Audit Flash IA à Périgueux (4 h, 490 € HT) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
+      en: "Audit Flash IA à Périgueux (4 h, 490 € HT) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
     },
     interventions: {
-      fr: "Intervenir à Périgueux dans le commerce de détail pour automatiser les tâches administratives.",
-      en: "Intervenir à Périgueux dans le commerce de détail pour automatiser les tâches administratives.",
+      fr: "Intervention sur site à Périgueux dès 590 € HT pour TPE et PME — automatisation réservations hôtelières, suivi patients, devis BTP, relances administratives.",
+      en: "Intervention sur site à Périgueux dès 590 € HT pour TPE et PME — automatisation réservations hôtelières, suivi patients, devis BTP, relances administratives.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Périgueux dans la construction pour optimiser les processus.",
-      en: "Implémenter des solutions IA à Périgueux dans la construction pour optimiser les processus.",
+      fr: "Implémentation IA à Périgueux dès 990 € HT en code custom (TypeScript/Python) pour commerces du secteur sauvegardé, professions de santé et artisans du Grand Périgueux.",
+      en: "Implémentation IA à Périgueux dès 990 € HT en code custom (TypeScript/Python) pour commerces du secteur sauvegardé, professions de santé et artisans du Grand Périgueux.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de Périgueux, avec des sessions dès 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants de Périgueux, avec des sessions dès 990 € HT.",
+      fr: "Coaching un-à-un dirigeants TPE/PME de Périgueux dès 990 € HT — feuille de route IA pour hôteliers, restaurateurs, artisans et commerçants du Périgord.",
+      en: "Coaching un-à-un dirigeants TPE/PME de Périgueux dès 990 € HT — feuille de route IA pour hôteliers, restaurateurs, artisans et commerçants du Périgord.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Périgueux ?",
-      a: "Les interventions à Périgueux commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Périgueux ?",
+      a: "Audit Flash 4 h à 490 € HT, intervention sur site à partir de 590 € HT, implémentation et coaching un-à-un dès 990 € HT. Tarifs publics complets sur axion-ia.com.",
     },
     {
-      q: "Axion-IA se déplace-t-il dans les communes autour de Périgueux ?",
-      a: "Oui, nous nous déplaçons dans des communes comme Boulazac Isle Manoire et Chancelade pour nos interventions IA.",
+      q: "Sous quels délais Axion-IA intervient-il à Périgueux ?",
+      a: "Nous nous déplaçons à Périgueux sous 5 jours ouvrés. L'A89, les liaisons Intercités et l'aéroport de Bassillac (9 km) facilitent nos interventions depuis Bordeaux, Limoges ou Paris.",
     },
     {
-      q: "Quels délais pour une intervention IA à Périgueux ?",
-      a: "Nous nous engageons à intervenir sur site à Périgueux dans un délai de cinq jours ouvrés après la validation du projet.",
+      q: "Axion-IA couvre-t-il les communes autour de Périgueux ?",
+      a: "Oui, nous intervenons dans les huit communes limitrophes : Boulazac Isle Manoire, Trélissac, Chancelade, Champcevinel, Marsac-sur-l'Isle, Coulounieix-Chamiers, Sanilhac, Château-l'Évêque, et plus largement dans les 43 communes du Grand Périgueux.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Périgueux ?",
-      a: "Nos solutions IA intègrent les exigences RGPD, garantissant la protection des données personnelles lors de nos interventions à Périgueux.",
+      q: "Quels secteurs locaux à Périgueux bénéficient le plus de l'IA ?",
+      a: "L'hôtellerie-restauration liée au tourisme UNESCO (cathédrale Saint-Front), les cabinets de santé, les artisans du BTP, les commerces du secteur sauvegardé médiéval et l'administration locale tirent le meilleur parti de nos automatisations — réservations, agendas, devis, reporting.",
+    },
+    {
+      q: "Comment Axion-IA garantit-elle la conformité RGPD et AI Act à Périgueux ?",
+      a: "Code custom hébergé en Union européenne, registre des traitements, DPIA et journal d'audit IA conformes RGPD et AI Act. Particulièrement adapté aux professions de santé et à l'hôtellerie soumises à des obligations de protection des données patients/clients.",
+    },
+    {
+      q: "Axion-IA propose-t-il du no-code à Périgueux ?",
+      a: "Non. Axion-IA développe en code custom (TypeScript, Python, Next.js) pour garantir la propriété intellectuelle, la portabilité et la conformité réglementaire, essentielles pour les TPE/PME santé, hôtellerie et BTP du Périgord.",
     },
   ],
 };

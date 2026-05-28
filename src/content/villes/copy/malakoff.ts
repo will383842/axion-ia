@@ -7,62 +7,72 @@ import type { VilleCopy } from "./types";
 
 export const MALAKOFF_COPY: VilleCopy = {
   pitchFr:
-    "À Malakoff, Axion-IA propose des interventions en IA pour optimiser les processus des entreprises locales. Avec des acteurs comme Orange et Thales, nous aidons les TPE, PME et ETI à intégrer des solutions IA efficaces pour améliorer leur productivité.",
+    "Axion-IA accompagne les TPE et PME de Malakoff (Hauts-de-Seine, environ 30 500 habitants), commune limitrophe des 14e et 15e arrondissements de Paris. Le tissu local s'est largement converti du secteur industriel vers les services tertiaires, avec une forte densité de cabinets professionnels, agences, sièges sociaux de PME et acteurs du numérique. Nous y proposons des audits, formations et implémentations IA en code custom, à destination des dirigeants des Hauts-de-Seine sud.",
   pitchEn:
-    "À Malakoff, Axion-IA propose des interventions en IA pour optimiser les processus des entreprises locales. Avec des acteurs comme Orange et Thales, nous aidons les TPE, PME et ETI à intégrer des solutions IA efficaces pour améliorer leur productivité.",
+    "Axion-IA accompagne les TPE et PME de Malakoff (Hauts-de-Seine, environ 30 500 habitants), commune limitrophe des 14e et 15e arrondissements de Paris. Le tissu local s'est largement converti du secteur industriel vers les services tertiaires, avec une forte densité de cabinets professionnels, agences, sièges sociaux de PME et acteurs du numérique. Nous y proposons des audits, formations et implémentations IA en code custom, à destination des dirigeants des Hauts-de-Seine sud.",
   directAnswerFr:
-    "Axion-IA intervient à Malakoff pour accompagner les entreprises dans l'intégration de l'IA. Avec un écosystème comprenant Orange et Thales, nous proposons des audits, interventions et implémentations pour automatiser les tâches administratives et optimiser les processus métier.",
+    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à 490 € HT pour un Audit Flash, 590 € HT pour une intervention et 990 € HT pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
   directAnswerEn:
-    "Axion-IA intervient à Malakoff pour accompagner les entreprises dans l'intégration de l'IA. Avec un écosystème comprenant Orange et Thales, nous proposons des audits, interventions et implémentations pour automatiser les tâches administratives et optimiser les processus métier.",
-  seoHook: "programmation informatique & activités des",
+    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à 490 € HT pour un Audit Flash, 590 € HT pour une intervention et 990 € HT pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
+  seoHook: "tertiaire & services aux entreprises",
   ecosystemFr:
-    "Malakoff, avec ses 3 000 établissements actifs, accueille des entreprises comme Orange et Thales. Les secteurs dominants incluent la programmation informatique et les activités des sièges sociaux, ce qui en fait un lieu propice à l'innovation technologique.",
+    "Malakoff présente une trame urbaine mixte (pavillonnaire et collectif) et un tissu économique tertiarisé depuis la fermeture du site Thomson-CSF en 1993. La commune accueille des cabinets professionnels, agences, ESN, PME tertiaires et sièges sociaux à taille humaine, bénéficiant de la proximité immédiate de Paris. L'environnement reste à dimension humaine, avec quatre stations de la ligne 13, deux axes ferroviaires majeurs (Paris-Versailles et LGV Atlantique), et la frontière directe avec Vanves, Montrouge, Châtillon et Clamart.",
   ecosystemEn:
-    "Malakoff, avec ses 3 000 établissements actifs, accueille des entreprises comme Orange et Thales. Les secteurs dominants incluent la programmation informatique et les activités des sièges sociaux, ce qui en fait un lieu propice à l'innovation technologique.",
+    "Malakoff présente une trame urbaine mixte (pavillonnaire et collectif) et un tissu économique tertiarisé depuis la fermeture du site Thomson-CSF en 1993. La commune accueille des cabinets professionnels, agences, ESN, PME tertiaires et sièges sociaux à taille humaine, bénéficiant de la proximité immédiate de Paris. L'environnement reste à dimension humaine, avec quatre stations de la ligne 13, deux axes ferroviaires majeurs (Paris-Versailles et LGV Atlantique), et la frontière directe avec Vanves, Montrouge, Châtillon et Clamart.",
   distancesFr:
-    "Malakoff est à 5 km de la Gare Montparnasse et à 12 km de l'aéroport Paris-Orly, facilitant l'accès aux entreprises.",
+    "Malakoff est desservie par quatre stations de la ligne 13 du métro et par la gare Transilien de Vanves-Malakoff (ligne N). Paris-Montparnasse est à environ 4 km, l'aéroport Paris-Orly à environ 12 km, et l'aéroport Paris-Charles-de-Gaulle à environ 30 km. La commune est traversée par l'axe ferroviaire Paris-Versailles et la LGV Atlantique.",
   distancesEn:
-    "Malakoff est à 5 km de la Gare Montparnasse et à 12 km de l'aéroport Paris-Orly, facilitant l'accès aux entreprises.",
+    "Malakoff est desservie par quatre stations de la ligne 13 du métro et par la gare Transilien de Vanves-Malakoff (ligne N). Paris-Montparnasse est à environ 4 km, l'aéroport Paris-Orly à environ 12 km, et l'aéroport Paris-Charles-de-Gaulle à environ 30 km. La commune est traversée par l'axe ferroviaire Paris-Versailles et la LGV Atlantique.",
   topSectorsNaf: [
-    "Programmation informatique",
+    "Services aux entreprises (ESN, conseil)",
+    "Activités juridiques et comptables",
+    "Agences de communication et création",
     "Activités des sièges sociaux",
-    "Construction de bâtiments",
-    "Activités juridiques",
+    "Commerce de détail de proximité",
+    "Santé et action sociale",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Malakoff pour identifier les opportunités IA avec des acteurs comme Orange — à partir de 490 € HT.",
-      en: "Réaliser un audit à Malakoff pour identifier les opportunités IA avec des acteurs comme Orange — à partir de 490 € HT.",
+      fr: "Audit IA à Malakoff pour TPE et PME tertiaires : cartographie des processus (back-office, relation client, production documentaire) et identification des cas d'usage prioritaires — à partir de 490 € HT.",
+      en: "Audit IA à Malakoff pour TPE et PME tertiaires : cartographie des processus (back-office, relation client, production documentaire) et identification des cas d'usage prioritaires — à partir de 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Malakoff pour automatiser les processus avec Thales — intervention dès 590 € HT.",
-      en: "Intervenir à Malakoff pour automatiser les processus avec Thales — intervention dès 590 € HT.",
+      fr: "Interventions sur site à Malakoff : automatisation administrative, traitement documentaire, assistants métier pour cabinets, agences et ESN locales — dès 590 € HT.",
+      en: "Interventions sur site à Malakoff : automatisation administrative, traitement documentaire, assistants métier pour cabinets, agences et ESN locales — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Malakoff pour améliorer l'efficacité opérationnelle — dès 990 € HT.",
-      en: "Implémenter des solutions IA à Malakoff pour améliorer l'efficacité opérationnelle — dès 990 € HT.",
+      fr: "Implémentation IA en code custom à Malakoff : intégration aux CRM, ERP et outils métier des PME franciliennes, avec tests, mise en production et documentation.",
+      en: "Implémentation IA en code custom à Malakoff : intégration aux CRM, ERP et outils métier des PME franciliennes, avec tests, mise en production et documentation.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Malakoff dans l'adoption de l'IA — sessions 1-to-1 à partir de 990 € HT.",
-      en: "Accompagner les dirigeants à Malakoff dans l'adoption de l'IA — sessions 1-to-1 à partir de 990 € HT.",
+      fr: "Accompagnement un-à-un pour dirigeants à Malakoff : sessions personnalisées sur la stratégie IA et la conduite du changement dans un contexte de PME tertiaire, dès 990 € HT.",
+      en: "Accompagnement un-à-un pour dirigeants à Malakoff : sessions personnalisées sur la stratégie IA et la conduite du changement dans un contexte de PME tertiaire, dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Malakoff ?",
-      a: "Les interventions IA à Malakoff débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs Axion-IA pour une intervention à Malakoff ?",
+      a: "À Malakoff, nos tarifs publics démarrent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une intervention sur site et 990 € HT pour un accompagnement un-à-un destiné aux dirigeants de TPE et PME.",
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Malakoff ?",
-      a: "Williams et notre équipe se déplacent sur site à Malakoff dans un délai de 5 jours ouvrés pour assurer un service personnalisé.",
+      a: "Williams et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis. La ligne 13 et la gare Transilien Vanves-Malakoff facilitent l'accès depuis le reste de l'Île-de-France.",
     },
     {
       q: "Quels délais pour un audit IA à Malakoff ?",
-      a: "Nous proposons un Audit Flash de 4 heures à partir de 490 € HT, réalisable rapidement pour identifier les opportunités IA.",
+      a: "Notre Audit Flash de 4 heures peut être planifié sous quelques jours ouvrés à Malakoff. Il fournit un livrable actionnable identifiant les cas d'usage IA prioritaires pour votre TPE ou PME.",
     },
     {
-      q: "Comment Axion-IA garantit-il la conformité RGPD à Malakoff ?",
-      a: "Axion-IA s'assure que toutes les solutions IA déployées à Malakoff respectent les normes RGPD, garantissant la protection des données.",
+      q: "Comment Axion-IA garantit la conformité RGPD à Malakoff ?",
+      a: "Toutes nos interventions à Malakoff respectent le RGPD : hébergement européen, minimisation des données, registre des traitements et clauses contractuelles dédiées sont systématiquement intégrés à chaque mission.",
+    },
+    {
+      q: "Axion-IA couvre-t-il les communes autour de Malakoff ?",
+      a: "Oui, nous intervenons également à Vanves, Montrouge, Châtillon, Clamart, Bagneux et dans les arrondissements limitrophes de Paris (14e et 15e), depuis notre base à Malakoff.",
+    },
+    {
+      q: "Quels secteurs locaux servez-vous à Malakoff ?",
+      a: "Nous accompagnons en priorité les TPE et PME tertiaires de Malakoff : cabinets professionnels (juridique, comptable, conseil), agences de communication, ESN, commerces de proximité et acteurs de la santé.",
     },
   ],
 };

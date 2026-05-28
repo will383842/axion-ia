@@ -1,68 +1,76 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Hand-corrected 2026-05-28 (anti-doorway HCU 2024 — Wikipedia factual rewrite).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const BOUGUENAIS_COPY: VilleCopy = {
   pitchFr:
-    "À Bouguenais, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Avec des entreprises comme Airbus et STX France à proximité, notre expertise s'adapte aux besoins spécifiques des secteurs locaux, tels que la programmation informatique et les transports terrestres.",
+    "Axion-IA accompagne les TPE et PME de Bouguenais (20 530 habitants, Loire-Atlantique), commune de Nantes Métropole située à 6 km au sud-ouest de Nantes. Notre cabinet conçoit du code IA sur mesure (pas de no-code) pour les artisans, commerces et sous-traitants industriels installés près de la zone aéroportuaire D2A et du port industriel de Cheviré. Devis et tarifs publics consultables en ligne.",
   pitchEn:
-    "À Bouguenais, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Avec des entreprises comme Airbus et STX France à proximité, notre expertise s'adapte aux besoins spécifiques des secteurs locaux, tels que la programmation informatique et les transports terrestres.",
+    "Axion-IA accompagne les TPE et PME de Bouguenais (20 530 habitants, Loire-Atlantique), commune de Nantes Métropole située à 6 km au sud-ouest de Nantes. Notre cabinet conçoit du code IA sur mesure (pas de no-code) pour les artisans, commerces et sous-traitants industriels installés près de la zone aéroportuaire D2A et du port industriel de Cheviré. Devis et tarifs publics consultables en ligne.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Bouguenais, où des entreprises comme Airbus et STX France sont implantées. Nous nous déplaçons pour automatiser vos processus, qu'il s'agisse de devis, relances ou reporting. Nos audits débutent à et nos interventions, avec des tarifs publics consultables en ligne.",
+    "Axion-IA se déplace à Bouguenais (44340) pour auditer et automatiser les processus des TPE et PME locales : devis, relances clients, reporting, suivi production. La commune accueille le site Airbus (fuselages centraux), l'aéroport Nantes-Atlantique et le Technocampus Ocean, ce qui structure un tissu dense de sous-traitants en aéronautique, composites et logistique. Notre Audit Flash 4 h débute à 490 € HT, les interventions à 590 € HT, avec déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Bouguenais, où des entreprises comme Airbus et STX France sont implantées. Nous nous déplaçons pour automatiser vos processus, qu'il s'agisse de devis, relances ou reporting. Nos audits débutent à et nos interventions, avec des tarifs publics consultables en ligne.",
-  seoHook: "transports terrestres & entreposage",
+    "Axion-IA se déplace à Bouguenais (44340) pour auditer et automatiser les processus des TPE et PME locales : devis, relances clients, reporting, suivi production. La commune accueille le site Airbus (fuselages centraux), l'aéroport Nantes-Atlantique et le Technocampus Ocean, ce qui structure un tissu dense de sous-traitants en aéronautique, composites et logistique. Notre Audit Flash 4 h débute à 490 € HT, les interventions à 590 € HT, avec déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
+  seoHook: "aéronautique, logistique portuaire & composites",
   ecosystemFr:
-    "Bouguenais bénéficie d'un écosystème industriel dynamique avec des acteurs tels qu'Airbus et STX France. La ZAC de la Neustrie renforce l'attractivité locale pour les entreprises du secteur des transports et de la programmation informatique.",
+    "Bouguenais combine deux pôles économiques rares : la zone D2A autour de l'aéroport Nantes-Atlantique (Airbus, équipementiers aéronautiques) et la zone industrialo-portuaire de Cheviré (logistique fluviale, vrac, négoce). Le Technocampus Ocean et le Laboratoire central des Ponts et Chaussées (≈250 salariés) ancrent un écosystème R&D matériaux composites et génie civil. La desserte par la ligne 3 du tramway et sept lignes de bus connecte les TPE locales au centre nantais.",
   ecosystemEn:
-    "Bouguenais bénéficie d'un écosystème industriel dynamique avec des acteurs tels qu'Airbus et STX France. La ZAC de la Neustrie renforce l'attractivité locale pour les entreprises du secteur des transports et de la programmation informatique.",
+    "Bouguenais combine deux pôles économiques rares : la zone D2A autour de l'aéroport Nantes-Atlantique (Airbus, équipementiers aéronautiques) et la zone industrialo-portuaire de Cheviré (logistique fluviale, vrac, négoce). Le Technocampus Ocean et le Laboratoire central des Ponts et Chaussées (≈250 salariés) ancrent un écosystème R&D matériaux composites et génie civil. La desserte par la ligne 3 du tramway et sept lignes de bus connecte les TPE locales au centre nantais.",
   distancesFr:
-    "L'aéroport Nantes Atlantique est à seulement 2 km de Bouguenais, facilitant l'accès pour nos interventions sur site.",
+    "Bouguenais est à 6 km au sud-ouest de Nantes (centre), à 2 km de l'aéroport Nantes-Atlantique et limitrophe de Rezé, Saint-Aignan-Grandlieu, Bouaye, Brains, La Montagne et Indre. La gare de Nantes (TGV Paris en 2 h) est accessible en 20 minutes via le tramway ligne 3.",
   distancesEn:
-    "L'aéroport Nantes Atlantique est à seulement 2 km de Bouguenais, facilitant l'accès pour nos interventions sur site.",
+    "Bouguenais est à 6 km au sud-ouest de Nantes (centre), à 2 km de l'aéroport Nantes-Atlantique et limitrophe de Rezé, Saint-Aignan-Grandlieu, Bouaye, Brains, La Montagne et Indre. La gare de Nantes (TGV Paris en 2 h) est accessible en 20 minutes via le tramway ligne 3.",
   topSectorsNaf: [
-    "Transports terrestres",
-    "Entreposage",
-    "Réparation de machines",
-    "Programmation informatique",
+    "Construction aéronautique et spatiale",
+    "Transports terrestres et entreposage",
+    "Logistique portuaire et fluviale",
+    "Réparation de machines et équipements",
+    "Commerce de détail et services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Bouguenais pour identifier les opportunités IA chez Airbus et STX France — amélioration des processus.",
-      en: "Réaliser un audit à Bouguenais pour identifier les opportunités IA chez Airbus et STX France — amélioration des processus.",
+      fr: "Audit IA à Bouguenais pour les sous-traitants aéronautiques de la zone D2A et les TPE du commerce local — cartographie des automatisations à 490 € HT.",
+      en: "Audit IA à Bouguenais pour les sous-traitants aéronautiques de la zone D2A et les TPE du commerce local — cartographie des automatisations à 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Bouguenais pour automatiser les tâches administratives — réduction des coûts opérationnels mesurés.",
-      en: "Intervenir à Bouguenais pour automatiser les tâches administratives — réduction des coûts opérationnels mesurés.",
+      fr: "Interventions à Bouguenais pour automatiser devis, factures et reporting des PME logistiques de Cheviré et des artisans de la commune — dès 590 € HT.",
+      en: "Interventions à Bouguenais pour automatiser devis, factures et reporting des PME logistiques de Cheviré et des artisans de la commune — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Bouguenais dans le secteur de la programmation informatique — efficacité accrue.",
-      en: "Implémenter des solutions IA à Bouguenais dans le secteur de la programmation informatique — efficacité accrue.",
+      fr: "Implémentation de solutions IA codées sur mesure à Bouguenais (pas de no-code) pour les ETI et PME industrielles du bassin aéroportuaire — dès 990 € HT.",
+      en: "Implémentation de solutions IA codées sur mesure à Bouguenais (pas de no-code) pour les ETI et PME industrielles du bassin aéroportuaire — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Bouguenais pour les dirigeants — stratégie IA personnalisée.",
-      en: "Proposer des sessions 1-to-1 à Bouguenais pour les dirigeants — stratégie IA personnalisée.",
+      fr: "Sessions 1-to-1 à Bouguenais pour dirigeants de TPE/PME : roadmap IA, choix d'outils, pilotage des risques RGPD — dès 990 € HT.",
+      en: "Sessions 1-to-1 à Bouguenais pour dirigeants de TPE/PME : roadmap IA, choix d'outils, pilotage des risques RGPD — dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Bouguenais ?",
-      a: "Nos interventions à Bouguenais commencent à partir de 590 € HT. Pour un audit Flash de 4 heures, le tarif débute à 490 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs d'une intervention IA à Bouguenais ?",
+      a: "L'Audit Flash 4 h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT et l'implémentation sur mesure à 990 € HT. Tous nos tarifs publics sont consultables en ligne, sans frais cachés.",
     },
     {
-      q: "Comment se déroule le déplacement de votre équipe à Bouguenais ?",
-      a: "Nos consultants se déplacent directement sur site à Bouguenais, garantissant une intervention rapide et efficace. L'aéroport Nantes Atlantique à 2 km facilite nos déplacements.",
+      q: "Sous quel délai Axion-IA peut-il intervenir à Bouguenais ?",
+      a: "Nous nous déplaçons à Bouguenais sous 5 jours ouvrés en moyenne. L'aéroport Nantes-Atlantique à 2 km et la gare TGV de Nantes à 20 minutes facilitent notre venue depuis toute la France.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Bouguenais ?",
-      a: "Oui, nous offrons des sessions de formation IA adaptées aux besoins spécifiques des entreprises de Bouguenais, incluant des ateliers pratiques et des stratégies personnalisées.",
+      q: "Intervenez-vous aussi à Rezé, Saint-Aignan-Grandlieu ou Bouaye ?",
+      a: "Oui, nous couvrons l'ensemble des communes limitrophes de Bouguenais : Rezé, Pont-Saint-Martin, Saint-Aignan-Grandlieu, Bouaye, Brains, La Montagne, Indre et le reste de Nantes Métropole.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD lors de vos interventions à Bouguenais ?",
-      a: "Nous intégrons systématiquement les normes RGPD dans nos solutions IA, garantissant la protection des données personnelles lors de nos interventions à Bouguenais.",
+      q: "Comment garantissez-vous la conformité RGPD pour les PME de Bouguenais ?",
+      a: "Chaque mission inclut une cartographie des données traitées, un registre des traitements et un volet AI Act 2024. Pour les sous-traitants aéronautiques, nous appliquons en plus une revue de confidentialité industrielle.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous le plus à Bouguenais ?",
+      a: "Principalement les TPE/PME de l'aéronautique et des composites (zone D2A), la logistique portuaire de Cheviré, le commerce de détail du bourg et les artisans du bâtiment. Les ETI sont accompagnées en complément.",
+    },
+    {
+      q: "Faites-vous du no-code ou du code sur mesure à Bouguenais ?",
+      a: "Nous codons toutes nos solutions IA sur mesure (Python, TypeScript, APIs), sans plateforme no-code. C'est une garantie de pérennité, de réversibilité et d'absence de dépendance à un éditeur tiers.",
     },
   ],
 };

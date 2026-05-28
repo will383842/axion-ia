@@ -1,68 +1,73 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// MANUALLY EDITED 2026-05-28 — anti-doorway HCU 2024 (sources : fr.wikipedia.org/wiki/Cormeilles-en-Parisis).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Cormeilles-en-Parisis, une ville proche de Paris abritant Cap Digital et Station F, pour optimiser vos processus grâce à l'IA. Notre équipe nationale se déplace sur site pour des solutions concrètes et adaptées.",
+    "Cormeilles-en-Parisis (27 292 habitants, Val-d'Oise, CA Val Parisis) est une ville en croissance (+12,96 % depuis 2017) marquée par son passé industriel — plâtre Lambert (1830-2005) puis ciment Lafarge (1970-2017) — et aujourd'hui par ses zones artisanales du Champs-Guillaume et du Bois Rochefort. Axion-IA accompagne les TPE et PME locales (commerce de proximité, BTP, services) avec des audits IA sur site et du code custom, sans no-code.",
   pitchEn:
-    "Axion-IA intervient à Cormeilles-en-Parisis, une ville proche de Paris abritant Cap Digital et Station F, pour optimiser vos processus grâce à l'IA. Notre équipe nationale se déplace sur site pour des solutions concrètes et adaptées.",
+    "Cormeilles-en-Parisis (27 292 habitants, Val-d'Oise, CA Val Parisis) est une ville en croissance (+12,96 % depuis 2017) marquée par son passé industriel — plâtre Lambert (1830-2005) puis ciment Lafarge (1970-2017) — et aujourd'hui par ses zones artisanales du Champs-Guillaume et du Bois Rochefort. Axion-IA accompagne les TPE et PME locales (commerce de proximité, BTP, services) avec des audits IA sur site et du code custom, sans no-code.",
   directAnswerFr:
-    "À Cormeilles-en-Parisis, Axion-IA propose des interventions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche inclut des audits et des implémentations sur site, tout en tenant compte des spécificités locales. Avec des entités comme LVMH et BNP Paribas dans l'écosystème parisien, nous assurons une intégration fluide et efficace de l'IA.",
+    "Axion-IA intervient à Cormeilles-en-Parisis pour les TPE et PME du Val-d'Oise : artisans des zones Champs-Guillaume et Bois Rochefort, commerçants du marché couvert, entreprises BTP héritières du tissu plâtrier-cimentier local, services de proximité. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris en 16 minutes via la ligne J Saint-Lazare. Le futur écoquartier Seine Parisii (22 ha, 1 200 logements d'ici 2030) génère de nouvelles opportunités d'automatisation pour les artisans et commerçants locaux.",
   directAnswerEn:
-    "À Cormeilles-en-Parisis, Axion-IA propose des interventions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche inclut des audits et des implémentations sur site, tout en tenant compte des spécificités locales. Avec des entités comme LVMH et BNP Paribas dans l'écosystème parisien, nous assurons une intégration fluide et efficace de l'IA.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA intervient à Cormeilles-en-Parisis pour les TPE et PME du Val-d'Oise : artisans des zones Champs-Guillaume et Bois Rochefort, commerçants du marché couvert, entreprises BTP héritières du tissu plâtrier-cimentier local, services de proximité. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris en 16 minutes via la ligne J Saint-Lazare. Le futur écoquartier Seine Parisii (22 ha, 1 200 logements d'ici 2030) génère de nouvelles opportunités d'automatisation pour les artisans et commerçants locaux.",
+  seoHook: "artisanat BTP & commerce de proximité Val Parisis",
   ecosystemFr:
-    "Cormeilles-en-Parisis bénéficie de la proximité avec Paris, où des entités comme Inria et Station F enrichissent l'écosystème technologique. Les entreprises locales peuvent ainsi s'inspirer de ces pôles d'innovation pour intégrer l'IA.",
+    "Cormeilles-en-Parisis s'inscrit dans la CA Val Parisis aux côtés de Sannois, Franconville et Montigny-lès-Cormeilles. Le tissu économique repose sur deux zones artisanales (Champs-Guillaume et Bois Rochefort), un marché couvert alimentaire et un héritage BTP issu des carrières de plâtre Lambert exploitées de 1830 à 2005. Le complexe loisirs Bois Rochefort (cinéma, bowling, karting, ouvert 2022-2023) et le projet Seine Parisii structurent les opportunités locales pour les TPE et PME.",
   ecosystemEn:
-    "Cormeilles-en-Parisis bénéficie de la proximité avec Paris, où des entités comme Inria et Station F enrichissent l'écosystème technologique. Les entreprises locales peuvent ainsi s'inspirer de ces pôles d'innovation pour intégrer l'IA.",
+    "Cormeilles-en-Parisis s'inscrit dans la CA Val Parisis aux côtés de Sannois, Franconville et Montigny-lès-Cormeilles. Le tissu économique repose sur deux zones artisanales (Champs-Guillaume et Bois Rochefort), un marché couvert alimentaire et un héritage BTP issu des carrières de plâtre Lambert exploitées de 1830 à 2005. Le complexe loisirs Bois Rochefort (cinéma, bowling, karting, ouvert 2022-2023) et le projet Seine Parisii structurent les opportunités locales pour les TPE et PME.",
   distancesFr:
-    "Cormeilles-en-Parisis est à 18 km de la Gare de Paris-Saint-Lazare et à 35 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Cormeilles-en-Parisis est à 17 km de Paris, accessible en 16 minutes depuis Paris Saint-Lazare via la ligne J Transilien. L'autoroute A15 est accessible par la sortie Herblay.",
   distancesEn:
-    "Cormeilles-en-Parisis est à 18 km de la Gare de Paris-Saint-Lazare et à 35 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Cormeilles-en-Parisis est à 17 km de Paris, accessible en 16 minutes depuis Paris Saint-Lazare via la ligne J Transilien. L'autoroute A15 est accessible par la sortie Herblay.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Transports terrestres",
-    "Construction",
-    "Travaux spécialisés",
+    "Commerce de détail (marché couvert, proximité)",
+    "Travaux de construction et BTP (héritage plâtre-ciment)",
+    "Artisanat (zones Champs-Guillaume, Bois Rochefort)",
+    "Services aux particuliers",
+    "Restauration et loisirs (complexe Bois Rochefort)",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Cormeilles-en-Parisis pour identifier les opportunités IA dans le commerce de détail et les transports.",
-      en: "Réaliser un audit à Cormeilles-en-Parisis pour identifier les opportunités IA dans le commerce de détail et les transports.",
+      fr: "Réaliser un audit IA à Cormeilles-en-Parisis pour les TPE et PME des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
+      en: "Réaliser un audit IA à Cormeilles-en-Parisis pour les TPE et PME des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
     },
     interventions: {
-      fr: "Intervenir à Cormeilles-en-Parisis pour automatiser les tâches administratives et améliorer l'efficacité des processus.",
-      en: "Intervenir à Cormeilles-en-Parisis pour automatiser les tâches administratives et améliorer l'efficacité des processus.",
+      fr: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
+      en: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Cormeilles-en-Parisis pour optimiser les opérations dans la construction et les travaux spécialisés.",
-      en: "Implémenter des solutions IA à Cormeilles-en-Parisis pour optimiser les opérations dans la construction et les travaux spécialisés.",
+      fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
+      en: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Cormeilles-en-Parisis en sessions 1-to-1 pour une adoption stratégique de l'IA.",
-      en: "Accompagner les dirigeants de Cormeilles-en-Parisis en sessions 1-to-1 pour une adoption stratégique de l'IA.",
+      fr: "Accompagner en un-à-un les dirigeants de TPE et PME à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
+      en: "Accompagner en un-à-un les dirigeants de TPE et PME à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Cormeilles-en-Parisis ?",
-      a: "Les audits IA à Cormeilles-en-Parisis débutent à partir de 490 € HT pour un Audit Flash de 4 heures. Consultez nos tarifs publics pour plus de détails.",
+      a: "Les audits IA à Cormeilles-en-Parisis débutent à 590 € HT pour un Audit Flash de 4 heures sur site, déplacement Williams depuis Paris inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
-      q: "Comment se déroule une intervention IA à Cormeilles-en-Parisis ?",
-      a: "Nos interventions à Cormeilles-en-Parisis incluent une analyse sur site et la mise en œuvre de solutions IA adaptées aux besoins spécifiques de votre entreprise.",
+      q: "Quels sont les délais pour une intervention IA à Cormeilles-en-Parisis ?",
+      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis (16 minutes depuis Paris Saint-Lazare via ligne J). Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Cormeilles-en-Parisis ?",
-      a: "Oui, nous intervenons également dans les communes voisines telles qu'Argenteuil, Sannois et Herblay-sur-Seine pour des services IA sur site.",
+      a: "Oui, nous intervenons dans les communes limitrophes de la CA Val Parisis : Argenteuil, Sannois, Franconville, Montigny-lès-Cormeilles, La Frette-sur-Seine, Sartrouville et Maisons-Laffitte.",
     },
     {
-      q: "Quels sont les délais pour une implémentation IA à Cormeilles-en-Parisis ?",
-      a: "Les délais d'implémentation varient selon le projet, mais nous nous engageons à intervenir rapidement pour répondre à vos besoins.",
+      q: "Vos interventions à Cormeilles-en-Parisis sont-elles conformes RGPD ?",
+      a: "Oui. Axion-IA développe du code custom hébergé en Europe, sans no-code ni outils opaques. Les données des TPE et PME de Cormeilles-en-Parisis restent souveraines et conformes au RGPD.",
+    },
+    {
+      q: "Quels secteurs d'activité accompagnez-vous à Cormeilles-en-Parisis ?",
+      a: "Nous accompagnons les TPE et PME locales : artisans BTP héritiers du tissu plâtre-ciment, commerçants du marché couvert et proximité, services aux entreprises des zones Champs-Guillaume et Bois Rochefort, restauration et loisirs autour du complexe Bois Rochefort.",
     },
   ],
 };

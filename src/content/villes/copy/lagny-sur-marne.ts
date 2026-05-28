@@ -1,63 +1,76 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 53 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — corrigé manuellement 2026-05-28 (anti-doorway HCU 2024).
+// Lagny-sur-Marne (77) — Communauté d'agglomération Marne et Gondoire, vallée de la Marne.
+// Source faits : Wikipedia FR Lagny-sur-Marne. EN = mirror FR.
 
 import type { VilleCopy } from "./types";
 
 export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Lagny-sur-Marne, intégrant les dernières avancées en IA. Paris, avec ses pôles comme Cap Digital et Inria, influence l'innovation en Île-de-France.",
+    "Lagny-sur-Marne (77), 21 461 habitants, commune de Seine-et-Marne située à 28 km à l'est de Paris dans la vallée de la Marne. Chef-lieu de la Communauté d'agglomération Marne et Gondoire, elle réunit environ 2 000 établissements actifs dominés par commerce, transports, services, construction et industrie. Voisine de Pomponne, Thorigny-sur-Marne, Saint-Thibault-des-Vignes et Montévrain, elle accueille un tissu TPE/PME qu'Axion-IA accompagne.",
   pitchEn:
-    "Axion-IA intervient à Lagny-sur-Marne, intégrant les dernières avancées en IA. Paris, avec ses pôles comme Cap Digital et Inria, influence l'innovation en Île-de-France.",
+    "Lagny-sur-Marne (77), 21 461 habitants, commune de Seine-et-Marne située à 28 km à l'est de Paris dans la vallée de la Marne. Chef-lieu de la Communauté d'agglomération Marne et Gondoire, elle réunit environ 2 000 établissements actifs dominés par commerce, transports, services, construction et industrie. Voisine de Pomponne, Thorigny-sur-Marne, Saint-Thibault-des-Vignes et Montévrain, elle accueille un tissu TPE/PME qu'Axion-IA accompagne.",
   directAnswerFr:
-    "À Lagny-sur-Marne, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec l'influence de pôles technologiques parisiens tels que Station F et Cap Digital, notre équipe nationale se déplace pour offrir des solutions sur site, sans implantation locale. Nous garantissons une approche personnalisée pour chaque entreprise, en tenant compte des spécificités du tissu économique local.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Lagny-sur-Marne (77) auprès des TPE/PME de la Communauté d'agglomération Marne et Gondoire. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs et PME tertiaires, transports et industrie installées à Lagny, Thorigny-sur-Marne, Saint-Thibault-des-Vignes, Pomponne et Montévrain. Audits, interventions et coaching 1-to-1 sur site via la ligne P et l'A104, sans implantation locale.",
   directAnswerEn:
-    "À Lagny-sur-Marne, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec l'influence de pôles technologiques parisiens tels que Station F et Cap Digital, notre équipe nationale se déplace pour offrir des solutions sur site, sans implantation locale. Nous garantissons une approche personnalisée pour chaque entreprise, en tenant compte des spécificités du tissu économique local.",
-  seoHook: "commerce détail & transports terrestres",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Lagny-sur-Marne (77) auprès des TPE/PME de la Communauté d'agglomération Marne et Gondoire. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs et PME tertiaires, transports et industrie installées à Lagny, Thorigny-sur-Marne, Saint-Thibault-des-Vignes, Pomponne et Montévrain. Audits, interventions et coaching 1-to-1 sur site via la ligne P et l'A104, sans implantation locale.",
+  seoHook: "TPE/PME commerce, services & artisanat Marne et Gondoire",
   ecosystemFr:
-    "Lagny-sur-Marne bénéficie de la proximité de pôles économiques comme Bussy-Saint-Georges et Noisiel. Le tissu économique local est enrichi par des secteurs tels que le commerce de détail et les transports terrestres.",
+    "Lagny-sur-Marne, chef-lieu de Marne et Gondoire, totalise environ 2 000 établissements actifs avec une nette dominante commerce-transports-services (≈ 1 400), suivis de l'administratif, de la construction et de l'industrie. Le tissu local est essentiellement composé de TPE et petites PME, en lien direct avec les communes voisines de la vallée de la Marne et du plateau de Brie.",
   ecosystemEn:
-    "Lagny-sur-Marne bénéficie de la proximité de pôles économiques comme Bussy-Saint-Georges et Noisiel. Le tissu économique local est enrichi par des secteurs tels que le commerce de détail et les transports terrestres.",
+    "Lagny-sur-Marne, chef-lieu de Marne et Gondoire, totalise environ 2 000 établissements actifs avec une nette dominante commerce-transports-services (≈ 1 400), suivis de l'administratif, de la construction et de l'industrie. Le tissu local est essentiellement composé de TPE et petites PME, en lien direct avec les communes voisines de la vallée de la Marne et du plateau de Brie.",
   distancesFr:
-    "Lagny-sur-Marne est à 15 km de la gare TGV de Marne-la-Vallée - Chessy et à 30 km de l'aéroport de Paris-Charles de Gaulle.",
+    "Paris-Est en ligne P (Transilien) : ~35 min depuis la gare de Lagny-Thorigny. A104 en bordure ouest, RD 934 en bordure est. Marne-la-Vallée — Chessy (TGV / RER A) à environ 15 min. Aéroport Paris-CDG à 30 min.",
   distancesEn:
-    "Lagny-sur-Marne est à 15 km de la gare TGV de Marne-la-Vallée - Chessy et à 30 km de l'aéroport de Paris-Charles de Gaulle.",
-  topSectorsNaf: ["Commerce de détail", "Transports terrestres", "Restauration", "Construction"],
+    "Paris-Est en ligne P (Transilien) : ~35 min depuis la gare de Lagny-Thorigny. A104 en bordure ouest, RD 934 en bordure est. Marne-la-Vallée — Chessy (TGV / RER A) à environ 15 min. Aéroport Paris-CDG à 30 min.",
+  topSectorsNaf: [
+    "Commerce de détail Marne et Gondoire",
+    "Services aux entreprises tertiaires",
+    "Transports terrestres et logistique",
+    "Construction et artisanat BTP",
+    "Industrie de proximité Seine-et-Marne",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Lagny-sur-Marne permet d'identifier les opportunités d'IA dans les secteurs comme le commerce de détail. Audit Flash à partir de 490 € HT.",
-      en: "Réaliser un audit à Lagny-sur-Marne permet d'identifier les opportunités d'IA dans les secteurs comme le commerce de détail. Audit Flash à partir de 490 € HT.",
+      fr: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès 490 € HT, restitution opérationnelle sous 5 jours.",
+      en: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès 490 € HT, restitution opérationnelle sous 5 jours.",
     },
     interventions: {
-      fr: "Intervenir à Lagny-sur-Marne pour optimiser les processus dans les transports terrestres. Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Lagny-sur-Marne pour optimiser les processus dans les transports terrestres. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès 590 € HT.",
+      en: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Lagny-sur-Marne, notamment dans la construction, pour une efficacité accrue. Tarifs à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Lagny-sur-Marne, notamment dans la construction, pour une efficacité accrue. Tarifs à partir de 990 € HT.",
+      fr: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès 990 € HT.",
+      en: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Lagny-sur-Marne avec des sessions 1-to-1 personnalisées. Disponibles dès 990 € HT.",
-      en: "Accompagner les dirigeants de Lagny-sur-Marne avec des sessions 1-to-1 personnalisées. Disponibles dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès 990 € HT.",
+      en: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Lagny-sur-Marne ?",
-      a: "Les interventions IA à Lagny-sur-Marne commencent à partir de 590 € HT pour une Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Lagny-sur-Marne et sur Marne et Gondoire ?",
+      a: "Oui, nous intervenons à Lagny-sur-Marne et dans les communes voisines de Pomponne, Thorigny-sur-Marne, Saint-Thibault-des-Vignes, Montévrain, Gouvernes, Dampmart et Chanteloup-en-Brie, ainsi que sur l'axe Marne-la-Vallée.",
     },
     {
-      q: "Comment Axion-IA gère-t-il les déplacements vers Lagny-sur-Marne ?",
-      a: "Notre équipe nationale se déplace directement sur site à Lagny-sur-Marne pour assurer une intervention efficace, sans implantation locale nécessaire.",
+      q: "Quels sont vos tarifs pour une intervention IA à Lagny-sur-Marne ?",
+      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
-      q: "Quels délais pour une intervention IA à Lagny-sur-Marne ?",
-      a: "Nous nous engageons à intervenir sur site à Lagny-sur-Marne dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Quels secteurs accompagnez-vous à Lagny-sur-Marne ?",
+      a: "TPE commerce, restauration et artisans BTP, PME services aux entreprises, transports terrestres et logistique, industrie de proximité — soit les ≈ 2 000 établissements actifs de Lagny et de Marne et Gondoire.",
+    },
+    {
+      q: "Quel délai pour une intervention sur site à Lagny-sur-Marne ?",
+      a: "Délai standard : 5 jours ouvrés après cadrage. Sur la Seine-et-Marne, une intervention rapide est possible sous 48-72h en cas de disponibilité consultant depuis Paris (ligne P, ~35 min).",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Lagny-sur-Marne ?",
-      a: "Axion-IA garantit la conformité RGPD de ses solutions IA lors de ses interventions à Lagny-sur-Marne, en respectant les réglementations en vigueur.",
+      a: "Hébergement UE, DPA contractuel, minimisation et anonymisation des données, revue conformité RGPD/AI Act à chaque livrable client TPE/PME de Marne et Gondoire.",
+    },
+    {
+      q: "Travaillez-vous avec les artisans BTP et commerçants indépendants ?",
+      a: "Oui, formats adaptés TPE : audit ciblé un processus, intervention 1 journée, coaching 1-to-1 dirigeant. Code custom intégré à vos outils existants — jamais une solution no-code générique.",
     },
   ],
 };

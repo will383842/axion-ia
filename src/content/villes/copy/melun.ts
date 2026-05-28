@@ -1,67 +1,76 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 60 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// AUTO-GENERATED 2026-05-27 — T4 anti-doorway fix Claude Code (Will).
+// Melun (77, Seine-et-Marne) — 45 995 hab. 2023, préfecture de Seine-et-Marne.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const MELUN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Melun, une ville dynamique de l'Île-de-France, pour accompagner les entreprises locales. Avec notre expertise, nous aidons à optimiser les processus grâce à l'IA, tout en tenant compte des spécificités du tissu économique local, comme celui de Paris avec Cap Digital et Station F.",
+    "Melun (77), 45 995 habitants en 2023, préfecture de Seine-et-Marne, située à 41 km au sud-est de Paris dans une boucle de la Seine. Troisième commune du département après Meaux et Chelles. Tissu mêlant TPE commerçants centre-ville, PME services et BTP, professions libérales, administrations et secteur hospitalier. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   pitchEn:
-    "Axion-IA intervient à Melun, une ville dynamique de l'Île-de-France, pour accompagner les entreprises locales. Avec notre expertise, nous aidons à optimiser les processus grâce à l'IA, tout en tenant compte des spécificités du tissu économique local, comme celui de Paris avec Cap Digital et Station F.",
+    "Melun (77), 45 995 habitants en 2023, préfecture de Seine-et-Marne, située à 41 km au sud-est de Paris dans une boucle de la Seine. Troisième commune du département après Meaux et Chelles. Tissu mêlant TPE commerçants centre-ville, PME services et BTP, professions libérales, administrations et secteur hospitalier. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "Axion-IA se déplace à Melun pour offrir des solutions IA adaptées aux besoins des entreprises locales. Melun, avec ses 3 000 établissements actifs, bénéficie d'un environnement économique varié. Nous intervenons sur site pour des audits, des implémentations et des formations, en tenant compte des spécificités des secteurs présents, tels que le commerce de détail et la construction. Nos tarifs publics, comme l'Audit Flash sur mesure, sont consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA se déplace à Melun pour offrir des solutions IA adaptées aux besoins des entreprises locales. Melun, avec ses 3 000 établissements actifs, bénéficie d'un environnement économique varié. Nous intervenons sur site pour des audits, des implémentations et des formations, en tenant compte des spécificités des secteurs présents, tels que le commerce de détail et la construction. Nos tarifs publics, comme l'Audit Flash sur mesure, sont consultables en ligne.",
-  seoHook: "commerce détail & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+  seoHook: "préfecture 77, services & administrations Seine-et-Marne",
   ecosystemFr:
-    "Melun accueille Safran Aircraft Engines et de nombreux autres acteurs économiques. La ZAC de Vaux-le-Pénil est un lieu stratégique pour le développement des entreprises locales, renforçant l'attractivité de la région.",
+    "Melun, préfecture de Seine-et-Marne, structure l'économie du sud du département. La ville polarise commerces de centre-ville, services administratifs, secteur hospitalier en expansion (depuis 2018), professions libérales et BTP. Les zones d'activités voisines, notamment à Vaux-le-Pénil, accueillent PME services, logistique et industrie légère. Position stratégique sur les axes Paris-Lyon-Marseille (rail) et A5/A6 (route).",
   ecosystemEn:
-    "Melun accueille Safran Aircraft Engines et de nombreux autres acteurs économiques. La ZAC de Vaux-le-Pénil est un lieu stratégique pour le développement des entreprises locales, renforçant l'attractivité de la région.",
+    "Melun, préfecture de Seine-et-Marne, structure l'économie du sud du département. La ville polarise commerces de centre-ville, services administratifs, secteur hospitalier en expansion (depuis 2018), professions libérales et BTP. Les zones d'activités voisines, notamment à Vaux-le-Pénil, accueillent PME services, logistique et industrie légère. Position stratégique sur les axes Paris-Lyon-Marseille (rail) et A5/A6 (route).",
   distancesFr:
-    "Melun est à 45 km de l'aéroport de Paris-Orly et à 50 km de la gare TGV Gare de Marne-la-Vallée - Chessy.",
+    "Paris-Gare-de-Lyon à 25 min en Transilien R ou RER D (terminus Melun). Aéroport Paris-Orly à 45 km. Aéroport Paris-Charles-de-Gaulle à 60 km. Accès A5 et A6 à proximité. Réseau bus Grand Melun pour l'agglomération.",
   distancesEn:
-    "Melun est à 45 km de l'aéroport de Paris-Orly et à 50 km de la gare TGV Gare de Marne-la-Vallée - Chessy.",
-  topSectorsNaf: ["Commerce de détail", "Construction", "Transports terrestres", "Santé humaine"],
+    "Paris-Gare-de-Lyon à 25 min en Transilien R ou RER D (terminus Melun). Aéroport Paris-Orly à 45 km. Aéroport Paris-Charles-de-Gaulle à 60 km. Accès A5 et A6 à proximité. Réseau bus Grand Melun pour l'agglomération.",
+  topSectorsNaf: [
+    "Commerce de détail centre-ville",
+    "Services administratifs & professions libérales",
+    "Santé & secteur hospitalier",
+    "Construction & BTP",
+    "Logistique & transport",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Melun pour identifier les processus à automatiser, avec des tarifs dès 490 € HT.",
-      en: "Réaliser un audit à Melun pour identifier les processus à automatiser, avec des tarifs dès 490 € HT.",
+      fr: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Melun pour optimiser l'efficacité des équipes, en tenant compte des spécificités locales.",
-      en: "Intervenir à Melun pour optimiser l'efficacité des équipes, en tenant compte des spécificités locales.",
+      fr: "Interventions IA sur site à Melun : ateliers adaptés aux commerces centre-ville, cabinets libéraux, PME services et acteurs hospitaliers. Vos équipes repartent autonomes sur outils IA métier.",
+      en: "Interventions IA sur site à Melun : ateliers adaptés aux commerces centre-ville, cabinets libéraux, PME services et acteurs hospitaliers. Vos équipes repartent autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Melun, en s'appuyant sur l'écosystème industriel local, dès 990 € HT.",
-      en: "Implémenter des solutions IA à Melun, en s'appuyant sur l'écosystème industriel local, dès 990 € HT.",
+      fr: "Implémentation IA à Melun : code custom pour automatiser gestion patients (santé), classification documents administratifs, agents IA accueil PME, optimisation devis BTP. Pas de no-code, livrables sur mesure.",
+      en: "Implémentation IA à Melun : code custom pour automatiser gestion patients (santé), classification documents administratifs, agents IA accueil PME, optimisation devis BTP. Pas de no-code, livrables sur mesure.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Melun dans leur stratégie IA, avec des sessions à partir de 990 € HT.",
-      en: "Accompagner les dirigeants de Melun dans leur stratégie IA, avec des sessions à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Melun : sessions sur site (centre-ville, Vaux-le-Pénil) ou en visio pour dirigeants TPE, gérants PME, professions libérales et responsables administratifs.",
+      en: "Coaching 1-to-1 à Melun : sessions sur site (centre-ville, Vaux-le-Pénil) ou en visio pour dirigeants TPE, gérants PME, professions libérales et responsables administratifs.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Melun ?",
-      a: "Nos interventions à Melun débutent à partir de 590 € HT. Vous pouvez consulter nos tarifs publics pour plus de détails sur notre site.",
+      q: "Axion-IA intervient-il à Melun ?",
+      a: "Oui, Axion-IA intervient à Melun et dans les communes limitrophes : Dammarie-lès-Lys, Le Mée-sur-Seine, La Rochette, Vaux-le-Pénil, Maincy, Rubelles, Vert-Saint-Denis, Voisenon. Trajet Paris-Melun en 25 min par Transilien R.",
     },
     {
-      q: "Axion-IA peut-elle se déplacer à Melun pour une consultation ?",
-      a: "Oui, notre équipe se déplace à Melun pour des consultations sur site, garantissant une prise en compte directe des besoins de votre entreprise.",
+      q: "Quels sont les tarifs pour une mission IA à Melun ?",
+      a: "L'Audit Flash démarre à 490 € HT. L'Intervention Essentielle débute à 590 € HT. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour un audit IA à Melun ?",
-      a: "Nous nous engageons à réaliser un audit IA à Melun dans un délai rapide, avec un Audit Flash disponible à partir de 490 € HT.",
+      a: "L'Audit Flash est livré sous 5 jours ouvrés après validation de la demande. Les interventions sur site sont planifiables sous 2 à 3 semaines selon nos disponibilités.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Melun ?",
-      a: "Nous intégrons les principes de conformité RGPD dans toutes nos interventions à Melun, garantissant la protection des données personnelles de vos clients.",
+      q: "Accompagnez-vous les professions libérales et les acteurs de santé à Melun ?",
+      a: "Oui. Pour les cabinets libéraux : agents IA prise de RDV, classification documents, automatisation factures. Pour le secteur hospitalier : aide à la gestion administrative, classification de dossiers, conformité RGPD santé renforcée.",
     },
     {
-      q: "Proposez-vous des formations IA pour les entreprises de Melun ?",
-      a: "Oui, nous proposons des sessions de formation IA à Melun, adaptées aux besoins spécifiques des entreprises locales, dès 990 € HT pour un accompagnement personnalisé.",
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Melun ?",
+      a: "Toutes les solutions livrées à Melun respectent le RGPD : hébergement UE, minimisation des données, journalisation, DPA contractuel. Pour les acteurs de santé, attention particulière aux données sensibles. Code custom, pas de boîte noire.",
+    },
+    {
+      q: "Quelles communes proches couvrez-vous depuis Melun ?",
+      a: "Nous couvrons aussi Dammarie-lès-Lys, Le Mée-sur-Seine, Vaux-le-Pénil, Voisenon, Vert-Saint-Denis, La Rochette, Maincy, Rubelles, ainsi que l'ensemble de l'arrondissement de Melun.",
     },
   ],
 };

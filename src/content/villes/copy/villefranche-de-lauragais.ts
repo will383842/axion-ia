@@ -9,9 +9,9 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   pitchEn:
     "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash dès 490 € HT, code custom souverain, jamais no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash dès 490 € HT, code custom souverain, jamais no-code.",
   seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",
@@ -49,23 +49,27 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villefranche-de-Lauragais ?",
-      a: "Oui, Axion-IA intervient à Villefranche-de-Lauragais et dans tout le Lauragais (Revel, Castelnaudary, Nailloux). Nos consultants se déplacent en 35 min depuis Toulouse via l'A61.",
+      a: "Oui, Axion-IA intervient à Villefranche-de-Lauragais et dans tout le Lauragais (Renneville, Gardouch, Saint-Rome, Nailloux, Castelnaudary, Revel). Nos consultants se déplacent en 35 min depuis Toulouse via l'A61, sortie 20.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Villefranche-de-Lauragais ?",
-      a: "Nous accompagnons tous types d'activités : PME agroalimentaires, TPE artisans, commerces, professions libérales, transport. Aucun secteur exclu.",
+      a: "Nous accompagnons TPE artisans, commerçants du centre-bastide, PME agroalimentaires, exploitations céréalières (62 % du foncier local en céréales), professions libérales et acteurs du transport-logistique.",
     },
     {
-      q: "Tarifs audit IA à Villefranche-de-Lauragais  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME agroalimentaires, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      q: "Tarifs audit IA à Villefranche-de-Lauragais : quel budget prévoir ?",
+      a: "L'Audit Flash démarre à 590 € HT pour une TPE. Pour les PME agroalimentaires ou exploitations céréalières du Lauragais, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics consultables.",
     },
     {
-      q: "L'IA peut-elle aider une PME agroalimentaire dans le Lauragais ?",
-      a: "Oui, l'IA optimise traçabilité, gestion stocks, planification production, conformité réglementaire et classification documents. Gains concrets rapidement.",
+      q: "Comment Axion-IA gère-t-il la conformité RGPD à Villefranche-de-Lauragais ?",
+      a: "Tous nos déploiements à Villefranche-de-Lauragais intègrent les exigences RGPD : minimisation, hébergement européen, registre des traitements, droit à l'effacement. Code custom auditable, pas de no-code opaque.",
+    },
+    {
+      q: "L'IA peut-elle aider une exploitation céréalière du Lauragais ?",
+      a: "Oui, l'IA optimise pilotage cultures (62 % du foncier en céréales), traçabilité, gestion stocks, classification documents administratifs et conformité PAC. Approche pragmatique TPE-PME.",
     },
     {
       q: "Comment se déroule une intervention IA à Villefranche-de-Lauragais ?",
-      a: "Nos consultants se déplacent à Villefranche-de-Lauragais (35 min A61 depuis Toulouse). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nos consultants se déplacent à Villefranche-de-Lauragais (35 min A61 depuis Toulouse, sortie 20). Demi-journée découverte ou journée atelier pratique selon le besoin.",
     },
   ],
 };

@@ -1,5 +1,6 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 68 — Model: gpt-4o.
+// Manually corrected 2026-05-28 (anti-doorway HCU 2024 + Wikipedia facts).
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -7,57 +8,72 @@ import type { VilleCopy } from "./types";
 
 export const LE_CANNET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Le Cannet, au cœur d'un bassin économique dynamique comprenant Cannes et Antibes, pour optimiser vos processus grâce à l'IA. Nos services s'adressent aux entreprises locales du commerce de détail et de la santé humaine.",
+    "Axion-IA accompagne les TPE et PME du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
   pitchEn:
-    "Axion-IA intervient à Le Cannet, au cœur d'un bassin économique dynamique comprenant Cannes et Antibes, pour optimiser vos processus grâce à l'IA. Nos services s'adressent aux entreprises locales du commerce de détail et de la santé humaine.",
+    "Axion-IA accompagne les TPE et PME du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
   directAnswerFr:
-    "Le Cannet, avec ses 4 000 établissements actifs, est un pôle économique important de la région Provence-Alpes-Côte d'Azur. Axion-IA propose des interventions sur site pour les entreprises locales, notamment dans le commerce de détail et le secteur de la santé humaine. Nos prestations incluent des audits et des implémentations, permettant de répondre aux besoins spécifiques des PME et ETI locales.",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès 490 € HT), des interventions sur site (dès 590 € HT) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
   directAnswerEn:
-    "Le Cannet, avec ses 4 000 établissements actifs, est un pôle économique important de la région Provence-Alpes-Côte d'Azur. Axion-IA propose des interventions sur site pour les entreprises locales, notamment dans le commerce de détail et le secteur de la santé humaine. Nos prestations incluent des audits et des implémentations, permettant de répondre aux besoins spécifiques des PME et ETI locales.",
-  seoHook: "commerce détail & restauration",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès 490 € HT), des interventions sur site (dès 590 € HT) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
+  seoHook: "commerce, hôtellerie-restauration & événementiel",
   ecosystemFr:
-    "Le Cannet profite de la proximité de Cannes et Antibes, bénéficiant ainsi de l'influence économique de ces communes. Le secteur de la construction et celui de la restauration y sont particulièrement développés.",
+    "Le Cannet est situé à environ 2 km au nord de Cannes et appartient à la Communauté d'agglomération Cannes Pays de Lérins. Son tissu économique est dominé par le commerce, l'hôtellerie-restauration, les services et un secteur événementiel structuré par les grands rendez-vous cannois (Festival, MIPIM, MIPCOM). La commune accueille également le musée Bonnard, témoin de son patrimoine culturel.",
   ecosystemEn:
-    "Le Cannet profite de la proximité de Cannes et Antibes, bénéficiant ainsi de l'influence économique de ces communes. Le secteur de la construction et celui de la restauration y sont particulièrement développés.",
+    "Le Cannet est situé à environ 2 km au nord de Cannes et appartient à la Communauté d'agglomération Cannes Pays de Lérins. Son tissu économique est dominé par le commerce, l'hôtellerie-restauration, les services et un secteur événementiel structuré par les grands rendez-vous cannois (Festival, MIPIM, MIPCOM). La commune accueille également le musée Bonnard, témoin de son patrimoine culturel.",
   distancesFr:
-    "Le Cannet est situé à 5 km de la gare TGV de Cannes et à 25 km de l'aéroport Nice Côte d'Azur.",
+    "Le Cannet est à environ 2 km de Cannes (gare SNCF), 27 km de l'aéroport Nice Côte d'Azur et environ 32 km de Nice. L'autoroute A8 (La Provençale) dessert l'agglomération via les sorties Mougins et Cannes.",
   distancesEn:
-    "Le Cannet est situé à 5 km de la gare TGV de Cannes et à 25 km de l'aéroport Nice Côte d'Azur.",
-  topSectorsNaf: ["Commerce de détail", "Restauration", "Construction", "Santé humaine"],
+    "Le Cannet est à environ 2 km de Cannes (gare SNCF), 27 km de l'aéroport Nice Côte d'Azur et environ 32 km de Nice. L'autoroute A8 (La Provençale) dessert l'agglomération via les sorties Mougins et Cannes.",
+  topSectorsNaf: [
+    "Commerce de détail",
+    "Hôtellerie-restauration",
+    "Services aux entreprises",
+    "Événementiel et tourisme d'affaires",
+    "Construction et BTP",
+    "Activités immobilières",
+  ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Le Cannet pour identifier les opportunités IA dans le commerce de détail — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit à Le Cannet pour identifier les opportunités IA dans le commerce de détail — Audit Flash dès 490 € HT.",
+      fr: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès 490 € HT, livrable PDF + plan d'action.",
+      en: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès 490 € HT, livrable PDF + plan d'action.",
     },
     interventions: {
-      fr: "Intervenir à Le Cannet pour automatiser la gestion administrative des entreprises de santé — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Le Cannet pour automatiser la gestion administrative des entreprises de santé — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès 590 € HT.",
+      en: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Le Cannet pour les entreprises de construction — Amélioration des processus dès 990 € HT.",
-      en: "Implémenter des solutions IA à Le Cannet pour les entreprises de construction — Amélioration des processus dès 990 € HT.",
+      fr: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès 990 € HT.",
+      en: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès 990 € HT.",
     },
     unAUn: {
-      fr: "Accompagner individuellement les dirigeants de TPE à Le Cannet — Optimisation des tâches administratives dès 990 € HT.",
-      en: "Accompagner individuellement les dirigeants de TPE à Le Cannet — Optimisation des tâches administratives dès 990 € HT.",
+      fr: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès 990 € HT, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès 990 € HT, sessions sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Le Cannet ?",
-      a: "Nos interventions à Le Cannet débutent à partir de 590 € HT pour une Intervention Essentielle. Les tarifs publics sont consultables sur notre site.",
+      q: "Quels sont les tarifs publics d'Axion-IA pour intervenir au Cannet ?",
+      a: "Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour une Intervention Essentielle et 990 € HT pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
     },
     {
-      q: "Comment se déroule un audit IA sur site à Le Cannet ?",
-      a: "Un audit sur site à Le Cannet permet d'identifier les opportunités d'amélioration via l'IA. L'Audit Flash 4h commence à 490 € HT.",
+      q: "Quels délais pour une intervention IA au Cannet après prise de contact ?",
+      a: "L'Audit Flash est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est cadrée sous 2 à 3 semaines. Les implémentations plus complexes (CRM hôtelier, back-office événementiel) s'étalent sur 4 à 8 semaines.",
     },
     {
-      q: "Axion-IA se déplace-t-il facilement à Le Cannet ?",
-      a: "Oui, Axion-IA intervient directement sur site à Le Cannet, facilitant ainsi la mise en œuvre de nos solutions IA pour les entreprises locales.",
+      q: "Axion-IA intervient-elle dans les communes proches du Cannet ?",
+      a: "Oui. Nous couvrons sans surcoût Cannes, Mougins, Vallauris, Mandelieu-la-Napoule et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité.",
     },
     {
-      q: "Quelles entreprises du Cannet peuvent bénéficier de vos services ?",
-      a: "Nous accompagnons les entreprises du commerce de détail, de la santé, de la construction et de la restauration à Le Cannet.",
+      q: "Comment Axion-IA garantit-elle le respect du RGPD lors d'une mission au Cannet ?",
+      a: "Toutes nos interventions appliquent un cadre RGPD strict : DPA signé avant collecte, hébergement UE, minimisation des données, traçabilité des accès. Nous livrons le code applicatif au client et n'utilisons aucune solution no-code propriétaire.",
+    },
+    {
+      q: "Quels secteurs cannettans sont prioritaires pour Axion-IA ?",
+      a: "Nous accompagnons en priorité le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié aux grands rendez-vous cannois (Festival, MIPIM, MIPCOM).",
+    },
+    {
+      q: "Vos consultants se déplacent-ils réellement au Cannet ou tout est-il à distance ?",
+      a: "Nos consultants se déplacent physiquement au Cannet pour les phases de cadrage et d'ateliers utilisateurs. Le développement est ensuite effectué à distance, avec des points hebdomadaires en visio et un retour sur site pour la mise en production.",
     },
   ],
 };

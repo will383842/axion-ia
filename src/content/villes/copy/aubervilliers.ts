@@ -1,68 +1,76 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// AUTO-GENERATED 2026-05-27 — T4 anti-doorway fix Claude Code (Will).
+// Aubervilliers (93, Seine-Saint-Denis) — 88 365 hab. 2023, Plaine Saint-Denis.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const AUBERVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Aubervilliers, une ville dynamique avec des acteurs comme Veolia et Saint-Gobain. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, en optimisant les processus administratifs et opérationnels pour un retour sur investissement rapide.",
+    "Aubervilliers (93), 88 365 habitants en 2023, commune dense de Seine-Saint-Denis limitrophe de Paris 18e et 19e, La Courneuve, Pantin et Saint-Denis. Traversée par le canal Saint-Denis, partie de la Plaine Saint-Denis. Tissu mêlant TPE commerçants et grossistes, PME logistique et BTP, professions libérales, services aux entreprises sur le Parc du Millénaire et la ZAC Canal Porte d'Aubervilliers. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   pitchEn:
-    "Axion-IA intervient à Aubervilliers, une ville dynamique avec des acteurs comme Veolia et Saint-Gobain. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, en optimisant les processus administratifs et opérationnels pour un retour sur investissement rapide.",
+    "Aubervilliers (93), 88 365 habitants en 2023, commune dense de Seine-Saint-Denis limitrophe de Paris 18e et 19e, La Courneuve, Pantin et Saint-Denis. Traversée par le canal Saint-Denis, partie de la Plaine Saint-Denis. Tissu mêlant TPE commerçants et grossistes, PME logistique et BTP, professions libérales, services aux entreprises sur le Parc du Millénaire et la ZAC Canal Porte d'Aubervilliers. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "À Aubervilliers, Axion-IA propose des interventions IA sur site pour les entreprises de tous secteurs, notamment le commerce de gros et la construction. Avec des acteurs économiques tels que Veolia et Saint-Gobain, nous aidons les entreprises à automatiser leurs processus et à améliorer leur efficacité opérationnelle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "À Aubervilliers, Axion-IA propose des interventions IA sur site pour les entreprises de tous secteurs, notamment le commerce de gros et la construction. Avec des acteurs économiques tels que Veolia et Saint-Gobain, nous aidons les entreprises à automatiser leurs processus et à améliorer leur efficacité opérationnelle.",
-  seoHook: "commerce gros & construction",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+  seoHook: "commerce de gros, logistique & tertiaire Plaine Saint-Denis",
   ecosystemFr:
-    "Aubervilliers est un pôle économique avec des entreprises comme Veolia et Saint-Gobain. La ville bénéficie de la proximité de la ZAC Canal Porte d'Aubervilliers et de l'Université Paris 13, renforçant son attractivité pour les entreprises cherchant à innover.",
+    "Aubervilliers s'appuie sur des zones d'activités structurantes : le Parc du Millénaire (bureaux), la ZAC Canal Porte d'Aubervilliers (commerces et bureaux), les EMGP (studios télévision et industries créatives) et le Campus Condorcet (enseignement supérieur et recherche). Héritière d'une longue histoire industrielle (verrerie Saint-Gobain dès 1866, manufacture d'allumettes, parfumerie L.T. Piver, aéroplanes Henry Potez), la ville concentre aujourd'hui commerce de gros, logistique, BTP et services tertiaires.",
   ecosystemEn:
-    "Aubervilliers est un pôle économique avec des entreprises comme Veolia et Saint-Gobain. La ville bénéficie de la proximité de la ZAC Canal Porte d'Aubervilliers et de l'Université Paris 13, renforçant son attractivité pour les entreprises cherchant à innover.",
+    "Aubervilliers s'appuie sur des zones d'activités structurantes : le Parc du Millénaire (bureaux), la ZAC Canal Porte d'Aubervilliers (commerces et bureaux), les EMGP (studios télévision et industries créatives) et le Campus Condorcet (enseignement supérieur et recherche). Héritière d'une longue histoire industrielle (verrerie Saint-Gobain dès 1866, manufacture d'allumettes, parfumerie L.T. Piver, aéroplanes Henry Potez), la ville concentre aujourd'hui commerce de gros, logistique, BTP et services tertiaires.",
   distancesFr:
-    "Aubervilliers est à 6 km de la Gare de Paris-Nord et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Paris (porte de la Villette) à 5 min. Métro lignes 7 et 12 desservent la commune. RER B et E à proximité. Tramway T3b en bord de ville. Accès A86 sortie 10. Aéroport Paris-Charles-de-Gaulle à 20 km.",
   distancesEn:
-    "Aubervilliers est à 6 km de la Gare de Paris-Nord et à 20 km de l'Aéroport de Paris-Charles de Gaulle.",
+    "Paris (porte de la Villette) à 5 min. Métro lignes 7 et 12 desservent la commune. RER B et E à proximité. Tramway T3b en bord de ville. Accès A86 sortie 10. Aéroport Paris-Charles-de-Gaulle à 20 km.",
   topSectorsNaf: [
     "Commerce de gros",
-    "Construction",
-    "Transport terrestre",
-    "Activités des sièges sociaux",
+    "Logistique & transport",
+    "Construction & BTP",
+    "Services aux entreprises",
+    "Industries créatives & médias",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Aubervilliers pour identifier les opportunités IA dans le commerce de gros et la construction — à partir de 490 € HT.",
-      en: "Réaliser un audit à Aubervilliers pour identifier les opportunités IA dans le commerce de gros et la construction — à partir de 490 € HT.",
+      fr: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervenir à Aubervilliers pour automatiser les processus administratifs — bénéfice immédiat pour les entreprises locales.",
-      en: "Intervenir à Aubervilliers pour automatiser les processus administratifs — bénéfice immédiat pour les entreprises locales.",
+      fr: "Interventions IA sur site à Aubervilliers : ateliers adaptés au commerce de gros, à la logistique canal Saint-Denis, aux artisans BTP et aux services tertiaires. Vos équipes repartent autonomes sur outils IA métier.",
+      en: "Interventions IA sur site à Aubervilliers : ateliers adaptés au commerce de gros, à la logistique canal Saint-Denis, aux artisans BTP et aux services tertiaires. Vos équipes repartent autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Aubervilliers, en s'appuyant sur l'écosystème local — tarifs à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Aubervilliers, en s'appuyant sur l'écosystème local — tarifs à partir de 990 € HT.",
+      fr: "Implémentation IA à Aubervilliers : code custom pour automatiser flux logistiques, gestion catalogue grossistes, classification documents BTP, agents IA service client tertiaire. Pas de no-code, livrables sur mesure.",
+      en: "Implémentation IA à Aubervilliers : code custom pour automatiser flux logistiques, gestion catalogue grossistes, classification documents BTP, agents IA service client tertiaire. Pas de no-code, livrables sur mesure.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants à Aubervilliers avec des sessions 1-to-1 — pour une adoption rapide de l'IA.",
-      en: "Accompagner les dirigeants à Aubervilliers avec des sessions 1-to-1 — pour une adoption rapide de l'IA.",
+      fr: "Coaching 1-to-1 à Aubervilliers : sessions sur site (Parc du Millénaire, ZAC Canal, EMGP) ou en visio pour dirigeants TPE, PME et gérants. Format court, terrain.",
+      en: "Coaching 1-to-1 à Aubervilliers : sessions sur site (Parc du Millénaire, ZAC Canal, EMGP) ou en visio pour dirigeants TPE, PME et gérants. Format court, terrain.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Aubervilliers ?",
-      a: "Les interventions IA à Aubervilliers commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails sur les services proposés.",
+      q: "Axion-IA intervient-il à Aubervilliers ?",
+      a: "Oui, Axion-IA intervient à Aubervilliers et dans les communes limitrophes : Saint-Denis, La Courneuve, Pantin, Paris 18e et 19e. Nos consultants se déplacent sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, les EMGP ou le Campus Condorcet.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Aubervilliers ?",
-      a: "Notre équipe nationale se déplace directement sur site à Aubervilliers pour réaliser les interventions, audits et implémentations nécessaires.",
+      q: "Quels sont les tarifs pour une mission IA à Aubervilliers ?",
+      a: "L'Audit Flash démarre à 490 € HT. L'Intervention Essentielle débute à 590 € HT. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Quels délais pour une intervention IA à Aubervilliers ?",
-      a: "Nous nous engageons à intervenir à Aubervilliers dans un délai de 5 jours ouvrés après validation de la demande.",
+      q: "Quels délais pour un audit IA à Aubervilliers ?",
+      a: "L'Audit Flash est livré sous 5 jours ouvrés après validation de la demande. Les interventions sur site sont planifiables sous 2 à 3 semaines selon nos disponibilités.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Aubervilliers ?",
-      a: "Axion-IA garantit que toutes les solutions IA déployées à Aubervilliers respectent les normes RGPD, assurant la protection des données personnelles.",
+      q: "Accompagnez-vous les commerçants et grossistes d'Aubervilliers ?",
+      a: "Oui, les TPE commerçants et grossistes sont notre cible prioritaire. Cas typiques : automatisation catalogue, gestion stocks, agents IA réponse client, classification factures, prédiction réassort.",
+    },
+    {
+      q: "Comment Axion-IA garantit-il la conformité RGPD à Aubervilliers ?",
+      a: "Toutes les solutions livrées à Aubervilliers respectent le RGPD : hébergement UE, minimisation des données, journalisation des traitements, DPA contractuel. Code custom, pas de boîte noire.",
+    },
+    {
+      q: "Quelles communes proches couvrez-vous depuis Aubervilliers ?",
+      a: "Nous intervenons aussi à Saint-Denis, Pantin, La Courneuve, Bobigny, Paris 18e et 19e, Saint-Ouen-sur-Seine. Métro 7/12 ou tramway T3b suffisent pour la majorité des déplacements.",
     },
   ],
 };

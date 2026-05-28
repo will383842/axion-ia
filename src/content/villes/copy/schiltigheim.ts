@@ -1,72 +1,74 @@
 // AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 65 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
+// Manually corrected 2026-05-28 — Anti-doorway HCU 2024 (sources Wikipedia FR).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 export const SCHILTIGHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Schiltigheim, ville dynamique du Grand Est, pour optimiser les processus des entreprises locales. Avec des acteurs tels qu'Heineken et Adidas, notre cabinet propose des solutions IA adaptées aux besoins spécifiques de chaque secteur.",
+    "Axion-IA accompagne les TPE et PME de Schiltigheim, commune du Bas-Rhin limitrophe nord de Strasbourg (34 708 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Surnommée la « cité des Brasseurs » pour son héritage industriel (Kronenbourg, Fischer, Adelshoffen, Schützenberger), la ville accueille aujourd'hui l'Espace Européen de l'Entreprise et un tissu de services, commerces et activités tertiaires. Notre cabinet code en custom, sans no-code, pour les dirigeants schilikois.",
   pitchEn:
-    "Axion-IA intervient à Schiltigheim, ville dynamique du Grand Est, pour optimiser les processus des entreprises locales. Avec des acteurs tels qu'Heineken et Adidas, notre cabinet propose des solutions IA adaptées aux besoins spécifiques de chaque secteur.",
+    "Axion-IA accompagne les TPE et PME de Schiltigheim, commune du Bas-Rhin limitrophe nord de Strasbourg (34 708 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Surnommée la « cité des Brasseurs » pour son héritage industriel (Kronenbourg, Fischer, Adelshoffen, Schützenberger), la ville accueille aujourd'hui l'Espace Européen de l'Entreprise et un tissu de services, commerces et activités tertiaires. Notre cabinet code en custom, sans no-code, pour les dirigeants schilikois.",
   directAnswerFr:
-    "Axion-IA se déplace à Schiltigheim pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme Heineken et Adidas présents dans la région, nous offrons des services allant de l'audit à l'implémentation, en passant par des interventions ciblées pour maximiser l'efficacité opérationnelle.",
+    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès 490 € HT.",
   directAnswerEn:
-    "Axion-IA se déplace à Schiltigheim pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme Heineken et Adidas présents dans la région, nous offrons des services allant de l'audit à l'implémentation, en passant par des interventions ciblées pour maximiser l'efficacité opérationnelle.",
-  seoHook: "industrie agroalimentaire & commerce gros",
+    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès 490 € HT.",
+  seoHook: "services aux entreprises, commerce gros & agroalimentaire",
   ecosystemFr:
-    "Schiltigheim accueille des entreprises comme Heineken et Adidas, renforçant son statut dans l'industrie agroalimentaire et le commerce de gros. L'Espace Européen de l'Entreprise joue un rôle clé dans le développement économique local.",
+    "Schiltigheim, intégrée à l'Eurométropole de Strasbourg, héberge l'Espace Européen de l'Entreprise (EEE), parc d'activités créé en 1994 sur 96 hectares regroupant environ 500 sociétés et 9 000 emplois (services, conseil, BtoB, IT). La ville conserve son identité de « cité des Brasseurs » avec un héritage agroalimentaire historique (Kronenbourg, Fischer, Adelshoffen, Schützenberger, L'Espérance). Elle est traversée par les axes ferroviaires Paris-Strasbourg et Strasbourg-Lauterbourg.",
   ecosystemEn:
-    "Schiltigheim accueille des entreprises comme Heineken et Adidas, renforçant son statut dans l'industrie agroalimentaire et le commerce de gros. L'Espace Européen de l'Entreprise joue un rôle clé dans le développement économique local.",
+    "Schiltigheim, intégrée à l'Eurométropole de Strasbourg, héberge l'Espace Européen de l'Entreprise (EEE), parc d'activités créé en 1994 sur 96 hectares regroupant environ 500 sociétés et 9 000 emplois (services, conseil, BtoB, IT). La ville conserve son identité de « cité des Brasseurs » avec un héritage agroalimentaire historique (Kronenbourg, Fischer, Adelshoffen, Schützenberger, L'Espérance). Elle est traversée par les axes ferroviaires Paris-Strasbourg et Strasbourg-Lauterbourg.",
   distancesFr:
-    "La gare TGV de Strasbourg est à 5 km de Schiltigheim, et l'aéroport de Strasbourg à 15 km.",
+    "Schiltigheim borde Strasbourg sur tout son côté nord (centre-ville à environ 4 km), avec la gare TGV de Strasbourg accessible en quelques minutes. L'aéroport de Strasbourg-Entzheim est à environ 15 km au sud-ouest. Communes limitrophes : Strasbourg, Bischheim, Hœnheim, Niederhausbergen, Mittelhausbergen, Oberhausbergen et Souffelweyersheim.",
   distancesEn:
-    "La gare TGV de Strasbourg est à 5 km de Schiltigheim, et l'aéroport de Strasbourg à 15 km.",
+    "Schiltigheim borde Strasbourg sur tout son côté nord (centre-ville à environ 4 km), avec la gare TGV de Strasbourg accessible en quelques minutes. L'aéroport de Strasbourg-Entzheim est à environ 15 km au sud-ouest. Communes limitrophes : Strasbourg, Bischheim, Hœnheim, Niederhausbergen, Mittelhausbergen, Oberhausbergen et Souffelweyersheim.",
   topSectorsNaf: [
-    "Industrie agroalimentaire",
+    "Services aux entreprises (Espace Européen de l'Entreprise)",
     "Commerce de gros",
-    "Activités financières",
+    "Industrie agroalimentaire (brasseries)",
+    "Activités financières et de conseil",
     "Programmation informatique",
+    "Commerce de détail",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Schiltigheim pour identifier les opportunités d'automatisation chez des entreprises comme Heineken — à partir de 490 € HT.",
-      en: "Réaliser un audit à Schiltigheim pour identifier les opportunités d'automatisation chez des entreprises comme Heineken — à partir de 490 € HT.",
+      fr: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès 490 € HT.",
+      en: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Schiltigheim pour automatiser les tâches administratives dans des secteurs tels que le commerce de gros — dès 590 € HT.",
-      en: "Intervenir à Schiltigheim pour automatiser les tâches administratives dans des secteurs tels que le commerce de gros — dès 590 € HT.",
+      fr: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès 590 € HT.",
+      en: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Schiltigheim pour optimiser les processus dans l'industrie agroalimentaire — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA à Schiltigheim pour optimiser les processus dans l'industrie agroalimentaire — à partir de 990 € HT.",
+      fr: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès 990 € HT.",
+      en: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès 990 € HT.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Schiltigheim pour dirigeants souhaitant intégrer l'IA dans leur stratégie — dès 990 € HT.",
-      en: "Proposer des sessions 1-to-1 à Schiltigheim pour dirigeants souhaitant intégrer l'IA dans leur stratégie — dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Schiltigheim pour dirigeants schilikois — stratégie IA et adoption opérationnelle, dès 990 € HT.",
+      en: "Accompagnement 1-to-1 à Schiltigheim pour dirigeants schilikois — stratégie IA et adoption opérationnelle, dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Schiltigheim ?",
-      a: "Les interventions à Schiltigheim commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Quels sont les tarifs pour une intervention IA à Schiltigheim ?",
+      a: "Nos interventions IA à Schiltigheim démarrent à 590 € HT pour l'Intervention Essentielle, après un Audit Flash à 490 € HT. Tarifs publics affichés.",
     },
     {
-      q: "Comment se déroule un audit IA à Schiltigheim ?",
-      a: "Un audit IA à Schiltigheim débute par une analyse des processus existants pour identifier les opportunités d'automatisation, avec un Audit Flash à partir de 490 € HT.",
+      q: "Williams se déplace-t-il à Schiltigheim depuis Paris ?",
+      a: "Oui, Williams se déplace à Schiltigheim (gare TGV de Strasbourg à 5 km, 1h45 de Paris en TGV) dans les 5 jours ouvrés suivant la signature, pour intervenir directement chez vous ou à l'Espace Européen de l'Entreprise.",
     },
     {
-      q: "Axion-IA intervient-elle dans l'industrie agroalimentaire à Schiltigheim ?",
-      a: "Oui, Axion-IA intervient dans l'industrie agroalimentaire à Schiltigheim, optimisant les processus pour des entreprises comme Heineken.",
+      q: "Quels secteurs schilikois Axion-IA accompagne-t-il ?",
+      a: "Nous accompagnons en priorité les TPE et PME de Schiltigheim dans les services aux entreprises (EEE), le commerce de gros, l'industrie agroalimentaire, le conseil et la programmation informatique, secteurs structurants du tissu local.",
     },
     {
-      q: "Quels délais pour une intervention IA à Schiltigheim ?",
-      a: "Williams se déplace sur site à Schiltigheim dans les 5 jours ouvrés suivant la demande, pour une intervention rapide et efficace.",
+      q: "Intervenez-vous dans les communes proches de Schiltigheim ?",
+      a: "Oui, nous intervenons sans surcoût à Strasbourg, Bischheim, Hœnheim, Niederhausbergen, Mittelhausbergen, Oberhausbergen et Souffelweyersheim, toutes limitrophes de Schiltigheim.",
     },
     {
-      q: "Comment Axion-IA assure-t-elle la conformité RGPD à Schiltigheim ?",
-      a: "Nous garantissons la conformité RGPD en intégrant des solutions IA respectueuses des réglementations en vigueur lors de nos interventions à Schiltigheim.",
+      q: "Axion-IA garantit-il la conformité RGPD à Schiltigheim ?",
+      a: "Oui, toutes nos solutions IA déployées à Schiltigheim respectent strictement le RGPD : code custom hébergé UE, anonymisation des données, journalisation des accès et contrats de sous-traitance conformes aux exigences de la CNIL.",
     },
   ],
 };

@@ -1,68 +1,75 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — T4 batch fix Claude Code (Will).
+// Wattrelos (59, Nord) — métropole lilloise, frontière belge, ex-textile, La Redoute logistique.
 
 import type { VilleCopy } from "./types";
 
 export const WATTRELOS_COPY: VilleCopy = {
   pitchFr:
-    "À Wattrelos, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des acteurs économiques comme LVMH et BNP Paribas en France, nous apportons notre expertise nationale pour optimiser vos processus.",
+    "Wattrelos (59), 40 847 habitants, commune de la Métropole européenne de Lille en frontière belge (Mouscron, Estaimpuis). Ancien bassin textile (Lainière de Roubaix) reconverti en logistique et services. La Redoute y emploie environ 500 personnes. Zones d'activités l'Avelin, le Beck, le Winhoute, éco-quartier de l'Union. Canal de Roubaix rouvert à la navigation depuis 2009. Axion-IA accompagne TPE, PME, commerces et artisans wattrelosiens.",
   pitchEn:
-    "À Wattrelos, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des acteurs économiques comme LVMH et BNP Paribas en France, nous apportons notre expertise nationale pour optimiser vos processus.",
+    "Wattrelos (59), 40 847 habitants, commune de la Métropole européenne de Lille en frontière belge (Mouscron, Estaimpuis). Ancien bassin textile (Lainière de Roubaix) reconverti en logistique et services. La Redoute y emploie environ 500 personnes. Zones d'activités l'Avelin, le Beck, le Winhoute, éco-quartier de l'Union. Canal de Roubaix rouvert à la navigation depuis 2009. Axion-IA accompagne TPE, PME, commerces et artisans wattrelosiens.",
   directAnswerFr:
-    "Axion-IA intervient à Wattrelos pour aider les entreprises à automatiser leurs processus, en s'inspirant des innovations présentes à Paris avec Cap Digital et Station F. Nous offrons des audits et des implémentations IA pour améliorer l'efficacité opérationnelle, tout en respectant les réglementations en vigueur. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises de la région.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit Flash 490 € HT, tarifs publics, code custom (pas no-code).",
   directAnswerEn:
-    "Axion-IA intervient à Wattrelos pour aider les entreprises à automatiser leurs processus, en s'inspirant des innovations présentes à Paris avec Cap Digital et Station F. Nous offrons des audits et des implémentations IA pour améliorer l'efficacité opérationnelle, tout en respectant les réglementations en vigueur. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises de la région.",
-  seoHook: "commerce détail & transport terrestre",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit Flash 490 € HT, tarifs publics, code custom (pas no-code).",
+  seoHook: "TPE/PME logistique & commerce frontière belge",
   ecosystemFr:
-    "Wattrelos, entourée par des villes comme Roubaix et Tourcoing, bénéficie d'un tissu économique diversifié. Les entreprises locales peuvent s'inspirer des pôles d'innovation tels que Cap Digital et Station F pour intégrer des solutions IA performantes.",
+    "Tissu économique de Wattrelos structuré autour de la logistique (La Redoute, Metro), du négoce textile (Steffy), du commerce transfrontalier avec la Belgique, de l'artisanat BTP et des services aux entreprises. Les zones d'activités l'Avelin, le Beck, le Winhoute et l'éco-quartier de l'Union concentrent les implantations. Forte interconnexion avec Roubaix, Tourcoing et Lille (métropole de 1,2 M d'habitants).",
   ecosystemEn:
-    "Wattrelos, entourée par des villes comme Roubaix et Tourcoing, bénéficie d'un tissu économique diversifié. Les entreprises locales peuvent s'inspirer des pôles d'innovation tels que Cap Digital et Station F pour intégrer des solutions IA performantes.",
+    "Tissu économique de Wattrelos structuré autour de la logistique (La Redoute, Metro), du négoce textile (Steffy), du commerce transfrontalier avec la Belgique, de l'artisanat BTP et des services aux entreprises. Les zones d'activités l'Avelin, le Beck, le Winhoute et l'éco-quartier de l'Union concentrent les implantations. Forte interconnexion avec Roubaix, Tourcoing et Lille (métropole de 1,2 M d'habitants).",
   distancesFr:
-    "Wattrelos est située à 15 km de la Gare de Lille-Europe et à 20 km de l'Aéroport de Lille-Lesquin.",
+    "Lille à 14 km. Roubaix à 3 km. Tourcoing à 4 km. Mouscron (Belgique) à 5 km. Gare de Lille-Flandres à 15 km. Gare de Lille-Europe à 15 km. Aéroport de Lille-Lesquin à 20 km. Lignes de bus Ilévia et ligne transfrontalière MWR vers Mouscron.",
   distancesEn:
-    "Wattrelos est située à 15 km de la Gare de Lille-Europe et à 20 km de l'Aéroport de Lille-Lesquin.",
+    "Lille à 14 km. Roubaix à 3 km. Tourcoing à 4 km. Mouscron (Belgique) à 5 km. Gare de Lille-Flandres à 15 km. Gare de Lille-Europe à 15 km. Aéroport de Lille-Lesquin à 20 km. Lignes de bus Ilévia et ligne transfrontalière MWR vers Mouscron.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Transport terrestre",
-    "Restauration",
-    "Travaux de construction",
+    "Logistique & e-commerce (La Redoute)",
+    "Commerce transfrontalier & négoce",
+    "Artisanat BTP & rénovation",
+    "Services aux entreprises",
+    "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Wattrelos pour identifier les opportunités IA dans le commerce de détail et le transport terrestre.",
-      en: "Réaliser un audit à Wattrelos pour identifier les opportunités IA dans le commerce de détail et le transport terrestre.",
+      fr: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit Flash 490 € HT, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit Flash 490 € HT, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
-      fr: "Intervenir à Wattrelos pour automatiser les tâches administratives dans les secteurs de la restauration et de la construction.",
-      en: "Intervenir à Wattrelos pour automatiser les tâches administratives dans les secteurs de la restauration et de la construction.",
+      fr: "Interventions IA sur site à Wattrelos : ateliers adaptés logistique, négoce, commerce ou artisan BTP. Équipes formées et autonomes sur outils IA métier.",
+      en: "Interventions IA sur site à Wattrelos : ateliers adaptés logistique, négoce, commerce ou artisan BTP. Équipes formées et autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Wattrelos, facilitant la gestion des processus métier pour les entreprises locales.",
-      en: "Implémenter des solutions IA à Wattrelos, facilitant la gestion des processus métier pour les entreprises locales.",
+      fr: "Implémentation IA à Wattrelos : automatisation préparation commandes e-commerce, classification dossiers, chatbot client, optimisation supply chain pour PME nord lilloises.",
+      en: "Implémentation IA à Wattrelos : automatisation préparation commandes e-commerce, classification dossiers, chatbot client, optimisation supply chain pour PME nord lilloises.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de Wattrelos avec des sessions 1-to-1 pour maximiser l'impact de l'IA sur leurs opérations.",
-      en: "Accompagner les dirigeants de Wattrelos avec des sessions 1-to-1 pour maximiser l'impact de l'IA sur leurs opérations.",
+      fr: "Coaching 1-to-1 à Wattrelos : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, commerçants et responsables logistique de la métropole lilloise.",
+      en: "Coaching 1-to-1 à Wattrelos : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, commerçants et responsables logistique de la métropole lilloise.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Wattrelos ?",
-      a: "Les tarifs pour une intervention IA à Wattrelos commencent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il à Wattrelos ?",
+      a: "Oui, Axion-IA intervient à Wattrelos et dans la métropole lilloise : Roubaix, Tourcoing, Leers, Lille. Déplacement sur site possible, accès via A22 ou TER depuis Lille.",
     },
     {
-      q: "Comment Axion-IA gère-t-il les déplacements à Wattrelos ?",
-      a: "Williams se déplace à Wattrelos pour assurer une intervention sur site, garantissant une compréhension directe des besoins locaux.",
+      q: "Quels sont les tarifs pour une mission IA à Wattrelos ?",
+      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Quels délais pour une implémentation IA à Wattrelos ?",
-      a: "Les délais pour une implémentation IA à Wattrelos varient selon le projet, mais nous nous engageons à des interventions rapides et efficaces.",
+      q: "Accompagnez-vous les acteurs logistiques et e-commerce ?",
+      a: "Oui, pour les PME logistique et e-commerce (héritage La Redoute) : automatisation préparation commandes, classification retours, agents IA support client, optimisation supply chain.",
     },
     {
-      q: "Comment Axion-IA assure-t-il la conformité RGPD à Wattrelos ?",
-      a: "Axion-IA s'assure que toutes les solutions IA déployées à Wattrelos respectent les normes RGPD, protégeant ainsi les données de vos clients.",
+      q: "Axion-IA respecte-t-il le RGPD à Wattrelos ?",
+      a: "Oui, toutes nos implémentations IA respectent strictement le RGPD : hébergement UE, anonymisation, registre de traitements, AIPD si nécessaire. Code custom, pas de no-code opaque.",
+    },
+    {
+      q: "Quels délais pour une intervention à Wattrelos ?",
+      a: "Audit Flash livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 à 3 semaines. Implémentations 4 à 8 semaines selon périmètre.",
+    },
+    {
+      q: "Quels secteurs locaux accompagnez-vous à Wattrelos ?",
+      a: "Logistique et e-commerce (zones l'Avelin, le Beck, le Winhoute), négoce et commerce transfrontalier Belgique, artisanat BTP, commerces de proximité et services aux entreprises de la métropole.",
     },
   ],
 };

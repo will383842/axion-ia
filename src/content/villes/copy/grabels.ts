@@ -1,32 +1,33 @@
-﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
-// Grabels (34, Hérault) — nord-ouest Montpellier, garrigue, résidentielle, zone d'activités.
+// MANUAL FIX 2026-05-28 — anti-doorway HCU 2024 (enrichissement faits Wikipedia).
+// EN = mirror FR (Will rule 2026-05-22).
 
 import type { VilleCopy } from "./types";
 
 export const GRABELS_COPY: VilleCopy = {
   pitchFr:
-    "Grabels (34), commune résidentielle du nord-ouest de Montpellier, entre garrigue et vignoble. Forte croissance démographique, zones d'activités, campus universitaire à proximité. Tissu TPE professions libérales, PME services, artisans, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Grabels (34), 9 092 habitants, commune résidentielle de l'Hérault située à 8 km au nord-ouest de Montpellier, entre garrigue méditerranéenne et vignoble. Forte croissance démographique depuis 1962, densité 560 hab/km². Tissu TPE professions libérales (santé, conseil), PME services, artisans BTP, commerces de proximité. Proximité du campus universitaire de Montpellier et des zones d'activités métropolitaines. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest montpelliérain.",
   pitchEn:
-    "Grabels (34), commune résidentielle du nord-ouest de Montpellier, entre garrigue et vignoble. Forte croissance démographique, zones d'activités, campus universitaire à proximité. Tissu TPE professions libérales, PME services, artisans, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Grabels (34), 9 092 habitants, commune résidentielle de l'Hérault située à 8 km au nord-ouest de Montpellier, entre garrigue méditerranéenne et vignoble. Forte croissance démographique depuis 1962, densité 560 hab/km². Tissu TPE professions libérales (santé, conseil), PME services, artisans BTP, commerces de proximité. Proximité du campus universitaire de Montpellier et des zones d'activités métropolitaines. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest montpelliérain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grabels (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord-ouest montpelliérain.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Grabels (Hérault, Montpellier Méditerranée Métropole) auprès des TPE, PME de services, professions libérales, artisans BTP et commerces du nord-ouest montpelliérain. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grabels (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord-ouest montpelliérain.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Grabels (Hérault, Montpellier Méditerranée Métropole) auprès des TPE, PME de services, professions libérales, artisans BTP et commerces du nord-ouest montpelliérain. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   ecosystemFr:
-    "Grabels est une commune résidentielle en forte croissance au nord-ouest de Montpellier, entre garrigue et vignoble. Proximité du campus universitaire de Montpellier et des zones d'activités. Tissu TPE professions libérales (santé, conseil), PME services, artisans BTP, commerces de proximité. Cadre de vie prisé des familles et cadres.",
+    "Grabels est intégrée à Montpellier Méditerranée Métropole. Commune résidentielle en forte croissance depuis 1962, située entre garrigue et vignoble, traversée par la rivière Mosson et le GR 653 (Via Tolosana). Tissu économique : TPE professions libérales (santé, conseil, juridique), PME services, artisans BTP et étanchéité (ex. EB Étanchéité, IdSolutions), commerces de proximité. Proximité immédiate du campus universitaire de Montpellier structure un bassin d'emploi cadres et familles.",
   ecosystemEn:
-    "Grabels est une commune résidentielle en forte croissance au nord-ouest de Montpellier, entre garrigue et vignoble. Proximité du campus universitaire de Montpellier et des zones d'activités. Tissu TPE professions libérales (santé, conseil), PME services, artisans BTP, commerces de proximité. Cadre de vie prisé des familles et cadres.",
+    "Grabels est intégrée à Montpellier Méditerranée Métropole. Commune résidentielle en forte croissance depuis 1962, située entre garrigue et vignoble, traversée par la rivière Mosson et le GR 653 (Via Tolosana). Tissu économique : TPE professions libérales (santé, conseil, juridique), PME services, artisans BTP et étanchéité (ex. EB Étanchéité, IdSolutions), commerces de proximité. Proximité immédiate du campus universitaire de Montpellier structure un bassin d'emploi cadres et familles.",
   distancesFr:
-    "Montpellier centre à 10 min par tramway T5 ou voiture. Saint-Gély-du-Fesc à 10 min. Gare TGV Montpellier Sud de France à 20 min. Aéroport Montpellier-Méditerranée à 25 min.",
+    "Montpellier centre à 8 km (10 min tramway T5 ou voiture), Juvignac à 5 min, Saint-Gély-du-Fesc à 10 min, Combaillaux à 8 min. Gare TGV Montpellier Sud de France à 20 min. Aéroport Montpellier-Méditerranée à 25 min. Accès A750 / A9 directs.",
   distancesEn:
-    "Montpellier centre à 10 min par tramway T5 ou voiture. Saint-Gély-du-Fesc à 10 min. Gare TGV Montpellier Sud de France à 20 min. Aéroport Montpellier-Méditerranée à 25 min.",
+    "Montpellier centre à 8 km (10 min tramway T5 ou voiture), Juvignac à 5 min, Saint-Gély-du-Fesc à 10 min, Combaillaux à 8 min. Gare TGV Montpellier Sud de France à 20 min. Aéroport Montpellier-Méditerranée à 25 min. Accès A750 / A9 directs.",
   seoHook: "professions libérales & services",
   topSectorsNaf: [
     "Professions libérales (santé, conseil, juridique)",
     "PME services & conseil",
-    "Artisanat BTP & rénovation",
+    "Artisanat BTP & étanchéité",
     "Commerce de proximité",
-    "Enseignement & recherche (proximité campus)",
+    "Enseignement & recherche (proximité campus Montpellier)",
+    "Restauration & hébergement",
   ],
   servicesContext: {
     audit: {
@@ -49,7 +50,11 @@ export const GRABELS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grabels ?",
-      a: "Oui, Axion-IA intervient à Grabels et dans tout le nord-ouest Montpellier (Saint-Gély-du-Fesc, Juvignac, Saint-Jean-de-Védas, Pignan). Nos consultants se déplacent depuis Montpellier en 10 min.",
+      a: "Oui, Axion-IA intervient à Grabels et dans tout le nord-ouest Montpellier. Nos consultants se déplacent depuis Montpellier en 10 min via tramway T5 ou voiture.",
+    },
+    {
+      q: "Quelles communes proches couvrez-vous autour de Grabels ?",
+      a: "Nous intervenons à Grabels et dans les communes limitrophes : Montpellier, Juvignac, Combaillaux, Saint-Gély-du-Fesc, Saint-Clément-de-Rivière, ainsi qu'à Saint-Jean-de-Védas, Pignan et Lattes.",
     },
     {
       q: "Proposez-vous des audits IA pour les professions libérales ?",
@@ -60,8 +65,12 @@ export const GRABELS_COPY: VilleCopy = {
       a: "Pour les PME de services, audit IA complet, intervention formation équipes, implémentation agents IA métier (chatbot, automatisation CRM, classification emails). Coaching 1-to-1 dirigeant disponible.",
     },
     {
-      q: "Travaillez-vous avec les artisans BTP ?",
-      a: "Oui, nous accompagnons les artisans BTP sur leurs cas IA : automatisation devis et facturation, classification photos chantier, planification interventions, agents IA réponse client.",
+      q: "Travaillez-vous avec les artisans BTP de Grabels ?",
+      a: "Oui, nous accompagnons les artisans BTP et étanchéité (tissu local fort, type EB Étanchéité, IdSolutions) sur leurs cas IA : automatisation devis et facturation, classification photos chantier, planification interventions, agents IA réponse client.",
+    },
+    {
+      q: "Comment garantissez-vous la conformité RGPD à Grabels ?",
+      a: "Conformité RGPD intégrée dès la conception : hébergement UE, anonymisation, registre des traitements, DPA fourni. Code custom auditable, pas de dépendance SaaS US opaque. Conforme AI Act EU 2026.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Grabels ?",

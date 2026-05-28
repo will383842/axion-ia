@@ -1,68 +1,76 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 63 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// AUTO-GENERATED 2026-05-27 — corrigé manuellement 2026-05-28 (anti-doorway HCU 2024).
+// Cenon (33) — Bordeaux Métropole, rive droite Garonne, banlieue Est Bordeaux.
+// Source faits : Wikipedia FR Cenon. EN = mirror FR.
 
 import type { VilleCopy } from "./types";
 
 export const CENON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Cenon, un carrefour stratégique proche de Bordeaux, pour optimiser les processus IA des entreprises locales. Avec des entités comme LVMH et BNP Paribas en toile de fond, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur.",
+    "Cenon (33), 26 834 habitants, commune de la rive droite de la Garonne intégrée à Bordeaux Métropole (28 communes). Voisine d'Artigues-près-Bordeaux, Floirac et Lormont, desservie par la gare TER Cenon et les lignes A et E du tramway TBM, elle réunit un tissu de TPE commerce de détail, restauration, artisanat BTP et services aux entreprises de l'aire bordelaise. Axion-IA accompagne ces dirigeants TPE/PME locaux.",
   pitchEn:
-    "Axion-IA intervient à Cenon, un carrefour stratégique proche de Bordeaux, pour optimiser les processus IA des entreprises locales. Avec des entités comme LVMH et BNP Paribas en toile de fond, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur.",
+    "Cenon (33), 26 834 habitants, commune de la rive droite de la Garonne intégrée à Bordeaux Métropole (28 communes). Voisine d'Artigues-près-Bordeaux, Floirac et Lormont, desservie par la gare TER Cenon et les lignes A et E du tramway TBM, elle réunit un tissu de TPE commerce de détail, restauration, artisanat BTP et services aux entreprises de l'aire bordelaise. Axion-IA accompagne ces dirigeants TPE/PME locaux.",
   directAnswerFr:
-    "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits et des interventions, garantissant une optimisation immédiate des processus métiers.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Cenon (33) auprès des TPE/PME de la rive droite bordelaise et de Bordeaux Métropole. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs, services aux entreprises et PME tertiaires installés à Cenon, Lormont, Floirac et Artigues-près-Bordeaux. Audits, interventions et coaching 1-to-1 livrés sur site via la gare TER ou le tramway A/E, sans implantation locale.",
   directAnswerEn:
-    "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits et des interventions, garantissant une optimisation immédiate des processus métiers.",
-  seoHook: "commerce détail & travaux spécialisés",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Cenon (33) auprès des TPE/PME de la rive droite bordelaise et de Bordeaux Métropole. Nous accompagnons en priorité les TPE artisans BTP, commerçants, restaurateurs, services aux entreprises et PME tertiaires installés à Cenon, Lormont, Floirac et Artigues-près-Bordeaux. Audits, interventions et coaching 1-to-1 livrés sur site via la gare TER ou le tramway A/E, sans implantation locale.",
+  seoHook: "TPE commerce & artisanat BTP rive droite Bordeaux",
   ecosystemFr:
-    "Cenon, au cœur de la Nouvelle-Aquitaine, bénéficie de la proximité de Bordeaux et de son écosystème économique riche, incluant des entreprises comme LVMH et BNP Paribas. Ce contexte dynamique favorise l'innovation et l'optimisation des processus via l'IA.",
+    "Cenon appartient à Bordeaux Métropole (28 communes) et occupe la rive droite de la Garonne, en bordure de Lormont, Floirac et Artigues-près-Bordeaux. Le tissu local est dominé par des TPE commerce de détail, restauration, artisans BTP, services de proximité et PME tertiaires gravitant autour du centre bordelais accessible en tramway A et E.",
   ecosystemEn:
-    "Cenon, au cœur de la Nouvelle-Aquitaine, bénéficie de la proximité de Bordeaux et de son écosystème économique riche, incluant des entreprises comme LVMH et BNP Paribas. Ce contexte dynamique favorise l'innovation et l'optimisation des processus via l'IA.",
+    "Cenon appartient à Bordeaux Métropole (28 communes) et occupe la rive droite de la Garonne, en bordure de Lormont, Floirac et Artigues-près-Bordeaux. Le tissu local est dominé par des TPE commerce de détail, restauration, artisans BTP, services de proximité et PME tertiaires gravitant autour du centre bordelais accessible en tramway A et E.",
   distancesFr:
-    "Cenon est à 5 km de la gare de Bordeaux-Saint-Jean et à 20 km de l'aéroport de Bordeaux-Mérignac.",
+    "Bordeaux centre à 10 min (tramway A). Gare Bordeaux-Saint-Jean à 15 min. Rocade A630 sorties 25 et 26 en limite communale. Aéroport Bordeaux-Mérignac à 25 min. Paris en TGV depuis Bordeaux-Saint-Jean : 2h.",
   distancesEn:
-    "Cenon est à 5 km de la gare de Bordeaux-Saint-Jean et à 20 km de l'aéroport de Bordeaux-Mérignac.",
+    "Bordeaux centre à 10 min (tramway A). Gare Bordeaux-Saint-Jean à 15 min. Rocade A630 sorties 25 et 26 en limite communale. Aéroport Bordeaux-Mérignac à 25 min. Paris en TGV depuis Bordeaux-Saint-Jean : 2h.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Travaux spécialisés",
-    "Restauration",
-    "Transports terrestres",
+    "Commerce de détail rive droite",
+    "Restauration et débits de boissons",
+    "Artisanat BTP et travaux spécialisés",
+    "Services aux entreprises tertiaires",
+    "Transports terrestres et logistique urbaine",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Cenon permet d'identifier les axes d'amélioration IA, avec des tarifs à partir de 490 € HT.",
-      en: "Réaliser un audit à Cenon permet d'identifier les axes d'amélioration IA, avec des tarifs à partir de 490 € HT.",
+      fr: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit Flash dès 490 € HT, livrable opérationnel sous 5 jours.",
+      en: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit Flash dès 490 € HT, livrable opérationnel sous 5 jours.",
     },
     interventions: {
-      fr: "Intervenir à Cenon pour automatiser les processus administratifs et relances, dès 590 € HT.",
-      en: "Intervenir à Cenon pour automatiser les processus administratifs et relances, dès 590 € HT.",
+      fr: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Intervention Essentielle dès 590 € HT.",
+      en: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Intervention Essentielle dès 590 € HT.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Cenon, intégrant des systèmes existants pour une efficacité accrue, dès 990 € HT.",
-      en: "Implémenter des solutions IA à Cenon, intégrant des systèmes existants pour une efficacité accrue, dès 990 € HT.",
+      fr: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès 990 € HT.",
+      en: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès 990 € HT.",
     },
     unAUn: {
-      fr: "Proposer des sessions 1-to-1 à Cenon pour les dirigeants, assurant un accompagnement personnalisé à partir de 990 € HT.",
-      en: "Proposer des sessions 1-to-1 à Cenon pour les dirigeants, assurant un accompagnement personnalisé à partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès 990 € HT.",
+      en: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès 990 € HT.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention IA à Cenon ?",
-      a: "Nos interventions à Cenon débutent à partir de 590 € HT. Pour des détails complets, consultez nos tarifs publics sur notre site.",
+      q: "Axion-IA intervient-il à Cenon et sur la rive droite de Bordeaux Métropole ?",
+      a: "Oui, nous intervenons à Cenon et dans les communes voisines de Bordeaux Métropole : Lormont, Floirac, Artigues-près-Bordeaux et Bordeaux centre. Nos consultants se déplacent depuis Paris via Bordeaux-Saint-Jean (TGV 2h) puis tramway A.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Cenon ?",
-      a: "Nous intervenons directement sur site à Cenon, facilitant la logistique grâce à la proximité de la gare de Bordeaux-Saint-Jean et de l'aéroport de Bordeaux-Mérignac.",
+      q: "Quels sont vos tarifs pour une intervention IA à Cenon ?",
+      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Grille publique disponible sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
-      q: "Quel est le délai pour une intervention à Cenon ?",
-      a: "Nous nous engageons à intervenir sur site à Cenon dans un délai de 5 jours ouvrés, selon la disponibilité et la complexité du projet.",
+      q: "Quels secteurs accompagnez-vous à Cenon ?",
+      a: "TPE commerce de détail, restauration, artisans BTP et travaux spécialisés, services aux entreprises tertiaires, PME logistique et transports terrestres présents sur la rive droite bordelaise.",
     },
     {
-      q: "Comment assurez-vous la conformité RGPD à Cenon ?",
-      a: "Axion-IA respecte les normes RGPD lors de ses interventions à Cenon, garantissant la protection des données personnelles tout au long du processus.",
+      q: "Quel délai pour une intervention sur site à Cenon ?",
+      a: "Délai standard : 5 jours ouvrés après validation du périmètre. Une intervention urgente en agglomération bordelaise reste possible sous 48-72h selon la disponibilité consultant.",
+    },
+    {
+      q: "Comment Axion-IA assure-t-il la conformité RGPD à Cenon ?",
+      a: "Hébergement UE, minimisation des données, DPA contractuel, logs anonymisés et passage en revue conformité RGPD/AI Act à chaque livraison auprès de nos clients TPE/PME cenonnais.",
+    },
+    {
+      q: "Travaillez-vous avec les artisans BTP et commerçants indépendants de Cenon ?",
+      a: "Oui, formats adaptés TPE : audit ciblé un processus, intervention 1 journée, coaching 1-to-1 dirigeant. Pas de no-code générique : code custom intégré à vos outils existants (caisse, ERP, agenda).",
     },
   ],
 };
