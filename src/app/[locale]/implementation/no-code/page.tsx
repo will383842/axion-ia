@@ -7,7 +7,12 @@ import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getImplementation } from "@/content/implementation";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildImageGraphJsonLd,
+} from "@/lib/seo";
 import { Section } from "@/components/layout/Section";
 import { Link } from "@/i18n/navigation";
 
@@ -39,6 +44,39 @@ export default async function NoCodePage({ params }: Props) {
   const a = getImplementation(SLUG);
   const copy = a[loc];
   const path = loc === "fr" ? a.pathFr : a.pathEn;
+  const isFr = loc === "fr";
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « automatisation no-code IA », « n8n Make Zapier IA TPE PME ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — automatisations no-code IA pour entreprises"
+          : "Axion-IA team — no-code AI automations for companies",
+        alt: isFr
+          ? "Équipe Axion-IA déploie des automatisations no-code IA pour TPE et PME — workflows n8n, Make, Zapier avec briques IA (résumé, classification, génération), maintenance simplifiée par les équipes métier."
+          : "Axion-IA team deploys no-code AI automations for small businesses and SMEs — n8n, Make, Zapier workflows with AI bricks (summarization, classification, generation), easy maintenance by business teams.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, expert no-code IA"
+          : "William — Axion-IA founder, no-code AI expert",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'automatisation no-code IA pour dirigeants TPE et PME — sélection plateforme, design des flows, transfert d'autonomie aux équipes."
+          : "Portrait of William, Axion-IA founder. Personally drives no-code AI automation projects for small business and SME executives — platform selection, flow design, autonomy transfer to teams.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
   const jsonLd = [
     buildServiceJsonLd({
       locale: loc,
@@ -48,8 +86,8 @@ export default async function NoCodePage({ params }: Props) {
       serviceType: "AI implementation · no-code",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    imagesJsonLd,
   ];
-  const isFr = loc === "fr";
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [

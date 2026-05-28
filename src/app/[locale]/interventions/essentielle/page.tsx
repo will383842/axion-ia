@@ -10,7 +10,12 @@ import { Cta } from "@/components/marketing/Cta";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ESSENTIELLE_TIERS, getIntervention } from "@/content/interventions";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildImageGraphJsonLd,
+} from "@/lib/seo";
 
 // ESSENTIELLE_TIERS importé de content/interventions.ts (source unique).
 
@@ -42,6 +47,41 @@ export default async function Essentielle({ params }: Props) {
   const copy = intervention[loc];
   const path = loc === "fr" ? intervention.pathFr : intervention.pathEn;
 
+  const isFr = loc === "fr";
+
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « formation IA essentielle TPE PME », « journée IA découverte entreprise ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — journée découverte IA Essentielle TPE et PME"
+          : "Axion-IA team — Essentielle AI discovery day for small businesses and SMEs",
+        alt: isFr
+          ? "Équipe Axion-IA en journée « Essentielle » — cabinet IA opérationnel français accompagnant TPE et PME (9 h-17 h sur site) avec découverte des outils IA, ateliers pratiques et idées d'automatisations métier."
+          : "Axion-IA team in « Essentielle » day — French operational AI consultancy supporting small businesses and SMEs (9 a.m.-5 p.m. on site) with AI tool discovery, hands-on workshops and business automation ideas.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, formateur IA Essentielle"
+          : "William — Axion-IA founder, Essentielle AI trainer",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Anime personnellement les journées Essentielle pour équipes TPE et PME — tour d'horizon des outils IA, mises en pratique, premières automatisations à emporter."
+          : "Portrait of William, Axion-IA founder. Personally runs Essentielle days for small business and SME teams — AI tool overview, hands-on practice, first automations to take away.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
+
   const jsonLd = [
     buildServiceJsonLd({
       locale: loc,
@@ -53,9 +93,8 @@ export default async function Essentielle({ params }: Props) {
       area: "Worldwide",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    imagesJsonLd,
   ];
-
-  const isFr = loc === "fr";
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [

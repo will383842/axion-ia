@@ -11,7 +11,12 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { APPROFONDIE_TIERS, getIntervention } from "@/content/interventions";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildImageGraphJsonLd,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -39,6 +44,39 @@ export default async function Approfondie({ params }: Props) {
   const intervention = getIntervention("approfondie");
   const copy = intervention[loc];
   const path = loc === "fr" ? intervention.pathFr : intervention.pathEn;
+  const isFr = loc === "fr";
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « formation IA approfondie 2 jours », « co-construction automatisations IA TPE PME ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — formation IA Approfondie 2 jours sur site"
+          : "Axion-IA team — Approfondie 2-day on-site AI training",
+        alt: isFr
+          ? "Équipe Axion-IA en session « Approfondie » 2 jours — cabinet IA opérationnel français accompagnant TPE et PME pour co-construire 10 à 20 automatisations IA sur leurs vrais outils métier, avec plan d'action 30 jours."
+          : "Axion-IA team in « Approfondie » 2-day session — French operational AI consultancy supporting small businesses and SMEs to co-build 10 to 20 AI automations on their real domain tools, with 30-day action plan.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, formateur IA Approfondie"
+          : "William — Axion-IA founder, Approfondie AI trainer",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Anime personnellement les sessions « Approfondie » pour équipes TPE et PME — panorama IA jour 1, co-construction d'automatisations jour 2, plan d'action 30 jours partagé."
+          : "Portrait of William, Axion-IA founder. Personally runs « Approfondie » sessions for small business and SME teams — AI panorama day 1, automation co-build day 2, shared 30-day action plan.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
   const jsonLd = [
     buildServiceJsonLd({
       locale: loc,
@@ -48,8 +86,8 @@ export default async function Approfondie({ params }: Props) {
       serviceType: "AI deep-dive training (2 days)",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    imagesJsonLd,
   ];
-  const isFr = loc === "fr";
   const breadcrumbItems = [
     {
       href: "/interventions",

@@ -9,7 +9,12 @@ import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getIntervention } from "@/content/interventions";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildImageGraphJsonLd,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -37,6 +42,39 @@ export default async function GagnerDuTemps({ params }: Props) {
   const intervention = getIntervention("gagner-du-temps");
   const copy = intervention[loc];
   const path = loc === "fr" ? intervention.pathFr : intervention.pathEn;
+  const isFr = loc === "fr";
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « formation IA gagner du temps », « atelier productivité IA TPE PME ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — formation IA productivité « Gagner du temps »"
+          : "Axion-IA team — AI productivity training « Save Time »",
+        alt: isFr
+          ? "Équipe Axion-IA en journée de formation « Gagner du temps » — cabinet IA opérationnel français accompagnant TPE et PME pour automatiser les tâches répétitives, bibliothèque de prompts métier et 5 à 10 automatisations testées live."
+          : "Axion-IA team in « Save Time » training day — French operational AI consultancy supporting small businesses and SMEs to automate repetitive tasks, business prompt library and 5 to 10 live-tested automations.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, formateur productivité IA"
+          : "William — Axion-IA founder, AI productivity trainer",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Anime personnellement les journées « Gagner du temps » pour dirigeants TPE et PME — diagnostic chronophages, automatisations IA, plan d'application personnel."
+          : "Portrait of William, Axion-IA founder. Personally runs « Save Time » days for small business and SME executives — time-sink diagnosis, AI automations, personal application plan.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
   const jsonLd = [
     buildServiceJsonLd({
       locale: loc,
@@ -46,8 +84,8 @@ export default async function GagnerDuTemps({ params }: Props) {
       serviceType: "AI productivity training",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    imagesJsonLd,
   ];
-  const isFr = loc === "fr";
   const breadcrumbItems = [
     {
       href: "/interventions",

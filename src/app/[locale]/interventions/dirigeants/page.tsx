@@ -14,7 +14,13 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
-import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildItemListJsonLd,
+  buildImageGraphJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 // ============================================================================
@@ -94,6 +100,40 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
       url: `${SITE_URL}/${loc}${loc === "fr" ? f.pathFr : f.pathEn}`,
       description: isFr ? f.taglineFr : f.taglineEn,
     })),
+  });
+
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Portrait
+  // fondateur (asset principal de la page hub Dirigeants 1-to-1) + photo
+  // équipe pour exposition Google Images + AI Overviews sur requêtes
+  // « formation dirigeant IA », « 1-to-1 dirigeant Claude productivité ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, partenaire 1-to-1 des dirigeants TPE et PME"
+          : "William — Axion-IA founder, 1-on-1 partner for small business and SME executives",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Accompagne personnellement les dirigeants TPE et PME en 1-to-1 sur les 3 formats (productivité personnelle, vision IA stratégique, maîtrise Claude). Confidentialité totale."
+          : "Portrait of William, Axion-IA founder. Personally supports small business and SME executives in 1-on-1 on the 3 formats (personal productivity, strategic AI vision, Claude mastery). Total confidentiality.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — accompagnement dirigeants TPE et PME"
+          : "Axion-IA team — small business and SME executive support",
+        alt: isFr
+          ? "Équipe Axion-IA spécialisée dans l'accompagnement 1-to-1 des dirigeants TPE et PME françaises — cadrage personnalisé, méthodologie IA confidentielle, rapport sous 7 jours."
+          : "Axion-IA team specialized in 1-on-1 support for French small business and SME executives — personalized framing, confidential AI methodology, report within 7 days.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+    ],
   });
 
   // 3 mini-blocs « pour qui » — alignés sur les 3 formats Dirigeants.
@@ -281,6 +321,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
 
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} />
+      <JsonLd data={imagesJsonLd} />
     </>
   );
 }

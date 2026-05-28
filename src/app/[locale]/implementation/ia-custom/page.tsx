@@ -7,7 +7,12 @@ import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getImplementation } from "@/content/implementation";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildImageGraphJsonLd,
+} from "@/lib/seo";
 import { Section } from "@/components/layout/Section";
 import { Link } from "@/i18n/navigation";
 
@@ -39,6 +44,39 @@ export default async function IaCustomPage({ params }: Props) {
   const a = getImplementation(SLUG);
   const copy = a[loc];
   const path = loc === "fr" ? a.pathFr : a.pathEn;
+  const isFr = loc === "fr";
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « IA sur-mesure entreprise », « IA custom intégrée SI ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — IA sur-mesure intégrée dans le SI entreprise"
+          : "Axion-IA team — custom AI integrated into the enterprise IT system",
+        alt: isFr
+          ? "Équipe Axion-IA conçoit et déploie des solutions IA sur-mesure pour TPE, PME et ETI françaises — architecture, fine-tuning, RAG métier, intégration SI, hébergement souverain, MLOps simplifié."
+          : "Axion-IA team designs and deploys custom AI solutions for French small businesses, SMEs and mid-caps — architecture, fine-tuning, business RAG, IT integration, sovereign hosting, simplified MLOps.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, expert IA sur-mesure"
+          : "William — Axion-IA founder, custom AI expert",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'IA sur-mesure pour dirigeants TPE et PME — cadrage métier, choix d'architecture, mise en production sécurisée."
+          : "Portrait of William, Axion-IA founder. Personally drives custom AI projects for small business and SME executives — business scoping, architecture choice, secure production deployment.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
   const jsonLd = [
     buildServiceJsonLd({
       locale: loc,
@@ -48,8 +86,8 @@ export default async function IaCustomPage({ params }: Props) {
       serviceType: "AI implementation · ia-custom",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    imagesJsonLd,
   ];
-  const isFr = loc === "fr";
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [

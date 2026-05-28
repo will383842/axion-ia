@@ -14,7 +14,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
-import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -81,6 +81,39 @@ export default async function IndividuelFamilyPage({ params }: Props) {
     serviceType: "AI coaching",
     priceEur: 0,
     areasServed: buildServiceAreasServed(loc),
+  });
+
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « coaching IA individuel », « coaching IA indépendant freelance ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — coaching IA individuel sur-mesure"
+          : "Axion-IA team — bespoke individual AI coaching",
+        alt: isFr
+          ? "Équipe Axion-IA accompagne en 1-to-1 indépendants, freelances, managers et collaborateurs opérationnels — coaching IA construit sur leur métier précis, leurs vrais cas d'usage, amorti en quelques jours."
+          : "Axion-IA team supports independents, freelancers, managers and operational staff in 1-on-1 — AI coaching built on their exact role, real use cases, pays for itself in days.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, coach IA individuel"
+          : "William — Axion-IA founder, individual AI coach",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Accompagne personnellement les coachings IA individuels 1-to-1 — cadrage visio 20 min, parcours sur-mesure par métier, séances facturées à l'unité."
+          : "Portrait of William, Axion-IA founder. Personally runs individual 1-on-1 AI coachings — 20-min framing video, bespoke journey by role, sessions invoiced per unit.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
   });
 
   // 3 mini-blocs « pour qui » — Will (2026-05-11) : ouvert à n'importe quel
@@ -322,6 +355,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
       />
 
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={imagesJsonLd} />
     </>
   );
 }

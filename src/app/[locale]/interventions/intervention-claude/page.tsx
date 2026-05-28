@@ -9,7 +9,12 @@ import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getIntervention } from "@/content/interventions";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildImageGraphJsonLd,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -37,6 +42,39 @@ export default async function FormationClaude({ params }: Props) {
   const intervention = getIntervention("intervention-claude");
   const copy = intervention[loc];
   const path = loc === "fr" ? intervention.pathFr : intervention.pathEn;
+  const isFr = loc === "fr";
+  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « formation Claude Anthropic », « maîtriser Claude Code CLI entreprise ».
+  const imagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — formation Claude (Anthropic) pour entreprises"
+          : "Axion-IA team — Claude (Anthropic) training for companies",
+        alt: isFr
+          ? "Équipe Axion-IA en journée de formation Claude — cabinet IA opérationnel français accompagnant TPE et PME sur les 3 surfaces Claude (chat, Projects/Cowork, Code CLI), bibliothèque de prompts métier."
+          : "Axion-IA team in Claude training day — French operational AI consultancy supporting small businesses and SMEs on Claude's 3 surfaces (chat, Projects/Cowork, Code CLI), business prompt library.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA, formateur Claude Anthropic"
+          : "William — Axion-IA founder, Claude Anthropic trainer",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Anime personnellement les formations Claude pour équipes TPE et PME — prompts experts, Projects multi-documents, Claude Code pour équipes tech."
+          : "Portrait of William, Axion-IA founder. Personally runs Claude trainings for small business and SME teams — expert prompts, multi-document Projects, Claude Code for tech teams.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
   const jsonLd = [
     buildServiceJsonLd({
       locale: loc,
@@ -46,8 +84,8 @@ export default async function FormationClaude({ params }: Props) {
       serviceType: "Claude (Anthropic) tool-specific training",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
+    imagesJsonLd,
   ];
-  const isFr = loc === "fr";
   const breadcrumbItems = [
     {
       href: "/interventions",
