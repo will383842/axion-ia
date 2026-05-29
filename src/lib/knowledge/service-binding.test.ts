@@ -1,13 +1,14 @@
 import { describe, it, expect } from "vitest";
-import {
-  getServiceOffer,
-  getServiceCta,
-  buildServiceOfferJsonLd,
-} from "./service-binding";
+import { getServiceOffer, getServiceCta, buildServiceOfferJsonLd } from "./service-binding";
 
 describe("service-binding (KB V4.1 B+C — code-only)", () => {
   it("dérive un prix d'entrée pour les services avec tiers (pricing.ts SSOT)", () => {
-    for (const slug of ["audit", "implementation", "interventions-formations", "un-a-un"] as const) {
+    for (const slug of [
+      "audit",
+      "implementation",
+      "interventions-formations",
+      "un-a-un",
+    ] as const) {
       const offer = getServiceOffer(slug);
       expect(offer).not.toBeNull();
       expect(offer!.fromPriceEur).toBeTypeOf("number");
