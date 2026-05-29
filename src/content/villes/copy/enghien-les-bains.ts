@@ -30,8 +30,8 @@ export const ENGHIEN_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Enghien-les-Bains : formats adaptés hôtel, restaurant, commerce, cabinet libéral ou espace événementiel. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,7 +57,7 @@ export const ENGHIEN_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Enghien-les-Bains ?",
-      a: "L'Audit Flash IA à Enghien-les-Bains démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Enghien-les-Bains démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les acteurs du thermalisme et du bien-être ?",

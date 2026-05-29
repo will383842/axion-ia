@@ -30,8 +30,8 @@ export const GEVEZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gévezé : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const GEVEZE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Gévezé ?",
-      a: "L'Audit Flash démarre à 490 € HT pour les TPE gévezéennes. Il comprend un diagnostic de vos processus métier, l'identification des cas d'usage IA prioritaires et une feuille de route avec ROI estimé.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour les TPE gévezéennes. Il comprend un diagnostic de vos processus métier, l'identification des cas d'usage IA prioritaires et une feuille de route avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment ?",

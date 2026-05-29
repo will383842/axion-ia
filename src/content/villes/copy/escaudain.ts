@@ -30,8 +30,8 @@ export const ESCAUDAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Escaudain : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Escaudain ?",
-      a: "Oui, audit Flash 490 € HT, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
     },
     {
       q: "Accompagnez-vous les commerces et restaurateurs ?",
@@ -61,7 +61,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et PME ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

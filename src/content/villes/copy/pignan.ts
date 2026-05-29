@@ -10,9 +10,9 @@ export const PIGNAN_COPY: VilleCopy = {
   pitchEn:
     "Pignan (34), commune de l'ouest de l'agglomération de Montpellier (8 431 habitants, +20% depuis 2017), entre plaine viticole et garrigue. Tissu mêlant administration publique/éducation/santé (22,4 %), services spécialisés (19,4 %), commerce-hôtellerie (17,9 %), construction (13,7 %) et viticulture historique. Axion-IA répond aux besoins de toutes les entreprises, en priorité TPE commerçants et PME viticoles, puis ETI.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pignan (34) et dans l'ouest montpelliérain (Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques). Nous accompagnons en priorité TPE commerçants, PME viticoles AOC, artisans BTP, professions libérales et services spécialisés. Audit Flash 490 € HT, intervention 590 € HT, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pignan (34) et dans l'ouest montpelliérain (Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques). Nous accompagnons en priorité TPE commerçants, PME viticoles AOC, artisans BTP, professions libérales et services spécialisés. Audit Flash {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pignan (34) et dans l'ouest montpelliérain (Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques). Nous accompagnons en priorité TPE commerçants, PME viticoles AOC, artisans BTP, professions libérales et services spécialisés. Audit Flash 490 € HT, intervention 590 € HT, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pignan (34) et dans l'ouest montpelliérain (Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques). Nous accompagnons en priorité TPE commerçants, PME viticoles AOC, artisans BTP, professions libérales et services spécialisés. Audit Flash {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
   ecosystemFr:
     "Pignan est une commune résidentielle en forte croissance (+20 % depuis 2017) à l'ouest de Montpellier, entre Plaine viticole et garrigue. Le tissu local mélange administration et services publics (22,4 %), services spécialisés (19,4 %), commerce et hôtellerie (17,9 %), construction (13,7 %) et viticulture AOC Languedoc. Production reconnue d'huile d'olive et d'une variété locale, la rougette de Pignan. Trois lignes de bus (34, 38, 43) relient au réseau de transports de Montpellier.",
   ecosystemEn:
@@ -31,16 +31,16 @@ export const PIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pignan : diagnostic 4h pour TPE commerçants, PME viticoles AOC, artisans BTP et professions libérales de l'ouest Montpellier. Audit Flash 490 € HT, ROI chiffré, plan d'action priorisé.",
-      en: "Audit IA à Pignan : diagnostic 4h pour TPE commerçants, PME viticoles AOC, artisans BTP et professions libérales de l'ouest Montpellier. Audit Flash 490 € HT, ROI chiffré, plan d'action priorisé.",
+      fr: "Audit IA à Pignan : diagnostic 4h pour TPE commerçants, PME viticoles AOC, artisans BTP et professions libérales de l'ouest Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, plan d'action priorisé.",
+      en: "Audit IA à Pignan : diagnostic 4h pour TPE commerçants, PME viticoles AOC, artisans BTP et professions libérales de l'ouest Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, plan d'action priorisé.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Intervention Essentielle 590 € HT.",
-      en: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Intervention Essentielle 590 € HT.",
+      fr: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Formation 4 h {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Formation 4 h {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Pignan : automatisation gestion parcelles vignoble AOC, devis artisans BTP, chatbot client commerce, classification documents professions libérales. Code Python/TypeScript sur mesure dès 990 € HT.",
-      en: "Implémentation IA à Pignan : automatisation gestion parcelles vignoble AOC, devis artisans BTP, chatbot client commerce, classification documents professions libérales. Code Python/TypeScript sur mesure dès 990 € HT.",
+      fr: "Implémentation IA à Pignan : automatisation gestion parcelles vignoble AOC, devis artisans BTP, chatbot client commerce, classification documents professions libérales. Code Python/TypeScript sur mesure dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Pignan : automatisation gestion parcelles vignoble AOC, devis artisans BTP, chatbot client commerce, classification documents professions libérales. Code Python/TypeScript sur mesure dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Pignan : sessions sur site ou en visio pour viticulteurs AOC, artisans, commerçants et gérants TPE/PME de l'ouest montpelliérain. Cadrage stratégique IA, montée en compétence.",
@@ -54,19 +54,19 @@ export const PIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs AOC Languedoc ?",
-      a: "Oui, audits IA adaptés aux domaines viticoles AOC : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit Flash 490 € HT, restitution sous 7 jours.",
+      a: "Oui, audits IA adaptés aux domaines viticoles AOC : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit Flash {{price:audit-flash|flat}}, restitution sous 7 jours.",
     },
     {
       q: "Quels services pour les artisans BTP à Pignan ?",
-      a: "Pour les artisans BTP (13,7 % des établissements pignanais) : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Cas typiques : devis automatisés, classification photos chantier, planification interventions, agents IA réponse client.",
+      a: "Pour les artisans BTP (13,7 % des établissements pignanais) : Audit Flash {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Cas typiques : devis automatisés, classification photos chantier, planification interventions, agents IA réponse client.",
     },
     {
       q: "Accompagnez-vous les commerces de proximité ?",
-      a: "Oui, pour les commerces et activités d'hôtellerie de Pignan (17,9 % des établissements) : Audit Flash 490 € HT, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes fournisseurs, marketing digital local.",
+      a: "Oui, pour les commerces et activités d'hôtellerie de Pignan (17,9 % des établissements) : Audit Flash {{price:audit-flash|flat}}, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes fournisseurs, marketing digital local.",
     },
     {
       q: "Quel est le tarif d'entrée et les délais à Pignan ?",
-      a: "Audit Flash 490 € HT, Intervention Essentielle 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. William se déplace à Pignan sous 5 jours ouvrés depuis Montpellier (15 min). Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. William se déplace à Pignan sous 5 jours ouvrés depuis Montpellier (15 min). Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Pignan ?",

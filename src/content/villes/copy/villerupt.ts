@@ -30,8 +30,8 @@ export const VILLERUPT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villerupt : formats adaptés au bureau, commerce, cabinet ou chantier. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const VILLERUPT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans du Pays Haut ?",
-      a: "Oui, commerçants et artisans BTP de Villerupt et alentours : gestion stocks, devis automatisés, présence en ligne, relation client. Audit Flash 490 € HT.",
+      a: "Oui, commerçants et artisans BTP de Villerupt et alentours : gestion stocks, devis automatisés, présence en ligne, relation client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Villerupt ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Villerupt ?",

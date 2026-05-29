@@ -30,8 +30,8 @@ export const VALLEIRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valleiry : formats adaptés aux PME tertiaires, cabinets, commerces et artisans du Grand Genève français. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const VALLEIRY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Valleiry  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Genevois français, il identifie les cas d'usage IA à fort ROI pour votre activité (services transfrontaliers, BTP, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Genevois français, il identifie les cas d'usage IA à fort ROI pour votre activité (services transfrontaliers, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Valleiry ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Valleiry (construction résidentielle, rénovation, second œuvre) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi photos chantier, gestion planning. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Valleiry (construction résidentielle, rénovation, second œuvre) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi photos chantier, gestion planning. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Valleiry ?",

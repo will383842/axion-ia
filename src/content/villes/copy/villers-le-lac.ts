@@ -30,8 +30,8 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-le-Lac : formats adaptés à l'atelier horloger, PME micro-mécanique ou TPE artisan du Haut-Doubs. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants touristiques ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Villers-le-Lac, notamment ceux du secteur touristique du Saut du Doubs : automatisation réservations, agents IA accueil client, gestion avis en ligne, optimisation planning saisonnier. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de Villers-le-Lac, notamment ceux du secteur touristique du Saut du Doubs : automatisation réservations, agents IA accueil client, gestion avis en ligne, optimisation planning saisonnier. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de Villers-le-Lac ?",

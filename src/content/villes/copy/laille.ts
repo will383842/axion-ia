@@ -30,8 +30,8 @@ export const LAILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laillé : formats adaptés exploitation agricole, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LAILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Laillé  ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Laillé et du bassin sud-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Laillé et du bassin sud-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et maraîchères ?",
@@ -61,7 +61,7 @@ export const LAILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants de Laillé ?",
-      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté, fidélisation clients automatisée. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté, fidélisation clients automatisée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Laillé ?",

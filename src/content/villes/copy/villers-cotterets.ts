@@ -30,8 +30,8 @@ export const VILLERS_COTTERETS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-Cotterêts : formats adaptés à l'hôtel, restaurant, boutique, atelier ou cabinet libéral. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const VILLERS_COTTERETS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et la filière bois ?",
-      a: "Oui, artisans BTP et acteurs de la filière bois liée à la forêt de Retz : automatisation devis, traçabilité chantiers, gestion fournisseurs, optimisation tournées et conformité. Audit Flash 490 € HT.",
+      a: "Oui, artisans BTP et acteurs de la filière bois liée à la forêt de Retz : automatisation devis, traçabilité chantiers, gestion fournisseurs, optimisation tournées et conformité. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Villers-Cotterêts ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Villers-Cotterêts ?",

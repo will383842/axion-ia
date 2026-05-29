@@ -30,8 +30,8 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Larmor-Plage : diagnostic pour TPE hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Larmor-Plage : diagnostic pour TPE hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Larmor-Plage : diagnostic pour TPE hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Larmor-Plage : diagnostic pour TPE hôtelières, commerces balnéaires, PME nautiques et artisans du littoral lorientais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Larmor-Plage : ateliers adaptés aux équipes hôtelières, commerces saisonniers et PME nautiques. Vos collaborateurs repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Larmor-Plage  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour les TPE et PME de Larmor-Plage. Il comprend un diagnostic de 4 heures, une cartographie des processus automatisables et un rapport ROI chiffré sous 10 jours ouvrés.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour les TPE et PME de Larmor-Plage. Il comprend un diagnostic de 4 heures, une cartographie des processus automatisables et un rapport ROI chiffré sous 10 jours ouvrés.",
     },
     {
       q: "Accompagnez-vous les TPE du tourisme à Larmor-Plage ?",
@@ -61,7 +61,7 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux petits commerces balnéaires ?",
-      a: "Absolument. Les petits commerces et artisans de Larmor-Plage bénéficient d'outils IA accessibles : chatbots service client, automatisation comptabilité et facturation, gestion stocks prédictive, marketing local automatisé. L'Audit Flash 490 € HT identifie les gains rapides.",
+      a: "Absolument. Les petits commerces et artisans de Larmor-Plage bénéficient d'outils IA accessibles : chatbots service client, automatisation comptabilité et facturation, gestion stocks prédictive, marketing local automatisé. L'Audit Flash {{price:audit-flash|flat}} identifie les gains rapides.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Larmor-Plage ?",

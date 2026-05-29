@@ -30,8 +30,8 @@ export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-du-Mont : formations adaptées aux commerces, cabinets, TPE services et PME tertiaires. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les commerces grande distribution ?",
-      a: "Oui, audit Flash 490 € HT adapté aux commerces et grande distribution de Saint-Pierre-du-Mont. Diagnostic gestion stocks prédictive, automatisation commandes, optimisation planning personnel, chatbot service client, analyse données ventes.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux commerces et grande distribution de Saint-Pierre-du-Mont. Diagnostic gestion stocks prédictive, automatisation commandes, optimisation planning personnel, chatbot service client, analyse données ventes.",
     },
     {
       q: "Accompagnez-vous les professions libérales de l'agglo montoise ?",
@@ -61,7 +61,7 @@ export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP saint-pierrois ?",
-      a: "Pour les TPE artisans BTP à Saint-Pierre-du-Mont, audit Flash 490 € HT, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis et factures, agents IA prise de RDV, suivi chantiers, gestion planning équipes.",
+      a: "Pour les TPE artisans BTP à Saint-Pierre-du-Mont, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis et factures, agents IA prise de RDV, suivi chantiers, gestion planning équipes.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Saint-Pierre-du-Mont ?",

@@ -30,8 +30,8 @@ export const SURZUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Surzur : formats adaptés à l'exploitation agricole, chantier BTP, entreprise de services ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const SURZUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP à Surzur ?",
-      a: "Pour les TPE artisans BTP (construction neuve, rénovation) à Surzur, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, planification chantier IA, classification photos avancement, gestion sous-traitants.",
+      a: "Pour les TPE artisans BTP (construction neuve, rénovation) à Surzur, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, planification chantier IA, classification photos avancement, gestion sous-traitants.",
     },
     {
       q: "Travaillez-vous avec les hébergeurs touristiques presqu'île de Rhuys ?",

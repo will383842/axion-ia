@@ -30,8 +30,8 @@ export const MIONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mions : formats adaptés au bureau tertiaire, entrepôt logistique, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const MIONS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans mionnais ?",
-      a: "Pour les TPE artisans BTP et commerçants à Mions, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Mions, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

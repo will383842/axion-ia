@@ -30,8 +30,8 @@ export const CHAGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chagny : diagnostic adapté aux domaines viticoles, restaurateurs, commerçants, artisans et prestataires de services de la Côte chalonnaise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Chagny : diagnostic adapté aux domaines viticoles, restaurateurs, commerçants, artisans et prestataires de services de la Côte chalonnaise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Chagny : diagnostic adapté aux domaines viticoles, restaurateurs, commerçants, artisans et prestataires de services de la Côte chalonnaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Chagny : diagnostic adapté aux domaines viticoles, restaurateurs, commerçants, artisans et prestataires de services de la Côte chalonnaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const CHAGNY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Chagny  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Chagny et de la Côte chalonnaise, il identifie les cas d'usage IA à fort ROI pour votre domaine, restaurant ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Chagny et de la Côte chalonnaise, il identifie les cas d'usage IA à fort ROI pour votre domaine, restaurant ou commerce.",
     },
     {
       q: "Accompagnez-vous les viticulteurs de la Côte chalonnaise ?",
@@ -65,7 +65,7 @@ export const CHAGNY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Chagny ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chagny, à partir de 990 € HT. Sessions dans votre domaine viticole, restaurant ou en visio. Approche terrain adaptée au tissu économique bourguignon.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chagny, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre domaine viticole, restaurant ou en visio. Approche terrain adaptée au tissu économique bourguignon.",
     },
   ],
 };

@@ -11,9 +11,9 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
   pitchEn:
     "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de TPE artisans, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit Flash 590 € HT, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit Flash {{price:intervention-4h|flat}}, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit Flash 590 € HT, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit Flash {{price:intervention-4h|flat}}, code custom, conformité RGPD intégrée.",
   seoHook: "TPE & PME Est parisien",
   ecosystemFr:
     "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle TPE artisans, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
@@ -32,8 +32,8 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit Flash 590 € HT.",
-      en: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit Flash 590 € HT.",
+      fr: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit Flash {{price:intervention-4h|flat}}.",
+      en: "Audit IA à Noisy-le-Sec : diagnostic adapté aux TPE artisans BTP, commerces de proximité, PME services et professions libérales de l'Est parisien. Audit Flash {{price:intervention-4h|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noisy-le-Sec : ateliers adaptés à la PME services, l'artisan BTP, le commerce de proximité ou la profession libérale. Vos équipes repartent autonomes.",
@@ -55,7 +55,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Noisy-le-Sec ?",
-      a: "L'Audit Flash démarre à 590 € HT pour une TPE. Pour les PME services ou BTP de Seine-Saint-Denis, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics consultables.",
+      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME services ou BTP de Seine-Saint-Denis, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Quels délais pour une intervention à Noisy-le-Sec ?",

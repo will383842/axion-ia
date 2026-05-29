@@ -30,8 +30,8 @@ export const VOREPPE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère vers Grenoble. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère vers Grenoble. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère vers Grenoble. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Voreppe : diagnostic adapté aux TPE artisans, PME tertiaires/industrielles, professions libérales du bassin nord-Isère vers Grenoble. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Voreppe : formats adaptés au commerce, atelier artisan ou bureau PME. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const VOREPPE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans voreppins ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Voreppe (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Voreppe (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires et industries du bassin ?",
@@ -61,7 +61,7 @@ export const VOREPPE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les acteurs du tourisme Chartreuse-Vercors ?",
-      a: "Pour les acteurs du tourisme patrimoine et nature autour de Voreppe (cluse, sites historiques, randonnée Chartreuse-Vercors), audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback visiteurs.",
+      a: "Pour les acteurs du tourisme patrimoine et nature autour de Voreppe (cluse, sites historiques, randonnée Chartreuse-Vercors), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback visiteurs.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",

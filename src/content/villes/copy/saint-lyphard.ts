@@ -30,8 +30,8 @@ export const SAINT_LYPHARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Lyphard : diagnostic adapté aux TPE touristiques de Brière, artisans chaumiers, exploitants agricoles et commerçants saisonniers. Audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Lyphard : diagnostic adapté aux TPE touristiques de Brière, artisans chaumiers, exploitants agricoles et commerçants saisonniers. Audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Lyphard : diagnostic adapté aux TPE touristiques de Brière, artisans chaumiers, exploitants agricoles et commerçants saisonniers. Audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Lyphard : diagnostic adapté aux TPE touristiques de Brière, artisans chaumiers, exploitants agricoles et commerçants saisonniers. Audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Lyphard : formations pratiques pour hébergeurs touristiques, artisans, commerçants et agriculteurs de Brière. Autonomie IA immédiate de vos équipes.",
@@ -61,7 +61,7 @@ export const SAINT_LYPHARD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE touristique à Saint-Lyphard ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, parfaitement adapté aux TPE touristiques et gîtes de Brière. Il identifie les opportunités IA : automatisation réservations, communication multilingue, gestion saisonnalité, optimisation référencement local.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux TPE touristiques et gîtes de Brière. Il identifie les opportunités IA : automatisation réservations, communication multilingue, gestion saisonnalité, optimisation référencement local.",
     },
     {
       q: "Comment vos consultants se rendent-ils à Saint-Lyphard ?",

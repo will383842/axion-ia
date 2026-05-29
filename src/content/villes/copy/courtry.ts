@@ -30,8 +30,8 @@ export const COURTRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courtry : formats adaptés atelier artisan, commerce, cabinet libéral et bureau de services. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const COURTRY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Courtry  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME de Courtry, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services de proximité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Courtry, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services de proximité.",
     },
     {
       q: "Travaillez-vous avec les artisans et entreprises BTP ?",
@@ -65,7 +65,7 @@ export const COURTRY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Courtry ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et indépendants à Courtry, à partir de 990 € HT. Sessions sur site ou en visio, adaptées à votre activité artisanale, commerciale ou libérale.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et indépendants à Courtry, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site ou en visio, adaptées à votre activité artisanale, commerciale ou libérale.",
     },
   ],
 };

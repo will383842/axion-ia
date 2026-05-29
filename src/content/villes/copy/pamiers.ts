@@ -30,8 +30,8 @@ export const PAMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit Flash 490 € HT.",
-      en: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit Flash 490 € HT.",
+      fr: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pamiers : formats adaptés à l'usine métallurgique, l'exploitation agricole, le commerce, le cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const PAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pamiers  ?",
-      a: "L'audit Flash débute selon la taille de votre activité pour une TPE. Pour les PME industrielles (métallurgie, agroalimentaire), un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, transparents.",
+      a: "L'audit Flash débute selon la taille de votre activité pour une TPE. Pour les PME industrielles (métallurgie, agroalimentaire), un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les PME métallurgie et fonderie de Pamiers ?",

@@ -30,8 +30,8 @@ export const LE_CENDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Cendre : formats adaptés bureau tertiaire, cabinet libéral, chantier BTP, commerce, siège PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const LE_CENDRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

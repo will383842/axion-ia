@@ -30,8 +30,8 @@ export const VALLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vallet : formats adaptés au chai viticole, négoce, tonnellerie ou commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés viticole.",
@@ -61,7 +61,7 @@ export const VALLET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants ?",
-      a: "Pour les artisans tonneliers, BTP et commerçants à Vallet, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de commandes.",
+      a: "Pour les artisans tonneliers, BTP et commerçants à Vallet, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de commandes.",
     },
     {
       q: "L'oenotourisme Muscadet peut-il bénéficier de l'IA ?",

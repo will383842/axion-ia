@@ -30,8 +30,8 @@ export const GUERET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guéret : formations pratiques pour commerçants, agents de services publics, artisans et exploitants agricoles creusois.",
@@ -53,7 +53,7 @@ export const GUERET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Guéret  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME creusoises. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME creusoises. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les exploitations agricoles en Creuse ?",

@@ -30,8 +30,8 @@ export const ARTIGUES_PRES_BORDEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Artigues-près-Bordeaux : diagnostic pour PME tertiaires, commerces, TPE artisans et professions libérales de l'est bordelais. Audit Flash 490 € HT.",
-      en: "Audit IA à Artigues-près-Bordeaux : diagnostic pour PME tertiaires, commerces, TPE artisans et professions libérales de l'est bordelais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Artigues-près-Bordeaux : diagnostic pour PME tertiaires, commerces, TPE artisans et professions libérales de l'est bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Artigues-près-Bordeaux : diagnostic pour PME tertiaires, commerces, TPE artisans et professions libérales de l'est bordelais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Artigues-près-Bordeaux : ateliers adaptés aux bureaux tertiaires, commerces et ateliers. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const ARTIGUES_PRES_BORDEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Artigues-près-Bordeaux  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME tertiaires et TPE artisans de l'est bordelais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME tertiaires et TPE artisans de l'est bordelais.",
     },
     {
       q: "Accompagnez-vous les PME des zones d'activités ?",
@@ -61,7 +61,7 @@ export const ARTIGUES_PRES_BORDEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP à Artigues ?",
-      a: "Pour les TPE artisans BTP : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Artigues-près-Bordeaux ?",

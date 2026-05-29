@@ -30,8 +30,8 @@ export const PFASTATT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pfastatt : formats adaptés à la PME industrielle, à l'atelier de sous-traitance, à l'artisan BTP ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PFASTATT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Pfastatt  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Pfastatt et de l'agglomération mulhousienne, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, artisanat ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pfastatt et de l'agglomération mulhousienne, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, artisanat ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants de Pfastatt ?",
@@ -65,7 +65,7 @@ export const PFASTATT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Pfastatt ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Pfastatt, à partir de 990 € HT. Sessions dans votre atelier, bureau ou en visio. Approche terrain adaptée au tissu industriel et artisanal de Mulhouse Alsace Agglomération.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Pfastatt, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, bureau ou en visio. Approche terrain adaptée au tissu industriel et artisanal de Mulhouse Alsace Agglomération.",
     },
   ],
 };

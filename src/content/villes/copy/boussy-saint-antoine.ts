@@ -30,8 +30,8 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boussy-Saint-Antoine : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Boussy-Saint-Antoine  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Brunoy et Yerres ?",

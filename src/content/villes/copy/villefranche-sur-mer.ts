@@ -30,8 +30,8 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit Flash 490 € HT.",
-      en: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit Flash 490 € HT.",
+      fr: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villefranche-sur-Mer : formats adaptés à l'hôtel de luxe, le restaurant gastronomique, la galerie d'art, le yacht charter ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villefranche-sur-Mer  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Villefranche-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique haut de gamme ou artisanale.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Villefranche-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique haut de gamme ou artisanale.",
     },
     {
       q: "Accompagnez-vous les PME du tourisme et de l'hôtellerie de luxe ?",
@@ -61,11 +61,11 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les restaurateurs et commerçants de Villefranche ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA réservation multilingues, gestion stocks intelligente, automatisation comptabilité, fidélisation clientèle internationale augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA réservation multilingues, gestion stocks intelligente, automatisation comptabilité, fidélisation clientèle internationale augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Villefranche-sur-Mer ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villefranche-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé à Nice. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villefranche-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé à Nice. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

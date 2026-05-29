@@ -30,8 +30,8 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et TPE/PME du bassin d'Arcachon. ROI chiffré pratique, audit Flash 490 € HT accessible aux artisans et petites structures.",
-      en: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et TPE/PME du bassin d'Arcachon. ROI chiffré pratique, audit Flash 490 € HT accessible aux artisans et petites structures.",
+      fr: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et TPE/PME du bassin d'Arcachon. ROI chiffré pratique, audit Flash {{price:audit-flash|flat}} accessible aux artisans et petites structures.",
+      en: "Audit IA à La Teste : diagnostic adapté aux ostréiculteurs, hôteliers Pyla et TPE/PME du bassin d'Arcachon. ROI chiffré pratique, audit Flash {{price:audit-flash|flat}} accessible aux artisans et petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Teste : sessions adaptées à la saisonnalité touristique. Demi-journée à 2 jours, vos équipes (réception hôtel, conchyliculteurs, restaurateurs) repartent avec outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans du bassin d'Arcachon ?",
-      a: "Pour les artisans à La Teste (BTP, services aux particuliers, métiers de bouche), nous proposons audit Flash 490 € HT, intervention 1 journée formation IA pratique, coaching 1-to-1 pour gérants. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
+      a: "Pour les artisans à La Teste (BTP, services aux particuliers, métiers de bouche), nous proposons audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation IA pratique, coaching 1-to-1 pour gérants. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
       q: "Comment se passe une mission depuis Paris jusqu'au bassin ?",

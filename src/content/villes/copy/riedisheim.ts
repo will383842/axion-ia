@@ -30,8 +30,8 @@ export const RIEDISHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Riedisheim : formats adaptés au cabinet, au commerce, à l'atelier d'artisan, au bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const RIEDISHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Riedisheim ?",
-      a: "Oui, commerçants de proximité et artisans riedisheimois : gestion stocks, relation client, présence en ligne, automatisation administrative, devis et facturation. Audit Flash 490 € HT.",
+      a: "Oui, commerçants de proximité et artisans riedisheimois : gestion stocks, relation client, présence en ligne, automatisation administrative, devis et facturation. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Riedisheim ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Riedisheim ?",

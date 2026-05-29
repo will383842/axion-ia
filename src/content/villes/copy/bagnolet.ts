@@ -30,8 +30,8 @@ export const BAGNOLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bagnolet pour studios créatifs, agences, commerces et acteurs de la logistique urbaine : nous cartographions vos process (production, support, livraison, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
-      en: "Audit IA à Bagnolet pour studios créatifs, agences, commerces et acteurs de la logistique urbaine : nous cartographions vos process (production, support, livraison, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      fr: "Audit IA à Bagnolet pour studios créatifs, agences, commerces et acteurs de la logistique urbaine : nous cartographions vos process (production, support, livraison, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bagnolet pour studios créatifs, agences, commerces et acteurs de la logistique urbaine : nous cartographions vos process (production, support, livraison, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bagnolet : formats adaptés au studio créatif, à l'agence, au commerce ou à l'entrepôt urbain. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -61,7 +61,7 @@ export const BAGNOLET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bagnolet ?",
-      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
       q: "Intervenez-vous aussi à Montreuil, Pantin ou Les Lilas ?",

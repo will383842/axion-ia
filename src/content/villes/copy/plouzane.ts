@@ -30,8 +30,8 @@ export const PLOUZANE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouzané : diagnostic adapté aux start-up deeptech, PME technologiques, sous-traitants recherche marine et services du Technopôle Brest-Iroise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Plouzané : diagnostic adapté aux start-up deeptech, PME technologiques, sous-traitants recherche marine et services du Technopôle Brest-Iroise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Plouzané : diagnostic adapté aux start-up deeptech, PME technologiques, sous-traitants recherche marine et services du Technopôle Brest-Iroise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plouzané : diagnostic adapté aux start-up deeptech, PME technologiques, sous-traitants recherche marine et services du Technopôle Brest-Iroise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouzané : formats adaptés au labo, au bureau ou au Technopôle. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const PLOUZANE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Plouzané  ?",
-      a: "L'Audit Flash IA à Plouzané démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Plouzané démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les start-up du Technopôle Brest-Iroise ?",

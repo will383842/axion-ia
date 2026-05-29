@@ -30,8 +30,8 @@ export const STIRING_WENDEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Stiring-Wendel : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Stiring-Wendel : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Stiring-Wendel : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Stiring-Wendel : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Stiring-Wendel : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const STIRING_WENDEL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Stiring-Wendel ?",
-      a: "Oui, commerçants et artisans stiringeois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, agents conversationnels bilingues FR/DE. Audit Flash 490 € HT.",
+      a: "Oui, commerçants et artisans stiringeois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, agents conversationnels bilingues FR/DE. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Stiring-Wendel ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Stiring-Wendel ?",

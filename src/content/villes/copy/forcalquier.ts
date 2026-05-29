@@ -30,8 +30,8 @@ export const FORCALQUIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Forcalquier : formats adaptés aux laboratoires cosmétiques, distilleries, exploitations lavande ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const FORCALQUIER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Forcalquier  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, PME cosmétique et commerçants forcalquiérans. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, PME cosmétique et commerçants forcalquiérans. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Forcalquier ?",

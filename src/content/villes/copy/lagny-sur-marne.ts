@@ -31,20 +31,20 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès 490 € HT, restitution opérationnelle sous 5 jours.",
-      en: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès 490 € HT, restitution opérationnelle sous 5 jours.",
+      fr: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
+      en: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès 590 € HT.",
-      en: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès 590 € HT.",
+      fr: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès {{price:intervention-4h|flat}}.",
+      en: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès 990 € HT.",
-      en: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès 990 € HT.",
+      fr: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Lagny-sur-Marne : agents conversationnels B2B, workflows ERP, traitement courriers et bons, intégration aux outils existants des PME industrielles et tertiaires locales. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès 990 € HT.",
-      en: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Lagny-sur-Marne : sessions dans votre bureau, atelier, commerce ou en visio, pour dirigeants TPE/PME de Marne et Gondoire. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
@@ -54,7 +54,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Lagny-sur-Marne ?",
-      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Lagny-sur-Marne ?",

@@ -30,8 +30,8 @@ export const CHEVREUSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chevreuse : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Chevreuse : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Chevreuse : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chevreuse : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chevreuse : formats adaptés commerce, bureau, gîte ou exploitation agricole. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const CHEVREUSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Chevreuse  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Chevreuse démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Chevreuse démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme vert à Chevreuse ?",

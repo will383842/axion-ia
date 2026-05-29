@@ -30,8 +30,8 @@ export const EYGUIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eyguières : ateliers pratiques pour exploitants agricoles, artisans et commerçants. Outils IA configurés métier réel, de l'exploitation au point de vente.",
@@ -53,7 +53,7 @@ export const EYGUIERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un exploitant agricole ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Parfaitement adapté aux TPE agricoles et artisans eyguièrois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux TPE agricoles et artisans eyguièrois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les producteurs d'huile d'olive AOC des Alpilles ?",

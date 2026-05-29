@@ -30,8 +30,8 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux TPE commerçants, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux TPE commerçants, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux TPE commerçants, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Brevin-les-Pins : diagnostic adapté aux TPE commerçants, PME campings et touristiques, artisans du bâtiment et professions libérales du littoral sud-estuaire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Brevin-les-Pins : formats adaptés aux campings, hôtels, commerces saisonniers et artisans du littoral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Brevin  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Saint-Brevin-les-Pins. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Saint-Brevin-les-Pins. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les campings et hébergements touristiques ?",
@@ -61,11 +61,11 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants saisonniers de Saint-Brevin ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, prévision affluence, automatisation comptabilité, fidélisation touristes.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, prévision affluence, automatisation comptabilité, fidélisation touristes.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Saint-Brevin ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Brevin-les-Pins. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Brevin-les-Pins. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

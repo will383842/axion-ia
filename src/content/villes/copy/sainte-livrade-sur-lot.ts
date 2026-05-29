@@ -30,8 +30,8 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Livrade-sur-Lot : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la vallée du Lot. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Sainte-Livrade-sur-Lot : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la vallée du Lot. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Sainte-Livrade-sur-Lot : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la vallée du Lot. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sainte-Livrade-sur-Lot : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la vallée du Lot. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Livrade-sur-Lot : formats adaptés à l'exploitation agricole, l'entreprise agroalimentaire, le commerce ou l'atelier. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sainte-Livrade-sur-Lot  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME livradaises : exploitations agricoles, entreprises agroalimentaires, commerçants et artisans. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME livradaises : exploitations agricoles, entreprises agroalimentaires, commerçants et artisans. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les agriculteurs de la vallée du Lot ?",
@@ -61,7 +61,7 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Sainte-Livrade-sur-Lot ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres, à partir de 990 € HT. Sessions dans votre exploitation, entreprise ou en visio. Approche terrain adaptée aux métiers agricoles et agroalimentaires du Lot-et-Garonne.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre exploitation, entreprise ou en visio. Approche terrain adaptée aux métiers agricoles et agroalimentaires du Lot-et-Garonne.",
     },
     {
       q: "Comment se déroule une mission IA à Sainte-Livrade-sur-Lot ?",

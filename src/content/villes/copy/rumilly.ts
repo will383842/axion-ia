@@ -30,8 +30,8 @@ export const RUMILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rumilly : formats adaptés à l'usine agroalimentaire, atelier industriel, exploitation agricole et commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const RUMILLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rumilly  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME agroalimentaires comme aux TPE artisans et commerçants de l'Albanais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME agroalimentaires comme aux TPE artisans et commerçants de l'Albanais.",
     },
     {
       q: "L'IA peut-elle aider la filière laitière et fromagère ?",

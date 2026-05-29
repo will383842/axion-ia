@@ -45,8 +45,8 @@ export const LE_MANS_COPY: VilleCopy = {
       en: "AI implementation in Le Mans: deployment into your existing tools (CRM, ERP, email) with contractually-costed ROI. Priority sectors: insurance, automotive, manufacturing, research. No lock-in, your teams stay in control.",
     },
     unAUn: {
-      fr: "Coaching IA individuel au Mans — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux manceaux : gestionnaire sinistres, responsable de production automobile, dirigeant de PME sarthoise ou manager Novaxis qui veut progresser seul, sur ses propres données et contraintes métier.",
-      en: "Individual AI coaching in Le Mans — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Le Mans premises: claims manager, automotive production lead, Sarthe SME executive or Novaxis manager who wants to progress alone, on their own data and business constraints.",
+      fr: "Coaching IA individuel au Mans — à partir de {{price:intervention-dirigeants|flat}}. Un consultant senior dédié à votre cas, dans vos locaux manceaux : gestionnaire sinistres, responsable de production automobile, dirigeant de PME sarthoise ou manager Novaxis qui veut progresser seul, sur ses propres données et contraintes métier.",
+      en: "Individual AI coaching in Le Mans — from {{price:intervention-dirigeants|compact}} excl. VAT. A senior consultant dedicated to your case, at your Le Mans premises: claims manager, automotive production lead, Sarthe SME executive or Novaxis manager who wants to progress alone, on their own data and business constraints.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI sarthoises — site vitrine premium pour assurance mutualiste, mobilité et automobile (Covéa/MMA, ACO, Renault ACI), espace client interactif Novaxis ou pôle iD4CAR, dashboard métier connecté à votre CRM/ERP ou systèmes assurance. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -724,7 +724,7 @@ export const LE_MANS_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA au Mans s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux manceaux — Novaxis, sites industriels ou PME sarthoises. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA au Mans s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux manceaux — Novaxis, sites industriels ou PME sarthoises. Frais de logement, repas et forfait trajet facturés en sus.",
         whyHere: [
           "Le Mans concentre des dirigeants de PME et ETI assurance (MMA/Covéa, courtiers régionaux) dont la confidentialité des données sinistres et contrats rend le format collectif inadapté — le coaching individuel est la seule option viable.",
           "Les responsables techniques et ingénieurs de la filière automobile (Renault ACI, fournisseurs iD4CAR) traitent des données de production propriétaires (bons de commande, PPAP, données qualité) trop sensibles pour un cadre collectif.",
@@ -763,7 +763,7 @@ export const LE_MANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Coaching individuel entrée pour dirigeants TPE, artisans, indépendants et petits cabinets sarthois — une journée, un consultant dédié.",
           },
@@ -803,7 +803,7 @@ export const LE_MANS_COPY: VilleCopy = {
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA au Mans ?",
-            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux manceaux. Un consultant senior vous accompagne sur vos propres cas métier (assurance, automobile, industrie, services) pendant une journée entière. À partir de 990 € HT.",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux manceaux. Un consultant senior vous accompagne sur vos propres cas métier (assurance, automobile, industrie, services) pendant une journée entière. À partir de {{price:intervention-dirigeants|flat}}.",
           },
           {
             q: "Pourquoi choisir le coaching individuel plutôt qu'une formation collective au Mans ?",
@@ -830,7 +830,7 @@ export const LE_MANS_COPY: VilleCopy = {
           "Confidentialité stricte : vos données assurance, automobile ou industrielles ne quittent pas vos locaux manceaux. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Le Mans is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Le Mans premises — Novaxis, industrial sites or Sarthe SMEs. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Le Mans is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Le Mans premises — Novaxis, industrial sites or Sarthe SMEs. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Le Mans hosts insurance SME and mid-cap executives (MMA/Covéa, regional brokers) whose claims and contract data confidentiality makes the collective format unsuitable — individual coaching is the only viable option.",
           "Technical managers and engineers in the automotive sector (Renault ACI, iD4CAR suppliers) handle proprietary production data (purchase orders, PPAP, quality data) too sensitive for a group setting.",
@@ -869,7 +869,7 @@ export const LE_MANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry individual coaching for Sarthe micro-business executives, artisans, freelancers and small practices — one day, one dedicated consultant.",
           },
@@ -909,7 +909,7 @@ export const LE_MANS_COPY: VilleCopy = {
         faq: [
           {
             q: "What is Axion-IA's individual AI coaching in Le Mans?",
-            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Le Mans premises. A senior consultant accompanies you on your own business cases (insurance, automotive, manufacturing, services) for a full day. From 990 € excl. VAT.",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Le Mans premises. A senior consultant accompanies you on your own business cases (insurance, automotive, manufacturing, services) for a full day. From {{price:intervention-dirigeants|compact}} excl. VAT.",
           },
           {
             q: "Why choose individual coaching over a group training in Le Mans?",

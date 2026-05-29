@@ -30,8 +30,8 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux TPE/PME commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux TPE/PME commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux TPE/PME commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Margny-lès-Compiègne : diagnostic adapté aux TPE/PME commerce, logistique, services et artisanat de l'agglomération compiégnoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Margny-lès-Compiègne : formats adaptés au commerce, à l'entrepôt logistique, au cabinet conseil ou au chantier BTP. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Margny-lès-Compiègne  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME margnoliennes : commerces, logisticiens, prestataires de services, artisans BTP. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME margnoliennes : commerces, logisticiens, prestataires de services, artisans BTP. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les commerces et la grande distribution locale ?",
@@ -65,7 +65,7 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Margny-lès-Compiègne ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Margny-lès-Compiègne, à partir de 990 € HT. Sessions dans votre commerce, entrepôt, bureau ou en visio. Approche terrain adaptée aux métiers de l'agglomération compiégnoise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Margny-lès-Compiègne, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre commerce, entrepôt, bureau ou en visio. Approche terrain adaptée aux métiers de l'agglomération compiégnoise.",
     },
   ],
 };

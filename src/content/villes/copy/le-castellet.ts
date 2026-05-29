@@ -30,8 +30,8 @@ export const LE_CASTELLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Castellet : ateliers pour viticulteurs Bandol, hôteliers, restaurateurs et prestataires événementiels. Outils IA configurés métier réel premium.",
@@ -53,7 +53,7 @@ export const LE_CASTELLET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole AOC Bandol ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles AOC Bandol, hôtels et restaurants castellans. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC Bandol, hôtels et restaurants castellans. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Bandol ?",

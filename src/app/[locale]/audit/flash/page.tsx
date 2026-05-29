@@ -7,10 +7,16 @@ import { AuditDetailPage } from "@/components/sections/AuditDetailPage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { buildProductMetadata, buildImageGraphJsonLd } from "@/lib/seo";
+import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Flash via template SSOT.
 
 const TIER = "audit-flash" as const;
+
+// SSOT prix — dérivé de pricing.ts (audit-flash : priceFlat 490, priceFlatOnsite 890).
+const FLASH_TIER = getTierById(AUDIT_TIERS, "audit-flash");
+const FLASH_DISTANCE = FLASH_TIER.priceFlat ?? 0;
+const FLASH_ONSITE = FLASH_TIER.priceFlatOnsite ?? 0;
 
 export const revalidate = 3600;
 
@@ -27,8 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/audit/flash",
     title: isFr
-      ? "Audit Flash IA · 490 € distance / 890 € sur site · Axion-IA"
-      : "Flash AI audit · €490 remote / €890 on site · Axion-IA",
+      ? `Audit Flash IA · ${formatAmount(FLASH_DISTANCE, "fr", { compact: true })} distance / ${formatAmount(FLASH_ONSITE, "fr", { compact: true })} sur site · Axion-IA`
+      : `Flash AI audit · ${formatAmount(FLASH_DISTANCE, "en", { compact: true })} remote / ${formatAmount(FLASH_ONSITE, "en", { compact: true })} on site · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/flash", en: "/audit/flash" },
   });
@@ -53,8 +59,8 @@ export default async function AuditFlashPage({ params }: Props) {
           ? "Équipe Axion-IA — audit Flash IA TPE et PME"
           : "Axion-IA team — Flash AI audit for small businesses and SMEs",
         alt: isFr
-          ? "Équipe Axion-IA en session d'audit Flash IA — cabinet IA opérationnel français accompagnant TPE et PME en 1 demi-journée, à distance 490 € ou sur site 890 €, cartographie IA, ROI rapide."
-          : "Axion-IA team in Flash AI audit session — French operational AI consultancy supporting small businesses and SMEs in half a day, remote €490 or on site €890, AI mapping, quick ROI.",
+          ? `Équipe Axion-IA en session d'audit Flash IA — cabinet IA opérationnel français accompagnant TPE et PME en 1 demi-journée, à distance ${formatAmount(FLASH_DISTANCE, "fr", { compact: true })} ou sur site ${formatAmount(FLASH_ONSITE, "fr", { compact: true })}, cartographie IA, ROI rapide.`
+          : `Axion-IA team in Flash AI audit session — French operational AI consultancy supporting small businesses and SMEs in half a day, remote ${formatAmount(FLASH_DISTANCE, "en", { compact: true })} or on site ${formatAmount(FLASH_ONSITE, "en", { compact: true })}, AI mapping, quick ROI.`,
         width: 1961,
         height: 802,
         encodingFormat: "image/avif",

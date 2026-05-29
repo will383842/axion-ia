@@ -30,8 +30,8 @@ export const BEAUGENCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaugency : formats adaptés au commerce de centre-ville, domaine viticole ou PME agro-alimentaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BEAUGENCY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE commerçants et artisans de Beaugency ?",
-      a: "Oui, nous accompagnons les TPE commerçants du centre historique et artisans de Beaugency sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, classification commandes, gestion planning chantier. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE commerçants du centre historique et artisans de Beaugency sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, classification commandes, gestion planning chantier. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les PME viticoles du Val de Loire ?",
@@ -61,7 +61,7 @@ export const BEAUGENCY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hébergeurs et restaurateurs touristiques ?",
-      a: "Pour les hébergeurs et restaurateurs de Beaugency (tourisme patrimonial Val de Loire UNESCO), audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification avis clients, tarification dynamique.",
+      a: "Pour les hébergeurs et restaurateurs de Beaugency (tourisme patrimonial Val de Loire UNESCO), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification avis clients, tarification dynamique.",
     },
     {
       q: "Comment se déroule une mission sur site à Beaugency ?",

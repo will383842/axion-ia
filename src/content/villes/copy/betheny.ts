@@ -30,8 +30,8 @@ export const BETHENY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bétheny : formats adaptés à l'exploitation viticole, au négoce Champagne, à la TPE artisanale ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BETHENY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bétheny  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bétheny et du nord rémois, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bétheny et du nord rémois, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les viticulteurs et maisons de Champagne ?",
@@ -61,7 +61,7 @@ export const BETHENY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Bétheny ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bétheny, à partir de 990 € HT. Sessions dans vos locaux, exploitation viticole ou en visio. Approche terrain adaptée au vignoble champenois.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bétheny, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux, exploitation viticole ou en visio. Approche terrain adaptée au vignoble champenois.",
     },
     {
       q: "Comment se déroule une mission IA à Bétheny ?",

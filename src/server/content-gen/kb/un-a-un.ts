@@ -74,7 +74,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Tarifs ────────────────────────────────────────────────────────────────
   {
     id: "ua-007",
-    text: "Programme coaching 1-to-1 Axion-IA 3 mois (12 séances de 75 min) : 3 500 à 5 000 € HT — inclut diagnostic initial, supports personnalisés, accès ressources premium et synthèse de fin de parcours.",
+    text: "Programme coaching 1-to-1 Axion-IA 3 mois (12 séances de 75 min) — sur devis selon le périmètre, inclut diagnostic initial, supports personnalisés, accès ressources premium et synthèse de fin de parcours.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
@@ -83,7 +83,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   {
     id: "ua-008",
-    text: "Programme coaching 1-to-1 Axion-IA 6 mois (24 séances de 75 min) : 6 000 à 9 000 € HT — format recommandé pour une transformation profonde et l'accompagnement d'un projet IA stratégique de l'idée au déploiement.",
+    text: "Programme coaching 1-to-1 Axion-IA 6 mois (24 séances de 75 min) — sur devis selon le périmètre, format recommandé pour une transformation profonde et l'accompagnement d'un projet IA stratégique de l'idée au déploiement.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
@@ -112,7 +112,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Contexte marché du coaching IA ───────────────────────────────────────
   {
     id: "ua-011",
-    text: "Le marché du coaching exécutif en France représente 890 millions d'euros en 2024 (ICF France), avec une part croissante de demandes liées à la transformation IA — estimée à 18 % des nouvelles missions en 2025.",
+    text: "Le marché du coaching exécutif en France représente 890 millions d'euros en 2024 (ICF France), avec une part croissante de demandes liées à la transformation IA — estimée à 18 % des nouvelles missions en 2025." /* price-exempt: stat marché tierce */,
     source: "ICF France — Rapport d'activité coaching exécutif 2024",
     sourceUrl: "https://icf-france.fr",
     verifiedAt: "2026-05-01",

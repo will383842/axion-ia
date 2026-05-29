@@ -57,7 +57,7 @@ export const BETHUNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans béthunois ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants de la Grand-Place, professions libérales. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants de la Grand-Place, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles de Béthune ?",

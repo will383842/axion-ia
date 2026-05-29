@@ -30,8 +30,8 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaufort-en-Anjou : formations pour équipes agricoles, horticoles et commerciales. Ateliers pratiques adaptés au contexte Beaufortais.",
@@ -53,7 +53,7 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Beaufort-en-Anjou  ?",
-      a: "L'Audit Flash IA à Beaufort-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Beaufort-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les horticulteurs du Beaufortais ?",

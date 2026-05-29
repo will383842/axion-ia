@@ -18,6 +18,7 @@ import {
   buildImageGraphJsonLd,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { CODAGE_TIERS, getTierById, formatAmount } from "@/content/pricing";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
@@ -146,8 +147,7 @@ export default async function CodageDeveloppementHub({ params }: Props) {
         {
           id: "q-delai-cout",
           question: "Combien de temps et quel budget prévoir ?",
-          answer:
-            "Un chatbot RAG greffé sur une plateforme existante : 3 semaines, à partir de 2 000 €. Une plateforme sur mesure complète avec IA intégrée : 6 à 12 semaines, devis sur mesure selon périmètre. Toujours en forfait fixe — pas de régie, pas de dépassement.",
+          answer: `Un chatbot RAG greffé sur une plateforme existante : 3 semaines, à partir de ${formatAmount(getTierById(CODAGE_TIERS, "codage-web").priceMin!, "fr", { compact: true })}. Une plateforme sur mesure complète avec IA intégrée : 6 à 12 semaines, devis sur mesure selon périmètre. Toujours en forfait fixe — pas de régie, pas de dépassement.`,
         },
         {
           id: "q-proprio",
@@ -178,8 +178,7 @@ export default async function CodageDeveloppementHub({ params }: Props) {
         {
           id: "q-time-cost",
           question: "How long and what budget should I plan for?",
-          answer:
-            "A RAG chatbot grafted onto an existing platform: 3 weeks, from €2,000. A complete custom platform with integrated AI: 6 to 12 weeks, custom quote based on scope. Always fixed fee — no time-and-materials, no overruns.",
+          answer: `A RAG chatbot grafted onto an existing platform: 3 weeks, from ${formatAmount(getTierById(CODAGE_TIERS, "codage-web").priceMin!, "en", { compact: true })}. A complete custom platform with integrated AI: 6 to 12 weeks, custom quote based on scope. Always fixed fee — no time-and-materials, no overruns.`,
         },
         {
           id: "q-owner",

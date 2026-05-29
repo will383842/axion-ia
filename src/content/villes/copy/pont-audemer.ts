@@ -30,8 +30,8 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Audemer : formats adaptés à l'atelier, la boutique centre-ville, l'office tourisme, le cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans pont-audemériens ?",
-      a: "Pour les TPE artisans à Pont-Audemer, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, gestion commandes, agents IA prise de RDV.",
+      a: "Pour les TPE artisans à Pont-Audemer, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, gestion commandes, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Le Havre ?",

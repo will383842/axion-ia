@@ -8,7 +8,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
   pitchFr:
     "Rosny-sous-Bois (93110, Seine-Saint-Denis), 47 180 habitants sur 5,91 km², est une commune dense de l'Est parisien membre de l'Établissement public territorial Grand Paris-Grand Est et de la Métropole du Grand Paris. Connue pour Westfield Rosny 2 (premier centre commercial de l'Est parisien) et le centre commercial Domus, elle accueille aussi le siège de l'IGN et un centre technique de la gendarmerie. Axion-IA, cabinet d'architectes IA seniors, accompagne ici en priorité les TPE du commerce de détail, du BTP et des services, puis les PME tertiaires implantées autour du pôle RER E / métro 11.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sous-Bois (93110, Métropole du Grand Paris). Nous accompagnons en priorité les TPE du commerce de détail (galeries Westfield Rosny 2, Domus), du BTP et des services, puis les PME tertiaires et numériques implantées autour du pôle multimodal RER E / métro 11 / A86. Audit Flash dès 490 € HT, intervention sur site dès 590 € HT. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sous-Bois (93110, Métropole du Grand Paris). Nous accompagnons en priorité les TPE du commerce de détail (galeries Westfield Rosny 2, Domus), du BTP et des services, puis les PME tertiaires et numériques implantées autour du pôle multimodal RER E / métro 11 / A86. Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
   seoHook: "commerce détail Westfield & PME tertiaires Est parisien",
   ecosystemFr:
     "Rosny-sous-Bois concentre 14 559 emplois (2017) sur 5,91 km², avec une densité de 7 983 habitants/km². L'économie locale est dominée par le commerce de détail (Westfield Rosny 2, premier centre commercial de l'Est parisien — Carrefour, enseignes mode), l'ameublement (centre commercial Domus, Leroy Merlin), la construction et la programmation informatique. La ville héberge le siège de l'IGN (Institut national de l'information géographique et forestière) et un centre technique de la gendarmerie nationale, qui structurent un écosystème de PME tertiaires et numériques. Communes voisines : Bondy, Fontenay-sous-Bois, Montreuil, Neuilly-Plaisance, Noisy-le-Sec, Villemomble.",
@@ -24,8 +24,8 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosny-sous-Bois : diagnostic pour TPE commerce de détail des galeries Westfield Rosny 2 et Domus, PME BTP, sociétés de services numériques et fournisseurs de l'IGN. Cas d'usage typiques : prévision stocks, chatbot SAV, classification documents, optimisation tournées. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Rosny-sous-Bois : diagnostic pour TPE commerce de détail des galeries Westfield Rosny 2 et Domus, PME BTP, sociétés de services numériques et fournisseurs de l'IGN. Cas d'usage typiques : prévision stocks, chatbot SAV, classification documents, optimisation tournées. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Rosny-sous-Bois : diagnostic pour TPE commerce de détail des galeries Westfield Rosny 2 et Domus, PME BTP, sociétés de services numériques et fournisseurs de l'IGN. Cas d'usage typiques : prévision stocks, chatbot SAV, classification documents, optimisation tournées. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Rosny-sous-Bois : diagnostic pour TPE commerce de détail des galeries Westfield Rosny 2 et Domus, PME BTP, sociétés de services numériques et fournisseurs de l'IGN. Cas d'usage typiques : prévision stocks, chatbot SAV, classification documents, optimisation tournées. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rosny-sous-Bois : ateliers pour TPE commerçantes (Westfield Rosny 2, Domus), PME BTP et services informatiques. Équipes autonomes sur outils IA métier. Déplacement depuis Paris via RER E (25 min Châtelet) ou métro ligne 11 (terminus Rosny-Bois-Perrier).",
@@ -47,7 +47,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Rosny-sous-Bois ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site débutent à 590 € HT. L'implémentation et le coaching 1-to-1 sont sur devis. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site débutent à {{price:intervention-4h|flat}}. L'implémentation et le coaching 1-to-1 sont sur devis. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour une mission à Rosny-sous-Bois ?",
@@ -70,7 +70,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
   pitchEn:
     "Rosny-sous-Bois (93110, Seine-Saint-Denis), 47 180 habitants sur 5,91 km², est une commune dense de l'Est parisien membre de l'Établissement public territorial Grand Paris-Grand Est et de la Métropole du Grand Paris. Connue pour Westfield Rosny 2 (premier centre commercial de l'Est parisien) et le centre commercial Domus, elle accueille aussi le siège de l'IGN et un centre technique de la gendarmerie. Axion-IA, cabinet d'architectes IA seniors, accompagne ici en priorité les TPE du commerce de détail, du BTP et des services, puis les PME tertiaires implantées autour du pôle RER E / métro 11.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sous-Bois (93110, Métropole du Grand Paris). Nous accompagnons en priorité les TPE du commerce de détail (galeries Westfield Rosny 2, Domus), du BTP et des services, puis les PME tertiaires et numériques implantées autour du pôle multimodal RER E / métro 11 / A86. Audit Flash dès 490 € HT, intervention sur site dès 590 € HT. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sous-Bois (93110, Métropole du Grand Paris). Nous accompagnons en priorité les TPE du commerce de détail (galeries Westfield Rosny 2, Domus), du BTP et des services, puis les PME tertiaires et numériques implantées autour du pôle multimodal RER E / métro 11 / A86. Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Code custom sur mesure, pas de no-code, conformité RGPD et AI Act garantie.",
   ecosystemEn:
     "Rosny-sous-Bois concentre 14 559 emplois (2017) sur 5,91 km², avec une densité de 7 983 habitants/km². L'économie locale est dominée par le commerce de détail (Westfield Rosny 2, premier centre commercial de l'Est parisien — Carrefour, enseignes mode), l'ameublement (centre commercial Domus, Leroy Merlin), la construction et la programmation informatique. La ville héberge le siège de l'IGN (Institut national de l'information géographique et forestière) et un centre technique de la gendarmerie nationale, qui structurent un écosystème de PME tertiaires et numériques. Communes voisines : Bondy, Fontenay-sous-Bois, Montreuil, Neuilly-Plaisance, Noisy-le-Sec, Villemomble.",
   distancesEn:

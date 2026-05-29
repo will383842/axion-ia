@@ -30,8 +30,8 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubergenville : formats adaptés boutique, entrepôt logistique, bureau PME, cabinet, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Mantes ou Paris ?",

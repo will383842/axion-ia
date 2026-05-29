@@ -30,8 +30,8 @@ export const PULNOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pulnoy : formats adaptés au commerce, à l'artisanat, au cabinet libéral ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const PULNOY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Pulnoy  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Pulnoy et du Grand Nancy, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet ou activité artisanale.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pulnoy et du Grand Nancy, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet ou activité artisanale.",
     },
     {
       q: "Accompagnez-vous les professions libérales du Grand Nancy ?",
@@ -65,7 +65,7 @@ export const PULNOY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Pulnoy ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Pulnoy, à partir de 990 € HT. Sessions dans vos locaux, au cabinet ou en visio. Approche terrain adaptée au tissu économique de la métropole nancéienne.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Pulnoy, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux, au cabinet ou en visio. Approche terrain adaptée au tissu économique de la métropole nancéienne.",
     },
   ],
 };

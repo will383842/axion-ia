@@ -30,8 +30,8 @@ export const CHAURAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chauray : diagnostic adapté aux TPE artisans des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Chauray : diagnostic adapté aux TPE artisans des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Chauray : diagnostic adapté aux TPE artisans des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chauray : diagnostic adapté aux TPE artisans des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chauray : formats adaptés au bureau, entrepôt logistique, commerce ou atelier. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const CHAURAY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants des zones d'activités ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants des zones d'activités de Chauray (Mendès-France, La Coupe) sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants des zones d'activités de Chauray (Mendès-France, La Coupe) sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME tertiaires et logistiques ?",

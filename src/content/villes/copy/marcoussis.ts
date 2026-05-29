@@ -30,8 +30,8 @@ export const MARCOUSSIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marcoussis : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,15 +53,15 @@ export const MARCOUSSIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Marcoussis ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Marcoussis sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Marcoussis sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales de Marcoussis ?",
-      a: "Pour les professions libérales à Marcoussis, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
+      a: "Pour les professions libérales à Marcoussis, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
       q: "Travaillez-vous avec les PME du plateau de Courtabœuf ?",
-      a: "Oui, nous accompagnons les PME et bureaux d'études du plateau de Courtabœuf (Les Ulis) à 10 min de Marcoussis : automatisation documentaire, agents conversationnels internes, veille sectorielle augmentée, CRM IA. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME et bureaux d'études du plateau de Courtabœuf (Les Ulis) à 10 min de Marcoussis : automatisation documentaire, agents conversationnels internes, veille sectorielle augmentée, CRM IA. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission à Marcoussis depuis Paris ?",

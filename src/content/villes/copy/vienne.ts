@@ -30,8 +30,8 @@ export const VIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vienne : diagnostic des tâches automatisables pour tourisme, hôtellerie-restauration, commerce de centre-ville et logistique rhodanienne. Audit Flash dès 490 € HT, livrable priorisé.",
-      en: "Audit IA à Vienne : diagnostic des tâches automatisables pour tourisme, hôtellerie-restauration, commerce de centre-ville et logistique rhodanienne. Audit Flash dès 490 € HT, livrable priorisé.",
+      fr: "Audit IA à Vienne : diagnostic des tâches automatisables pour tourisme, hôtellerie-restauration, commerce de centre-ville et logistique rhodanienne. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Vienne : diagnostic des tâches automatisables pour tourisme, hôtellerie-restauration, commerce de centre-ville et logistique rhodanienne. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vienne : ateliers pratiques pour accueil touristique, restauration, commerces et administration, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vienne ?",
-      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME viennoises : tourisme, hôtellerie-restauration, commerce et logistique.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME viennoises : tourisme, hôtellerie-restauration, commerce et logistique.",
     },
     {
       q: "Comment l'IA aide-t-elle les acteurs du tourisme à Vienne ?",

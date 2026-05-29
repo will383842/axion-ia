@@ -30,8 +30,8 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Affrique : diagnostic adapté aux TPE artisans, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Affrique : diagnostic adapté aux TPE artisans, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Affrique : diagnostic adapté aux TPE artisans, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Affrique : diagnostic adapté aux TPE artisans, PME agroalimentaires filière Roquefort, commerçants et professions libérales du sud Aveyron. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Affrique : formats adaptés à l'atelier laitier, à l'exploitation agricole, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Affrique  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME agroalimentaires filière Roquefort, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME agroalimentaires filière Roquefort, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert Grands Causses ?",
@@ -65,7 +65,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Saint-Affrique ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Affrique. Format flexible : dans vos locaux, en visio ou à Millau. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Affrique. Format flexible : dans vos locaux, en visio ou à Millau. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const MAZAMET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash 490 € HT.",
-      en: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash 490 € HT.",
+      fr: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mazamet : formats adaptés à l'atelier textile, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MAZAMET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Mazamet ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Mazamet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Mazamet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "L'IA peut-elle aider les PME textile à Mazamet ?",
@@ -65,7 +65,7 @@ export const MAZAMET_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Mazamet ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Mazamet. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Mazamet. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

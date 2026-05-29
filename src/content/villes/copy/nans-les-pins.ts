@@ -30,8 +30,8 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nans-les-Pins : ateliers pour équipes TPE/PME, hôteliers, restaurateurs, gestionnaires de golf et artisans. Outils IA configurés métier réel, dans vos locaux.",
@@ -53,7 +53,7 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Nans-les-Pins  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME tourisme, hôtellerie, restauration et commerces nansais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME tourisme, hôtellerie, restauration et commerces nansais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les hôtels, golfs et restaurants ?",

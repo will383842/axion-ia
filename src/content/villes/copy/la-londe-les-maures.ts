@@ -28,8 +28,8 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit Flash 490 € HT.",
-      en: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit Flash 490 € HT.",
+      fr: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Londe-les-Maures : formations pratiques adaptées viticulture, œnotourisme, hôtellerie, restauration et nautisme. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Londe-les-Maures  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME hôtellerie varoises. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME hôtellerie varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et l'œnotourisme à La Londe-les-Maures ?",
@@ -59,7 +59,7 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à La Londe-les-Maures ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, vignerons et hôteliers du littoral des Maures. Sur site ou visio, dès 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, vignerons et hôteliers du littoral des Maures. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à La Londe-les-Maures ?",

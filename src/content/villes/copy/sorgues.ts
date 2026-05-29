@@ -30,8 +30,8 @@ export const SORGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sorgues : ateliers pour équipes TPE/PME industrielles, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const SORGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sorgues  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces sorguais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces sorguais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et logistiques ?",

@@ -30,8 +30,8 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neufchâteau : formats adaptés à l'usine de mobilier, la menuiserie, l'atelier artisanal, le commerce ou le bureau. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Neufchâteau  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME néocastriennes : fabricants de mobilier, menuisiers, agroalimentaire, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME néocastriennes : fabricants de mobilier, menuisiers, agroalimentaire, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les fabricants de mobilier et d'ameublement ?",
@@ -65,7 +65,7 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Neufchâteau ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Neufchâteau, à partir de 990 € HT. Sessions dans votre usine, menuiserie, atelier, commerce ou en visio. Approche terrain adaptée aux métiers du mobilier, du bois et de l'artisanat vosgien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Neufchâteau, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, menuiserie, atelier, commerce ou en visio. Approche terrain adaptée aux métiers du mobilier, du bois et de l'artisanat vosgien.",
     },
   ],
 };

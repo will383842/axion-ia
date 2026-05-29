@@ -10,9 +10,9 @@ export const PUTEAUX_COPY: VilleCopy = {
   pitchEn:
     "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. William se déplace sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
   directAnswerFr:
-    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des TPE et PME — cabinets de conseil, prestataires de services, agences, commerces, restaurants. William se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit Flash de 4 heures dès 490 € HT pour cartographier vos processus, une Intervention Essentielle dès 590 € HT pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès 990 € HT. Code custom, RGPD et AI Act.",
+    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des TPE et PME — cabinets de conseil, prestataires de services, agences, commerces, restaurants. William se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit Flash de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom, RGPD et AI Act.",
   directAnswerEn:
-    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des TPE et PME — cabinets de conseil, prestataires de services, agences, commerces, restaurants. William se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit Flash de 4 heures dès 490 € HT pour cartographier vos processus, une Intervention Essentielle dès 590 € HT pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès 990 € HT. Code custom, RGPD et AI Act.",
+    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des TPE et PME — cabinets de conseil, prestataires de services, agences, commerces, restaurants. William se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit Flash de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom, RGPD et AI Act.",
   seoHook: "TPE & PME La Défense · IA opérationnelle sur site",
   ecosystemFr:
     "Puteaux héberge une partie majeure de La Défense (premier quartier d'affaires européen, partagé avec Courbevoie, Nanterre et La Garenne-Colombes) : Grande Arche, CNIT, Les Quatre Temps. Autour des grandes tours gravite un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, agences digitales, commerces, restaurants, artisans. Les communes voisines (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine, Bois de Boulogne) prolongent ce bassin d'affaires francilien densément desservi par le RER A, la ligne 1, le T2 et les Transilien L et U.",
@@ -32,26 +32,26 @@ export const PUTEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Puteaux dès 490 € HT — William se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
-      en: "Audit Flash IA à Puteaux dès 490 € HT — William se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
+      fr: "Audit Flash IA à Puteaux dès {{price:audit-flash|flat}} — William se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
+      en: "Audit Flash IA à Puteaux dès {{price:audit-flash|flat}} — William se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Puteaux dès 590 € HT — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
-      en: "Intervention Essentielle à Puteaux dès 590 € HT — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
+      fr: "Intervention Essentielle à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
+      en: "Intervention Essentielle à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
     },
     implementation: {
-      fr: "Implémentation IA sur site à Puteaux dès 990 € HT — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
-      en: "Implémentation IA sur site à Puteaux dès 990 € HT — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
+      fr: "Implémentation IA sur site à Puteaux dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
+      en: "Implémentation IA sur site à Puteaux dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 dirigeant à Puteaux dès 990 € HT — accompagnement stratégique IA pour patrons de TPE et PME de La Défense.",
-      en: "Sessions 1-to-1 dirigeant à Puteaux dès 990 € HT — accompagnement stratégique IA pour patrons de TPE et PME de La Défense.",
+      fr: "Sessions 1-to-1 dirigeant à Puteaux dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME de La Défense.",
+      en: "Sessions 1-to-1 dirigeant à Puteaux dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME de La Défense.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Puteaux ?",
-      a: "À Puteaux, l'Audit Flash débute à 490 € HT (4 heures sur site), l'Intervention Essentielle à 590 € HT et l'accompagnement 1-to-1 dirigeant à 990 € HT. Tarifs publics consultables sur axion-ia.com.",
+      a: "À Puteaux, l'Audit Flash débute à {{price:audit-flash|flat}} (4 heures sur site), la Formation 4 h à {{price:intervention-4h|flat}} et l'accompagnement 1-to-1 dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "William se déplace-t-il dans les entreprises de Puteaux et de La Défense ?",

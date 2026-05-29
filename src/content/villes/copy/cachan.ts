@@ -11,9 +11,9 @@ export const CACHAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Cachan (94230, Val-de-Marne, 31 103 habitants), commune de la proche banlieue sud de Paris située à 7,4 km au sud de Notre-Dame, dans le déploiement d'automatisations IA sur mesure en code custom. Desservie par la gare Arcueil-Cachan du RER B et bientôt par la ligne 15 du Grand Paris Express, la ville accueille un tissu de services lié à la présence de l'École normale supérieure Paris-Saclay et de l'ESTP, avec un mix de commerces de proximité, sociétés d'ingénierie et professions libérales.",
   directAnswerFr:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. William se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit Flash à 490 € HT, une Intervention Essentielle à 590 € HT ou un accompagnement un-à-un à 990 € HT. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. William se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit Flash à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   directAnswerEn:
-    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. William se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit Flash à 490 € HT, une Intervention Essentielle à 590 € HT ou un accompagnement un-à-un à 990 € HT. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
+    "À Cachan (Val-de-Marne, 94230), Axion-IA conçoit et déploie des automatisations IA en code custom pour les TPE et PME locales — cabinets d'ingénierie, professions libérales, commerces et structures liées à l'ENS Paris-Saclay et l'ESTP. William se déplace sur site depuis Paris (15 minutes via le RER B Arcueil-Cachan) pour un Audit Flash à {{price:audit-flash|flat}}, une Formation 4 h à {{price:intervention-4h|flat}} ou un accompagnement un-à-un à {{price:intervention-dirigeants|flat}}. Nous ne faisons pas de no-code : chaque solution est développée sur mesure, RGPD by design.",
   seoHook: "ingénierie & services universitaires",
   ecosystemFr:
     "Cachan, 31 103 habitants en 2023 dans l'arrondissement de L'Haÿ-les-Roses, s'appuie sur un tissu économique tertiaire structuré autour de l'École normale supérieure Paris-Saclay, de l'ESTP et de plusieurs instituts d'ingénierie. Le maillage de TPE et PME locales (services, ingénierie, professions libérales, commerces de proximité, restauration) bénéficie de la proximité immédiate d'Arcueil, Bagneux, Villejuif, Bourg-la-Reine et L'Haÿ-les-Roses, et de l'accès direct au cœur de Paris via le RER B.",
@@ -33,26 +33,26 @@ export const CACHAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Cachan dès 490 € HT — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
-      en: "Audit Flash IA à Cachan dès 490 € HT — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
+      fr: "Audit Flash IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
+      en: "Audit Flash IA à Cachan dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME et identifier 3 à 5 automatisations prioritaires.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Cachan dès 590 € HT — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
-      en: "Intervention Essentielle à Cachan dès 590 € HT — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
+      fr: "Intervention Essentielle à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
+      en: "Intervention Essentielle à Cachan dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Paris via le RER B pour automatiser un workflow concret (devis, relances, reporting).",
     },
     implementation: {
-      fr: "Implémentation IA en code custom à Cachan dès 990 € HT — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
-      en: "Implémentation IA en code custom à Cachan dès 990 € HT — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
+      fr: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
+      en: "Implémentation IA en code custom à Cachan dès {{price:impl-poc|entry}} — développement sur mesure, hébergement Europe et conformité RGPD pour les TPE/PME du Val-de-Marne.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un dirigeant à Cachan dès 990 € HT — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
-      en: "Accompagnement un-à-un dirigeant à Cachan dès 990 € HT — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
+      fr: "Accompagnement un-à-un dirigeant à Cachan dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
+      en: "Accompagnement un-à-un dirigeant à Cachan dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre TPE ou PME.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Cachan ?",
-      a: "Nos interventions à Cachan débutent à 590 € HT pour une Intervention Essentielle sur site. L'Audit Flash 4 heures démarre à 490 € HT et l'accompagnement un-à-un dirigeant à 990 € HT. Tous nos tarifs sont publics et fermes.",
+      a: "Nos interventions à Cachan débutent à {{price:intervention-4h|flat}} pour une Intervention Essentielle sur site. L'Audit Flash 4 heures démarre à {{price:audit-flash|flat}} et l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et fermes.",
     },
     {
       q: "Combien de temps faut-il pour intervenir à Cachan ?",

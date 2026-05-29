@@ -10,9 +10,9 @@ export const BREBIERES_COPY: VilleCopy = {
     "Brebieres (62), commune du Pas-de-Calais situee entre Douai et Arras, reunit pres de 5 280 habitants. Son economie beneficie de la double proximite Douai-Arras : PME tertiaires, TPE de services, commerces, artisanat BTP et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "axe Douai-Arras, tertiaire & logistique",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Brebieres (62). Nous accompagnons les TPE, PME et ETI de l'axe Douai-Arras : entreprises tertiaires, commercants, artisans, logisticiens et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Brebieres est situee entre Douai (8 km) et Arras (15 km), sur l'axe A1/A26. Tissu economique mixte : PME tertiaires, TPE de services, commerces de proximite, artisanat BTP et activites logistiques liees a la desserte autoroutiere.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BREBIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, TPE de services et artisans de l'axe Douai-Arras. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, TPE de services et artisans de l'axe Douai-Arras. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, TPE de services et artisans de l'axe Douai-Arras. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Brebieres : diagnostic adapte aux PME tertiaires, TPE de services et artisans de l'axe Douai-Arras. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Brebieres : formations adaptees aux bureaux tertiaires, commerces, ateliers artisanaux et entrepots logistiques. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const BREBIERES_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME tertiaires de Brebieres ?",
-      a: "Pour les PME tertiaires, nous proposons : automatisation administrative, IA redaction documents, agents conversationnels B2B, CRM intelligent. Audit Flash 490 EUR HT.",
+      a: "Pour les PME tertiaires, nous proposons : automatisation administrative, IA redaction documents, agents conversationnels B2B, CRM intelligent. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Brebieres ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Brebieres ?",
-      a: "Oui, nous accompagnons les artisans BTP : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les artisans BTP : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Brebieres ?",

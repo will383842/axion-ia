@@ -30,8 +30,8 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, TPE artisans, maraîchers et commerçants du bassin angevin. Audit Flash 490 € HT pour les petites structures.",
-      en: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, TPE artisans, maraîchers et commerçants du bassin angevin. Audit Flash 490 € HT pour les petites structures.",
+      fr: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, TPE artisans, maraîchers et commerçants du bassin angevin. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
+      en: "Audit IA à Loire-Authion : diagnostic adapté aux PME horticoles, pépinières, TPE artisans, maraîchers et commerçants du bassin angevin. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loire-Authion : formations pépiniéristes et horticulteurs, ateliers artisans, sessions maraîchers et commerçants. Autonomie IA de vos équipes terrain et gestion.",
@@ -57,7 +57,7 @@ export const LOIRE_AUTHION_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME horticole ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, adapté aux TPE. Pour les PME horticoles et pépinières, l'Audit Stratégique complet offre un diagnostic poussé : automatisation serre, prédiction, traçabilité, optimisation supply chain. ROI chiffré.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE. Pour les PME horticoles et pépinières, l'Audit Stratégique complet offre un diagnostic poussé : automatisation serre, prédiction, traçabilité, optimisation supply chain. ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les maraîchers et arboriculteurs de Loire-Authion ?",

@@ -30,8 +30,8 @@ export const CHENNEVIERES_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chennevières-sur-Marne : formats adaptés au cabinet, commerce ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const CHENNEVIERES_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Chennevières-sur-Marne ?",
-      a: "L'Audit Flash IA à Chennevières-sur-Marne démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Chennevières-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Chennevières-sur-Marne ?",

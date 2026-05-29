@@ -30,8 +30,8 @@ export const MUTZIG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mutzig : formats adaptés à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant, au bureau de services. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const MUTZIG_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Mutzig ?",
-      a: "Oui, commerçants, artisans et restaurateurs mutzigeois : gestion stocks, prise de réservations, relation client, automatisation comptabilité, présence en ligne. Audit Flash 490 € HT.",
+      a: "Oui, commerçants, artisans et restaurateurs mutzigeois : gestion stocks, prise de réservations, relation client, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Mutzig ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Mutzig ?",

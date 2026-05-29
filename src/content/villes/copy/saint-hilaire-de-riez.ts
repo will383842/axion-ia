@@ -30,8 +30,8 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Hilaire-de-Riez : formats adaptés aux campings, hôtels-restaurants, commerces saisonniers et activités touristiques. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les campings de Saint-Hilaire-de-Riez ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas campings : pricing dynamique, réservation en ligne IA, gestion saisonnalité, agents multilingues, prédiction affluence.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas campings : pricing dynamique, réservation en ligne IA, gestion saisonnalité, agents multilingues, prédiction affluence.",
     },
     {
       q: "Accompagnez-vous les commerces saisonniers du littoral ?",
@@ -61,7 +61,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Hilaire-de-Riez  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Hilaire-de-Riez ?",

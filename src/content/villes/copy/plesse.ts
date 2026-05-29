@@ -30,8 +30,8 @@ export const PLESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit Flash 490 € HT accessible aux petites structures rurales.",
-      en: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit Flash 490 € HT accessible aux petites structures rurales.",
+      fr: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} accessible aux petites structures rurales.",
+      en: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} accessible aux petites structures rurales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plessé : formations et ateliers pratiques adaptés aux exploitants agricoles, artisans BTP et commerçants. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const PLESSE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation agricole à Plessé ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, adapté aux exploitations agricoles et TPE rurales. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, automatisation administrative, prédiction rendements.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et TPE rurales. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, automatisation administrative, prédiction rendements.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Plessé ?",

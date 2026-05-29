@@ -30,8 +30,8 @@ export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hauts de Bienne : diagnostic adapté aux TPE lunettiers, artisans bois, commerces de station, hébergeurs touristiques et professions libérales du Haut-Jura. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Hauts de Bienne : diagnostic adapté aux TPE lunettiers, artisans bois, commerces de station, hébergeurs touristiques et professions libérales du Haut-Jura. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Hauts de Bienne : diagnostic adapté aux TPE lunettiers, artisans bois, commerces de station, hébergeurs touristiques et professions libérales du Haut-Jura. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Hauts de Bienne : diagnostic adapté aux TPE lunettiers, artisans bois, commerces de station, hébergeurs touristiques et professions libérales du Haut-Jura. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hauts de Bienne : formats adaptés à l'atelier lunettier, au commerce de station, à l'hébergement touristique ou au cabinet. Vos équipes maîtrisent les outils déployés.",
@@ -53,11 +53,11 @@ export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les lunettiers du Haut-Jura ?",
-      a: "Oui, nous accompagnons les TPE et PME de la lunetterie jurassienne sur des cas IA concrets : contrôle qualité vision, automatisation production, gestion stocks montures, traçabilité, maintenance prédictive machines. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME de la lunetterie jurassienne sur des cas IA concrets : contrôle qualité vision, automatisation production, gestion stocks montures, traçabilité, maintenance prédictive machines. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Hauts de Bienne  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Haut-Jura, il identifie les cas d'usage IA à fort ROI pour votre activité (lunetterie, tourisme, commerce, artisanat). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Haut-Jura, il identifie les cas d'usage IA à fort ROI pour votre activité (lunetterie, tourisme, commerce, artisanat). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les hébergeurs et commerces touristiques ?",

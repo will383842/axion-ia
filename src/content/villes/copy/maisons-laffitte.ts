@@ -11,9 +11,9 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Maisons-Laffitte, ville de 23 093 habitants surnommée « Cité du Cheval », située à environ 18 km au nord-ouest de Paris dans les Yvelines. Nous intervenons sur site auprès des professionnels de la filière équestre (hippodrome, entraîneurs de pur-sang, écuries), des commerces du centre-ville, des activités immobilières, des sièges sociaux et des indépendants installés dans le Parc privé de Maisons-Laffitte.",
   directAnswerFr:
-    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les TPE/PME locales : écuries, agences immobilières, commerces de proximité et sièges de petites structures. Nous proposons des audits dès 490 € HT, des automatisations à 590 € HT et des implémentations complètes à 990 € HT, livrées en code source et conformes RGPD.",
+    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les TPE/PME locales : écuries, agences immobilières, commerces de proximité et sièges de petites structures. Nous proposons des audits dès {{price:audit-flash|flat}}, des automatisations à {{price:intervention-4h|flat}} et des implémentations complètes à {{price:impl-poc|entry}}, livrées en code source et conformes RGPD.",
   directAnswerEn:
-    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les TPE/PME locales : écuries, agences immobilières, commerces de proximité et sièges de petites structures. Nous proposons des audits dès 490 € HT, des automatisations à 590 € HT et des implémentations complètes à 990 € HT, livrées en code source et conformes RGPD.",
+    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les TPE/PME locales : écuries, agences immobilières, commerces de proximité et sièges de petites structures. Nous proposons des audits dès {{price:audit-flash|flat}}, des automatisations à {{price:intervention-4h|flat}} et des implémentations complètes à {{price:impl-poc|entry}}, livrées en code source et conformes RGPD.",
   seoHook: "filière équestre & activités immobilières",
   ecosystemFr:
     "Le tissu économique de Maisons-Laffitte est dominé par la filière équestre (hippodrome, entraîneurs, écuries de pur-sang) et l'immobilier résidentiel haut de gamme, le Parc privé représentant 60 % de la commune et abritant environ 40 % des habitants. Le revenu médian par foyer est élevé (48 001 € en 2010, 450e rang national) et le taux de chômage local (7,7 % en 2013) reste sous la moyenne française. Le centre-ville concentre commerces de proximité, agences immobilières et activités de services.",
@@ -33,26 +33,26 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit Flash dès 490 € HT.",
+      fr: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA en code source à Maisons-Laffitte — CRM agences immobilières, gestion des pensions équestres, sites web augmentés — dès 990 € HT.",
-      en: "Implémenter des solutions IA en code source à Maisons-Laffitte — CRM agences immobilières, gestion des pensions équestres, sites web augmentés — dès 990 € HT.",
+      fr: "Implémenter des solutions IA en code source à Maisons-Laffitte — CRM agences immobilières, gestion des pensions équestres, sites web augmentés — dès {{price:impl-poc|entry}}.",
+      en: "Implémenter des solutions IA en code source à Maisons-Laffitte — CRM agences immobilières, gestion des pensions équestres, sites web augmentés — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants TPE/PME de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de 990 € HT.",
-      en: "Accompagner les dirigeants TPE/PME de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de 990 € HT.",
+      fr: "Accompagner les dirigeants TPE/PME de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants TPE/PME de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Maisons-Laffitte ?",
-      a: "Nos prestations à Maisons-Laffitte débutent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une Intervention Essentielle et 990 € HT pour une implémentation IA complète. Tarifs publics sur axion-ia.com.",
+      a: "Nos prestations à Maisons-Laffitte débutent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics sur axion-ia.com.",
     },
     {
       q: "Comment se déroule une intervention IA à Maisons-Laffitte ?",
@@ -72,7 +72,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour dirigeants à Maisons-Laffitte ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants à partir de 990 € HT, en présentiel sur Maisons-Laffitte, particulièrement adaptées aux professions libérales et aux gérants de TPE/PME locales.",
+      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}, en présentiel sur Maisons-Laffitte, particulièrement adaptées aux professions libérales et aux gérants de TPE/PME locales.",
     },
   ],
 };

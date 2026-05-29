@@ -30,8 +30,8 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carrières-sur-Seine : formats adaptés boutique, bureau conseil, cabinet, agence immobilière, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et agences immobilières ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Outils IA estimation, gestion mandats, CRM acquéreurs, vitrines augmentées.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA estimation, gestion mandats, CRM acquéreurs, vitrines augmentées.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",

@@ -65,7 +65,7 @@ export const TERNAY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE, artisans et commerçants de Ternay ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, indépendants. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, indépendants. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Comment se déroule une mission depuis Lyon ?",

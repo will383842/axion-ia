@@ -30,8 +30,8 @@ export const SELESTAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sélestat : formats adaptés à l'atelier industriel, le domaine viticole, l'hôtel-restaurant, le commerce, l'agence, le cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const SELESTAT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous l'hôtellerie-restauration et le tourisme patrimonial ?",
-      a: "Oui, hôteliers, restaurateurs et acteurs du tourisme patrimonial sélestadiens : channel manager, optimisation occupation, agents conversationnels multilingues, gestion réservations, marketing local. Audit Flash 490 € HT.",
+      a: "Oui, hôteliers, restaurateurs et acteurs du tourisme patrimonial sélestadiens : channel manager, optimisation occupation, agents conversationnels multilingues, gestion réservations, marketing local. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Sélestat ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Sélestat ?",

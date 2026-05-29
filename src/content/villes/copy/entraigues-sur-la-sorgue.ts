@@ -30,8 +30,8 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Entraigues-sur-la-Sorgue : ateliers pour équipes TPE/PME logistique, négoces, maraîchers, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Entraigues-sur-la-Sorgue  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME logistiques, négoces et commerces entraiguois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques, négoces et commerces entraiguois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistiques et de négoce des zones d'activités ?",

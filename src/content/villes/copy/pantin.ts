@@ -32,26 +32,26 @@ export const PANTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit Flash 4h dès 490 € HT.",
-      en: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit Flash 4h dès 490 € HT.",
+      fr: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit Flash 4h dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Intervention Essentielle dès 590 € HT.",
-      en: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès 990 € HT.",
-      en: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès 990 € HT.",
+      fr: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès 990 € HT.",
-      en: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Pantin : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur stratégie IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Pantin ?",
-      a: "Tarifs publics : Audit Flash 4h dès 490 € HT, Intervention Essentielle dès 590 € HT, implémentation ou accompagnement 1-to-1 dès 990 € HT. Grille identique partout en France, sans frais de déplacement caché.",
+      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou accompagnement 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France, sans frais de déplacement caché.",
     },
     {
       q: "Quels délais pour une intervention à Pantin ?",

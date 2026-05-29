@@ -30,8 +30,8 @@ export const TONNEINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tonneins : formats adaptés à l'usine, l'atelier, le commerce ou le bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const TONNEINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Tonneins  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME tonneinquaises : industriels, entreprises agroalimentaires, commerçants, artisans et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME tonneinquaises : industriels, entreprises agroalimentaires, commerçants, artisans et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les industries à Tonneins ?",
@@ -61,7 +61,7 @@ export const TONNEINS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Tonneins ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Tonneins, à partir de 990 € HT. Sessions dans votre usine, atelier, commerce ou en visio. Approche terrain adaptée aux métiers du Val de Garonne.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Tonneins, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, atelier, commerce ou en visio. Approche terrain adaptée aux métiers du Val de Garonne.",
     },
     {
       q: "Comment se déroule une mission IA à Tonneins ?",

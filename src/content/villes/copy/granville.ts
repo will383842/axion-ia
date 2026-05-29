@@ -30,8 +30,8 @@ export const GRANVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Granville : formats adaptés à la criée, l'hôtel, le restaurant, le commerce portuaire, l'atelier artisanal. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,11 +53,11 @@ export const GRANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE de la pêche et ostréiculture ?",
-      a: "Oui, nous accompagnons les TPE pêche et ostréiculture de Granville : automatisation traçabilité produits de la mer, prédiction rendements, optimisation logistique criée, classification qualité coquillages. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE pêche et ostréiculture de Granville : automatisation traçabilité produits de la mer, prédiction rendements, optimisation logistique criée, classification qualité coquillages. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les hôteliers et restaurateurs granvillais ?",
-      a: "Pour les PME hôtellerie-restauration à Granville, audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas typiques : agents IA réservation, prédiction affluence saisonnière, optimisation menus, fidélisation clientèle.",
+      a: "Pour les PME hôtellerie-restauration à Granville, audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : agents IA réservation, prédiction affluence saisonnière, optimisation menus, fidélisation clientèle.",
     },
     {
       q: "Travaillez-vous avec les professionnels du nautisme ?",

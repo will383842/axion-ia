@@ -30,8 +30,8 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-d'Irube : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et planning. Agglo Bayonne : déplacement inclus.",
@@ -57,7 +57,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Pierre-d'Irube ?",
-      a: "L'audit Flash IA à Saint-Pierre-d'Irube démarre à 490 € HT. Diagnostic de vos processus métier, identification gains IA prioritaires, ROI chiffré et plan d'action adapté à votre activité.",
+      a: "L'audit Flash IA à Saint-Pierre-d'Irube démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus métier, identification gains IA prioritaires, ROI chiffré et plan d'action adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de l'agglo Bayonne ?",

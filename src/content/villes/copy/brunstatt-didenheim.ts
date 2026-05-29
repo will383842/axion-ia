@@ -30,8 +30,8 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brunstatt-Didenheim : diagnostic adapté aux prestataires de services, professions libérales, artisans BTP, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Brunstatt-Didenheim : diagnostic adapté aux prestataires de services, professions libérales, artisans BTP, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Brunstatt-Didenheim : diagnostic adapté aux prestataires de services, professions libérales, artisans BTP, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Brunstatt-Didenheim : diagnostic adapté aux prestataires de services, professions libérales, artisans BTP, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la TPE de services, à l'artisan BTP ou au commerçant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Brunstatt-Didenheim  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Brunstatt-Didenheim et du sud mulhousien, il identifie les cas d'usage IA à fort ROI pour votre cabinet, atelier, commerce ou activité de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Brunstatt-Didenheim et du sud mulhousien, il identifie les cas d'usage IA à fort ROI pour votre cabinet, atelier, commerce ou activité de services.",
     },
     {
       q: "Accompagnez-vous les professions libérales et services de Brunstatt-Didenheim ?",
@@ -65,7 +65,7 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Brunstatt-Didenheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et professionnels libéraux à Brunstatt-Didenheim, à partir de 990 € HT. Sessions dans votre cabinet, bureau ou en visio. Approche terrain adaptée au tissu tertiaire et artisanal de Mulhouse Alsace Agglomération.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et professionnels libéraux à Brunstatt-Didenheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre cabinet, bureau ou en visio. Approche terrain adaptée au tissu tertiaire et artisanal de Mulhouse Alsace Agglomération.",
     },
   ],
 };

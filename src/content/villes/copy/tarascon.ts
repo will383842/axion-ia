@@ -30,8 +30,8 @@ export const TARASCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tarascon : formats adaptés à l'atelier textile, au commerce de centre-ville et à l'entreprise agroalimentaire. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const TARASCON_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Tarascon ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME textile et agroalimentaire, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME textile et agroalimentaire, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les PME textile de Tarascon ?",
@@ -61,7 +61,7 @@ export const TARASCON_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux TPE artisans de Tarascon ?",
-      a: "Absolument. L'Audit Flash à 490 € HT est conçu pour les TPE artisans et commerçants. Nous identifions les quick-wins IA adaptés à votre activité : automatisation devis, gestion planning, facturation.",
+      a: "Absolument. L'Audit Flash à {{price:audit-flash|flat}} est conçu pour les TPE artisans et commerçants. Nous identifions les quick-wins IA adaptés à votre activité : automatisation devis, gestion planning, facturation.",
     },
     {
       q: "Comment se déroule une mission IA à Tarascon ?",

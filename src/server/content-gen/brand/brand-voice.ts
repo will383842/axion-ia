@@ -61,7 +61,8 @@ export const BRAND_VOICE_AXION_IA = {
 
 const VOCAB_BASE = `Vocabulary IA : toujours écrire "IA" (pas "AI"), "Machine Learning (ML)" (pas "ML" seul), "RAG" en plein à la première occurrence.
 Mots bannis : révolutionner, disruptif, next-gen, game-changer, magique, révolutionnaire, garanti.
-Contact : contact@axion-ia.com uniquement (0 numéro de téléphone, 0 prix en dur, 0 délai chiffré).`;
+Contact : contact@axion-ia.com uniquement (0 numéro de téléphone, 0 délai chiffré).
+PRIX — RÈGLE ABSOLUE : ne JAMAIS écrire un montant en chiffres ni « € »/« EUR »/« euros ». Pour citer un tarif, écrire EXCLUSIVEMENT un token \`{{price:<tierId>}}\` (résolu automatiquement depuis la grille officielle au rendu) ou renvoyer vers la page Tarifs. Tokens disponibles : {{price:audit-flash|flat}}, {{price:audit-cible|range}}, {{price:intervention-4h|flat}}, {{price:intervention-essentielle|flat}}, {{price:intervention-dirigeants|flat}}, {{price:impl-poc|entry}}, {{price:maintenance-standard|flat}}. Tout montant € écrit en dur sera bloqué par le price-gate.`;
 
 /** Manon consultante — landing, blog conseil, faq (défaut). */
 const BV_MANON_CONSULTANTE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES

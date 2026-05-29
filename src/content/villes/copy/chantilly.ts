@@ -30,8 +30,8 @@ export const CHANTILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chantilly : diagnostic adapté aux TPE/PME hôtellerie-restauration, tourisme, filière équestre, commerce de luxe et services du sud de l'Oise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Chantilly : diagnostic adapté aux TPE/PME hôtellerie-restauration, tourisme, filière équestre, commerce de luxe et services du sud de l'Oise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Chantilly : diagnostic adapté aux TPE/PME hôtellerie-restauration, tourisme, filière équestre, commerce de luxe et services du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Chantilly : diagnostic adapté aux TPE/PME hôtellerie-restauration, tourisme, filière équestre, commerce de luxe et services du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chantilly : formats adaptés à l'hôtel, au restaurant, au centre équestre, à la boutique ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const CHANTILLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chantilly  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME cantiliennes : hôteliers, restaurateurs, acteurs du tourisme et de la filière équestre, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME cantiliennes : hôteliers, restaurateurs, acteurs du tourisme et de la filière équestre, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises du tourisme et de l'hôtellerie à Chantilly ?",
@@ -65,7 +65,7 @@ export const CHANTILLY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Chantilly ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chantilly, à partir de 990 € HT. Sessions dans votre hôtel, restaurant, centre d'entraînement ou en visio. Approche terrain adaptée aux métiers du tourisme et des services du sud de l'Oise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chantilly, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre hôtel, restaurant, centre d'entraînement ou en visio. Approche terrain adaptée aux métiers du tourisme et des services du sud de l'Oise.",
     },
   ],
 };

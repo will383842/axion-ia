@@ -57,7 +57,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans beauvaisiens ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis, gestion du planning, réponse client.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis, gestion du planning, réponse client.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Beauvais ?",

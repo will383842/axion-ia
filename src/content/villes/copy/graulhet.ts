@@ -30,8 +30,8 @@ export const GRAULHET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit Flash 490 € HT.",
-      en: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit Flash 490 € HT.",
+      fr: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Graulhet : formats adaptés à l'atelier artisan, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const GRAULHET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Graulhet ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Graulhet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Graulhet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier.",
     },
     {
       q: "L'IA peut-elle aider les entreprises du cuir à Graulhet ?",
@@ -65,7 +65,7 @@ export const GRAULHET_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel à Graulhet ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Graulhet. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Graulhet. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

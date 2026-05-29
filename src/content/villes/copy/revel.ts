@@ -30,8 +30,8 @@ export const REVEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Revel : diagnostic adapté aux TPE artisans d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit Flash 490 € HT.",
-      en: "Audit IA à Revel : diagnostic adapté aux TPE artisans d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Revel : diagnostic adapté aux TPE artisans d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Revel : diagnostic adapté aux TPE artisans d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Revel : formats adaptés à l'atelier d'ébénisterie, au commerce de la halle, à l'hébergement touristique. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const REVEL_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Revel  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "L'IA peut-elle aider un artisan ébéniste à Revel ?",

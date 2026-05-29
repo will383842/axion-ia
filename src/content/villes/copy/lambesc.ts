@@ -30,8 +30,8 @@ export const LAMBESC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lambesc : ateliers pour domaines viticoles, moulins à huile, cabinets libéraux et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LAMBESC_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Lambesc  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, viticulteurs, oléiculteurs et PME lambescaines. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs, oléiculteurs et PME lambescaines. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Coteaux d'Aix ?",

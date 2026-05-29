@@ -11,9 +11,9 @@ export const SURESNES_COPY: VilleCopy = {
   pitchEn:
     "Suresnes (92, Hauts-de-Seine) compte 48 956 habitants (recensement 2023), à 12 km à l'ouest de Notre-Dame de Paris, en bordure du Bois de Boulogne. La commune fait partie de l'Établissement public territorial Paris Ouest La Défense (11 communes, environ 563 000 habitants) et de la Métropole du Grand Paris. Économie tirée par les sièges sociaux, les services aux entreprises, la programmation informatique, les activités financières et un commerce de proximité dense. Patrimoine : Mont-Valérien (mémorial national). Axion-IA accompagne TPE et PME suresnoises en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les TPE et PME locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit Flash dès 590 € HT, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les TPE et PME locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit Flash dès {{price:intervention-4h|flat}}, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les TPE et PME locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit Flash dès 590 € HT, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les TPE et PME locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit Flash dès {{price:intervention-4h|flat}}, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
   seoHook: "sièges sociaux, programmation & services paris ouest",
   ecosystemFr:
     "Suresnes s'inscrit dans l'EPT Paris Ouest La Défense (Puteaux, Nanterre, Courbevoie, Levallois, Neuilly...) qui regroupe environ 563 000 habitants et concentre une part majeure des sièges et fonctions tertiaires d'Île-de-France. La commune est limitrophe de Puteaux, Nanterre (nord), Saint-Cloud (sud), Rueil-Malmaison (ouest) et Paris-Bois de Boulogne (est). Économie tirée par la programmation informatique, les sièges sociaux, les services financiers, la R&D, les activités juridiques et un commerce de centre-ville actif. La proximité immédiate de La Défense (1er quartier d'affaires européen) structure le bassin.",
@@ -33,8 +33,8 @@ export const SURESNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Suresnes : diagnostic adapté aux TPE et PME de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit Flash 590 € HT, ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Suresnes : diagnostic adapté aux TPE et PME de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit Flash 590 € HT, ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Suresnes : diagnostic adapté aux TPE et PME de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit Flash {{price:intervention-4h|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Suresnes : diagnostic adapté aux TPE et PME de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit Flash {{price:intervention-4h|flat}}, ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Suresnes : formats adaptés à vos bureaux ouest parisien, votre cabinet, votre boutique ou en visio. Atelier 1 journée pour vos équipes opérationnelles.",
@@ -52,7 +52,7 @@ export const SURESNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Suresnes ?",
-      a: "L'Intervention Essentielle débute à 590 € HT et l'Audit Flash à 590 € HT. Les frais de déplacement depuis Paris (15 min via Transilien L) sont facturés en sus de manière transparente. Tarifs publics détaillés sur notre site.",
+      a: "L'Intervention Essentielle débute à {{price:intervention-4h|flat}} et l'Audit Flash à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Paris (15 min via Transilien L) sont facturés en sus de manière transparente. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Suresnes ?",

@@ -30,8 +30,8 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saulx-les-Chartreux : formats adaptés exploitation maraîchère, atelier artisan, cabinet libéral ou bureau PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion RDV, CRM patients/clients, conformité RGPD, fidélisation, marketing local.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion RDV, CRM patients/clients, conformité RGPD, fidélisation, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Massy ou Paris ?",

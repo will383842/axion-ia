@@ -30,8 +30,8 @@ export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louhans-Châteaurenaud : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerçants des arcades et du marché ?",
-      a: "Oui, agents conversationnels clients, automatisation commandes, gestion stocks, présence en ligne. Audit Flash 490 € HT adapté commerçants Bresse.",
+      a: "Oui, agents conversationnels clients, automatisation commandes, gestion stocks, présence en ligne. Audit Flash {{price:audit-flash|flat}} adapté commerçants Bresse.",
     },
     {
       q: "Quels tarifs pour un audit IA à Louhans ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Louhans-Châteaurenaud ?",

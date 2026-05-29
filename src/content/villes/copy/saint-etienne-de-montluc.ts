@@ -30,8 +30,8 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Étienne-de-Montluc : formats courts adaptés TPE/PME. Vos équipes repartent avec outils IA configurés métier, demi-journée à 2 jours.",
@@ -53,7 +53,7 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Saint-Étienne-de-Montluc ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants de Saint-Étienne-de-Montluc sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisanales et indépendants de Saint-Étienne-de-Montluc sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du nord-ouest nantais ?",

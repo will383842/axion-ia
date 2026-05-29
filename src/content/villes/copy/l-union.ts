@@ -30,8 +30,8 @@ export const L_UNION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Union : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-est toulousain. Audit Flash 490 € HT.",
-      en: "Audit IA à L'Union : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-est toulousain. Audit Flash 490 € HT.",
+      fr: "Audit IA à L'Union : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-est toulousain. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à L'Union : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-est toulousain. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Union : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const L_UNION_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à L'Union  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à L'Union ?",
@@ -65,7 +65,7 @@ export const L_UNION_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à L'Union ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à L'Union. Format flexible : locaux, visio ou coworking. À partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à L'Union. Format flexible : locaux, visio ou coworking. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

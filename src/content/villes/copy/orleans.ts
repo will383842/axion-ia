@@ -819,7 +819,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Quel est le tarif d'entrée pour un accompagnement 1-to-1 à Orléans ?",
-            a: "Le tarif d'entrée est de 990 € HT pour une première séance ou un forfait découverte. Les parcours complets sont sur devis selon le nombre de séances et le profil. Tarifs publics affichés sur la page dédiée.",
+            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour une première séance ou un forfait découverte. Les parcours complets sont sur devis selon le nombre de séances et le profil. Tarifs publics affichés sur la page dédiée.",
           },
         ],
         guarantees:
@@ -925,7 +925,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "What is the entry price for 1-to-1 coaching in Orléans?",
-            a: "The entry price is 990 € excl. VAT for a first session or discovery package. Full programmes are quoted based on the number of sessions and profile. Public pricing displayed on the dedicated page.",
+            a: "The entry price is {{price:intervention-dirigeants|compact}} excl. VAT for a first session or discovery package. Full programmes are quoted based on the number of sessions and profile. Public pricing displayed on the dedicated page.",
           },
         ],
         guarantees:

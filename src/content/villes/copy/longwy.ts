@@ -30,8 +30,8 @@ export const LONGWY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longwy : diagnostic adapté aux TPE/PME industrielles reconverties, artisans d'art, commerces frontaliers, PME logistique transfrontalière. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Longwy : diagnostic adapté aux TPE/PME industrielles reconverties, artisans d'art, commerces frontaliers, PME logistique transfrontalière. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Longwy : diagnostic adapté aux TPE/PME industrielles reconverties, artisans d'art, commerces frontaliers, PME logistique transfrontalière. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Longwy : diagnostic adapté aux TPE/PME industrielles reconverties, artisans d'art, commerces frontaliers, PME logistique transfrontalière. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longwy : formats adaptés à l'atelier industriel, atelier de faïence, commerce frontalier, entrepôt logistique. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const LONGWY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Longwy  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME industrielles, artisans d'art et commerces frontaliers du bassin longovicien.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME industrielles, artisans d'art et commerces frontaliers du bassin longovicien.",
     },
     {
       q: "Accompagnez-vous les PME industrielles reconverties du bassin sidérurgique ?",

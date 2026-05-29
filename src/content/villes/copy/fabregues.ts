@@ -9,9 +9,9 @@ export const FABREGUES_COPY: VilleCopy = {
   pitchEn:
     "Fabrègues (34, Hérault), 7 447 habitants en 2023, commune située à 12 km au sud-ouest de Montpellier, au pied du massif de la Gardiole. Tissu économique dominé par le commerce de détail (26,6 % des établissements), le BTP (18,2 %) et les services publics et sociaux (15 %). Limitrophe de Pignan, Cournonsec, Cournonterral, Gigean, Mireval, Saussan, Saint-Jean-de-Védas, Vic-la-Gardiole, Villeneuve-lès-Maguelone. Patrimoine en circulade médiévale (XIe-XIIe), site Natura 2000, viticulture historique. Axion-IA accompagne TPE, PME et professions libérales locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons en priorité les TPE commerçants et artisans (26,6 % des établissements de la commune), puis les PME services et BTP (18,2 %), professions libérales, exploitants viticoles et acteurs publics et sociaux (15 %). Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons en priorité les TPE commerçants et artisans (26,6 % des établissements de la commune), puis les PME services et BTP (18,2 %), professions libérales, exploitants viticoles et acteurs publics et sociaux (15 %). Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons en priorité les TPE commerçants et artisans (26,6 % des établissements de la commune), puis les PME services et BTP (18,2 %), professions libérales, exploitants viticoles et acteurs publics et sociaux (15 %). Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons en priorité les TPE commerçants et artisans (26,6 % des établissements de la commune), puis les PME services et BTP (18,2 %), professions libérales, exploitants viticoles et acteurs publics et sociaux (15 %). Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   ecosystemFr:
     "Fabrègues, 7 447 habitants, polarise une économie résidentielle et commerçante au sud-ouest de Montpellier. Sur ses 729 établissements, 194 relèvent du commerce de détail (26,6 %), le BTP représente 18,2 % et les services publics et sociaux 15 %. La commune conserve une viticulture comme activité agricole principale, héritage de son histoire. Le patrimoine inclut une circulade médiévale (XIe-XIIe siècles), un oppidum à La Roque et un site Natura 2000 pour la conservation des oiseaux.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const FABREGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fabrègues : diagnostic pour PME services et logistique, TPE commerçants, artisans BTP et professions libérales du sud-ouest Montpellier. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Fabrègues : diagnostic pour PME services et logistique, TPE commerçants, artisans BTP et professions libérales du sud-ouest Montpellier. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Fabrègues : diagnostic pour PME services et logistique, TPE commerçants, artisans BTP et professions libérales du sud-ouest Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fabrègues : diagnostic pour PME services et logistique, TPE commerçants, artisans BTP et professions libérales du sud-ouest Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fabrègues : ateliers adaptés PME logistique, commerce, cabinet libéral ou artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const FABREGUES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les PME de logistique ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux PME de logistique et transport : automatisation flux, optimisation entreposage, classification documents, prédiction demande. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux PME de logistique et transport : automatisation flux, optimisation entreposage, classification documents, prédiction demande. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerces et TPE ?",
-      a: "Pour les TPE et commerces à Fabrègues, audit Flash 490 € HT, intervention formation 1 journée et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes.",
+      a: "Pour les TPE et commerces à Fabrègues, audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes.",
     },
     {
       q: "Accompagnez-vous les artisans BTP ?",
@@ -65,7 +65,7 @@ export const FABREGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Fabrègues ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

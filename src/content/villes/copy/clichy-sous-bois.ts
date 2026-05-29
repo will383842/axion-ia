@@ -10,9 +10,9 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Clichy-sous-Bois, commune résidentielle de 29 354 habitants en Seine-Saint-Denis située à 11 km à l'est des portes de Paris. Le territoire ne dispose d'aucun axe autoroutier ni gare ferroviaire mais est desservi par le tramway T4 (stations Maurice Audin, Mairie de Clichy-sous-Bois, Romain Rolland, Clichy-Montfermeil) et de nombreuses lignes de bus. Nous nous déplaçons sur place pour auditer les commerces de détail, artisans du bâtiment et structures associatives locales, afin d'identifier des automatisations IA concrètes — devis, facturation, prise de rendez-vous, suivi clients — avec un code custom auditable, sans solution no-code propriétaire.",
   directAnswerFr:
-    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les TPE puis les PME locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit Flash à 490 € HT, intervention dès 590 € HT, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
+    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les TPE puis les PME locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit Flash à {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les TPE puis les PME locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit Flash à 490 € HT, intervention dès 590 € HT, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
+    "Axion-IA se déplace à Clichy-sous-Bois (Seine-Saint-Denis, 29 354 habitants) pour accompagner en priorité les TPE puis les PME locales — artisans, commerces de proximité, associations — sur leurs cas d'usage IA opérationnels. Le tissu est principalement résidentiel, sans grande zone industrielle, ce qui oriente nos missions vers l'automatisation back-office (relances, comptabilité, planning) plutôt que vers la production. Audit Flash à {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Nous codons en propre, sans plateforme no-code, pour des solutions pérennes et conformes RGPD.",
   seoHook: "commerces de proximité & artisans bâtiment",
   ecosystemFr:
     "Clichy-sous-Bois est une commune à forte dominante résidentielle de Seine-Saint-Denis, sans grande zone d'activités industrielles sur son territoire. Son économie repose principalement sur les commerces de détail, l'artisanat du bâtiment et un tissu associatif dense. Historiquement, la Fosse Maussoin exploitait une carrière de gypse pour la production de plâtre, dont la production était évacuée par un chemin de fer industriel vers le canal de l'Ourcq. La commune compte aujourd'hui 110 hectares de forêt sur 413 hectares au total, dont le parc de la Fosse-Maussoin classé Natura 2000, ce qui en fait la deuxième ville la plus verte du département.",
@@ -31,12 +31,12 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clichy-sous-Bois pour les TPE/PME locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de 490 € HT.",
-      en: "Audit IA à Clichy-sous-Bois pour les TPE/PME locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de 490 € HT.",
+      fr: "Audit IA à Clichy-sous-Bois pour les TPE/PME locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Clichy-sous-Bois pour les TPE/PME locales — commerces de détail, artisans du bâtiment, associations — pour cibler les automatisations à fort ROI (relances, devis, planning). À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site à Clichy-sous-Bois pour automatiser facturation, suivi clients et tâches administratives répétitives — code custom auditable, sans no-code. Dès 590 € HT.",
-      en: "Interventions sur site à Clichy-sous-Bois pour automatiser facturation, suivi clients et tâches administratives répétitives — code custom auditable, sans no-code. Dès 590 € HT.",
+      fr: "Interventions sur site à Clichy-sous-Bois pour automatiser facturation, suivi clients et tâches administratives répétitives — code custom auditable, sans no-code. Dès {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site à Clichy-sous-Bois pour automatiser facturation, suivi clients et tâches administratives répétitives — code custom auditable, sans no-code. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA mesurées à Clichy-sous-Bois pour les artisans du bâtiment et commerces — outils internes développés sur-mesure, conformes RGPD.",
@@ -50,7 +50,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Clichy-sous-Bois ?",
-      a: "Audit Flash dès 490 € HT (4 heures), intervention sur site dès 590 € HT. Tous nos tarifs sont publics et consultables sur axion-ia.com — pas de devis opaque.",
+      a: "Audit Flash dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et consultables sur axion-ia.com — pas de devis opaque.",
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Clichy-sous-Bois ?",

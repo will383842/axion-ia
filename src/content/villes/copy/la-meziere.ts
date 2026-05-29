@@ -30,8 +30,8 @@ export const LA_MEZIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Mézière : diagnostic adapté aux TPE/PME, commerçants Cap Malo, artisans et professions libérales du nord rennais. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
-      en: "Audit IA à La Mézière : diagnostic adapté aux TPE/PME, commerçants Cap Malo, artisans et professions libérales du nord rennais. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
+      fr: "Audit IA à La Mézière : diagnostic adapté aux TPE/PME, commerçants Cap Malo, artisans et professions libérales du nord rennais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      en: "Audit IA à La Mézière : diagnostic adapté aux TPE/PME, commerçants Cap Malo, artisans et professions libérales du nord rennais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Mézière : formations adaptées aux équipes TPE/PME, commerçants, artisans et professions libérales locales. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LA_MEZIERE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à La Mézière  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME, commerçants Cap Malo, artisans et professions libérales mézièroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME, commerçants Cap Malo, artisans et professions libérales mézièroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone Cap Malo ?",
@@ -61,7 +61,7 @@ export const LA_MEZIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les artisans et professions libérales de La Mézière ?",
-      a: "Pour les artisans et professions libérales mézièroises, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion documentaire, conformité RGPD et rédaction assistée.",
+      a: "Pour les artisans et professions libérales mézièroises, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion documentaire, conformité RGPD et rédaction assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à La Mézière ?",

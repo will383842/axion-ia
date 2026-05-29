@@ -30,8 +30,8 @@ export const MONTECH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montech : diagnostic adapté aux TPE artisans, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash 490 € HT.",
-      en: "Audit IA à Montech : diagnostic adapté aux TPE artisans, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash 490 € HT.",
+      fr: "Audit IA à Montech : diagnostic adapté aux TPE artisans, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montech : diagnostic adapté aux TPE artisans, PME tertiaires et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montech : formats adaptés à l'exploitation agricole, PME logistique, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MONTECH_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Montech ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Montech. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Montech. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles de Montech ?",
@@ -65,7 +65,7 @@ export const MONTECH_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Montech ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Montech. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Montech. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const AUBIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubière : diagnostic adapté aux startups deeptech, laboratoires recherche UCA, commerces zone commerciale, PME tertiaires. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aubière : diagnostic adapté aux startups deeptech, laboratoires recherche UCA, commerces zone commerciale, PME tertiaires. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aubière : diagnostic adapté aux startups deeptech, laboratoires recherche UCA, commerces zone commerciale, PME tertiaires. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aubière : diagnostic adapté aux startups deeptech, laboratoires recherche UCA, commerces zone commerciale, PME tertiaires. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubière : formats adaptés labo, incubateur, bureau startup, commerce, siège PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const AUBIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

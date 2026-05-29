@@ -15,6 +15,16 @@
 import type { ContentType } from "../../../../prisma/generated/client";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { runV7Phase8Pipeline, type V7Phase8GeneratorConfig } from "./v7-phase8-shared";
+import { INTERVENTION_TIERS, getTierById, formatAmount } from "@/content/pricing";
+
+// Prix d'entrée Essentielle dérivé de la SSOT (pricing.ts) pour les CTA — évite
+// tout montant en dur. (Avant : « 490 € » en dur, faux : 490 = Audit Flash, et
+// l'Essentielle vaut le prix ci-dessous.)
+const ESSENTIELLE_CTA_PRICE = formatAmount(
+  getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+  "fr",
+  { compact: true },
+);
 
 // Doctrine commune partagée par les 12 (rappel doctrine Manon brand-voice
 // + AI Act art. 50 disclosure + interdiction superlatifs marketing creux).
@@ -65,7 +75,7 @@ const PAIN_POINT_SOLUTION_CONFIG = buildConfig(
 Story arc : présente un pain point métier concret (avec data sectorielle),
 puis la solution IA pas-à-pas. Cas concret anonymisé recommandé. FAQ × 8.`,
   "/interventions/essentielle",
-  "Réserver l'intervention Essentielle · 490 €",
+  `Réserver l'intervention Essentielle · ${ESSENTIELLE_CTA_PRICE}`,
 );
 
 const VS_COMPARATOR_CONFIG = buildConfig(
@@ -110,7 +120,7 @@ Tutoriel pas-à-pas (5-8 étapes) pour réaliser X dans le contexte Y (ville).
 Chaque étape = h3 + paragraphe court + tip pratique. FAQ × 8. Mention
 intervention Axion-IA en alternative pro.`,
   "/interventions/essentielle",
-  "Faire faire par Axion-IA · 490 €",
+  `Faire faire par Axion-IA · ${ESSENTIELLE_CTA_PRICE}`,
 );
 
 const BEST_FOR_X_IN_Y_CONFIG = buildConfig(

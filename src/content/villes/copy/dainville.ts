@@ -10,9 +10,9 @@ export const DAINVILLE_COPY: VilleCopy = {
     "Dainville (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 680 habitants. Situee a l'ouest d'Arras, son economie beneficie de la proximite de la prefecture : PME tertiaires, TPE de services, professions liberales, commerces et artisanat. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras, tertiaire & professions liberales",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dainville (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, professions liberales, commercants et artisans. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Dainville jouxte Arras (3 km) a l'ouest. Tissu economique compose de PME tertiaires, TPE de services, professions liberales (avocats, comptables), commerces de proximite et artisanat. Commune residentielle prisee beneficiant des infrastructures de la CUA.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DAINVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Dainville : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Dainville : formations adaptees aux bureaux tertiaires, cabinets liberaux, commerces et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const DAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les professions liberales de Dainville ?",
-      a: "Pour les professions liberales de l'Arrageois, nous proposons : automatisation documents juridiques, IA redaction rapports, gestion agenda intelligente, agents conversationnels clients. Audit Flash 490 EUR HT.",
+      a: "Pour les professions liberales de l'Arrageois, nous proposons : automatisation documents juridiques, IA redaction rapports, gestion agenda intelligente, agents conversationnels clients. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Dainville ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires de l'Arrageois ?",
-      a: "Oui, nous accompagnons les PME tertiaires : automatisation administrative, IA redaction, CRM intelligent, agents conversationnels B2B. Gains productivite rapides. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les PME tertiaires : automatisation administrative, IA redaction, CRM intelligent, agents conversationnels B2B. Gains productivite rapides. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Dainville ?",

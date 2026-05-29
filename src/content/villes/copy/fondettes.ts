@@ -30,8 +30,8 @@ export const FONDETTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fondettes : formats adaptés au bureau tertiaire, atelier artisan, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const FONDETTES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission à Fondettes ?",

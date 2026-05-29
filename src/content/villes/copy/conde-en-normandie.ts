@@ -30,8 +30,8 @@ export const CONDE_EN_NORMANDIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Condé-en-Normandie : formats adaptés à l'usine, atelier industriel, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const CONDE_EN_NORMANDIE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants condéens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Condé-en-Normandie, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Condé-en-Normandie, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Condé-en-Normandie  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA en zone bocage ?",

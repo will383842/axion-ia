@@ -30,8 +30,8 @@ export const VERNAISON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Vernaison : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vernaison : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VERNAISON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

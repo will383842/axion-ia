@@ -30,8 +30,8 @@ export const SAINT_ZACHARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Zacharie : ateliers pour artisans, BTP, commerçants, restaurateurs et agriculteurs. Outils IA configurés métier réel local.",
@@ -53,7 +53,7 @@ export const SAINT_ZACHARIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE artisan ou BTP zacharien ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux artisans, BTP, commerçants et agriculteurs de Saint-Zacharie et de la vallée de l'Huveaune. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, BTP, commerçants et agriculteurs de Saint-Zacharie et de la vallée de l'Huveaune. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de la vallée de l'Huveaune ?",

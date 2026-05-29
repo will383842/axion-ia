@@ -99,6 +99,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^\.github\/workflows\/gsc-crawl-stats-weekly\.yml$/,
   /^\.github\/workflows\/content-gen-seed\.yml$/,
   /^\.github\/workflows\/enable-openai-embeddings\.yml$/,
+  // Workflow de seed KB manuel — référence content-gen (seeding KB) en CI.
+  /^\.github\/workflows\/seed-kb-manual\.yml$/,
+  // Sprint Pricing SSOT 2026-05-29 : le garde-fou anti-prix-en-dur SCANNE
+  // `src/server/content-gen/**` comme surface d'enforcement → référence
+  // légitime à content-gen hors zone (test transverse, pas du code content-gen).
+  /^src\/content\/__tests__\/no-hardcoded-prices\.spec\.ts$/,
   /^prisma\/migrations\/\d+_add_service_sector\/migration\.sql$/,
   /^prisma\/seed\.ts$/,
   /^prisma\/seeds\/blog-fs-bootstrap\.ts$/,

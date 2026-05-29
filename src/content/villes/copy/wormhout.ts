@@ -30,8 +30,8 @@ export const WORMHOUT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wormhout : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Wormhout : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Wormhout : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Wormhout : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants de Flandre intérieure. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wormhout : formats adaptés aux exploitations agricoles, ateliers artisans, commerces et cabinets. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const WORMHOUT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Wormhout  ?",
-      a: "L'audit Flash IA à Wormhout démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit Flash IA à Wormhout démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles autour de Wormhout ?",

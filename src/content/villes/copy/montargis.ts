@@ -9,9 +9,9 @@ export const MONTARGIS_COPY: VilleCopy = {
   pitchEn:
     "Montargis (45), sous-prefecture du Loiret surnommee la Venise du Gatinais pour ses canaux, est un pole economique du sud de l'Ile-de-France elargie. Tissu de TPE et PME du commerce, de l'agroalimentaire, des services aux entreprises, de l'artisanat et du tourisme fluvial. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit Flash des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Montargis est la sous-prefecture du Loiret, surnommee la Venise du Gatinais grace a ses 131 ponts et passerelles enjambant canaux et rivieres. Pole economique du Gatinais, son tissu repose sur le commerce de centre-ville, l'agroalimentaire (celebres pralines de Montargis), les services aux entreprises, l'artisanat et le tourisme fluvial. Communes voisines : Amilly, Chalette-sur-Loing, Villemandeur, Pannes, Conflans-sur-Loing.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MONTARGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Montargis : diagnostic adapte aux TPE commerces, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Montargis : diagnostic adapte aux TPE commerces, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Montargis : diagnostic adapte aux TPE commerces, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Montargis : diagnostic adapte aux TPE commerces, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Montargis : formats adaptes aux commerces de centre-ville, entreprises agroalimentaires, structures touristiques et PME de services du bassin montargois.",
@@ -53,7 +53,7 @@ export const MONTARGIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Montargis ?",
-      a: "L'Audit Flash IA a Montargis demarre a 490 euros HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus metier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffre avec ROI estime.",
+      a: "L'Audit Flash IA a Montargis demarre a {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus metier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffre avec ROI estime.",
     },
     {
       q: "Accompagnez-vous les entreprises agroalimentaires a Montargis ?",
@@ -61,7 +61,7 @@ export const MONTARGIS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les TPE a Montargis ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Montargis a partir de 990 euros HT. Sessions dans vos locaux, en centre-ville ou en visio, adaptees a votre secteur d'activite.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Montargis a partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux, en centre-ville ou en visio, adaptees a votre secteur d'activite.",
     },
     {
       q: "Quels secteurs d'activite accompagnez-vous a Montargis ?",

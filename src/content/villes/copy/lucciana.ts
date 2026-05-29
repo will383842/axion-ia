@@ -30,8 +30,8 @@ export const LUCCIANA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lucciana : formats adaptés exploitation viticole/agrumes, commerce agglo Bastia, plateforme aéroportuaire, atelier artisan, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const LUCCIANA_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et acteurs aéroportuaires ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis le continent ?",

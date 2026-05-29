@@ -30,8 +30,8 @@ export const LE_VESINET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Vésinet : formats adaptés au cabinet médical, étude juridique, agence immobilière ou commerce de centre-ville. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const LE_VESINET_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA au Vésinet ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE/PME au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
     },
     {
       q: "Comment se rendre au Vésinet depuis Paris ?",

@@ -30,8 +30,8 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Cateau-Cambrésis : formats adaptés à l'atelier, au chantier, au commerce, au cabinet, à l'office de tourisme. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP catésiens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP au Cateau-Cambrésis sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash 490 € HT, intervention 1 journée formation.",
+      a: "Oui, nous accompagnons les TPE artisans BTP au Cateau-Cambrésis sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et agroalimentaires du Cambrésis ?",
@@ -61,7 +61,7 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces, professions libérales et acteurs touristiques ?",
-      a: "Pour les commerçants, professions libérales et acteurs du tourisme culturel (musée Matisse) au Cateau-Cambrésis, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, billetterie, fidélisation.",
+      a: "Pour les commerçants, professions libérales et acteurs du tourisme culturel (musée Matisse) au Cateau-Cambrésis, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, billetterie, fidélisation.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

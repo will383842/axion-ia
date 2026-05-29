@@ -30,8 +30,8 @@ export const VIF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vif : formats adaptés au commerce, atelier artisan, exploitation agricole ou cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const VIF_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP vifards ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Vif (BTP rural, plombiers, électriciens, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning saisonnier. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Vif (BTP rural, plombiers, électriciens, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning saisonnier. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerces et professions libérales locales ?",
-      a: "Pour les commerces et professions libérales à Vif, nous proposons audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation gestion RDV (santé, juridique), classification dossiers, transcription consultations.",
+      a: "Pour les commerces et professions libérales à Vif, nous proposons audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation gestion RDV (santé, juridique), classification dossiers, transcription consultations.",
     },
     {
       q: "Comment se passe une mission rurale depuis Grenoble ?",

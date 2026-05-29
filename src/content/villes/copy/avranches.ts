@@ -30,8 +30,8 @@ export const AVRANCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avranches : formats adaptés au commerce, à l'exploitation agricole, à l'hôtel, au cabinet. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,15 +53,15 @@ export const AVRANCHES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et PME agroalimentaires du bocage ?",
-      a: "Oui, nous accompagnons les TPE et PME agroalimentaires du bocage avranchin : automatisation traçabilité élevage, prédiction rendements laitiers, optimisation logistique cidre, contrôle qualité. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME agroalimentaires du bocage avranchin : automatisation traçabilité élevage, prédiction rendements laitiers, optimisation logistique cidre, contrôle qualité. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les prestataires tourisme Mont-Saint-Michel ?",
-      a: "Pour les prestataires tourisme autour du Mont-Saint-Michel, audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas typiques : agents IA accueil multilingues, prédiction affluence, optimisation réservations, CRM clientèle.",
+      a: "Pour les prestataires tourisme autour du Mont-Saint-Michel, audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : agents IA accueil multilingues, prédiction affluence, optimisation réservations, CRM clientèle.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans d'Avranches ?",
-      a: "Oui, nous accompagnons les commerçants et artisans d'Avranches sur leurs cas IA : gestion stocks, agents conversationnels prise de RDV, fidélisation client, automatisation comptabilité, marketing digital. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les commerçants et artisans d'Avranches sur leurs cas IA : gestion stocks, agents conversationnels prise de RDV, fidélisation client, automatisation comptabilité, marketing digital. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission à Avranches ?",

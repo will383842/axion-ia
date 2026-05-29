@@ -30,8 +30,8 @@ export const ARRADON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arradon : formats adaptés au cabinet de conseil, étude libérale, atelier nautique ou hébergement de charme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const ARRADON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans nautiques du golfe ?",
-      a: "Pour les TPE artisans nautiques et commerçants d'Arradon, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis réparation, agents IA réservation, gestion stocks, planning saison.",
+      a: "Pour les TPE artisans nautiques et commerçants d'Arradon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis réparation, agents IA réservation, gestion stocks, planning saison.",
     },
     {
       q: "Travaillez-vous avec les hébergeurs haut de gamme du golfe du Morbihan ?",

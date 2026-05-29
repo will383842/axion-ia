@@ -30,8 +30,8 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, TPE artisans, commerçants. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Charnay-lès-Mâcon : diagnostic adapté aux PME tertiaires agglo Mâcon, viticulteurs Mâconnais AOC, TPE artisans, commerçants. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Charnay-lès-Mâcon : formats adaptés bureau tertiaire, exploitation viticole, commerce, atelier artisan. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires agglo Mâcon ?",
-      a: "Oui, agents conversationnels B2B, automatisation workflow documentaire, CRM augmenté, classification automatique emails et documents. Audit Flash 490 € HT.",
+      a: "Oui, agents conversationnels B2B, automatisation workflow documentaire, CRM augmenté, classification automatique emails et documents. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stock.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stock.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

@@ -29,14 +29,8 @@ import { prisma } from "@/lib/prisma";
 import { getVille } from "@/content/villes";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import type { VilleEconomicData } from "@/content/villes/economic-data/types";
-import {
-  AUDIT_TIERS,
-  INTERVENTION_TIERS,
-  IMPLEMENTATION_TIERS,
-  UN_A_UN_TIERS,
-  formatAmount,
-  getEntryPriceEur,
-} from "@/content/pricing";
+// Prix : le prompt demande désormais au LLM d'émettre des tokens {{price:…}}
+// (résolus depuis pricing.ts au rendu) — plus d'injection de montants en dur.
 
 /** Output JSON attendu du LLM. Doit matcher `VilleCopy` shape (FR-only). */
 /**
@@ -489,7 +483,7 @@ Tu es un journaliste éditorial de Les Échos / La Tribune qui écrit sur un cab
 ✅ AUTORISÉ — phrases factuelles avec noms propres :
   - "Le bassin industriel de [Ville] regroupe Bouygues, Renault et Sanofi"
   - "Axion-IA intervient à [Ville] pour automatiser devis, relances et reporting"
-  - "L'audit Flash 4h démarre à 490 € HT"
+  - "L'audit Flash 4h démarre à {{price:audit-flash|flat}}" (token prix — JAMAIS de montant en chiffres)
   - "Williams se déplace sur site dans les 5 jours ouvrés"
 
 ❌ INTERDIT — adjectifs élogieux + marketing-speak (pénalité -10 par occurrence) :
@@ -533,15 +527,6 @@ function buildUserPrompt(
   retryFeedback: string,
 ): string {
   const safeSlug = escapeSlugInput(ville.slug);
-  // Prix réels SSOT — injectés pour que les FAQ tarifs disent les vrais montants
-  const auditEntry = formatAmount(getEntryPriceEur(AUDIT_TIERS) ?? 0, "fr", { compact: true });
-  const interventionEntry = formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", {
-    compact: true,
-  });
-  const implEntry = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "fr", {
-    compact: true,
-  });
-  const unAUnEntry = formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "fr", { compact: true });
 
   const feedbackSection = retryFeedback
     ? `\n\n## ⚠️ FEEDBACK PASSE PRÉCÉDENTE — corrige IMPÉRATIVEMENT\n${retryFeedback}\n`
@@ -564,11 +549,15 @@ function buildUserPrompt(
 ## Knowledge Base — données économiques locales vérifiées (USE THESE NAMES)
 ${kbMarkdown}${kbDoctrineSection}
 
-## Tarifs publics Axion-IA — citer les VRAIS prix dans la FAQ tarifs
-- Audit : à partir de ${auditEntry} HT (Audit Flash 4h)
-- Intervention : à partir de ${interventionEntry} HT (Intervention Essentielle)
-- Implémentation : à partir de ${implEntry} HT
-- 1-to-1 dirigeant : à partir de ${unAUnEntry} HT
+## Tarifs publics Axion-IA — utilise les TOKENS prix (JAMAIS de montant en dur)
+Pour citer un prix, écris EXACTEMENT le token ci-dessous : il est remplacé par le
+tarif réel (source de vérité pricing.ts) au rendu. N'écris JAMAIS un montant en
+chiffres ni « € »/« EUR »/« euros » — uniquement le token.
+- Audit Flash (4h) : {{price:audit-flash|flat}}
+- Formation 4h : {{price:intervention-4h|flat}}
+- Intervention Essentielle (1 jour) : {{price:intervention-essentielle|flat}}
+- Implémentation (Pilote IA) : à partir de {{price:impl-poc|entry}}
+- Coaching 1-to-1 dirigeant : {{price:intervention-dirigeants|flat}}
 
 ## CONTRAINTES STRICTES (word counts — re-gen si non-respectés)
 - pitchFr : 35-55 mots OBLIGATOIRE. DOIT mentionner ≥ 1 nom propre du KB (Cap Digital, Inria, Station F, LVMH…) ET ${ville.nameFr}.
@@ -579,11 +568,12 @@ ${kbMarkdown}${kbDoctrineSection}
 - servicesContext : 4 sections (audit/interventions/implementation/unAUn) — 22-40 mots OBLIGATOIRE chacune. Forme recommandée : "[Verbe d'action] à ${ville.nameFr} [contexte précis avec ≥ 1 nom KB] — [bénéfice concret]." Bannir : "transformation digitale efficace", "gain de compétitivité", "développement personnalisé".
 - faqGeolocalisee : 4-6 Q/R B2B local pertinentes (tarifs, déplacement intra-ville, délais, RGPD, formats)
   - Q : 12-22 mots, question concrète d'un prospect ${ville.nameFr}
-  - A : 35-65 mots OBLIGATOIRE, FACTUELLE. Pour les tarifs : CITER les vrais prix (ex : "Audit Flash à partir de ${auditEntry} HT, intervention dès ${interventionEntry} HT — tarifs publics sur le site"). JAMAIS "contactez-nous pour devis".
+  - A : 35-65 mots OBLIGATOIRE, FACTUELLE. Pour les tarifs : utiliser les TOKENS prix (ex : "Audit Flash à partir de {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}} — tarifs publics sur le site"). JAMAIS de montant en chiffres, JAMAIS "contactez-nous pour devis".
 ## INTERDICTIONS DURES — pénalité -10 par occurrence
 - Toute implication qu'Axion-IA est implanté/basé/présent à ${ville.nameFr} : "expertise locale", "équipe locale", "présence locale", "notre antenne", "à proximité", "nos bureaux"
 - Marketing-speak : "transformation digitale efficace", "gain de compétitivité", "solutions sur mesure", "acteurs majeurs", "centre névralgique", "dynamique et innovant", "expertise dédiée", "tirer parti", "leviers IA"
 - Tarifs flous : "contactez-nous", "selon vos besoins", "selon la complexité", "n'hésitez pas"
+- Tout montant en chiffres ou « € »/« EUR »/« euros » écrit en dur (utiliser EXCLUSIVEMENT les tokens {{price:...}})
 - Re-traitement détaillé d'un service (réservé aux sous-pages verticales)
 - Invention de faits absents du KB${feedbackSection}
 

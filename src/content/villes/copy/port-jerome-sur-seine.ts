@@ -10,9 +10,9 @@ export const PORT_JEROME_SUR_SEINE_COPY: VilleCopy = {
     "Port-Jerome-sur-Seine (76), commune nouvelle de Seine-Maritime en bord de Seine, reunit pres de 10 620 habitants. Pole petrochimique et de raffinage majeur, elle accueille des TPE sous-traitantes, des PME industrielles, des commerces et des prestataires de services lies a l'industrie. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "petrochimie, industrie & sous-traitance",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les TPE, PME et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les TPE, PME et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les TPE, PME et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les TPE, PME et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Port-Jerome-sur-Seine est une commune nouvelle issue de la fusion de Notre-Dame-de-Gravenchon, Auberville-la-Campagne et Touffreville-la-Cable. Pole petrochimique de premier plan (raffinage, chimie), l'economie locale repose sur les sous-traitants industriels, TPE de maintenance, PME de services et commerces.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PORT_JEROME_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux TPE sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux TPE sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux TPE sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux TPE sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Port-Jerome-sur-Seine : formations adaptees aux sous-traitants industriels, PME de maintenance, commerces et artisans. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const PORT_JEROME_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Port-Jerome ?",
-      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports HSE, planification interventions, gestion documentaire technique. Audit Flash 490 EUR HT.",
+      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports HSE, planification interventions, gestion documentaire technique. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Port-Jerome-sur-Seine ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME de maintenance industrielle ?",

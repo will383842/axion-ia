@@ -30,8 +30,8 @@ export const GRENADE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grenade : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit Flash 490 € HT.",
-      en: "Audit IA à Grenade : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit Flash 490 € HT.",
+      fr: "Audit IA à Grenade : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Grenade : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grenade : formats adaptés à l'exploitation agricole, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
@@ -57,7 +57,7 @@ export const GRENADE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Grenade  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider une PME agroalimentaire à Grenade ?",

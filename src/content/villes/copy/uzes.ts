@@ -30,8 +30,8 @@ export const UZES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Uzès : formats adaptés aux artisans d'art, commerces, caves viticoles et structures touristiques de l'Uzège.",
@@ -57,7 +57,7 @@ export const UZES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Uzès  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Duché d'Uzès ?",

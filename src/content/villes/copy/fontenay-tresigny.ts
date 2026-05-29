@@ -30,8 +30,8 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontenay-Trésigny : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME logistique de la Brie. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Fontenay-Trésigny  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Fontenay-Trésigny et de la Brie, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Fontenay-Trésigny et de la Brie, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment à Fontenay-Trésigny ?",

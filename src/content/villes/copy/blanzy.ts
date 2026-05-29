@@ -30,8 +30,8 @@ export const BLANZY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blanzy : formats adaptés à l'atelier industriel, à la TPE artisanale, au commerce de proximité ou à la structure de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BLANZY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Blanzy  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier Le Creusot-Montceau, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier Le Creusot-Montceau, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Blanzy ?",
@@ -61,7 +61,7 @@ export const BLANZY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Blanzy ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Blanzy, à partir de 990 € HT. Sessions dans vos locaux industriels, commerciaux, bureau ou en visio. Approche terrain adaptée au bassin Le Creusot-Montceau.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Blanzy, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux industriels, commerciaux, bureau ou en visio. Approche terrain adaptée au bassin Le Creusot-Montceau.",
     },
     {
       q: "Comment se déroule une mission IA à Blanzy ?",

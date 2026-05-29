@@ -30,8 +30,8 @@ export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clermont-l'Hérault : diagnostic pour TPE commerçants, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Clermont-l'Hérault : diagnostic pour TPE commerçants, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Clermont-l'Hérault : diagnostic pour TPE commerçants, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Clermont-l'Hérault : diagnostic pour TPE commerçants, PME viticoles Terrasses du Larzac, artisans, acteurs tourisme nature Salagou. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clermont-l'Hérault : ateliers adaptés domaine viticole, commerce, hôtel ou cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les domaines viticoles Terrasses du Larzac ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerces de centre-ville ?",
-      a: "Pour les commerces de centre-ville de Clermont-l'Hérault, audit Flash 490 € HT, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, automatisation commandes, gestion stocks, agents IA prise de RDV.",
+      a: "Pour les commerces de centre-ville de Clermont-l'Hérault, audit Flash {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, automatisation commandes, gestion stocks, agents IA prise de RDV.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme nature autour du Salagou ?",
@@ -65,7 +65,7 @@ export const CLERMONT_L_HERAULT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Clermont-l'Hérault ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

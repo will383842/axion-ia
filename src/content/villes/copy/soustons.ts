@@ -30,8 +30,8 @@ export const SOUSTONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soustons : formations adaptées aux campings, hébergements nature, exploitations agricoles, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SOUSTONS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les campings et hébergeurs ?",
-      a: "Oui, audit Flash 490 € HT adapté aux campings et hébergeurs de plein air à Soustons. Diagnostic chatbot réservation multilingue, gestion saisonnière, automatisation facturation, prédiction taux d'occupation.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux campings et hébergeurs de plein air à Soustons. Diagnostic chatbot réservation multilingue, gestion saisonnière, automatisation facturation, prédiction taux d'occupation.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles landaises ?",
@@ -61,7 +61,7 @@ export const SOUSTONS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans soustonnais ?",
-      a: "Pour les TPE commerçants et artisans à Soustons, audit Flash 490 € HT, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, agents IA communication clients, gestion stocks saisonniers, facturation.",
+      a: "Pour les TPE commerçants et artisans à Soustons, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, agents IA communication clients, gestion stocks saisonniers, facturation.",
     },
     {
       q: "Comment se déroule une mission à Soustons ?",

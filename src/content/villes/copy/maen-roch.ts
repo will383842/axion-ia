@@ -30,8 +30,8 @@ export const MAEN_ROCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maen Roch : formats adaptés exploitation agricole, atelier agroalimentaire, commerce de bourg ou bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Maen Roch  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Maen Roch et du bassin de Fougères. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Maen Roch et du bassin de Fougères. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et PME agroalimentaires ?",
@@ -61,7 +61,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants ruraux ?",
-      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté commerçants de bourg, fidélisation clients. Audit Flash 490 € HT adapté aux petites structures rurales.",
+      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté commerçants de bourg, fidélisation clients. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures rurales.",
     },
     {
       q: "Comment se déroule une mission IA à Maen Roch depuis Rennes ?",

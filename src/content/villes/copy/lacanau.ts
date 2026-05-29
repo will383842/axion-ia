@@ -30,8 +30,8 @@ export const LACANAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et TPE artisans de la côte médocaine. Audit Flash 490 € HT.",
-      en: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et TPE artisans de la côte médocaine. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et TPE artisans de la côte médocaine. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et TPE artisans de la côte médocaine. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lacanau : ateliers adaptés aux hébergements, surf schools, restaurants et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LACANAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lacanau  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux TPE touristiques et saisonnières de la côte médocaine.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux TPE touristiques et saisonnières de la côte médocaine.",
     },
     {
       q: "Accompagnez-vous les écoles de surf et hébergeurs ?",

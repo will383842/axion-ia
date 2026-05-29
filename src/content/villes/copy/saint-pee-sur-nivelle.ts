@@ -30,8 +30,8 @@ export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux TPE agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux TPE agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux TPE agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux TPE agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pée-sur-Nivelle : déploiement outils IA dans vos exploitations, gîtes, campings ou commerces. Automatisation réservations, gestion saisonnière et marketing terroir.",
@@ -57,7 +57,7 @@ export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Pée-sur-Nivelle ?",
-      a: "L'audit Flash IA à Saint-Pée-sur-Nivelle démarre à 490 € HT. Diagnostic de vos processus agricoles, touristiques ou artisanaux, identification cas d'usage IA et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Saint-Pée-sur-Nivelle démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agricoles, touristiques ou artisanaux, identification cas d'usage IA et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les producteurs de piment d'Espelette ?",

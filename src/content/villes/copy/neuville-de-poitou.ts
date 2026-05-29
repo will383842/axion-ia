@@ -30,8 +30,8 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neuville-de-Poitou : formats adaptés au cabinet, commerce, exploitation agricole ou bureau tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Neuville-de-Poitou ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE de Neuville-de-Poitou. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Neuville-de-Poitou. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales du nord Vienne ?",
@@ -61,7 +61,7 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants neuvillois ?",
-      a: "Pour les commerçants de Neuville-de-Poitou, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
+      a: "Pour les commerçants de Neuville-de-Poitou, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
     },
     {
       q: "Travaillez-vous avec les entreprises proches du Futuroscope ?",

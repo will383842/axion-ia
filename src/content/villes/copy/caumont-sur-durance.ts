@@ -30,8 +30,8 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Caumont-sur-Durance : formats adaptés aux exploitations agricoles, PME services, artisans, professions libérales et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les exploitations agricoles autour de la Durance ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture plaine de la Durance : traçabilité parcellaire, gestion récoltes, optimisation circuits courts, fiches Google Business et commercialisation B2B.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture plaine de la Durance : traçabilité parcellaire, gestion récoltes, optimisation circuits courts, fiches Google Business et commercialisation B2B.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et professions libérales de Caumont ?",
@@ -61,7 +61,7 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Caumont-sur-Durance  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Caumont-sur-Durance ?",

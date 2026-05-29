@@ -10,9 +10,9 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Saint-Louis (Haut-Rhin), commune frontalière de 22 805 habitants située à 3,5 km du centre de Bâle et 4 km de Weil am Rhein. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces transfrontaliers, transporteurs et logisticiens, artisans du BTP et professionnels de santé libéraux du Pays de Saint-Louis. Notre approche développe du code custom — pas de no-code générique — adapté aux spécificités d'une agglomération trinationale France-Suisse-Allemagne.",
   directAnswerFr:
-    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit Flash à partir de 490 € HT, intervention sur site à partir de 590 € HT, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût géographique.",
+    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit Flash à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût géographique.",
   directAnswerEn:
-    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit Flash à partir de 490 € HT, intervention sur site à partir de 590 € HT, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût géographique.",
+    "Axion-IA se déplace à Saint-Louis (Haut-Rhin) pour accompagner les TPE et PME frontalières dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerce transfrontalier, transport-logistique liée à l'EuroAirport Bâle-Mulhouse, BTP, santé libérale — avant les rares ETI du bassin. Audit Flash à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût géographique.",
   seoHook: "TPE PME frontalières Bâle : commerce, logistique, BTP",
   ecosystemFr:
     "Saint-Louis, troisième commune la plus peuplée du Haut-Rhin (22 805 habitants en 2023), forme avec Bâle et Weil am Rhein une agglomération trinationale active. Le tissu économique local repose sur le commerce transfrontalier, la logistique liée à l'EuroAirport Bâle-Mulhouse-Fribourg (7e aéroport français), les services à la frontière, le BTP et la santé libérale. L'héritage industriel historique (rubans, soie, chimie, distillerie Fernet Branca devenue musée) a laissé place à une économie tertiaire et transfrontalière. Les TPE et PME y composent l'essentiel du tissu.",
@@ -50,7 +50,7 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Saint-Louis (Haut-Rhin) ?",
-      a: "Audit Flash à partir de 490 € HT, intervention sur site à partir de 590 € HT, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour la zone frontalière.",
+      a: "Audit Flash à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour la zone frontalière.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Saint-Louis ?",

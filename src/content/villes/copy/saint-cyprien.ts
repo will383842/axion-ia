@@ -30,8 +30,8 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Cyprien : formats adaptés à l'hôtel, restaurant, marina, golf, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces de Saint-Cyprien ?",
-      a: "Pour les TPE et commerces à Saint-Cyprien, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence saisonnière, gestion stocks, agents IA prise de commandes.",
+      a: "Pour les TPE et commerces à Saint-Cyprien, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence saisonnière, gestion stocks, agents IA prise de commandes.",
     },
     {
       q: "Comment se déroule une mission à Saint-Cyprien ?",

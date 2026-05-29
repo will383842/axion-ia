@@ -30,8 +30,8 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beausoleil : formats adaptés au commerce, cabinet libéral ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier, contexte bilingue FR/IT fréquent.",
@@ -53,7 +53,7 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerces de proximité de Beausoleil ?",
-      a: "Oui, nous accompagnons les TPE commerces de proximité de Beausoleil sur leurs cas IA : automatisation gestion stocks, agents IA prise de commandes, fidélisation client, gestion caisse augmentée. Audit Flash 490 € HT adapté aux petits commerces.",
+      a: "Oui, nous accompagnons les TPE commerces de proximité de Beausoleil sur leurs cas IA : automatisation gestion stocks, agents IA prise de commandes, fidélisation client, gestion caisse augmentée. Audit Flash {{price:audit-flash|flat}} adapté aux petits commerces.",
     },
     {
       q: "Accompagnez-vous les professions libérales et services à la personne ?",

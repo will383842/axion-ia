@@ -30,8 +30,8 @@ export const HENNEBONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hennebont : diagnostic adapté aux TPE artisans, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Hennebont : diagnostic adapté aux TPE artisans, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Hennebont : diagnostic adapté aux TPE artisans, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hennebont : diagnostic adapté aux TPE artisans, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hennebont : formats adaptés atelier industriel, boutique de centre-ville, cabinet de services. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const HENNEBONT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Hennebont  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME industrie des bords du Blavet.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME industrie des bords du Blavet.",
     },
     {
       q: "Travaillez-vous avec les commerces du centre médiéval ?",

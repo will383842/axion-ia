@@ -10,9 +10,9 @@ export const GARDANNE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Gardanne (21 597 habitants, Bouches-du-Rhône), commune située à 15 km au sud d'Aix-en-Provence et 25 km au nord de Marseille, intégrée à la Métropole d'Aix-Marseille-Provence. Cabinet IA dédié aux TPE et PME francophones, nous codons en custom (pas de no-code) pour le tissu industriel hérité de la mine de charbon (fermée en 2003) et de l'alumine Alteo (ex-Pechiney depuis 1893), ainsi que pour les services aux entreprises gravitant autour des zones d'activité Morandat, Bompertuis, Avon, La Palun et Novactis.",
   directAnswerFr:
-    "À Gardanne, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit Flash dès 490 € HT, intervention dès 590 € HT, implémentation dès 990 € HT.",
+    "À Gardanne, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "À Gardanne, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit Flash dès 490 € HT, intervention dès 590 € HT, implémentation dès 990 € HT.",
+    "À Gardanne, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
   seoHook: "industrie reconvertie & microélectronique",
   ecosystemFr:
     "Gardanne combine un héritage minier-industriel (Alteo et son procédé d'alumine depuis 1893, centrale biomasse 150 MW) et une orientation tech via le campus École des Mines de Saint-Étienne dédié à la microélectronique. Cinq zones d'activité structurent le tissu local : Morandat (reconversion de l'ancien puits), Bompertuis, Avon, La Palun et Novactis. L'intégration à la Métropole Aix-Marseille-Provence ouvre l'accès à des donneurs d'ordre régionaux. Indies (mode, 50 salariés) et Traction Levage illustrent la diversification des TPE/PME locales.",
@@ -31,26 +31,26 @@ export const GARDANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA sur site à Gardanne dès 490 € HT : analyse des process des TPE et PME industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
-      en: "Audit Flash IA sur site à Gardanne dès 490 € HT : analyse des process des TPE et PME industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
+      fr: "Audit Flash IA sur site à Gardanne dès {{price:audit-flash|flat}} : analyse des process des TPE et PME industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
+      en: "Audit Flash IA sur site à Gardanne dès {{price:audit-flash|flat}} : analyse des process des TPE et PME industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
     },
     interventions: {
-      fr: "Interventions IA à Gardanne dès 590 € HT : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour TPE métropolitaines.",
-      en: "Interventions IA à Gardanne dès 590 € HT : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour TPE métropolitaines.",
+      fr: "Interventions IA à Gardanne dès {{price:intervention-4h|flat}} : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour TPE métropolitaines.",
+      en: "Interventions IA à Gardanne dès {{price:intervention-4h|flat}} : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour TPE métropolitaines.",
     },
     implementation: {
-      fr: "Implémentation IA à Gardanne dès 990 € HT : intégration d'agents codés sur mesure pour PME industrielles et tertiaires, connectés à leurs ERP/CRM existants, sans no-code, dans le bassin Aix-Marseille-Gardanne.",
-      en: "Implémentation IA à Gardanne dès 990 € HT : intégration d'agents codés sur mesure pour PME industrielles et tertiaires, connectés à leurs ERP/CRM existants, sans no-code, dans le bassin Aix-Marseille-Gardanne.",
+      fr: "Implémentation IA à Gardanne dès {{price:impl-poc|entry}} : intégration d'agents codés sur mesure pour PME industrielles et tertiaires, connectés à leurs ERP/CRM existants, sans no-code, dans le bassin Aix-Marseille-Gardanne.",
+      en: "Implémentation IA à Gardanne dès {{price:impl-poc|entry}} : intégration d'agents codés sur mesure pour PME industrielles et tertiaires, connectés à leurs ERP/CRM existants, sans no-code, dans le bassin Aix-Marseille-Gardanne.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Gardanne dès 990 € HT pour dirigeants de TPE et PME : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
-      en: "Accompagnement 1-à-1 à Gardanne dès 990 € HT pour dirigeants de TPE et PME : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
+      fr: "Accompagnement 1-à-1 à Gardanne dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
+      en: "Accompagnement 1-à-1 à Gardanne dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Gardanne ?",
-      a: "Les interventions IA à Gardanne démarrent à 590 € HT. L'Audit Flash débute à 490 € HT et l'implémentation à 990 € HT. Tarifs publics, pas de devis surprise.",
+      a: "Les interventions IA à Gardanne démarrent à {{price:intervention-4h|flat}}. L'Audit Flash débute à {{price:audit-flash|flat}} et l'implémentation à {{price:impl-poc|entry}}. Tarifs publics, pas de devis surprise.",
     },
     {
       q: "Quels délais pour une mission à Gardanne ?",

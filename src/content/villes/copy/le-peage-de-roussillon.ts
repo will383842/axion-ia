@@ -30,8 +30,8 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Péage-de-Roussillon : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans du Pays Roussillonnais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA au Péage-de-Roussillon : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans du Pays Roussillonnais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA au Péage-de-Roussillon : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans du Pays Roussillonnais. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA au Péage-de-Roussillon : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans du Pays Roussillonnais. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site au Péage-de-Roussillon : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants au Péage-de-Roussillon, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants au Péage-de-Roussillon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

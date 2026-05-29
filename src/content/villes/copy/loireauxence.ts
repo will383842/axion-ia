@@ -30,8 +30,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loireauxence : formats courts adaptés atelier, exploitation, bureau ou commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et exploitants agricoles ?",
-      a: "Oui, nous accompagnons les TPE artisanales et exploitants agricoles de Loireauxence sur des cas IA concrets : automatisation devis/factures, gestion parcellaire, traçabilité, agents IA relation client. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisanales et exploitants agricoles de Loireauxence sur des cas IA concrets : automatisation devis/factures, gestion parcellaire, traçabilité, agents IA relation client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du bassin Ancenis-Nantes ?",
@@ -64,8 +64,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
       a: "Nos consultants se déplacent sur site à Loireauxence (40 min depuis Nantes, gare Ancenis TER à 10 min). Hébergement local pour missions multi-jours. Frais de déplacement facturés à part, tarifs transparents.",
     },
     {
-      q: "L'audit Flash 490 € HT convient-il aux petites structures ?",
-      a: "Oui, l'audit Flash 490 € HT est conçu pour les TPE, indépendants et professions libérales. En 4 heures, diagnostic de 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
+      q: "L'audit Flash {{price:audit-flash|flat}} convient-il aux petites structures ?",
+      a: "Oui, l'audit Flash {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, diagnostic de 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
     },
   ],
 };

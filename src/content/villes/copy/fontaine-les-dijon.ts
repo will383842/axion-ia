@@ -30,8 +30,8 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontaine-lès-Dijon : formations pratiques pour professions libérales, consultants, commerçants et prestataires B2B. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Fontaine-lès-Dijon  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et professions libérales fontainoises, il inclut un diagnostic complet, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et professions libérales fontainoises, il inclut un diagnostic complet, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les cabinets médicaux à Fontaine-lès-Dijon ?",
@@ -61,7 +61,7 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les consultants et TPE tertiaires fontainois ?",
-      a: "Pour les consultants et TPE tertiaires de Fontaine-lès-Dijon, nous proposons Audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas typiques : agents IA prospection, automatisation reporting, CRM augmenté, analyse documentaire IA.",
+      a: "Pour les consultants et TPE tertiaires de Fontaine-lès-Dijon, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : agents IA prospection, automatisation reporting, CRM augmenté, analyse documentaire IA.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Fontaine-lès-Dijon ?",

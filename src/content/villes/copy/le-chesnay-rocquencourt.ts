@@ -30,8 +30,8 @@ export const LE_CHESNAY_ROCQUENCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI mesurable, audit Flash dès 490 € HT accessible aux indépendants et cabinets.",
-      en: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI mesurable, audit Flash dès 490 € HT accessible aux indépendants et cabinets.",
+      fr: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux indépendants et cabinets.",
+      en: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux indépendants et cabinets.",
     },
     interventions: {
       fr: "Interventions IA sur site au Chesnay : sessions adaptées aux cabinets professionnels et PME tertiaires. Formats demi-journée à 2 jours, vos équipes (assistants, secrétaires médicales, juristes) repartent autonomes.",
@@ -57,7 +57,7 @@ export const LE_CHESNAY_ROCQUENCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE versaillaises ?",
-      a: "Pour les TPE et indépendants au Chesnay et Versailles Grand Parc, audit Flash 490 € HT, intervention demi-journée ou 1 jour, ou coaching 1-to-1. Format compatible avec une activité solo ou très petite équipe. Pas de gros engagement, vous gardez la main.",
+      a: "Pour les TPE et indépendants au Chesnay et Versailles Grand Parc, audit Flash {{price:audit-flash|flat}}, intervention demi-journée ou 1 jour, ou coaching 1-to-1. Format compatible avec une activité solo ou très petite équipe. Pas de gros engagement, vous gardez la main.",
     },
     {
       q: "Quels formats pour les PME tertiaires du bassin versaillais ?",

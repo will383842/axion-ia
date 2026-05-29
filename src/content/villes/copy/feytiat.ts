@@ -30,8 +30,8 @@ export const FEYTIAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feytiat : diagnostic adapté aux TPE artisans, PME tertiaires et technologiques, commerçants et professions libérales de l'agglo limougeaude sud. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Feytiat : diagnostic adapté aux TPE artisans, PME tertiaires et technologiques, commerçants et professions libérales de l'agglo limougeaude sud. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Feytiat : diagnostic adapté aux TPE artisans, PME tertiaires et technologiques, commerçants et professions libérales de l'agglo limougeaude sud. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Feytiat : diagnostic adapté aux TPE artisans, PME tertiaires et technologiques, commerçants et professions libérales de l'agglo limougeaude sud. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Feytiat : formats adaptés au bureau tech, cabinet libéral, commerce ou atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const FEYTIAT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Feytiat ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE de Feytiat. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Feytiat. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME tech proches d'Ester Technopole ?",
@@ -61,7 +61,7 @@ export const FEYTIAT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants feytiatois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Feytiat, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et commerçants à Feytiat, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission à Feytiat depuis Limoges ?",

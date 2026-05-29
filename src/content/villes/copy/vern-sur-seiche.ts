@@ -30,8 +30,8 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vern-sur-Seiche : formats adaptés bureau tertiaire, chantier artisan, commerce de proximité, cabinet libéral ou atelier sous-traitance. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vern-sur-Seiche  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE tertiaires, artisans et commerces de proximité du sud-est rennais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE tertiaires, artisans et commerces de proximité du sud-est rennais.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et de santé de Vern-sur-Seiche ?",

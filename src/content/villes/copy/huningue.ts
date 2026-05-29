@@ -30,8 +30,8 @@ export const HUNINGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Huningue : formats adaptés au site industriel, à l'entrepôt logistique, au commerce, à l'agence ou au bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const HUNINGUE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Huningue  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Huningue : industriels chimie/pharma, logisticiens, commerçants, artisans et prestataires de services du bassin trinational. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Huningue : industriels chimie/pharma, logisticiens, commerçants, artisans et prestataires de services du bassin trinational. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises chimiques et pharmaceutiques ?",
@@ -65,7 +65,7 @@ export const HUNINGUE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Huningue ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Huningue, à partir de 990 € HT. Sessions dans votre usine, entrepôt, agence ou en visio. Approche terrain adaptée aux enjeux trinationaux du bassin de Bâle.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Huningue, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, entrepôt, agence ou en visio. Approche terrain adaptée aux enjeux trinationaux du bassin de Bâle.",
     },
   ],
 };

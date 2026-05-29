@@ -30,8 +30,8 @@ export const NOVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, TPE artisans et PME services de la Petite Crau. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, TPE artisans et PME services de la Petite Crau. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, TPE artisans et PME services de la Petite Crau. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, TPE artisans et PME services de la Petite Crau. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noves : ateliers pour exploitations agricoles, domaines viticoles, TPE artisans et équipes PME services. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const NOVES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Noves  ?",
-      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, exploitations agricoles, viticulteurs et PME novaises. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, exploitations agricoles, viticulteurs et PME novaises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles de Noves ?",
@@ -61,7 +61,7 @@ export const NOVES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC de Noves ?",
-      a: "Oui, nous accompagnons les domaines viticoles AOC : gestion parcellaire, traçabilité vendanges, marketing vente directe caveau, agents IA réservation, optimisation stocks. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les domaines viticoles AOC : gestion parcellaire, traçabilité vendanges, marketing vente directe caveau, agents IA réservation, optimisation stocks. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Noves ?",

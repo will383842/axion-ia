@@ -30,8 +30,8 @@ export const GIGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, TPE commerçants, artisans et professions libérales de la vallée de l'Hérault. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, TPE commerçants, artisans et professions libérales de la vallée de l'Hérault. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, TPE commerçants, artisans et professions libérales de la vallée de l'Hérault. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, TPE commerçants, artisans et professions libérales de la vallée de l'Hérault. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gignac : ateliers adaptés domaine viticole, commerce, cabinet libéral ou artisan. Équipes autonomes sur outils IA métier.",
@@ -53,19 +53,19 @@ export const GIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les domaines viticoles Terrasses du Larzac ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client, classification avis, prédiction vendanges. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client, classification avis, prédiction vendanges. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerces de Gignac ?",
-      a: "Pour les commerces de Gignac, audit Flash 490 € HT, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      a: "Pour les commerces de Gignac, audit Flash {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
     },
     {
       q: "Accompagnez-vous les artisans et professions libérales ?",
-      a: "Oui, pour les artisans BTP et professions libérales, audit Flash 490 € HT, coaching 1-to-1. Cas typiques : automatisation devis, classification dossiers, agents IA prise de RDV.",
+      a: "Oui, pour les artisans BTP et professions libérales, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation devis, classification dossiers, agents IA prise de RDV.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Gignac ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

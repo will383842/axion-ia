@@ -30,8 +30,8 @@ export const MONTS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Monts : formats adaptés au cabinet professionnel, atelier artisan, commerce de proximité ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MONTS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans montois ?",
-      a: "Pour les TPE et artisans à Monts, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
+      a: "Pour les TPE et artisans à Monts, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Monts ?",

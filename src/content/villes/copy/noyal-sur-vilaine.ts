@@ -30,8 +30,8 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noyal-sur-Vilaine : formations pratiques adaptées artisans, commerçants, PME de services et exploitants agricoles. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Noyal-sur-Vilaine ?",
-      a: "L'Audit Flash démarre à 490 € HT pour les TPE noyalaises. Il comprend un diagnostic complet de vos processus, l'identification des cas d'usage IA prioritaires et une feuille de route chiffrée avec ROI estimé.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour les TPE noyalaises. Il comprend un diagnostic complet de vos processus, l'identification des cas d'usage IA prioritaires et une feuille de route chiffrée avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces de proximité ?",

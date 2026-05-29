@@ -18,7 +18,10 @@ import {
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
   IMPLEMENTATION_TIERS,
+  MAINTENANCE_TIERS,
   formatPrice,
+  formatAmount,
+  getTierById,
   INTERVENTION_FEES_NOTE,
   type PricingTier,
 } from "@/content/pricing";
@@ -52,8 +55,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
       : "AI pricing · Audits, Training, Implementations · Axion-IA",
     description: isFr
-      ? "Tous nos tarifs IA en transparence : Audits dès 490 € HT, Formations dès 590 € HT, Implémentations dès 990 € HT, 1-to-1 dès 990 € HT, Plateforme web/SaaS sur devis."
-      : "All our AI pricing, transparent: Audits from €490 ex. VAT, Trainings from €590, Implementations from €990, 1-to-1 from €990, Web platform/SaaS on quote.",
+      ? `Tous nos tarifs IA en transparence : Audits dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, Formations dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")}, Implémentations dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}, 1-to-1 dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "fr")}, Plateforme web/SaaS sur devis.`
+      : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "en", { compact: true })}, Web platform/SaaS on quote.`,
     alternates: { fr: "/tarifs", en: "/pricing" },
   });
 }
@@ -221,7 +224,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Puis-je avoir un devis personnalisé ?",
           answer:
-            "Oui — décrivez votre besoin via la page Contact, réponse personnalisée sous 24 h ouvrées. Pour les formats > 5 000 € HT, nous proposons aussi un cadrage 30 min gratuit avant devis détaillé.",
+            "Oui — décrivez votre besoin via la page Contact, réponse personnalisée sous 24 h ouvrées. Pour les formats > 5 000 € HT, nous proposons aussi un cadrage 30 min gratuit avant devis détaillé." /* price-exempt: seuil qualification devis */,
         },
       ]
     : [
@@ -253,7 +256,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Can I get a custom quote?",
           answer:
-            "Yes — describe your need via the Contact page, personalised reply within 24 business hours. For formats > €5,000 ex. VAT, we also offer a free 30-min scoping call before detailed quote.",
+            "Yes — describe your need via the Contact page, personalised reply within 24 business hours. For formats > €5,000 ex. VAT, we also offer a free 30-min scoping call before detailed quote." /* price-exempt: seuil qualification devis */,
         },
       ];
 
@@ -311,22 +314,62 @@ export default async function PricingPage({ params }: Props) {
         schemaCenterLabel={isFr ? "Tarifs publics" : "Public pricing"}
         schemaAriaLabel={
           isFr
-            ? "Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit Flash 490 €, Audit Ciblé 1900 €, Formation 4 h 590 €, Essentielle 690 €, Approfondie 1190 €, 1-to-1 990 €, Pilote IA 990 €, Maintenance 290 €/mois)."
-            : "Diagram: public pricing at the center, surrounded by 8 priced Axion-IA services (Flash audit €490, Targeted audit €1900, 4 h training €590, Essential €690, Deep dive €1190, 1-to-1 €990, AI Pilot €990, Maintenance €290/month)."
+            ? `Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formation 4 h ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr", { compact: true })}, Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, Approfondie ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "fr", { compact: true })}, 1-to-1 ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
+            : `Diagram: public pricing at the center, surrounded by 8 priced Axion-IA services (Flash audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, 4 h training ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, Deep dive ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!, "en", { compact: true })}, 1-to-1 ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
         }
         schemaNodes={[
-          { label: "Flash", benefit: "490 € HT", accent: "terracotta" },
-          { label: isFr ? "Ciblé" : "Targeted", benefit: "1 900 € HT", accent: "primary" },
-          { label: "Formation 4 h", benefit: "590 € HT", accent: "sage" },
-          { label: "Essentielle", benefit: "690 € HT", accent: "mocha" },
           {
-            label: isFr ? "Approfondie" : "Deep dive",
-            benefit: "1 190 € HT",
+            label: "Flash",
+            benefit: formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr"),
             accent: "terracotta",
           },
-          { label: "1-to-1", benefit: "990 € HT", accent: "primary" },
-          { label: isFr ? "Pilote IA" : "AI Pilot", benefit: "990 € HT", accent: "sage" },
-          { label: "Maintenance", benefit: "290 € HT/mois", accent: "mocha" },
+          {
+            label: isFr ? "Ciblé" : "Targeted",
+            benefit: formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr"),
+            accent: "primary",
+          },
+          {
+            label: "Formation 4 h",
+            benefit: formatAmount(
+              getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!,
+              "fr",
+            ),
+            accent: "sage",
+          },
+          {
+            label: "Essentielle",
+            benefit: formatAmount(
+              getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+              "fr",
+            ),
+            accent: "mocha",
+          },
+          {
+            label: isFr ? "Approfondie" : "Deep dive",
+            benefit: formatAmount(
+              getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!,
+              "fr",
+            ),
+            accent: "terracotta",
+          },
+          {
+            label: "1-to-1",
+            benefit: formatAmount(
+              getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
+              "fr",
+            ),
+            accent: "primary",
+          },
+          {
+            label: isFr ? "Pilote IA" : "AI Pilot",
+            benefit: formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr"),
+            accent: "sage",
+          },
+          {
+            label: "Maintenance",
+            benefit: formatPrice(getTierById(MAINTENANCE_TIERS, "maintenance-standard"), "fr"),
+            accent: "mocha",
+          },
         ]}
       />
 

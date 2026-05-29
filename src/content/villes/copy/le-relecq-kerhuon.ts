@@ -30,8 +30,8 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site au Relecq-Kerhuon : formats adaptés au bureau tertiaire, à l'atelier naval ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure réel.",
@@ -61,7 +61,7 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants du Relecq-Kerhuon ?",
-      a: "Pour les TPE artisans BTP et commerçants au Relecq-Kerhuon, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants au Relecq-Kerhuon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos.",
     },
     {
       q: "Comment se déroule une mission IA au Relecq-Kerhuon ?",

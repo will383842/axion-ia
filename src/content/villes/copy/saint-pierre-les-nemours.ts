@@ -30,8 +30,8 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-lès-Nemours : formats adaptés atelier artisan, commerce, usine PME, cabinet libéral, hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Pierre-lès-Nemours  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Nemours et Fontainebleau ?",

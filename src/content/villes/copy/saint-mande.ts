@@ -52,7 +52,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Mandé ?",
-      a: "Nos interventions sur site à Saint-Mandé démarrent à 590 € HT. Les audits flash sont à partir de 490 € HT et les implémentations sur mesure à partir de 990 € HT. Tarifs publics consultables sur axion-ia.com.",
+      a: "Nos interventions sur site à Saint-Mandé démarrent à {{price:intervention-4h|flat}}. Les audits flash sont à partir de {{price:audit-flash|flat}} et les implémentations sur mesure à partir de {{price:impl-poc|entry}}. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Saint-Mandé ?",

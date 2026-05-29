@@ -30,8 +30,8 @@ export const BLAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit Flash 490 € HT.",
-      en: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blaye : ateliers adaptés aux chais, hébergements touristiques et commerces de bourg. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BLAYE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Blaye  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux vignerons et hébergeurs touristiques du Blayais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et hébergeurs touristiques du Blayais.",
     },
     {
       q: "Accompagnez-vous les vignerons de Côtes de Blaye ?",

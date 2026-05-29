@@ -30,8 +30,8 @@ export const PARTHENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit Flash 490 € HT.",
-      en: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit Flash 490 € HT.",
+      fr: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parthenay : déploiement outils IA dans vos exploitations, ateliers ou commerces. Gestion troupeau, traçabilité production et marketing patrimonial.",
@@ -57,7 +57,7 @@ export const PARTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Parthenay ?",
-      a: "L'audit Flash IA à Parthenay démarre à 490 € HT. Diagnostic de vos processus agricoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Parthenay démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agricoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme à Parthenay ?",

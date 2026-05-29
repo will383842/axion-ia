@@ -30,8 +30,8 @@ export const LEVENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Levens : formats adaptés au gîte, commerce de village, atelier artisan ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,15 +53,15 @@ export const LEVENS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les gîtes et acteurs du tourisme nature ?",
-      a: "Oui, nous accompagnons les gîtes et acteurs tourisme nature de Levens sur leurs cas IA : agents conversationnels multilingues, automatisation réservations, gestion avis visiteurs, marketing digital randonnée/VTT. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les gîtes et acteurs tourisme nature de Levens sur leurs cas IA : agents conversationnels multilingues, automatisation réservations, gestion avis visiteurs, marketing digital randonnée/VTT. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP de montagne ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Levens et moyen-pays sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Levens et moyen-pays sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales de Levens, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Coaching 1-to-1 ou audit Flash 490 € HT.",
+      a: "Pour les commerçants et professions libérales de Levens, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Coaching 1-to-1 ou audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Levens depuis Nice ?",

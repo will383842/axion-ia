@@ -69,6 +69,13 @@ interface TrainingConfig {
   faq: ReadonlyArray<{ qFr: string; qEn: string; aFr: string; aEn: string }>;
 }
 
+// Prix d'entrée Essentielle dérivé de la SSOT (pricing.ts) — référencé dans la
+// FAQ ci-dessous via template literal pour qu'un changement de tarif se propage.
+const ESSENTIELLE_ENTRY_EUR = getTierById(
+  INTERVENTION_TIERS,
+  "intervention-essentielle",
+).priceFlat!;
+
 const TRAINING_CONFIGS: Record<CollectiveTrainingSlug, TrainingConfig> = {
   "demarrage-ia-express": {
     slug: "demarrage-ia-express",
@@ -175,8 +182,8 @@ const TRAINING_CONFIGS: Record<CollectiveTrainingSlug, TrainingConfig> = {
       {
         qFr: "Et après ces 4 h, qu'est-ce que je fais ?",
         qEn: "What do I do after these 4 hours?",
-        aFr: "Vous repartez avec un plan d'action. Si vous voulez aller plus loin, le format Essentielle 1 jour (490 € HT) reprend la base et l'approfondit sur les cas métier. L'Approfondie 2 jours installe l'IA en équipe à l'échelle.",
-        aEn: "You leave with an action plan. If you want to go further, the Essential 1-day format (€490 excl. VAT) covers the basics in depth on business cases. The Deep Dive 2 days installs AI across the team at scale.",
+        aFr: `Vous repartez avec un plan d'action. Si vous voulez aller plus loin, le format Essentielle 1 jour (${formatAmount(ESSENTIELLE_ENTRY_EUR, "fr", { compact: true })} HT) reprend la base et l'approfondit sur les cas métier. L'Approfondie 2 jours installe l'IA en équipe à l'échelle.`,
+        aEn: `You leave with an action plan. If you want to go further, the Essential 1-day format (${formatAmount(ESSENTIELLE_ENTRY_EUR, "en", { compact: true })} excl. VAT) covers the basics in depth on business cases. The Deep Dive 2 days installs AI across the team at scale.`,
       },
     ],
   },

@@ -30,8 +30,8 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chatuzange-le-Goubet : formats adaptés à l'exploitation agricole, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chatuzange-le-Goubet, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Chatuzange-le-Goubet, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",

@@ -30,8 +30,8 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bailly-Romainvilliers : formats adaptés boutique, hôtel, agence immobilière et bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Bailly-Romainvilliers  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME du Val d'Europe, nous proposons des audits approfondis adaptés aux enjeux commerce, hôtellerie et services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME du Val d'Europe, nous proposons des audits approfondis adaptés aux enjeux commerce, hôtellerie et services.",
     },
     {
       q: "Travaillez-vous avec les commerçants du Val d'Europe ?",
@@ -65,7 +65,7 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Bailly-Romainvilliers ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bailly-Romainvilliers, à partir de 990 € HT. Sessions sur site dans votre établissement ou en visio, adaptées à votre secteur.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bailly-Romainvilliers, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans votre établissement ou en visio, adaptées à votre secteur.",
     },
   ],
 };

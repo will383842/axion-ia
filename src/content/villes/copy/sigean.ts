@@ -30,8 +30,8 @@ export const SIGEAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sigean : diagnostic adapté aux acteurs touristiques (Réserve Africaine), viticulteurs Corbières, TPE artisans et commerçants du littoral audois. Audit Flash 490 € HT.",
-      en: "Audit IA à Sigean : diagnostic adapté aux acteurs touristiques (Réserve Africaine), viticulteurs Corbières, TPE artisans et commerçants du littoral audois. Audit Flash 490 € HT.",
+      fr: "Audit IA à Sigean : diagnostic adapté aux acteurs touristiques (Réserve Africaine), viticulteurs Corbières, TPE artisans et commerçants du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sigean : diagnostic adapté aux acteurs touristiques (Réserve Africaine), viticulteurs Corbières, TPE artisans et commerçants du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sigean : formats adaptés au parc animalier, au domaine viticole, au commerce ou à l'hôtel. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const SIGEAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sigean  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tourisme ou viticoles, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tourisme ou viticoles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Corbières autour de Sigean ?",
@@ -65,7 +65,7 @@ export const SIGEAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Sigean ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Sigean. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Sigean. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

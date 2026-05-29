@@ -30,8 +30,8 @@ export const VENTABREN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ventabren : ateliers pour cabinets libéraux, TPE artisans et équipes PME tertiaires. Proximité immédiate gare TGV et technopôle Arbois. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const VENTABREN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ventabren  ?",
-      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs ventabrennois. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs ventabrennois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Ventabren ?",
@@ -61,7 +61,7 @@ export const VENTABREN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les domaines viticoles AOC de Ventabren ?",
-      a: "Oui, nous accompagnons les domaines viticoles AOC Coteaux d'Aix sur des cas IA : gestion parcellaire, traçabilité vendanges, agents IA caveau et œnotourisme, marketing vente directe. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les domaines viticoles AOC Coteaux d'Aix sur des cas IA : gestion parcellaire, traçabilité vendanges, agents IA caveau et œnotourisme, marketing vente directe. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Ventabren ?",

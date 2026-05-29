@@ -30,8 +30,8 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ville-du-Bois : formats adaptés bureau tertiaire, commerce, cabinet libéral, atelier artisan, siège PME Hurepoix. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Ville-du-Bois  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Longjumeau et Montlhéry ?",

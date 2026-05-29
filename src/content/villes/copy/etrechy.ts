@@ -30,8 +30,8 @@ export const ETRECHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Étréchy : formats adaptés cabinet libéral, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const ETRECHY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de proximité ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de commande, fidélisation client, marketing local.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de commande, fidélisation client, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",

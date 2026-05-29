@@ -30,8 +30,8 @@ export const SAINT_JUERY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Juéry : formats adaptés à l'atelier mécanique, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_JUERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Saint-Juéry ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT selon la complexité des processus de production. Tarifs publics.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE. Pour les PME industrielles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des processus de production. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle optimiser la production métallurgique ?",
@@ -65,7 +65,7 @@ export const SAINT_JUERY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Saint-Juéry ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Juéry. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Juéry. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

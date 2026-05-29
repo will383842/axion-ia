@@ -730,7 +730,7 @@ export const BREST_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Brest accompagne individuellement les dirigeants et cadres des technologies marines, de la défense maritime, du Technopôle Brest-Iroise et des PME du Finistère. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — documentation technique maritime, traitement de données océaniques, reporting de bureau d'études ou gestion commerciale de PME brestoise. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Brest accompagne individuellement les dirigeants et cadres des technologies marines, de la défense maritime, du Technopôle Brest-Iroise et des PME du Finistère. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — documentation technique maritime, traitement de données océaniques, reporting de bureau d'études ou gestion commerciale de PME brestoise. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Brest concentre des ingénieurs et cadres de la défense maritime (Naval Group, Thales Underwater Systems, Marine nationale) avec des besoins IA précis et des contraintes de confidentialité fortes — le coaching 1-to-1 s'adapte à leurs contraintes réglementaires.",
           "Les chercheurs et cadres d'IFREMER, du Lab-STICC et du Technopôle Brest-Iroise ont des besoins IA spécifiques sur le traitement de données scientifiques marines, la veille bibliographique et la valorisation de données — le coaching individuel cible ces enjeux précisément.",
@@ -769,7 +769,7 @@ export const BREST_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Programme d'entrée pour les gérants de TPE, artisans, indépendants et petites structures du Finistère souhaitant intégrer l'IA dans leur activité quotidienne.",
           },
@@ -836,7 +836,7 @@ export const BREST_COPY: VilleCopy = {
           "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Brest individually supports executives and managers in marine technologies, maritime defence, Technopôle Brest-Iroise and Finistère SMEs. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — maritime technical documentation, oceanic data processing, engineering bureau reporting or commercial management for a Brest SME. You progress at your own pace, without superfluous theory.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Brest individually supports executives and managers in marine technologies, maritime defence, Technopôle Brest-Iroise and Finistère SMEs. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — maritime technical documentation, oceanic data processing, engineering bureau reporting or commercial management for a Brest SME. You progress at your own pace, without superfluous theory.",
         whyHere: [
           "Brest concentrates engineers and managers in maritime defence (Naval Group, Thales Underwater Systems, French Navy) with precise AI needs and strong confidentiality constraints — 1-to-1 coaching adapts to their regulatory requirements.",
           "Researchers and managers at IFREMER, Lab-STICC and Technopôle Brest-Iroise have specific AI needs around marine scientific data processing, bibliographic monitoring and data valorisation — individual coaching targets these challenges precisely.",
@@ -875,7 +875,7 @@ export const BREST_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry programme for micro-business owners, craft firms, freelancers and small Finistère structures wishing to integrate AI into their daily activity.",
           },

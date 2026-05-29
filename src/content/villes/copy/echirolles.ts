@@ -32,26 +32,26 @@ export const ECHIROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
-      en: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
+      fr: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès 590 € HT, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès 590 € HT, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      en: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
-      fr: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de 990 € HT, hébergement RGPD France.",
-      en: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de 990 € HT, hébergement RGPD France.",
+      fr: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
+      en: "Implémentation IA en code source à Échirolles (ERP industriel, GMAO, gestion patient, intégration SI) pour TPE et PME, à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Échirolles pour dirigeants de TPE et PME industrielles ou de service : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de 990 € HT.",
-      en: "Sessions 1-to-1 à Échirolles pour dirigeants de TPE et PME industrielles ou de service : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de 990 € HT.",
+      fr: "Sessions 1-to-1 à Échirolles pour dirigeants de TPE et PME industrielles ou de service : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Échirolles pour dirigeants de TPE et PME industrielles ou de service : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Échirolles ?",
-      a: "Les interventions Axion-IA à Échirolles démarrent à 590 € HT, l'Audit Flash 4h à 490 € HT, et l'implémentation à 990 € HT. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Échirolles démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Échirolles ?",
@@ -71,7 +71,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA sur site à Échirolles ?",
-      a: "Oui, nous animons des ateliers en présentiel à Échirolles (demi-journée ou journée complète) pour les équipes des TPE et PME, ainsi que des sessions 1-to-1 pour dirigeants à partir de 990 € HT.",
+      a: "Oui, nous animons des ateliers en présentiel à Échirolles (demi-journée ou journée complète) pour les équipes des TPE et PME, ainsi que des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

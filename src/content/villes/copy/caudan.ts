@@ -30,8 +30,8 @@ export const CAUDAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Caudan : formats adaptés aux PME industrielles, plateformes logistiques, artisans BTP et cabinets du bassin lorientais. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const CAUDAN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Caudan  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Lorient Agglomération, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, BTP, commerce, libéral). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Lorient Agglomération, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, BTP, commerce, libéral). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Caudan ?",

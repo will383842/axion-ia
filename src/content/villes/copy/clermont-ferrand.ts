@@ -44,8 +44,8 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
       en: "AI implementation in Clermont-Ferrand: we deploy AI into your existing tools (industrial ERP, CRM, emails, GPAO) with contractually-costed ROI. Your teams stay in control, no lock-in.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Clermont-Ferrand — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux du Technopôle La Pardieu ou d'un site industriel du bassin : dirigeant, manager ou expert technique qui veut progresser seul, à son rythme, sur sa réalité métier.",
-      en: "Individual AI coaching in Clermont-Ferrand — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Technopôle La Pardieu or industrial basin premises: executive, manager or technical expert who wants to progress alone, at their pace, on their real business context.",
+      fr: "Coaching IA individuel à Clermont-Ferrand — à partir de {{price:intervention-dirigeants|flat}}. Un consultant senior dédié à votre cas, dans vos locaux du Technopôle La Pardieu ou d'un site industriel du bassin : dirigeant, manager ou expert technique qui veut progresser seul, à son rythme, sur sa réalité métier.",
+      en: "Individual AI coaching in Clermont-Ferrand — from {{price:intervention-dirigeants|compact}} excl. VAT. A senior consultant dedicated to your case, at your Technopôle La Pardieu or industrial basin premises: executive, manager or technical expert who wants to progress alone, at their pace, on their real business context.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI clermontoises et auvergnates — site vitrine premium pour sous-traitants Michelin et acteurs aéronautique (Auvergne Aéronautique), espace client pour coopératives Limagrain et filière agro AOP, dashboard métier connecté à votre ERP industriel, GPAO ou CRM. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -730,7 +730,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Clermont-Ferrand s'adresse au dirigeant, manager ou expert technique qui veut progresser sur l'IA à son rythme, sur ses propres cas métier — sans partager sa session avec d'autres participants. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux du Technopôle La Pardieu, d'un site industriel ou d'un cabinet du bassin clermontois. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA à Clermont-Ferrand s'adresse au dirigeant, manager ou expert technique qui veut progresser sur l'IA à son rythme, sur ses propres cas métier — sans partager sa session avec d'autres participants. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux du Technopôle La Pardieu, d'un site industriel ou d'un cabinet du bassin clermontois. Frais de logement, repas et forfait trajet facturés en sus.",
         whyHere: [
           "Clermont-Ferrand compte de nombreux dirigeants de PME et ETI (sous-traitance Michelin, agroalimentaire AOP, biotech) qui préfèrent une montée en compétences privée, centrée sur leurs propres données et processus industriels, sans exposer leurs enjeux stratégiques à un groupe.",
           "Les ingénieurs et responsables R&D du campus des Cézeaux et du Biopôle Clermont-Limagne bénéficient d'un accompagnement individuel calibré sur leur niveau technique élevé — loin d'une session pédagogique standardisée.",
@@ -769,7 +769,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Coaching individuel entrée pour dirigeants TPE, artisans et indépendants du bassin clermontois — une journée, un consultant dédié.",
           },
@@ -809,7 +809,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Clermont-Ferrand ?",
-            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux clermontois. Un consultant senior vous accompagne sur vos propres cas métier (industrie, agro, biotech, services) pendant une journée entière. À partir de 990 € HT.",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux clermontois. Un consultant senior vous accompagne sur vos propres cas métier (industrie, agro, biotech, services) pendant une journée entière. À partir de {{price:intervention-dirigeants|flat}}.",
           },
           {
             q: "En quoi le coaching individuel diffère-t-il d'une intervention collective ?",
@@ -836,7 +836,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux clermontois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Clermont-Ferrand is for the executive, manager or technical expert who wants to progress on AI at their own pace, on their own business cases — without sharing the session with other participants. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Technopôle La Pardieu, industrial basin or practice premises. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Clermont-Ferrand is for the executive, manager or technical expert who wants to progress on AI at their own pace, on their own business cases — without sharing the session with other participants. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Technopôle La Pardieu, industrial basin or practice premises. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Clermont-Ferrand has many SME and mid-cap executives (Michelin subcontracting, AOP agri-food, biotech) who prefer private skills development, focused on their own data and industrial processes, without exposing their strategic challenges to a group.",
           "R&D engineers and managers at campus des Cézeaux and Biopôle Clermont-Limagne benefit from individual coaching calibrated to their high technical level — far from a standardised pedagogical session.",
@@ -875,7 +875,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry individual coaching for Clermont basin micro-business executives, craftspeople and freelancers — one day, one dedicated consultant.",
           },
@@ -915,7 +915,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         faq: [
           {
             q: "What is Axion-IA's individual AI coaching in Clermont-Ferrand?",
-            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Clermont premises. A senior consultant accompanies you on your own business cases (manufacturing, agri-food, biotech, services) for a full day. From 990 € excl. VAT.",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Clermont premises. A senior consultant accompanies you on your own business cases (manufacturing, agri-food, biotech, services) for a full day. From {{price:intervention-dirigeants|compact}} excl. VAT.",
           },
           {
             q: "How does individual coaching differ from a group session?",

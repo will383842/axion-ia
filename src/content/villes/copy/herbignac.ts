@@ -30,8 +30,8 @@ export const HERBIGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Herbignac : diagnostic adapté aux TPE artisans, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Herbignac : diagnostic adapté aux TPE artisans, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Herbignac : diagnostic adapté aux TPE artisans, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Herbignac : diagnostic adapté aux TPE artisans, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Herbignac : formats adaptés à l'exploitation agricole, au commerce, à l'hébergement touristique ou au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const HERBIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",
-      a: "Oui, nous accompagnons les exploitations agricoles d'Herbignac sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks et commandes, optimisation logistique, agents IA relation client. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitations agricoles d'Herbignac sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks et commandes, optimisation logistique, agents IA relation client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les acteurs du tourisme vert en Brière ?",
@@ -61,7 +61,7 @@ export const HERBIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Herbignac  ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Brière.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Brière.",
     },
     {
       q: "Intervenez-vous dans les zones rurales du nord Brière ?",

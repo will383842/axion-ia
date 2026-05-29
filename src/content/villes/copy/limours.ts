@@ -30,8 +30,8 @@ export const LIMOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Limours : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const LIMOURS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et TPE du Hurepoix ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",

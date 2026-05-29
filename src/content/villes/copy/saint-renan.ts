@@ -30,8 +30,8 @@ export const SAINT_RENAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
-      en: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
+      en: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Renan : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -57,11 +57,11 @@ export const SAINT_RENAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et professions libérales de Saint-Renan ?",
-      a: "Oui, nous accompagnons les TPE artisans et professions libérales de Saint-Renan sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de RDV, gestion documentaire, secrétariat automatisé. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et professions libérales de Saint-Renan sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de RDV, gestion documentaire, secrétariat automatisé. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Renan  ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Saint-Renan et du Pays d'Iroise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Saint-Renan et du Pays d'Iroise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Renan ?",

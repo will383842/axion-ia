@@ -30,8 +30,8 @@ export const BILLERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit Flash 490 € HT.",
-      en: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit Flash 490 € HT.",
+      fr: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes. Déplacement inclus dans l'agglo Pau.",
@@ -57,7 +57,7 @@ export const BILLERE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Billère ?",
-      a: "L'audit Flash IA à Billère démarre à 490 € HT. Diagnostic de vos processus métier, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre activité dans l'agglo paloise.",
+      a: "L'audit Flash IA à Billère démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus métier, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre activité dans l'agglo paloise.",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Billère ?",

@@ -30,8 +30,8 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arpajon-sur-Cère : formats adaptés au bureau, exploitation élevage, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",

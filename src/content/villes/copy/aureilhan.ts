@@ -30,8 +30,8 @@ export const AUREILHAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aureilhan : formats adaptés à l'atelier industriel, enseigne commerciale, restaurant ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const AUREILHAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants aureilhanais ?",
-      a: "Pour les TPE artisans et commerçants à Aureilhan, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, visibilité web locale.",
+      a: "Pour les TPE artisans et commerçants à Aureilhan, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous les enseignes de la zone commerciale ?",

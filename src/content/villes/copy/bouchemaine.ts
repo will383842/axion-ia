@@ -30,8 +30,8 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouchemaine : formations pour cabinets, PME services et commerces. Ateliers pratiques adaptés aux professionnels de l'ouest angevin.",
@@ -53,7 +53,7 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bouchemaine  ?",
-      a: "L'Audit Flash IA à Bouchemaine démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Bouchemaine démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Bouchemaine ?",

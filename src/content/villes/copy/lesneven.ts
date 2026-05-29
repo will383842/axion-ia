@@ -30,8 +30,8 @@ export const LESNEVEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lesneven : formats adaptés à l'atelier artisan, l'exploitation agricole, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const LESNEVEN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants lesneviens ?",
-      a: "Oui, pour les TPE artisans BTP et commerçants à Lesneven, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Oui, pour les TPE artisans BTP et commerçants à Lesneven, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs du nord Finistère ?",

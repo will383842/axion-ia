@@ -10,9 +10,9 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Cagnes-sur-Mer, quatrième commune des Alpes-Maritimes avec 53 354 habitants, intégrée à la Métropole Nice Côte d'Azur. Située entre Saint-Laurent-du-Var et Villeneuve-Loubet sur le littoral méditerranéen, la ville s'appuie sur un tissu de près de 6 000 établissements actifs orientés commerce, tourisme, BTP et services. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier concrètes (devis, relances, planning, OCR factures), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   directAnswerFr:
-    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. William se déplace sur site depuis Paris pour réaliser un Audit Flash 4h (490 € HT), une intervention ciblée (590 € HT) ou une implémentation complète (à partir de 990 € HT). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
+    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. William se déplace sur site depuis Paris pour réaliser un Audit Flash 4h ({{price:audit-flash|flat}}), une intervention ciblée ({{price:intervention-4h|flat}}) ou une implémentation complète (à partir de {{price:impl-poc|entry}}). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
   directAnswerEn:
-    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. William se déplace sur site depuis Paris pour réaliser un Audit Flash 4h (490 € HT), une intervention ciblée (590 € HT) ou une implémentation complète (à partir de 990 € HT). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
+    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. William se déplace sur site depuis Paris pour réaliser un Audit Flash 4h ({{price:audit-flash|flat}}), une intervention ciblée ({{price:intervention-4h|flat}}) ou une implémentation complète (à partir de {{price:impl-poc|entry}}). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
   seoHook: "commerce, tourisme & BTP littoral",
   ecosystemFr:
     "Cagnes-sur-Mer concentre près de 6 000 établissements actifs autour du commerce de détail, du tourisme balnéaire (Cros-de-Cagnes), du BTP et des activités immobilières. La ville abrite l'Hippodrome de la Côte d'Azur inauguré en 1960, le Musée Renoir (ancienne résidence du peintre 1908-1919) et le Château-Musée Grimaldi. Sa position sur l'A8 (sorties 47 et 48) et ses deux gares SNCF (Cagnes-sur-Mer, Cros-de-Cagnes) la connectent au bassin d'emploi azuréen Nice-Antibes-Sophia Antipolis.",
@@ -32,26 +32,26 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Cagnes-sur-Mer pour TPE-PME du commerce, du tourisme et du BTP — 490 € HT, livrable cartographie processus + 3 quick wins automatisation chiffrés.",
-      en: "Audit Flash 4h à Cagnes-sur-Mer pour TPE-PME du commerce, du tourisme et du BTP — 490 € HT, livrable cartographie processus + 3 quick wins automatisation chiffrés.",
+      fr: "Audit Flash 4h à Cagnes-sur-Mer pour TPE-PME du commerce, du tourisme et du BTP — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés.",
+      en: "Audit Flash 4h à Cagnes-sur-Mer pour TPE-PME du commerce, du tourisme et du BTP — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés.",
     },
     interventions: {
-      fr: "Intervention sur site à Cagnes-sur-Mer dès 590 € HT : prototype automatisation devis, relances clients, OCR factures fournisseurs ou intégration CRM léger pour artisans et commerçants.",
-      en: "Intervention sur site à Cagnes-sur-Mer dès 590 € HT : prototype automatisation devis, relances clients, OCR factures fournisseurs ou intégration CRM léger pour artisans et commerçants.",
+      fr: "Intervention sur site à Cagnes-sur-Mer dès {{price:intervention-4h|flat}} : prototype automatisation devis, relances clients, OCR factures fournisseurs ou intégration CRM léger pour artisans et commerçants.",
+      en: "Intervention sur site à Cagnes-sur-Mer dès {{price:intervention-4h|flat}} : prototype automatisation devis, relances clients, OCR factures fournisseurs ou intégration CRM léger pour artisans et commerçants.",
     },
     implementation: {
-      fr: "Implémentation complète à Cagnes-sur-Mer à partir de 990 € HT : intégration code custom (Python, Node, n8n self-host) dans votre SI existant, tests recette et transfert de compétences.",
-      en: "Implémentation complète à Cagnes-sur-Mer à partir de 990 € HT : intégration code custom (Python, Node, n8n self-host) dans votre SI existant, tests recette et transfert de compétences.",
+      fr: "Implémentation complète à Cagnes-sur-Mer à partir de {{price:impl-poc|entry}} : intégration code custom (Python, Node, n8n self-host) dans votre SI existant, tests recette et transfert de compétences.",
+      en: "Implémentation complète à Cagnes-sur-Mer à partir de {{price:impl-poc|entry}} : intégration code custom (Python, Node, n8n self-host) dans votre SI existant, tests recette et transfert de compétences.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 dirigeant à Cagnes-sur-Mer dès 990 € HT : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et premier cas d'usage activé sous 2 semaines.",
-      en: "Coaching 1-to-1 dirigeant à Cagnes-sur-Mer dès 990 € HT : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et premier cas d'usage activé sous 2 semaines.",
+      fr: "Coaching 1-to-1 dirigeant à Cagnes-sur-Mer dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et premier cas d'usage activé sous 2 semaines.",
+      en: "Coaching 1-to-1 dirigeant à Cagnes-sur-Mer dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et premier cas d'usage activé sous 2 semaines.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour un audit IA à Cagnes-sur-Mer ?",
-      a: "L'Audit Flash 4h sur site à Cagnes-sur-Mer démarre à 490 € HT (cartographie processus + 3 quick wins). Une intervention ciblée est facturée 590 € HT, une implémentation complète à partir de 990 € HT. Tarifs publics fixes, sans abonnement.",
+      a: "L'Audit Flash 4h sur site à Cagnes-sur-Mer démarre à {{price:audit-flash|flat}} (cartographie processus + 3 quick wins). Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, sans abonnement.",
     },
     {
       q: "William se déplace-t-il vraiment à Cagnes-sur-Mer ?",

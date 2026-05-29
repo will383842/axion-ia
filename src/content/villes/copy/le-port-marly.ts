@@ -30,8 +30,8 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Port-Marly : formats adaptés commerce, bureau, cabinet ou restaurant. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Port-Marly ?",
-      a: "L'Audit Flash IA au Port-Marly démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA au Port-Marly démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et commerçants au Port-Marly ?",

@@ -30,8 +30,8 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Puy-Sainte-Réparade : ateliers pour domaines viticoles, cabinets libéraux, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Puy-Sainte-Réparade ?",
-      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles, TPE artisans, PME tertiaires et professions libérales locales. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, TPE artisans, PME tertiaires et professions libérales locales. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC du Puy-Sainte-Réparade ?",
@@ -61,7 +61,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales et PME tertiaires locales ?",
-      a: "Absolument. Cas IA pour PME tertiaires et libéraux : automatisation gestion cabinet, CRM intelligent, agents conversationnels, rédaction assistée, analyse documentaire. Audit Flash 490 € HT.",
+      a: "Absolument. Cas IA pour PME tertiaires et libéraux : automatisation gestion cabinet, CRM intelligent, agents conversationnels, rédaction assistée, analyse documentaire. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA au Puy-Sainte-Réparade ?",

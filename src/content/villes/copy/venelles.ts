@@ -30,8 +30,8 @@ export const VENELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Venelles : ateliers pour équipes PME, cabinets libéraux ou artisans. Format demi-journée ou journée, outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const VENELLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Venelles  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, professions libérales et PME venelloises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales et PME venelloises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Venelles ?",

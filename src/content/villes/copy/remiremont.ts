@@ -30,8 +30,8 @@ export const REMIREMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Remiremont : diagnostic adapté aux commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Remiremont : diagnostic adapté aux commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Remiremont : diagnostic adapté aux commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Remiremont : diagnostic adapté aux commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const REMIREMONT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Remiremont  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Remiremont et du sud-vosgien, il identifie les cas d'usage IA à fort ROI pour votre commerce, hôtel, cabinet ou activité de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Remiremont et du sud-vosgien, il identifie les cas d'usage IA à fort ROI pour votre commerce, hôtel, cabinet ou activité de services.",
     },
     {
       q: "Accompagnez-vous les commerçants des arcades de Remiremont ?",
@@ -65,7 +65,7 @@ export const REMIREMONT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Remiremont ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Remiremont, à partir de 990 € HT. Sessions dans votre commerce, hôtel, cabinet, atelier ou en visio. Approche terrain adaptée au tissu commercial, touristique et libéral sud-vosgien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Remiremont, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre commerce, hôtel, cabinet, atelier ou en visio. Approche terrain adaptée au tissu commercial, touristique et libéral sud-vosgien.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Laurent-de-la-Salanque : formats adaptés au commerce, exploitation maraîchère, atelier, entrepôt logistique. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et indépendants ?",
-      a: "Pour les TPE artisans et indépendants à Saint-Laurent-de-la-Salanque, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion planning.",
+      a: "Pour les TPE artisans et indépendants à Saint-Laurent-de-la-Salanque, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion planning.",
     },
     {
       q: "Comment se déroule une mission à Saint-Laurent-de-la-Salanque ?",

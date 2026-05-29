@@ -30,8 +30,8 @@ export const CROSNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crosne : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de l'est Essonne. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Crosne : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de l'est Essonne. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Crosne : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de l'est Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Crosne : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de l'est Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crosne : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,15 +53,15 @@ export const CROSNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans crosnois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Crosne sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Crosne sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales de Crosne ?",
-      a: "Pour les professions libérales à Crosne, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
+      a: "Pour les professions libérales à Crosne, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
       q: "Proposez-vous des audits rapides pour les PME de Crosne ?",
-      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de 490 € HT, idéal pour les PME de Crosne souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
+      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Crosne souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
       q: "Comment se passe une mission à Crosne depuis Paris ?",

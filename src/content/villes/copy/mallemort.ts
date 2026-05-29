@@ -30,8 +30,8 @@ export const MALLEMORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mallemort : ateliers pratiques pour exploitants agricoles, artisans et commerçants. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const MALLEMORT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un exploitant agricole ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE agricoles, artisans et commerçants mallemortais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE agricoles, artisans et commerçants mallemortais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les arboriculteurs de la Durance ?",

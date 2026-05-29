@@ -10,9 +10,9 @@ export const BOURBOURG_COPY: VilleCopy = {
     "Bourbourg (59), petite ville de la Flandre maritime dans le Nord, reunit pres de 6 930 habitants. Situee entre Dunkerque et Saint-Omer le long du canal de Bourbourg, son economie associe TPE artisans, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Flandre maritime, industrie & canal",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bourbourg (59). Nous accompagnons les TPE, PME et ETI de la Flandre maritime : industriels du Dunkerquois, artisans, agriculteurs, commercants et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Bourbourg est situee en Flandre maritime, entre Dunkerque (15 km) et Saint-Omer (25 km), le long du canal de Bourbourg. Tissu economique mixte : PME industrielles (sous-traitance sidero-chimie dunkerquoise), TPE artisanat BTP, agriculture flamande (polyculture, elevage), commerces de centre-bourg et services.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BOURBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, TPE artisans, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, TPE artisans, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, TPE artisans, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Bourbourg : diagnostic adapte aux PME industrielles du Dunkerquois, TPE artisans, agriculteurs et commercants de Flandre maritime. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Bourbourg : formations adaptees a l'atelier industriel, a l'exploitation agricole, au commerce ou au bureau. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const BOURBOURG_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles du Dunkerquois ?",
-      a: "Pour les PME sous-traitantes sidero-chimie du Dunkerquois, nous proposons : automatisation processus, predictif maintenance, classification documents qualite, agents conversationnels B2B. Audit Flash 490 EUR HT.",
+      a: "Pour les PME sous-traitantes sidero-chimie du Dunkerquois, nous proposons : automatisation processus, predictif maintenance, classification documents qualite, agents conversationnels B2B. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de Flandre maritime ?",
-      a: "Oui, nous accompagnons les exploitants agricoles flamands sur leurs cas IA : IA predictive rendements, automatisation gestion parcellaire, agents conversationnels cooperatives. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les exploitants agricoles flamands sur leurs cas IA : IA predictive rendements, automatisation gestion parcellaire, agents conversationnels cooperatives. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Bourbourg ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Bourbourg ?",

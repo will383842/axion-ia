@@ -38,8 +38,8 @@ export const DIJON_COPY: VilleCopy = {
       en: "AI implementation in Dijon: deployment into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Dijon — à partir de 990 € HT. Un consultant senior entièrement dédié à votre cas, dans vos locaux dijonnais : dirigeant de domaine viticole, responsable agroalimentaire, manager de cabinet ou directeur de PME Côte-d'Or qui veut progresser seul, à son rythme.",
-      en: "Individual AI coaching in Dijon — from 990 € excl. VAT. A senior consultant entirely dedicated to your case, at your Dijon premises: wine estate executive, agri-food manager, practice leader or Côte-d'Or SME director who wants to progress alone, at their own pace.",
+      fr: "Coaching IA individuel à Dijon — à partir de {{price:intervention-dirigeants|flat}}. Un consultant senior entièrement dédié à votre cas, dans vos locaux dijonnais : dirigeant de domaine viticole, responsable agroalimentaire, manager de cabinet ou directeur de PME Côte-d'Or qui veut progresser seul, à son rythme.",
+      en: "Individual AI coaching in Dijon — from {{price:intervention-dirigeants|compact}} excl. VAT. A senior consultant entirely dedicated to your case, at your Dijon premises: wine estate executive, agri-food manager, practice leader or Côte-d'Or SME director who wants to progress alone, at their own pace.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI dijonnaises et bourguignonnes — site vitrine premium pour domaines viticoles AOP et acteurs agroalimentaires (URGO, Amora, Vitagora), espace client pour cabinets et formations, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -731,7 +731,7 @@ export const DIJON_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Dijon s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux dijonnais — domaine viticole, cabinet de conseil, PME agroalimentaire ou ETI de Côte-d'Or. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA individuel Axion-IA à Dijon s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux dijonnais — domaine viticole, cabinet de conseil, PME agroalimentaire ou ETI de Côte-d'Or. Frais de logement, repas et forfait trajet en sus.",
         whyHere: [
           "Dijon compte de nombreux dirigeants de domaines viticoles, coopératives agroalimentaires et cabinets de conseil qui préfèrent une montée en compétences IA privée, ancrée dans leurs propres données (fiches cuvées, notes de dégustation, spécifications produit).",
           "Les responsables de PME pharma-santé (URGO-type) et d'ETI industrielles de Côte-d'Or bénéficient d'un accompagnement individuel calibré sur leurs contraintes réglementaires et de confidentialité — sans partager leurs enjeux avec un groupe.",
@@ -770,7 +770,7 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Coaching individuel entrée pour dirigeants TPE, artisans, indépendants et petits domaines viticoles de la métropole dijonnaise — une journée, un consultant dédié.",
           },
@@ -810,7 +810,7 @@ export const DIJON_COPY: VilleCopy = {
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Dijon ?",
-            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux dijonnais. Un consultant senior vous accompagne sur vos cas métier (viticulture, agro, pharma, services) pendant une journée entière. À partir de 990 € HT.",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux dijonnais. Un consultant senior vous accompagne sur vos cas métier (viticulture, agro, pharma, services) pendant une journée entière. À partir de {{price:intervention-dirigeants|flat}}.",
           },
           {
             q: "Pourquoi choisir le coaching individuel plutôt qu'une session collective à Dijon ?",
@@ -825,7 +825,7 @@ export const DIJON_COPY: VilleCopy = {
             a: "Non. Le coaching s'adapte à votre niveau — débutant ou praticien avancé. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
           },
           {
-            q: "Les frais de déplacement sont-ils inclus dans le tarif de 990 € HT ?",
+            q: "Les frais de déplacement sont-ils inclus dans le tarif de {{price:intervention-dirigeants|flat}} ?",
             a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, selon la doctrine tarifaire Axion-IA. Ces frais sont détaillés sur devis préalable à la confirmation.",
           },
           {
@@ -837,7 +837,7 @@ export const DIJON_COPY: VilleCopy = {
           "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux dijonnais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Dijon is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Dijon premises — wine estate, consulting firm, agri-food SME or Côte-d'Or mid-cap. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Dijon is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Dijon premises — wine estate, consulting firm, agri-food SME or Côte-d'Or mid-cap. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Dijon has many wine estate owners, agri-food co-op managers and consulting firm directors who prefer private AI skills development focused on their own data (cuvée sheets, tasting notes, product specifications).",
           "Pharma-healthcare SME managers (URGO-type) and Côte-d'Or industrial mid-cap executives benefit from individual coaching calibrated to their regulatory and confidentiality constraints — without sharing their challenges with a group.",
@@ -876,7 +876,7 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry individual coaching for Dijon metropolitan micro-business executives, artisans, freelancers and small wine estates — one day, one dedicated consultant.",
           },
@@ -916,7 +916,7 @@ export const DIJON_COPY: VilleCopy = {
         faq: [
           {
             q: "What is Axion-IA's individual AI coaching in Dijon?",
-            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Dijon premises. A senior consultant accompanies you on your business cases (viticulture, agri-food, pharma, services) for a full day. From 990 € excl. VAT.",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Dijon premises. A senior consultant accompanies you on your business cases (viticulture, agri-food, pharma, services) for a full day. From {{price:intervention-dirigeants|compact}} excl. VAT.",
           },
           {
             q: "Why choose individual coaching over a group session in Dijon?",
@@ -931,7 +931,7 @@ export const DIJON_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — beginner or advanced practitioner. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included in the 990 € excl. VAT price?",
+            q: "Are travel costs included in the {{price:intervention-dirigeants|compact}} excl. VAT price?",
             a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are detailed on a prior quote before confirmation.",
           },
           {

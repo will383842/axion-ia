@@ -30,8 +30,8 @@ export const BREUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Breuillet : formats adaptés au commerce, cabinet professionnel, atelier artisan ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,15 +53,15 @@ export const BREUILLET_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Breuillet ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Breuillet sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Breuillet sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les exploitants agricoles du sud Essonne ?",
-      a: "Pour les exploitants agricoles de la vallée de la Renarde autour de Breuillet, audit Flash 490 € HT, intervention 1 journée formation. Cas IA : prédiction météo locale, classification photos cultures, automatisation traçabilité, vente directe e-commerce.",
+      a: "Pour les exploitants agricoles de la vallée de la Renarde autour de Breuillet, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation. Cas IA : prédiction météo locale, classification photos cultures, automatisation traçabilité, vente directe e-commerce.",
     },
     {
       q: "Proposez-vous des audits rapides pour les PME de Breuillet ?",
-      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de 490 € HT, idéal pour les PME de Breuillet souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
+      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Breuillet souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
       q: "Comment se passe une mission à Breuillet depuis Paris ?",

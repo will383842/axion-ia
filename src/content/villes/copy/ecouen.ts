@@ -30,8 +30,8 @@ export const ECOUEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Écouen : formats adaptés au commerce, au cabinet ou à l'office de tourisme. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const ECOUEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Écouen ?",
-      a: "L'Audit Flash IA à Écouen démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Écouen démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme culturel à Écouen ?",

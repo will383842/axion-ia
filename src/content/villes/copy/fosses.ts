@@ -30,8 +30,8 @@ export const FOSSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fosses : formats adaptés au chantier artisan, au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,7 +57,7 @@ export const FOSSES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Fosses ?",
-      a: "L'Audit Flash IA à Fosses démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Fosses démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les entreprises liées au bassin Roissy ?",

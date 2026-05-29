@@ -30,8 +30,8 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Ismier : formats adaptés au cabinet professionnel, atelier artisan haut de gamme, bureau PME tertiaire. Vos équipes repartent autonomes sur outils IA métier.",

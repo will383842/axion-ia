@@ -30,8 +30,8 @@ export const COGNIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cognin : formats adaptés aux bureaux tertiaires, ateliers artisans BTP, commerces ou cabinets libéraux. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const COGNIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Cognin ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour une TPE à Cognin. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Cognin. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
     },
     {
       q: "Comment se déroule une mission IA à Cognin ?",

@@ -30,8 +30,8 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bures-sur-Yvette : formats adaptés au cabinet professionnel, commerce, bureau d'études ou atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME proches du campus Paris-Saclay ?",
-      a: "Oui, nous accompagnons les PME et bureaux d'études du bassin Paris-Saclay sur leurs cas IA : automatisation documentaire, classification données scientifiques, agents conversationnels internes, veille sectorielle augmentée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME et bureaux d'études du bassin Paris-Saclay sur leurs cas IA : automatisation documentaire, classification données scientifiques, agents conversationnels internes, veille sectorielle augmentée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Proposez-vous des audits rapides pour les TPE de Bures ?",
-      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de 490 € HT, idéal pour les TPE de Bures-sur-Yvette souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
+      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les TPE de Bures-sur-Yvette souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
       q: "Comment se passe une mission à Bures-sur-Yvette depuis Paris ?",

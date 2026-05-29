@@ -30,8 +30,8 @@ export const RETHEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rethel : formations pratiques pour équipes agroalimentaires, exploitations agricoles, commerce et services du Rethélois. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -53,15 +53,15 @@ export const RETHEL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous la filière agroalimentaire boudin blanc de Rethel ?",
-      a: "Oui, nous accompagnons les charcuteries, artisans et industriels du boudin blanc IGP de Rethel avec des solutions IA adaptées : traçabilité IGP, contrôle qualité, gestion stocks, optimisation production. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les charcuteries, artisans et industriels du boudin blanc IGP de Rethel avec des solutions IA adaptées : traçabilité IGP, contrôle qualité, gestion stocks, optimisation production. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Rethel  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME rethéloises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME rethéloises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles du Rethélois ?",
-      a: "Pour les exploitations agricoles du Rethélois (céréales, grandes cultures), nous proposons : outils IA prédiction rendement, optimisation intrants, gestion documentaire PAC, automatisation reporting. Audit Flash 490 € HT.",
+      a: "Pour les exploitations agricoles du Rethélois (céréales, grandes cultures), nous proposons : outils IA prédiction rendement, optimisation intrants, gestion documentaire PAC, automatisation reporting. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Rethel ?",

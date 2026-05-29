@@ -30,8 +30,8 @@ export const ERSTEIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Erstein : diagnostic adapté aux agro-industriels, exploitants agricoles du Ried, commerçants et artisans du sud Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Erstein : diagnostic adapté aux agro-industriels, exploitants agricoles du Ried, commerçants et artisans du sud Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Erstein : diagnostic adapté aux agro-industriels, exploitants agricoles du Ried, commerçants et artisans du sud Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Erstein : diagnostic adapté aux agro-industriels, exploitants agricoles du Ried, commerçants et artisans du sud Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Erstein : formats adaptés à l'agro-industrie, à l'exploitation agricole, à la coopérative, au commerce ou à l'atelier artisanal. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const ERSTEIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Erstein  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME d'Erstein et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre agro-industrie, exploitation agricole, coopérative, commerce ou activité artisanale.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d'Erstein et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre agro-industrie, exploitation agricole, coopérative, commerce ou activité artisanale.",
     },
     {
       q: "Accompagnez-vous les agro-industriels et coopératives du sud Bas-Rhin ?",
@@ -65,7 +65,7 @@ export const ERSTEIN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Erstein ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Erstein, à partir de 990 € HT. Sessions à l'exploitation, au site agro-industriel ou en visio. Approche terrain adaptée au tissu agricole et agroalimentaire du sud Bas-Rhin.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Erstein, à partir de {{price:intervention-dirigeants|flat}}. Sessions à l'exploitation, au site agro-industriel ou en visio. Approche terrain adaptée au tissu agricole et agroalimentaire du sud Bas-Rhin.",
     },
   ],
 };

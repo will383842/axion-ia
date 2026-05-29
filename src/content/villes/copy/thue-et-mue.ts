@@ -30,8 +30,8 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thue et Mue : diagnostic adapté aux PME services agglo Caen, exploitations céréalières, TPE artisans BTP, commerçants et professions libérales périurbaines. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Thue et Mue : diagnostic adapté aux PME services agglo Caen, exploitations céréalières, TPE artisans BTP, commerçants et professions libérales périurbaines. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Thue et Mue : diagnostic adapté aux PME services agglo Caen, exploitations céréalières, TPE artisans BTP, commerçants et professions libérales périurbaines. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thue et Mue : diagnostic adapté aux PME services agglo Caen, exploitations céréalières, TPE artisans BTP, commerçants et professions libérales périurbaines. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thue et Mue : formats adaptés au bureau tertiaire, exploitation agricole, atelier BTP ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Thue et Mue ?",
-      a: "Pour les TPE artisans BTP et commerçants à Thue et Mue, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Thue et Mue, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Thue et Mue  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Êtes-vous proches de l'aéroport Caen-Carpiquet ?",

@@ -30,8 +30,8 @@ export const BARBERAZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Barberaz : formats adaptés aux bureaux tertiaires, cabinets libéraux, ateliers artisans BTP ou commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const BARBERAZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Barberaz ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour une TPE à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
     },
     {
       q: "Comment se déroule une mission IA à Barberaz ?",

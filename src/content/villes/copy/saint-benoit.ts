@@ -30,8 +30,8 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Benoît : formats adaptés aux cabinets libéraux, PME tertiaires, commerces ou associations culturelles. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales à Saint-Benoît ?",
-      a: "Oui, nous accompagnons les professions libérales à Saint-Benoît (médecins, avocats, experts-comptables, kinés) sur leurs cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers, dictée IA rapports. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les professions libérales à Saint-Benoît (médecins, avocats, experts-comptables, kinés) sur leurs cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers, dictée IA rapports. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires du Grand Poitiers ?",
@@ -61,7 +61,7 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Benoît, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, marketing digital local.",
+      a: "Pour les TPE artisans et commerçants à Saint-Benoît, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, marketing digital local.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

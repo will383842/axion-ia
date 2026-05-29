@@ -30,8 +30,8 @@ export const LISIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lisieux : diagnostic adapté aux producteurs agroalimentaires normands (fromages AOP, cidreries), professionnels du tourisme/pèlerinage, PME industrielles et TPE artisans du Pays d'Auge. Audit Flash 490 € HT.",
-      en: "Audit IA à Lisieux : diagnostic adapté aux producteurs agroalimentaires normands (fromages AOP, cidreries), professionnels du tourisme/pèlerinage, PME industrielles et TPE artisans du Pays d'Auge. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lisieux : diagnostic adapté aux producteurs agroalimentaires normands (fromages AOP, cidreries), professionnels du tourisme/pèlerinage, PME industrielles et TPE artisans du Pays d'Auge. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lisieux : diagnostic adapté aux producteurs agroalimentaires normands (fromages AOP, cidreries), professionnels du tourisme/pèlerinage, PME industrielles et TPE artisans du Pays d'Auge. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lisieux : formats adaptés à la fromagerie, la cidrerie, l'hôtel/hébergement touristique, l'atelier industriel ou le commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const LISIEUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Lisieux ?",
-      a: "L'audit Flash IA à Lisieux démarre à 490 € HT. Diagnostic complet de vos processus agroalimentaires, touristiques ou industriels, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté au Pays d'Auge.",
+      a: "L'audit Flash IA à Lisieux démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, touristiques ou industriels, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté au Pays d'Auge.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Lisieux ?",

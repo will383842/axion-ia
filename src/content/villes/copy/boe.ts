@@ -30,8 +30,8 @@ export const BOE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boé : diagnostic adapté aux TPE/PME logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Boé : diagnostic adapté aux TPE/PME logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Boé : diagnostic adapté aux TPE/PME logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Boé : diagnostic adapté aux TPE/PME logistique, transport, artisanat, commerce et services de l'agglomération agenaise sud-ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boé : formats adaptés à l'entrepôt logistique, l'atelier, le commerce ou le bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BOE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Boé  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Boé : logisticiens, transporteurs, artisans, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Boé : logisticiens, transporteurs, artisans, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les entreprises de logistique à Boé ?",
@@ -61,7 +61,7 @@ export const BOE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Boé ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Boé, à partir de 990 € HT. Sessions dans votre entrepôt, atelier, commerce ou en visio. Approche terrain adaptée aux métiers de l'agglomération agenaise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Boé, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre entrepôt, atelier, commerce ou en visio. Approche terrain adaptée aux métiers de l'agglomération agenaise.",
     },
     {
       q: "Comment se déroule une mission IA à Boé ?",

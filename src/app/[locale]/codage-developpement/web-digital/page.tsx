@@ -20,6 +20,7 @@ import {
   buildItemListJsonLd,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { CODAGE_TIERS, getTierById, formatAmount } from "@/content/pricing";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { Illustration } from "@/components/visual/Illustration";
@@ -312,8 +313,7 @@ export default async function WebDigitalPage({ params }: Props) {
         {
           id: "q-cout",
           question: "Combien ça coûte d'intégrer l'IA dans un site web ?",
-          answer:
-            "De 2 000 € (chatbot RAG sur une base documentaire) à 30 000 €+ (plateforme sur mesure complète avec IA intégrée). Toujours en forfait fixe, devis ferme avant démarrage.",
+          answer: `De ${formatAmount(getTierById(CODAGE_TIERS, "codage-web").priceMin!, "fr", { compact: true })} (chatbot RAG sur une base documentaire) à ${formatAmount(getTierById(CODAGE_TIERS, "codage-web").priceMax!, "fr", { compact: true })}+ (plateforme sur mesure complète avec IA intégrée). Toujours en forfait fixe, devis ferme avant démarrage.`,
         },
         {
           id: "q-proprio",
@@ -350,8 +350,7 @@ export default async function WebDigitalPage({ params }: Props) {
         {
           id: "q-cost",
           question: "How much does it cost to add AI to a website?",
-          answer:
-            "From €2,000 (RAG chatbot on a knowledge base) to €30,000+ (full custom platform with integrated AI). Always fixed fee, firm quote before kick-off.",
+          answer: `From ${formatAmount(getTierById(CODAGE_TIERS, "codage-web").priceMin!, "en", { compact: true })} (RAG chatbot on a knowledge base) to ${formatAmount(getTierById(CODAGE_TIERS, "codage-web").priceMax!, "en", { compact: true })}+ (full custom platform with integrated AI). Always fixed fee, firm quote before kick-off.`,
         },
         {
           id: "q-owner",

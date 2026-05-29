@@ -30,8 +30,8 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud-ouest Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud-ouest Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud-ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-Tolosane : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud-ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-Tolosane : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villeneuve-Tolosane  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Villeneuve-Tolosane ?",
@@ -65,7 +65,7 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à Villeneuve-Tolosane ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villeneuve-Tolosane. Format flexible : locaux, visio. À partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Villeneuve-Tolosane. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

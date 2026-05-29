@@ -30,8 +30,8 @@ export const EYBENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux indépendants et cabinets.",
-      en: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux indépendants et cabinets.",
+      fr: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux indépendants et cabinets.",
+      en: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux indépendants et cabinets.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eybens : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes (assistants, secrétaires médicales, commerciaux) repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const EYBENS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans eybinois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Eybens (plombiers, électriciens, menuisiers, peintres) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Eybens (plombiers, électriciens, menuisiers, peintres) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME tertiaires de l'agglomération grenobloise ?",

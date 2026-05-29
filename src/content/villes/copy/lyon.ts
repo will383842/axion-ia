@@ -761,7 +761,7 @@ export const LYON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "à partir de 990 € HT",
+            price: "à partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Pour indépendants, gérants et dirigeants de TPE lyonnaises (Presqu'île, Vieux Lyon, quartiers résidentiels). Parcours court sur sessions de travail ciblées — email, devis, veille, gestion administrative.",
           },

@@ -30,8 +30,8 @@ export const MORMANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mormant : formats adaptés atelier artisan, commerce de bourg, usine agroalimentaire, exploitation agricole, cabinet libéral. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const MORMANT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mormant  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Melun et Provins ?",

@@ -30,8 +30,8 @@ export const FISMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fismes : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Fismes : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Fismes : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fismes : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fismes : formats adaptés boutique, cabinet, exploitation, atelier. Vos équipes repartent autonomes sur les outils déployés.",
@@ -53,7 +53,7 @@ export const FISMES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fismes  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME du bassin fismois.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME du bassin fismois.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs champenois autour de Fismes ?",

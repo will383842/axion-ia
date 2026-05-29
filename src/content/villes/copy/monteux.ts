@@ -30,8 +30,8 @@ export const MONTEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Monteux : ateliers pour équipes TPE/PME agricoles, transformateurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
@@ -53,7 +53,7 @@ export const MONTEUX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Monteux  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE maraîchers, PME agroalimentaires, artisans et commerces montiliens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE maraîchers, PME agroalimentaires, artisans et commerces montiliens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les maraîchers et l'agroalimentaire local ?",

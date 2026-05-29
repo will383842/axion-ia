@@ -30,8 +30,8 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brétigny : diagnostic adapté aux TPE indépendantes, PME tertiaires sud-Essonne et structures de santé bréthignolaises. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Brétigny : diagnostic adapté aux TPE indépendantes, PME tertiaires sud-Essonne et structures de santé bréthignolaises. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Brétigny : diagnostic adapté aux TPE indépendantes, PME tertiaires sud-Essonne et structures de santé bréthignolaises. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Brétigny : diagnostic adapté aux TPE indépendantes, PME tertiaires sud-Essonne et structures de santé bréthignolaises. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brétigny : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes (assistants, commerciaux, médecins) repartent avec outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et indépendants ?",
-      a: "Pour les TPE et indépendants à Brétigny (artisans, commerces, freelances), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
+      a: "Pour les TPE et indépendants à Brétigny (artisans, commerces, freelances), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {
       q: "Accompagnez-vous les PME de la ZAC Clause-Bois Badeau ?",

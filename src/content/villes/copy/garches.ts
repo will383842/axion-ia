@@ -30,8 +30,8 @@ export const GARCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Garches : formats adaptés au cabinet médical, bureau conseil, commerce ou PME tertiaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const GARCHES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Garches  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest parisien, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, conseil, patrimoine, commerce). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest parisien, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, conseil, patrimoine, commerce). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les cabinets conseil des Hauts-de-Seine ?",

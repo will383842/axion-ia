@@ -30,8 +30,8 @@ export const BORDERES_SUR_L_ECHEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bordères-sur-l'Échez : diagnostic adapté aux PME industrielles, TPE artisans BTP, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bordères-sur-l'Échez : diagnostic adapté aux PME industrielles, TPE artisans BTP, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bordères-sur-l'Échez : diagnostic adapté aux PME industrielles, TPE artisans BTP, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bordères-sur-l'Échez : diagnostic adapté aux PME industrielles, TPE artisans BTP, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bordères-sur-l'Échez : formats adaptés à l'atelier industriel, entreprise artisanale, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const BORDERES_SUR_L_ECHEZ_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP bordarais ?",
-      a: "Pour les TPE artisans BTP à Bordères-sur-l'Échez, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis chantier, agents IA prise de RDV, gestion planning équipes, suivi chantier.",
+      a: "Pour les TPE artisans BTP à Bordères-sur-l'Échez, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis chantier, agents IA prise de RDV, gestion planning équipes, suivi chantier.",
     },
     {
       q: "Accompagnez-vous les professions libérales et services ?",

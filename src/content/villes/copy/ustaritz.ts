@@ -30,8 +30,8 @@ export const USTARITZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ustaritz : diagnostic adapté aux TPE agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit Flash 490 € HT.",
-      en: "Audit IA à Ustaritz : diagnostic adapté aux TPE agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ustaritz : diagnostic adapté aux TPE agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ustaritz : diagnostic adapté aux TPE agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ustaritz : déploiement outils IA dans vos exploitations agricoles, ateliers artisanaux ou commerces. Vos équipes repartent autonomes sur outils configurés métier.",
@@ -57,7 +57,7 @@ export const USTARITZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Ustaritz ?",
-      a: "L'audit Flash IA à Ustaritz démarre à 490 € HT. Diagnostic de vos processus agricoles, artisanaux ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Ustaritz démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agricoles, artisanaux ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les artisans du terroir basque à Ustaritz ?",

@@ -30,8 +30,8 @@ export const ALBERTVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Albertville : formats adaptés station, usine sous-traitance, bureau administratif, hôtel, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",

@@ -30,8 +30,8 @@ export const NIEUL_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nieul-sur-Mer : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit Flash 490 € HT.",
-      en: "Audit IA à Nieul-sur-Mer : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit Flash 490 € HT.",
+      fr: "Audit IA à Nieul-sur-Mer : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nieul-sur-Mer : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nieul-sur-Mer : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const NIEUL_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Nieul-sur-Mer ?",
-      a: "L'audit Flash IA à Nieul-sur-Mer démarre à 490 € HT. Diagnostic complet de vos processus tertiaires ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Nieul-sur-Mer démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Nieul-sur-Mer ?",

@@ -30,8 +30,8 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Divonne-les-Bains : formats adaptés à l'hôtel thermal, casino, golf, bureau. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",

@@ -30,8 +30,8 @@ export const AVION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avion : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs ESS de l'agglo Lens-Liévin. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Avion : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs ESS de l'agglo Lens-Liévin. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Avion : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs ESS de l'agglo Lens-Liévin. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Avion : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs ESS de l'agglo Lens-Liévin. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avion : formats adaptés à l'atelier artisanal, cabinet, commerce ou structure ESS. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const AVION_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants d'Avion ?",
-      a: "Pour les TPE artisans BTP et commerçants à Avion, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Avion, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les PME de services de l'agglo Lens ?",

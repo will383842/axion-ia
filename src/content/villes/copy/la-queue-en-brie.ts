@@ -30,8 +30,8 @@ export const LA_QUEUE_EN_BRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Queue-en-Brie : formats adaptés atelier artisan, commerce, cabinet, exploitation. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const LA_QUEUE_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à La Queue-en-Brie ?",
-      a: "L'audit Flash IA à La Queue-en-Brie démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à La Queue-en-Brie démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Quels services pour les commerces de centre-bourg ?",
-      a: "CRM augmenté, gestion stocks prédictive, fidélisation client IA, automatisation commandes fournisseurs, présence digitale optimisée. Audit Flash 490 € HT pour identifier vos priorités.",
+      a: "CRM augmenté, gestion stocks prédictive, fidélisation client IA, automatisation commandes fournisseurs, présence digitale optimisée. Audit Flash {{price:audit-flash|flat}} pour identifier vos priorités.",
     },
     {
       q: "Comment se déroule un coaching 1-to-1 à La Queue-en-Brie ?",

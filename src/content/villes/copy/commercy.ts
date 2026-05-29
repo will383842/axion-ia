@@ -30,8 +30,8 @@ export const COMMERCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Commercy : formats adaptés à la pâtisserie artisanale, au commerce, au restaurant ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const COMMERCY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Commercy  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Commercy et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Commercy et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
     },
     {
       q: "Accompagnez-vous les pâtissiers et artisans agroalimentaires de Commercy ?",
@@ -65,7 +65,7 @@ export const COMMERCY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Commercy ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Commercy, à partir de 990 € HT. Sessions dans votre atelier, boutique ou en visio. Approche terrain adaptée au tissu économique meusien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Commercy, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, boutique ou en visio. Approche terrain adaptée au tissu économique meusien.",
     },
   ],
 };

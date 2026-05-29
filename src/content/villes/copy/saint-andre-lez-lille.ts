@@ -30,8 +30,8 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-lez-Lille : diagnostic adapté aux TPE et PME de services, cabinets de professions libérales, commerçants, artisans et restaurateurs de la première couronne lilloise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-André-lez-Lille : diagnostic adapté aux TPE et PME de services, cabinets de professions libérales, commerçants, artisans et restaurateurs de la première couronne lilloise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-André-lez-Lille : diagnostic adapté aux TPE et PME de services, cabinets de professions libérales, commerçants, artisans et restaurateurs de la première couronne lilloise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-André-lez-Lille : diagnostic adapté aux TPE et PME de services, cabinets de professions libérales, commerçants, artisans et restaurateurs de la première couronne lilloise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-lez-Lille : formats adaptés au cabinet libéral, à l'agence conseil, au commerce ou au restaurant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-André-lez-Lille  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la première couronne lilloise, il identifie les cas d'usage IA à fort ROI pour votre activité (professions libérales, services, commerce, artisanat, restauration). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la première couronne lilloise, il identifie les cas d'usage IA à fort ROI pour votre activité (professions libérales, services, commerce, artisanat, restauration). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les agences conseil et ESN à Saint-André-lez-Lille ?",

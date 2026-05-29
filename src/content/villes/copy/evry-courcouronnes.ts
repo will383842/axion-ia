@@ -10,9 +10,9 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Évry-Courcouronnes, préfecture de l'Essonne née de la fusion de 2019. La ville abrite Arianespace, le cluster biotech Genopole et l'Université d'Évry-Val-d'Essonne, dans un bassin de 30 km au sud-est de Paris desservi par le RER D et le tramway T12.",
   directAnswerFr:
-    "À Évry-Courcouronnes, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès 590 € HT, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
+    "À Évry-Courcouronnes, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès {{price:intervention-4h|flat}}, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
   directAnswerEn:
-    "À Évry-Courcouronnes, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès 590 € HT, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
+    "À Évry-Courcouronnes, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'écosystème local mêle services tertiaires de préfecture, biotech (Genopole), aérospatial (Arianespace) et industrie partagée avec Corbeil-Essonnes. Nos services incluent audits dès {{price:intervention-4h|flat}}, interventions, implémentations sur mesure et sessions un-à-un, avec tarifs publics consultables.",
   seoHook: "biotech Genopole & services aux entreprises",
   ecosystemFr:
     "Évry-Courcouronnes structure son économie autour du cluster biotech Genopole, du siège d'Arianespace et d'un écosystème académique dense : Université d'Évry-Val-d'Essonne, Télécom SudParis et ENSIIE. Trois gares RER, trois stations T12 et l'autoroute A6 desservent un bassin d'emploi élargi vers Corbeil-Essonnes, Ris-Orangis et Bondoufle.",
@@ -51,7 +51,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Évry-Courcouronnes ?",
-      a: "Les interventions à Évry-Courcouronnes commencent à partir de 590 € HT (Intervention Essentielle). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
+      a: "Les interventions à Évry-Courcouronnes commencent à partir de {{price:intervention-4h|flat}} (Intervention Essentielle). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines d'Évry-Courcouronnes ?",
@@ -71,7 +71,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les dirigeants à Évry-Courcouronnes ?",
-      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME d'Évry-Courcouronnes, à partir de 990 € HT, pour bâtir une feuille de route IA opérationnelle.",
+      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME d'Évry-Courcouronnes, à partir de {{price:intervention-dirigeants|flat}}, pour bâtir une feuille de route IA opérationnelle.",
     },
   ],
 };

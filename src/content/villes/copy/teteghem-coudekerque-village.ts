@@ -30,8 +30,8 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Téteghem-Coudekerque-Village : diagnostic adapté aux prestataires logistiques portuaires, PME industrielles sous-traitantes Dunkerque, commerçants, artisans et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Téteghem-Coudekerque-Village : diagnostic adapté aux prestataires logistiques portuaires, PME industrielles sous-traitantes Dunkerque, commerçants, artisans et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Téteghem-Coudekerque-Village : diagnostic adapté aux prestataires logistiques portuaires, PME industrielles sous-traitantes Dunkerque, commerçants, artisans et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Téteghem-Coudekerque-Village : diagnostic adapté aux prestataires logistiques portuaires, PME industrielles sous-traitantes Dunkerque, commerçants, artisans et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Téteghem-Coudekerque-Village : formats adaptés au prestataire logistique, à la PME industrielle, au commerce ou à l'exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Téteghem-Coudekerque-Village  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, industrie sous-traitante, commerce, agriculture). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, industrie sous-traitante, commerce, agriculture). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME industrielles sous-traitantes Dunkerque ?",

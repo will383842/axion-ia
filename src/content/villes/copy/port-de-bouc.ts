@@ -30,8 +30,8 @@ export const PORT_DE_BOUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Port-de-Bouc : diagnostic adapté aux TPE sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Port-de-Bouc : diagnostic adapté aux TPE sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Port-de-Bouc : diagnostic adapté aux TPE sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Port-de-Bouc : diagnostic adapté aux TPE sous-traitants industriels et PME ingénierie du golfe de Fos. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Port-de-Bouc : formats adaptés à l'industrie, la maintenance et la logistique portuaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const PORT_DE_BOUC_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Port-de-Bouc ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME industrielles du golfe de Fos, l'audit Stratégique approfondi est disponible. Tous les tarifs sont publics et sans engagement.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME industrielles du golfe de Fos, l'audit Stratégique approfondi est disponible. Tous les tarifs sont publics et sans engagement.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants industriels de Port-de-Bouc ?",

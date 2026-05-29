@@ -20,6 +20,14 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { REGIONS, getIndexableRegions, getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles, VILLES } from "@/content/villes";
 import { buildProductMetadata, buildItemListJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  AUDIT_TIERS,
+  INTERVENTION_TIERS,
+  IMPLEMENTATION_TIERS,
+  getTierById,
+  getEntryPriceEur,
+  formatAmount,
+} from "@/content/pricing";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -120,33 +128,45 @@ export default async function ImplantationsHub({ params }: Props) {
         position: 1,
         name: isFr ? "Audit IA" : "Audit IA",
         url: `${SITE_URL}/${loc}/audit`,
-        description: isFr
-          ? "Diagnostic IA chiffré, 4 niveaux (Flash 490 € → Stratégique ETI dès 12 000 €), plan d'action priorisé."
-          : "Diagnostic IA chiffré, 4 niveaux (Flash 490 € → Stratégique ETI dès 12 000 €), plan d'action priorisé.",
+        description: `Diagnostic IA chiffré, 4 niveaux (Flash ${formatAmount(
+          getTierById(AUDIT_TIERS, "audit-flash").priceFlat!,
+          loc,
+          { compact: true },
+        )} → Stratégique ETI dès ${formatAmount(
+          getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
+          loc,
+          { compact: true },
+        )}), plan d'action priorisé.`,
       },
       {
         position: 2,
         name: isFr ? "Formation IA en entreprise" : "Formation IA en entreprise",
         url: `${SITE_URL}/${loc}/interventions`,
-        description: isFr
-          ? "Ateliers et interventions sur site, dès 490 €, groupes 1-30 personnes, sur vos vraies données."
-          : "Ateliers et interventions sur site, dès 490 €, groupes 1-30 personnes, sur vos vraies données.",
+        description: `Ateliers et interventions sur site, dès ${formatAmount(
+          getEntryPriceEur(INTERVENTION_TIERS)!,
+          loc,
+          { compact: true },
+        )}, groupes 1-30 personnes, sur vos vraies données.`,
       },
       {
         position: 3,
         name: isFr ? "Coaching 1-to-1 dirigeants" : "Coaching 1-to-1 dirigeants",
         url: `${SITE_URL}/${loc}/un-a-un`,
-        description: isFr
-          ? "Journée 1-to-1 avec un dirigeant, 990 €, structurer l'entreprise et chiffrer les gains IA."
-          : "Journée 1-to-1 avec un dirigeant, 990 €, structurer l'entreprise et chiffrer les gains IA.",
+        description: `Journée 1-to-1 avec un dirigeant, ${formatAmount(
+          getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
+          loc,
+          { compact: true },
+        )}, structurer l'entreprise et chiffrer les gains IA.`,
       },
       {
         position: 4,
         name: isFr ? "Implémentation IA" : "Implémentation IA",
         url: `${SITE_URL}/${loc}/implementation`,
-        description: isFr
-          ? "Pilote IA dès 990 €, chatbot RAG, agents IA, automatisations, IA custom d'entreprise."
-          : "Pilote IA dès 990 €, chatbot RAG, agents IA, automatisations, IA custom d'entreprise.",
+        description: `Pilote IA dès ${formatAmount(
+          getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!,
+          loc,
+          { compact: true },
+        )}, chatbot RAG, agents IA, automatisations, IA custom d'entreprise.`,
       },
       {
         position: 5,

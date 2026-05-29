@@ -10,9 +10,9 @@ export const ANNEZIN_COPY: VilleCopy = {
     "Annezin (62), commune de l'agglomeration de Bethune dans le Pas-de-Calais, reunit pres de 5 830 habitants. Situee aux portes de Bethune, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Bethune, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Annezin (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration bethunoise : commercants, artisans, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Annezin jouxte Bethune (2 km), dans le bassin minier reconverti. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et activites tertiaires. Commune residentielle beneficiant du dynamisme bethunois.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const ANNEZIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Annezin : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Annezin : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Annezin : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Annezin : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration bethunoise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Annezin : formations adaptees aux commerces, bureaux tertiaires, cabinets de sante et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const ANNEZIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants d'Annezin ?",
-      a: "Pour les commercants de l'agglo bethunoise, nous proposons : gestion stocks IA, agents conversationnels clients, fidelisation automatisee, comptabilite augmentee. Audit Flash 490 EUR HT.",
+      a: "Pour les commercants de l'agglo bethunoise, nous proposons : gestion stocks IA, agents conversationnels clients, fidelisation automatisee, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Annezin ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professionnels de sante d'Annezin ?",
-      a: "Oui, nous accompagnons medecins, pharmaciens et professionnels de sante : agenda IA, automatisation dossiers patients, agents conversationnels prise de rendez-vous. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons medecins, pharmaciens et professionnels de sante : agenda IA, automatisation dossiers patients, agents conversationnels prise de rendez-vous. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Annezin ?",

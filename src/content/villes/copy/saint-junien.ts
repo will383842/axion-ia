@@ -30,8 +30,8 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Junien : formats adaptés à l'atelier cuir, usine textile, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Saint-Junien ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE/PME de Saint-Junien. Pour les PME industrielles (cuir, textile, mécanique), l'audit approfondi inclut diagnostic process, cartographie IA et plan d'action ROI. Tarifs publics.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE/PME de Saint-Junien. Pour les PME industrielles (cuir, textile, mécanique), l'audit approfondi inclut diagnostic process, cartographie IA et plan d'action ROI. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les entreprises de ganterie et mégisserie ?",
@@ -61,7 +61,7 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants saint-juniauds ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Junien, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, fidélisation client augmentée.",
+      a: "Pour les TPE artisans et commerçants à Saint-Junien, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, fidélisation client augmentée.",
     },
     {
       q: "Comment se passe une mission depuis Limoges ?",

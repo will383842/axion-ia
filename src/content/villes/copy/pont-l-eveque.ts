@@ -30,8 +30,8 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-l'Évêque : formats adaptés à la fromagerie, hôtel, restaurant, cidrerie ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hôteliers-restaurateurs du Pays d'Auge ?",
-      a: "Pour les hôteliers-restaurateurs de Pont-l'Évêque et Pays d'Auge, audit Flash 490 € HT, interventions formations, coaching 1-to-1. Cas : agents IA réservation multilingues, prédiction taux d'occupation, classification avis.",
+      a: "Pour les hôteliers-restaurateurs de Pont-l'Évêque et Pays d'Auge, audit Flash {{price:audit-flash|flat}}, interventions formations, coaching 1-to-1. Cas : agents IA réservation multilingues, prédiction taux d'occupation, classification avis.",
     },
     {
       q: "Combien coûte un audit IA à Pont-l'Évêque  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Pont-l'Évêque ?",

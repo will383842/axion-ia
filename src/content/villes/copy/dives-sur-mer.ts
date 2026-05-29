@@ -30,8 +30,8 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dives-sur-Mer : formats adaptés à l'hôtel, la boutique, l'atelier d'art, l'exploitation ostréicole. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et ostréiculteurs divais ?",
-      a: "Pour les TPE et ostréiculteurs à Dives-sur-Mer, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : traçabilité lots, prédiction récoltes, classification photos produits, gestion commandes.",
+      a: "Pour les TPE et ostréiculteurs à Dives-sur-Mer, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : traçabilité lots, prédiction récoltes, classification photos produits, gestion commandes.",
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",

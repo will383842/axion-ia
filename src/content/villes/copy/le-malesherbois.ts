@@ -30,8 +30,8 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site au Malesherbois : formats adaptés à l'entrepôt logistique, au bureau PME, au commerce ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans du Malesherbois ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants du Malesherbois sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier BTP, facturation automatisée. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants du Malesherbois sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier BTP, facturation automatisée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les PME logistiques de l'axe A19 ?",
@@ -61,7 +61,7 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des services pour les exploitants agricoles ?",
-      a: "Oui, nous accompagnons les exploitants agricoles céréaliers Beauce-Gâtinais autour du Malesherbois. Cas IA : prédiction rendements, optimisation intrants, gestion parcellaire assistée, automatisation administrative PAC, classification données météo. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitants agricoles céréaliers Beauce-Gâtinais autour du Malesherbois. Cas IA : prédiction rendements, optimisation intrants, gestion parcellaire assistée, automatisation administrative PAC, classification données météo. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission sur site au Malesherbois ?",

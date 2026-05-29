@@ -30,8 +30,8 @@ export const SAVERNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saverne : diagnostic adapté aux industriels, commerçants du centre historique, hôteliers-restaurateurs et artisans du Pays de Saverne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saverne : diagnostic adapté aux industriels, commerçants du centre historique, hôteliers-restaurateurs et artisans du Pays de Saverne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saverne : diagnostic adapté aux industriels, commerçants du centre historique, hôteliers-restaurateurs et artisans du Pays de Saverne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saverne : diagnostic adapté aux industriels, commerçants du centre historique, hôteliers-restaurateurs et artisans du Pays de Saverne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saverne : formats adaptés à la PME industrielle, au commerce du centre, à l'hôtel-restaurant ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAVERNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saverne  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Saverne et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre PME industrielle, commerce, hôtel-restaurant ou activité artisanale.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Saverne et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre PME industrielle, commerce, hôtel-restaurant ou activité artisanale.",
     },
     {
       q: "Accompagnez-vous les industriels et PME manufacturières du Pays de Saverne ?",
@@ -65,7 +65,7 @@ export const SAVERNE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Saverne ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saverne, à partir de 990 € HT. Sessions à l'atelier, au commerce ou en visio. Approche terrain adaptée au tissu économique du Pays de Saverne et des Vosges du Nord.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saverne, à partir de {{price:intervention-dirigeants|flat}}. Sessions à l'atelier, au commerce ou en visio. Approche terrain adaptée au tissu économique du Pays de Saverne et des Vosges du Nord.",
     },
   ],
 };

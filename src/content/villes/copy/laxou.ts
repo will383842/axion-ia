@@ -30,8 +30,8 @@ export const LAXOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laxou : formats adaptés au bureau tertiaire, parc d'activités, commerce de zone, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const LAXOU_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Laxou  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, ESN, cabinets conseil et commerces de la Métropole nancéienne.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, ESN, cabinets conseil et commerces de la Métropole nancéienne.",
     },
     {
       q: "Accompagnez-vous les ESN et cabinets conseil de Laxou ?",

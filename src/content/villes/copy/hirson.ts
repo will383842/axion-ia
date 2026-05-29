@@ -30,8 +30,8 @@ export const HIRSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hirson : formats adaptés à l'atelier industriel, chantier, boutique, ferme ou bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const HIRSON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et frontaliers belges ?",
-      a: "Oui, exploitations agricoles thiérachiennes (élevage laitier, filière maroilles) et entrepreneurs frontaliers belges : gestion troupeaux, traçabilité produits, conformité transfrontalière, outils collaboratifs multilingues. Audit Flash 490 € HT.",
+      a: "Oui, exploitations agricoles thiérachiennes (élevage laitier, filière maroilles) et entrepreneurs frontaliers belges : gestion troupeaux, traçabilité produits, conformité transfrontalière, outils collaboratifs multilingues. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Hirson ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Hirson ?",

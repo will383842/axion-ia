@@ -30,8 +30,8 @@ export const RUELLE_SUR_TOUVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ruelle-sur-Touvre : diagnostic adapté aux PME industrielles défense, sous-traitants métallurgie, TPE artisans et commerces de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
-      en: "Audit IA à Ruelle-sur-Touvre : diagnostic adapté aux PME industrielles défense, sous-traitants métallurgie, TPE artisans et commerces de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ruelle-sur-Touvre : diagnostic adapté aux PME industrielles défense, sous-traitants métallurgie, TPE artisans et commerces de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ruelle-sur-Touvre : diagnostic adapté aux PME industrielles défense, sous-traitants métallurgie, TPE artisans et commerces de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ruelle-sur-Touvre : formats adaptés à l'atelier industriel, au bureau d'études, à la fonderie ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const RUELLE_SUR_TOUVRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Ruelle-sur-Touvre ?",
-      a: "L'audit Flash IA à Ruelle-sur-Touvre démarre à 490 € HT. Diagnostic complet de vos processus industriels, métallurgiques ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Ruelle-sur-Touvre démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus industriels, métallurgiques ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Ruelle-sur-Touvre ?",

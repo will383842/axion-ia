@@ -11,9 +11,9 @@ export const ANTONY_COPY: VilleCopy = {
   pitchEn:
     "Antony (92), sous-préfecture des Hauts-de-Seine, compte 64 263 habitants au carrefour de trois départements (92, 91, 94). Ville desservie par cinq stations du RER B, le RER C et le tramway T10, traversée par l'A86 et la RD 920. Tissu de TPE de proximité, PME tertiaires, professions libérales et établissements de santé privé. Axion-IA accompagne ces entreprises locales dans leur transition vers l'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner TPE commerçantes, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit Flash à partir de 490 € HT, interventions à partir de 590 € HT, sur tarifs publics et sans devis opaque.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner TPE commerçantes, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit Flash à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics et sans devis opaque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner TPE commerçantes, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit Flash à partir de 490 € HT, interventions à partir de 590 € HT, sur tarifs publics et sans devis opaque.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Antony et dans tout le sud des Hauts-de-Seine. Nos consultants se déplacent sur site pour accompagner TPE commerçantes, PME tertiaires, professions libérales, cliniques privées et établissements d'enseignement. Audit Flash à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics et sans devis opaque.",
   seoHook: "TPE & PME tertiaires sud des Hauts-de-Seine",
   ecosystemFr:
     "Antony s'organise autour d'un tissu de services tertiaires, de commerces de proximité et de professions libérales. La ville accueille l'Institution Sainte-Marie (l'un des plus grands établissements privés d'enseignement de France) et l'un des plus importants pôles privés de santé d'Île-de-France. Le secteur Antonypole, futur arrêt de la ligne 18 du Grand Paris Express en 2027, et la zone Croix de Berny concentrent les bureaux. Antony Habitat gère 5 330 logements sociaux soit environ 20 % du parc.",
@@ -32,8 +32,8 @@ export const ANTONY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Antony : diagnostic pour TPE commerçantes, PME tertiaires, cabinets libéraux et établissements de santé. Audit Flash 490 € HT avec ROI chiffré sur 12 mois.",
-      en: "Audit IA à Antony : diagnostic pour TPE commerçantes, PME tertiaires, cabinets libéraux et établissements de santé. Audit Flash 490 € HT avec ROI chiffré sur 12 mois.",
+      fr: "Audit IA à Antony : diagnostic pour TPE commerçantes, PME tertiaires, cabinets libéraux et établissements de santé. Audit Flash {{price:audit-flash|flat}} avec ROI chiffré sur 12 mois.",
+      en: "Audit IA à Antony : diagnostic pour TPE commerçantes, PME tertiaires, cabinets libéraux et établissements de santé. Audit Flash {{price:audit-flash|flat}} avec ROI chiffré sur 12 mois.",
     },
     interventions: {
       fr: "Interventions IA sur site à Antony : automatisation devis et relances, prise de rendez-vous médicale, gestion documentaire pour cabinets libéraux. Déplacement sur site sous 5 jours ouvrés.",
@@ -55,7 +55,7 @@ export const ANTONY_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Antony ?",
-      a: "L'Audit Flash démarre à 490 € HT, les interventions sur site à partir de 590 € HT. Tarifs publics affichés, pas de devis opaque. Implémentation et coaching 1-to-1 sur devis selon périmètre.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, les interventions sur site à partir de {{price:intervention-4h|flat}}. Tarifs publics affichés, pas de devis opaque. Implémentation et coaching 1-to-1 sur devis selon périmètre.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Antony ?",

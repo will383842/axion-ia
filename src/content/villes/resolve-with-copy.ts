@@ -20,6 +20,7 @@
 
 import { getVille, type Ville } from "./index";
 import type { VilleCopy, VilleFaq } from "./copy/types";
+import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 import { prisma } from "@/lib/prisma";
 
 interface DbVilleCopyShape {
@@ -126,12 +127,14 @@ async function getApprovedVilleCopyFromDb(slug: string): Promise<VilleCopy | nul
 export async function resolveVilleWithCopy(slug: string): Promise<Ville | undefined> {
   const ville = getVille(slug);
   if (!ville) return undefined;
-  // Priorité 1 — fichier statique manuel
+  // Priorité 1 — fichier statique manuel (déjà résolu des tokens prix au
+  // module-init de `villes/index.ts`, cf. VILLES map).
   if (ville.copy) return ville;
-  // Priorité 2 — DB GeneratedVilleCopy approved
+  // Priorité 2 — DB GeneratedVilleCopy approved. Résolution des tokens prix
+  // {{price:…}} ici (cette branche ne passe pas par le VILLES map).
   const dbCopy = await getApprovedVilleCopyFromDb(slug);
   if (dbCopy) {
-    return { ...ville, copy: dbCopy };
+    return { ...ville, copy: resolvePriceTokensDeep(dbCopy, "fr") };
   }
   // Priorité 3 — pas de copy, stub minimal
   return ville;

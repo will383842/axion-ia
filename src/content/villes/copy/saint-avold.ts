@@ -30,8 +30,8 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Avold : formats adaptés à l'atelier industriel, plateforme chimique, entrepôt logistique, chantier, bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces, artisans BTP et acteurs logistique ?",
-      a: "Oui, commerçants, artisans BTP et entreprises logistique de Saint-Avold : gestion stocks, devis automatisés, relation client, optimisation tournées, présence en ligne. Audit Flash 490 € HT.",
+      a: "Oui, commerçants, artisans BTP et entreprises logistique de Saint-Avold : gestion stocks, devis automatisés, relation client, optimisation tournées, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Saint-Avold ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Saint-Avold ?",

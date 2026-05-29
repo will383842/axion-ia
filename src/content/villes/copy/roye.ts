@@ -30,8 +30,8 @@ export const ROYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et TPE artisans du Santerre. Audit Flash 490 € HT.",
-      en: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et TPE artisans du Santerre. Audit Flash 490 € HT.",
+      fr: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et TPE artisans du Santerre. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roye : diagnostic adapté aux PME agroalimentaires (conserveries, sucreries), exploitations agricoles, entreprises de logistique et TPE artisans du Santerre. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roye : formats adaptés à l'usine agroalimentaire, l'exploitation agricole, l'entrepôt logistique ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const ROYE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Roye ?",
-      a: "L'audit Flash IA à Roye démarre à 490 € HT. Diagnostic complet de vos processus agroalimentaires ou agricoles, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre secteur.",
+      a: "L'audit Flash IA à Roye démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires ou agricoles, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre secteur.",
     },
     {
       q: "L'IA peut-elle optimiser la logistique à Roye ?",

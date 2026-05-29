@@ -30,8 +30,8 @@ export const LA_HAGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Hague : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce rural, le prestataire touristique. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE agricoles du nord Cotentin ?",
-      a: "Pour les TPE agricoles de La Hague et du nord Cotentin, audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas typiques : traçabilité élevage, prédiction rendements, automatisation PAC, gestion parcelles.",
+      a: "Pour les TPE agricoles de La Hague et du nord Cotentin, audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : traçabilité élevage, prédiction rendements, automatisation PAC, gestion parcelles.",
     },
     {
       q: "Travaillez-vous avec les prestataires tourisme nature ?",

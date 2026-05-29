@@ -30,8 +30,8 @@ export const CESSON_SEVIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cesson-Sévigné : formats adaptés aux équipes tech, ESN, startups. Vos développeurs et data scientists repartent autonomes sur les derniers outils IA.",
@@ -61,7 +61,7 @@ export const CESSON_SEVIGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et indépendants cessonnais ?",
-      a: "Pour les TPE, indépendants et commerçants à Cesson-Sévigné, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation tâches admin, agents IA prise de RDV, outils productivité.",
+      a: "Pour les TPE, indépendants et commerçants à Cesson-Sévigné, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation tâches admin, agents IA prise de RDV, outils productivité.",
     },
     {
       q: "Quelle différence avec les ESN locales qui proposent de l'IA ?",

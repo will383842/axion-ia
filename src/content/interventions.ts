@@ -29,11 +29,20 @@ const TEMPS_PRICE_FR = formatPrice(TEMPS_TIER, "fr");
 const TEMPS_PRICE_EN = formatPrice(TEMPS_TIER, "en");
 const CLAUDE_TIER = getTierById(INTERVENTION_TIERS, "intervention-claude");
 const CLAUDE_PRICE_FR = formatPrice(CLAUDE_TIER, "fr");
-const CLAUDE_PRICE_EN = formatPrice(CLAUDE_TIER, "en");
+const CLAUDE_PRICE_EN = `${formatAmount(CLAUDE_TIER.priceFlat!, "en", { compact: true })} (excl. VAT)`;
+
+// Grille des 3 paliers Approfondie résumée en une phrase — prix dérivés SSOT
+// (APPROFONDIE_SUB_TIERS) pour que la prose FAQ reste alignée sur pricing.ts.
+const APPROFONDIE_BRACKETS_FR = `${APPROFONDIE_SUB_TIERS.map((s) =>
+  formatAmount(s.priceFlat, "fr", { compact: true }),
+).join(" / ")} HT`;
+const APPROFONDIE_BRACKETS_EN = APPROFONDIE_SUB_TIERS.map((s) =>
+  formatAmount(s.priceFlat, "en", { compact: true }),
+).join(" / ");
 
 // Paliers d'effectif Essentielle pour le listing public — Sprint 14.10.5
 // (Will 2026-05-08). Source unique = `pricing.ts::ESSENTIELLE_SUB_TIERS`
-// (3 brackets fines : 2-4 / 5-6 / 7-8 personnes → 490 / 790 / 1190 € HT).
+// (3 brackets : 2-8 / 9-15 / 16-30 personnes → voir ESSENTIELLE_SUB_TIERS).
 //
 // Au-delà de 8 personnes : format Approfondie 2 jours (cf. APPROFONDIE_SUB_TIERS).
 // Au-delà de 30 personnes : Conférence ou Sur demande particulière.
@@ -54,7 +63,7 @@ const ESSENTIELLE_PRICE_TIERS_EN: ReadonlyArray<{ size: string; price: string }>
 
 // Paliers Approfondie 2 jours (Sprint 14.10.6) — même grille d'effectif
 // qu'Essentielle (2-8 / 9-15 / 16-30 personnes), prix × 1.8 environ pour
-// la 2ème journée → 880 / 1420 / 2140 € HT. Source unique pricing.ts.
+// la 2ème journée (cf. APPROFONDIE_SUB_TIERS). Source unique pricing.ts.
 const APPROFONDIE_PRICE_TIERS_FR: ReadonlyArray<{ size: string; price: string }> =
   APPROFONDIE_SUB_TIERS.map((sub) => ({
     size: sub.rangeFr,
@@ -739,7 +748,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Format équipes étendu · 2 jours sur site",
         title: "Approfondie",
         titleEm: "2 jours équipes",
-        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 1 190 / 1 590 / 2 490 € HT). Ateliers étendus, co-construction d'usages IA sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
+        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : ${APPROFONDIE_BRACKETS_FR}). Ateliers étendus, co-construction d'usages IA sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
         ctaPrimary: "Réserver l'Approfondie",
         faqIntro: "équipes",
       }),
@@ -761,8 +770,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
         {
           title: "Tarif dégressif au nombre de participants",
-          description:
-            "3 paliers d'effectif : 2-8 personnes (1 190 € HT), 9-15 (1 590 € HT), 16-30 (2 490 € HT). Plus l'équipe est grande, plus le coût par personne baisse.",
+          description: `3 paliers d'effectif : 2-8 personnes (${formatAmount(APPROFONDIE_SUB_TIERS[0]!.priceFlat, "fr")}), 9-15 (${formatAmount(APPROFONDIE_SUB_TIERS[1]!.priceFlat, "fr")}), 16-30 (${formatAmount(APPROFONDIE_SUB_TIERS[2]!.priceFlat, "fr")}). Plus l'équipe est grande, plus le coût par personne baisse.`,
         },
       ],
       metrics: [
@@ -804,7 +812,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Extended team format · 2 days on site",
         title: "Deep Dive",
         titleEm: "2-day teams",
-        answer: `Two consecutive on-site days (starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}) to go deep on AI as a team (2 to 30 people depending on tier: €880 / €1,420 / €2,140). Extended workshops, automation co-build on your real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.`,
+        answer: `Two consecutive on-site days (starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}) to go deep on AI as a team (2 to 30 people depending on tier: ${APPROFONDIE_BRACKETS_EN}). Extended workshops, automation co-build on your real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.`,
         ctaPrimary: "Book Deep Dive",
         faqIntro: "teams",
       }),
@@ -826,8 +834,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
         {
           title: "Pricing scales with headcount",
-          description:
-            "3 tiers: 2-8 people (€880), 9-15 (€1,420), 16-30 (€2,140). The bigger the team, the lower the per-person cost.",
+          description: `3 tiers: 2-8 people (${formatAmount(APPROFONDIE_SUB_TIERS[0]!.priceFlat, "en")}), 9-15 (${formatAmount(APPROFONDIE_SUB_TIERS[1]!.priceFlat, "en")}), 16-30 (${formatAmount(APPROFONDIE_SUB_TIERS[2]!.priceFlat, "en")}). The bigger the team, the lower the per-person cost.`,
         },
       ],
       metrics: [
@@ -1138,7 +1145,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       metrics: [
-        { number: "990", suffix: "€ HT", label: "Tarif fixe, sans surprise" },
+        { number: `${CLAUDE_TIER.priceFlat}`, suffix: "€ HT", label: "Tarif fixe, sans surprise" },
         { number: "5-10", suffix: "AI methods", label: "Testées par participant" },
         { number: "+2", suffix: "h/jour", label: "Gain moyen par collaborateur" },
       ],
@@ -1203,7 +1210,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       metrics: [
-        { number: "€990", suffix: "flat", label: "Fixed fee, no surprises" },
+        { number: `€${CLAUDE_TIER.priceFlat}`, suffix: "flat", label: "Fixed fee, no surprises" },
         { number: "5-10", suffix: "AI methods", label: "Tested per participant" },
         { number: "+2", suffix: "h/day", label: "Average gain per employee" },
       ],
@@ -1296,8 +1303,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Intervention outil-spécifique · Claude (Anthropic) · 1 journée",
         title: "Intervention Claude",
         titleEm: "Chat · Cowork · Code",
-        answer:
-          "Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Format petit groupe (2 à 8 personnes) pour profondeur maximale. Tarif fixe 990 € HT — réservation directe sur le calendrier.",
+        answer: `Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Format petit groupe (2 à 8 personnes) pour profondeur maximale. Tarif fixe ${CLAUDE_PRICE_FR} — réservation directe sur le calendrier.`,
         ctaPrimary: "Réserver la Formation Claude",
         faqIntro: "équipes Claude",
       }),
@@ -1355,8 +1361,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       ctaBlockTitle: "Maîtrisez Claude (Anthropic) en profondeur",
-      ctaBlockDescription:
-        "Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe 990 € HT pour 2 à 8 personnes.",
+      ctaBlockDescription: `Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe ${CLAUDE_PRICE_FR} pour 2 à 8 personnes.`,
       metaSeo: {
         title: "Expert Claude (Anthropic) · Formation IA outil-spécifique · Axion-IA",
         description:
@@ -1368,8 +1373,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Tool-specific intervention · Claude (Anthropic) · 1 day",
         title: "Claude intervention",
         titleEm: "Chat · Cowork · Code",
-        answer:
-          "A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). Small-group format (2 to 8 people) for maximum depth. Fixed fee €990 (excl. VAT) — direct calendar booking.",
+        answer: `A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). Small-group format (2 to 8 people) for maximum depth. Fixed fee ${CLAUDE_PRICE_EN} — direct calendar booking.`,
         ctaPrimary: "Book the Claude Training",
         faqIntro: "Claude teams",
       }),
@@ -1427,8 +1431,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       ctaBlockTitle: "Master Claude (Anthropic) in depth",
-      ctaBlockDescription:
-        "Book the next date — live calendar, instant confirmation. Fixed fee €990 (excl. VAT) for 2 to 8 people.",
+      ctaBlockDescription: `Book the next date — live calendar, instant confirmation. Fixed fee ${CLAUDE_PRICE_EN} for 2 to 8 people.`,
       metaSeo: {
         title: "Claude (Anthropic) Expert Training · AI Tool-specific Session · Axion-IA",
         description:

@@ -30,8 +30,8 @@ export const AIMARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit Flash 490 € HT.",
-      en: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aimargues : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans Petite Camargue.",
@@ -57,7 +57,7 @@ export const AIMARGUES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Aimargues  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les acteurs des traditions camarguaises ?",

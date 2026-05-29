@@ -30,8 +30,8 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux TPE artisans bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux TPE artisans bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux TPE artisans bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roquefort-la-Bédoule : diagnostic adapté aux TPE artisans bâtiment, PME services et professions libérales du sud-est marseillais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquefort-la-Bédoule : formats adaptés à l'atelier artisan bâtiment, au cabinet libéral et à la PME services. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Roquefort-la-Bédoule  ?",
-      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME services et professions libérales de Roquefort-la-Bédoule. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME services et professions libérales de Roquefort-la-Bédoule. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Roquefort-la-Bédoule ?",
@@ -61,7 +61,7 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
     },
     {
       q: "Les commerçants de Roquefort-la-Bédoule peuvent-ils tirer parti de l'IA ?",
-      a: "Absolument. Cas IA pour commerçants : agents conversationnels fidélisation, gestion stocks prédictive, marketing local automatisé, prise de commande, comptabilité simplifiée. Audit Flash 490 € HT.",
+      a: "Absolument. Cas IA pour commerçants : agents conversationnels fidélisation, gestion stocks prédictive, marketing local automatisé, prise de commande, comptabilité simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Roquefort-la-Bédoule ?",

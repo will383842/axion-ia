@@ -30,8 +30,8 @@ export const FECAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fécamp : formats adaptés au bureau, atelier, criée, commerce, hébergement touristique. Vos équipes repartent autonomes sur outils IA.",

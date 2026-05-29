@@ -30,8 +30,8 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bricquebec-en-Cotentin : formats adaptés à l'exploitation d'élevage, la fromagerie, le commerce, l'atelier artisanal. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,11 +53,11 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les éleveurs bovins du bocage cotentinois ?",
-      a: "Oui, nous accompagnons les TPE éleveurs bovins du bocage : traçabilité troupeau, prédiction rendements laitiers, automatisation PAC, suivi sanitaire IA, optimisation alimentation. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE éleveurs bovins du bocage : traçabilité troupeau, prédiction rendements laitiers, automatisation PAC, suivi sanitaire IA, optimisation alimentation. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME agroalimentaires locales ?",
-      a: "Pour les PME agroalimentaires de Bricquebec (fromageries, cidreries), audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas typiques : automatisation traçabilité, contrôle qualité vision, prédiction fermentation.",
+      a: "Pour les PME agroalimentaires de Bricquebec (fromageries, cidreries), audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation traçabilité, contrôle qualité vision, prédiction fermentation.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants de bourg ?",

@@ -30,8 +30,8 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux TPE artisans, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux TPE artisans, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux TPE artisans, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Morières-lès-Avignon : diagnostic adapté aux TPE artisans, PME commerciales, professions libérales et commerces du sud-est avignonnais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Morières-lès-Avignon : ateliers pour équipes TPE/PME, professions libérales et artisans. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Morières-lès-Avignon  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME commerciales, professions libérales et commerces moriérois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME commerciales, professions libérales et commerces moriérois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales (santé, droit, conseil) ?",

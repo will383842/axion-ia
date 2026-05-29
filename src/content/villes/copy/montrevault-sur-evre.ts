@@ -30,8 +30,8 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montrevault-sur-Èvre : formations pratiques pour équipes agricoles, artisanales et industrielles. Ateliers métier adaptés au contexte rural des Mauges.",
@@ -53,11 +53,11 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Montrevault-sur-Èvre  ?",
-      a: "L'Audit Flash IA à Montrevault-sur-Èvre démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Montrevault-sur-Èvre démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles des Mauges ?",
-      a: "Oui, nous accompagnons les exploitants agricoles à Montrevault-sur-Èvre : IA pour traçabilité troupeaux, optimisation assolement, gestion administrative PAC, maintenance prédictive matériel. Audit Flash 490 € HT adapté aux exploitations.",
+      a: "Oui, nous accompagnons les exploitants agricoles à Montrevault-sur-Èvre : IA pour traçabilité troupeaux, optimisation assolement, gestion administrative PAC, maintenance prédictive matériel. Audit Flash {{price:audit-flash|flat}} adapté aux exploitations.",
     },
     {
       q: "Quels secteurs ciblez-vous à Montrevault-sur-Èvre ?",

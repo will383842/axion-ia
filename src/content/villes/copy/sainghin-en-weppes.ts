@@ -30,8 +30,8 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux TPE et PME agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux TPE et PME agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux TPE et PME agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sainghin-en-Weppes : diagnostic adapté aux TPE et PME agricoles des Weppes, artisans du bâtiment, commerçants et prestataires B2B de l'ouest lillois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainghin-en-Weppes : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Sainghin-en-Weppes  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME des Weppes et de l'ouest lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des Weppes et de l'ouest lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants des Weppes ?",

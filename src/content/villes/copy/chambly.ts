@@ -30,8 +30,8 @@ export const CHAMBLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chambly : diagnostic adapté aux TPE/PME commerce, artisanat BTP, services aux particuliers et aux entreprises du sud de l'Oise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Chambly : diagnostic adapté aux TPE/PME commerce, artisanat BTP, services aux particuliers et aux entreprises du sud de l'Oise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Chambly : diagnostic adapté aux TPE/PME commerce, artisanat BTP, services aux particuliers et aux entreprises du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Chambly : diagnostic adapté aux TPE/PME commerce, artisanat BTP, services aux particuliers et aux entreprises du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chambly : formats adaptés au commerce, au chantier BTP, au cabinet ou au bureau de services. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const CHAMBLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chambly  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME chamblisiennes : commerçants, artisans BTP, prestataires de services aux particuliers et aux entreprises. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME chamblisiennes : commerçants, artisans BTP, prestataires de services aux particuliers et aux entreprises. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les artisans du BTP à Chambly ?",
@@ -65,7 +65,7 @@ export const CHAMBLY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Chambly ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chambly, à partir de 990 € HT. Sessions dans votre commerce, bureau ou en visio. Approche terrain adaptée aux métiers du commerce et des services du sud de l'Oise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chambly, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre commerce, bureau ou en visio. Approche terrain adaptée aux métiers du commerce et des services du sud de l'Oise.",
     },
   ],
 };

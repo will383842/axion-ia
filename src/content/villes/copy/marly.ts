@@ -30,8 +30,8 @@ export const MARLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marly : formats adaptés à l'enseigne commerciale, au cabinet libéral, au prestataire de services ou à l'artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const MARLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Marly  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, services, professions libérales, artisanat, industrie). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, services, professions libérales, artisanat, industrie). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les professions libérales à Marly ?",

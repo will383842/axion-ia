@@ -30,8 +30,8 @@ export const GRAVELINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gravelines : diagnostic adapté aux TPE/PME sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gravelines : diagnostic adapté aux TPE/PME sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gravelines : diagnostic adapté aux TPE/PME sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gravelines : diagnostic adapté aux TPE/PME sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gravelines : formats adaptés au site industriel nucléaire, à la criée, à l'hôtel-restaurant balnéaire ou à l'entrepôt portuaire. Vos équipes maîtrisent les outils déployés.",
@@ -57,7 +57,7 @@ export const GRAVELINES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Gravelines  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du littoral dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du littoral dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour la pêche et le tourisme balnéaire à Gravelines ?",

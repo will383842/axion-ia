@@ -30,8 +30,8 @@ export const SENAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sénas : ateliers pratiques pour équipes logistique, exploitants agricoles et artisans BTP. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const SENAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique à Sénas ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE/PME de transport, logistique et agriculture sénassaises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE/PME de transport, logistique et agriculture sénassaises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles de la Durance ?",

@@ -30,8 +30,8 @@ export const CARROS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carros : formats adaptés à l'atelier industriel, entrepôt logistique ou bureau PME de la ZI. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const CARROS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et PME industrielles de Carros ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles de la ZI Carros-Le Broc sur leurs cas IA : automatisation production, gestion stocks prédictive, maintenance préventive, classification documents qualité, CRM augmentés. Audit Flash 490 € HT pour démarrer.",
+      a: "Oui, nous accompagnons les TPE/PME industrielles de la ZI Carros-Le Broc sur leurs cas IA : automatisation production, gestion stocks prédictive, maintenance préventive, classification documents qualité, CRM augmentés. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du moyen-pays niçois ?",
-      a: "Oui, nous accompagnons les artisans BTP de Carros et du moyen-pays niçois sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les artisans BTP de Carros et du moyen-pays niçois sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour la logistique et le transport à Carros ?",

@@ -65,7 +65,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE, indépendants et professions libérales ?",
-      a: "Oui, les TPE sont notre priorité : indépendants, professions libérales, commerçants. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation administrative et relation client.",
+      a: "Oui, les TPE sont notre priorité : indépendants, professions libérales, commerçants. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation administrative et relation client.",
     },
     {
       q: "Comment se déroule une mission à Noisy-le-Grand ?",

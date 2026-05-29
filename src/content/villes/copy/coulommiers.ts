@@ -30,8 +30,8 @@ export const COULOMMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coulommiers : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Coulommiers ?",
-      a: "L'audit Flash IA à Coulommiers démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Coulommiers démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires de Coulommiers ?",
@@ -61,7 +61,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants de Coulommiers ?",
-      a: "Audit Flash 490 € HT, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Coulommiers ?",

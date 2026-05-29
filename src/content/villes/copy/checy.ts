@@ -9,9 +9,9 @@ export const CHECY_COPY: VilleCopy = {
   pitchEn:
     "Checy (45), commune de l'agglomeration d'Orleans en bords de Loire a l'est, allie cadre ligérien et dynamisme economique metropolitain. Tissu TPE/PME industrie, services, commerce, artisanat, viticulture. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Checy (45). Nous accompagnons TPE et PME : entreprises industrielles, prestataires de services, commercants, artisans et viticulteurs de l'est de l'agglomeration orleanaise. Audit Flash des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Checy est situee en bords de Loire a l'est d'Orleans Metropole, sur l'axe logistique Orleans-Montargis. L'economie locale s'appuie sur des PME industrielles, les services aux entreprises, le commerce, l'artisanat du batiment et la viticulture AOC Orleans-Clery en bordure du Val de Loire UNESCO.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CHECY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Checy : diagnostic adapte aux PME industrielles, prestataires de services, commercants et viticulteurs de l'est de l'agglomeration orleanaise. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Checy : diagnostic adapte aux PME industrielles, prestataires de services, commercants et viticulteurs de l'est de l'agglomeration orleanaise. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Checy : diagnostic adapte aux PME industrielles, prestataires de services, commercants et viticulteurs de l'est de l'agglomeration orleanaise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Checy : diagnostic adapte aux PME industrielles, prestataires de services, commercants et viticulteurs de l'est de l'agglomeration orleanaise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Checy : formats adaptes aux ateliers industriels, TPE de services, commerces, artisans et exploitations viticoles du secteur est d'Orleans.",
@@ -53,7 +53,7 @@ export const CHECY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Checy ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE et PME de Checy, nous proposons des audits approfondis adaptes aux enjeux industrie, services ou viticulture.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Checy, nous proposons des audits approfondis adaptes aux enjeux industrie, services ou viticulture.",
     },
     {
       q: "L'IA peut-elle aider les PME industrielles a Checy ?",
@@ -61,7 +61,7 @@ export const CHECY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Checy ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Checy, a partir de 990 euros HT. Sessions dans vos locaux professionnels, a Orleans centre ou en visio.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Checy, a partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux professionnels, a Orleans centre ou en visio.",
     },
     {
       q: "L'IA peut-elle aider les viticulteurs a Checy ?",

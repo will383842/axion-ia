@@ -30,8 +30,8 @@ export const GUEUGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gueugnon : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const GUEUGNON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerces locaux ?",
-      a: "Oui, audit Flash 490 € HT adapté artisans BTP et commerces de proximité. Intervention 1 journée formation. Coaching 1-to-1.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté artisans BTP et commerces de proximité. Intervention 1 journée formation. Coaching 1-to-1.",
     },
     {
       q: "Quels tarifs pour un audit IA à Gueugnon ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Gueugnon ?",

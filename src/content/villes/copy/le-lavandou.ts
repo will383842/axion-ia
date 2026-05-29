@@ -30,8 +30,8 @@ export const LE_LAVANDOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Lavandou : ateliers pour hôteliers, restaurateurs, loueurs de bateaux et commerces. Outils IA configurés métier réel saison estivale.",
@@ -53,7 +53,7 @@ export const LE_LAVANDOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel du Lavandou ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux hôtels, restaurants et résidences de tourisme lavandourains. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux hôtels, restaurants et résidences de tourisme lavandourains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie haut de gamme du Lavandou ?",

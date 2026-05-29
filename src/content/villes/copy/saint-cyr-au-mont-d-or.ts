@@ -30,8 +30,8 @@ export const SAINT_CYR_AU_MONT_D_OR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Cyr-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Saint-Cyr-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Saint-Cyr-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-Cyr-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Cyr-au-Mont-d'Or : formats adaptés au cabinet, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_CYR_AU_MONT_D_OR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Pour les TPE artisans BTP et commerçants, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

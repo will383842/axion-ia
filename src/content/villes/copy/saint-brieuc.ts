@@ -10,9 +10,9 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Saint-Brieuc, préfecture des Côtes-d'Armor (44 364 habitants, agglomération 154 167 habitants), pour accompagner en priorité les TPE et PME bretonnes. La ville s'appuie sur deux technopôles structurants — le Zoopôle (biotechnologies, santé animale) et le Véhipôle (filière automobile) — ainsi que sur le port du Légué. Connectée à Paris par TGV (environ 2h37) et à 12 km de l'aéroport Saint-Brieuc Armor (Trémuson), la ville bénéficie de la RN 12 (E50) et d'une rocade de contournement. Nous codons en propre, sans solution no-code propriétaire.",
   directAnswerFr:
-    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les TPE puis les PME locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste TPE puis PME, plus représentatives du tissu briochin.",
+    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les TPE puis les PME locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste TPE puis PME, plus représentatives du tissu briochin.",
   directAnswerEn:
-    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les TPE puis les PME locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste TPE puis PME, plus représentatives du tissu briochin.",
+    "Axion-IA se déplace à Saint-Brieuc (Côtes-d'Armor, 44 364 habitants) pour accompagner en priorité les TPE puis les PME locales. La ville héberge deux technopôles — Zoopôle (santé animale, biotechnologies) et Véhipôle (automobile) — et le port commercial du Légué. Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom, hébergement UE, conformité RGPD documentée. Les ETI restent un complément : notre cible prioritaire reste TPE puis PME, plus représentatives du tissu briochin.",
   seoHook: "Zoopôle biotech & Véhipôle automobile",
   ecosystemFr:
     "Saint-Brieuc structure son économie autour de deux technopôles emblématiques : le Zoopôle (biotechnologies, santé animale) et le Véhipôle (filière automobile). Le port du Légué, dont l'expansion remonte à 1819, reste une infrastructure commerciale et de plaisance importante. Historiquement, l'arrivée du chemin de fer en 1865 a transformé la ville (Paris en 17 heures contre 6 jours auparavant en diligence). L'agglomération briochine compte 154 167 habitants, ce qui en fait le principal pôle d'emploi du département. Les Côtes-d'Armor mêlent agro-alimentaire, services et industrie légère.",
@@ -31,12 +31,12 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Brieuc pour les TPE/PME briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de 490 € HT.",
-      en: "Audit IA à Saint-Brieuc pour les TPE/PME briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de 490 € HT.",
+      fr: "Audit IA à Saint-Brieuc pour les TPE/PME briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Brieuc pour les TPE/PME briochines — sous-traitants du Zoopôle ou Véhipôle, commerces, services agro — pour cibler les automatisations utiles. À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site à Saint-Brieuc pour automatiser devis, facturation, traçabilité et suivi clients — code custom auditable. Dès 590 € HT.",
-      en: "Interventions sur site à Saint-Brieuc pour automatiser devis, facturation, traçabilité et suivi clients — code custom auditable. Dès 590 € HT.",
+      fr: "Interventions sur site à Saint-Brieuc pour automatiser devis, facturation, traçabilité et suivi clients — code custom auditable. Dès {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site à Saint-Brieuc pour automatiser devis, facturation, traçabilité et suivi clients — code custom auditable. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA mesurées à Saint-Brieuc pour TPE/PME — outils internes sur-mesure adaptés aux contraintes des filières locales (santé animale, automobile, agro).",
@@ -50,7 +50,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Brieuc ?",
-      a: "Audit Flash dès 490 € HT (4 heures), intervention sur site dès 590 € HT. Tarifs publics sur axion-ia.com — pas de devis opaque.",
+      a: "Audit Flash dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tarifs publics sur axion-ia.com — pas de devis opaque.",
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Saint-Brieuc ?",

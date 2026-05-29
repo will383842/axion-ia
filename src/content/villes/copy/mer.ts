@@ -30,8 +30,8 @@ export const MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mer : formations en entrepôt, atelier de production, bureau ou commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mer  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {
       q: "Quels services IA pour la logistique à Mer ?",

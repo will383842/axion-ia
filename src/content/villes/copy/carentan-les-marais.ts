@@ -30,8 +30,8 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carentan-les-Marais : formats adaptés à l'exploitation laitière, la laiterie, le musée, le commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les éleveurs et agriculteurs des marais du Cotentin ?",
-      a: "Oui, nous accompagnons les TPE éleveurs bovins laitiers et allaitants du Cotentin : traçabilité troupeau AOC, prédiction rendements laitiers, automatisation PAC, optimisation pâturage prairies humides. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE éleveurs bovins laitiers et allaitants du Cotentin : traçabilité troupeau AOC, prédiction rendements laitiers, automatisation PAC, optimisation pâturage prairies humides. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour le tourisme mémoriel D-Day ?",

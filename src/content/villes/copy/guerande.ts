@@ -30,8 +30,8 @@ export const GUERANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guérande : diagnostic adapté aux TPE paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit Flash 490 € HT.",
-      en: "Audit IA à Guérande : diagnostic adapté aux TPE paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Guérande : diagnostic adapté aux TPE paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Guérande : diagnostic adapté aux TPE paludiers, PME agroalimentaires du sel, commerçants de la cité médiévale et professions libérales de la presqu'île guérandaise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guérande : formats adaptés à l'agroalimentaire du sel, tourisme patrimonial, artisanat d'art et commerces de bouche. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const GUERANDE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Guérande  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Guérande. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur artisanal ou agroalimentaire.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Guérande. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur artisanal ou agroalimentaire.",
     },
     {
       q: "Accompagnez-vous les producteurs de sel de Guérande ?",
@@ -61,11 +61,11 @@ export const GUERANDE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de la cité médiévale ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, fidélisation touristes, agents conversationnels, automatisation comptabilité.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, fidélisation touristes, agents conversationnels, automatisation comptabilité.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Guérande ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Guérande. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Guérande. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquebrune-Cap-Martin : formats adaptés à l'hôtel, restaurant, cabinet ou commerce balnéaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention tourisme et services.",
@@ -53,7 +53,7 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants haut de gamme ?",
-      a: "Oui, nous accompagnons les TPE hôtellerie-restauration haut de gamme de Roquebrune-Cap-Martin sur leurs cas IA : agents conversationnels multilingues, automatisation réservations et check-in, gestion avis clients, personnalisation séjour. Audit Flash 490 € HT pour démarrer.",
+      a: "Oui, nous accompagnons les TPE hôtellerie-restauration haut de gamme de Roquebrune-Cap-Martin sur leurs cas IA : agents conversationnels multilingues, automatisation réservations et check-in, gestion avis clients, personnalisation séjour. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Accompagnez-vous les professions libérales de la commune ?",

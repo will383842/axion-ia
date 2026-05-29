@@ -30,8 +30,8 @@ export const BRUMATH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brumath : diagnostic adapté aux TPE/PME industrie, agroalimentaire, brasserie, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Brumath : diagnostic adapté aux TPE/PME industrie, agroalimentaire, brasserie, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Brumath : diagnostic adapté aux TPE/PME industrie, agroalimentaire, brasserie, artisans BTP, commerces et services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Brumath : diagnostic adapté aux TPE/PME industrie, agroalimentaire, brasserie, artisans BTP, commerces et services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brumath : formats adaptés à l'atelier de production, chantier, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const BRUMATH_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants brumathois ?",
-      a: "Oui, les artisans BTP, commerçants et professions de services de Brumath bénéficient de l'audit Flash 490 € HT et d'interventions sur site adaptées aux TPE alsaciennes. Automatisation devis, relances, gestion clients.",
+      a: "Oui, les artisans BTP, commerçants et professions de services de Brumath bénéficient de l'audit Flash {{price:audit-flash|flat}} et d'interventions sur site adaptées aux TPE alsaciennes. Automatisation devis, relances, gestion clients.",
     },
     {
       q: "Quels tarifs pour un audit IA à Brumath ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Brumath ?",

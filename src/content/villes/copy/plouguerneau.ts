@@ -30,8 +30,8 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouguerneau : formats adaptés aux hébergeurs touristiques, goémoniers, ostréiculteurs ou commerces littoraux. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Plouguerneau ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Plouguerneau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation présence en ligne saisonnière. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de Plouguerneau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation présence en ligne saisonnière. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME du pays des Abers ?",

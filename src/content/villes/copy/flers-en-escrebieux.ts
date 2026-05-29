@@ -30,8 +30,8 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Flers-en-Escrebieux : formats adaptés à l'atelier, l'entrepôt logistique ou le cabinet. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,11 +57,11 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans BTP du bassin minier ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Flers-en-Escrebieux et dans le bassin minier sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Flers-en-Escrebieux et dans le bassin minier sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services IA pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales du Douaisis, nous proposons audit Flash 490 € HT, interventions formation sur site, implémentation agents IA (chatbot, automatisation agenda, gestion documents) et coaching 1-to-1 dirigeants.",
+      a: "Pour les commerçants et professions libérales du Douaisis, nous proposons audit Flash {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation agenda, gestion documents) et coaching 1-to-1 dirigeants.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Paris ?",

@@ -30,8 +30,8 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Penne-sur-Huveaune : ateliers pratiques pour commerçants, artisans et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à La Penne-sur-Huveaune  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, commerçants et PME pennoises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME pennoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone La Valentine ?",

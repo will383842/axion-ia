@@ -30,8 +30,8 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Vallier : formats adaptés atelier industriel, chantier BTP, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP ?",
-      a: "Oui, automatisation devis et factures, planification chantiers assistée IA, gestion sous-traitants, CRM prospects. Audit Flash 490 € HT pour démarrer.",
+      a: "Oui, automatisation devis et factures, planification chantiers assistée IA, gestion sous-traitants, CRM prospects. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Quels services pour la logistique et le transport ?",

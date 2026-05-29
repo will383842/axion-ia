@@ -30,8 +30,8 @@ export const CARBON_BLANC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carbon-Blanc : diagnostic pour TPE artisans, professions libérales, commerçants et PME de services de la rive droite. Audit Flash 490 € HT.",
-      en: "Audit IA à Carbon-Blanc : diagnostic pour TPE artisans, professions libérales, commerçants et PME de services de la rive droite. Audit Flash 490 € HT.",
+      fr: "Audit IA à Carbon-Blanc : diagnostic pour TPE artisans, professions libérales, commerçants et PME de services de la rive droite. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Carbon-Blanc : diagnostic pour TPE artisans, professions libérales, commerçants et PME de services de la rive droite. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carbon-Blanc : ateliers adaptés aux cabinets, ateliers et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CARBON_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Carbon-Blanc  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de la rive droite.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de la rive droite.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Carbon-Blanc ?",
@@ -61,7 +61,7 @@ export const CARBON_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP à Carbon-Blanc ?",
-      a: "Pour les TPE artisans BTP : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Carbon-Blanc ?",

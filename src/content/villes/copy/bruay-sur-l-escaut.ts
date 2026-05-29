@@ -30,8 +30,8 @@ export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruay-sur-l'Escaut : diagnostic adapté aux TPE artisans, PME industrielles, sous-traitants automobile et logisticiens du Valenciennois, bassin minier reconverti. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Bruay-sur-l'Escaut : diagnostic adapté aux TPE artisans, PME industrielles, sous-traitants automobile et logisticiens du Valenciennois, bassin minier reconverti. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Bruay-sur-l'Escaut : diagnostic adapté aux TPE artisans, PME industrielles, sous-traitants automobile et logisticiens du Valenciennois, bassin minier reconverti. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bruay-sur-l'Escaut : diagnostic adapté aux TPE artisans, PME industrielles, sous-traitants automobile et logisticiens du Valenciennois, bassin minier reconverti. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruay-sur-l'Escaut : formations adaptées TPE/PME industrielles, ateliers pratiques outils IA pour ateliers, bureaux d'études et logistique. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bruay-sur-l'Escaut  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Bruay-sur-l'Escaut et du bassin minier souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Bruay-sur-l'Escaut et du bassin minier souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile du Valenciennois ?",
@@ -61,7 +61,7 @@ export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE artisans à Bruay-sur-l'Escaut ?",
-      a: "Nous proposons audit Flash 4h (490 € HT), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des artisans BTP, commerçants et indépendants du Hainaut.",
+      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des artisans BTP, commerçants et indépendants du Hainaut.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Bruay-sur-l'Escaut ?",

@@ -30,8 +30,8 @@ export const GIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gières : formats adaptés au laboratoire universitaire, bureau PME, cabinet ou atelier. Vos équipes (chercheurs, commerciaux, assistants) repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const GIERES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans giérois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Gières sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Gières sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales à Gières (médecins, avocats, expert-comptables, consultants), audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers.",
+      a: "Pour les professions libérales à Gières (médecins, avocats, expert-comptables, consultants), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",

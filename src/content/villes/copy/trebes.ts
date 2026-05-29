@@ -30,8 +30,8 @@ export const TREBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit Flash 490 € HT.",
-      en: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trèbes : formats adaptés au domaine viticole, à la base nautique canal du Midi, au commerce ou à l'atelier artisan. Vos équipes maîtrisent les outils déployés.",
@@ -57,7 +57,7 @@ export const TREBES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Trèbes  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME viticoles ou agroalimentaires, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME viticoles ou agroalimentaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme fluvial ?",
@@ -65,7 +65,7 @@ export const TREBES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Trèbes ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Trèbes. Format flexible : dans vos locaux, au domaine, en visio ou à Carcassonne. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Trèbes. Format flexible : dans vos locaux, au domaine, en visio ou à Carcassonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

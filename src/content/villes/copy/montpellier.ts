@@ -38,7 +38,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
       en: "AI implementation in Montpellier: we integrate AI into your existing tools (CRM, ERP, email, health/biotech/IT business tools) with contractually-costed ROI. Your teams stay in control — no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Montpellier : accompagnement 1-to-1 ancré dans votre réalité — santé/biotech, IT, jeux vidéo ou agroalimentaire. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Coaching IA individuel à Montpellier : accompagnement 1-to-1 ancré dans votre réalité — santé/biotech, IT, jeux vidéo ou agroalimentaire. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Montpellier: 1-to-1 support rooted in your reality — health/biotech, IT, video games or agri-food. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -726,7 +726,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Montpellier est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants, managers et experts des secteurs santé-biotech, IT, jeux vidéo et agronomie du bassin montpelliérain. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Montpellier est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants, managers et experts des secteurs santé-biotech, IT, jeux vidéo et agronomie du bassin montpelliérain. Frais de logement, repas et forfait trajet en sus.",
         whyHere: [
           "Montpellier concentre des profils très différents — médecin ou data scientist chez Sanofi, studio director chez Ubisoft, directeur technique dans une PME Cap Omega — qui n'ont ni le même rythme ni les mêmes cas d'usage : le 1-to-1 est la seule formule qui s'adapte à chacun.",
           "L'écosystème santé d'Euromédecine impose des contraintes réglementaires (HDS, RGPD santé, MDR) que seul un accompagnement individuel peut intégrer dans chaque exercice pratique.",
@@ -765,7 +765,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Entrée coaching 1-to-1 — dirigeant, indépendant ou expert TPE numérique, biotech ou agronomie du bassin montpelliérain.",
           },
@@ -825,7 +825,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
-            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression et vos besoins.",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à {{price:intervention-dirigeants|flat}}. La suite se décide à l'issue de chaque séance selon votre progression et vos besoins.",
           },
         ],
         guarantees:

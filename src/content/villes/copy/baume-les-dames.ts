@@ -30,8 +30,8 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baume-les-Dames : formats adaptés à l'atelier industriel, TPE artisan BTP ou commerce de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Baume-les-Dames ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Baume-les-Dames sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning saisonnier. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Baume-les-Dames sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning saisonnier. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de la vallée du Doubs ?",

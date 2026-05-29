@@ -9,9 +9,9 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Georges-d'Orques (34, Hérault), commune viticole et résidentielle de 5 676 habitants (2023), située à 8 km à l'ouest de Montpellier. AOC Languedoc-Saint-Georges-d'Orques, l'un des plus anciens crus du Languedoc, exporté en Europe dès le Moyen Âge et apprécié de Thomas Jefferson. Tissu de TPE commerçants, artisans BTP (23,1 % des établissements), professions libérales, et PME viticoles. Axion-IA y accompagne le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès 490 € HT et des consultants qui se déplacent depuis Montpellier en 10 min.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent depuis Montpellier en 10 min.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès 490 € HT et des consultants qui se déplacent depuis Montpellier en 10 min.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent depuis Montpellier en 10 min.",
   ecosystemFr:
     "Saint-Georges-d'Orques est une commune de Montpellier Méditerranée Métropole en croissance (+5,17 % depuis 2017). L'AOC Languedoc-Saint-Georges-d'Orques compte parmi les plus anciens crus du Languedoc, déjà cité au XVIIIe siècle. Le tissu économique compte 610 établissements, dominés par la construction (23,1 %, le double de la moyenne départementale), le commerce de proximité et les professions libérales. Traditions camarguaises (arènes), tambourin (six titres nationaux entre 1965 et 1973). Garrigue, cadre résidentiel prisé.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Georges-d'Orques : ateliers adaptés au commerce de proximité, à l'artisan BTP, au cabinet libéral, au domaine viticole ou au caveau de dégustation. Équipes formées et autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Saint-Georges-d'Orques ?",
-      a: "L'Audit Flash démarre à 490 € HT (diagnostic 2 jours). L'Intervention Essentielle démarre à 590 € HT. Le coaching 1-to-1 démarre à 990 € HT. Tarifs publics affichés, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
       q: "Quels délais pour une implémentation IA à Saint-Georges-d'Orques ?",
@@ -65,7 +65,7 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les domaines viticoles AOC et l'œnotourisme ?",
-      a: "Oui. Cas d'usage IA viticoles et œnotouristiques : chatbot multilingue visiteurs, automatisation réservations dégustations, gestion d'avis, optimisation parcelles, marketing digital domaine. Format Audit Flash 490 € HT ou intervention sur mesure.",
+      a: "Oui. Cas d'usage IA viticoles et œnotouristiques : chatbot multilingue visiteurs, automatisation réservations dégustations, gestion d'avis, optimisation parcelles, marketing digital domaine. Format Audit Flash {{price:audit-flash|flat}} ou intervention sur mesure.",
     },
   ],
 };

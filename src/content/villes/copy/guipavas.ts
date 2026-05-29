@@ -30,8 +30,8 @@ export const GUIPAVAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guipavas : formats adaptés à l'entrepôt, au bureau ou à la zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const GUIPAVAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guipavas  ?",
-      a: "L'Audit Flash IA à Guipavas démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Guipavas démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques à Guipavas ?",

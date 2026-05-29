@@ -30,8 +30,8 @@ export const TARNOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tarnos : formations adaptées aux ateliers industriels, entrepôts logistiques, TPE artisans et commerces. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const TARNOS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les PME industrielles tarnosiennes ?",
-      a: "Oui, audit Flash 490 € HT adapté aux PME industrielles de Tarnos (chimie, métallurgie, sous-traitance). Diagnostic automatisation production, prédiction maintenance, contrôle qualité par vision, classification documents techniques.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux PME industrielles de Tarnos (chimie, métallurgie, sous-traitance). Diagnostic automatisation production, prédiction maintenance, contrôle qualité par vision, classification documents techniques.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique et transport ?",
@@ -61,7 +61,7 @@ export const TARNOS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Tarnos ?",
-      a: "Pour les TPE artisans BTP et commerçants à Tarnos, audit Flash 490 € HT, coaching 1-to-1, intervention formation 1 journée. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      a: "Pour les TPE artisans BTP et commerçants à Tarnos, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation 1 journée. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se passe une mission à Tarnos depuis Bayonne ?",

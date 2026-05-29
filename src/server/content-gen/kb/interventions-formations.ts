@@ -104,7 +104,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Tarifs indicatifs ────────────────────────────────────────────────────
   {
     id: "form-010",
-    text: "Atelier découverte IA en entreprise (2h, jusqu'à 12 personnes) : 800 à 1 200 € HT, inclus supports pédagogiques et accès 30 jours à l'espace ressources Axion-IA.",
+    text: "Atelier découverte IA en entreprise (2h, jusqu'à 12 personnes) — sur devis selon le périmètre, inclus supports pédagogiques et accès 30 jours à l'espace ressources Axion-IA.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -113,7 +113,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-011",
-    text: "Formation journée complète en entreprise (6h, jusqu'à 10 personnes) : 2 500 à 3 500 € HT selon secteur et niveau — déductible de la taxe d'apprentissage et éligible CPF pour les salariés.",
+    text: "Formation journée complète en entreprise (6h, jusqu'à 10 personnes) — sur devis selon le périmètre, selon secteur et niveau — déductible de la taxe d'apprentissage et éligible CPF pour les salariés.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -122,7 +122,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-012",
-    text: "Parcours accompagnement 6 semaines (format hybride présentiel + distanciel) : 4 500 à 8 000 € HT selon l'effectif formé (5 à 20 personnes) — inclus audit initial des usages IA existants.",
+    text: "Parcours accompagnement 6 semaines (format hybride présentiel + distanciel) — sur devis selon le périmètre, selon l'effectif formé (5 à 20 personnes) — inclus audit initial des usages IA existants.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -208,7 +208,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-021",
-    text: "Une conférence Axion-IA sur l'IA appliquée à votre secteur (90 min, jusqu'à 200 personnes) : 2 000 à 4 000 € HT selon format (présentiel, distanciel, hybride) et déplacements.",
+    text: "Une conférence Axion-IA sur l'IA appliquée à votre secteur (90 min, jusqu'à 200 personnes) — sur devis selon le périmètre, selon format (présentiel, distanciel, hybride) et déplacements.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -340,7 +340,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-035",
-    text: "Le coût moyen d'un formateur IA certifié en France se situe entre 800 et 1 800 € HT par jour en 2025, avec une prime pour les formateurs spécialisés en IA générative (LLM, prompting avancé) atteignant 2 500 € HT/jour.",
+    text: "Le coût moyen d'un formateur IA certifié en France se situe entre 800 et 1 800 € HT par jour en 2025, avec une prime pour les formateurs spécialisés en IA générative (LLM, prompting avancé) atteignant 2 500 € HT/jour." /* price-exempt: stat marché tierce */,
     source: "Syntec Numérique — Baromètre des métiers du numérique 2025",
     sourceUrl: "https://syntec-numerique.fr",
     verifiedAt: "2026-05-22",
@@ -369,7 +369,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Financement CPF et OPCO ───────────────────────────────────────────────
   {
     id: "form-038",
-    text: "Le Compte Personnel de Formation (CPF) finance les formations IA certifiantes inscrites au RNCP ou au RS (Répertoire Spécifique) — le solde moyen disponible par salarié est de 800 à 1 500 € permettant de couvrir une formation courte de 1 à 2 jours.",
+    text: "Le Compte Personnel de Formation (CPF) finance les formations IA certifiantes inscrites au RNCP ou au RS (Répertoire Spécifique) — le solde moyen disponible par salarié est de 800 à 1 500 € permettant de couvrir une formation courte de 1 à 2 jours." /* price-exempt: stat marché tierce */,
     source: "France Compétences — Guide CPF et formations numériques 2025",
     sourceUrl: "https://www.francecompetences.fr",
     verifiedAt: "2026-05-22",
@@ -434,7 +434,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-045",
-    text: "France Travail (ex-Pôle Emploi) finance des formations de reconversion vers les métiers de l'IA (data analyst, prompt engineer, consultant IA) via l'AIF (Aide Individuelle à la Formation) — montant moyen financé : 4 200 € par demandeur d'emploi en 2024.",
+    text: "France Travail (ex-Pôle Emploi) finance des formations de reconversion vers les métiers de l'IA (data analyst, prompt engineer, consultant IA) via l'AIF (Aide Individuelle à la Formation) — montant moyen financé : 4 200 € par demandeur d'emploi en 2024." /* price-exempt: stat marché tierce */,
     source: "France Travail — Guide formations IA et reconversion 2024",
     sourceUrl: "https://www.francetravail.fr",
     verifiedAt: "2026-05-22",
@@ -732,7 +732,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Résultats terrain Axion-IA ────────────────────────────────────────────
   {
     id: "form-076",
-    text: "Parmi les entreprises ayant suivi un programme complet Axion-IA (3 jours ou plus), 84 % ont réduit leur recours à la sous-traitance de tâches rédactionnelles et administratives dans les 6 mois suivants — réalisant une économie moyenne de 8 000 € HT/an.",
+    text: "Parmi les entreprises ayant suivi un programme complet Axion-IA (3 jours ou plus), 84 % ont réduit leur recours à la sous-traitance de tâches rédactionnelles et administratives dans les 6 mois suivants — réalisant une économie moyenne de 8 000 € HT/an." /* price-exempt: économie réalisée par le client, pas un tarif Axion */,
     source: "Axion-IA — Étude impact économique formations 2025",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-22",

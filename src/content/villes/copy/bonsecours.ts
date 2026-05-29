@@ -10,9 +10,9 @@ export const BONSECOURS_COPY: VilleCopy = {
     "Bonsecours (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 6 440 habitants. Connue pour sa basilique et son panorama sur Rouen, elle accueille des professions liberales, des TPE de services, des commerces de proximite et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "professions liberales, panorama & residentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonsecours (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise : medecins, avocats, commercants, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Bonsecours est une commune residentielle sur les hauteurs de Rouen, connue pour sa basilique et son panorama exceptionnel. Partie de la Metropole Rouen Normandie, son tissu economique comprend des professions liberales, TPE de services, commerces, artisanat et acteurs du tourisme religieux.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BONSECOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Bonsecours : diagnostic adapte aux professions liberales, TPE de services et commercants des hauteurs de Rouen. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Bonsecours : diagnostic adapte aux professions liberales, TPE de services et commercants des hauteurs de Rouen. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Bonsecours : diagnostic adapte aux professions liberales, TPE de services et commercants des hauteurs de Rouen. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Bonsecours : diagnostic adapte aux professions liberales, TPE de services et commercants des hauteurs de Rouen. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Bonsecours : formations adaptees aux cabinets liberaux, commerces et TPE de services de l'agglomeration rouennaise. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const BONSECOURS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les professions liberales de Bonsecours ?",
-      a: "Pour les professions liberales, nous proposons : automatisation documents, IA redaction, gestion agenda intelligente, accueil patients/clients IA. Audit Flash 490 EUR HT.",
+      a: "Pour les professions liberales, nous proposons : automatisation documents, IA redaction, gestion agenda intelligente, accueil patients/clients IA. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Bonsecours ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les commercants de Bonsecours ?",

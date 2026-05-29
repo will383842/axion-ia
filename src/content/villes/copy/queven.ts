@@ -30,8 +30,8 @@ export const QUEVEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quéven : formations pratiques pour équipes PME technologiques, sous-traitants industriels, artisans et professionnels de santé. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const QUEVEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Quéven  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME quévenoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quévenoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et professions libérales à Quéven ?",
-      a: "Pour les artisans et professions libérales, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : automatisation devis et factures, gestion planning, CRM intelligent, comptabilité augmentée et marketing local.",
+      a: "Pour les artisans et professions libérales, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : automatisation devis et factures, gestion planning, CRM intelligent, comptabilité augmentée et marketing local.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Quéven ?",

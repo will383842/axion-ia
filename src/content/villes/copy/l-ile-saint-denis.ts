@@ -30,8 +30,8 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Île-Saint-Denis : diagnostic adapté aux TPE créatives, PME de services, artisans, commerçants et acteurs de l'économie circulaire de cette commune insulaire. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à L'Île-Saint-Denis : diagnostic adapté aux TPE créatives, PME de services, artisans, commerçants et acteurs de l'économie circulaire de cette commune insulaire. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à L'Île-Saint-Denis : diagnostic adapté aux TPE créatives, PME de services, artisans, commerçants et acteurs de l'économie circulaire de cette commune insulaire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à L'Île-Saint-Denis : diagnostic adapté aux TPE créatives, PME de services, artisans, commerçants et acteurs de l'économie circulaire de cette commune insulaire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Île-Saint-Denis : formats adaptés à l'atelier créatif, au local associatif ou au bureau PME. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,11 +57,11 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE créatives de L'Île-Saint-Denis ?",
-      a: "Oui, nous accompagnons les TPE créatives et artisanales de l'île (ateliers d'artistes, designers, artisans d'art) sur des cas IA pratiques : automatisation gestion commandes, agents IA service client, outils de création assistée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE créatives et artisanales de l'île (ateliers d'artistes, designers, artisans d'art) sur des cas IA pratiques : automatisation gestion commandes, agents IA service client, outils de création assistée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à L'Île-Saint-Denis ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une session de 4 heures sur site. Pour les audits approfondis (Audit Stratégique), comptez entre 1 900 et 3 900 € HT selon le périmètre. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
       q: "Comment accéder à L'Île-Saint-Denis pour une mission ?",

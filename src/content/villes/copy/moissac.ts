@@ -30,8 +30,8 @@ export const MOISSAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash 490 € HT.",
-      en: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moissac : formats adaptés à l'exploitation fruitière, commerce de centre-ville, hébergement tourisme ou cabinet libéral. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const MOISSAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Moissac  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Moissac. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité locale.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Moissac. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité locale.",
     },
     {
       q: "L'IA peut-elle aider la filière chasselas AOP ?",
@@ -65,7 +65,7 @@ export const MOISSAC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Moissac ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Moissac. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Moissac. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

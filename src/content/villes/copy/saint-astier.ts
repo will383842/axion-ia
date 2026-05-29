@@ -30,8 +30,8 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Astier : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Astier : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Astier : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Astier : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'industrie ciment et de l'agroalimentaire en vallée de l'Isle. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Astier : formations pratiques pour commerçants, artisans, équipes industrie et exploitants agricoles de la vallée de l'Isle.",
@@ -53,7 +53,7 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Astier  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la vallée de l'Isle. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la vallée de l'Isle. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider l'industrie ciment à Saint-Astier ?",
@@ -65,7 +65,7 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel en vallée de l'Isle ?",
-      a: "Oui, coaching 1-to-1 adapté aux dirigeants TPE/PME de Saint-Astier et de la vallée de l'Isle. Sur site ou en visio. Sessions à partir de 990 € HT.",
+      a: "Oui, coaching 1-to-1 adapté aux dirigeants TPE/PME de Saint-Astier et de la vallée de l'Isle. Sur site ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

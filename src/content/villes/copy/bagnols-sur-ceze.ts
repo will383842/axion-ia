@@ -30,8 +30,8 @@ export const BAGNOLS_SUR_CEZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bagnols-sur-Cèze : formats adaptés aux sous-traitants industriels, commerçants et artisans. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const BAGNOLS_SUR_CEZE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bagnols-sur-Cèze  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Côtes du Rhône gardoises ?",

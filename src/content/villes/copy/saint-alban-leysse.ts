@@ -30,8 +30,8 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Alban-Leysse : formats adaptés aux cabinets libéraux, bureaux tertiaires, ateliers artisans ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME tertiaires de Grand Chambéry ?",
-      a: "Pour les PME tertiaires de Grand Chambéry, audit Flash 490 € HT, interventions formation sur site, implémentation agents IA, coaching 1-to-1 dirigeants. Cas typiques : automatisation processus, relation client, reporting IA.",
+      a: "Pour les PME tertiaires de Grand Chambéry, audit Flash {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA, coaching 1-to-1 dirigeants. Cas typiques : automatisation processus, relation client, reporting IA.",
     },
     {
       q: "Tarifs audit IA à Saint-Alban-Leysse  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour une TPE à Saint-Alban-Leysse. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Saint-Alban-Leysse. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Alban-Leysse ?",

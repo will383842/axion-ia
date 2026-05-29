@@ -30,8 +30,8 @@ export const LIBERCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Libercourt : formations pratiques adaptées à la logistique, au commerce ou au cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LIBERCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Libercourt  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les entreprises logistiques à Libercourt ?",
@@ -61,7 +61,7 @@ export const LIBERCOURT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA à Libercourt ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du bassin minier. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du bassin minier. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Libercourt ?",

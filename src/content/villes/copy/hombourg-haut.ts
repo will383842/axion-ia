@@ -30,8 +30,8 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hombourg-Haut : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Hombourg-Haut : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Hombourg-Haut : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hombourg-Haut : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hombourg-Haut : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
@@ -53,11 +53,11 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières vers la Sarre ?",
-      a: "Oui, nombreux entrepreneurs frontaliers à Hombourg-Haut travaillant avec la Sarre : automatisation administrative transfrontalière, gestion bilingue FR/DE, conformité, outils collaboratifs. Audit Flash 490 € HT.",
+      a: "Oui, nombreux entrepreneurs frontaliers à Hombourg-Haut travaillant avec la Sarre : automatisation administrative transfrontalière, gestion bilingue FR/DE, conformité, outils collaboratifs. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Hombourg-Haut ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et du patrimoine ?",

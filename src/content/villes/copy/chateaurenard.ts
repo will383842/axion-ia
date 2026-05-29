@@ -30,8 +30,8 @@ export const CHATEAURENARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, TPE artisans et PME agroalimentaires. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, TPE artisans et PME agroalimentaires. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, TPE artisans et PME agroalimentaires. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, TPE artisans et PME agroalimentaires. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaurenard : ateliers pour producteurs maraîchers, équipes du MIN, négociants et PME agroalimentaires. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const CHATEAURENARD_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Châteaurenard  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE agricoles, négociants du MIN et PME agroalimentaires châteaurenardais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE agricoles, négociants du MIN et PME agroalimentaires châteaurenardais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les négociants du MIN de Châteaurenard ?",

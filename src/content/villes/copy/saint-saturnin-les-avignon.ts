@@ -30,8 +30,8 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Saturnin-lès-Avignon : formats adaptés aux TPE artisans, PME services, professions libérales et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE artisans et professions libérales ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas TPE/professions libérales : automatisation devis, gestion administrative, agents conversationnels prise de rendez-vous, fiches Google Business et content marketing local.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas TPE/professions libérales : automatisation devis, gestion administrative, agents conversationnels prise de rendez-vous, fiches Google Business et content marketing local.",
     },
     {
       q: "Accompagnez-vous les PME services et commerces de Saint-Saturnin ?",
@@ -61,7 +61,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Saturnin-lès-Avignon  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Saturnin-lès-Avignon ?",

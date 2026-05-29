@@ -30,8 +30,8 @@ export const LES_HAUTS_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Hauts-d'Anjou : formations pour équipes agricoles, artisanales et commerciales. Ateliers métier adaptés au contexte rural nord-angevin.",
@@ -53,11 +53,11 @@ export const LES_HAUTS_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Hauts-d'Anjou ?",
-      a: "L'Audit Flash IA aux Hauts-d'Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA aux Hauts-d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du nord angevin ?",
-      a: "Oui, nous accompagnons les exploitants agricoles aux Hauts-d'Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitants agricoles aux Hauts-d'Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels secteurs ciblez-vous aux Hauts-d'Anjou ?",

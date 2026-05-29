@@ -30,8 +30,8 @@ export const ARLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
-      en: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
+      fr: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arles : formats adaptés à l'hôtel, à la structure culturelle, à l'exploitation agricole ou au commerce. Vos collaborateurs gèrent ensuite les outils en autonomie.",
@@ -61,7 +61,7 @@ export const ARLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Arles ?",
-      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles camarguaises ?",

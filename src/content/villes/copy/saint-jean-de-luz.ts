@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Luz : formats adaptés à l'hôtel, au restaurant, à la criée, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Luz  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME luziennes : hôteliers-restaurateurs, commerçants, professionnels de la pêche, artisans basques et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME luziennes : hôteliers-restaurateurs, commerçants, professionnels de la pêche, artisans basques et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les professionnels de la pêche à Saint-Jean-de-Luz ?",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Saint-Jean-de-Luz ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Jean-de-Luz, à partir de 990 € HT. Sessions dans votre hôtel, restaurant, commerce ou en visio. Approche terrain adaptée aux métiers de la Côte Basque.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Jean-de-Luz, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre hôtel, restaurant, commerce ou en visio. Approche terrain adaptée aux métiers de la Côte Basque.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Jean-de-Luz ?",

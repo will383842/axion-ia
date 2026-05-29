@@ -30,8 +30,8 @@ export const ORSAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orsay : formats adaptés labo, incubateur, bureau campus, PME high-tech. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const ORSAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et petits cabinets conseil ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",

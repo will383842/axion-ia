@@ -723,7 +723,7 @@ export const BORDEAUX_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Bordeaux accompagne individuellement les dirigeants et cadres de l'aéronautique/spatial (Aerospace Valley), du négoce viticole, de la French Tech Bordeaux et des ETI de Gironde. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — qualification d'appels d'offres aéronautiques, documentation viti-vinicole, développement produit numérique, pilotage commercial ETI. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Bordeaux accompagne individuellement les dirigeants et cadres de l'aéronautique/spatial (Aerospace Valley), du négoce viticole, de la French Tech Bordeaux et des ETI de Gironde. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — qualification d'appels d'offres aéronautiques, documentation viti-vinicole, développement produit numérique, pilotage commercial ETI. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Bordeaux concentre des ingénieurs et cadres de l'aéronautique (Dassault, Thales, Safran, ArianeGroup) avec des agendas très contraints et des besoins IA précis (documentation technique, qualification AO, reporting). Le coaching 1-to-1 s'adapte à leur réalité sans passer par des formations collectives.",
           "Le tissu viti-vinicole bordelais (négociants, châteaux, coopératives, courtiers) a des besoins IA spécifiques — génération de fiches techniques, gestion des clients export, marketing digital. Le coaching individuel cible ces enjeux précisément.",
@@ -762,7 +762,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Programme d'entrée pour les gérants de TPE, artisans viticoles, indépendants et startups de la French Tech Bordeaux souhaitant intégrer l'IA dans leur activité quotidienne.",
           },
@@ -829,7 +829,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Bordeaux individually supports executives and managers in aerospace/space (Aerospace Valley), wine trade, French Tech Bordeaux and Gironde mid-caps. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — aerospace RFP qualification, wine-sector documentation, digital product development, mid-cap commercial management. You progress at your own pace, without superfluous theory.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Bordeaux individually supports executives and managers in aerospace/space (Aerospace Valley), wine trade, French Tech Bordeaux and Gironde mid-caps. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — aerospace RFP qualification, wine-sector documentation, digital product development, mid-cap commercial management. You progress at your own pace, without superfluous theory.",
         whyHere: [
           "Bordeaux concentrates aerospace engineers and managers (Dassault, Thales, Safran, ArianeGroup) with very constrained agendas and precise AI needs (technical documentation, RFP qualification, reporting). 1-to-1 coaching adapts to their reality without group training.",
           "The Bordeaux wine trade (négociants, châteaux, cooperatives, brokers) has specific AI needs — technical sheet generation, export client management, digital marketing. Individual coaching targets these challenges precisely.",
@@ -868,7 +868,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry programme for micro-business owners, wine-sector craftspeople, freelancers and French Tech Bordeaux startups wishing to integrate AI into their daily activity.",
           },

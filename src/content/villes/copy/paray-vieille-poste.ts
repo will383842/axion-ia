@@ -30,8 +30,8 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paray-Vieille-Poste : formats adaptés entrepôt logistique, siège PME fret, hôtel aéroportuaire, commerce, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hôtels près d'Orly ?",
-      a: "Audit IA du parcours client, CRM augmenté réservations, chatbot multilingue, automatisation facturation et revenue management. Audit Flash 490 € HT.",
+      a: "Audit IA du parcours client, CRM augmenté réservations, chatbot multilingue, automatisation facturation et revenue management. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Paray-Vieille-Poste  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Orly et Thiais ?",

@@ -30,8 +30,8 @@ export const SAUSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sausheim : formats adaptés à l'atelier automobile, à la ligne de production, à l'entrepôt logistique ou au bureau d'études. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const SAUSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sausheim  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone industrielle de Sausheim, il identifie les cas d'usage IA à fort ROI pour votre ligne de production, atelier sous-traitant ou entrepôt logistique.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone industrielle de Sausheim, il identifie les cas d'usage IA à fort ROI pour votre ligne de production, atelier sous-traitant ou entrepôt logistique.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobiles de Sausheim ?",
@@ -65,7 +65,7 @@ export const SAUSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Sausheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Sausheim, à partir de 990 € HT. Sessions dans votre usine, atelier ou en visio. Approche terrain adaptée au tissu industriel automobile et logistique de l'est mulhousien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Sausheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, atelier ou en visio. Approche terrain adaptée au tissu industriel automobile et logistique de l'est mulhousien.",
     },
   ],
 };

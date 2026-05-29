@@ -30,8 +30,8 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bois-d'Arcy : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Bois-d'Arcy : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Bois-d'Arcy : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bois-d'Arcy : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales entre Versailles et Saint-Quentin-en-Yvelines. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bois-d'Arcy : formats adaptés à l'atelier artisan, commerce, cabinet libéral ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP à Bois-d'Arcy ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Bois-d'Arcy (plombiers, électriciens, maçons, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning saisonnier. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Bois-d'Arcy (plombiers, électriciens, maçons, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning saisonnier. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les professions libérales locales ?",
@@ -61,7 +61,7 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Bois-d'Arcy ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE/PME à Bois-d'Arcy. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone Versailles/SQY.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Bois-d'Arcy. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone Versailles/SQY.",
     },
     {
       q: "Intervenez-vous aussi à Saint-Quentin-en-Yvelines ?",

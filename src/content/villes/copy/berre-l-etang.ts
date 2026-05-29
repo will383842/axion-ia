@@ -30,8 +30,8 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Berre-l'Étang : formats adaptés au site industriel, à l'atelier maintenance et au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Berre-l'Étang ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME chimie et maintenance, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME chimie et maintenance, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Berre-l'Étang ?",

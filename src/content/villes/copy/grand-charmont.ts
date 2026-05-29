@@ -9,9 +9,9 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
   pitchEn:
     "Grand-Charmont (25), commune du Pays de Montbeliard, est une ville residentielle adossee au bassin industriel automobile Stellantis-Sochaux. Tissu TPE/PME sous-traitance automobile, commerce de proximite, services a la personne, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit Flash des {{price:audit-flash|flat}}.",
   seoHook: "pays de montbeliard",
   ecosystemFr:
     "Grand-Charmont fait partie de l'agglomeration de Montbeliard dans le nord du Doubs. La ville est historiquement liee au bassin industriel automobile (Stellantis-Sochaux a 5 km). Le tissu economique local repose sur la sous-traitance industrielle, le commerce de proximite et les services aux particuliers.",
@@ -30,8 +30,8 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Grand-Charmont : diagnostic adapte aux sous-traitants automobile, commercants de proximite, prestataires services a la personne et artisans BTP du Pays de Montbeliard. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Grand-Charmont : diagnostic adapte aux sous-traitants automobile, commercants de proximite, prestataires services a la personne et artisans BTP du Pays de Montbeliard. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Grand-Charmont : diagnostic adapte aux sous-traitants automobile, commercants de proximite, prestataires services a la personne et artisans BTP du Pays de Montbeliard. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Grand-Charmont : diagnostic adapte aux sous-traitants automobile, commercants de proximite, prestataires services a la personne et artisans BTP du Pays de Montbeliard. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Grand-Charmont : formats adaptes aux ateliers sous-traitance automobile, commerces, structures services a la personne et chantiers BTP de l'agglomeration montbeliardaise.",
@@ -57,7 +57,7 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Grand-Charmont ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE et PME de Grand-Charmont, nous proposons des audits approfondis adaptes aux enjeux automobile, commerce ou services.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Grand-Charmont, nous proposons des audits approfondis adaptes aux enjeux automobile, commerce ou services.",
     },
     {
       q: "Travaillez-vous avec les commercants de proximite ?",
@@ -65,7 +65,7 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Grand-Charmont ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Grand-Charmont, a partir de 990 euros HT. Sessions dans votre atelier, commerce, bureau ou en visio.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Grand-Charmont, a partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, commerce, bureau ou en visio.",
     },
   ],
 };

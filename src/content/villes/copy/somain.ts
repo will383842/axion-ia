@@ -30,8 +30,8 @@ export const SOMAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Somain : formats adaptés à l'entrepôt logistique, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const SOMAIN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Somain  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour l'industrie agroalimentaire à Somain ?",

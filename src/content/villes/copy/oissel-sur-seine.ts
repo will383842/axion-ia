@@ -30,8 +30,8 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oissel-sur-Seine : formats adaptés à l'atelier, entrepôt, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans oisselliens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Oissel-sur-Seine sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Oissel-sur-Seine sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Oissel-sur-Seine ?",

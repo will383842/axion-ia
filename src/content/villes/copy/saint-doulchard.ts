@@ -30,8 +30,8 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Doulchard : formats adaptés aux PME tertiaires, commerçants zones d'activités, artisans, logisticiens. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans du Cher ?",
-      a: "Pour les TPE artisans à Saint-Doulchard et agglo Bourges : audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
+      a: "Pour les TPE artisans à Saint-Doulchard et agglo Bourges : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
     },
     {
       q: "Accompagnez-vous les acteurs de la logistique ?",

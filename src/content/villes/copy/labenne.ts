@@ -30,8 +30,8 @@ export const LABENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Labenne : formations adaptées aux commerces, campings, hébergeurs, restaurateurs et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LABENNE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les campings labennais ?",
-      a: "Oui, audit Flash 490 € HT adapté aux campings et hébergeurs de plein air à Labenne. Diagnostic chatbot réservation multilingue, gestion saisonnière, automatisation check-in, prédiction taux d'occupation, analyse avis.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux campings et hébergeurs de plein air à Labenne. Diagnostic chatbot réservation multilingue, gestion saisonnière, automatisation check-in, prédiction taux d'occupation, analyse avis.",
     },
     {
       q: "Accompagnez-vous les commerçants de la zone commerciale ?",
@@ -61,7 +61,7 @@ export const LABENNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et restaurateurs labennais ?",
-      a: "Pour les TPE artisans BTP et restaurateurs à Labenne, audit Flash 490 € HT, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion réservations, classification avis clients, facturation.",
+      a: "Pour les TPE artisans BTP et restaurateurs à Labenne, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion réservations, classification avis clients, facturation.",
     },
     {
       q: "Comment se passe une mission à Labenne depuis Bayonne ?",

@@ -30,8 +30,8 @@ export const SARZEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sarzeau : diagnostic adapté aux TPE touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Sarzeau : diagnostic adapté aux TPE touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Sarzeau : diagnostic adapté aux TPE touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sarzeau : diagnostic adapté aux TPE touristiques, PME de l'hébergement, restaurateurs et artisans de la presqu'île de Rhuys. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sarzeau : formations pratiques pour équipes hôtelières, restaurateurs, commerçants saisonniers et artisans. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const SARZEAU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Sarzeau  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME sarzeautines, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME sarzeautines, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "L'IA peut-elle aider à gérer la saisonnalité à Sarzeau ?",

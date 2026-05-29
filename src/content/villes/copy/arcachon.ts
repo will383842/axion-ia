@@ -30,8 +30,8 @@ export const ARCACHON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit Flash 490 € HT.",
-      en: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit Flash 490 € HT.",
+      fr: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arcachon : ateliers adaptés aux hôtels, restaurants, ports ostréicoles et commerces. Équipes autonomes sur outils IA configurés tourisme.",
@@ -53,7 +53,7 @@ export const ARCACHON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arcachon  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles d'Arcachon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les hôteliers d'Arcachon ?",

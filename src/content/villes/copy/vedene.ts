@@ -30,8 +30,8 @@ export const VEDENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vedène : ateliers pour équipes TPE/PME logistique, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const VEDENE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vedène  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME logistiques, négoces et commerces vedénais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques, négoces et commerces vedénais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistiques et de négoce des zones d'activités ?",

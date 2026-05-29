@@ -30,8 +30,8 @@ export const NOUZONVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nouzonville : formats adaptés atelier industriel, bureau PME, salle de réunion mairie. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const NOUZONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Nouzonville  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME industrielles ardennaises.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME industrielles ardennaises.",
     },
     {
       q: "Travaillez-vous avec les ateliers métallurgie et forge ?",

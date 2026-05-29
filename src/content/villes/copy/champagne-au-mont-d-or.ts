@@ -30,8 +30,8 @@ export const CHAMPAGNE_AU_MONT_D_OR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champagne-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Champagne-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Champagne-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Champagne-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champagne-au-Mont-d'Or : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHAMPAGNE_AU_MONT_D_OR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Pour les TPE artisans BTP et commerçants, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

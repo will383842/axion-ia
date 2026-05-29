@@ -30,8 +30,8 @@ export const LYS_HAUT_LAYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lys-Haut-Layon : formations pour équipes viticoles, touristiques et commerciales. Ateliers métier adaptés au vignoble du Layon.",
@@ -53,7 +53,7 @@ export const LYS_HAUT_LAYON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lys-Haut-Layon  ?",
-      a: "L'Audit Flash IA à Lys-Haut-Layon démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Lys-Haut-Layon démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les vignerons des coteaux du Layon ?",

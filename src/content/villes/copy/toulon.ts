@@ -716,7 +716,7 @@ export const TOULON_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Toulon est un accompagnement individuel conçu pour les dirigeants, cadres et managers du Var qui veulent maîtriser l'IA à leur rythme, en partant de leur réalité métier concrète. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels — que vous soyez à la tête d'une PME du centre-ville, cadre dans l'écosystème Naval Group / DCNS, responsable R&D à Toulon Var Technologie ou enseignant-chercheur à l'UTLN. Tarif d'entrée à 990 € HT. Frais de déplacement en sus pour les séances en présentiel.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Toulon est un accompagnement individuel conçu pour les dirigeants, cadres et managers du Var qui veulent maîtriser l'IA à leur rythme, en partant de leur réalité métier concrète. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels — que vous soyez à la tête d'une PME du centre-ville, cadre dans l'écosystème Naval Group / DCNS, responsable R&D à Toulon Var Technologie ou enseignant-chercheur à l'UTLN. Tarif d'entrée à {{price:intervention-dirigeants|flat}}. Frais de déplacement en sus pour les séances en présentiel.",
         whyHere: [
           "Toulon concentre des profils de dirigeants et cadres à très haute valeur : ingénieurs de la défense maritime, managers de PME du Var, responsables innovation des pôles technologiques — autant de personnes pour qui l'IA représente un levier stratégique individuel immédiat.",
           "L'écosystème Naval Group / DCNS et ses sous-traitants génère des milliers de cadres techniques et de managers de projet qui ont tout à gagner à intégrer l'IA dans leur pratique quotidienne (rédaction de spécifications, comptes-rendus, analyse documentaire, gestion de projet).",
@@ -755,7 +755,7 @@ export const TOULON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Entrée accessible pour indépendants, artisans, gérants de TPE du Var souhaitant un parcours court sur 2-3 séances focalisées sur leurs cas d'usage prioritaires. Frais de déplacement en sus pour le présentiel.",
           },
@@ -799,7 +799,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Quel est le tarif d'entrée pour un coaching 1-to-1 à Toulon ?",
-            a: "Le tarif d'entrée est de 990 € HT pour un parcours court (2-3 séances). Les frais de déplacement du consultant sont facturés en sus pour les séances en présentiel hors Toulon intra-muros. Le programme complet est défini après l'entretien de positionnement.",
+            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court (2-3 séances). Les frais de déplacement du consultant sont facturés en sus pour les séances en présentiel hors Toulon intra-muros. Le programme complet est défini après l'entretien de positionnement.",
           },
           {
             q: "Les séances se déroulent-elles en présentiel ou à distance ?",
@@ -822,7 +822,7 @@ export const TOULON_COPY: VilleCopy = {
           "Entretien de positionnement inclus : si à l'issue de cet entretien le coaching ne correspond pas à vos besoins, aucune facturation. Programme remis avant tout engagement financier. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Frais de déplacement détaillés et validés avec vous avant chaque séance en présentiel. Aucun lock-in : les outils et méthodes appris sont utilisables en autonomie totale sans dépendance à Axion-IA. Remboursement de la dernière séance si vous estimez ne pas avoir progressé sur l'objectif fixé en début de séance.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Toulon is an individual accompaniment designed for Var executives, managers and senior professionals who want to master AI at their own pace, starting from their concrete business reality. No group, no generic programme: each session is built around your real challenges — whether you lead a city-centre SME, work within the Naval Group / DCNS ecosystem, manage R&D at Toulon Var Technologie or research at UTLN. Entry price from 990 € excl. VAT. Travel expenses billed separately for in-person sessions.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Toulon is an individual accompaniment designed for Var executives, managers and senior professionals who want to master AI at their own pace, starting from their concrete business reality. No group, no generic programme: each session is built around your real challenges — whether you lead a city-centre SME, work within the Naval Group / DCNS ecosystem, manage R&D at Toulon Var Technologie or research at UTLN. Entry price from {{price:intervention-dirigeants|compact}} excl. VAT. Travel expenses billed separately for in-person sessions.",
         whyHere: [
           "Toulon concentrates high-value executive and managerial profiles: maritime defence engineers, Var SME managers, innovation leads at technology clusters — people for whom AI represents an immediate individual strategic lever.",
           "The Naval Group / DCNS ecosystem and its sub-contractors generates thousands of technical managers and project managers who stand to gain directly from integrating AI into their daily practice (spec writing, meeting minutes, document analysis, project management).",
@@ -861,7 +861,7 @@ export const TOULON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Accessible entry for Var independents, tradespeople and micro-business owners wanting a short programme of 2-3 sessions focused on their priority use cases. Travel expenses billed separately for in-person.",
           },
@@ -905,7 +905,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "What is the entry price for 1-to-1 coaching in Toulon?",
-            a: "The entry price is 990 € excl. VAT for a short programme (2-3 sessions). Consultant travel expenses are billed separately for in-person sessions outside Toulon city centre. The full programme is defined after the positioning interview.",
+            a: "The entry price is {{price:intervention-dirigeants|compact}} excl. VAT for a short programme (2-3 sessions). Consultant travel expenses are billed separately for in-person sessions outside Toulon city centre. The full programme is defined after the positioning interview.",
           },
           {
             q: "Are sessions in person or remote?",

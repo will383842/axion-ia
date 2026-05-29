@@ -66,7 +66,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Durée d'un audit IA : de 1 jour à 6 semaines selon la formule",
       metaTitle: "Durée audit IA : 1 jour à 6 semaines | Axion-IA",
       metaDescription:
-        "Un audit IA Flash prend 1 jour (489 €), un audit Ciblé 5 à 10 jours, un audit Stratégique PME 3 à 6 semaines. Choisissez selon votre urgence et votre taille.",
+        "Un audit IA Flash prend 1 jour (490 €), un audit Ciblé 5 à 10 jours, un audit Stratégique PME 3 à 6 semaines. Choisissez selon votre urgence et votre taille.",
       h2Variants: [
         "Durée de l'audit Flash (1 jour)",
         "Durée de l'audit Stratégique PME",

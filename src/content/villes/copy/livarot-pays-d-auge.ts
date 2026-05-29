@@ -30,8 +30,8 @@ export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Livarot-Pays-d'Auge : formats adaptés à la fromagerie, laiterie, cidrerie, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les exploitations laitières du Pays d'Auge ?",
-      a: "Pour les exploitations laitières et éleveurs du Pays d'Auge, audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion troupeaux, prédiction production, automatisation traçabilité lait.",
+      a: "Pour les exploitations laitières et éleveurs du Pays d'Auge, audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion troupeaux, prédiction production, automatisation traçabilité lait.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Livarot-Pays-d'Auge  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",

@@ -30,8 +30,8 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'est Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'est Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'est Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'est Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quint-Fonsegrives : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Quint-Fonsegrives  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Quint-Fonsegrives ?",
@@ -65,7 +65,7 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à Quint-Fonsegrives ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME. Format flexible : locaux, visio. À partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const GEMENOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gémenos : diagnostic adapté aux PME technologiques, TPE artisans et professions libérales de la zone d'activités gémenoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gémenos : diagnostic adapté aux PME technologiques, TPE artisans et professions libérales de la zone d'activités gémenoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gémenos : diagnostic adapté aux PME technologiques, TPE artisans et professions libérales de la zone d'activités gémenoise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gémenos : diagnostic adapté aux PME technologiques, TPE artisans et professions libérales de la zone d'activités gémenoise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gémenos : ateliers pour équipes PME tech, cabinets libéraux et TPE. Outils IA configurés métier réel, format demi-journée ou journée.",
@@ -53,7 +53,7 @@ export const GEMENOS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME tech à Gémenos ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux PME technologiques, TPE et professions libérales gémenoises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME technologiques, TPE et professions libérales gémenoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME tech de la zone d'activités ?",

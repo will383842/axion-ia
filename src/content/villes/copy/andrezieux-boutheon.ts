@@ -30,8 +30,8 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Andrézieux-Bouthéon : formats adaptés au site aéroportuaire, entrepôt logistique, bureau tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces locaux ?",
-      a: "Pour les TPE artisans BTP et commerçants à Andrézieux-Bouthéon, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Andrézieux-Bouthéon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

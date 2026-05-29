@@ -30,8 +30,8 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laneuveville-devant-Nancy : formats adaptés à l'atelier industriel, au bureau tertiaire, au chantier BTP, à l'entrepôt logistique ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et logistique de Laneuveville-devant-Nancy ?",
-      a: "Oui, nous accompagnons les artisans BTP et acteurs logistiques sur des cas IA pratiques : automatisation devis, gestion planning chantier, optimisation tournées, agents IA prise de RDV. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les artisans BTP et acteurs logistiques sur des cas IA pratiques : automatisation devis, gestion planning chantier, optimisation tournées, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Laneuveville-devant-Nancy  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Laneuveville-devant-Nancy et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Laneuveville-devant-Nancy et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Laneuveville-devant-Nancy ?",

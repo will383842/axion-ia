@@ -45,8 +45,8 @@ export const CRETEIL_COPY: VilleCopy = {
       en: "Déploiement d'outils IA sur mesure (RAG documentaire, automatisation, agents) chez vos équipes à Créteil — intégration dans votre SI existant, code custom, sans dépendance éditeur. Détail complet sur la sous-page /implementations.",
     },
     unAUn: {
-      fr: "Accompagnement individuel dirigeant TPE/PME à Créteil : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de 990 € HT — détail sur la sous-page /un-a-un.",
-      en: "Accompagnement individuel dirigeant TPE/PME à Créteil : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de 990 € HT — détail sur la sous-page /un-a-un.",
+      fr: "Accompagnement individuel dirigeant TPE/PME à Créteil : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
+      en: "Accompagnement individuel dirigeant TPE/PME à Créteil : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const CRETEIL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit ou une intervention IA d'une TPE/PME cristolienne ?",
-      a: "Une intervention collective démarre à 590 € HT, un accompagnement dirigeant 1-to-1 à 990 € HT. L'audit complet est cadré sur mesure selon le périmètre. Pour une TPE de moins de 10 salariés, un format condensé est généralement recommandé. Tarifs publics consultables sur axion-ia.fr.",
+      a: "Une intervention collective démarre à {{price:intervention-4h|flat}}, un accompagnement dirigeant 1-to-1 à {{price:intervention-dirigeants|flat}}. L'audit complet est cadré sur mesure selon le périmètre. Pour une TPE de moins de 10 salariés, un format condensé est généralement recommandé. Tarifs publics consultables sur axion-ia.fr.",
     },
     {
       q: "Nos données patients, étudiants ou administratives sont sensibles — comment Axion-IA gère-t-il la confidentialité ?",
@@ -64,7 +64,7 @@ export const CRETEIL_COPY: VilleCopy = {
     },
     {
       q: "En combien de temps un premier outil IA peut-il être opérationnel pour une TPE de Créteil ?",
-      a: "Pour une TPE (1-10 salariés), un premier outil IA — relance client automatisée, génération de devis, FAQ interne, traitement de documents — peut être déployé en 3 à 5 semaines après l'audit initial. L'implémentation démarre à 990 € HT. Le périmètre est cadré dès l'audit pour éviter tout dérapage.",
+      a: "Pour une TPE (1-10 salariés), un premier outil IA — relance client automatisée, génération de devis, FAQ interne, traitement de documents — peut être déployé en 3 à 5 semaines après l'audit initial. L'implémentation démarre à {{price:impl-poc|entry}}. Le périmètre est cadré dès l'audit pour éviter tout dérapage.",
     },
     {
       q: "Quels secteurs économiques locaux Axion-IA cible-t-il à Créteil ?",
@@ -76,7 +76,7 @@ export const CRETEIL_COPY: VilleCopy = {
     },
     {
       q: "Quelle différence entre une intervention collective et un accompagnement 1-to-1 dirigeant ?",
-      a: "L'intervention collective (dès 590 € HT) s'adresse à une équipe de 5 à 20 personnes : prise en main d'outils IA, cas d'usage métier, mise en pratique. Le 1-to-1 dirigeant (dès 990 € HT) est un format individuel centré sur la stratégie IA : feuille de route, gouvernance, arbitrages make-or-buy. Les deux formats sont disponibles à Créteil.",
+      a: "L'intervention collective (dès {{price:intervention-4h|flat}}) s'adresse à une équipe de 5 à 20 personnes : prise en main d'outils IA, cas d'usage métier, mise en pratique. Le 1-to-1 dirigeant (dès {{price:intervention-dirigeants|flat}}) est un format individuel centré sur la stratégie IA : feuille de route, gouvernance, arbitrages make-or-buy. Les deux formats sont disponibles à Créteil.",
     },
   ],
 };

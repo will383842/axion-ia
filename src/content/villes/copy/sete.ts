@@ -10,9 +10,9 @@ export const SETE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Sète (45 337 habitants, Hérault), ville singulière enclavée entre la Méditerranée et l'étang de Thau, à 37 km de Montpellier. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu portuaire (pêche, conchyliculture, transports maritimes), le tourisme et la restauration, et les activités viticoles environnantes, dans une agglomération (Sète Agglopôle Méditerranée, 95 662 habitants) reliée à Marseillan par un lido de 12 km.",
   directAnswerFr:
-    "À Sète, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit Flash dès 490 € HT, intervention dès 590 € HT, implémentation dès 990 € HT, sans devis caché et sans no-code.",
+    "À Sète, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché et sans no-code.",
   directAnswerEn:
-    "À Sète, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit Flash dès 490 € HT, intervention dès 590 € HT, implémentation dès 990 € HT, sans devis caché et sans no-code.",
+    "À Sète, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) de l'agglopôle : pêcheurs, conchyliculteurs de l'étang de Thau, transitaires du port (commerce, pêche, plaisance), hôteliers-restaurateurs du front de mer, viticulteurs et agences immobilières. Nous nous déplaçons par la gare de Sète (TGV, Intercités, TER Occitanie) et l'autoroute A9. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché et sans no-code.",
   seoHook: "port de Sète & conchyliculture de Thau",
   ecosystemFr:
     "Le tissu économique sétois s'articule autour du port (commerce, pêche, plaisance), de la conchyliculture sur l'étang de Thau (huîtres et moules de Bouzigues), du tourisme balnéaire (lido de 12 km vers Marseillan), de la restauration de spécialités locales et de la viticulture. Sète Agglopôle Méditerranée fédère une unité urbaine de 95 662 habitants. Les communes membres incluent Frontignan, Marseillan, Bouzigues, Loupian, Mèze et Balaruc-les-Bains. Cette diversité TPE/PME maritime, agricole et touristique constitue un terrain unique pour des solutions IA codées sur mesure.",
@@ -31,26 +31,26 @@ export const SETE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA sur site à Sète dès 490 € HT : analyse des process chez les TPE/PME du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
-      en: "Audit Flash IA sur site à Sète dès 490 € HT : analyse des process chez les TPE/PME du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
+      fr: "Audit Flash IA sur site à Sète dès {{price:audit-flash|flat}} : analyse des process chez les TPE/PME du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
+      en: "Audit Flash IA sur site à Sète dès {{price:audit-flash|flat}} : analyse des process chez les TPE/PME du port, de la conchyliculture de Thau et de l'hôtellerie-restauration pour identifier 3 à 5 cas d'usage IA prioritaires en code custom.",
     },
     interventions: {
-      fr: "Interventions IA à Sète dès 590 € HT : automatisation des relances clients pour transitaires portuaires, outils de traçabilité pour conchyliculteurs de Bouzigues, gestion des réservations pour restaurateurs du front de mer.",
-      en: "Interventions IA à Sète dès 590 € HT : automatisation des relances clients pour transitaires portuaires, outils de traçabilité pour conchyliculteurs de Bouzigues, gestion des réservations pour restaurateurs du front de mer.",
+      fr: "Interventions IA à Sète dès {{price:intervention-4h|flat}} : automatisation des relances clients pour transitaires portuaires, outils de traçabilité pour conchyliculteurs de Bouzigues, gestion des réservations pour restaurateurs du front de mer.",
+      en: "Interventions IA à Sète dès {{price:intervention-4h|flat}} : automatisation des relances clients pour transitaires portuaires, outils de traçabilité pour conchyliculteurs de Bouzigues, gestion des réservations pour restaurateurs du front de mer.",
     },
     implementation: {
-      fr: "Implémentation IA à Sète dès 990 € HT : intégration d'assistants métiers codés sur mesure chez les TPE/PME maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
-      en: "Implémentation IA à Sète dès 990 € HT : intégration d'assistants métiers codés sur mesure chez les TPE/PME maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
+      fr: "Implémentation IA à Sète dès {{price:impl-poc|entry}} : intégration d'assistants métiers codés sur mesure chez les TPE/PME maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
+      en: "Implémentation IA à Sète dès {{price:impl-poc|entry}} : intégration d'assistants métiers codés sur mesure chez les TPE/PME maritimes, viticoles et touristiques de Sète Agglopôle Méditerranée, connectés à leurs systèmes existants.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Sète dès 990 € HT pour dirigeants de TPE et PME sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
-      en: "Accompagnement 1-à-1 à Sète dès 990 € HT pour dirigeants de TPE et PME sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
+      fr: "Accompagnement 1-à-1 à Sète dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
+      en: "Accompagnement 1-à-1 à Sète dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME sétoises : montée en compétences IA pratique, ancrée sur les réalités du port, de l'étang de Thau et du tourisme balnéaire.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Sète ?",
-      a: "Les interventions IA à Sète démarrent à 590 € HT. L'Audit Flash débute à 490 € HT et l'implémentation à 990 € HT. Tous nos tarifs sont publics, sans devis caché.",
+      a: "Les interventions IA à Sète démarrent à {{price:intervention-4h|flat}}. L'Audit Flash débute à {{price:audit-flash|flat}} et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics, sans devis caché.",
     },
     {
       q: "Quels délais pour une mission à Sète ?",

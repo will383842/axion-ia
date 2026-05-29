@@ -30,8 +30,8 @@ export const AUBIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubignan : formats adaptés aux domaines viticoles, maraîchers, PME agroalimentaires, coopératives et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Ventoux ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B, fiches Google Business et oenotourisme.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B, fiches Google Business et oenotourisme.",
     },
     {
       q: "Accompagnez-vous les maraîchers et coopératives agricoles d'Aubignan ?",
@@ -61,7 +61,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Aubignan  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Aubignan ?",

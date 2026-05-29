@@ -10,9 +10,9 @@ export const PETIT_COURONNE_COPY: VilleCopy = {
     "Petit-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 8 680 habitants. Ville industrielle (raffinage) et patrie de Pierre Corneille, elle accueille des TPE sous-traitantes, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie, raffinage & boucle Seine",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants industriels de la boucle de Seine : maintenance, services, artisans, commercants et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Petit-Couronne est situee en rive gauche de la Seine, au sud de Rouen. Zone industrielle historique (raffinage, chimie) et tissu de TPE sous-traitantes, PME de services, commerces et artisanat. Maison natale de Pierre Corneille. Partie de la Metropole Rouen Normandie.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PETIT_COURONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Petit-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Petit-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Petit-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Petit-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et commercants de la boucle de Seine sud. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Petit-Couronne : formations adaptees aux sous-traitants industriels, PME de services, commerces et artisans. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const PETIT_COURONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Petit-Couronne ?",
-      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports, planification interventions, gestion documentaire technique. Audit Flash 490 EUR HT.",
+      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports, planification interventions, gestion documentaire technique. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Petit-Couronne ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les commercants de Petit-Couronne ?",

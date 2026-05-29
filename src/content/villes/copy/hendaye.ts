@@ -30,8 +30,8 @@ export const HENDAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hendaye : formats adaptés à l'hôtel, au restaurant, au commerce, à l'entrepôt ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const HENDAYE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Hendaye  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME hendayaises : hôteliers-restaurateurs, commerçants transfrontaliers, transporteurs, artisans et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME hendayaises : hôteliers-restaurateurs, commerçants transfrontaliers, transporteurs, artisans et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières à Hendaye ?",
@@ -61,7 +61,7 @@ export const HENDAYE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Hendaye ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Hendaye, à partir de 990 € HT. Sessions dans votre hôtel, restaurant, commerce ou en visio. Approche terrain adaptée aux métiers de la Côte Basque et du transfrontalier.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Hendaye, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre hôtel, restaurant, commerce ou en visio. Approche terrain adaptée aux métiers de la Côte Basque et du transfrontalier.",
     },
     {
       q: "Comment se déroule une mission IA à Hendaye ?",

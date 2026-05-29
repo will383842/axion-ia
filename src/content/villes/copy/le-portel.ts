@@ -30,8 +30,8 @@ export const LE_PORTEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Portel : formations pratiques adaptées au tourisme, commerce balnéaire ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LE_PORTEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Portel ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du littoral boulonnais. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du littoral boulonnais. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les entreprises touristiques du Portel ?",
@@ -61,7 +61,7 @@ export const LE_PORTEL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants au Portel ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du littoral. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du littoral. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission au Portel ?",

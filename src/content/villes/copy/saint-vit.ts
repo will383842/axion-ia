@@ -30,8 +30,8 @@ export const SAINT_VIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Vit : formats adaptés à l'atelier industriel, entrepôt logistique, TPE artisan BTP ou exploitation agricole. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const SAINT_VIT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Saint-Vit ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Saint-Vit sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Saint-Vit sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de Saint-Vit ?",

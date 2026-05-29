@@ -30,8 +30,8 @@ export const LA_CADIERE_D_AZUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Cadière-d'Azur : ateliers pour viticulteurs Bandol, hôteliers, restaurateurs, oléiculteurs et artisans. Outils IA configurés métier réel premium.",
@@ -53,7 +53,7 @@ export const LA_CADIERE_D_AZUR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole AOC Bandol ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles AOC Bandol, oléiculteurs et hôtels premium cadiérens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC Bandol, oléiculteurs et hôtels premium cadiérens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Bandol ?",

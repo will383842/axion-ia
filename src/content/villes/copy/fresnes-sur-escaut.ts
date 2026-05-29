@@ -10,9 +10,9 @@ export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
     "Fresnes-sur-Escaut (59), commune de la vallee de l'Escaut dans le bassin minier du Nord, reunit pres de 7 350 habitants. Ancienne cite miniere reconvertie, son tissu economique associe TPE artisans, PME industrielles, commerces de proximite et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & vallee Escaut",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Fresnes-sur-Escaut (59). Nous accompagnons les TPE, PME et ETI de la vallee de l'Escaut et du bassin minier : industriels, artisans, commercants, professions liberales et services aux entreprises. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Fresnes-sur-Escaut est situee dans la vallee de l'Escaut, en plein bassin minier du Nord (inscrit UNESCO). Reconversion industrielle post-charbon vers PME industrielles diversifiees, TPE artisanat BTP, commerces et services. Proximite de Valenciennes (10 km) et du parc naturel Scarpe-Escaut.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, TPE artisans et commercants de la vallee de l'Escaut. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, TPE artisans et commercants de la vallee de l'Escaut. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, TPE artisans et commercants de la vallee de l'Escaut. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Fresnes-sur-Escaut : diagnostic adapte aux PME industrielles du bassin minier, TPE artisans et commercants de la vallee de l'Escaut. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Fresnes-sur-Escaut : formations adaptees a l'atelier industriel, au commerce ou au bureau tertiaire. Equipes autonomes sur outils IA des la premiere journee.",
@@ -53,15 +53,15 @@ export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles du bassin minier ?",
-      a: "Pour les PME industrielles en reconversion du bassin minier, nous proposons : automatisation processus, predictif maintenance, classification documents, agents conversationnels B2B. Audit Flash 490 EUR HT.",
+      a: "Pour les PME industrielles en reconversion du bassin minier, nous proposons : automatisation processus, predictif maintenance, classification documents, agents conversationnels B2B. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans a Fresnes-sur-Escaut ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commercants et independants de la vallee de l'Escaut : automatisation devis, agents IA prise de RDV, outils IA accessibles. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, commercants et independants de la vallee de l'Escaut : automatisation devis, agents IA prise de RDV, outils IA accessibles. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Fresnes-sur-Escaut ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Fresnes-sur-Escaut ?",

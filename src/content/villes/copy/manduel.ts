@@ -30,8 +30,8 @@ export const MANDUEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Manduel : diagnostic adapté aux TPE/PME viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit Flash 490 € HT.",
-      en: "Audit IA à Manduel : diagnostic adapté aux TPE/PME viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit Flash 490 € HT.",
+      fr: "Audit IA à Manduel : diagnostic adapté aux TPE/PME viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Manduel : diagnostic adapté aux TPE/PME viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Manduel : formats adaptés aux caves viticoles, entreprises de services, logisticiens et commerces de la zone gare TGV Costières.",
@@ -53,7 +53,7 @@ export const MANDUEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Manduel  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Costières de Nîmes ?",

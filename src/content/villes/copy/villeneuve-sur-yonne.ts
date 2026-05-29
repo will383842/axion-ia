@@ -30,8 +30,8 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-sur-Yonne : formats adaptés à l'atelier artisan, commerce, gîte patrimonial, PME, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME services et agriculteurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

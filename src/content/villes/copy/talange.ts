@@ -30,8 +30,8 @@ export const TALANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Talange : formats adaptés au commerce, bureau tertiaire, atelier BTP, entrepôt logistique ou cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const TALANGE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Talange ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les entreprises de services et professions libérales ?",

@@ -30,8 +30,8 @@ export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Sulpice-la-Pointe : diagnostic adapté aux TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales de l'axe Toulouse-Tarn. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Sulpice-la-Pointe : diagnostic adapté aux TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales de l'axe Toulouse-Tarn. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Sulpice-la-Pointe : diagnostic adapté aux TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales de l'axe Toulouse-Tarn. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Sulpice-la-Pointe : diagnostic adapté aux TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales de l'axe Toulouse-Tarn. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Sulpice-la-Pointe : formats adaptés à la PME sous-traitante aéro, commerce de bourg ou cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Sulpice-la-Pointe  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Saint-Sulpice-la-Pointe. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Saint-Sulpice-la-Pointe. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier.",
     },
     {
       q: "Accompagnez-vous les sous-traitants aéronautique ?",
@@ -61,11 +61,11 @@ export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Saint-Sulpice ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA relation client, automatisation comptabilité, fidélisation augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA relation client, automatisation comptabilité, fidélisation augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Saint-Sulpice ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Sulpice-la-Pointe. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Sulpice-la-Pointe. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

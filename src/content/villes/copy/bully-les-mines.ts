@@ -30,8 +30,8 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bully-les-Mines : formats adaptés à l'atelier BTP, l'usine reconvertie, le commerce, le cabinet. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Bully-les-Mines sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, suivi chantiers, gestion planning. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Bully-les-Mines sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, suivi chantiers, gestion planning. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les PME industrie reconvertie et sous-traitance ?",
@@ -61,7 +61,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Bully-les-Mines, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
+      a: "Pour les commerçants et professions libérales à Bully-les-Mines, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
     },
     {
       q: "Comment se passe une mission à Bully-les-Mines depuis Lille ?",

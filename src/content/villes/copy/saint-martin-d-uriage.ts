@@ -30,8 +30,8 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-d'Uriage : formats adaptés à l'établissement thermal, hôtel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hôteliers et commerces locaux ?",
-      a: "Pour les hôteliers tourisme thermal et commerçants à Saint-Martin-d'Uriage, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback.",
+      a: "Pour les hôteliers tourisme thermal et commerçants à Saint-Martin-d'Uriage, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",

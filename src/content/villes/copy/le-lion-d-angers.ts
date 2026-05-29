@@ -30,8 +30,8 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Lion-d'Angers : formations adaptées aux exploitations agricoles, centres équestres, artisans et commerces du bassin nord-ouest angevin. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE au Lion-d'Angers ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et acteurs de la filière équine. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et acteurs de la filière équine. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous du coaching IA individuel pour les dirigeants ?",
-      a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants TPE/PME du Lion-d'Angers. Sessions sur site, dans votre exploitation ou en visio, à partir de 990 € HT.",
+      a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants TPE/PME du Lion-d'Angers. Sessions sur site, dans votre exploitation ou en visio, à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Comment se passe une mission IA depuis Angers ?",

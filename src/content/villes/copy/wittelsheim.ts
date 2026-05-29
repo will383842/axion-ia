@@ -30,8 +30,8 @@ export const WITTELSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wittelsheim : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const WITTELSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Wittelsheim ?",
-      a: "Oui, commerçants et artisans wittelsheimois : gestion stocks, relation client, présence en ligne, automatisation administrative, devis et facturation. Audit Flash 490 € HT.",
+      a: "Oui, commerçants et artisans wittelsheimois : gestion stocks, relation client, présence en ligne, automatisation administrative, devis et facturation. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Wittelsheim ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Wittelsheim ?",

@@ -28,8 +28,8 @@ export const LE_PRADET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pradet : diagnostic adapté aux TPE artisanales, PME de services, commerces et hôtellerie-restauration de l'agglo toulonnaise est. Audit Flash 490 € HT.",
-      en: "Audit IA au Pradet : diagnostic adapté aux TPE artisanales, PME de services, commerces et hôtellerie-restauration de l'agglo toulonnaise est. Audit Flash 490 € HT.",
+      fr: "Audit IA au Pradet : diagnostic adapté aux TPE artisanales, PME de services, commerces et hôtellerie-restauration de l'agglo toulonnaise est. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Pradet : diagnostic adapté aux TPE artisanales, PME de services, commerces et hôtellerie-restauration de l'agglo toulonnaise est. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pradet : formations pratiques adaptées commerces, hôtellerie, restauration, professions libérales et artisanat. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LE_PRADET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Pradet ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les commerces et l'hôtellerie au Pradet ?",
@@ -59,7 +59,7 @@ export const LE_PRADET_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants au Pradet ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, professions libérales et hôteliers de l'agglo toulonnaise. Sur site ou visio, dès 990 € HT. Prise en main outils IA métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, professions libérales et hôteliers de l'agglo toulonnaise. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA métier.",
     },
     {
       q: "Quels délais pour une mission au Pradet ?",

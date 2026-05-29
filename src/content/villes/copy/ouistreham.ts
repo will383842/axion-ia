@@ -30,8 +30,8 @@ export const OUISTREHAM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ouistreham : formats adaptés à l'hôtel, restaurant, port de plaisance, commerce saisonnier ou site touristique. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const OUISTREHAM_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hôteliers-restaurateurs d'Ouistreham ?",
-      a: "Pour les hôteliers-restaurateurs d'Ouistreham, audit Flash 490 € HT, interventions formations, coaching 1-to-1. Cas typiques : agents IA réservation multilingues (clientèle ferry UK), prédiction taux d'occupation, classification avis.",
+      a: "Pour les hôteliers-restaurateurs d'Ouistreham, audit Flash {{price:audit-flash|flat}}, interventions formations, coaching 1-to-1. Cas typiques : agents IA réservation multilingues (clientèle ferry UK), prédiction taux d'occupation, classification avis.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ouistreham  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Ouistreham ?",

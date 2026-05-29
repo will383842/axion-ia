@@ -30,8 +30,8 @@ export const SAUJON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saujon : diagnostic adapté aux professionnels du thermalisme, de la santé, de l'hébergement curistes, TPE artisans et commerces du bassin Saujon-Royan. Audit Flash 490 € HT.",
-      en: "Audit IA à Saujon : diagnostic adapté aux professionnels du thermalisme, de la santé, de l'hébergement curistes, TPE artisans et commerces du bassin Saujon-Royan. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saujon : diagnostic adapté aux professionnels du thermalisme, de la santé, de l'hébergement curistes, TPE artisans et commerces du bassin Saujon-Royan. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saujon : diagnostic adapté aux professionnels du thermalisme, de la santé, de l'hébergement curistes, TPE artisans et commerces du bassin Saujon-Royan. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saujon : formats adaptés à l'établissement thermal, au cabinet de santé, à l'hébergement ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const SAUJON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saujon ?",
-      a: "L'audit Flash IA à Saujon démarre à 490 € HT. Diagnostic complet de vos processus thermaux, médicaux ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Saujon démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus thermaux, médicaux ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Saujon ?",

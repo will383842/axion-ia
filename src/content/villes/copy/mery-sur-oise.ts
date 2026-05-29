@@ -30,8 +30,8 @@ export const MERY_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Méry-sur-Oise : formats adaptés au chantier artisan, au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,7 +57,7 @@ export const MERY_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Méry-sur-Oise ?",
-      a: "L'Audit Flash IA à Méry-sur-Oise démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Méry-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les commerces et PME proches de Cergy-Pontoise ?",

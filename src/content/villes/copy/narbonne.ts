@@ -30,8 +30,8 @@ export const NARBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit Flash dès 490 € HT.",
-      en: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Narbonne : formats adaptés au domaine viticole, à la cave coopérative, à l'entrepôt logistique, à l'hôtel-restaurant patrimoine ou littoral, à l'artisan BTP. Vos équipes repartent autonomes.",

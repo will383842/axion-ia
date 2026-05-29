@@ -46,7 +46,7 @@ export const RENNES_COPY: VilleCopy = {
       en: "AI implementation in Rennes: we deploy AI into your existing tools (CRM, ERP, agronomy platforms, industrial MES) with contractually-costed ROI. Mandatory on-site kick-off, remote iterations thereafter. Your teams stay in control.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -733,7 +733,7 @@ export const RENNES_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Rennes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux ingénieurs, managers et dirigeants des secteurs numérique, agroalimentaire, industrie et télécoms du bassin rennais. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Rennes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux ingénieurs, managers et dirigeants des secteurs numérique, agroalimentaire, industrie et télécoms du bassin rennais. Frais de logement, repas et forfait trajet en sus.",
         whyHere: [
           "Rennes concentre des profils très spécialisés — développeur ou chef de projet à Atalante, directrice qualité chez Valorial, responsable de produit dans une scale-up French Tech — qui ont besoin d'un coaching ancré dans leurs contraintes sectorielles précises, pas d'un cours généraliste.",
           "L'écosystème IRISA/Inria produit des profils deep-tech qui veulent maîtriser les intégrations avancées (fine-tuning, RAG, agents) : le 1-to-1 adapte le niveau de complexité séance par séance.",
@@ -772,7 +772,7 @@ export const RENNES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Entrée coaching 1-to-1 — indépendant, développeur, consultant ou dirigeant TPE du numérique ou de l'agro rennais.",
           },
@@ -832,7 +832,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
-            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression.",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à {{price:intervention-dirigeants|flat}}. La suite se décide à l'issue de chaque séance selon votre progression.",
           },
         ],
         guarantees:

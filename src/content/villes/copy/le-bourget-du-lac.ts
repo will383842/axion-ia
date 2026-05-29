@@ -30,8 +30,8 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Bourget-du-Lac : formats adaptés aux équipes R&D, startups deeptech, TPE tourisme lacustre. Vos collaborateurs repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Bourget-du-Lac ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme lacustre ?",

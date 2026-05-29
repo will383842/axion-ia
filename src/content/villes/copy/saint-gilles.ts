@@ -30,8 +30,8 @@ export const SAINT_GILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gilles : formats adaptés aux exploitations agricoles, caves viticoles, commerces et structures touristiques Petite Camargue.",
@@ -57,7 +57,7 @@ export const SAINT_GILLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Gilles  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les acteurs touristiques de Saint-Gilles ?",

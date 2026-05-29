@@ -61,7 +61,7 @@ export const ISTRES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans et commerces d'Istres ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Quels services pour la logistique de l'étang de Berre ?",

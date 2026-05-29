@@ -10,9 +10,9 @@ export const HERSIN_COUPIGNY_COPY: VilleCopy = {
     "Hersin-Coupigny (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 080 habitants. Situee entre Barlin et Noeux-les-Mines, son economie repose sur les TPE artisanales, les PME industrielles, le commerce de proximite et les services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Hersin-Coupigny est situee dans le bassin minier entre Barlin (2 km) et Noeux-les-Mines (3 km). Tissu economique compose de TPE artisanales BTP, PME de petite industrie, commerces de centre-bourg, services de proximite et professions de sante.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HERSIN_COUPIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Hersin-Coupigny : diagnostic adapte aux TPE artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Hersin-Coupigny : diagnostic adapte aux TPE artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Hersin-Coupigny : diagnostic adapte aux TPE artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Hersin-Coupigny : diagnostic adapte aux TPE artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Hersin-Coupigny : formations adaptees aux ateliers industriels, chantiers artisanaux, commerces et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const HERSIN_COUPIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les petites industries de Hersin-Coupigny ?",
-      a: "Pour les PME industrielles du bassin minier, nous proposons : automatisation processus production, maintenance predictive, gestion qualite IA, planning optimise. Audit Flash 490 EUR HT.",
+      a: "Pour les PME industrielles du bassin minier, nous proposons : automatisation processus production, maintenance predictive, gestion qualite IA, planning optimise. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Hersin-Coupigny ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Hersin-Coupigny ?",
-      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Hersin-Coupigny ?",

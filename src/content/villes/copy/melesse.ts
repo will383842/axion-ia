@@ -30,8 +30,8 @@ export const MELESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Melesse : formations adaptées TPE/PME, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const MELESSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Melesse  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME du nord rennais souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME du nord rennais souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Melesse ?",

@@ -30,8 +30,8 @@ export const PERIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, TPE artisans, prestataires de services et commerces de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
-      en: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, TPE artisans, prestataires de services et commerces de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
+      fr: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, TPE artisans, prestataires de services et commerces de l'agglomération de La Rochelle. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, TPE artisans, prestataires de services et commerces de l'agglomération de La Rochelle. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Périgny : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const PERIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Périgny ?",
-      a: "L'audit Flash IA à Périgny démarre à 490 € HT. Diagnostic complet de vos processus tertiaires, technologiques ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Périgny démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires, technologiques ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Périgny ?",

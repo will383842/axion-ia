@@ -11,9 +11,9 @@ export const ANGOULEME_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Angoulême, préfecture de la Charente et cœur de la communauté d'agglomération GrandAngoulême (38 communes, environ 140 000 habitants). La ville bénéficie d'un tissu économique structuré autour de la papeterie historique, de l'imprimerie, de la filière image (Cité internationale de la bande dessinée et de l'image, Festival international de la BD) et des services administratifs. Notre cabinet intervient sur site pour auditer, former et déployer des outils d'intelligence artificielle pragmatiques au service des dirigeants charentais.",
   directAnswerFr:
-    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à 590 € HT pour une intervention et à 490 € HT pour un Audit Flash de 4 heures, en français et avec un seul interlocuteur référent.",
+    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention et à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures, en français et avec un seul interlocuteur référent.",
   directAnswerEn:
-    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à 590 € HT pour une intervention et à 490 € HT pour un Audit Flash de 4 heures, en français et avec un seul interlocuteur référent.",
+    "À Angoulême, Axion-IA propose aux TPE et PME charentaises des audits d'opportunités IA, des formations sur site et des implémentations de code custom adaptées à leurs métiers. Nous travaillons avec les imprimeurs, éditeurs, studios d'animation et acteurs de la filière image présents dans l'agglomération, ainsi qu'avec les commerces, cabinets professionnels et entreprises industrielles de la Charente. Nos prestations démarrent à {{price:intervention-4h|flat}} pour une intervention et à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures, en français et avec un seul interlocuteur référent.",
   seoHook: "imprimerie & édition",
   ecosystemFr:
     "L'écosystème économique d'Angoulême s'appuie sur une tradition papetière remontant au XVIe siècle, une filière imprimerie-édition active, et un pôle image internationalement reconnu autour de la Cité internationale de la bande dessinée et du Festival international de la BD. La ville accueille également un centre universitaire, des services administratifs préfectoraux et des PME industrielles réparties entre Angoulême, La Couronne, Soyaux et Gond-Pontouvre. Les TPE et PME de l'agglomération opèrent dans un environnement à taille humaine, avec un accès direct à Paris et Bordeaux par la LGV Sud Europe Atlantique.",
@@ -33,26 +33,26 @@ export const ANGOULEME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de 490 € HT.",
-      en: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de 490 € HT.",
+      fr: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Angoulême pour TPE et PME : cartographie des processus métier (imprimerie, édition, studios image, commerces, cabinets), identification des cas d'usage à fort ROI, livrable actionnable — à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site à Angoulême et dans GrandAngoulême : automatisation administrative, traitement documentaire, devis intelligent, dès 590 € HT par demi-journée.",
-      en: "Interventions sur site à Angoulême et dans GrandAngoulême : automatisation administrative, traitement documentaire, devis intelligent, dès 590 € HT par demi-journée.",
+      fr: "Interventions sur site à Angoulême et dans GrandAngoulême : automatisation administrative, traitement documentaire, devis intelligent, dès {{price:intervention-4h|flat}} par demi-journée.",
+      en: "Interventions sur site à Angoulême et dans GrandAngoulême : automatisation administrative, traitement documentaire, devis intelligent, dès {{price:intervention-4h|flat}} par demi-journée.",
     },
     implementation: {
       fr: "Implémentation de solutions IA en code custom à Angoulême : intégration aux outils existants (ERP, CRM, gestion d'impression), tests, mise en production et documentation.",
       en: "Implémentation de solutions IA en code custom à Angoulême : intégration aux outils existants (ERP, CRM, gestion d'impression), tests, mise en production et documentation.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un pour dirigeants à Angoulême : sessions personnalisées sur la stratégie IA, le choix des outils et la conduite du changement, dès 990 € HT.",
-      en: "Accompagnement un-à-un pour dirigeants à Angoulême : sessions personnalisées sur la stratégie IA, le choix des outils et la conduite du changement, dès 990 € HT.",
+      fr: "Accompagnement un-à-un pour dirigeants à Angoulême : sessions personnalisées sur la stratégie IA, le choix des outils et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un pour dirigeants à Angoulême : sessions personnalisées sur la stratégie IA, le choix des outils et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Angoulême ?",
-      a: "À Angoulême, nos tarifs publics démarrent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une intervention sur site et 990 € HT pour un accompagnement un-à-un destiné aux dirigeants de TPE et PME.",
+      a: "À Angoulême, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un destiné aux dirigeants de TPE et PME.",
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Angoulême ?",

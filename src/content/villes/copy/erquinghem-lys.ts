@@ -30,8 +30,8 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Erquinghem-Lys : formats adaptés à l'atelier, l'usine textile, l'exploitation agricole ou le cabinet. Vos équipes repartent avec des outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans d'Erquinghem-Lys ?",
-      a: "Oui, nous accompagnons les TPE artisans à Erquinghem-Lys sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion planning, facturation automatisée. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans à Erquinghem-Lys sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion planning, facturation automatisée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les exploitants agricoles périurbains ?",
-      a: "Pour les exploitants agricoles et maraîchers du val de Lys, nous proposons audit Flash 490 € HT, implémentation IA prédiction récoltes, classification photos cultures, optimisation vente directe et traçabilité parcelles.",
+      a: "Pour les exploitants agricoles et maraîchers du val de Lys, nous proposons audit Flash {{price:audit-flash|flat}}, implémentation IA prédiction récoltes, classification photos cultures, optimisation vente directe et traçabilité parcelles.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

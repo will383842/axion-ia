@@ -30,8 +30,8 @@ export const JOUY_LE_MOUTIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jouy-le-Moutier : formats adaptés au cabinet, commerce ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const JOUY_LE_MOUTIER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Jouy-le-Moutier ?",
-      a: "L'Audit Flash IA à Jouy-le-Moutier démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Jouy-le-Moutier démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Jouy-le-Moutier ?",

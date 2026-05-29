@@ -11,9 +11,9 @@ export const RAMBOUILLET_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Rambouillet (27 724 habitants, 78120), sous-préfecture des Yvelines à 45 km au sud-ouest de Paris. Clairière forestière dans le massif de Rambouillet (50 % du territoire boisé) et partiellement intégrée au Parc naturel régional de la Haute Vallée de Chevreuse, la ville mêle commerces, services, tourisme patrimonial (château) et activités liées à la forêt. Notre équipe se déplace pour automatiser devis, relances et processus métiers, avec du code custom, pas de no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les TPE et PME locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit Flash 4h dès 490 € HT, une Intervention Essentielle à partir de 590 € HT et un accompagnement un-à-un dirigeant à 990 € HT. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
+    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les TPE et PME locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit Flash 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les TPE et PME locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit Flash 4h dès 490 € HT, une Intervention Essentielle à partir de 590 € HT et un accompagnement un-à-un dirigeant à 990 € HT. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
+    "Axion-IA intervient à Rambouillet (Yvelines, 78120) pour les TPE et PME locales — commerces du centre-ville, professionnels du tourisme et de l'hôtellerie autour du château, artisans du bâtiment, exploitations et entreprises liées à la forêt et au Parc naturel régional, professions libérales. Nous proposons un Audit Flash 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via le Transilien N (Paris-Montparnasse) ou la RN10, code custom, conformité RGPD documentée.",
   seoHook: "TPE & PME Rambouillet · commerce, tourisme, services",
   ecosystemFr:
     "Rambouillet est sous-préfecture des Yvelines et chef-lieu d'arrondissement. Sa densité modérée (788 hab/km² sur 35,19 km²) et son insertion dans le massif forestier orientent l'économie locale vers les commerces de centre-ville, l'hôtellerie-restauration autour du château présidentiel, les services et professions libérales, l'artisanat du bâtiment et les filières liées à la forêt et au tourisme du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu dominé par les TPE et PME.",
@@ -33,26 +33,26 @@ export const RAMBOUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer à Rambouillet les processus d'un commerce de centre-ville, d'un hôtel-restaurant ou d'un artisan du bâtiment — Audit Flash 4h dès 490 € HT.",
-      en: "Auditer à Rambouillet les processus d'un commerce de centre-ville, d'un hôtel-restaurant ou d'un artisan du bâtiment — Audit Flash 4h dès 490 € HT.",
+      fr: "Auditer à Rambouillet les processus d'un commerce de centre-ville, d'un hôtel-restaurant ou d'un artisan du bâtiment — Audit Flash 4h dès {{price:audit-flash|flat}}.",
+      en: "Auditer à Rambouillet les processus d'un commerce de centre-ville, d'un hôtel-restaurant ou d'un artisan du bâtiment — Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une TPE/PME — Intervention Essentielle à partir de 590 € HT, code custom sans no-code.",
-      en: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une TPE/PME — Intervention Essentielle à partir de 590 € HT, code custom sans no-code.",
+      fr: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une TPE/PME — Formation 4 h à partir de {{price:intervention-4h|flat}}, code custom sans no-code.",
+      en: "Intervenir à Rambouillet pour automatiser devis, réservations et relances d'une TPE/PME — Formation 4 h à partir de {{price:intervention-4h|flat}}, code custom sans no-code.",
     },
     implementation: {
-      fr: "Implémenter à Rambouillet des outils IA opérationnels (classification emails, extraction documents, suivi client) — déploiement sur site dès 990 € HT.",
-      en: "Implémenter à Rambouillet des outils IA opérationnels (classification emails, extraction documents, suivi client) — déploiement sur site dès 990 € HT.",
+      fr: "Implémenter à Rambouillet des outils IA opérationnels (classification emails, extraction documents, suivi client) — déploiement sur site dès {{price:impl-poc|entry}}.",
+      en: "Implémenter à Rambouillet des outils IA opérationnels (classification emails, extraction documents, suivi client) — déploiement sur site dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un à Rambouillet un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de 990 € HT.",
-      en: "Accompagner en un-à-un à Rambouillet un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de 990 € HT.",
+      fr: "Accompagner en un-à-un à Rambouillet un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner en un-à-un à Rambouillet un dirigeant TPE/PME pour cadrer une feuille de route IA réaliste — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont vos tarifs pour une intervention à Rambouillet ?",
-      a: "À Rambouillet (78120), l'Audit Flash 4h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT, et l'Implémentation à 990 € HT. Tarifs publics, sans abonnement, déplacement Transilien N ou RN10 inclus.",
+      a: "À Rambouillet (78120), l'Audit Flash 4h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}}, et l'Implémentation à {{price:impl-poc|entry}}. Tarifs publics, sans abonnement, déplacement Transilien N ou RN10 inclus.",
     },
     {
       q: "Sous quel délai vous déplacez-vous à Rambouillet ?",

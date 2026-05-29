@@ -30,8 +30,8 @@ export const LATTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lattes : diagnostic adapté aux TPE/PME commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Lattes : diagnostic adapté aux TPE/PME commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Lattes : diagnostic adapté aux TPE/PME commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lattes : diagnostic adapté aux TPE/PME commerciales, de restauration, de services et professions libérales de l'agglo Montpellier sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lattes : formats adaptés à l'enseigne commerciale, au restaurant, au cabinet ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LATTES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Lattes  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Lattes : enseignes commerciales Boirargues, restaurateurs, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Lattes : enseignes commerciales Boirargues, restaurateurs, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les commerces de Lattes ?",
@@ -61,7 +61,7 @@ export const LATTES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Lattes ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Lattes, à partir de 990 € HT. Sessions sur site dans votre commerce, restaurant, cabinet ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier sud.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Lattes, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans votre commerce, restaurant, cabinet ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier sud.",
     },
     {
       q: "Comment se déroule une mission IA à Lattes ?",

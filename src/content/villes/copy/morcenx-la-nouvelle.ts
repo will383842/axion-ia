@@ -30,8 +30,8 @@ export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Morcenx-la-Nouvelle : formations adaptées aux exploitations forestières, structures tourisme nature, exploitations agricoles et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans morcenais ?",
-      a: "Pour les TPE commerçants et artisans à Morcenx-la-Nouvelle, audit Flash 490 € HT, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis/factures, gestion stocks, agents IA communication.",
+      a: "Pour les TPE commerçants et artisans à Morcenx-la-Nouvelle, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis/factures, gestion stocks, agents IA communication.",
     },
     {
       q: "Comment se passe une mission à Morcenx-la-Nouvelle ?",

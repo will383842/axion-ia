@@ -31,20 +31,20 @@ export const CENON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit Flash dès 490 € HT, livrable opérationnel sous 5 jours.",
-      en: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit Flash dès 490 € HT, livrable opérationnel sous 5 jours.",
+      fr: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit Flash dès {{price:audit-flash|flat}}, livrable opérationnel sous 5 jours.",
+      en: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit Flash dès {{price:audit-flash|flat}}, livrable opérationnel sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Intervention Essentielle dès 590 € HT.",
-      en: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès 990 € HT.",
-      en: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès 990 € HT.",
+      fr: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès 990 € HT.",
-      en: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Cenon : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME des secteurs commerce, restauration, BTP et services rive droite bordelaise. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
@@ -54,7 +54,7 @@ export const CENON_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Cenon ?",
-      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Grille publique disponible sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique disponible sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Cenon ?",

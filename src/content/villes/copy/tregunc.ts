@@ -30,8 +30,8 @@ export const TREGUNC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trégunc : diagnostic adapté aux TPE artisans, hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et exploitants agricoles du littoral sud Finistère. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Trégunc : diagnostic adapté aux TPE artisans, hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et exploitants agricoles du littoral sud Finistère. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Trégunc : diagnostic adapté aux TPE artisans, hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et exploitants agricoles du littoral sud Finistère. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Trégunc : diagnostic adapté aux TPE artisans, hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et exploitants agricoles du littoral sud Finistère. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trégunc : formats adaptés à l'hébergement touristique, l'exploitation ostréicole, le commerce saisonnier ou l'exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const TREGUNC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants tréguncois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Trégunc, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers.",
+      a: "Pour les TPE artisans BTP et commerçants à Trégunc, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers.",
     },
     {
       q: "Comment se déroule une mission à Trégunc ?",

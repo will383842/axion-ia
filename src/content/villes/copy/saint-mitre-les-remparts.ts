@@ -30,8 +30,8 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour TPE artisans, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour TPE artisans, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour TPE artisans, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Mitre-les-Remparts : diagnostic pour TPE artisans, commerçants, exploitants agricoles et PME du bassin Fos-étang de Berre. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Mitre-les-Remparts : ateliers pratiques pour artisans, commerçants et équipes PME industrielles. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Mitre-les-Remparts  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, commerçants et PME saint-mitréennes. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME saint-mitréennes. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les entreprises de la ZIP de Fos-sur-Mer ?",

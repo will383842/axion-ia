@@ -30,8 +30,8 @@ export const ESVRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Esvres : formats adaptés à l'atelier artisan, au commerce, à l'exploitation agricole ou au cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const ESVRES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans esvriens ?",
-      a: "Pour les TPE et artisans à Esvres, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
+      a: "Pour les TPE et artisans à Esvres, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles à Esvres ?",

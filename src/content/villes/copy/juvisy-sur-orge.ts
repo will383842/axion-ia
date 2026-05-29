@@ -30,8 +30,8 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, TPE artisans BTP, professions libérales, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, TPE artisans BTP, professions libérales, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, TPE artisans BTP, professions libérales, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Juvisy-sur-Orge : diagnostic adapté aux PME tertiaires, commerces de gare, TPE artisans BTP, professions libérales, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Juvisy-sur-Orge : formats adaptés bureau, commerce, chantier, cabinet, restaurant. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP et professions libérales ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

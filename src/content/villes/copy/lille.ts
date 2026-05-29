@@ -45,8 +45,8 @@ export const LILLE_COPY: VilleCopy = {
       en: "AI implementation in Lille: we deploy AI into your existing tools (CRM, ERP, email, e-commerce) with contractually-costed ROI. Your teams stay in control, no Axion-IA dependency.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Lille — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux lillois ou de la métropole : directeur retail, responsable supply chain, fondateur EuraTechnologies ou manager d'un siège grand groupe qui veut progresser seul, sur ses propres données et enjeux.",
-      en: "Individual AI coaching in Lille — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Lille or metropolitan premises: retail director, supply chain manager, EuraTechnologies founder or large-group HQ manager who wants to progress alone, on their own data and challenges.",
+      fr: "Coaching IA individuel à Lille — à partir de {{price:intervention-dirigeants|flat}}. Un consultant senior dédié à votre cas, dans vos locaux lillois ou de la métropole : directeur retail, responsable supply chain, fondateur EuraTechnologies ou manager d'un siège grand groupe qui veut progresser seul, sur ses propres données et enjeux.",
+      en: "Individual AI coaching in Lille — from {{price:intervention-dirigeants|compact}} excl. VAT. A senior consultant dedicated to your case, at your Lille or metropolitan premises: retail director, supply chain manager, EuraTechnologies founder or large-group HQ manager who wants to progress alone, on their own data and challenges.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI lilloise — site vitrine premium pour retail, e-commerce et logistique, espace client interactif, dashboard métier connecté à votre CRM/ERP/WMS. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -730,7 +730,7 @@ export const LILLE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Lille s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres données et enjeux métier, sans partager sa session avec un groupe. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux lillois — Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq ou siège d'un grand groupe de la métropole. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA à Lille s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres données et enjeux métier, sans partager sa session avec un groupe. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux lillois — Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq ou siège d'un grand groupe de la métropole. Frais de logement, repas et forfait trajet facturés en sus.",
         whyHere: [
           "Lille concentre des dirigeants et directeurs de grands groupes retail (Decathlon, Auchan, La Redoute, Boulanger) dont les données stratégiques (catalogues, pricing, supply chain) sont trop sensibles pour un cadre collectif — le coaching individuel est la seule option viable.",
           "Les fondateurs et directeurs de startups EuraTechnologies ont des besoins IA très spécifiques (intégration produit, stack technique) et un emploi du temps incompatible avec un programme de groupe.",
@@ -769,7 +769,7 @@ export const LILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Coaching individuel entrée pour dirigeants TPE, fondateurs de startups EuraTechnologies et indépendants lillois — une journée, un consultant dédié.",
           },
@@ -809,7 +809,7 @@ export const LILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Lille ?",
-            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux lillois. Un consultant senior vous accompagne sur vos propres cas métier (retail, e-commerce, logistique, IT) pendant une journée entière. À partir de 990 € HT.",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux lillois. Un consultant senior vous accompagne sur vos propres cas métier (retail, e-commerce, logistique, IT) pendant une journée entière. À partir de {{price:intervention-dirigeants|flat}}.",
           },
           {
             q: "Pourquoi choisir le coaching individuel plutôt qu'une session collective à Lille ?",
@@ -836,7 +836,7 @@ export const LILLE_COPY: VilleCopy = {
           "Confidentialité stricte : vos données commerciales et stratégiques ne quittent pas vos locaux lillois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions lilloise).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Lille is for the executive, manager or expert who wants to progress on AI at their own pace, on their own data and business challenges, without sharing the session with a group. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Lille premises — Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq or a metropolitan large-group HQ. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Lille is for the executive, manager or expert who wants to progress on AI at their own pace, on their own data and business challenges, without sharing the session with a group. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Lille premises — Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq or a metropolitan large-group HQ. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Lille hosts directors and executives at major retail groups (Decathlon, Auchan, La Redoute, Boulanger) whose strategic data (catalogues, pricing, supply chain) is too sensitive for a group setting — individual coaching is the only viable option.",
           "EuraTechnologies founders and directors have very specific AI needs (product integration, technical stack) and schedules incompatible with a group programme.",
@@ -875,7 +875,7 @@ export const LILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry individual coaching for Lille micro-business executives, EuraTechnologies start-up founders and freelancers — one day, one dedicated consultant.",
           },
@@ -915,7 +915,7 @@ export const LILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "What is Axion-IA's individual AI coaching in Lille?",
-            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Lille premises. A senior consultant accompanies you on your own business cases (retail, e-commerce, logistics, IT) for a full day. From 990 € excl. VAT.",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Lille premises. A senior consultant accompanies you on your own business cases (retail, e-commerce, logistics, IT) for a full day. From {{price:intervention-dirigeants|compact}} excl. VAT.",
           },
           {
             q: "Why choose individual coaching over a group session in Lille?",

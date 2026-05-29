@@ -30,8 +30,8 @@ export const ROQUEVAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquevaire : diagnostic adapté aux TPE artisans, PME de services et professions libérales de la vallée de l'Huveaune. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Roquevaire : diagnostic adapté aux TPE artisans, PME de services et professions libérales de la vallée de l'Huveaune. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Roquevaire : diagnostic adapté aux TPE artisans, PME de services et professions libérales de la vallée de l'Huveaune. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roquevaire : diagnostic adapté aux TPE artisans, PME de services et professions libérales de la vallée de l'Huveaune. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquevaire : formats adaptés à l'atelier artisan, au cabinet libéral et à la PME services. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const ROQUEVAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Roquevaire  ?",
-      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, commerçants et PME roquevairoises. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME roquevairoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Roquevaire ?",
@@ -61,7 +61,7 @@ export const ROQUEVAIRE_COPY: VilleCopy = {
     },
     {
       q: "Les commerçants de Roquevaire peuvent-ils tirer parti de l'IA ?",
-      a: "Absolument. Cas IA pour commerçants : agents conversationnels fidélisation, gestion stocks prédictive, marketing local automatisé, prise de commande. Audit Flash 490 € HT.",
+      a: "Absolument. Cas IA pour commerçants : agents conversationnels fidélisation, gestion stocks prédictive, marketing local automatisé, prise de commande. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Roquevaire ?",

@@ -30,8 +30,8 @@ export const DARDILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dardilly : formats adaptés au siège social Techlid, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const DARDILLY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Dardilly, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      a: "Pour les TPE artisans BTP et commerçants à Dardilly, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

@@ -11,9 +11,9 @@ export const LANESTER_COPY: VilleCopy = {
   pitchEn:
     "Lanester (56), 3e commune du Morbihan (23 263 habitants), forme avec Lorient une agglomération naval et portuaire majeure de Bretagne sud. Tissu économique structuré autour de la construction navale (Naval Group, Kership, Chantiers Piriou), de l'arsenal militaire et des zones d'activités Kerpont-Kerrous et Kerpont-Manebos. Axion-IA accompagne en priorité TPE et PME lanestériennes — commerce, artisanat, sous-traitance navale, services — puis les ETI.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit Flash 490 € HT, code sur mesure (pas de no-code).",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit Flash {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit Flash 490 € HT, code sur mesure (pas de no-code).",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanester (56) et dans l'agglomération de Lorient (Caudan, Hennebont, Lorient, Kervignac, Locmiquélic). Nous accompagnons en priorité les TPE et PME lanestériennes : commerces des zones Kerpont, artisans BTP, sous-traitants Naval Group, restaurateurs, professions libérales. ETI navales également couvertes. Audit Flash {{price:audit-flash|flat}}, code sur mesure (pas de no-code).",
   seoHook: "construction navale, commerce & artisanat",
   ecosystemFr:
     "Lanester est séparée de Lorient par le Scorff et structurée autour de plusieurs pôles : le port militaire du Rohu, l'arsenal, les zones commerciales et artisanales Kerpont-Kerrous, Kerpont-Manebos et Lann-Gazec, ainsi qu'un grand centre commercial proche de Caudan. La construction navale civile et militaire (Naval Group, Kership Lorient construisant 12 navires anti-mines, Chantiers Piriou) tire un écosystème dense de sous-traitants TPE-PME.",
@@ -32,16 +32,16 @@ export const LANESTER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lanester : diagnostic 4h pour TPE et PME locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit Flash 490 € HT.",
-      en: "Audit IA à Lanester : diagnostic 4h pour TPE et PME locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lanester : diagnostic 4h pour TPE et PME locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lanester : diagnostic 4h pour TPE et PME locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Intervention Essentielle 590 € HT.",
-      en: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Intervention Essentielle 590 € HT.",
+      fr: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Formation 4 h {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Formation 4 h {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Lanester : intégration ERP/CRM, automatisation flux qualité sous-traitance navale, classification documents fournisseurs, agents IA support multilingue (commerce portuaire). Code sur mesure dès 990 € HT.",
-      en: "Implémentation IA à Lanester : intégration ERP/CRM, automatisation flux qualité sous-traitance navale, classification documents fournisseurs, agents IA support multilingue (commerce portuaire). Code sur mesure dès 990 € HT.",
+      fr: "Implémentation IA à Lanester : intégration ERP/CRM, automatisation flux qualité sous-traitance navale, classification documents fournisseurs, agents IA support multilingue (commerce portuaire). Code sur mesure dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Lanester : intégration ERP/CRM, automatisation flux qualité sous-traitance navale, classification documents fournisseurs, agents IA support multilingue (commerce portuaire). Code sur mesure dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Lanester : sessions sur site ou en visio pour dirigeants TPE-PME, artisans BTP, gérants commerces et chefs d'atelier sous-traitants navals de l'agglo lorientaise.",
@@ -55,7 +55,7 @@ export const LANESTER_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention IA à Lanester ?",
-      a: "Audit Flash 490 € HT (4h). Intervention Essentielle 590 € HT. Implémentation et coaching 1-to-1 sur devis dès 990 € HT selon périmètre. Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4h). Formation 4 h {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}} selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour démarrer une mission à Lanester ?",

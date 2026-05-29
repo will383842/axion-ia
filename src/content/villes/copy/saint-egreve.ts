@@ -30,8 +30,8 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Égrève : formats adaptés à l'environnement médical (CHAI, cabinets), atelier artisan ou bureau PME. Vos équipes repartent avec outils IA configurés métier réel.",
@@ -57,7 +57,7 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans saint-égréviens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Égrève (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos avant/après, gestion stocks. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Égrève (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos avant/après, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les PME tertiaires de l'agglomération grenobloise ?",

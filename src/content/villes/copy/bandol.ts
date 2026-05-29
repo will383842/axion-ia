@@ -30,8 +30,8 @@ export const BANDOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bandol : ateliers pour vignerons AOC, restaurateurs gastronomiques, hôteliers et professionnels du nautisme. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const BANDOL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine AOC Bandol ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles AOC Bandol, restaurateurs et hôteliers bandolais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC Bandol, restaurateurs et hôteliers bandolais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons de l'AOC Bandol à l'export ?",

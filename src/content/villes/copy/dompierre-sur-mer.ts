@@ -30,8 +30,8 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dompierre-sur-Mer : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
-      en: "Audit IA à Dompierre-sur-Mer : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
+      fr: "Audit IA à Dompierre-sur-Mer : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Dompierre-sur-Mer : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dompierre-sur-Mer : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Dompierre-sur-Mer ?",
-      a: "L'audit Flash IA à Dompierre-sur-Mer démarre à 490 € HT. Diagnostic complet de vos processus tertiaires ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Dompierre-sur-Mer démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Dompierre-sur-Mer ?",

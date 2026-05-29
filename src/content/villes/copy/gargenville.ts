@@ -30,8 +30,8 @@ export const GARGENVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gargenville : formats adaptés aux artisans, PME de services et professions libérales du Mantois. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const GARGENVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gargenville  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
     },
     {
       q: "Intervenez-vous en présentiel à Gargenville ?",

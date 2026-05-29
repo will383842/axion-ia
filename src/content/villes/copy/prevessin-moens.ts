@@ -30,8 +30,8 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Prévessin-Moëns : formats adaptés au bureau tech, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",

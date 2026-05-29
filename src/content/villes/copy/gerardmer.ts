@@ -30,8 +30,8 @@ export const GERARDMER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gérardmer : diagnostic adapté aux hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles et prestataires de services du massif vosgien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Gérardmer : diagnostic adapté aux hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles et prestataires de services du massif vosgien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Gérardmer : diagnostic adapté aux hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles et prestataires de services du massif vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gérardmer : diagnostic adapté aux hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles et prestataires de services du massif vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gérardmer : formats adaptés à l'hôtel, au restaurant, au commerce touristique, à l'atelier textile ou à la TPE de services. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const GERARDMER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Gérardmer  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Gérardmer et du massif vosgien, il identifie les cas d'usage IA à fort ROI pour votre hôtel, restaurant, commerce touristique ou activité de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Gérardmer et du massif vosgien, il identifie les cas d'usage IA à fort ROI pour votre hôtel, restaurant, commerce touristique ou activité de services.",
     },
     {
       q: "Accompagnez-vous les hôteliers-restaurateurs de Gérardmer ?",
@@ -65,7 +65,7 @@ export const GERARDMER_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Gérardmer ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Gérardmer, à partir de 990 € HT. Sessions dans votre hôtel, restaurant, commerce, atelier ou en visio. Approche terrain adaptée au tissu touristique et artisanal du massif vosgien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Gérardmer, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre hôtel, restaurant, commerce, atelier ou en visio. Approche terrain adaptée au tissu touristique et artisanal du massif vosgien.",
     },
   ],
 };

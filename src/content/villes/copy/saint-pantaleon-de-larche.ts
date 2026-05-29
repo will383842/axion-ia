@@ -30,8 +30,8 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pantaléon-de-Larche : formations pratiques pour artisans, commerçants et exploitants agricoles de l'agglo Brive.",
@@ -53,7 +53,7 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Pantaléon-de-Larche  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME du sud briviste. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME du sud briviste. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les artisans de Saint-Pantaléon-de-Larche ?",
@@ -65,7 +65,7 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel dans l'agglo Brive ?",
-      a: "Oui, coaching 1-to-1 sur site ou en visio pour dirigeants TPE/PME de Saint-Pantaléon-de-Larche et alentours. Sessions à partir de 990 € HT.",
+      a: "Oui, coaching 1-to-1 sur site ou en visio pour dirigeants TPE/PME de Saint-Pantaléon-de-Larche et alentours. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

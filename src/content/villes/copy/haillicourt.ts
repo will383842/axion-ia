@@ -10,9 +10,9 @@ export const HAILLICOURT_COPY: VilleCopy = {
     "Haillicourt (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 060 habitants. Situee entre Bruay-la-Buissiere et Bethune, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les services a la personne. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Haillicourt (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et services a la personne. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Haillicourt (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et services a la personne. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Haillicourt (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et services a la personne. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Haillicourt (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et services a la personne. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Haillicourt est situee dans le bassin minier entre Bruay-la-Buissiere (2 km) et Bethune (8 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, services a la personne et professions de sante. Heritage minier reconverti.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HAILLICOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Haillicourt : diagnostic adapte aux TPE artisanales, commercants et services a la personne du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Haillicourt : diagnostic adapte aux TPE artisanales, commercants et services a la personne du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Haillicourt : diagnostic adapte aux TPE artisanales, commercants et services a la personne du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Haillicourt : diagnostic adapte aux TPE artisanales, commercants et services a la personne du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Haillicourt : formations adaptees aux ateliers artisanaux, commerces, structures de services a la personne et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const HAILLICOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les services a la personne a Haillicourt ?",
-      a: "Pour les structures de services a la personne, nous proposons : planning interventions IA, gestion equipes terrain, agents conversationnels beneficiaires, automatisation facturation. Audit Flash 490 EUR HT.",
+      a: "Pour les structures de services a la personne, nous proposons : planning interventions IA, gestion equipes terrain, agents conversationnels beneficiaires, automatisation facturation. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Haillicourt ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans de Haillicourt ?",
-      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Haillicourt ?",

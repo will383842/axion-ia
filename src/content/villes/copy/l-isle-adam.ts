@@ -30,8 +30,8 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Isle-Adam : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales du nord Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à L'Isle-Adam : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales du nord Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à L'Isle-Adam : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à L'Isle-Adam : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Isle-Adam : formats adaptés au bureau, cabinet, commerce ou atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants de L'Isle-Adam ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du centre historique de L'Isle-Adam sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du centre historique de L'Isle-Adam sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les professions libérales adamoises ?",

@@ -30,8 +30,8 @@ export const MARNAZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marnaz : formats adaptés à l'atelier d'usinage, ligne de production ou bureau d'études. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const MARNAZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Marnaz ?",
-      a: "L'audit Flash IA à Marnaz démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus d'usinage et sous-traitance, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Marnaz démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus d'usinage et sous-traitance, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "L'IA peut-elle améliorer le contrôle qualité en décolletage ?",

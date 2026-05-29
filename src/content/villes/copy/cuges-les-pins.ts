@@ -30,8 +30,8 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cuges-les-Pins : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit Flash 490 € HT.",
-      en: "Audit IA à Cuges-les-Pins : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit Flash 490 € HT.",
+      fr: "Audit IA à Cuges-les-Pins : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cuges-les-Pins : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tourisme du piémont Sainte-Baume. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cuges-les-Pins : ateliers pratiques pour artisans, commerçants et exploitants agricoles. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cuges-les-Pins  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, exploitants agricoles et commerçants cugeois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, exploitants agricoles et commerçants cugeois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les viticulteurs de Cuges-les-Pins ?",

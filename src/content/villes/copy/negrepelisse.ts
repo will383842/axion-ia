@@ -30,8 +30,8 @@ export const NEGREPELISSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nègrepelisse : diagnostic adapté aux TPE artisans, PME agroalimentaires, viticulteurs et commerçants du bourg quercinois sur l'Aveyron. Audit Flash 490 € HT.",
-      en: "Audit IA à Nègrepelisse : diagnostic adapté aux TPE artisans, PME agroalimentaires, viticulteurs et commerçants du bourg quercinois sur l'Aveyron. Audit Flash 490 € HT.",
+      fr: "Audit IA à Nègrepelisse : diagnostic adapté aux TPE artisans, PME agroalimentaires, viticulteurs et commerçants du bourg quercinois sur l'Aveyron. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nègrepelisse : diagnostic adapté aux TPE artisans, PME agroalimentaires, viticulteurs et commerçants du bourg quercinois sur l'Aveyron. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nègrepelisse : formats adaptés aux PME agroalimentaires, artisans, exploitations viticoles et cabinets libéraux. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const NEGREPELISSE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Nègrepelisse  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Nègrepelisse. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Nègrepelisse. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les exploitations viticoles et agricoles ?",
@@ -61,11 +61,11 @@ export const NEGREPELISSE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Nègrepelisse ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée sur site, coaching 1-to-1. Cas typiques : gestion stocks IA, automatisation devis-facturation, agents conversationnels clients, fidélisation augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée sur site, coaching 1-to-1. Cas typiques : gestion stocks IA, automatisation devis-facturation, agents conversationnels clients, fidélisation augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Nègrepelisse ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Nègrepelisse. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Nègrepelisse. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

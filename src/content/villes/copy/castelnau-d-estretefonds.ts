@@ -30,8 +30,8 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castelnau-d'Estrétefonds : formats adaptés à l'entrepôt logistique, au transporteur, à l'artisan. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Castelnau-d'Estrétefonds  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME logistiques, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistiques, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider une PME logistique à Eurocentre ?",

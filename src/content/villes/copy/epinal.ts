@@ -11,9 +11,9 @@ export const EPINAL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Épinal, préfecture des Vosges et premier pôle économique et commercial du département. La ville s'est construite autour de la papeterie alimentée par la Moselle, de l'imagerie d'Épinal (1796) et d'une tradition textile héritée des industriels alsaciens installés après 1870. Aujourd'hui, le tissu local rassemble PME du bois, de l'imprimerie, du commerce, du tourisme et de la santé. Notre cabinet déploie des outils d'intelligence artificielle pragmatiques au service des dirigeants vosgiens.",
   directAnswerFr:
-    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à 490 € HT pour un Audit Flash de 4 heures et à 590 € HT pour une intervention. William et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
+    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures et à {{price:intervention-4h|flat}} pour une intervention. William et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
   directAnswerEn:
-    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à 490 € HT pour un Audit Flash de 4 heures et à 590 € HT pour une intervention. William et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
+    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures et à {{price:intervention-4h|flat}} pour une intervention. William et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique d'Épinal repose sur la papeterie historique (force motrice de la Moselle), l'imagerie d'Épinal toujours active depuis 1796, la filière bois caractéristique des Vosges, et un commerce de détail de centre-ville dynamique. L'Université de Lorraine y maintient un campus délocalisé qui alimente le bassin de compétences. La communauté d'agglomération d'Épinal regroupe une douzaine de communes, dont Golbey, Chantraine, Dinozé, Jeuxey et Thaon-les-Vosges, soit environ 60 000 habitants.",
@@ -33,26 +33,26 @@ export const EPINAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de 490 € HT pour un Audit Flash de 4 heures.",
-      en: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de 490 € HT pour un Audit Flash de 4 heures.",
+      fr: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de {{price:audit-flash|flat}} pour un Audit Flash de 4 heures.",
+      en: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de {{price:audit-flash|flat}} pour un Audit Flash de 4 heures.",
     },
     interventions: {
-      fr: "Interventions sur site à Épinal et dans l'agglomération : automatisation administrative, traitement de devis, gestion documentaire, dès 590 € HT par demi-journée.",
-      en: "Interventions sur site à Épinal et dans l'agglomération : automatisation administrative, traitement de devis, gestion documentaire, dès 590 € HT par demi-journée.",
+      fr: "Interventions sur site à Épinal et dans l'agglomération : automatisation administrative, traitement de devis, gestion documentaire, dès {{price:intervention-4h|flat}} par demi-journée.",
+      en: "Interventions sur site à Épinal et dans l'agglomération : automatisation administrative, traitement de devis, gestion documentaire, dès {{price:intervention-4h|flat}} par demi-journée.",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Épinal : intégration à vos outils métier (ERP bois, caisse commerce, planning santé), tests et mise en production avec documentation complète.",
       en: "Implémentation IA en code custom à Épinal : intégration à vos outils métier (ERP bois, caisse commerce, planning santé), tests et mise en production avec documentation complète.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès 990 € HT.",
-      en: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès 990 € HT.",
+      fr: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Épinal ?",
-      a: "À Épinal, nos tarifs publics démarrent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une intervention sur site et 990 € HT pour un accompagnement un-à-un dédié aux dirigeants de TPE et PME.",
+      a: "À Épinal, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un dédié aux dirigeants de TPE et PME.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour d'Épinal ?",

@@ -30,8 +30,8 @@ export const LE_PECQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pecq : formats adaptés au restaurant, commerce, cabinet libéral ou PME tertiaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LE_PECQ_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les restaurateurs et commerçants du Pecq ?",
-      a: "Oui, nous accompagnons les restaurateurs et commerçants au Pecq sur leurs cas IA concrets : chatbots réservation table, gestion avis clients automatisée, agents IA fidélisation, automatisation commandes fournisseurs, gestion stocks prédictive. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les restaurateurs et commerçants au Pecq sur leurs cas IA concrets : chatbots réservation table, gestion avis clients automatisée, agents IA fidélisation, automatisation commandes fournisseurs, gestion stocks prédictive. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les professions libérales pisciacaises ?",
@@ -61,7 +61,7 @@ export const LE_PECQ_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA au Pecq ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE/PME au Pecq. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Pecq. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
     },
     {
       q: "Comment se rendre au Pecq depuis Paris ?",

@@ -30,8 +30,8 @@ export const LORGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lorgues : ateliers pour vignerons, restaurateurs, commerçants du marché et artisans. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LORGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole Côtes de Provence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles, restaurateurs et artisans lorguais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, restaurateurs et artisans lorguais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Côtes de Provence ?",

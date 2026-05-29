@@ -30,8 +30,8 @@ export const LEMPDES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lempdes : formats adaptés aux entrepôts logistiques, bureaux tertiaires, ateliers industriels ou commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const LEMPDES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces de Lempdes ?",
-      a: "Pour les TPE artisans et commerçants à Lempdes, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
+      a: "Pour les TPE artisans et commerçants à Lempdes, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

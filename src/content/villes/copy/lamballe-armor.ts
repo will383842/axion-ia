@@ -30,8 +30,8 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lamballe-Armor : formats adaptés site agroalimentaire, exploitation, commerce, hôtel, restaurant, cabinet. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Lamballe-Armor ?",
-      a: "Oui, audit Flash 490 € HT, automatisation traçabilité et qualité, maintenance prédictive lignes transformation, gestion stocks et logistique, reporting commercial, optimisation cycles production pour filière porcine, volaille et transformation.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation traçabilité et qualité, maintenance prédictive lignes transformation, gestion stocks et logistique, reporting commercial, optimisation cycles production pour filière porcine, volaille et transformation.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de centre-bourg ?",
@@ -61,7 +61,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour l'hôtellerie-restauration et le tourisme littoral ?",
-      a: "Audit Flash 490 € HT, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Haras national et de la baie de Saint-Brieuc.",
+      a: "Audit Flash {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Haras national et de la baie de Saint-Brieuc.",
     },
     {
       q: "Comment se déroule une mission depuis Rennes ou Paris ?",

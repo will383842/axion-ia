@@ -30,8 +30,8 @@ export const ARNAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arnage : diagnostic adapté aux TPE artisans, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Arnage : diagnostic adapté aux TPE artisans, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Arnage : diagnostic adapté aux TPE artisans, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Arnage : diagnostic adapté aux TPE artisans, PME industrielles agglo Le Mans, sous-traitants automobile et commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arnage : formats adaptés aux PME industrielles, sous-traitants auto, TPE artisanales. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const ARNAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles d'Arnage ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, automatisation logistique, optimisation chaîne de production.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, automatisation logistique, optimisation chaîne de production.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile près du circuit ?",
@@ -61,7 +61,7 @@ export const ARNAGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arnage  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Arnage ?",

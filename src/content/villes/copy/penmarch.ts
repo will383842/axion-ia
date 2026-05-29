@@ -30,8 +30,8 @@ export const PENMARCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Penmarch : diagnostic adapté aux TPE pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Penmarch : diagnostic adapté aux TPE pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Penmarch : diagnostic adapté aux TPE pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Penmarch : diagnostic adapté aux TPE pêche et mareyage du port Saint-Guénolé, conserveries, artisans, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Penmarch : formats adaptés criée et atelier mareyage, ligne conserverie, chantier artisan, commerce ou restaurant. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const PENMARCH_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Penmarch  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE pêche, mareyeurs, conserveries et artisans du Pays Bigouden.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE pêche, mareyeurs, conserveries et artisans du Pays Bigouden.",
     },
     {
       q: "Travaillez-vous avec les pêcheurs et mareyeurs de Saint-Guénolé ?",

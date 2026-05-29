@@ -30,8 +30,8 @@ export const COGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cognac : diagnostic adapté aux viticulteurs, distillateurs, tonneliers, maisons de négoce et professionnels de l'œnotourisme du bassin cognaçais. Audit Flash 490 € HT.",
-      en: "Audit IA à Cognac : diagnostic adapté aux viticulteurs, distillateurs, tonneliers, maisons de négoce et professionnels de l'œnotourisme du bassin cognaçais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Cognac : diagnostic adapté aux viticulteurs, distillateurs, tonneliers, maisons de négoce et professionnels de l'œnotourisme du bassin cognaçais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cognac : diagnostic adapté aux viticulteurs, distillateurs, tonneliers, maisons de négoce et professionnels de l'œnotourisme du bassin cognaçais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cognac : formats adaptés au chai, à la distillerie, à la tonnellerie, au bureau de négoce ou à l'office de tourisme. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const COGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Cognac ?",
-      a: "L'audit Flash IA à Cognac démarre à 490 € HT. Diagnostic complet de vos processus viticoles, de distillation, de négoce ou touristiques, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Cognac démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus viticoles, de distillation, de négoce ou touristiques, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Cognac ?",

@@ -10,9 +10,9 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient au Grand-Quevilly, commune de 25 789 habitants en Seine-Maritime, dans la métropole rouennaise. Le tissu local mêle pétrochimie (site Borealis/GPN), grands équipements culturels (Zénith de Rouen, Théâtre Charles-Dullin, multiplexe Pathé, médiathèque François-Mitterrand) et zones commerciales. Le tramway Georges-Braque relie le centre de Rouen en 20 minutes, et la route nationale 338 (Sud III) connecte directement à l'A13. Nous accompagnons en priorité les TPE et PME locales — sous-traitants industriels, services aux entreprises, commerces — sur leurs cas d'usage IA opérationnels, avec un code custom auditable, sans solution no-code propriétaire.",
   directAnswerFr:
-    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
+    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
   directAnswerEn:
-    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit Flash dès 490 € HT, intervention sur site dès 590 € HT, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
+    "Axion-IA se déplace au Grand-Quevilly (Seine-Maritime, 25 789 habitants) pour accompagner en priorité les TPE puis les PME de la métropole rouennaise. Le tissu local — sous-traitance pétrochimique autour de Borealis/GPN, services aux entreprises, commerces — gagne en productivité sur les automatisations administratives (devis, facturation, planning, suivi qualité). Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, tarifs publics affichés sur axion-ia.com. Code custom propre, hébergement UE, conformité RGPD documentée. Les ETI restent marginales : nous priorisons clairement TPE puis PME.",
   seoHook: "pétrochimie & services aux entreprises",
   ecosystemFr:
     "Le Grand-Quevilly est marqué par un héritage industriel fort. Le site pétrochimique Borealis (anciennement GPN) reste un employeur structurant. La commune a abrité les Chantiers de Normandie (fermés en 1986) et une ancienne centrale électrique au charbon. Le tissu actuel mêle pétrochimie, sous-traitance industrielle, logistique fluviale (proximité de la Seine), zones commerciales (multiplexe Pathé du Bois Cany ouvert en 1999) et grands équipements culturels (Zénith de Rouen ouvert en 2001, Théâtre Charles-Dullin, médiathèque François-Mitterrand). La proximité immédiate de Rouen ouvre l'accès à un bassin d'emploi métropolitain.",
@@ -31,12 +31,12 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de 490 € HT.",
-      en: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de 490 € HT.",
+      fr: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA au Grand-Quevilly pour les TPE/PME — sous-traitants pétrochimiques, prestataires logistiques, commerces, services — afin de cibler les automatisations à fort ROI. À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site au Grand-Quevilly pour automatiser flux logistiques, suivi qualité, facturation et devis — code custom auditable. Dès 590 € HT.",
-      en: "Interventions sur site au Grand-Quevilly pour automatiser flux logistiques, suivi qualité, facturation et devis — code custom auditable. Dès 590 € HT.",
+      fr: "Interventions sur site au Grand-Quevilly pour automatiser flux logistiques, suivi qualité, facturation et devis — code custom auditable. Dès {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site au Grand-Quevilly pour automatiser flux logistiques, suivi qualité, facturation et devis — code custom auditable. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA mesurées au Grand-Quevilly pour les sous-traitants industriels et services aux entreprises — outils internes sur-mesure, conformes RGPD.",
@@ -50,7 +50,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention au Grand-Quevilly ?",
-      a: "Audit Flash dès 490 € HT (4 heures), intervention sur site dès 590 € HT. Tarifs publics sur axion-ia.com — pas de devis opaque.",
+      a: "Audit Flash dès {{price:audit-flash|flat}} (4 heures), intervention sur site dès {{price:intervention-4h|flat}}. Tarifs publics sur axion-ia.com — pas de devis opaque.",
     },
     {
       q: "Comment Axion-IA se déplace-t-il au Grand-Quevilly ?",

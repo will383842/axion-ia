@@ -30,8 +30,8 @@ export const VAUJOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaujours : diagnostic adapté aux TPE artisanales BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Vaujours : diagnostic adapté aux TPE artisanales BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Vaujours : diagnostic adapté aux TPE artisanales BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Vaujours : diagnostic adapté aux TPE artisanales BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaujours : formats adaptés à l'atelier artisanal, au commerce de bourg ou au cabinet libéral. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -53,11 +53,11 @@ export const VAUJOURS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP de Vaujours ?",
-      a: "Oui, nous accompagnons les TPE artisanales BTP de Vaujours (plombiers, électriciens, maçons, couvreurs) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes, suivi chantier photo. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisanales BTP de Vaujours (plombiers, électriciens, maçons, couvreurs) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes, suivi chantier photo. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Vaujours ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une session de 4 heures sur site à Vaujours. Pour les audits approfondis (Audit Stratégique), comptez entre 1 900 et 3 900 € HT selon le périmètre. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site à Vaujours. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les professions libérales à Vaujours ?",

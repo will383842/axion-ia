@@ -30,8 +30,8 @@ export const MARCHEPRIME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marcheprime : diagnostic pour TPE artisans BTP, commerçants, professions libérales et PME de services du corridor Bordeaux-Arcachon. Audit Flash 490 € HT.",
-      en: "Audit IA à Marcheprime : diagnostic pour TPE artisans BTP, commerçants, professions libérales et PME de services du corridor Bordeaux-Arcachon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Marcheprime : diagnostic pour TPE artisans BTP, commerçants, professions libérales et PME de services du corridor Bordeaux-Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marcheprime : diagnostic pour TPE artisans BTP, commerçants, professions libérales et PME de services du corridor Bordeaux-Arcachon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marcheprime : ateliers adaptés aux artisans, cabinets et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MARCHEPRIME_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Marcheprime  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux TPE artisans et professions libérales de Marcheprime.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux TPE artisans et professions libérales de Marcheprime.",
     },
     {
       q: "Accompagnez-vous les artisans BTP ?",
@@ -61,7 +61,7 @@ export const MARCHEPRIME_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers.",
+      a: "Pour les professions libérales : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers.",
     },
     {
       q: "Comment se déroule une mission à Marcheprime ?",

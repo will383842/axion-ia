@@ -43,8 +43,8 @@ export const LE_HAVRE_COPY: VilleCopy = {
       en: "AI implementation in Le Havre: we integrate AI into your existing tools (industrial ERP, TMS, CRM, emails) with contractually-costed ROI. Your teams stay in control, no tech dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel au Havre — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux havrais ou de la ZIP : dirigeant logistique, directeur technique industriel ou responsable de PME portuaire qui veut progresser seul, sur ses propres données et contraintes métier.",
-      en: "Individual AI coaching in Le Havre — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Le Havre or ZIP premises: logistics executive, industrial technical director or port SME manager who wants to progress alone, on their own data and business constraints.",
+      fr: "Coaching IA individuel au Havre — à partir de {{price:intervention-dirigeants|flat}}. Un consultant senior dédié à votre cas, dans vos locaux havrais ou de la ZIP : dirigeant logistique, directeur technique industriel ou responsable de PME portuaire qui veut progresser seul, sur ses propres données et contraintes métier.",
+      en: "Individual AI coaching in Le Havre — from {{price:intervention-dirigeants|compact}} excl. VAT. A senior consultant dedicated to your case, at your Le Havre or ZIP premises: logistics executive, industrial technical director or port SME manager who wants to progress alone, on their own data and business constraints.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI havraises — site vitrine premium pour logistique portuaire, pétrochimie et aéronautique (HAROPA, Safran Nacelles, Sidel), espace client interactif supply chain, dashboard métier connecté à votre TMS/ERP industriel ou CRM. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -727,7 +727,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA au Havre s'adresse au dirigeant, directeur technique ou responsable logistique qui veut progresser sur l'IA à son rythme, sur ses propres données portuaires et industrielles — sans session collective. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux havrais ou de la Zone Industrialo-Portuaire. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA au Havre s'adresse au dirigeant, directeur technique ou responsable logistique qui veut progresser sur l'IA à son rythme, sur ses propres données portuaires et industrielles — sans session collective. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux havrais ou de la Zone Industrialo-Portuaire. Frais de logement, repas et forfait trajet facturés en sus.",
         whyHere: [
           "Le Havre concentre des dirigeants et directeurs techniques d'ETI industrielles (logistique, pétrochimie, aéronautique) dont les contraintes de confidentialité (secret industriel, données de fret, contrats d'affrètement) rendent le format collectif inadapté.",
           "Les responsables de PME logistiques portuaires (Nov@log, commissionnaires de transport) traitent des données propriétaires — manifestes de cargaison, liasses douanières, CMR — qui ne peuvent pas être partagées dans un cadre collectif.",
@@ -766,7 +766,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Coaching individuel entrée pour dirigeants TPE, commissionnaires indépendants et petits prestataires portuaires havrais — une journée, un consultant dédié.",
           },
@@ -806,7 +806,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA au Havre ?",
-            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, directeur technique ou responsable logistique — dans vos locaux havrais ou de la ZIP. Un consultant senior vous accompagne sur vos propres cas métier (logistique maritime, industrie, services) pendant une journée entière. À partir de 990 € HT.",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, directeur technique ou responsable logistique — dans vos locaux havrais ou de la ZIP. Un consultant senior vous accompagne sur vos propres cas métier (logistique maritime, industrie, services) pendant une journée entière. À partir de {{price:intervention-dirigeants|flat}}.",
           },
           {
             q: "Pourquoi choisir un coaching individuel plutôt qu'une session collective au Havre ?",
@@ -833,7 +833,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           "Confidentialité stricte : vos données industrielles et portuaires ne quittent pas vos locaux havrais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions Normandie).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Le Havre is for the executive, technical director or logistics manager who wants to progress on AI at their own pace, on their own port and industrial data — without a group session. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Le Havre or Port Industrial Zone premises. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Le Havre is for the executive, technical director or logistics manager who wants to progress on AI at their own pace, on their own port and industrial data — without a group session. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Le Havre or Port Industrial Zone premises. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Le Havre hosts industrial mid-cap executives and technical directors (logistics, petrochemicals, aeronautics) whose confidentiality constraints (trade secrets, freight data, charter contracts) make the collective format unsuitable.",
           "Port logistics SME managers (Nov@log members, freight forwarders) handle proprietary data — cargo manifests, customs dossiers, CMR — that cannot be shared in a group setting.",
@@ -872,7 +872,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry individual coaching for Le Havre micro-business executives, independent freight forwarders and small port service providers — one day, one dedicated consultant.",
           },
@@ -912,7 +912,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         faq: [
           {
             q: "What is Axion-IA's individual AI coaching in Le Havre?",
-            a: "It is a bespoke AI session dedicated to one person — executive, technical director or logistics manager — at your Le Havre or ZIP premises. A senior consultant accompanies you on your own business cases (maritime logistics, manufacturing, services) for a full day. From 990 € excl. VAT.",
+            a: "It is a bespoke AI session dedicated to one person — executive, technical director or logistics manager — at your Le Havre or ZIP premises. A senior consultant accompanies you on your own business cases (maritime logistics, manufacturing, services) for a full day. From {{price:intervention-dirigeants|compact}} excl. VAT.",
           },
           {
             q: "Why choose individual coaching over a group session in Le Havre?",

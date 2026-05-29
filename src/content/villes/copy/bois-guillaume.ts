@@ -30,8 +30,8 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bois-Guillaume : formats adaptés au cabinet, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires bois-guillaumaises ?",
-      a: "Oui, nous accompagnons les PME tertiaires et de services de Bois-Guillaume sur des cas IA : CRM intelligent, agents conversationnels, automatisation workflow, classification documents. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME tertiaires et de services de Bois-Guillaume sur des cas IA : CRM intelligent, agents conversationnels, automatisation workflow, classification documents. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Bois-Guillaume ?",

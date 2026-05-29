@@ -9,9 +9,9 @@ export const MORTEAU_COPY: VilleCopy = {
   pitchEn:
     "Morteau (25), capitale du Val de Morteau dans le Haut-Doubs, est reputee pour sa saucisse IGP et son heritage horloger frontalier avec la Suisse. Tissu TPE/PME agroalimentaire, horlogerie, commerce transfrontalier, artisanat, tourisme. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit Flash des {{price:audit-flash|flat}}.",
   seoHook: "agroalimentaire & horlogerie micromecanique",
   ecosystemFr:
     "Morteau est la ville-centre du Val de Morteau dans le Haut-Doubs, a 10 km de la frontiere suisse. La filiere saucisse de Morteau IGP structure l'agroalimentaire local. L'heritage horloger (Musee de l'Horlogerie) et la proximite de La Chaux-de-Fonds alimentent un tissu de micromecaniciens et commercants transfrontaliers.",
@@ -30,8 +30,8 @@ export const MORTEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Morteau : diagnostic adapte aux producteurs agroalimentaires IGP, horlogers, commercants transfrontaliers et artisans du Haut-Doubs. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Morteau : diagnostic adapte aux producteurs agroalimentaires IGP, horlogers, commercants transfrontaliers et artisans du Haut-Doubs. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Morteau : diagnostic adapte aux producteurs agroalimentaires IGP, horlogers, commercants transfrontaliers et artisans du Haut-Doubs. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Morteau : diagnostic adapte aux producteurs agroalimentaires IGP, horlogers, commercants transfrontaliers et artisans du Haut-Doubs. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Morteau : formats adaptes aux ateliers agroalimentaires, laboratoires horlogers, commerces de centre-ville et structures touristiques du Val de Morteau.",
@@ -57,7 +57,7 @@ export const MORTEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Morteau ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE et PME de Morteau, nous proposons des audits approfondis adaptes aux enjeux agroalimentaire, horlogerie ou commerce transfrontalier.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Morteau, nous proposons des audits approfondis adaptes aux enjeux agroalimentaire, horlogerie ou commerce transfrontalier.",
     },
     {
       q: "Travaillez-vous avec les horlogers et micromecaniciens du secteur ?",
@@ -65,7 +65,7 @@ export const MORTEAU_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Morteau ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Morteau, a partir de 990 euros HT. Sessions dans votre atelier, commerce, bureau ou en visio.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Morteau, a partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, commerce, bureau ou en visio.",
     },
   ],
 };

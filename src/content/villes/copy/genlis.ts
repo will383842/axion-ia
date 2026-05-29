@@ -30,8 +30,8 @@ export const GENLIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Genlis : ateliers dans vos locaux atelier BTP, bureau PME ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention artisanat, tertiaire et agriculture.",
@@ -61,7 +61,7 @@ export const GENLIS_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE et commerces de Genlis ?",
-      a: "Pour les TPE artisans et commerces de Genlis, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, automatisation devis, agents IA relation client.",
+      a: "Pour les TPE artisans et commerces de Genlis, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, automatisation devis, agents IA relation client.",
     },
     {
       q: "Comment se déroule une mission à Genlis ?",

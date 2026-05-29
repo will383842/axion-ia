@@ -30,8 +30,8 @@ export const TOUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Toul : formats adaptés au domaine viticole, exploitation agroalimentaire, atelier artisan, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const TOUL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces de Toul ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {
       q: "Comment se passe une mission à Toul depuis Nancy ?",

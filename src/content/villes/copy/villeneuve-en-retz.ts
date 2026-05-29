@@ -30,8 +30,8 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit Flash 490 € HT.",
-      en: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit Flash 490 € HT.",
+      fr: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-en-Retz : formations ostréiculteurs, artisans, commerçants et hébergeurs touristiques du littoral. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE touristique du Pays de Retz ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, adapté aux TPE touristiques et hébergeurs saisonniers. Il identifie les opportunités IA : automatisation réservations, communication multilingue, yield management, optimisation référencement local.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE touristiques et hébergeurs saisonniers. Il identifie les opportunités IA : automatisation réservations, communication multilingue, yield management, optimisation référencement local.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Villeneuve-en-Retz ?",

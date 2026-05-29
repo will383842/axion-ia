@@ -30,8 +30,8 @@ export const APT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Apt : diagnostic adapté aux TPE artisans, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Apt : diagnostic adapté aux TPE artisans, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Apt : diagnostic adapté aux TPE artisans, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Apt : diagnostic adapté aux TPE artisans, PME agroalimentaires (confiseries), viticulteurs Luberon, hôteliers et commerces de la sous-préfecture. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Apt : ateliers pour équipes TPE/PME agroalimentaires, viticulteurs, artisans métiers d'art et hôteliers. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const APT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Apt  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME agroalimentaires, viticulteurs et hôteliers aptésiens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME agroalimentaires, viticulteurs et hôteliers aptésiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les confiseries et acteurs de l'agroalimentaire aptésien ?",

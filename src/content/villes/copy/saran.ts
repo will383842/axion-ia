@@ -30,8 +30,8 @@ export const SARAN_COPY: VilleCopy = {
   seoHook: "logistique, commerce & services",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saran : diagnostic adapté aux TPE commerces, PME logistique et services, ETI industrie du nord orléanais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saran : diagnostic adapté aux TPE commerces, PME logistique et services, ETI industrie du nord orléanais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saran : diagnostic adapté aux TPE commerces, PME logistique et services, ETI industrie du nord orléanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saran : diagnostic adapté aux TPE commerces, PME logistique et services, ETI industrie du nord orléanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saran : formations en entrepôt logistique, bureau PME ou surface commerciale. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const SARAN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saran  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {
       q: "Quels services IA pour la logistique à Saran ?",

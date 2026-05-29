@@ -30,8 +30,8 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, TPE artisans et commerces du nord-est bordelais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, TPE artisans et commerces du nord-est bordelais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, TPE artisans et commerces du nord-est bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Loubès : diagnostic pour PME logistiques, vignerons, TPE artisans et commerces du nord-est bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Loubès : ateliers adaptés aux entrepôts logistiques, chais, ateliers BTP et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Loubès  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME logistiques et TPE artisans du nord-est Bordeaux.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME logistiques et TPE artisans du nord-est Bordeaux.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques à Saint-Loubès ?",
@@ -61,7 +61,7 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les vignerons à Saint-Loubès ?",
-      a: "Pour les vignerons de l'Entre-deux-Mers : audit IA 490 € HT, traçabilité parcelles, prédiction vendanges, agents IA oenotourisme, automatisation gestion chai.",
+      a: "Pour les vignerons de l'Entre-deux-Mers : audit IA {{price:audit-flash|flat}}, traçabilité parcelles, prédiction vendanges, agents IA oenotourisme, automatisation gestion chai.",
     },
     {
       q: "Comment se déroule une mission à Saint-Loubès ?",

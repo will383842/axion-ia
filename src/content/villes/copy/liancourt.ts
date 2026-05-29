@@ -30,8 +30,8 @@ export const LIANCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Liancourt : formats adaptés à l'atelier mécanique, à l'usine plasturgie, au commerce ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const LIANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Liancourt  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME liancouroises : industriels mécanique/plasturgie, agroalimentaire, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME liancouroises : industriels mécanique/plasturgie, agroalimentaire, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises de mécanique et plasturgie ?",
@@ -65,7 +65,7 @@ export const LIANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Liancourt ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Liancourt, à partir de 990 € HT. Sessions dans votre atelier, usine, commerce ou en visio. Approche terrain adaptée aux métiers industriels et de services du sud de l'Oise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Liancourt, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, usine, commerce ou en visio. Approche terrain adaptée aux métiers industriels et de services du sud de l'Oise.",
     },
   ],
 };

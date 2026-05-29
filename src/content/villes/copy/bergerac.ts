@@ -30,8 +30,8 @@ export const BERGERAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et TPE/PME du Périgord. ROI chiffré pratique, audit Flash 490 € HT accessible aux exploitations familiales.",
-      en: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et TPE/PME du Périgord. ROI chiffré pratique, audit Flash 490 € HT accessible aux exploitations familiales.",
+      fr: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et TPE/PME du Périgord. ROI chiffré pratique, audit Flash {{price:audit-flash|flat}} accessible aux exploitations familiales.",
+      en: "Audit IA à Bergerac : diagnostic adapté aux viticulteurs, artisans agroalimentaires et TPE/PME du Périgord. ROI chiffré pratique, audit Flash {{price:audit-flash|flat}} accessible aux exploitations familiales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bergerac : sessions au chai, dans la conserverie ou en bureau. Vos équipes (vignerons, ouvriers conserverie, vendeurs cave) repartent avec outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const BERGERAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans bergeracois ?",
-      a: "Pour les TPE et artisans à Bergerac (commerces, BTP, services), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1 pour gérants. Cas typiques : automatisation devis, agents IA pour vente directe, gestion administrative simplifiée.",
+      a: "Pour les TPE et artisans à Bergerac (commerces, BTP, services), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1 pour gérants. Cas typiques : automatisation devis, agents IA pour vente directe, gestion administrative simplifiée.",
     },
     {
       q: "Quels formats pour le tourisme et oenotourisme ?",

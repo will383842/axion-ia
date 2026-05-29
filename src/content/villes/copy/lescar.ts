@@ -30,8 +30,8 @@ export const LESCAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit Flash 490 € HT.",
-      en: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lescar : déploiement outils IA dans vos surfaces commerciales, bureaux ou ateliers. Automatisation gestion stocks, prévisions ventes, planning équipes.",
@@ -57,7 +57,7 @@ export const LESCAR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Lescar ?",
-      a: "L'audit Flash IA à Lescar démarre à 490 € HT. Diagnostic de vos processus commerciaux ou de services, identification gains IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Lescar démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus commerciaux ou de services, identification gains IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Accompagnez-vous les PME de services à Lescar ?",

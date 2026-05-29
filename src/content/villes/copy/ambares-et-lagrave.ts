@@ -30,8 +30,8 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit Flash 490 € HT.",
-      en: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambarès-et-Lagrave : ateliers adaptés aux process industriels, artisanat et commerce. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ambarès-et-Lagrave  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du nord Bordeaux.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du nord Bordeaux.",
     },
     {
       q: "Travaillez-vous avec les industries chimiques et logistiques ?",
@@ -61,7 +61,7 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans à Ambarès-et-Lagrave ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Ambarès-et-Lagrave : automatisation devis, agents IA prise de RDV, gestion planning, classification photos chantier. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Ambarès-et-Lagrave : automatisation devis, agents IA prise de RDV, gestion planning, classification photos chantier. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission sur site à Ambarès-et-Lagrave ?",

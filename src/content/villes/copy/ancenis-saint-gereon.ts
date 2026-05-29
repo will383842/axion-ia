@@ -30,8 +30,8 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit Flash 490 € HT.",
-      en: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ancenis-Saint-Géréon : formats adaptés aux domaines viticoles, PME agroalimentaires, sociétés de logistique et commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ancenis  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE d'Ancenis-Saint-Géréon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE d'Ancenis-Saint-Géréon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles du pays d'Ancenis ?",
@@ -61,11 +61,11 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les entreprises logistiques d'Ancenis ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : optimisation tournées IA, prévision demande, gestion entrepôt augmentée, automatisation facturation transport.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : optimisation tournées IA, prévision demande, gestion entrepôt augmentée, automatisation facturation transport.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Ancenis ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Ancenis-Saint-Géréon. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Ancenis-Saint-Géréon. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

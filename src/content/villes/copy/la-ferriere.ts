@@ -30,8 +30,8 @@ export const LA_FERRIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash 490 € HT.",
-      en: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash 490 € HT.",
+      fr: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferrière : formats adaptés à la PME industrielle, l'entreprise BTP, l'artisan ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LA_FERRIERE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Ferrière  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de La Ferrière. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou artisanal.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de La Ferrière. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou artisanal.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et BTP ?",
@@ -61,11 +61,11 @@ export const LA_FERRIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans de La Ferrière ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à La Ferrière ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à La Ferrière. Format flexible : dans vos locaux, en visio ou en espace partagé à La Roche-sur-Yon. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à La Ferrière. Format flexible : dans vos locaux, en visio ou en espace partagé à La Roche-sur-Yon. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

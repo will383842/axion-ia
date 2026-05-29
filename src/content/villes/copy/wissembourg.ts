@@ -30,8 +30,8 @@ export const WISSEMBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wissembourg : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos équipes repartent autonomes. Sessions bilingues franco-allemandes possibles.",
@@ -57,11 +57,11 @@ export const WISSEMBOURG_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles et viticoles ?",
-      a: "Oui, le tissu industriel et viticole de Wissembourg bénéficie de notre expertise : contrôle qualité, traçabilité production, gestion vendanges, automatisation commandes transfrontalières et relations donneurs d'ordres. Audit Flash 490 € HT.",
+      a: "Oui, le tissu industriel et viticole de Wissembourg bénéficie de notre expertise : contrôle qualité, traçabilité production, gestion vendanges, automatisation commandes transfrontalières et relations donneurs d'ordres. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Wissembourg ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Wissembourg ?",

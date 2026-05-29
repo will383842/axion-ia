@@ -30,8 +30,8 @@ export const AUVERS_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auvers-sur-Oise : formats adaptés au restaurant, à la galerie ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const AUVERS_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Auvers-sur-Oise ?",
-      a: "L'Audit Flash IA à Auvers-sur-Oise démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Auvers-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme culturel à Auvers-sur-Oise ?",

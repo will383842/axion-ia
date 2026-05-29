@@ -30,8 +30,8 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mézidon Vallée d'Auge : diagnostic adapté aux PME agroalimentaires Pays d'Auge (fromages AOP, cidreries), exploitations agricoles, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mézidon Vallée d'Auge : formats adaptés à la fromagerie, cidrerie, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les exploitations agricoles augeronnes ?",
-      a: "Pour les exploitations agricoles et éleveurs du Pays d'Auge, audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion troupeaux, prédiction production laitière, automatisation traçabilité.",
+      a: "Pour les exploitations agricoles et éleveurs du Pays d'Auge, audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion troupeaux, prédiction production laitière, automatisation traçabilité.",
     },
     {
       q: "Combien coûte un audit IA à Mézidon Vallée d'Auge  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",

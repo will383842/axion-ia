@@ -30,8 +30,8 @@ export const LUNEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lunéville : formats adaptés à l'atelier faïencier, usine, office de tourisme, commerce ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LUNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces de Lunéville ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {
       q: "Comment se passe une mission à Lunéville depuis Nancy ?",

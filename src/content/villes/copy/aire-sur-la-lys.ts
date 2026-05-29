@@ -30,8 +30,8 @@ export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aire-sur-la-Lys : diagnostic adapté aux TPE artisanales, PME agroalimentaires et professions libérales de la vallée de la Lys. Audit Flash 490 € HT.",
-      en: "Audit IA à Aire-sur-la-Lys : diagnostic adapté aux TPE artisanales, PME agroalimentaires et professions libérales de la vallée de la Lys. Audit Flash 490 € HT.",
+      fr: "Audit IA à Aire-sur-la-Lys : diagnostic adapté aux TPE artisanales, PME agroalimentaires et professions libérales de la vallée de la Lys. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aire-sur-la-Lys : diagnostic adapté aux TPE artisanales, PME agroalimentaires et professions libérales de la vallée de la Lys. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aire-sur-la-Lys : formations pratiques adaptées à l'exploitation agricole, au commerce ou au cabinet. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Aire-sur-la-Lys  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la vallée de la Lys. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la vallée de la Lys. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les exploitations agricoles près d'Aire-sur-la-Lys ?",
@@ -61,7 +61,7 @@ export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants dans la Lys ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME de la vallée de la Lys. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME de la vallée de la Lys. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Aire-sur-la-Lys ?",

@@ -30,8 +30,8 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Solliès-Toucas : ateliers pour arboriculteurs, maraîchers, artisans BTP et commerçants. Outils IA configurés métier réel agricole et services.",
@@ -53,7 +53,7 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation arboricole AOP ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux exploitations AOP Figue de Solliès, maraîchers et artisans toucadens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux exploitations AOP Figue de Solliès, maraîchers et artisans toucadens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les producteurs de figues AOP Solliès ?",

@@ -9,9 +9,9 @@ export const NEMOURS_COPY: VilleCopy = {
   pitchEn:
     "Nemours (77), ville historique du sud de la Seine-et-Marne sur les bords du Loing, abrite un chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France. Tissu TPE/PME industrie, commerce de centre-ville, artisanat, tourisme patrimonial, services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit Flash des {{price:audit-flash|flat}}.",
   seoHook: "vallée du",
   ecosystemFr:
     "Nemours est une ville historique du sud de la Seine-et-Marne, traversee par le Loing. Le chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France attirent un tourisme culturel. L'economie locale repose sur un tissu de TPE/PME industrie, commerce de centre-ville, artisanat et services, avec un acces A6 vers Paris et Fontainebleau.",
@@ -30,8 +30,8 @@ export const NEMOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Nemours : diagnostic adapte aux PME industrielles, commercants de centre-ville, artisans et acteurs du tourisme patrimonial du sud Seine-et-Marne. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Nemours : diagnostic adapte aux PME industrielles, commercants de centre-ville, artisans et acteurs du tourisme patrimonial du sud Seine-et-Marne. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Nemours : diagnostic adapte aux PME industrielles, commercants de centre-ville, artisans et acteurs du tourisme patrimonial du sud Seine-et-Marne. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Nemours : diagnostic adapte aux PME industrielles, commercants de centre-ville, artisans et acteurs du tourisme patrimonial du sud Seine-et-Marne. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Nemours : formats adaptes a l'atelier industriel, au commerce de bourg, a l'artisan BTP et aux structures culturelles. Equipes autonomes apres intervention.",
@@ -57,7 +57,7 @@ export const NEMOURS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Nemours ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE et PME de Nemours, nous proposons des audits approfondis adaptes aux enjeux industrie, commerce ou tourisme patrimonial.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Nemours, nous proposons des audits approfondis adaptes aux enjeux industrie, commerce ou tourisme patrimonial.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial ?",
@@ -65,7 +65,7 @@ export const NEMOURS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Nemours ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Nemours, a partir de 990 euros HT. Sessions dans votre local, atelier, bureau ou en visio.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Nemours, a partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre local, atelier, bureau ou en visio.",
     },
   ],
 };

@@ -9,9 +9,9 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   pitchEn:
     "Fleury-les-Aubrais (45), commune limitrophe d'Orléans dans le Loiret (~21 800 hab.), pôle d'emploi majeur de la métropole Orléans Métropole avec ~10 000 emplois. Hub ferroviaire historique (gare des Aubrais, 1853), présence Thales, zones d'activités Dessaux, Fleury-Saran, Lignerolles. Tissu TPE, PME, artisans. Axion-IA accompagne en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit Flash 490 € HT, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit Flash {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit Flash 490 € HT, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-les-Aubrais (45), commune intégrée à Orléans Métropole. Nous accompagnons en priorité les TPE commerçantes et artisanales, les PME industrielles et logistiques des zones Dessaux, Fleury-Saran et Lignerolles, ainsi que les ETI implantées localement. Audit Flash {{price:audit-flash|flat}}, déplacement depuis Paris ou Orléans, code custom, conformité RGPD.",
   seoHook: "agglo Orléans, ferroviaire & industrie",
   ecosystemFr:
     "Fleury-les-Aubrais est l'un des principaux pôles d'emploi de la métropole d'Orléans avec environ 10 000 emplois répartis sur les zones d'activités Dessaux, Fleury-Saran, l'Herveline, Lignerolles et Bicharderies. La gare des Aubrais, ouverte en 1853, accueille ~7 000 voyageurs/jour. Thales y est implantée. Tissu majoritairement TPE et PME, artisanat, services.",
@@ -30,8 +30,8 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fleury-les-Aubrais : diagnostic pour TPE commerçantes, PME industrielles et logistiques des zones Dessaux, Fleury-Saran, Lignerolles. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fleury-les-Aubrais : ateliers adaptés à l'industrie, la logistique ferroviaire, l'artisanat BTP et le commerce de proximité. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs à Fleury-les-Aubrais ?",
-      a: "Audit Flash à partir de 490 € HT, Intervention Essentielle à partir de 590 € HT, session 1-to-1 dirigeants à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}, session 1-to-1 dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Fleury-les-Aubrais ?",
@@ -69,7 +69,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous aider une PME industrielle des Aubrais ?",
-      a: "Oui, nous accompagnons les PME industrielles et sous-traitants sur la maintenance prédictive, la classification documentaire, l'automatisation de devis et la qualification de leads B2B. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME industrielles et sous-traitants sur la maintenance prédictive, la classification documentaire, l'automatisation de devis et la qualification de leads B2B. Audit Flash {{price:audit-flash|flat}}.",
     },
   ],
 };

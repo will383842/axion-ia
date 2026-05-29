@@ -30,8 +30,8 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montauban-de-Bretagne : formats adaptés aux exploitations agricoles, ateliers artisans BTP, commerces de bourg et PME logistique. Vos équipes maîtrisent les outils déployés.",
@@ -57,7 +57,7 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Montauban-de-Bretagne  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du centre Ille-et-Vilaine, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du centre Ille-et-Vilaine, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les PME logistique du corridor Rennes-Saint-Brieuc ?",

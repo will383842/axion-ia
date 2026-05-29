@@ -30,8 +30,8 @@ export const SAUTRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sautron : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes repartent avec outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAUTRON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et professions libérales de Sautron ?",
-      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sautron sur des cas IA accessibles : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sautron sur des cas IA accessibles : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services IA pour les PME nantaises ouest ?",
@@ -64,8 +64,8 @@ export const SAUTRON_COPY: VilleCopy = {
       a: "Nos consultants se déplacent sur site à Sautron (15 min depuis Nantes centre). Pour les missions multi-jours, hébergement local. Frais de déplacement facturés à part du forfait journée, tarifs transparents.",
     },
     {
-      q: "L'audit Flash 490 € HT est-il adapté aux indépendants ?",
-      a: "Oui, l'audit Flash 490 € HT est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
+      q: "L'audit Flash {{price:audit-flash|flat}} est-il adapté aux indépendants ?",
+      a: "Oui, l'audit Flash {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Ponts-de-Cé : formations pour équipes commerce, artisanat et PME services. Ateliers pratiques adaptés au tissu économique sud-angevin.",
@@ -53,7 +53,7 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Ponts-de-Cé ?",
-      a: "L'Audit Flash IA aux Ponts-de-Cé démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA aux Ponts-de-Cé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone Atoll ?",

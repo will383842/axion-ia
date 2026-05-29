@@ -30,8 +30,8 @@ export const NYONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nyons : diagnostic adapté aux oléiculteurs AOP, viticulteurs, PME agroalimentaires, acteurs tourisme provençal, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Nyons : diagnostic adapté aux oléiculteurs AOP, viticulteurs, PME agroalimentaires, acteurs tourisme provençal, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Nyons : diagnostic adapté aux oléiculteurs AOP, viticulteurs, PME agroalimentaires, acteurs tourisme provençal, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nyons : diagnostic adapté aux oléiculteurs AOP, viticulteurs, PME agroalimentaires, acteurs tourisme provençal, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nyons : formats adaptés au moulin à huile, exploitation oléicole/viticole, conserverie, gîte. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const NYONS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Nyons, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, agents IA RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Nyons, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, agents IA RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Avignon ?",

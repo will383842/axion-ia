@@ -30,8 +30,8 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, TPE indépendants et commerçants de l'est marseillais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, TPE indépendants et commerçants de l'est marseillais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, TPE indépendants et commerçants de l'est marseillais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Carnoux-en-Provence : diagnostic adapté aux professions libérales, TPE indépendants et commerçants de l'est marseillais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carnoux-en-Provence : ateliers pratiques pour cabinets libéraux, TPE et commerçants. Outils IA configurés métier réel, format demi-journée.",
@@ -53,7 +53,7 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Carnoux-en-Provence  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux professions libérales, TPE indépendants et commerçants carnousiens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux professions libérales, TPE indépendants et commerçants carnousiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Carnoux ?",

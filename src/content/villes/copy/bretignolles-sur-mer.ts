@@ -30,8 +30,8 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash 490 € HT.",
-      en: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash 490 € HT.",
+      fr: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bretignolles-sur-Mer : formats adaptés à l'hôtel, le camping, le restaurant, l'école de surf ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bretignolles-sur-Mer  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Bretignolles-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique ou artisanale.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Bretignolles-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique ou artisanale.",
     },
     {
       q: "Accompagnez-vous les PME du tourisme et de l'hôtellerie ?",
@@ -61,11 +61,11 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants saisonniers de Bretignolles ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, gestion stocks intelligente, automatisation comptabilité, fidélisation client saisonnier augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, gestion stocks intelligente, automatisation comptabilité, fidélisation client saisonnier augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Bretignolles-sur-Mer ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Bretignolles-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Bretignolles-sur-Mer. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

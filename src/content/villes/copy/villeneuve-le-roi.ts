@@ -30,8 +30,8 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-le-Roi : formats adaptés au métier (aérogare, entrepôt logistique, atelier maintenance, commerce). Vos équipes opérationnelles repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP villeneuvois ?",
-      a: "Pour les TPE artisans BTP à Villeneuve-le-Roi, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Adapté aux petites structures.",
+      a: "Pour les TPE artisans BTP à Villeneuve-le-Roi, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Adapté aux petites structures.",
     },
     {
       q: "Comment se déroule une intervention près de l'aéroport Orly ?",

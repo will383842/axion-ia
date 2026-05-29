@@ -30,8 +30,8 @@ export const CHANTEPIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chantepie : formats adaptés au bureau tertiaire, plateau open-space, atelier artisan ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,15 +53,15 @@ export const CHANTEPIE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires de Chantepie ?",
-      a: "Oui, nous accompagnons les PME tertiaires et bureaux d'études des zones d'activités de Chantepie sur leurs cas IA : automatisation workflow, agents conversationnels B2B, analyse documentaire, CRM augmenté. Audit Flash 490 € HT pour démarrer.",
+      a: "Oui, nous accompagnons les PME tertiaires et bureaux d'études des zones d'activités de Chantepie sur leurs cas IA : automatisation workflow, agents conversationnels B2B, analyse documentaire, CRM augmenté. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chantepie  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud-est rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, informatique, professions libérales). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud-est rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, informatique, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les entreprises informatiques du secteur ?",
-      a: "Oui, nous accompagnons les PME informatiques et bureaux d'études de Chantepie sur leurs cas IA : agents conversationnels support technique, automatisation tests, analyse code augmentée, classification tickets. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME informatiques et bureaux d'études de Chantepie sur leurs cas IA : agents conversationnels support technique, automatisation tests, analyse code augmentée, classification tickets. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Chantepie ?",

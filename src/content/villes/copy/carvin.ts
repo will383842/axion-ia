@@ -30,8 +30,8 @@ export const CARVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carvin : formats adaptés à l'entrepôt logistique, atelier artisanal, commerce ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const CARVIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Carvin ?",
-      a: "Pour les TPE artisans BTP et commerçants à Carvin, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et commerçants à Carvin, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Travaillez-vous avec les PME logistique et transport de l'axe A1 ?",

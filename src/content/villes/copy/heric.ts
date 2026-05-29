@@ -30,8 +30,8 @@ export const HERIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Héric : diagnostic adapté aux TPE artisans, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Héric : diagnostic adapté aux TPE artisans, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Héric : diagnostic adapté aux TPE artisans, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Héric : diagnostic adapté aux TPE artisans, PME bâtiment, exploitations agricoles et professions libérales du nord nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Héric : formats adaptés au chantier, à l'exploitation, au cabinet ou au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const HERIC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME du bâtiment à Héric ?",
-      a: "Oui, nous accompagnons les PME bâtiment sur des cas IA pratiques : automatisation devis et facturation, gestion planning chantiers, suivi sous-traitants, agents IA relation client. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME bâtiment sur des cas IA pratiques : automatisation devis et facturation, gestion planning chantiers, suivi sous-traitants, agents IA relation client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les exploitations agricoles ?",
@@ -61,7 +61,7 @@ export const HERIC_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Héric  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord nantais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord nantais.",
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",

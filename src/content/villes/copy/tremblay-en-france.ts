@@ -11,9 +11,9 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Tremblay-en-France, commune de 38 348 habitants en Seine-Saint-Denis qui héberge plus de 1 600 entreprises et environ 55 000 emplois. Notre cabinet conçoit du code IA sur mesure pour les PME logistiques, sous-traitants aéroportuaires, prestataires de services et commerces implantés autour de Paris-Nord 2, Roissypôle, Aéroville et de la zone Tremblay-CDG. En complément, nos interventions couvrent les ETI locales du transport et de l'entreposage.",
   directAnswerFr:
-    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des TPE et PME locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit Flash 4h à 590 € HT. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des TPE et PME locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit Flash 4h à {{price:intervention-4h|flat}}. Les ETI sont également couvertes.",
   directAnswerEn:
-    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des TPE et PME locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit Flash 4h à 590 € HT. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Tremblay-en-France pour automatiser les processus métier des TPE et PME locales : suivi de flotte, gestion des bordereaux, facturation, reporting opérationnel. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux PME de logistique, transport, entreposage et services présentes sur Paris-Nord 2 (577 entreprises sur 200 hectares), Roissypôle et la zone Tremblay-CDG (110 entreprises). Audit Flash 4h à {{price:intervention-4h|flat}}. Les ETI sont également couvertes.",
   seoHook: "logistique aéroportuaire & entreposage",
   ecosystemFr:
     "Tremblay-en-France structure son activité autour de trois zones majeures : Roissypôle (557 des 719 entreprises aéroportuaires, incluant le siège d'Air France), Paris-Nord 2 (577 entreprises sur 200 hectares, services et logistique) et la zone Tremblay-CDG (110 entreprises en logistique, construction et industrie). Le centre commercial Aéroville, ouvert en octobre 2013, ajoute environ 3 000 emplois dans le commerce et la restauration.",
@@ -32,8 +32,8 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Tremblay-en-France pour les TPE/PME logistiques de Paris-Nord 2 ou Roissypôle — 590 € HT.",
-      en: "Audit Flash 4h sur site à Tremblay-en-France pour les TPE/PME logistiques de Paris-Nord 2 ou Roissypôle — 590 € HT.",
+      fr: "Audit Flash 4h sur site à Tremblay-en-France pour les TPE/PME logistiques de Paris-Nord 2 ou Roissypôle — {{price:intervention-4h|flat}}.",
+      en: "Audit Flash 4h sur site à Tremblay-en-France pour les TPE/PME logistiques de Paris-Nord 2 ou Roissypôle — {{price:intervention-4h|flat}}.",
     },
     interventions: {
       fr: "Interventions Axion-IA à Tremblay-en-France pour automatiser suivi de flotte, bordereaux, facturation et reporting des PME logistiques.",
@@ -51,7 +51,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Tremblay-en-France ?",
-      a: "L'Audit Flash 4h à Tremblay-en-France démarre à 590 € HT. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
+      a: "L'Audit Flash 4h à Tremblay-en-France démarre à {{price:intervention-4h|flat}}. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
       q: "Axion-IA se déplace-t-il à Tremblay-en-France pour des audits ?",

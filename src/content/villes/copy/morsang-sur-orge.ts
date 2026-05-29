@@ -9,9 +9,9 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Morsang-sur-Orge (91), 21 667 habitants, commune résidentielle dense de l'Essonne située à 23 km au sud de Paris, à 7 km à l'ouest d'Évry et à 7 km au sud d'Orly. Tissu économique fortement tertiaire (64 %) avec deux zones d'activités principales (Buisson foireux et route de Corbeil), densité 4 936 hab/km². Desservie depuis décembre 2023 par le tramway T12 vers Massy-Palaiseau et Évry-Courcouronnes. Axion-IA accompagne les TPE, PME de services et artisans de la rive ouest de l'Orge.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Morsang-sur-Orge (Essonne) auprès des TPE, PME de services tertiaires, professions libérales et artisans. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Paris via la N20 ou le tramway T12. Conformité RGPD intégrée, pas de no-code, pas de dépendance SaaS opaque.",
   seoHook: "services tertiaires & professions libérales",
   ecosystemFr:
     "Morsang-sur-Orge est une commune dense de l'Essonne, intégrée à l'unité urbaine de Paris. Économie résidentielle et tertiaire : 64 % des établissements relèvent du secteur tertiaire en 2010, 15 % de l'administration publique. Deux zones d'activités (Buisson foireux et route de Corbeil) accueillent TPE de services, commerces, artisans BTP et professions libérales. La proximité d'Évry (préfecture, université Paris-Saclay) et d'Orly (zone aéroportuaire) structure un bassin d'emploi mixte. Le tramway T12 (depuis 2023) renforce la connexion vers le pôle Massy-Saclay.",
@@ -31,8 +31,8 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Morsang-sur-Orge : diagnostic pour TPE tertiaires, professions libérales et artisans de la rive ouest de l'Orge. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Morsang-sur-Orge : ateliers TPE/PME locales sur cas concrets (automatisation CRM, classification emails, agents IA service client, génération devis).",
@@ -43,14 +43,14 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
       en: "Implémentation IA à Morsang-sur-Orge : code custom pour cabinets libéraux, PME services, artisans BTP. Automatisation prise de RDV, facturation, classification dossiers, chatbot client.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de 990 € HT, format 2 h.",
-      en: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de 990 € HT, format 2 h.",
+      fr: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de {{price:intervention-dirigeants|flat}}, format 2 h.",
+      en: "Coaching 1-to-1 à Morsang-sur-Orge : sessions sur site ou visio pour dirigeants TPE, gérants commerces, professions libérales. À partir de {{price:intervention-dirigeants|flat}}, format 2 h.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Morsang-sur-Orge ?",
-      a: "Audit Flash 490 € HT (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de 590 € HT la demi-journée, coaching 1-to-1 dirigeant à partir de 990 € HT. Tarifs publics consultables.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de {{price:intervention-4h|flat}} la demi-journée, coaching 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics consultables.",
     },
     {
       q: "Axion-IA se déplace-t-il à Morsang-sur-Orge depuis Paris ?",

@@ -30,8 +30,8 @@ export const SAINT_PERAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Péray : formats adaptés au domaine viticole, cave, bureau, commerce. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const SAINT_PERAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

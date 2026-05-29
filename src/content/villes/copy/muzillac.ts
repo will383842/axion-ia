@@ -30,8 +30,8 @@ export const MUZILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Muzillac : formats adaptés aux professionnels du tourisme, ostréiculteurs, commerçants, artisans. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const MUZILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans à Muzillac ?",
-      a: "Pour les TPE artisans (BTP, métiers de bouche) à Muzillac : audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
+      a: "Pour les TPE artisans (BTP, métiers de bouche) à Muzillac : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
     },
     {
       q: "Accompagnez-vous le secteur tourisme littoral ?",

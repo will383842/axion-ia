@@ -30,8 +30,8 @@ export const MOUROUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouroux : diagnostic adapté aux TPE artisans, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Mouroux : diagnostic adapté aux TPE artisans, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Mouroux : diagnostic adapté aux TPE artisans, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mouroux : diagnostic adapté aux TPE artisans, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mouroux : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME de services de l'agglomération Coulommiers. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const MOUROUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mouroux  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Mouroux et de l'agglomération Coulommiers, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Mouroux et de l'agglomération Coulommiers, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les acteurs agroalimentaires de la Brie ?",

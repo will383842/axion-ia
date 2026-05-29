@@ -30,8 +30,8 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Germain-lès-Arpajon : formats adaptés atelier, boutique, cabinet, bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,11 +57,11 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales du secteur ?",
-      a: "Oui, médecins, avocats, experts-comptables du Hurepoix : automatisation gestion cabinet, secrétariat IA, CRM patients/clients, classification dossiers. Audit Flash 490 € HT adapté.",
+      a: "Oui, médecins, avocats, experts-comptables du Hurepoix : automatisation gestion cabinet, secrétariat IA, CRM patients/clients, classification dossiers. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME du Hurepoix essonnien ?",
-      a: "Audit IA (Flash 490 € HT à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
+      a: "Audit IA (Flash {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Évry ?",

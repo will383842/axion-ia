@@ -30,8 +30,8 @@ export const BADEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baden : formats adaptés aux professionnels du tourisme nautique, ostréiculteurs, commerçants du golfe du Morbihan. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const BADEN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les ostréiculteurs du golfe ?",
-      a: "Pour les ostréiculteurs du golfe du Morbihan à Baden : audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas IA : traçabilité produits, gestion stocks, automatisation commandes, vente directe en ligne.",
+      a: "Pour les ostréiculteurs du golfe du Morbihan à Baden : audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas IA : traçabilité produits, gestion stocks, automatisation commandes, vente directe en ligne.",
     },
     {
       q: "Accompagnez-vous les TPE et PME locales ?",

@@ -30,8 +30,8 @@ export const ALES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
-      en: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      fr: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Alès : formats adaptés à l'atelier industriel, au chantier ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -61,7 +61,7 @@ export const ALES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'une intervention IA à Alès ?",
-      a: "L'Audit Flash sur mesure démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Tous nos tarifs sont publics et sans devis opaque ; chaque chantier d'implémentation est ensuite chiffré selon le ROI.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et sans devis opaque ; chaque chantier d'implémentation est ensuite chiffré selon le ROI.",
     },
     {
       q: "Intervenez-vous dans les Cévennes autour d'Alès ?",

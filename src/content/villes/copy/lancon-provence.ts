@@ -30,8 +30,8 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lançon-Provence : ateliers pour PME logistique, entrepôts, transporteurs, domaines viticoles et équipes tertiaires. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lançon-Provence  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME logistique, viticulteurs et professions libérales lançonnaises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistique, viticulteurs et professions libérales lançonnaises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistique et entrepôts de la zone A7 ?",

@@ -30,8 +30,8 @@ export const COURCELLES_LES_LENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courcelles-lès-Lens : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit Flash 490 € HT.",
-      en: "Audit IA à Courcelles-lès-Lens : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit Flash 490 € HT.",
+      fr: "Audit IA à Courcelles-lès-Lens : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Courcelles-lès-Lens : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courcelles-lès-Lens : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const COURCELLES_LES_LENS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Courcelles-lès-Lens  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans de Courcelles-lès-Lens ?",
@@ -61,7 +61,7 @@ export const COURCELLES_LES_LENS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA à Courcelles-lès-Lens ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE du bassin minier. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE du bassin minier. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Courcelles-lès-Lens ?",

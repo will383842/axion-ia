@@ -30,8 +30,8 @@ export const LA_CRAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Crau : diagnostic adapté aux TPE maraîchers, domaines viticoles, PME agroalimentaires et commerces de l'agglo Toulon est. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à La Crau : diagnostic adapté aux TPE maraîchers, domaines viticoles, PME agroalimentaires et commerces de l'agglo Toulon est. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à La Crau : diagnostic adapté aux TPE maraîchers, domaines viticoles, PME agroalimentaires et commerces de l'agglo Toulon est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Crau : diagnostic adapté aux TPE maraîchers, domaines viticoles, PME agroalimentaires et commerces de l'agglo Toulon est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Crau : formats adaptés aux maraîchers, domaines viticoles, PME agroalimentaires et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LA_CRAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles de La Crau ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Côtes de Provence : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B et œnotourisme.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Côtes de Provence : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B et œnotourisme.",
     },
     {
       q: "Accompagnez-vous les maraîchers et exploitations agricoles autour de La Crau ?",
@@ -61,7 +61,7 @@ export const LA_CRAU_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à La Crau  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à La Crau ?",

@@ -30,8 +30,8 @@ export const HASPARREN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit Flash 490 € HT.",
-      en: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit Flash 490 € HT.",
+      fr: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hasparren : déploiement outils IA dans vos ateliers cuir, exploitations agricoles, fromageries ou commerces. Équipes formées et autonomes sur outils configurés métier.",
@@ -57,7 +57,7 @@ export const HASPARREN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Hasparren ?",
-      a: "L'audit Flash IA à Hasparren démarre à 490 € HT. Diagnostic de vos processus artisanaux, agricoles ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Hasparren démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus artisanaux, agricoles ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les éleveurs et fromagers basques de Hasparren ?",

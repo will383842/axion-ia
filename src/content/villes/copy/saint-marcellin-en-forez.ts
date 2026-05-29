@@ -30,8 +30,8 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Marcellin-en-Forez : formats adaptés au bureau tertiaire, exploitation agricole, commerce, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans san-marcellinois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Marcellin-en-Forez, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Marcellin-en-Forez, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

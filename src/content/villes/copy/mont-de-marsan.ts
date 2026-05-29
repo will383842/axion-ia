@@ -11,9 +11,9 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Mont-de-Marsan, préfecture des Landes (31 592 habitants), dans l'adoption d'outils d'intelligence artificielle codés sur mesure. Située au confluent de la Midouze, du Midou et de la Douze, la ville héberge la base aérienne 118, la préfecture des Landes ainsi qu'un tissu économique tourné vers le commerce, l'agriculture, l'agroalimentaire et l'administration. Notre cabinet code en custom, sans no-code, pour les dirigeants montois.",
   directAnswerFr:
-    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès 490 € HT.",
+    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès 490 € HT.",
+    "Axion-IA se déplace à Mont-de-Marsan (Landes, Nouvelle-Aquitaine) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 130 km au sud de Bordeaux, 50 km de Dax et 80 km de Pau, la ville est structurée autour de la préfecture des Landes, de la base aérienne 118, du commerce de détail, de l'agriculture (filière bois, pin maritime) et de l'agroalimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   seoHook: "administration, commerce & agroalimentaire",
   ecosystemFr:
     "Mont-de-Marsan, préfecture des Landes, est un pôle administratif et économique du sud de la Nouvelle-Aquitaine. La ville héberge la base aérienne 118 (un des principaux employeurs locaux), les services préfectoraux et un tissu de TPE/PME tournées vers le commerce, l'agroalimentaire, les activités liées à la forêt landaise (pin maritime, filière bois) et l'agriculture. Desservie par la gare de Mont-de-Marsan (TER vers Bordeaux et Dax) et par l'autoroute A65, elle est fondée historiquement au confluent du Midou et de la Douze.",
@@ -33,26 +33,26 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mont-de-Marsan pour TPE et PME locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès 490 € HT.",
-      en: "Audit IA à Mont-de-Marsan pour TPE et PME locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès 490 € HT.",
+      fr: "Audit IA à Mont-de-Marsan pour TPE et PME locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mont-de-Marsan pour TPE et PME locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Intervention Essentielle dès 590 € HT.",
-      en: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Mont-de-Marsan pour TPE/PME de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès 990 € HT.",
-      en: "Implémentation IA à Mont-de-Marsan pour TPE/PME de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès 990 € HT.",
+      fr: "Implémentation IA à Mont-de-Marsan pour TPE/PME de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Mont-de-Marsan pour TPE/PME de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Mont-de-Marsan pour dirigeants montois — stratégie IA et formation pratique, dès 990 € HT.",
-      en: "Accompagnement 1-to-1 à Mont-de-Marsan pour dirigeants montois — stratégie IA et formation pratique, dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Mont-de-Marsan pour dirigeants montois — stratégie IA et formation pratique, dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Mont-de-Marsan pour dirigeants montois — stratégie IA et formation pratique, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Mont-de-Marsan ?",
-      a: "Nos interventions IA à Mont-de-Marsan démarrent à 590 € HT pour l'Intervention Essentielle, après un Audit Flash à 490 € HT. Tarifs publics affichés.",
+      a: "Nos interventions IA à Mont-de-Marsan démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, après un Audit Flash à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
       q: "William se déplace-t-il à Mont-de-Marsan ?",

@@ -30,8 +30,8 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Varennes-Vauzelles : formats adaptés à l'entrepôt, au commerce de zone, au bureau PME ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,11 +53,11 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises logistiques et de transport ?",
-      a: "Oui, nous accompagnons les TPE et PME logistiques de Varennes-Vauzelles : optimisation tournées IA, gestion stocks entrepôt, planification chargements, automatisation administrative transport, traçabilité colis. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME logistiques de Varennes-Vauzelles : optimisation tournées IA, gestion stocks entrepôt, planification chargements, automatisation administrative transport, traçabilité colis. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Varennes-Vauzelles  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités de l'agglomération neversoise, il identifie les cas d'usage IA à fort ROI. Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités de l'agglomération neversoise, il identifie les cas d'usage IA à fort ROI. Tarifs publics.",
     },
     {
       q: "Proposez-vous des formations IA pour les commerces de zone ?",

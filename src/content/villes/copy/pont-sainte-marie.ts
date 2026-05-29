@@ -30,8 +30,8 @@ export const PONT_SAINTE_MARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Sainte-Marie : formats adaptés au commerce de marques, à la PME logistique, à la TPE artisanale ou au prestataire de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PONT_SAINTE_MARIE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pont-Sainte-Marie  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Pont-Sainte-Marie et de l'agglo troyenne, il identifie les cas d'usage IA à fort ROI.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pont-Sainte-Marie et de l'agglo troyenne, il identifie les cas d'usage IA à fort ROI.",
     },
     {
       q: "Accompagnez-vous les magasins d'usine et enseignes de marques ?",
@@ -61,7 +61,7 @@ export const PONT_SAINTE_MARIE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Pont-Sainte-Marie ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Pont-Sainte-Marie, à partir de 990 € HT. Sessions dans vos locaux commerciaux ou en visio. Approche terrain retail et distribution.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Pont-Sainte-Marie, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux commerciaux ou en visio. Approche terrain retail et distribution.",
     },
     {
       q: "Travaillez-vous avec les PME logistique de l'agglo troyenne ?",

@@ -30,8 +30,8 @@ export const OLLAINVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ollainville : formats adaptés atelier artisan, commerce, cabinet, exploitation agricole, bureau PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et exploitants agricoles ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Outils IA de planification, suivi parcelles, gestion administrative.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA de planification, suivi parcelles, gestion administrative.",
     },
     {
       q: "Comment se passe une mission depuis Arpajon ou Évry ?",

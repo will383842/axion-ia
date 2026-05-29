@@ -30,8 +30,8 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Château-Thierry : formats adaptés à la cave viticole, l''atelier agroalimentaire, l''hôtel/gîte, le chantier, le bureau, le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous le tourisme et le patrimoine La Fontaine ?",
-      a: "Oui, hébergeurs, restaurateurs et acteurs du tourisme patrimonial (La Fontaine, château, mémoire 14-18) castelthéodoriciens : automatisation réservations, marketing multilingue, fidélisation. Audit Flash 490 € HT.",
+      a: "Oui, hébergeurs, restaurateurs et acteurs du tourisme patrimonial (La Fontaine, château, mémoire 14-18) castelthéodoriciens : automatisation réservations, marketing multilingue, fidélisation. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Château-Thierry ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Château-Thierry ?",

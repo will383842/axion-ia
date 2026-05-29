@@ -30,8 +30,8 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Rémy-de-Provence : ateliers pour hôtels, restaurants, galeries, domaines oléicoles et viticoles, cabinets libéraux. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Rémy-de-Provence  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans d'art, hôteliers, restaurateurs et PME saint-rémoises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans d'art, hôteliers, restaurateurs et PME saint-rémoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie de charme et la restauration gastronomique ?",

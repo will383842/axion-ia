@@ -30,8 +30,8 @@ export const BLANQUEFORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blanquefort : diagnostic pour exploitations viticoles, PME industrielles, TPE artisans et commerces du nord Bordeaux-Médoc. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Blanquefort : diagnostic pour exploitations viticoles, PME industrielles, TPE artisans et commerces du nord Bordeaux-Médoc. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Blanquefort : diagnostic pour exploitations viticoles, PME industrielles, TPE artisans et commerces du nord Bordeaux-Médoc. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Blanquefort : diagnostic pour exploitations viticoles, PME industrielles, TPE artisans et commerces du nord Bordeaux-Médoc. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blanquefort : ateliers adaptés aux domaines viticoles, industries, artisanat et commerce. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BLANQUEFORT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Blanquefort  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles, PME industrielles et commerces de Blanquefort.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles, PME industrielles et commerces de Blanquefort.",
     },
     {
       q: "Accompagnez-vous les exploitations viticoles du Médoc ?",
@@ -61,7 +61,7 @@ export const BLANQUEFORT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME industrielles à Blanquefort ?",
-      a: "Pour les PME industrielles de Blanquefort : audit IA 490 € HT, interventions sur site, implémentation prédiction maintenance et automatisation. Coaching 1-to-1 dirigeants disponible.",
+      a: "Pour les PME industrielles de Blanquefort : audit IA {{price:audit-flash|flat}}, interventions sur site, implémentation prédiction maintenance et automatisation. Coaching 1-to-1 dirigeants disponible.",
     },
     {
       q: "Comment se passe une mission à Blanquefort ?",

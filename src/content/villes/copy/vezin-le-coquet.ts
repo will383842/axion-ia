@@ -30,8 +30,8 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vezin-le-Coquet : formats adaptés aux bureaux PME, cabinets libéraux, commerces et ateliers artisans. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,11 +53,11 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires de l'ouest de Rennes ?",
-      a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises de l'ouest rennais sur leurs cas IA : automatisation CRM, agents conversationnels B2B, classification documents, optimisation relation client. Audit Flash 490 € HT pour démarrer.",
+      a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises de l'ouest rennais sur leurs cas IA : automatisation CRM, agents conversationnels B2B, classification documents, optimisation relation client. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Combien coûte un audit IA à Vezin-le-Coquet  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Rennes Métropole, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Rennes Métropole, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les professions libérales de Vezin-le-Coquet ?",

@@ -30,8 +30,8 @@ export const TREGUEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trégueux : diagnostic adapté aux TPE commerces, PME de distribution, entreprises de services et professions libérales de l'agglomération briochine. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Trégueux : diagnostic adapté aux TPE commerces, PME de distribution, entreprises de services et professions libérales de l'agglomération briochine. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Trégueux : diagnostic adapté aux TPE commerces, PME de distribution, entreprises de services et professions libérales de l'agglomération briochine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Trégueux : diagnostic adapté aux TPE commerces, PME de distribution, entreprises de services et professions libérales de l'agglomération briochine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trégueux : formats adaptés au magasin, à l'entrepôt, au bureau ou en zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const TREGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Trégueux  ?",
-      a: "L'Audit Flash IA à Trégueux démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Trégueux démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces et enseignes à Trégueux ?",

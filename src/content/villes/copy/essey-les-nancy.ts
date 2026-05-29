@@ -30,8 +30,8 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Essey-lès-Nancy : formats adaptés au commerce de zone, bureau tertiaire, atelier BTP, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Essey-lès-Nancy  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME commerce de zone, tertiaires, artisans et professions libérales de l'est nancéien.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME commerce de zone, tertiaires, artisans et professions libérales de l'est nancéien.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone Saint-Sébastien ?",

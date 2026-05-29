@@ -30,8 +30,8 @@ export const ISBERGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Isbergues : diagnostic adapté aux PME industrielles reconverties, TPE artisanales et professions libérales du bassin artésien. Audit Flash 490 € HT.",
-      en: "Audit IA à Isbergues : diagnostic adapté aux PME industrielles reconverties, TPE artisanales et professions libérales du bassin artésien. Audit Flash 490 € HT.",
+      fr: "Audit IA à Isbergues : diagnostic adapté aux PME industrielles reconverties, TPE artisanales et professions libérales du bassin artésien. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Isbergues : diagnostic adapté aux PME industrielles reconverties, TPE artisanales et professions libérales du bassin artésien. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Isbergues : formations pratiques adaptées à l'atelier industriel, au commerce ou au cabinet. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const ISBERGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Isbergues  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et TPE artésiennes.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et TPE artésiennes.",
     },
     {
       q: "L'IA peut-elle aider les PME industrielles d'Isbergues ?",
@@ -61,7 +61,7 @@ export const ISBERGUES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Isbergues ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants PME industrielles et TPE. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants PME industrielles et TPE. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Isbergues ?",

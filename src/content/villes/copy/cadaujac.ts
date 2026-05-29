@@ -30,8 +30,8 @@ export const CADAUJAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, TPE artisans BTP, commerçants et professions libérales du sud bordelais. Audit Flash 490 € HT.",
-      en: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, TPE artisans BTP, commerçants et professions libérales du sud bordelais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, TPE artisans BTP, commerçants et professions libérales du sud bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cadaujac : diagnostic pour vignerons des Graves, TPE artisans BTP, commerçants et professions libérales du sud bordelais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cadaujac : ateliers adaptés aux chais, ateliers BTP et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CADAUJAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cadaujac  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux vignerons et TPE artisans des Graves.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et TPE artisans des Graves.",
     },
     {
       q: "Accompagnez-vous les vignerons des Graves ?",
@@ -61,7 +61,7 @@ export const CADAUJAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Cadaujac ?",

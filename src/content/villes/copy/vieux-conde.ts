@@ -30,8 +30,8 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vieux-Condé : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP vieux-condéens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Vieux-Condé sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash 490 € HT, intervention 1 journée formation.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Vieux-Condé sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Valenciennois ?",
@@ -61,7 +61,7 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Vieux-Condé, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
+      a: "Pour les commerçants et professions libérales à Vieux-Condé, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

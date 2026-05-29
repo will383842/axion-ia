@@ -30,8 +30,8 @@ export const CANNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cannes : diagnostic adapté à l'hôtellerie de prestige, événementiel international, yachting, retail luxe et tech. ROI chiffré, audit Flash dès 490 € HT.",
-      en: "Audit IA à Cannes : diagnostic adapté à l'hôtellerie de prestige, événementiel international, yachting, retail luxe et tech. ROI chiffré, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Cannes : diagnostic adapté à l'hôtellerie de prestige, événementiel international, yachting, retail luxe et tech. ROI chiffré, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cannes : diagnostic adapté à l'hôtellerie de prestige, événementiel international, yachting, retail luxe et tech. ROI chiffré, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cannes : formats adaptés à l'hôtel-restaurant, agence événementielle, broker yachting, boutique luxe. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CANNES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans, boutiques et brokers yachting ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : CRM clients VIP, automatisation devis yachting, gestion inventaire boutique luxe, suivi commandes haut de gamme.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : CRM clients VIP, automatisation devis yachting, gestion inventaire boutique luxe, suivi commandes haut de gamme.",
     },
     {
       q: "Comment se passe une mission depuis Nice ou Sophia Antipolis ?",

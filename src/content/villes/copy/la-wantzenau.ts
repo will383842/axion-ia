@@ -30,8 +30,8 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Wantzenau : formats adaptés au restaurant gastronomique, à l''hôtel, au cabinet libéral ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à La Wantzenau ?",
-      a: "L''Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de La Wantzenau et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité gastronomique, hôtelière, libérale ou commerciale.",
+      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de La Wantzenau et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité gastronomique, hôtelière, libérale ou commerciale.",
     },
     {
       q: "Accompagnez-vous les restaurateurs gastronomiques de La Wantzenau ?",
@@ -65,7 +65,7 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à La Wantzenau ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à La Wantzenau, à partir de 990 € HT. Sessions dans votre établissement ou en visio. Approche terrain adaptée au tissu économique haut de gamme alsacien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à La Wantzenau, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre établissement ou en visio. Approche terrain adaptée au tissu économique haut de gamme alsacien.",
     },
   ],
 };

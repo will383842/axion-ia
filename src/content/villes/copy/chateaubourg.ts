@@ -30,8 +30,8 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaubourg : formations adaptées aux PME industrielles et TPE artisans des zones d'activités est rennaises. Ateliers pratiques, équipes autonomes en fin de journée.",
@@ -53,7 +53,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Châteaubourg  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME des zones d'activités de Châteaubourg souhaitant identifier rapidement leurs cas d'usage IA avec ROI chiffré.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME des zones d'activités de Châteaubourg souhaitant identifier rapidement leurs cas d'usage IA avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires de Châteaubourg ?",
@@ -61,7 +61,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les entreprises logistiques à Châteaubourg ?",
-      a: "Pour les entreprises logistiques de l'axe Rennes-Laval, nous proposons optimisation tournées, prédiction flux, automatisation documentation transport, agents IA planification. Audit Flash 490 € HT ou implémentation clé en main.",
+      a: "Pour les entreprises logistiques de l'axe Rennes-Laval, nous proposons optimisation tournées, prédiction flux, automatisation documentation transport, agents IA planification. Audit Flash {{price:audit-flash|flat}} ou implémentation clé en main.",
     },
     {
       q: "Comment se déroule une intervention sur site à Châteaubourg ?",

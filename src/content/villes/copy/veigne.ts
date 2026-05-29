@@ -30,8 +30,8 @@ export const VEIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Veigné : formats adaptés à l'atelier artisan, au commerce, au cabinet professionnel ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const VEIGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans à Veigné ?",
-      a: "Pour les TPE et artisans à Veigné, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
+      a: "Pour les TPE et artisans à Veigné, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme vallée de l'Indre ?",

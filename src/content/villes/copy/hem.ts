@@ -30,8 +30,8 @@ export const HEM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hem : diagnostic adapté aux artisans BTP, sous-traitants textile-industriels, PME de services et commerçants de l'agglomération lilloise est. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Hem : diagnostic adapté aux artisans BTP, sous-traitants textile-industriels, PME de services et commerçants de l'agglomération lilloise est. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Hem : diagnostic adapté aux artisans BTP, sous-traitants textile-industriels, PME de services et commerçants de l'agglomération lilloise est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Hem : diagnostic adapté aux artisans BTP, sous-traitants textile-industriels, PME de services et commerçants de l'agglomération lilloise est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hem : formats adaptés à l'atelier artisan, à la PME sous-traitante, au cabinet libéral ou au commerce de proximité. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const HEM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Hem  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Hem et du Nord, il identifie les cas d'usage IA à fort ROI pour votre atelier artisan, PME sous-traitante, cabinet libéral ou commerce de proximité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hem et du Nord, il identifie les cas d'usage IA à fort ROI pour votre atelier artisan, PME sous-traitante, cabinet libéral ou commerce de proximité.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et sous-traitants industriels de Hem ?",
@@ -65,7 +65,7 @@ export const HEM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Hem ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Hem, à partir de 990 € HT. Sessions à l'atelier, au bureau ou en visio. Approche terrain adaptée au tissu artisan, commerçant et PME de l'agglomération lilloise est.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Hem, à partir de {{price:intervention-dirigeants|flat}}. Sessions à l'atelier, au bureau ou en visio. Approche terrain adaptée au tissu artisan, commerçant et PME de l'agglomération lilloise est.",
     },
   ],
 };

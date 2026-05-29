@@ -30,8 +30,8 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Rambert-d'Albon : diagnostic adapté aux opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs et TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Rambert-d'Albon : formats adaptés à l'entrepôt logistique, atelier industriel, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Rambert-d'Albon, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Rambert-d'Albon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

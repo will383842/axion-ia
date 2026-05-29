@@ -30,8 +30,8 @@ export const BELIN_BELIET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit Flash 490 € HT.",
-      en: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit Flash 490 € HT.",
+      fr: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Belin-Béliet : ateliers adaptés aux entreprises forestières, artisans et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Belin-Béliet  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux entreprises forestières et TPE artisans de la vallée de la Leyre.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux entreprises forestières et TPE artisans de la vallée de la Leyre.",
     },
     {
       q: "Accompagnez-vous les entreprises forestières ?",
@@ -61,7 +61,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Belin-Béliet ?",

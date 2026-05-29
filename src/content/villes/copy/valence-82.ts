@@ -30,8 +30,8 @@ export const VALENCE_82_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valence (82) : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit Flash 490 € HT.",
-      en: "Audit IA à Valence (82) : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit Flash 490 € HT.",
+      fr: "Audit IA à Valence (82) : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Valence (82) : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valence (82) : formats adaptés à la PME agroalimentaire, exploitation agricole, artisan du bâtiment ou cabinet libéral de Lomagne. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const VALENCE_82_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Valence (82)  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Valence-d'Agen. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Valence-d'Agen. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles du Tarn-et-Garonne ?",
@@ -61,11 +61,11 @@ export const VALENCE_82_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Valence (82) ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Valence (82) ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Valence-d'Agen. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Valence-d'Agen. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

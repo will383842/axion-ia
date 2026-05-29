@@ -30,8 +30,8 @@ export const THAON_LES_VOSGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thaon-les-Vosges : diagnostic adapté aux industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Thaon-les-Vosges : diagnostic adapté aux industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Thaon-les-Vosges : diagnostic adapté aux industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Thaon-les-Vosges : diagnostic adapté aux industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thaon-les-Vosges : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou à la TPE de services. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const THAON_LES_VOSGES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Thaon-les-Vosges  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Thaon-les-Vosges et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre atelier, chantier, commerce ou activité de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Thaon-les-Vosges et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre atelier, chantier, commerce ou activité de services.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants de Thaon-les-Vosges ?",
@@ -65,7 +65,7 @@ export const THAON_LES_VOSGES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Thaon-les-Vosges ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Thaon-les-Vosges, à partir de 990 € HT. Sessions dans votre atelier, chantier ou en visio. Approche terrain adaptée au tissu industriel et artisanal vosgien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Thaon-les-Vosges, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, chantier ou en visio. Approche terrain adaptée au tissu industriel et artisanal vosgien.",
     },
   ],
 };

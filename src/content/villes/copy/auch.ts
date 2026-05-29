@@ -9,9 +9,9 @@ export const AUCH_COPY: VilleCopy = {
   pitchEn:
     "Auch (32), préfecture du Gers et capitale historique de la Gascogne (~22 400 hab.), à 69 km à l'ouest de Toulouse. Tissu de TPE commerçants, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans et professions libérales. Axion-IA accompagne ces structures sur leurs cas d'usage IA opérationnels, sans no-code, en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit Flash à 490 € HT, code custom et conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit Flash à {{price:audit-flash|flat}}, code custom et conformité RGPD.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit Flash à 490 € HT, code custom et conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit Flash à {{price:audit-flash|flat}}, code custom et conformité RGPD.",
   seoHook: "Armagnac, agroalimentaire & commerce gascon",
   ecosystemFr:
     "Auch concentre l'économie du Gers autour de l'Armagnac, de la gastronomie gasconne, de l'agriculture céréalière et viticole, du commerce de proximité et des services. L'intercommunalité Grand Auch Cœur de Gascogne regroupe une majorité de TPE et PME, complétées par des artisans et des professions libérales actifs dans tout le bassin auscitain.",
@@ -30,8 +30,8 @@ export const AUCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit Flash 490 € HT, ROI chiffré, sans no-code.",
-      en: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit Flash 490 € HT, ROI chiffré, sans no-code.",
+      fr: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
+      en: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auch : ateliers adaptés au commerce de proximité, au domaine viticole, à l'agroalimentaire et aux cabinets libéraux. Déplacement depuis Toulouse, équipes autonomes en sortie.",
@@ -53,7 +53,7 @@ export const AUCH_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission à Auch ?",
-      a: "Audit Flash à partir de 490 € HT, Intervention Essentielle à partir de 590 € HT, session 1-to-1 dirigeants à partir de 990 € HT. Tarifs publics, sans devis opaque.",
+      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}, session 1-to-1 dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, sans devis opaque.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Auch ?",
@@ -69,7 +69,7 @@ export const AUCH_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs Armagnac autour d'Auch ?",
-      a: "Oui, nous accompagnons les domaines viticoles et producteurs d'Armagnac sur la traçabilité parcelles, la gestion commerciale, la classification d'avis client et la prédiction de millésime. Audit Flash à 490 € HT.",
+      a: "Oui, nous accompagnons les domaines viticoles et producteurs d'Armagnac sur la traçabilité parcelles, la gestion commerciale, la classification d'avis client et la prédiction de millésime. Audit Flash à {{price:audit-flash|flat}}.",
     },
   ],
 };

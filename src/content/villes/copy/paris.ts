@@ -766,7 +766,7 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Pour les indépendants, consultants et dirigeants de micro-entreprises parisiennes souhaitant gagner en efficacité IA sur leurs tâches quotidiennes.",
           },

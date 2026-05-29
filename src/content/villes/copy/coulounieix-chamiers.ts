@@ -30,8 +30,8 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit Flash 490 € HT.",
-      en: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit Flash 490 € HT.",
+      fr: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coulounieix-Chamiers : formations pratiques pour commerçants, artisans BTP et professions libérales de l'agglo Périgueux.",
@@ -53,7 +53,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Coulounieix-Chamiers  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les artisans BTP de Coulounieix-Chamiers ?",
@@ -65,7 +65,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour professions libérales à Périgueux ?",
-      a: "Oui, coaching 1-to-1 adapté aux professions libérales de Coulounieix-Chamiers et Périgueux. Sur site ou en visio. Sessions à partir de 990 € HT.",
+      a: "Oui, coaching 1-to-1 adapté aux professions libérales de Coulounieix-Chamiers et Périgueux. Sur site ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

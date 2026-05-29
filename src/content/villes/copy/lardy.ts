@@ -30,8 +30,8 @@ export const LARDY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lardy : formats adaptés aux TPE/PME et exploitations agricoles. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LARDY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans lardycois ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de la vallée de la Juine ?",

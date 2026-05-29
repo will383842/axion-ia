@@ -30,8 +30,8 @@ export const CORMONTREUIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cormontreuil : diagnostic adapté aux TPE commerces de zone d'activités, PME logistique et transport, artisans BTP, entreprises agroalimentaires. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Cormontreuil : diagnostic adapté aux TPE commerces de zone d'activités, PME logistique et transport, artisans BTP, entreprises agroalimentaires. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Cormontreuil : diagnostic adapté aux TPE commerces de zone d'activités, PME logistique et transport, artisans BTP, entreprises agroalimentaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cormontreuil : diagnostic adapté aux TPE commerces de zone d'activités, PME logistique et transport, artisans BTP, entreprises agroalimentaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cormontreuil : formats adaptés entrepôt, bureau, commerce, atelier. Équipes formées à l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const CORMONTREUIL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cormontreuil  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME des zones d'activités de Cormontreuil.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME des zones d'activités de Cormontreuil.",
     },
     {
       q: "Travaillez-vous avec les TPE et PME logistique de Cormontreuil ?",

@@ -30,8 +30,8 @@ export const MOUVAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouvaux : diagnostic adapté aux TPE/PME de la Métropole européenne de Lille, prestataires services, professions libérales, cabinets de conseil et commerçants du Nord. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Mouvaux : diagnostic adapté aux TPE/PME de la Métropole européenne de Lille, prestataires services, professions libérales, cabinets de conseil et commerçants du Nord. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Mouvaux : diagnostic adapté aux TPE/PME de la Métropole européenne de Lille, prestataires services, professions libérales, cabinets de conseil et commerçants du Nord. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Mouvaux : diagnostic adapté aux TPE/PME de la Métropole européenne de Lille, prestataires services, professions libérales, cabinets de conseil et commerçants du Nord. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mouvaux : formats adaptés au cabinet libéral, à la TPE de conseil, à l''agence de services ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MOUVAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Mouvaux ?",
-      a: "L''Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Mouvaux et du Nord, il identifie les cas d''usage IA à fort ROI pour votre activité de services, profession libérale, conseil ou commerce.",
+      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Mouvaux et du Nord, il identifie les cas d''usage IA à fort ROI pour votre activité de services, profession libérale, conseil ou commerce.",
     },
     {
       q: "Accompagnez-vous les professions libérales et cabinets de conseil de Mouvaux ?",
@@ -65,7 +65,7 @@ export const MOUVAUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Mouvaux ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et professions libérales à Mouvaux, à partir de 990 € HT. Sessions dans votre cabinet ou en visio. Approche terrain adaptée au tissu tertiaire haut de gamme de la Métropole européenne de Lille.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et professions libérales à Mouvaux, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre cabinet ou en visio. Approche terrain adaptée au tissu tertiaire haut de gamme de la Métropole européenne de Lille.",
     },
   ],
 };

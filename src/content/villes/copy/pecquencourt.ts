@@ -30,8 +30,8 @@ export const PECQUENCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pecquencourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier industrie et BTP. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pecquencourt  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Pecquencourt souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Pecquencourt souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du bassin minier de Douai ?",
@@ -61,7 +61,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les PME industrielles à Pecquencourt ?",
-      a: "Nous proposons audit Flash 4h (490 € HT), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Contrôle qualité par vision, prédiction maintenance, optimisation production.",
+      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Contrôle qualité par vision, prédiction maintenance, optimisation production.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Pecquencourt ?",

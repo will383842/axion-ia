@@ -30,8 +30,8 @@ export const SARREBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sarrebourg : diagnostic adapté aux TPE/PME industrie, cristallerie, artisans verriers, commerces, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Sarrebourg : diagnostic adapté aux TPE/PME industrie, cristallerie, artisans verriers, commerces, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Sarrebourg : diagnostic adapté aux TPE/PME industrie, cristallerie, artisans verriers, commerces, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sarrebourg : diagnostic adapté aux TPE/PME industrie, cristallerie, artisans verriers, commerces, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sarrebourg : formats adaptés à l'atelier industriel, la cristallerie, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const SARREBOURG_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et acteurs du tourisme ?",
-      a: "Oui, commerçants du centre-ville et acteurs du tourisme culturel sarrebourgeois (vitraux Chagall, patrimoine) : gestion réservations, relation client, automatisation comptabilité, présence en ligne. Audit Flash 490 € HT.",
+      a: "Oui, commerçants du centre-ville et acteurs du tourisme culturel sarrebourgeois (vitraux Chagall, patrimoine) : gestion réservations, relation client, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Sarrebourg ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Sarrebourg ?",

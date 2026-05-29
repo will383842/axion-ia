@@ -30,8 +30,8 @@ export const ACHICOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Achicourt : formations pratiques adaptées au commerce, bureau ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const ACHICOURT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Achicourt  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME arrageoises. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME arrageoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les PME de services à Achicourt ?",
@@ -61,7 +61,7 @@ export const ACHICOURT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Achicourt ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME de l'Arrageois. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME de l'Arrageois. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Achicourt ?",

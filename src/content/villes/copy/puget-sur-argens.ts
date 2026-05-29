@@ -30,8 +30,8 @@ export const PUGET_SUR_ARGENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Puget-sur-Argens : ateliers pour artisans BTP, PME logistique, commerçants et hôteliers de plein air. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const PUGET_SUR_ARGENS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique à Puget-sur-Argens ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux PME logistique, TPE BTP et commerçants pugétois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME logistique, TPE BTP et commerçants pugétois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistique sortie A8 ?",

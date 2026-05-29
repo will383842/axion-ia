@@ -30,8 +30,8 @@ export const DINAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dinan : formats adaptés à l'atelier, à l'hôtel, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const DINAN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Dinan  ?",
-      a: "L'Audit Flash IA à Dinan démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Dinan démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises touristiques à Dinan ?",

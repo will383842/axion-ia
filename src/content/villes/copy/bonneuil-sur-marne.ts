@@ -30,8 +30,8 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bonneuil-sur-Marne : formats adaptés entrepôt, plateforme logistique, chantier BTP, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Bonneuil-sur-Marne ?",
-      a: "L'audit Flash IA à Bonneuil-sur-Marne démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Bonneuil-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et PME BTP ?",

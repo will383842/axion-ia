@@ -30,8 +30,8 @@ export const CROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crolles : formats adaptés à l'atelier industriel high-tech (avec exigences confidentialité), PME tech ou TPE artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const CROLLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants crollois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Crolles (plombiers, électriciens, menuisiers) et commerçants sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Crolles (plombiers, électriciens, menuisiers) et commerçants sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME tertiaires du Grésivaudan ?",

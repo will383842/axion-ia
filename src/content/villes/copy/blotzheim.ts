@@ -30,8 +30,8 @@ export const BLOTZHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blotzheim : formats adaptés au hangar aéroportuaire, à l'entrepôt fret, à l'atelier sous-traitant ou au bureau frontalier. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const BLOTZHEIM_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Blotzheim  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone EuroAirport et du tissu frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité aéronautique, logistique ou sous-traitance.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone EuroAirport et du tissu frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité aéronautique, logistique ou sous-traitance.",
     },
     {
       q: "Accompagnez-vous les acteurs de l'EuroAirport et de l'aéronautique ?",
@@ -65,7 +65,7 @@ export const BLOTZHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Blotzheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Blotzheim, à partir de 990 € HT. Sessions dans votre hangar, entrepôt, atelier ou en visio. Approche terrain adaptée au tissu transfrontalier trinational et à l'écosystème EuroAirport.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Blotzheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre hangar, entrepôt, atelier ou en visio. Approche terrain adaptée au tissu transfrontalier trinational et à l'écosystème EuroAirport.",
     },
   ],
 };

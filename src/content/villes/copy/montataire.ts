@@ -30,8 +30,8 @@ export const MONTATAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montataire : formats adaptés à l'atelier industriel, l'entrepôt logistique, le chantier BTP et le commerce. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const MONTATAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Montataire ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Travaillez-vous avec les entreprises industrielles reconverties ?",

@@ -30,8 +30,8 @@ export const CABRIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cabriès : diagnostic adapté aux TPE commerçants Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Cabriès : diagnostic adapté aux TPE commerçants Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Cabriès : diagnostic adapté aux TPE commerçants Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cabriès : diagnostic adapté aux TPE commerçants Plan de Campagne, franchisés, restaurateurs, PME de services et artisans du nord aixois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cabriès : ateliers pour commerçants Plan de Campagne, restaurateurs, franchisés, PME services et équipes BTP. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const CABRIES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cabriès  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE commerçants, franchisés, restaurateurs et PME cabriésiens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE commerçants, franchisés, restaurateurs et PME cabriésiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les commerçants et franchisés de Plan de Campagne ?",

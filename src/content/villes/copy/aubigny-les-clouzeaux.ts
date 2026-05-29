@@ -30,8 +30,8 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubigny-Les Clouzeaux : formats adaptés aux PME industrielles, artisans BTP, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles d'Aubigny-Les Clouzeaux ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : automatisation production, maintenance prédictive, optimisation logistique, contrôle qualité vision.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : automatisation production, maintenance prédictive, optimisation logistique, contrôle qualité vision.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de l'agglomération yonnaise ?",
@@ -61,7 +61,7 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Aubigny-Les Clouzeaux  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Aubigny-Les Clouzeaux ?",

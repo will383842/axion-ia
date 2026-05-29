@@ -11,9 +11,9 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Saint-Ouen-l'Aumône (Val-d'Oise), commune intégrée à la ville nouvelle de Cergy-Pontoise. Le Parc d'activités des Béthunes, l'un des plus importants pôles d'activités d'Europe depuis le milieu des années 1980, structure le tissu économique local autour de la logistique, du commerce de gros, de la fabrication mécanique et des services aux entreprises. Notre cabinet déploie des solutions d'intelligence artificielle pragmatiques pour les dirigeants du Vexin et de l'ouest francilien.",
   directAnswerFr:
-    "À Saint-Ouen-l'Aumône, Axion-IA propose aux TPE et PME du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à 490 € HT pour un Audit Flash de 4 heures et 590 € HT pour une intervention sur site, avec un interlocuteur unique pour la mission.",
+    "À Saint-Ouen-l'Aumône, Axion-IA propose aux TPE et PME du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures et {{price:intervention-4h|flat}} pour une intervention sur site, avec un interlocuteur unique pour la mission.",
   directAnswerEn:
-    "À Saint-Ouen-l'Aumône, Axion-IA propose aux TPE et PME du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à 490 € HT pour un Audit Flash de 4 heures et 590 € HT pour une intervention sur site, avec un interlocuteur unique pour la mission.",
+    "À Saint-Ouen-l'Aumône, Axion-IA propose aux TPE et PME du Val-d'Oise des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées à la logistique, au commerce de gros, aux ateliers mécaniques et aux services professionnels du Parc d'activités des Béthunes et des zones environnantes. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures et {{price:intervention-4h|flat}} pour une intervention sur site, avec un interlocuteur unique pour la mission.",
   seoHook: "commerce gros & transport entreposage",
   ecosystemFr:
     "Saint-Ouen-l'Aumône concentre une partie majeure de l'activité économique de l'agglomération de Cergy-Pontoise grâce au Parc d'activités des Béthunes et aux zones d'Épluches et de Maubuisson. L'héritage industriel local (distilleries, fabrication mécanique des XIXe et XXe siècles) s'est mué en un pôle logistique, de commerce de gros et de services aux entreprises, alimenté par l'accès direct à l'A15, à l'ancienne RN14 et à la Francilienne, ainsi qu'aux liaisons ferroviaires vers Paris, Creil et Argenteuil.",
@@ -33,26 +33,26 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Ouen-l'Aumône pour TPE et PME : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de 490 € HT.",
-      en: "Audit IA à Saint-Ouen-l'Aumône pour TPE et PME : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de 490 € HT.",
+      fr: "Audit IA à Saint-Ouen-l'Aumône pour TPE et PME : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Ouen-l'Aumône pour TPE et PME : cartographie des processus logistique, commerce de gros, atelier mécanique ou services, et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site dans le Parc d'activités des Béthunes et à Saint-Ouen-l'Aumône : automatisation administrative, suivi de flux, devis intelligent — dès 590 € HT.",
-      en: "Interventions sur site dans le Parc d'activités des Béthunes et à Saint-Ouen-l'Aumône : automatisation administrative, suivi de flux, devis intelligent — dès 590 € HT.",
+      fr: "Interventions sur site dans le Parc d'activités des Béthunes et à Saint-Ouen-l'Aumône : automatisation administrative, suivi de flux, devis intelligent — dès {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site dans le Parc d'activités des Béthunes et à Saint-Ouen-l'Aumône : automatisation administrative, suivi de flux, devis intelligent — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA en code custom à Saint-Ouen-l'Aumône : intégration aux ERP, WMS et outils métier des PME locales, avec tests et mise en production documentée.",
       en: "Implémentation IA en code custom à Saint-Ouen-l'Aumône : intégration aux ERP, WMS et outils métier des PME locales, avec tests et mise en production documentée.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un pour dirigeants à Saint-Ouen-l'Aumône : sessions personnalisées sur la stratégie IA et la conduite du changement, dès 990 € HT.",
-      en: "Accompagnement un-à-un pour dirigeants à Saint-Ouen-l'Aumône : sessions personnalisées sur la stratégie IA et la conduite du changement, dès 990 € HT.",
+      fr: "Accompagnement un-à-un pour dirigeants à Saint-Ouen-l'Aumône : sessions personnalisées sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un pour dirigeants à Saint-Ouen-l'Aumône : sessions personnalisées sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Ouen-l'Aumône ?",
-      a: "À Saint-Ouen-l'Aumône, nos tarifs publics démarrent à 490 € HT pour un Audit Flash de 4 heures, 590 € HT pour une intervention sur site et 990 € HT pour un accompagnement un-à-un dédié aux dirigeants de TPE et PME.",
+      a: "À Saint-Ouen-l'Aumône, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un dédié aux dirigeants de TPE et PME.",
     },
     {
       q: "Combien de temps pour une intervention sur site à Saint-Ouen-l'Aumône ?",

@@ -30,8 +30,8 @@ export const THOUARS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, TPE artisans et commerçants du Thouarsais. Audit Flash 490 € HT.",
-      en: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, TPE artisans et commerçants du Thouarsais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, TPE artisans et commerçants du Thouarsais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thouars : diagnostic adapté aux PME industrielles (mécanique, plastique), agroalimentaires, TPE artisans et commerçants du Thouarsais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thouars : déploiement outils IA dans vos usines, ateliers ou commerces. Optimisation production, contrôle qualité et automatisation processus administratifs.",
@@ -57,7 +57,7 @@ export const THOUARS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Thouars ?",
-      a: "L'audit Flash IA à Thouars démarre à 490 € HT. Diagnostic de vos processus industriels ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Thouars démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus industriels ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les commerçants du centre-ville de Thouars ?",

@@ -30,8 +30,8 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Essarts-en-Bocage : formats adaptés aux exploitations agricoles, PME industrielles, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les exploitations agricoles d'Essarts-en-Bocage ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion parcellaire prédictive, optimisation élevage, traçabilité, automatisation facturation.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion parcellaire prédictive, optimisation élevage, traçabilité, automatisation facturation.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bocage ?",
@@ -61,7 +61,7 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Essarts-en-Bocage  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Essarts-en-Bocage ?",

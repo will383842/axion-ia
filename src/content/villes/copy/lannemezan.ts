@@ -30,8 +30,8 @@ export const LANNEMEZAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lannemezan : formats adaptés aux PME agroalimentaires, exploitations agricoles, commerces ou cabinets. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const LANNEMEZAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants lannemezanais ?",
-      a: "Pour les TPE artisans et commerçants à Lannemezan, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
+      a: "Pour les TPE artisans et commerçants à Lannemezan, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous les services publics et de santé ?",

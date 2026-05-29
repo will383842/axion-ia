@@ -30,8 +30,8 @@ export const MALEMORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Malemort : diagnostic adapté aux TPE/PME du commerce, de la logistique et des services de l'agglo briviste. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Malemort : diagnostic adapté aux TPE/PME du commerce, de la logistique et des services de l'agglo briviste. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Malemort : diagnostic adapté aux TPE/PME du commerce, de la logistique et des services de l'agglo briviste. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Malemort : diagnostic adapté aux TPE/PME du commerce, de la logistique et des services de l'agglo briviste. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Malemort : formations pratiques adaptées au commerce, à la logistique et aux services de l'agglomération Brive.",
@@ -53,7 +53,7 @@ export const MALEMORT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Malemort  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du commerce et de la logistique malemortoise. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du commerce et de la logistique malemortoise. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les commerces de la zone de Malemort ?",

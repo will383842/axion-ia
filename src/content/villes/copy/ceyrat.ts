@@ -30,8 +30,8 @@ export const CEYRAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ceyrat : formats adaptés aux cabinets santé, bureaux PME, ateliers artisans ou structures touristiques volcans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const CEYRAT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces de Ceyrat ?",
-      a: "Pour les TPE artisans et commerçants à Ceyrat, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
+      a: "Pour les TPE artisans et commerçants à Ceyrat, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

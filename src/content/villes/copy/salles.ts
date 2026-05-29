@@ -30,8 +30,8 @@ export const SALLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit Flash 490 € HT.",
-      en: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit Flash 490 € HT.",
+      fr: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Salles : ateliers adaptés aux entreprises forestières, artisans et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SALLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Salles  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE forestières et artisans de la vallée de la Leyre.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE forestières et artisans de la vallée de la Leyre.",
     },
     {
       q: "Accompagnez-vous les entreprises forestières ?",
@@ -61,7 +61,7 @@ export const SALLES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP à Salles ?",
-      a: "Pour les TPE artisans BTP : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Salles ?",

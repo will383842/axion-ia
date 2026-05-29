@@ -30,8 +30,8 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Fargeau-Ponthierry : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Fargeau-Ponthierry ?",
-      a: "L'audit Flash IA à Saint-Fargeau-Ponthierry démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Saint-Fargeau-Ponthierry démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisanales de Saint-Fargeau-Ponthierry ?",
@@ -61,7 +61,7 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME de services à Saint-Fargeau-Ponthierry ?",
-      a: "Audit Flash 490 € HT, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : CRM intelligent, automatisation reporting, classification emails, rédaction assistée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : CRM intelligent, automatisation reporting, classification emails, rédaction assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Saint-Fargeau-Ponthierry ?",

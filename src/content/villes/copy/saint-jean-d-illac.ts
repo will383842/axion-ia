@@ -30,8 +30,8 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-d'Illac : ateliers adaptés aux artisans, cabinets et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Jean-d'Illac  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de l'ouest bordelais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de l'ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Jean-d'Illac ?",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales de Saint-Jean-d'Illac : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers.",
+      a: "Pour les professions libérales de Saint-Jean-d'Illac : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers.",
     },
     {
       q: "Comment se déroule une mission à Saint-Jean-d'Illac ?",

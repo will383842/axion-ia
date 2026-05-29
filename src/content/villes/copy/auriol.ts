@@ -30,8 +30,8 @@ export const AURIOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auriol : formats adaptés au domaine viticole, à l'atelier artisan et au cabinet. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const AURIOL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Auriol ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME de services et domaines viticoles, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services et domaines viticoles, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
     },
     {
       q: "L'IA est-elle utile pour les viticulteurs d'Auriol ?",
-      a: "Oui, l'IA aide les viticulteurs : traçabilité parcellaire automatisée, gestion cave, optimisation planning vendanges, facturation et suivi clients, analyse prédictive rendements. Audit Flash 490 € HT.",
+      a: "Oui, l'IA aide les viticulteurs : traçabilité parcellaire automatisée, gestion cave, optimisation planning vendanges, facturation et suivi clients, analyse prédictive rendements. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants d'Auriol ?",

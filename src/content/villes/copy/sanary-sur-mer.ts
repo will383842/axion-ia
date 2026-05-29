@@ -30,8 +30,8 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux TPE hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux TPE hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux TPE hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux TPE hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sanary-sur-Mer : formats adaptés aux hôtels, restaurants, commerces et professionnels du tourisme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hôtels et restaurants de Sanary-sur-Mer ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas hôtellerie-restauration : gestion réservations, optimisation yield, fidélisation client, marketing local, automatisation devis groupes.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas hôtellerie-restauration : gestion réservations, optimisation yield, fidélisation client, marketing local, automatisation devis groupes.",
     },
     {
       q: "Accompagnez-vous les commerces et le marché provençal de Sanary-sur-Mer ?",
@@ -61,7 +61,7 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Sanary-sur-Mer  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Sanary-sur-Mer ?",

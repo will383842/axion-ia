@@ -30,8 +30,8 @@ export const GUEMENE_PENFAO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guémené-Penfao : diagnostic adapté aux exploitations agricoles, artisans BTP, commerçants et professionnels de santé du nord Loire-Atlantique. Audit Flash 490 € HT.",
-      en: "Audit IA à Guémené-Penfao : diagnostic adapté aux exploitations agricoles, artisans BTP, commerçants et professionnels de santé du nord Loire-Atlantique. Audit Flash 490 € HT.",
+      fr: "Audit IA à Guémené-Penfao : diagnostic adapté aux exploitations agricoles, artisans BTP, commerçants et professionnels de santé du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Guémené-Penfao : diagnostic adapté aux exploitations agricoles, artisans BTP, commerçants et professionnels de santé du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guémené-Penfao : ateliers pratiques pour exploitants agricoles, artisans filière bois, commerçants et professionnels de santé. Autonomie IA de vos équipes.",
@@ -53,7 +53,7 @@ export const GUEMENE_PENFAO_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation agricole à Guémené-Penfao ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, adapté aux exploitations agricoles et TPE du nord Loire-Atlantique. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, optimisation fournitures, automatisation administrative.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et TPE du nord Loire-Atlantique. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, optimisation fournitures, automatisation administrative.",
     },
     {
       q: "L'IA peut-elle aider les entreprises de la filière bois à Guémené-Penfao ?",

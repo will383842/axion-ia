@@ -30,8 +30,8 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit Flash 490 € HT.",
-      en: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit Flash 490 € HT.",
+      fr: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castanet-Tolosan : formats adaptés au cabinet libéral, au commerce de centre-ville, à la PME de services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Castanet-Tolosan  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Castanet-Tolosan ?",
@@ -65,7 +65,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel pour dirigeants à Castanet-Tolosan ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Castanet-Tolosan. Format flexible : dans vos locaux, en visio ou en espace partagé. À partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Castanet-Tolosan. Format flexible : dans vos locaux, en visio ou en espace partagé. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

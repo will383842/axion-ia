@@ -30,8 +30,8 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux TPE/PME artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux TPE/PME artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux TPE/PME artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux TPE/PME artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lacroix-Saint-Ouen : formats adaptés au chantier BTP, au bureau services, au commerce ou à l'atelier bois. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lacroix-Saint-Ouen  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME lacroisiennes : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME lacroisiennes : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et la filière bois ?",
@@ -65,7 +65,7 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Lacroix-Saint-Ouen ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Lacroix-Saint-Ouen, à partir de 990 € HT. Sessions dans votre bureau, chantier, atelier ou en visio. Approche terrain adaptée aux métiers de l'agglomération compiégnoise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Lacroix-Saint-Ouen, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre bureau, chantier, atelier ou en visio. Approche terrain adaptée aux métiers de l'agglomération compiégnoise.",
     },
   ],
 };

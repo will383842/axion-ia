@@ -30,8 +30,8 @@ export const LAMBERSART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lambersart : diagnostic adapté aux TPE indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux cabinets et commerces.",
-      en: "Audit IA à Lambersart : diagnostic adapté aux TPE indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux cabinets et commerces.",
+      fr: "Audit IA à Lambersart : diagnostic adapté aux TPE indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux cabinets et commerces.",
+      en: "Audit IA à Lambersart : diagnostic adapté aux TPE indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux cabinets et commerces.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lambersart : sessions adaptées aux cabinets professionnels et PME lilloises. Formats demi-journée à 2 jours, vos équipes (assistants, secrétaires médicales, juristes) repartent autonomes.",
@@ -57,7 +57,7 @@ export const LAMBERSART_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et indépendants lambersartoises ?",
-      a: "Pour les TPE et indépendants à Lambersart (commerces, artisans, freelances), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
+      a: "Pour les TPE et indépendants à Lambersart (commerces, artisans, freelances), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {
       q: "Quels formats pour les PME tertiaires de la MEL ?",

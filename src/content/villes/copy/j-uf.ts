@@ -30,8 +30,8 @@ export const J_UF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const J_UF_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Jœuf  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Jœuf et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Jœuf et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants du Pays Haut ?",
@@ -65,7 +65,7 @@ export const J_UF_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Jœuf ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Jœuf, à partir de 990 € HT. Sessions dans votre atelier, commerce ou en visio. Approche terrain adaptée au tissu économique et frontalier du Pays Haut lorrain.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Jœuf, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, commerce ou en visio. Approche terrain adaptée au tissu économique et frontalier du Pays Haut lorrain.",
     },
   ],
 };

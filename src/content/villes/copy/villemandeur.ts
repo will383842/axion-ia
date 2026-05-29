@@ -30,8 +30,8 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villemandeur : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou au bureau PME. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Villemandeur ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Villemandeur sur des cas IA concrets : automatisation devis chantier, agents IA accueil client, planification interventions, gestion stocks et facturation. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Villemandeur sur des cas IA concrets : automatisation devis chantier, agents IA accueil client, planification interventions, gestion stocks et facturation. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les PME logistiques et industrielles du Montargois ?",
@@ -61,7 +61,7 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des services pour les professions libérales ?",
-      a: "Oui, nous accompagnons les professions libérales de Villemandeur et du Montargois (médecins, avocats, experts-comptables, consultants). Cas IA : automatisation secrétariat, classification dossiers, agents conversationnels patients/clients, rédaction assistée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les professions libérales de Villemandeur et du Montargois (médecins, avocats, experts-comptables, consultants). Cas IA : automatisation secrétariat, classification dossiers, agents conversationnels patients/clients, rédaction assistée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission sur site à Villemandeur ?",

@@ -30,8 +30,8 @@ export const PELISSANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pélissanne : formats adaptés à l'atelier artisan, au cabinet et au commerce de bourg. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const PELISSANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Pélissanne ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans de Pélissanne ?",
@@ -61,7 +61,7 @@ export const PELISSANNE_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux commerçants de Pélissanne ?",
-      a: "Absolument. Cas IA pour commerçants : gestion stocks intelligente, agents IA prise de commande, fidélisation client automatisée, comptabilité simplifiée. Audit Flash 490 € HT.",
+      a: "Absolument. Cas IA pour commerçants : gestion stocks intelligente, agents IA prise de commande, fidélisation client automatisée, comptabilité simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Pélissanne ?",

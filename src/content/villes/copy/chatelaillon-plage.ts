@@ -30,8 +30,8 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et TPE/PME de la station balnéaire. Audit Flash 490 € HT.",
-      en: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et TPE/PME de la station balnéaire. Audit Flash 490 € HT.",
+      fr: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et TPE/PME de la station balnéaire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et TPE/PME de la station balnéaire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtelaillon-Plage : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Châtelaillon-Plage ?",
-      a: "L'audit Flash IA à Châtelaillon-Plage démarre à 490 € HT. Diagnostic complet de vos processus touristiques, hôteliers ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Châtelaillon-Plage démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus touristiques, hôteliers ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Châtelaillon-Plage ?",

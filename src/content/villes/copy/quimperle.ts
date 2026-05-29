@@ -30,8 +30,8 @@ export const QUIMPERLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quimperlé : diagnostic adapté aux TPE artisans, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Quimperlé : diagnostic adapté aux TPE artisans, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Quimperlé : diagnostic adapté aux TPE artisans, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Quimperlé : diagnostic adapté aux TPE artisans, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quimperlé : formats adaptés à l'atelier agroalimentaire, l'usine, le commerce ou l'établissement touristique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const QUIMPERLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerçants et artisans de Quimperlé ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Quimperlé centre-ville sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Quimperlé centre-ville sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Proposez-vous des solutions IA pour le tourisme à Quimperlé ?",

@@ -30,8 +30,8 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quincy-sous-Sénart : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,15 +53,15 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Quincy-sous-Sénart ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Quincy-sous-Sénart sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Quincy-sous-Sénart sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales de Quincy ?",
-      a: "Pour les professions libérales à Quincy-sous-Sénart, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
+      a: "Pour les professions libérales à Quincy-sous-Sénart, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
       q: "Proposez-vous des audits rapides pour les PME de Quincy-sous-Sénart ?",
-      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de 490 € HT, idéal pour les PME de Quincy-sous-Sénart souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
+      a: "Oui, notre Audit Flash de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Quincy-sous-Sénart souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
       q: "Comment se passe une mission à Quincy-sous-Sénart depuis Paris ?",

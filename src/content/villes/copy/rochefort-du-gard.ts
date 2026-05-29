@@ -30,8 +30,8 @@ export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit Flash 490 € HT.",
-      en: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rochefort-du-Gard : formats adaptés aux cabinets, entreprises de services, commerces et artisans entre Nîmes et Avignon.",
@@ -53,7 +53,7 @@ export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Rochefort-du-Gard  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

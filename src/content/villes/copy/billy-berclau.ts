@@ -10,9 +10,9 @@ export const BILLY_BERCLAU_COPY: VilleCopy = {
     "Billy-Berclau (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 090 habitants. Situee pres de Douvrin et de la zone industrielle historique, son economie associe PME industrielles, TPE de services, artisanat, commerce et sous-traitance. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie, bassin minier & sous-traitance",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Billy-Berclau (62). Nous accompagnons les TPE, PME et ETI du bassin minier : industriels, sous-traitants, artisans, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Billy-Berclau jouxte Douvrin et sa zone industrielle historique (sous-traitance automobile). Tissu economique mixte : PME industrielles, TPE artisanales BTP, commerces de proximite, services et sous-traitance. Proximite Bethune (10 km) et La Bassee.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BILLY_BERCLAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Billy-Berclau : diagnostic adapte aux PME industrielles, sous-traitants et TPE artisanales du bassin minier. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Billy-Berclau : diagnostic adapte aux PME industrielles, sous-traitants et TPE artisanales du bassin minier. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Billy-Berclau : diagnostic adapte aux PME industrielles, sous-traitants et TPE artisanales du bassin minier. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Billy-Berclau : diagnostic adapte aux PME industrielles, sous-traitants et TPE artisanales du bassin minier. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Billy-Berclau : formations adaptees aux ateliers industriels, bureaux PME, commerces et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const BILLY_BERCLAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles de Billy-Berclau ?",
-      a: "Pour les PME industrielles, nous proposons : maintenance predictive, automatisation controle qualite, optimisation supply chain, agents IA production. Audit Flash 490 EUR HT.",
+      a: "Pour les PME industrielles, nous proposons : maintenance predictive, automatisation controle qualite, optimisation supply chain, agents IA production. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Billy-Berclau ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Billy-Berclau ?",
-      a: "Oui, nous accompagnons les sous-traitants : automatisation processus production, gestion qualite IA, optimisation planning, agents conversationnels donneurs d'ordres. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les sous-traitants : automatisation processus production, gestion qualite IA, optimisation planning, agents conversationnels donneurs d'ordres. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Billy-Berclau ?",

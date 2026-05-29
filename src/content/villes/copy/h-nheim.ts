@@ -30,8 +30,8 @@ export const H_NHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hœnheim : formats adaptés au commerce, au cabinet libéral, à l'artisanat ou à la PME de services tertiaires. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const H_NHEIM_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Hœnheim  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Hœnheim et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet libéral, activité artisanale ou PME de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hœnheim et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet libéral, activité artisanale ou PME de services.",
     },
     {
       q: "Accompagnez-vous les professions libérales de l'Eurométropole ?",
@@ -65,7 +65,7 @@ export const H_NHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Hœnheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Hœnheim, à partir de 990 € HT. Sessions dans vos locaux, au cabinet ou en visio. Approche terrain adaptée au tissu économique de l'Eurométropole de Strasbourg.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Hœnheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux, au cabinet ou en visio. Approche terrain adaptée au tissu économique de l'Eurométropole de Strasbourg.",
     },
   ],
 };

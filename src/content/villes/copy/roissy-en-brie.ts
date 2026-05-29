@@ -10,9 +10,9 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Roissy-en-Brie (23 229 habitants, Seine-et-Marne), commune de Paris-Vallée de la Marne située à 25 km au sud-est de Paris. Le recensement 2019 a dénombré 1 107 unités économiques locales, principalement en commerce, transport, hôtellerie-restauration, construction et industrie légère. Nous intervenons sur site pour automatiser devis, relances, reporting et suivi de chantier avec du code IA sur mesure, sans no-code générique.",
   directAnswerFr:
-    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à 590 € HT pour une Intervention Essentielle, adaptée aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
+    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour une Intervention Essentielle, adaptée aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
   directAnswerEn:
-    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à 590 € HT pour une Intervention Essentielle, adaptée aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
+    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour une Intervention Essentielle, adaptée aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Roissy-en-Brie est limitrophe d'Émerainville, Croissy-Beaubourg, Pontault-Combault, Pontcarré et Ozoir-la-Ferrière. La commune fait partie de l'agglomération Paris-Vallée de la Marne. 45 % du territoire reste couvert par les bois et forêts, ce qui structure une urbanisation maîtrisée. Une importante station de transformation électrique EDF-RTE (400 kV / 225 kV) est implantée sur la commune. Le tissu économique local repose sur le commerce, le transport routier, la restauration et la construction, en lien direct avec les zones d'activités de Pontault-Combault et Émerainville.",
@@ -31,26 +31,26 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit Flash dès 490 € HT (4 h).",
-      en: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit Flash dès 490 € HT (4 h).",
+      fr: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
-      fr: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Intervention Essentielle dès 590 € HT.",
-      en: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA sur mesure à Roissy-en-Brie — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier BTP ou transport). Pas de no-code, pas de dépendance fournisseur tiers. Dès 990 € HT.",
-      en: "Implémentation de solutions IA sur mesure à Roissy-en-Brie — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier BTP ou transport). Pas de no-code, pas de dépendance fournisseur tiers. Dès 990 € HT.",
+      fr: "Implémentation de solutions IA sur mesure à Roissy-en-Brie — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier BTP ou transport). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation de solutions IA sur mesure à Roissy-en-Brie — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier BTP ou transport). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès 990 € HT.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Roissy-en-Brie ?",
-      a: "Nos tarifs publics commencent à 490 € HT pour un Audit Flash (4 h sur site), 590 € HT pour une Intervention Essentielle et 990 € HT pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit Flash (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
     },
     {
       q: "William se déplace-t-il vraiment à Roissy-en-Brie ?",

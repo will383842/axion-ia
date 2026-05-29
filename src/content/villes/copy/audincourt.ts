@@ -30,8 +30,8 @@ export const AUDINCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Audincourt : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier sous-traitance automobile, mécanique et métallurgie.",
@@ -61,7 +61,7 @@ export const AUDINCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE et PME industrielles d'Audincourt ?",
-      a: "Pour les TPE et PME industrielles d'Audincourt, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : contrôle qualité, maintenance prédictive, automatisation traçabilité, pilotage production.",
+      a: "Pour les TPE et PME industrielles d'Audincourt, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : contrôle qualité, maintenance prédictive, automatisation traçabilité, pilotage production.",
     },
     {
       q: "Comment se déroule une mission à Audincourt ?",

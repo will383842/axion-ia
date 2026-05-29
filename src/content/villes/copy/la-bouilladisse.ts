@@ -30,8 +30,8 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Bouilladisse : ateliers pratiques pour artisans BTP, commerçants et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Bouilladisse  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, commerçants et PME bouilladissoises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME bouilladissoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de La Bouilladisse ?",

@@ -30,8 +30,8 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux TPE artisans, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux TPE artisans, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux TPE artisans, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux TPE artisans, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vallons-de-l'Erdre : formats adaptés à l'exploitation agricole, à l'atelier, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et d'élevage ?",
-      a: "Oui, nous accompagnons les exploitations agricoles et d'élevage sur des cas IA pratiques : automatisation traçabilité, gestion troupeau, suivi parcellaire, agents IA vente directe, optimisation logistique. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitations agricoles et d'élevage sur des cas IA pratiques : automatisation traçabilité, gestion troupeau, suivi parcellaire, agents IA vente directe, optimisation logistique. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME agroalimentaires ?",
@@ -61,7 +61,7 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Vallons-de-l'Erdre  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Loire-Atlantique.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Loire-Atlantique.",
     },
     {
       q: "Comment se déroule une mission en zone rurale ?",

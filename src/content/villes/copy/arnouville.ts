@@ -30,8 +30,8 @@ export const ARNOUVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arnouville : formats adaptés au bureau, cabinet, commerce ou atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const ARNOUVILLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants arnouvillois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Arnouville sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Arnouville sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Arnouville ?",

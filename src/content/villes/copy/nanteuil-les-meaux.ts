@@ -30,8 +30,8 @@ export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nanteuil-lès-Meaux : diagnostic adapté aux artisans, commerçants, prestataires de services et professions libérales du bassin meldois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Nanteuil-lès-Meaux : diagnostic adapté aux artisans, commerçants, prestataires de services et professions libérales du bassin meldois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Nanteuil-lès-Meaux : diagnostic adapté aux artisans, commerçants, prestataires de services et professions libérales du bassin meldois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nanteuil-lès-Meaux : diagnostic adapté aux artisans, commerçants, prestataires de services et professions libérales du bassin meldois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nanteuil-lès-Meaux : formats adaptés atelier artisan, commerce, cabinet libéral et exploitation agricole. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Nanteuil-lès-Meaux  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME du bassin meldois, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services locaux.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME du bassin meldois, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services locaux.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants du bassin meldois ?",
@@ -65,7 +65,7 @@ export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Nanteuil-lès-Meaux ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et indépendants à Nanteuil-lès-Meaux, à partir de 990 € HT. Sessions sur site ou en visio, adaptées à votre secteur d'activité.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et indépendants à Nanteuil-lès-Meaux, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site ou en visio, adaptées à votre secteur d'activité.",
     },
   ],
 };

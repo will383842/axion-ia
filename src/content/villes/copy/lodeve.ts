@@ -30,8 +30,8 @@ export const LODEVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lodève : diagnostic pour TPE commerçants, artisans, professions libérales, acteurs tourisme nature et services publics du Lodévois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Lodève : diagnostic pour TPE commerçants, artisans, professions libérales, acteurs tourisme nature et services publics du Lodévois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Lodève : diagnostic pour TPE commerçants, artisans, professions libérales, acteurs tourisme nature et services publics du Lodévois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lodève : diagnostic pour TPE commerçants, artisans, professions libérales, acteurs tourisme nature et services publics du Lodévois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lodève : ateliers adaptés service public, commerce, hébergement touristique ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LODEVE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les services publics ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux services publics et collectivités : automatisation accueil usagers, classification dossiers, chatbot citoyen, optimisation processus administratifs. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux services publics et collectivités : automatisation accueil usagers, classification dossiers, chatbot citoyen, optimisation processus administratifs. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les acteurs du tourisme nature ?",
@@ -61,11 +61,11 @@ export const LODEVE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerces de centre-ville ?",
-      a: "Oui, pour les TPE et commerces à Lodève, audit Flash 490 € HT, coaching 1-to-1 rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      a: "Oui, pour les TPE et commerces à Lodève, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Lodève ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

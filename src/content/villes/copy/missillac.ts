@@ -30,8 +30,8 @@ export const MISSILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Missillac : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, exploitations agricoles et commerçants du secteur Brière-Redon. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Missillac : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, exploitations agricoles et commerçants du secteur Brière-Redon. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Missillac : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, exploitations agricoles et commerçants du secteur Brière-Redon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Missillac : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, exploitations agricoles et commerçants du secteur Brière-Redon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Missillac : formats adaptés à l'hôtel, à l'exploitation agricole, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MISSILLAC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hôtels et établissements touristiques ?",
-      a: "Oui, nous accompagnons les hôtels et établissements touristiques sur des cas IA : chatbot réservation multilingue, automatisation check-in/out, agents IA conciergerie, optimisation revenue management. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les hôtels et établissements touristiques sur des cas IA : chatbot réservation multilingue, automatisation check-in/out, agents IA conciergerie, optimisation revenue management. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les exploitations agricoles ?",
@@ -61,7 +61,7 @@ export const MISSILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Missillac  ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du secteur Brière-Redon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du secteur Brière-Redon.",
     },
     {
       q: "Comment se déroule une mission en zone rurale ?",

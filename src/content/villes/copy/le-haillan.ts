@@ -30,8 +30,8 @@ export const LE_HAILLAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, TPE artisans et commerces de l'ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, TPE artisans et commerces de l'ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, TPE artisans et commerces de l'ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, TPE artisans et commerces de l'ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Haillan : ateliers adaptés aux bureaux tertiaires, cabinets et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Haillan ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME tertiaires et TPE de l'ouest bordelais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME tertiaires et TPE de l'ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires au Haillan ?",
@@ -61,7 +61,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales au Haillan ?",
-      a: "Pour les professions libérales du Haillan : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers, agents conversationnels.",
+      a: "Pour les professions libérales du Haillan : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers, agents conversationnels.",
     },
     {
       q: "Comment se déroule une mission au Haillan ?",

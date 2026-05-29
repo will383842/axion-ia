@@ -30,8 +30,8 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtel-Guyon : formats adaptés établissement thermal, hôtel, cabinet santé, commerce. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

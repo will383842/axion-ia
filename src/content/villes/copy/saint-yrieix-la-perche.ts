@@ -30,8 +30,8 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Yrieix-la-Perche : formats adaptés à l'atelier manufacturier, exploitation agricole, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Saint-Yrieix ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE de Saint-Yrieix-la-Perche. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Saint-Yrieix-la-Perche. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les éleveurs et agriculteurs limousins ?",
@@ -61,7 +61,7 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les entreprises liées au kaolin et à la céramique ?",
-      a: "Pour les PME céramique et kaolin à Saint-Yrieix, contrôle qualité par vision IA (détection défauts pièces), optimisation fours, prédiction maintenance, traçabilité lots, automatisation devis clients. Audit Flash 490 € HT en premier jalon.",
+      a: "Pour les PME céramique et kaolin à Saint-Yrieix, contrôle qualité par vision IA (détection défauts pièces), optimisation fours, prédiction maintenance, traçabilité lots, automatisation devis clients. Audit Flash {{price:audit-flash|flat}} en premier jalon.",
     },
     {
       q: "Comment se passe une mission depuis Limoges ?",

@@ -30,8 +30,8 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villefontaine : diagnostic adapté aux TPE artisans, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Villefontaine : diagnostic adapté aux TPE artisans, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Villefontaine : diagnostic adapté aux TPE artisans, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Villefontaine : diagnostic adapté aux TPE artisans, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villefontaine : formats adaptés à l'atelier, l'entrepôt logistique ou le commerce. Vos équipes terrain et back-office repartent avec outils IA configurés métier réel.",
@@ -57,7 +57,7 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans villardiens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Villefontaine (plombiers, électriciens, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Villefontaine (plombiers, électriciens, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les PME de la ville nouvelle de L'Isle-d'Abeau ?",

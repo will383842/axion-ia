@@ -30,8 +30,8 @@ export const FLEURANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fleurance : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Fleurance : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Fleurance : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fleurance : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fleurance : formats adaptés à l'exploitation agricole, au commerce, au laboratoire ou à l'entreprise agroalimentaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const FLEURANCE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fleurance  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Fleurance : agriculteurs, artisans, commerçants, laboratoires et professionnels du tourisme culturel. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Fleurance : agriculteurs, artisans, commerçants, laboratoires et professionnels du tourisme culturel. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles de Fleurance ?",
@@ -61,7 +61,7 @@ export const FLEURANCE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Fleurance ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Fleurance, à partir de 990 € HT. Sessions sur site dans votre exploitation, commerce, laboratoire ou en visio. Approche terrain adaptée aux métiers de la Lomagne.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Fleurance, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans votre exploitation, commerce, laboratoire ou en visio. Approche terrain adaptée aux métiers de la Lomagne.",
     },
     {
       q: "Comment se déroule une mission IA à Fleurance ?",

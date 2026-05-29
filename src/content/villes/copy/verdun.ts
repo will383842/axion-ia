@@ -30,8 +30,8 @@ export const VERDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verdun : formats adaptés à l'hôtel, au restaurant, au site mémoriel ou à la TPE commerciale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const VERDUN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Verdun  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Verdun et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre activité touristique, hôtelière ou commerciale.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Verdun et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre activité touristique, hôtelière ou commerciale.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme de mémoire à Verdun ?",
@@ -65,7 +65,7 @@ export const VERDUN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Verdun ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Verdun, à partir de 990 € HT. Sessions dans votre hôtel, restaurant ou en visio. Approche terrain adaptée au tissu économique meusien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Verdun, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre hôtel, restaurant ou en visio. Approche terrain adaptée au tissu économique meusien.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const ELBEUF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Elbeuf : formats adaptés à l'atelier, bureau PME, commerce. Vos équipes de la boucle de Seine repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const ELBEUF_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans elbeuviens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Elbeuf sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Elbeuf sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Elbeuf ?",

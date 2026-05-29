@@ -30,8 +30,8 @@ export const LUISANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luisant : formats adaptés au cabinet libéral, commerce de proximité, atelier artisan ou bureau. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const LUISANT_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Luisant ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME et professions libérales. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et professions libérales. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de proximité ?",

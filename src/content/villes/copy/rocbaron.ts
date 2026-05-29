@@ -30,8 +30,8 @@ export const ROCBARON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rocbaron : ateliers pour équipes TPE/PME, viticulteurs, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Brignoles.",
@@ -53,7 +53,7 @@ export const ROCBARON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Rocbaron  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces rocbaronnais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces rocbaronnais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et exploitations agricoles ?",

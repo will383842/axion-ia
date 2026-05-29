@@ -30,8 +30,8 @@ export const CHANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Changé : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord-est de l'agglomération mancelle. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Changé : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord-est de l'agglomération mancelle. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Changé : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord-est de l'agglomération mancelle. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Changé : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord-est de l'agglomération mancelle. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Changé : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const CHANGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Changé ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, commerçants et professions libérales du bassin manceau. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, commerçants et professions libérales du bassin manceau. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les petites PME tertiaires ?",

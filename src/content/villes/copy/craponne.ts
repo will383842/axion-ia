@@ -30,8 +30,8 @@ export const CRAPONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Craponne : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const CRAPONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Craponne, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
+      a: "Pour les TPE artisans BTP et commerçants à Craponne, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

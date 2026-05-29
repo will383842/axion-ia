@@ -30,8 +30,8 @@ export const FUVEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, TPE artisans, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, TPE artisans, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, TPE artisans, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, TPE artisans, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fuveau : ateliers pour domaines viticoles, cabinets libéraux, équipes PME tertiaires et artisans. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const FUVEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Fuveau  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, viticulteurs AOC et PME tertiaires fuvelains. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs AOC et PME tertiaires fuvelains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Sainte-Victoire ?",

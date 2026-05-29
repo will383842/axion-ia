@@ -34,26 +34,26 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Seyne-sur-Mer — diagnostic des goulots opérationnels chez les TPE/PME du tourisme, de la restauration, du nautisme et des PME industrielles autour de CNIM. Audit Flash dès 490 € HT, livré sous 5 jours.",
-      en: "Audit IA à La Seyne-sur-Mer — diagnostic des goulots opérationnels chez les TPE/PME du tourisme, de la restauration, du nautisme et des PME industrielles autour de CNIM. Audit Flash dès 490 € HT, livré sous 5 jours.",
+      fr: "Audit IA à La Seyne-sur-Mer — diagnostic des goulots opérationnels chez les TPE/PME du tourisme, de la restauration, du nautisme et des PME industrielles autour de CNIM. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours.",
+      en: "Audit IA à La Seyne-sur-Mer — diagnostic des goulots opérationnels chez les TPE/PME du tourisme, de la restauration, du nautisme et des PME industrielles autour de CNIM. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Intervention Essentielle dès 590 € HT.",
-      en: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA pour TPE/PME seynoises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Lightspeed, Pennylane, Sage, Google Workspace). Forfait dès 990 € HT.",
-      en: "Implémentation IA pour TPE/PME seynoises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Lightspeed, Pennylane, Sage, Google Workspace). Forfait dès 990 € HT.",
+      fr: "Implémentation IA pour TPE/PME seynoises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Lightspeed, Pennylane, Sage, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA pour TPE/PME seynoises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Lightspeed, Pennylane, Sage, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions un-à-un avec dirigeants de TPE/PME de La Seyne-sur-Mer pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès 990 € HT.",
-      en: "Sessions un-à-un avec dirigeants de TPE/PME de La Seyne-sur-Mer pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès 990 € HT.",
+      fr: "Sessions un-à-un avec dirigeants de TPE/PME de La Seyne-sur-Mer pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions un-à-un avec dirigeants de TPE/PME de La Seyne-sur-Mer pour bâtir une feuille de route IA réaliste sur 24 mois, prioriser les cas d'usage et former l'équipe. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à La Seyne-sur-Mer ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site à La Seyne-sur-Mer, livré sous 5 jours ouvrés. Intervention Essentielle dès 590 € HT, implémentation complète dès 990 € HT. Tous nos tarifs sont publics et fixes.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à La Seyne-sur-Mer, livré sous 5 jours ouvrés. Formation 4 h dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
       q: "William se déplace-t-il à La Seyne-sur-Mer depuis Paris ?",

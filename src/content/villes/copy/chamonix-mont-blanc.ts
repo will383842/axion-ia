@@ -30,8 +30,8 @@ export const CHAMONIX_MONT_BLANC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chamonix-Mont-Blanc : formats adaptés à l'hôtel, au restaurant, à la compagnie de guides ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés tourisme.",
@@ -57,7 +57,7 @@ export const CHAMONIX_MONT_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE touristique à Chamonix ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT, adapté aux TPE et PME touristiques de Chamonix. Diagnostic complet des opportunités IA dans votre activité (hôtellerie, restauration, guides, commerce), ROI chiffré sous 5 jours ouvrés.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME touristiques de Chamonix. Diagnostic complet des opportunités IA dans votre activité (hôtellerie, restauration, guides, commerce), ROI chiffré sous 5 jours ouvrés.",
     },
     {
       q: "L'IA peut-elle aider les remontées mécaniques à Chamonix ?",

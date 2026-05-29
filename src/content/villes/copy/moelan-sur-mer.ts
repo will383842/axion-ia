@@ -30,8 +30,8 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moëlan-sur-Mer : formats adaptés aux exploitations ostréicoles, hébergeurs touristiques, TPE artisans ou commerces de bourg. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Moëlan-sur-Mer ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Moëlan-sur-Mer sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks saisonniers, optimisation présence en ligne. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de Moëlan-sur-Mer sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks saisonniers, optimisation présence en ligne. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de la côte sud Finistère ?",

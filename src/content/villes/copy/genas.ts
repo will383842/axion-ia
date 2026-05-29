@@ -30,8 +30,8 @@ export const GENAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Genas : formats adaptés au bureau, entrepôt, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const GENAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Genas, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
+      a: "Pour les TPE artisans BTP et commerçants à Genas, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

@@ -30,8 +30,8 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bonnières-sur-Seine : formats adaptés atelier, entrepôt, bureau ou exploitation. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bonnières-sur-Seine  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Bonnières-sur-Seine démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Bonnières-sur-Seine démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME industrielles à Bonnières-sur-Seine ?",

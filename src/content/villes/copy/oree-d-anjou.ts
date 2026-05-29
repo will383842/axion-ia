@@ -30,8 +30,8 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit Flash 490 € HT.",
-      en: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit Flash 490 € HT.",
+      fr: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orée d'Anjou : formations viticulteurs, ateliers PME industrielles, sessions artisans BTP et commerçants. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Champtoceaux ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, adapté aux TPE et petits domaines viticoles de toutes les communes déléguées d'Orée d'Anjou (Champtoceaux, Drain, Liré, Bouzillé). Diagnostic concret avec ROI chiffré.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE et petits domaines viticoles de toutes les communes déléguées d'Orée d'Anjou (Champtoceaux, Drain, Liré, Bouzillé). Diagnostic concret avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME industrielles entre Ancenis et Nantes ?",

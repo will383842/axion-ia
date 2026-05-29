@@ -30,8 +30,8 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plan-de-Cuques : formats adaptés au cabinet, commerce de village et bureau. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Plan-de-Cuques ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les professions libérales et PME, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les professions libérales et PME, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Plan-de-Cuques ?",
@@ -61,7 +61,7 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux TPE artisans de Plan-de-Cuques ?",
-      a: "Absolument. L'Audit Flash à 490 € HT est conçu pour les TPE. Cas pratiques : automatisation devis, gestion planning, facturation, suivi chantiers et relances clients automatiques.",
+      a: "Absolument. L'Audit Flash à {{price:audit-flash|flat}} est conçu pour les TPE. Cas pratiques : automatisation devis, gestion planning, facturation, suivi chantiers et relances clients automatiques.",
     },
     {
       q: "Comment se déroule une mission IA à Plan-de-Cuques ?",

@@ -30,8 +30,8 @@ export const LES_ANGLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit Flash 490 € HT.",
-      en: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit Flash 490 € HT.",
+      fr: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Angles : formats adaptés aux cabinets, commerces, restaurants et entreprises de services Grand Avignon rive droite.",
@@ -53,7 +53,7 @@ export const LES_ANGLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Angles ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone commerciale ?",

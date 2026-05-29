@@ -30,8 +30,8 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit Flash 490 € HT.",
-      en: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit Flash 490 € HT.",
+      fr: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Condat-sur-Vienne : formats adaptés au commerce, à l'atelier artisanal, au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Condat-sur-Vienne  ?",
-      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME des zones d'activités, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME des zones d'activités, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Accompagnez-vous les entreprises des zones d'activités sud Limoges ?",

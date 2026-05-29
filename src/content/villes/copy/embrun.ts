@@ -30,8 +30,8 @@ export const EMBRUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Embrun : formats adaptés aux bases nautiques, campings, hébergements ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const EMBRUN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Embrun  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME embrunaises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME embrunaises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Embrun ?",

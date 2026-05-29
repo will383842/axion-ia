@@ -30,8 +30,8 @@ export const IGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Igny : formats adaptés cabinet, bureau, commerce ou domicile professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const IGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces ignyaciens ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, réseaux sociaux assistés.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, réseaux sociaux assistés.",
     },
     {
       q: "Accompagnez-vous les PME ingénierie proches du plateau de Saclay ?",

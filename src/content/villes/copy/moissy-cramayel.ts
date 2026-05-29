@@ -30,8 +30,8 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moissy-Cramayel : diagnostic adapté aux TPE/PME logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Moissy-Cramayel : diagnostic adapté aux TPE/PME logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Moissy-Cramayel : diagnostic adapté aux TPE/PME logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Moissy-Cramayel : diagnostic adapté aux TPE/PME logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moissy-Cramayel : formats adaptés entrepôt logistique, bureau PME, commerce ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Moissy-Cramayel ?",
-      a: "L'audit Flash IA à Moissy-Cramayel démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Moissy-Cramayel démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises logistique des zones d'activités ?",
@@ -61,7 +61,7 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et PME de Moissy-Cramayel ?",
-      a: "Audit Flash 490 € HT, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Moissy-Cramayel ?",

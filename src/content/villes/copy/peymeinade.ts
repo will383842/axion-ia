@@ -30,8 +30,8 @@ export const PEYMEINADE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Peymeinade : formats adaptés à l'atelier artisan, commerce, exploitation agricole ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const PEYMEINADE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Peymeinade ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Peymeinade sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Peymeinade sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de l'arrière-pays ?",
@@ -61,7 +61,7 @@ export const PEYMEINADE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales de Peymeinade, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Audit Flash 490 € HT ou coaching 1-to-1.",
+      a: "Pour les commerçants et professions libérales de Peymeinade, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Audit Flash {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
       q: "Comment se déroule une mission à Peymeinade ?",

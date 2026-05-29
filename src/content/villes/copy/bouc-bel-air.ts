@@ -30,8 +30,8 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouc-Bel-Air : formats adaptés au cabinet, bureau ou commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Bouc-Bel-Air ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME tertiaires, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME tertiaires, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Bouc-Bel-Air ?",
@@ -61,7 +61,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux PME tertiaires de l'axe Aix-Marseille ?",
-      a: "Absolument. Nous accompagnons les PME tertiaires de Bouc-Bel-Air et l'axe Aix-Marseille : automatisation processus, agents conversationnels, CRM intelligent, reporting automatisé. Audit Flash 490 € HT.",
+      a: "Absolument. Nous accompagnons les PME tertiaires de Bouc-Bel-Air et l'axe Aix-Marseille : automatisation processus, agents conversationnels, CRM intelligent, reporting automatisé. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Bouc-Bel-Air ?",

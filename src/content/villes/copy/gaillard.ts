@@ -9,9 +9,9 @@ export const GAILLARD_COPY: VilleCopy = {
   pitchEn:
     "Gaillard (74), commune limitrophe directe de Geneve dans l'agglomeration du Grand Geneve, beneficie d'une economie transfrontaliere intense. Tissu TPE/PME de commerce, services, professions liberales et artisanat BTP. Axion-IA y intervient pour tous types d'activites du bassin genevois francais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gaillard (74). Nous accompagnons TPE et PME : commerce transfrontalier, services aux entreprises du Grand Geneve, professions liberales, artisans BTP et entreprises tertiaires de l'agglomeration annemassienne. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gaillard (74). Nous accompagnons TPE et PME : commerce transfrontalier, services aux entreprises du Grand Geneve, professions liberales, artisans BTP et entreprises tertiaires de l'agglomeration annemassienne. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gaillard (74). Nous accompagnons TPE et PME : commerce transfrontalier, services aux entreprises du Grand Geneve, professions liberales, artisans BTP et entreprises tertiaires de l'agglomeration annemassienne. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gaillard (74). Nous accompagnons TPE et PME : commerce transfrontalier, services aux entreprises du Grand Geneve, professions liberales, artisans BTP et entreprises tertiaires de l'agglomeration annemassienne. Audit Flash des {{price:audit-flash|flat}}.",
   seoHook: "commerce transfrontalier & services grand",
   ecosystemFr:
     "Gaillard est une commune directement frontaliere avec Geneve, integree a l'agglomeration d'Annemasse dans le Grand Geneve. Forte densite de commerces transfrontaliers, services tertiaires, professions liberales et artisanat BTP. La proximite immediate de Geneve (5 min) attire un tissu dynamique de TPE/PME orientees clientele suisse et franco-genevoise.",
@@ -30,8 +30,8 @@ export const GAILLARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Gaillard : diagnostic adapte aux TPE/PME transfrontalieres, commercants, professions liberales et artisans BTP de l'agglomeration genevoise. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Gaillard : diagnostic adapte aux TPE/PME transfrontalieres, commercants, professions liberales et artisans BTP de l'agglomeration genevoise. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Gaillard : diagnostic adapte aux TPE/PME transfrontalieres, commercants, professions liberales et artisans BTP de l'agglomeration genevoise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Gaillard : diagnostic adapte aux TPE/PME transfrontalieres, commercants, professions liberales et artisans BTP de l'agglomeration genevoise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Gaillard : formats adaptes aux commerces, cabinets et entreprises de services du Grand Geneve. Equipes autonomes sur outils IA configures metier.",
@@ -57,7 +57,7 @@ export const GAILLARD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Gaillard ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE/PME transfrontalieres de Gaillard, nous proposons des audits adaptes aux enjeux bilingues et multi-devises du Grand Geneve.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE/PME transfrontalieres de Gaillard, nous proposons des audits adaptes aux enjeux bilingues et multi-devises du Grand Geneve.",
     },
     {
       q: "Accompagnez-vous les professions liberales a Gaillard ?",
@@ -65,7 +65,7 @@ export const GAILLARD_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Gaillard ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Gaillard, a partir de 990 euros HT. Sessions en commerce, en cabinet ou en visio, adaptees au contexte transfrontalier du Grand Geneve.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Gaillard, a partir de {{price:intervention-dirigeants|flat}}. Sessions en commerce, en cabinet ou en visio, adaptees au contexte transfrontalier du Grand Geneve.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const SAINT_BARTHELEMY_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Barthélemy-d'Anjou : formations pour équipes PME tertiaires, logistique et commerce de gros. Ateliers pratiques dans vos locaux de zone d'activités.",
@@ -53,7 +53,7 @@ export const SAINT_BARTHELEMY_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Barthélemy-d'Anjou  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Saint-Barthélemy-d'Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Saint-Barthélemy-d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de Saint-Barthélemy ?",

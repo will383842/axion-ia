@@ -11,9 +11,9 @@ export const PALAISEAU_COPY: VilleCopy = {
   pitchEn:
     "Palaiseau, sous-préfecture de l'Essonne de 37 471 habitants située à environ 18 km au sud-ouest de Paris, est un pôle scientifique et technologique majeur du cluster Paris-Saclay. La commune accueille l'École polytechnique, Télécom Paris, l'ENSTA Paris ainsi que des centres de recherche d'Onera, du CEA et de Danone. Axion-IA y accompagne en priorité les TPE et PME locales — startups deeptech, cabinets, sous-traitants industriels — dans l'intégration concrète de l'IA opérationnelle, en code custom et sans no-code.",
   directAnswerFr:
-    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit Flash 4 heures (à partir de 490 € HT), les interventions ponctuelles à partir de 590 € HT, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
+    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit Flash 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
   directAnswerEn:
-    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit Flash 4 heures (à partir de 490 € HT), les interventions ponctuelles à partir de 590 € HT, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
+    "À Palaiseau, Axion-IA intervient sur site auprès des TPE et PME de l'écosystème Paris-Saclay, autour des grandes écoles (École polytechnique, Télécom Paris, ENSTA Paris) et des centres de recherche (Onera, CEA, Danone). Nos missions couvrent l'audit Flash 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via le RER B (Palaiseau, Palaiseau-Villebon, Lozère).",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Palaiseau est au cœur du cluster Paris-Saclay, l'un des principaux pôles scientifiques européens. La commune héberge l'École polytechnique, Télécom Paris, l'ENSTA Paris, ainsi que des centres de recherche d'Onera, du CEA et de Danone. Elle appartient à la communauté d'agglomération Paris-Saclay (créée en 2016 par fusion de deux intercommunalités) et est desservie par le RER B, le RER C et de nombreuses lignes de bus, avec des extensions prévues via le Grand Paris Express.",
@@ -32,8 +32,8 @@ export const PALAISEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit Flash à Palaiseau permet aux TPE et PME de l'écosystème Paris-Saclay d'identifier rapidement les opportunités d'automatisation. Audit 4 heures sur site à partir de 490 € HT.",
-      en: "Réaliser un audit Flash à Palaiseau permet aux TPE et PME de l'écosystème Paris-Saclay d'identifier rapidement les opportunités d'automatisation. Audit 4 heures sur site à partir de 490 € HT.",
+      fr: "Réaliser un audit Flash à Palaiseau permet aux TPE et PME de l'écosystème Paris-Saclay d'identifier rapidement les opportunités d'automatisation. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit Flash à Palaiseau permet aux TPE et PME de l'écosystème Paris-Saclay d'identifier rapidement les opportunités d'automatisation. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Palaiseau pour automatiser les flux administratifs, le reporting et les intégrations API des startups deeptech et PME du plateau de Saclay.",
@@ -51,7 +51,7 @@ export const PALAISEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Palaiseau ?",
-      a: "L'Audit Flash 4 heures à Palaiseau démarre à 490 € HT. Les interventions ciblées sur site commencent à 590 € HT. Tarifs publics complets sur notre page tarifs.",
+      a: "L'Audit Flash 4 heures à Palaiseau démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Tarifs publics complets sur notre page tarifs.",
     },
     {
       q: "William se déplace-t-il sur site à Palaiseau ?",

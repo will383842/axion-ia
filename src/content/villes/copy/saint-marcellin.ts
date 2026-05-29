@@ -30,8 +30,8 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Marcellin : formats adaptés à la fromagerie, exploitation laitière, atelier industriel ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans marcellinois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Marcellin, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Marcellin, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Lyon ?",

@@ -10,9 +10,9 @@ export const BOUGUENAIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Bouguenais (20 530 habitants, Loire-Atlantique), commune de Nantes Métropole située à 6 km au sud-ouest de Nantes. Notre cabinet conçoit du code IA sur mesure (pas de no-code) pour les artisans, commerces et sous-traitants industriels installés près de la zone aéroportuaire D2A et du port industriel de Cheviré. Devis et tarifs publics consultables en ligne.",
   directAnswerFr:
-    "Axion-IA se déplace à Bouguenais (44340) pour auditer et automatiser les processus des TPE et PME locales : devis, relances clients, reporting, suivi production. La commune accueille le site Airbus (fuselages centraux), l'aéroport Nantes-Atlantique et le Technocampus Ocean, ce qui structure un tissu dense de sous-traitants en aéronautique, composites et logistique. Notre Audit Flash 4 h débute à 490 € HT, les interventions à 590 € HT, avec déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
+    "Axion-IA se déplace à Bouguenais (44340) pour auditer et automatiser les processus des TPE et PME locales : devis, relances clients, reporting, suivi production. La commune accueille le site Airbus (fuselages centraux), l'aéroport Nantes-Atlantique et le Technocampus Ocean, ce qui structure un tissu dense de sous-traitants en aéronautique, composites et logistique. Notre Audit Flash 4 h débute à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
   directAnswerEn:
-    "Axion-IA se déplace à Bouguenais (44340) pour auditer et automatiser les processus des TPE et PME locales : devis, relances clients, reporting, suivi production. La commune accueille le site Airbus (fuselages centraux), l'aéroport Nantes-Atlantique et le Technocampus Ocean, ce qui structure un tissu dense de sous-traitants en aéronautique, composites et logistique. Notre Audit Flash 4 h débute à 490 € HT, les interventions à 590 € HT, avec déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
+    "Axion-IA se déplace à Bouguenais (44340) pour auditer et automatiser les processus des TPE et PME locales : devis, relances clients, reporting, suivi production. La commune accueille le site Airbus (fuselages centraux), l'aéroport Nantes-Atlantique et le Technocampus Ocean, ce qui structure un tissu dense de sous-traitants en aéronautique, composites et logistique. Notre Audit Flash 4 h débute à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
   seoHook: "aéronautique, logistique portuaire & composites",
   ecosystemFr:
     "Bouguenais combine deux pôles économiques rares : la zone D2A autour de l'aéroport Nantes-Atlantique (Airbus, équipementiers aéronautiques) et la zone industrialo-portuaire de Cheviré (logistique fluviale, vrac, négoce). Le Technocampus Ocean et le Laboratoire central des Ponts et Chaussées (≈250 salariés) ancrent un écosystème R&D matériaux composites et génie civil. La desserte par la ligne 3 du tramway et sept lignes de bus connecte les TPE locales au centre nantais.",
@@ -31,26 +31,26 @@ export const BOUGUENAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouguenais pour les sous-traitants aéronautiques de la zone D2A et les TPE du commerce local — cartographie des automatisations à 490 € HT.",
-      en: "Audit IA à Bouguenais pour les sous-traitants aéronautiques de la zone D2A et les TPE du commerce local — cartographie des automatisations à 490 € HT.",
+      fr: "Audit IA à Bouguenais pour les sous-traitants aéronautiques de la zone D2A et les TPE du commerce local — cartographie des automatisations à {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bouguenais pour les sous-traitants aéronautiques de la zone D2A et les TPE du commerce local — cartographie des automatisations à {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions à Bouguenais pour automatiser devis, factures et reporting des PME logistiques de Cheviré et des artisans de la commune — dès 590 € HT.",
-      en: "Interventions à Bouguenais pour automatiser devis, factures et reporting des PME logistiques de Cheviré et des artisans de la commune — dès 590 € HT.",
+      fr: "Interventions à Bouguenais pour automatiser devis, factures et reporting des PME logistiques de Cheviré et des artisans de la commune — dès {{price:intervention-4h|flat}}.",
+      en: "Interventions à Bouguenais pour automatiser devis, factures et reporting des PME logistiques de Cheviré et des artisans de la commune — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA codées sur mesure à Bouguenais (pas de no-code) pour les ETI et PME industrielles du bassin aéroportuaire — dès 990 € HT.",
-      en: "Implémentation de solutions IA codées sur mesure à Bouguenais (pas de no-code) pour les ETI et PME industrielles du bassin aéroportuaire — dès 990 € HT.",
+      fr: "Implémentation de solutions IA codées sur mesure à Bouguenais (pas de no-code) pour les ETI et PME industrielles du bassin aéroportuaire — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation de solutions IA codées sur mesure à Bouguenais (pas de no-code) pour les ETI et PME industrielles du bassin aéroportuaire — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Bouguenais pour dirigeants de TPE/PME : roadmap IA, choix d'outils, pilotage des risques RGPD — dès 990 € HT.",
-      en: "Sessions 1-to-1 à Bouguenais pour dirigeants de TPE/PME : roadmap IA, choix d'outils, pilotage des risques RGPD — dès 990 € HT.",
+      fr: "Sessions 1-to-1 à Bouguenais pour dirigeants de TPE/PME : roadmap IA, choix d'outils, pilotage des risques RGPD — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Bouguenais pour dirigeants de TPE/PME : roadmap IA, choix d'outils, pilotage des risques RGPD — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Bouguenais ?",
-      a: "L'Audit Flash 4 h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT et l'implémentation sur mesure à 990 € HT. Tous nos tarifs publics sont consultables en ligne, sans frais cachés.",
+      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne, sans frais cachés.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Bouguenais ?",

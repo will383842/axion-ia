@@ -30,8 +30,8 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Monistrol-sur-Loire : formats adaptés à l'atelier industriel, PME mécanique/plasturgie, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP ?",
-      a: "Oui, audit Flash 490 € HT, formation 1 journée gestion devis/planning IA, coaching 1-to-1 outils IA métier.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, formation 1 journée gestion devis/planning IA, coaching 1-to-1 outils IA métier.",
     },
     {
       q: "Quels services pour les commerces de proximité ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ou Lyon ?",

@@ -30,8 +30,8 @@ export const PETITE_FORET_COPY: VilleCopy = {
   seoHook: "logistique, BTP & services",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Petite-Forêt : formats adaptés au dépôt logistique, au chantier BTP, au commerce, au cabinet libéral. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const PETITE_FORET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP de Petite-Forêt ?",
-      a: "Pour les TPE artisans BTP à Petite-Forêt, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, suivi chantiers, relances clients, gestion planning.",
+      a: "Pour les TPE artisans BTP à Petite-Forêt, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, suivi chantiers, relances clients, gestion planning.",
     },
     {
       q: "Proposez-vous des formations pour les commerces et professions libérales ?",
-      a: "Oui, interventions IA adaptées aux commerces et professions libérales péti-forestois. Agents conversationnels, automatisation RDV, fidélisation clients. Audit Flash 490 € HT pour identifier vos cas prioritaires.",
+      a: "Oui, interventions IA adaptées aux commerces et professions libérales péti-forestois. Agents conversationnels, automatisation RDV, fidélisation clients. Audit Flash {{price:audit-flash|flat}} pour identifier vos cas prioritaires.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

@@ -32,26 +32,26 @@ export const ALFORTVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de 490 € HT.",
-      en: "Audit Flash 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de 490 € HT.",
+      fr: "Audit Flash 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit Flash 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès 590 € HT, déplacement équipe sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès 590 € HT, déplacement équipe sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès {{price:intervention-4h|flat}}, déplacement équipe sous 5 jours ouvrés.",
+      en: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès {{price:intervention-4h|flat}}, déplacement équipe sous 5 jours ouvrés.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA en code source à Alfortville (intégration SI, ERP, outils métier) pour TPE et PME, à partir de 990 € HT, hébergement RGPD France.",
-      en: "Implémentation de solutions IA en code source à Alfortville (intégration SI, ERP, outils métier) pour TPE et PME, à partir de 990 € HT, hébergement RGPD France.",
+      fr: "Implémentation de solutions IA en code source à Alfortville (intégration SI, ERP, outils métier) pour TPE et PME, à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
+      en: "Implémentation de solutions IA en code source à Alfortville (intégration SI, ERP, outils métier) pour TPE et PME, à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Alfortville pour dirigeants de TPE et PME : cadrage stratégie IA, choix des cas d'usage, formation pratique, à partir de 990 € HT.",
-      en: "Sessions 1-to-1 à Alfortville pour dirigeants de TPE et PME : cadrage stratégie IA, choix des cas d'usage, formation pratique, à partir de 990 € HT.",
+      fr: "Sessions 1-to-1 à Alfortville pour dirigeants de TPE et PME : cadrage stratégie IA, choix des cas d'usage, formation pratique, à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Alfortville pour dirigeants de TPE et PME : cadrage stratégie IA, choix des cas d'usage, formation pratique, à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Alfortville ?",
-      a: "Les interventions Axion-IA à Alfortville démarrent à 590 € HT, l'Audit Flash 4h à 490 € HT, et l'implémentation à 990 € HT. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Alfortville démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Alfortville ?",
@@ -71,7 +71,7 @@ export const ALFORTVILLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA sur site à Alfortville ?",
-      a: "Oui, nous animons des ateliers en présentiel à Alfortville (demi-journée ou journée complète) pour les équipes des TPE et PME, et des sessions 1-to-1 pour dirigeants à partir de 990 € HT.",
+      a: "Oui, nous animons des ateliers en présentiel à Alfortville (demi-journée ou journée complète) pour les équipes des TPE et PME, et des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

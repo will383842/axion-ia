@@ -30,8 +30,8 @@ export const RAISMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Raismes : formations adaptées TPE/PME industrielles et logistiques, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const RAISMES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Raismes  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Raismes souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Raismes souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME industrielles à Raismes ?",
@@ -61,7 +61,7 @@ export const RAISMES_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Raismes ?",
-      a: "Nous proposons audit Flash 4h (490 € HT), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants du Valenciennois.",
+      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants du Valenciennois.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Raismes ?",

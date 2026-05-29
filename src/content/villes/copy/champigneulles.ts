@@ -30,8 +30,8 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champigneulles : formats adaptés à l'industrie, à la PME logistique, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Champigneulles  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Champigneulles et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre industrie, atelier ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Champigneulles et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre industrie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et logisticiens de Champigneulles ?",
@@ -65,7 +65,7 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Champigneulles ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Champigneulles, à partir de 990 € HT. Sessions dans votre site industriel, entrepôt logistique ou en visio. Approche terrain adaptée au tissu économique de la Métropole du Grand Nancy.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Champigneulles, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre site industriel, entrepôt logistique ou en visio. Approche terrain adaptée au tissu économique de la Métropole du Grand Nancy.",
     },
   ],
 };

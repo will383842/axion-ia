@@ -30,8 +30,8 @@ export const PORNIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit Flash 490 € HT.",
-      en: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit Flash 490 € HT.",
+      fr: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pornic : formats adaptés à l'hôtellerie-restauration, commerce touristique, thalasso et artisanat littoral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const PORNIC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pornic  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Pornic. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Pornic. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants de Pornic ?",
@@ -61,11 +61,11 @@ export const PORNIC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Pornic ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, fidélisation client, agents conversationnels, automatisation comptabilité.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, fidélisation client, agents conversationnels, automatisation comptabilité.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Pornic ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Pornic. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Pornic. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

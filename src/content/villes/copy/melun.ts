@@ -10,9 +10,9 @@ export const MELUN_COPY: VilleCopy = {
   pitchEn:
     "Melun (77), 45 995 habitants en 2023, préfecture de Seine-et-Marne, située à 41 km au sud-est de Paris dans une boucle de la Seine. Troisième commune du département après Meaux et Chelles. Tissu mêlant TPE commerçants centre-ville, PME services et BTP, professions libérales, administrations et secteur hospitalier. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   seoHook: "préfecture 77, services & administrations Seine-et-Marne",
   ecosystemFr:
     "Melun, préfecture de Seine-et-Marne, structure l'économie du sud du département. La ville polarise commerces de centre-ville, services administratifs, secteur hospitalier en expansion (depuis 2018), professions libérales et BTP. Les zones d'activités voisines, notamment à Vaux-le-Pénil, accueillent PME services, logistique et industrie légère. Position stratégique sur les axes Paris-Lyon-Marseille (rail) et A5/A6 (route).",
@@ -31,8 +31,8 @@ export const MELUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Melun : ateliers adaptés aux commerces centre-ville, cabinets libéraux, PME services et acteurs hospitaliers. Vos équipes repartent autonomes sur outils IA métier.",
@@ -54,7 +54,7 @@ export const MELUN_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Melun ?",
-      a: "L'Audit Flash démarre à 490 € HT. L'Intervention Essentielle débute à 590 € HT. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. L'Intervention Essentielle débute à {{price:intervention-4h|flat}}. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour un audit IA à Melun ?",

@@ -30,8 +30,8 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Aubin-de-Médoc : ateliers adaptés aux artisans, cabinets et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Aubin-de-Médoc  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales du nord-ouest bordelais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales du nord-ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Aubin-de-Médoc ?",
@@ -61,7 +61,7 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers, agents conversationnels.",
+      a: "Pour les professions libérales : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers, agents conversationnels.",
     },
     {
       q: "Comment se déroule une mission à Saint-Aubin-de-Médoc ?",

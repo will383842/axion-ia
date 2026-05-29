@@ -30,8 +30,8 @@ export const NOISIEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noisiel : formats adaptés bureau tertiaire, espace coworking, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const NOISIEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Noisiel ?",
-      a: "L'audit Flash IA à Noisiel démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Noisiel démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises numériques de Noisiel ?",
@@ -61,7 +61,7 @@ export const NOISIEL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et PME de Noisiel ?",
-      a: "Audit Flash 490 € HT, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, CRM intelligent, gestion documentaire, facturation assistée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, CRM intelligent, gestion documentaire, facturation assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Noisiel ?",

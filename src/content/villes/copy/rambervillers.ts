@@ -30,8 +30,8 @@ export const RAMBERVILLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rambervillers : formats adaptés à l''atelier céramique/faïence, l''atelier bois, le chantier, le bureau, le commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const RAMBERVILLERS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerces de proximité ?",
-      a: "Oui, artisans BTP, commerçants et services rambuvetais : automatisation devis, gestion planning chantier, fidélisation client, présence numérique locale. Audit Flash 490 € HT.",
+      a: "Oui, artisans BTP, commerçants et services rambuvetais : automatisation devis, gestion planning chantier, fidélisation client, présence numérique locale. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Rambervillers ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Rambervillers ?",

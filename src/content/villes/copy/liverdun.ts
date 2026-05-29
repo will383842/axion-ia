@@ -30,8 +30,8 @@ export const LIVERDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Liverdun : formats adaptés à l'atelier, le commerce, l'hébergement touristique, le bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const LIVERDUN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial ?",
-      a: "Oui, hôteliers, gîtes, restaurateurs et acteurs du patrimoine médiéval liverdunois : réservation en ligne, relation client, communication digitale, visibilité touristique. Audit Flash 490 € HT.",
+      a: "Oui, hôteliers, gîtes, restaurateurs et acteurs du patrimoine médiéval liverdunois : réservation en ligne, relation client, communication digitale, visibilité touristique. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Liverdun ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Liverdun ?",

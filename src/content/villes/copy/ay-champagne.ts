@@ -30,8 +30,8 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aÿ-Champagne : formats adaptés chai, bureau, cave de dégustation, boutique. Vos équipes repartent autonomes sur les outils déployés.",
@@ -53,7 +53,7 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Aÿ-Champagne  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE vignerons et PME du secteur champenois.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE vignerons et PME du secteur champenois.",
     },
     {
       q: "Travaillez-vous avec les vignerons et maisons de champagne ?",

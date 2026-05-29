@@ -30,8 +30,8 @@ export const DRUSENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Drusenheim : formats adaptés à la plateforme industrielle, PME sous-traitante, logistique fluviale, commerce transfrontalier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,11 +61,11 @@ export const DRUSENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans transfrontaliers ?",
-      a: "Audit Flash 490 € HT, automatisation administrative transfrontalière (DE/FR), classification factures multilingue, agents conversationnels clients multilingue, optimisation planning.",
+      a: "Audit Flash {{price:audit-flash|flat}}, automatisation administrative transfrontalière (DE/FR), classification factures multilingue, agents conversationnels clients multilingue, optimisation planning.",
     },
     {
       q: "Quel est le tarif d'entrée pour une TPE à Drusenheim ?",
-      a: "L'audit Flash s'adapte à votre périmètre. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash s'adapte à votre périmètre. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

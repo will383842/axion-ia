@@ -32,26 +32,26 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "À Le Petit-Quevilly, l'audit Axion-IA cible les éditeurs et agences de Seine Innopolis, les PME tertiaires de l'Actipôle des Chartreux et les commerçants locaux. Cartographie des tâches manuelles (devis, facturation, support, reporting). Audit Flash 4h dès 490 € HT.",
-      en: "À Le Petit-Quevilly, l'audit Axion-IA cible les éditeurs et agences de Seine Innopolis, les PME tertiaires de l'Actipôle des Chartreux et les commerçants locaux. Cartographie des tâches manuelles (devis, facturation, support, reporting). Audit Flash 4h dès 490 € HT.",
+      fr: "À Le Petit-Quevilly, l'audit Axion-IA cible les éditeurs et agences de Seine Innopolis, les PME tertiaires de l'Actipôle des Chartreux et les commerçants locaux. Cartographie des tâches manuelles (devis, facturation, support, reporting). Audit Flash 4h dès {{price:audit-flash|flat}}.",
+      en: "À Le Petit-Quevilly, l'audit Axion-IA cible les éditeurs et agences de Seine Innopolis, les PME tertiaires de l'Actipôle des Chartreux et les commerçants locaux. Cartographie des tâches manuelles (devis, facturation, support, reporting). Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès 590 € HT, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
-      en: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès 590 € HT, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
+      fr: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
+      en: "Nos interventions au Petit-Quevilly couvrent les TPE-PME des six zones d'activités : automatisation CRM, génération de devis, intégration ERP, reporting financier. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site (5 stations tramway desservent la commune).",
     },
     implementation: {
-      fr: "L'implémentation au Petit-Quevilly s'adresse aux PME tech de Seine Innopolis et aux industriels héritiers de la chimie locale : outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement no-code. Dès 990 € HT, code livré et documenté.",
-      en: "L'implémentation au Petit-Quevilly s'adresse aux PME tech de Seine Innopolis et aux industriels héritiers de la chimie locale : outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement no-code. Dès 990 € HT, code livré et documenté.",
+      fr: "L'implémentation au Petit-Quevilly s'adresse aux PME tech de Seine Innopolis et aux industriels héritiers de la chimie locale : outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement no-code. Dès {{price:impl-poc|entry}}, code livré et documenté.",
+      en: "L'implémentation au Petit-Quevilly s'adresse aux PME tech de Seine Innopolis et aux industriels héritiers de la chimie locale : outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement no-code. Dès {{price:impl-poc|entry}}, code livré et documenté.",
     },
     unAUn: {
-      fr: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de TPE-PME des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès 990 € HT la demi-journée.",
-      en: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de TPE-PME des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès 990 € HT la demi-journée.",
+      fr: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de TPE-PME des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès {{price:intervention-dirigeants|flat}} la demi-journée.",
+      en: "Sessions un-à-un au Petit-Quevilly pour les dirigeants de TPE-PME des zones d'activités locales qui veulent monter en compétence sur l'IA générative (ChatGPT, Claude, scripting). Dès {{price:intervention-dirigeants|flat}} la demi-journée.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention IA au Petit-Quevilly ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, l'intervention essentielle sur site à 590 € HT, et une implémentation codée sur mesure à 990 € HT. Tarifs publiés sur axion-ia.com/tarifs et identiques en Métropole Rouen Normandie.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publiés sur axion-ia.com/tarifs et identiques en Métropole Rouen Normandie.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Le Petit-Quevilly ?",

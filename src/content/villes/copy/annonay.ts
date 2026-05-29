@@ -30,8 +30,8 @@ export const ANNONAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Annonay : formats adaptés à l'atelier industriel, exploitation agricole, site patrimonial, commerce. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const ANNONAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

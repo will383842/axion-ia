@@ -30,8 +30,8 @@ export const BAGNERES_DE_BIGORRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bagnères-de-Bigorre : formats adaptés aux thermes, hôtels, commerces ou structures touristiques. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const BAGNERES_DE_BIGORRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants bagnérais ?",
-      a: "Pour les TPE artisans et commerçants à Bagnères-de-Bigorre, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, visibilité web locale.",
+      a: "Pour les TPE artisans et commerçants à Bagnères-de-Bigorre, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous le secteur hôtellerie montagne ?",

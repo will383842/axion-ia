@@ -30,8 +30,8 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, TPE artisans et commerces du nord-ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, TPE artisans et commerces du nord-ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, TPE artisans et commerces du nord-ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, TPE artisans et commerces du nord-ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Taillan-Médoc : ateliers adaptés aux chais, bureaux, ateliers et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Taillan-Médoc ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et PME tertiaires du nord-ouest bordelais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et PME tertiaires du nord-ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les vignerons du Médoc ?",
@@ -61,7 +61,7 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME tertiaires au Taillan-Médoc ?",
-      a: "Pour les PME tertiaires : audit IA 490 € HT, intervention 1 journée, implémentation automatisation workflows, agents conversationnels, CRM augmentés, reporting automatisé.",
+      a: "Pour les PME tertiaires : audit IA {{price:audit-flash|flat}}, intervention 1 journée, implémentation automatisation workflows, agents conversationnels, CRM augmentés, reporting automatisé.",
     },
     {
       q: "Comment se déroule une mission au Taillan-Médoc ?",

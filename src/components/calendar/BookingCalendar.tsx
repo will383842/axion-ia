@@ -43,7 +43,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { APPROFONDIE_SUB_TIERS, ESSENTIELLE_SUB_TIERS } from "@/content/pricing";
+import {
+  APPROFONDIE_SUB_TIERS,
+  ESSENTIELLE_SUB_TIERS,
+  AUDIT_TIERS,
+  INTERVENTION_TIERS,
+  getTierById,
+  formatAmount,
+} from "@/content/pricing";
 import { createBookingAction } from "@/features/booking/actions";
 
 // Prix d'entrée Essentielle / Approfondie dérivés de pricing.ts (premier
@@ -61,6 +68,21 @@ const APPROFONDIE_HINT_FR = `2 jours consécutifs · à partir de ${APPROFONDIE_
 const APPROFONDIE_HINT_EN = `2 consecutive days · starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`;
 const APPROFONDIE_PRICE_TAG_FR = `À partir de ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
 const APPROFONDIE_PRICE_TAG_EN = `Starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`;
+
+// Prix fixes dérivés de pricing.ts pour les formats bookables direct (SSOT).
+// Sprint pricing-SSOT : suppression des montants € hardcodés dans les labels
+// et previews des cards calendrier au profit de dérivations.
+// - Audit Flash terrain : tier `audit-flash` champ `priceFlatOnsite` (890 €).
+// - Gagner du temps : tier `intervention-temps` (990 €).
+// - Démarrage IA Express / Atelier IA ciblé : tier `intervention-4h` (590 €).
+// - Formation Claude : tier `intervention-claude` (990 €).
+const AUDIT_FLASH_ONSITE_PRICE_EUR = getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!;
+const GAGNER_DU_TEMPS_PRICE_EUR = getTierById(INTERVENTION_TIERS, "intervention-temps").priceFlat!;
+const INTERVENTION_4H_PRICE_EUR = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
+const INTERVENTION_CLAUDE_PRICE_EUR = getTierById(
+  INTERVENTION_TIERS,
+  "intervention-claude",
+).priceFlat!;
 
 // 5 interventions Module 1 + audit Flash terrain — slug + label FR/EN +
 // durationDays + scheduleHint. Sprint 14.10.8 (Will 2026-05-12) : ajout
@@ -121,11 +143,11 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     // directement sur le calendrier. Slot 1 journée 9 h-17 h sur site avec
     // démos live + plan d'action sous 48 h.
     slug: "audit-flash-onsite",
-    fr: "Audit Flash terrain · 890 €",
-    en: "On-site Flash audit · €890",
+    fr: `Audit Flash terrain · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "fr", { compact: true })}`,
+    en: `On-site Flash audit · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "en", { compact: true })}`,
     durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 890 € HT",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €890",
+    scheduleHintFr: `Journée · 9 h – 17 h · sur site · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "fr")}`,
+    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · ${formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "en", { compact: true })}`,
   },
   {
     // Will (audit /interventions 2026-05-12) — formation à prix fixe 990 €
@@ -133,11 +155,11 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     // temps rejoint les formats bookables direct. Enum DB `gagner_du_temps`
     // déjà présent dans prisma/schema.prisma.
     slug: "gagner-du-temps",
-    fr: "Gagner du temps · 990 €",
-    en: "Save Time · €990",
+    fr: `Gagner du temps · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr", { compact: true })}`,
+    en: `Save Time · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
     durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 990 € HT",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €990",
+    scheduleHintFr: `Journée · 9 h – 17 h · sur site · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr")}`,
+    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · ${formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true })}`,
   },
   {
     // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe.
@@ -146,30 +168,30 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     // alors que le tarif est fixe. Promues bookables direct calendrier. Enum DB
     // `demarrage_ia_express` ajouté via migration 20260512120000_collective_4h_enum_values.
     slug: "demarrage-ia-express",
-    fr: "Démarrage IA Express · 4 h · 590 €",
-    en: "AI Express Kickoff · 4 h · €590",
+    fr: `Démarrage IA Express · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr", { compact: true })}`,
+    en: `AI Express Kickoff · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
     durationDays: 1,
-    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 590 € HT",
-    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €590",
+    scheduleHintFr: `Demi-journée · 9 h – 13 h · sur site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr")}`,
+    scheduleHintEn: `Half-day · 9 a.m. – 1 p.m. · on site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
   },
   {
     slug: "atelier-ia-cible",
-    fr: "Atelier IA ciblé · 4 h · 590 €",
-    en: "Targeted AI Workshop · 4 h · €590",
+    fr: `Atelier IA ciblé · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr", { compact: true })}`,
+    en: `Targeted AI Workshop · 4 h · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
     durationDays: 1,
-    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 590 € HT",
-    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €590",
+    scheduleHintFr: `Demi-journée · 9 h – 13 h · sur site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "fr")}`,
+    scheduleHintEn: `Half-day · 9 a.m. – 1 p.m. · on site · ${formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true })}`,
   },
   {
     // Will (audit /interventions 2026-05-12) — Formation Claude équipe passe
     // de Sur devis à prix fixe pour 2 à 8 personnes, bookable direct calendrier
     // (cf. pricing.ts intervention-claude). 2026-05-24 : alignement à 990 € HT.
     slug: "intervention-claude",
-    fr: "Formation Claude · 2-8 pers. · 990 €",
-    en: "Claude Training · 2-8 ppl · €990",
+    fr: `Formation Claude · 2-8 pers. · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr", { compact: true })}`,
+    en: `Claude Training · 2-8 ppl · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
     durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 990 € HT",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €990",
+    scheduleHintFr: `Journée · 9 h – 17 h · sur site · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr")}`,
+    scheduleHintEn: `Day · 9 a.m. – 5 p.m. · on site · ${formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true })}`,
   },
 ];
 
@@ -231,8 +253,8 @@ const INTERVENTION_VISUAL: Record<
     icon: ShieldCheck,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: "890 € HT",
-    priceEn: "€890",
+    priceFr: formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "fr"),
+    priceEn: formatAmount(AUDIT_FLASH_ONSITE_PRICE_EUR, "en", { compact: true }),
     previewFr: "1 journée sur site · cartographie 1 zone d'usage · démos live · rapport sous 48 h",
     previewEn: "1 day on site · map 1 use area · live demos · report within 48 h",
   },
@@ -240,8 +262,8 @@ const INTERVENTION_VISUAL: Record<
     icon: Star,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: "990 € HT",
-    priceEn: "€990",
+    priceFr: formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "fr"),
+    priceEn: formatAmount(GAGNER_DU_TEMPS_PRICE_EUR, "en", { compact: true }),
     previewFr:
       "1 journée équipe · automatisations tâches récurrentes · plusieurs heures gagnées/semaine",
     previewEn: "1 team day · recurring task automations · hours reclaimed each week",
@@ -250,8 +272,8 @@ const INTERVENTION_VISUAL: Record<
     icon: Sparkles,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: "590 € HT",
-    priceEn: "€590",
+    priceFr: formatAmount(INTERVENTION_4H_PRICE_EUR, "fr"),
+    priceEn: formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true }),
     previewFr: "Demi-journée · démystifier l'IA · panorama 2026 · 2-3 prompts opérationnels testés",
     previewEn: "Half-day · demystify AI · 2026 panorama · 2-3 working prompts tested",
   },
@@ -259,8 +281,8 @@ const INTERVENTION_VISUAL: Record<
     icon: Sparkles,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: "590 € HT",
-    priceEn: "€590",
+    priceFr: formatAmount(INTERVENTION_4H_PRICE_EUR, "fr"),
+    priceEn: formatAmount(INTERVENTION_4H_PRICE_EUR, "en", { compact: true }),
     previewFr: "Demi-journée · 1 cas d'usage métier · implémenté sur chaque poste",
     previewEn: "Half-day · 1 business case · implemented on each workstation",
   },
@@ -270,8 +292,8 @@ const INTERVENTION_VISUAL: Record<
     // la Formation Claude (cohérent avec la card listing InterventionFormatCard).
     accentBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     accentFg: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
-    priceFr: "990 € HT",
-    priceEn: "€990",
+    priceFr: formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "fr"),
+    priceEn: formatAmount(INTERVENTION_CLAUDE_PRICE_EUR, "en", { compact: true }),
     previewFr: "1 journée 100 % Claude · 2-8 pers. · Chat + Projects + Code CLI",
     previewEn: "1 day 100 % Claude · 2-8 ppl · Chat + Projects + Code CLI",
   },

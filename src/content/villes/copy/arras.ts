@@ -51,7 +51,7 @@ export const ARRAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs des audits IA à Arras ?",
-      a: "Les audits IA à Arras commencent à partir de 590 € HT pour un Audit Flash. Tous nos tarifs sont publics et consultables sur axion-ia.com.",
+      a: "Les audits IA à Arras commencent à partir de {{price:intervention-4h|flat}} pour un Audit Flash. Tous nos tarifs sont publics et consultables sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines d'Arras ?",
@@ -71,7 +71,7 @@ export const ARRAS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les dirigeants à Arras ?",
-      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME d'Arras, à partir de 990 € HT, pour cadrer une feuille de route IA opérationnelle.",
+      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME d'Arras, à partir de {{price:intervention-dirigeants|flat}}, pour cadrer une feuille de route IA opérationnelle.",
     },
   ],
 };

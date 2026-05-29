@@ -597,6 +597,29 @@ export const MAINTENANCE_TIERS: ReadonlyArray<PricingTier> = [
   },
 ];
 
+// ============================================================================
+// CODAGE & DÉVELOPPEMENT WEB — plateformes / SaaS sur mesure avec IA intégrée
+// 2026-05-29 (Will) — tier ajouté pour que les pages /codage-developpement
+// dérivent leurs prix de la SSOT (avant : 2 000–30 000 € en dur). Ajuster les
+// bornes ici les propage partout (pages + tokens prose).
+// ============================================================================
+
+export const CODAGE_TIERS: ReadonlyArray<PricingTier> = [
+  {
+    id: "codage-web",
+    labelFr: "Codage & développement web",
+    labelEn: "Web coding & development",
+    // Du chatbot RAG greffé (entrée) à la plateforme sur mesure complète.
+    priceMin: 2000,
+    priceMax: 30000,
+    descriptionFr:
+      "Développement web sur mesure avec IA intégrée — du chatbot RAG à la plateforme SaaS complète. Forfait fixe, devis ferme avant démarrage.",
+    descriptionEn:
+      "Custom web development with integrated AI — from RAG chatbot to full SaaS platform. Fixed fee, firm quote before kick-off.",
+    audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
+  },
+];
+
 /** Catalogue complet des prestations Axion-IA — facilite la dérivation et la
  *  recherche par id depuis n'importe quel consommateur. */
 export const PRICING_CATEGORIES = {
@@ -604,6 +627,7 @@ export const PRICING_CATEGORIES = {
   interventions: INTERVENTION_TIERS,
   implementation: IMPLEMENTATION_TIERS,
   maintenance: MAINTENANCE_TIERS,
+  codage: CODAGE_TIERS,
 } as const;
 
 // ============================================================================
@@ -773,4 +797,5 @@ export const PRICING = {
   interventions: INTERVENTION_TIERS,
   implementation: IMPLEMENTATION_TIERS,
   maintenance: MAINTENANCE_TIERS,
+  codage: CODAGE_TIERS,
 } as const;

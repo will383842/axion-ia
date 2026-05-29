@@ -30,8 +30,8 @@ export const HORBOURG_WIHR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Horbourg-Wihr : formats adaptés à la cave, le restaurant ou l'atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const HORBOURG_WIHR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Horbourg-Wihr ?",
-      a: "L'Audit Flash IA à Horbourg-Wihr démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Horbourg-Wihr démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs à Horbourg-Wihr ?",

@@ -30,8 +30,8 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gretz-Armainvilliers : formats adaptés au cabinet, commerce ou atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Gretz-Armainvilliers ?",
-      a: "L'Audit Flash IA à Gretz-Armainvilliers démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Gretz-Armainvilliers démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans à Gretz-Armainvilliers ?",

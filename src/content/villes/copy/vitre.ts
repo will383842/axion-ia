@@ -30,8 +30,8 @@ export const VITRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vitré : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const VITRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans vitréens ?",
-      a: "Pour les TPE, artisans et commerçants à Vitré, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE, artisans et commerçants à Vitré, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Rennes ?",

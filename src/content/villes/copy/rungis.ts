@@ -30,8 +30,8 @@ export const RUNGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rungis : formats adaptés pavillon MIN, entrepôt frigorifique, atelier, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const RUNGIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans alimentaires et restaurateurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

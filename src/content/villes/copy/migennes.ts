@@ -30,8 +30,8 @@ export const MIGENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Migennes : diagnostic adapté aux opérateurs logistique, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Migennes : diagnostic adapté aux opérateurs logistique, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Migennes : diagnostic adapté aux opérateurs logistique, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Migennes : diagnostic adapté aux opérateurs logistique, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MIGENNES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Migennes  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Migennes et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre activité logistique, industrielle ou commerciale.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Migennes et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre activité logistique, industrielle ou commerciale.",
     },
     {
       q: "Accompagnez-vous les opérateurs logistique de Migennes ?",
@@ -65,7 +65,7 @@ export const MIGENNES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Migennes ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Migennes, à partir de 990 € HT. Sessions dans vos locaux logistique, industriels, commerciaux ou en visio. Approche terrain adaptée au tissu économique icaunais.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Migennes, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux logistique, industriels, commerciaux ou en visio. Approche terrain adaptée au tissu économique icaunais.",
     },
   ],
 };

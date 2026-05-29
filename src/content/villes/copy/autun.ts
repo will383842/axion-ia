@@ -30,8 +30,8 @@ export const AUTUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Autun : formats adaptés commerce centre-bourg, bureau tertiaire, site patrimonial, atelier artisan. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const AUTUN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants d'Autun ?",
-      a: "Oui, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, CRM commerçants centre-bourg.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, CRM commerçants centre-bourg.",
     },
     {
       q: "Quels services pour les PME tertiaires d'Autun ?",

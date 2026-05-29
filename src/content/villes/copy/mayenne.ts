@@ -30,8 +30,8 @@ export const MAYENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du nord-Mayenne. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du nord-Mayenne. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du nord-Mayenne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du nord-Mayenne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mayenne : formations adaptées aux PME agroalimentaires, industriels plasturgie/mécanique, artisans, éleveurs et commerçants. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const MAYENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Mayenne ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du nord-Mayenne. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du nord-Mayenne. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour l'industrie plasturgique ?",

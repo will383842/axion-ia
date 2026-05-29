@@ -9,9 +9,9 @@ export const GRABELS_COPY: VilleCopy = {
   pitchEn:
     "Grabels (34), 9 092 habitants, commune résidentielle de l'Hérault située à 8 km au nord-ouest de Montpellier, entre garrigue méditerranéenne et vignoble. Forte croissance démographique depuis 1962, densité 560 hab/km². Tissu TPE professions libérales (santé, conseil), PME services, artisans BTP, commerces de proximité. Proximité du campus universitaire de Montpellier et des zones d'activités métropolitaines. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest montpelliérain.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Grabels (Hérault, Montpellier Méditerranée Métropole) auprès des TPE, PME de services, professions libérales, artisans BTP et commerces du nord-ouest montpelliérain. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Grabels (Hérault, Montpellier Méditerranée Métropole) auprès des TPE, PME de services, professions libérales, artisans BTP et commerces du nord-ouest montpelliérain. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Grabels (Hérault, Montpellier Méditerranée Métropole) auprès des TPE, PME de services, professions libérales, artisans BTP et commerces du nord-ouest montpelliérain. Audit Flash 490 € HT, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Grabels (Hérault, Montpellier Méditerranée Métropole) auprès des TPE, PME de services, professions libérales, artisans BTP et commerces du nord-ouest montpelliérain. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   ecosystemFr:
     "Grabels est intégrée à Montpellier Méditerranée Métropole. Commune résidentielle en forte croissance depuis 1962, située entre garrigue et vignoble, traversée par la rivière Mosson et le GR 653 (Via Tolosana). Tissu économique : TPE professions libérales (santé, conseil, juridique), PME services, artisans BTP et étanchéité (ex. EB Étanchéité, IdSolutions), commerces de proximité. Proximité immédiate du campus universitaire de Montpellier structure un bassin d'emploi cadres et familles.",
   ecosystemEn:
@@ -31,8 +31,8 @@ export const GRABELS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grabels : diagnostic pour professions libérales, PME services, artisans et commerces du nord-ouest Montpellier. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Grabels : diagnostic pour professions libérales, PME services, artisans et commerces du nord-ouest Montpellier. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Grabels : diagnostic pour professions libérales, PME services, artisans et commerces du nord-ouest Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Grabels : diagnostic pour professions libérales, PME services, artisans et commerces du nord-ouest Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grabels : ateliers adaptés cabinet libéral, PME services, commerce ou artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -58,7 +58,7 @@ export const GRABELS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les professions libérales ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux cabinets de professions libérales : automatisation plannings, classification dossiers, agents IA réponse patient/client, optimisation facturation. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux cabinets de professions libérales : automatisation plannings, classification dossiers, agents IA réponse patient/client, optimisation facturation. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME de services à Grabels ?",
@@ -74,7 +74,7 @@ export const GRABELS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Grabels ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

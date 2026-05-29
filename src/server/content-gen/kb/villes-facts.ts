@@ -1232,7 +1232,7 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-029",
-    text: "Le Conseil National du Numérique (CNNum) estime le coût moyen de mise en conformité AI Act pour une PME française à 50 000–200 000 euros, incluant audit, documentation technique, formation et adaptation des processus.",
+    text: "Le Conseil National du Numérique (CNNum) estime le coût moyen de mise en conformité AI Act pour une PME française à 50 000–200 000 euros, incluant audit, documentation technique, formation et adaptation des processus." /* price-exempt: coût conformité marché CNNum, pas un tarif Axion */,
     source: "CNNum — Rapport AI Act & PME 2025",
     sourceUrl: "https://www.cnnumerique.fr",
     verifiedAt: "2026-05-25",
@@ -1379,7 +1379,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-014",
-    text: "La réduction du temps de traitement des factures par l'IA est de 70-85 % selon les études de cabinets (Deloitte, 2023), avec un taux d'erreur réduit de 90 %. Pour une PME traitant 500 factures/mois, l'économie annuelle est estimée à 20 000-40 000 euros.",
+    text: "La réduction du temps de traitement des factures par l'IA est de 70-85 % selon les études de cabinets (Deloitte, 2023), avec un taux d'erreur réduit de 90 %. Pour une PME traitant 500 factures/mois, l'économie annuelle est estimée à 20 000-40 000 euros." /* price-exempt: économie marché Deloitte, pas un tarif Axion */,
     source: "Deloitte — AI in Finance Operations 2023",
     sourceUrl: "https://www.deloitte.com",
     verifiedAt: "2026-05-25",
@@ -1662,7 +1662,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-045",
-    text: "Selon une étude Deloitte (2024), chaque euro investi dans la formation aux outils IA génère 4 euros de gain de productivité sur 3 ans, faisant de la formation IA l'investissement ROI le plus élevé dans la transformation digitale.",
+    text: "Selon une étude Deloitte (2024), chaque euro investi dans la formation aux outils IA génère 4 euros de gain de productivité sur 3 ans, faisant de la formation IA l'investissement ROI le plus élevé dans la transformation digitale." /* price-exempt: ratio ROI marché Deloitte, pas un tarif Axion */,
     source: "Deloitte — AI Skills & ROI Report 2024",
     sourceUrl: "https://www.deloitte.com",
     verifiedAt: "2026-05-25",

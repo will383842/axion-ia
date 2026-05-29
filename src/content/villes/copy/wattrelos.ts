@@ -9,9 +9,9 @@ export const WATTRELOS_COPY: VilleCopy = {
   pitchEn:
     "Wattrelos (59), 40 847 habitants, commune de la Métropole européenne de Lille en frontière belge (Mouscron, Estaimpuis). Ancien bassin textile (Lainière de Roubaix) reconverti en logistique et services. La Redoute y emploie environ 500 personnes. Zones d'activités l'Avelin, le Beck, le Winhoute, éco-quartier de l'Union. Canal de Roubaix rouvert à la navigation depuis 2009. Axion-IA accompagne TPE, PME, commerces et artisans wattrelosiens.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit Flash 490 € HT, tarifs publics, code custom (pas no-code).",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit Flash {{price:audit-flash|flat}}, tarifs publics, code custom (pas no-code).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit Flash 490 € HT, tarifs publics, code custom (pas no-code).",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit Flash {{price:audit-flash|flat}}, tarifs publics, code custom (pas no-code).",
   seoHook: "TPE/PME logistique & commerce frontière belge",
   ecosystemFr:
     "Tissu économique de Wattrelos structuré autour de la logistique (La Redoute, Metro), du négoce textile (Steffy), du commerce transfrontalier avec la Belgique, de l'artisanat BTP et des services aux entreprises. Les zones d'activités l'Avelin, le Beck, le Winhoute et l'éco-quartier de l'Union concentrent les implantations. Forte interconnexion avec Roubaix, Tourcoing et Lille (métropole de 1,2 M d'habitants).",
@@ -30,8 +30,8 @@ export const WATTRELOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit Flash 490 € HT, ROI chiffré, pas de devis opaque.",
-      en: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit Flash 490 € HT, ROI chiffré, pas de devis opaque.",
+      fr: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wattrelos : ateliers adaptés logistique, négoce, commerce ou artisan BTP. Équipes formées et autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const WATTRELOS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Wattrelos ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Accompagnez-vous les acteurs logistiques et e-commerce ?",

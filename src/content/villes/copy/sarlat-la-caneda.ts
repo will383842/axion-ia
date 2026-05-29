@@ -30,8 +30,8 @@ export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sarlat-la-Canéda : diagnostic adapté aux TPE/PME du tourisme, de la restauration, de l'artisanat d'art et de l'agroalimentaire périgourdin. Audit Flash 490 € HT.",
-      en: "Audit IA à Sarlat-la-Canéda : diagnostic adapté aux TPE/PME du tourisme, de la restauration, de l'artisanat d'art et de l'agroalimentaire périgourdin. Audit Flash 490 € HT.",
+      fr: "Audit IA à Sarlat-la-Canéda : diagnostic adapté aux TPE/PME du tourisme, de la restauration, de l'artisanat d'art et de l'agroalimentaire périgourdin. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sarlat-la-Canéda : diagnostic adapté aux TPE/PME du tourisme, de la restauration, de l'artisanat d'art et de l'agroalimentaire périgourdin. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sarlat : formations pratiques pour hôteliers, restaurateurs, commerçants et artisans du Périgord Noir. Équipes autonomes.",
@@ -53,7 +53,7 @@ export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sarlat  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du tourisme et de la gastronomie sarladaise. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du tourisme et de la gastronomie sarladaise. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les hôtels et restaurants de Sarlat ?",

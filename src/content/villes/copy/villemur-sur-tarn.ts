@@ -9,9 +9,9 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
   pitchEn:
     "Villemur-sur-Tarn (31), bourg fortifié millénaire des bords du Tarn au nord de Toulouse, 6 345 habitants (Villemuriens), à la croisée des trois provinces historiques de Rouergue, Guyenne et Languedoc. La commune n'a jamais été prise par les Anglais durant la guerre de Cent Ans. Tissu économique mêlant industrie (le site Molex dans le quartier Cité verte, hérité de l'histoire manufacturière locale), TPE artisans, PME agroalimentaires, commerces de centre-ville et exploitations agricoles (l'agriculture occupe 78 % du foncier). Axion-IA y accompagne TPE, PME et commerces du nord Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit Flash dès 490 € HT, code custom (jamais de no-code). Nos consultants se déplacent en 45 min depuis Toulouse (38 km par route).",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit Flash dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nos consultants se déplacent en 45 min depuis Toulouse (38 km par route).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit Flash dès 490 € HT, code custom (jamais de no-code). Nos consultants se déplacent en 45 min depuis Toulouse (38 km par route).",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit Flash dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nos consultants se déplacent en 45 min depuis Toulouse (38 km par route).",
   seoHook: "industrie, agriculture & artisanat",
   ecosystemFr:
     "Villemur-sur-Tarn est un bourg structurant du nord de la Haute-Garonne, à cheval sur le Tarn et à la frontière du Tarn-et-Garonne. Le foncier est massivement agricole (78,3 % d'usage agricole, 11,3 % forestier), signe d'un tissu rural vivant. Le quartier Cité verte abrite le site industriel Molex (connectique électronique), héritage de la tradition manufacturière villemurienne. À côté, on trouve un tissu dense de TPE artisans BTP, commerces de centre-ville, PME agroalimentaires, exploitations en grandes cultures et vignoble (proximité Fronton AOC), ainsi que des professions libérales. La ville reste exposée aux crues récurrentes du Tarn (crue catastrophique du 3 mars 1930).",
@@ -31,16 +31,16 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villemur-sur-Tarn : diagnostic 4 heures adapté à l'industrie locale, aux TPE artisans, PME agroalimentaires, commerces et exploitants agricoles du nord Haute-Garonne. Audit Flash dès 490 € HT, livrable écrit avec 3 cas d'usage prioritaires.",
-      en: "Audit IA à Villemur-sur-Tarn : diagnostic 4 heures adapté à l'industrie locale, aux TPE artisans, PME agroalimentaires, commerces et exploitants agricoles du nord Haute-Garonne. Audit Flash dès 490 € HT, livrable écrit avec 3 cas d'usage prioritaires.",
+      fr: "Audit IA à Villemur-sur-Tarn : diagnostic 4 heures adapté à l'industrie locale, aux TPE artisans, PME agroalimentaires, commerces et exploitants agricoles du nord Haute-Garonne. Audit Flash dès {{price:audit-flash|flat}}, livrable écrit avec 3 cas d'usage prioritaires.",
+      en: "Audit IA à Villemur-sur-Tarn : diagnostic 4 heures adapté à l'industrie locale, aux TPE artisans, PME agroalimentaires, commerces et exploitants agricoles du nord Haute-Garonne. Audit Flash dès {{price:audit-flash|flat}}, livrable écrit avec 3 cas d'usage prioritaires.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villemur-sur-Tarn : ateliers pratiques chez vous, format adapté à l'atelier industriel, à la PME agroalimentaire, au commerce, à l'artisan ou à l'exploitant agricole. Intervention dès 590 € HT. Vos collaborateurs gèrent ensuite les outils en autonomie.",
-      en: "Interventions IA sur site à Villemur-sur-Tarn : ateliers pratiques chez vous, format adapté à l'atelier industriel, à la PME agroalimentaire, au commerce, à l'artisan ou à l'exploitant agricole. Intervention dès 590 € HT. Vos collaborateurs gèrent ensuite les outils en autonomie.",
+      fr: "Interventions IA sur site à Villemur-sur-Tarn : ateliers pratiques chez vous, format adapté à l'atelier industriel, à la PME agroalimentaire, au commerce, à l'artisan ou à l'exploitant agricole. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs gèrent ensuite les outils en autonomie.",
+      en: "Interventions IA sur site à Villemur-sur-Tarn : ateliers pratiques chez vous, format adapté à l'atelier industriel, à la PME agroalimentaire, au commerce, à l'artisan ou à l'exploitant agricole. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs gèrent ensuite les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Villemur-sur-Tarn : automatisation contrôle qualité, gestion stocks, OCR factures fournisseurs, classification documents techniques, agents conversationnels SAV, prédiction de pannes pour PME industrielles. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès 990 € HT.",
-      en: "Implémentation IA à Villemur-sur-Tarn : automatisation contrôle qualité, gestion stocks, OCR factures fournisseurs, classification documents techniques, agents conversationnels SAV, prédiction de pannes pour PME industrielles. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès 990 € HT.",
+      fr: "Implémentation IA à Villemur-sur-Tarn : automatisation contrôle qualité, gestion stocks, OCR factures fournisseurs, classification documents techniques, agents conversationnels SAV, prédiction de pannes pour PME industrielles. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Villemur-sur-Tarn : automatisation contrôle qualité, gestion stocks, OCR factures fournisseurs, classification documents techniques, agents conversationnels SAV, prédiction de pannes pour PME industrielles. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Villemur-sur-Tarn : sessions dirigeants TPE artisans, gérants commerces, exploitants agricoles, gérants PME industrielles et agroalimentaires du nord Haute-Garonne et de la vallée du Tarn.",
@@ -54,7 +54,7 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villemur-sur-Tarn ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, livrable écrit, 3 cas d'usage prioritaires). Pour une PME industrielle ou agroalimentaire, audit approfondi entre 1 900 et 3 900 € HT. Implémentation dès 990 € HT. Tarifs publics affichés.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, livrable écrit, 3 cas d'usage prioritaires). Pour une PME industrielle ou agroalimentaire, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Implémentation dès {{price:impl-poc|entry}}. Tarifs publics affichés.",
     },
     {
       q: "Quels délais pour une intervention IA à Villemur-sur-Tarn ?",

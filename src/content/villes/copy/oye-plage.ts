@@ -10,9 +10,9 @@ export const OYE_PLAGE_COPY: VilleCopy = {
     "Oye-Plage (62), commune littorale de la Cote d'Opale dans le Pas-de-Calais, reunit pres de 5 780 habitants. Situee entre Calais et Gravelines avec sa reserve naturelle du Platier d'Oye, son economie associe TPE tourisme, agriculture, commerces saisonniers, artisanat et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Cote Opale, reserve naturelle & tourisme",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Oye-Plage (62). Nous accompagnons les TPE, PME et ETI de cette commune littorale : acteurs du tourisme, agriculteurs, commercants saisonniers, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Oye-Plage est situee sur le littoral entre Calais (15 km) et Gravelines (10 km), avec la reserve naturelle du Platier d'Oye. Tissu economique mixte : TPE tourisme et campings, agriculture (maraichage, polyculture), commerces saisonniers, artisanat BTP et services.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const OYE_PLAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Oye-Plage : diagnostic adapte aux TPE touristiques, agriculteurs, commercants saisonniers et artisans de la Cote d'Opale. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Oye-Plage : diagnostic adapte aux TPE touristiques, agriculteurs, commercants saisonniers et artisans de la Cote d'Opale. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Oye-Plage : diagnostic adapte aux TPE touristiques, agriculteurs, commercants saisonniers et artisans de la Cote d'Opale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Oye-Plage : diagnostic adapte aux TPE touristiques, agriculteurs, commercants saisonniers et artisans de la Cote d'Opale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Oye-Plage : formations adaptees aux campings, exploitations agricoles, commerces saisonniers et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const OYE_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les campings d'Oye-Plage ?",
-      a: "Pour les campings et hebergements de plein air, nous proposons : revenue management IA, agents conversationnels reservation, gestion saisonnalite, automatisation check-in. Audit Flash 490 EUR HT.",
+      a: "Pour les campings et hebergements de plein air, nous proposons : revenue management IA, agents conversationnels reservation, gestion saisonnalite, automatisation check-in. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Oye-Plage ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle aider les agriculteurs d'Oye-Plage ?",
-      a: "Oui, nous accompagnons les exploitants agricoles : IA predictive rendements, gestion parcellaire automatisee, optimisation irrigation, agents conversationnels cooperatives. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les exploitants agricoles : IA predictive rendements, gestion parcellaire automatisee, optimisation irrigation, agents conversationnels cooperatives. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Oye-Plage ?",

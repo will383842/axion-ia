@@ -30,8 +30,8 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux TPE/PME du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux TPE/PME du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux TPE/PME du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux TPE/PME du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Sainte-Maxence : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce et le bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Pont-Sainte-Maxence ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique fluviale ?",

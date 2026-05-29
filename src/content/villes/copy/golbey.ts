@@ -30,8 +30,8 @@ export const GOLBEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const GOLBEY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Golbey  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Golbey et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre usine, atelier ou activité de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Golbey et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre usine, atelier ou activité de services.",
     },
     {
       q: "Accompagnez-vous les industriels papier-carton de Golbey ?",
@@ -65,7 +65,7 @@ export const GOLBEY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Golbey ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Golbey, à partir de 990 € HT. Sessions dans votre usine, atelier ou en visio. Approche terrain adaptée au tissu industriel papetier et logistique vosgien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Golbey, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, atelier ou en visio. Approche terrain adaptée au tissu industriel papetier et logistique vosgien.",
     },
   ],
 };

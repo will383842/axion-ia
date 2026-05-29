@@ -30,8 +30,8 @@ export const FROUARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Frouard : formats adaptés à la plate-forme logistique, à la PME transport, à l'industrie ou à la TPE artisanale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const FROUARD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Frouard  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Frouard et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre plate-forme logistique, entreprise de transport ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Frouard et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre plate-forme logistique, entreprise de transport ou commerce.",
     },
     {
       q: "Accompagnez-vous les logisticiens et transporteurs de Frouard ?",
@@ -65,7 +65,7 @@ export const FROUARD_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Frouard ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Frouard, à partir de 990 € HT. Sessions dans votre entrepôt, site industriel ou en visio. Approche terrain adaptée au tissu logistique de la Métropole du Grand Nancy.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Frouard, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre entrepôt, site industriel ou en visio. Approche terrain adaptée au tissu logistique de la Métropole du Grand Nancy.",
     },
   ],
 };

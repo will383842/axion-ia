@@ -30,8 +30,8 @@ export const SOYAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soyaux : diagnostic adapté aux PME tertiaires, TPE artisans, prestataires de services et commerces de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
-      en: "Audit IA à Soyaux : diagnostic adapté aux PME tertiaires, TPE artisans, prestataires de services et commerces de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
+      fr: "Audit IA à Soyaux : diagnostic adapté aux PME tertiaires, TPE artisans, prestataires de services et commerces de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Soyaux : diagnostic adapté aux PME tertiaires, TPE artisans, prestataires de services et commerces de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soyaux : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SOYAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Soyaux ?",
-      a: "L'audit Flash IA à Soyaux démarre à 490 € HT. Diagnostic complet de vos processus tertiaires, artisanaux ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Soyaux démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires, artisanaux ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Soyaux ?",

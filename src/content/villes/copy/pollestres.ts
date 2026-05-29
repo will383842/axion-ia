@@ -30,8 +30,8 @@ export const POLLESTRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pollestres : formats adaptés au bureau, atelier, exploitation, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const POLLESTRES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Pollestres, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Pollestres, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Pollestres ?",

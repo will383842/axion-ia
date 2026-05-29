@@ -30,8 +30,8 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ferney-Voltaire : formats adaptés au bureau international, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Quels services pour les professions libérales ?",

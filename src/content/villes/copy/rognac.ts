@@ -30,8 +30,8 @@ export const ROGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rognac : formats adaptés à l'entrepôt logistique, l'atelier artisan et le bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const ROGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Rognac ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME logistique et services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME logistique et services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de Rognac ?",
@@ -61,7 +61,7 @@ export const ROGNAC_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux artisans de Rognac ?",
-      a: "Absolument. L'Audit Flash à 490 € HT est conçu pour les TPE artisans. Cas IA pratiques : automatisation devis, gestion planning, facturation, suivi chantiers, relances clients.",
+      a: "Absolument. L'Audit Flash à {{price:audit-flash|flat}} est conçu pour les TPE artisans. Cas IA pratiques : automatisation devis, gestion planning, facturation, suivi chantiers, relances clients.",
     },
     {
       q: "Comment se déroule une mission IA à Rognac ?",

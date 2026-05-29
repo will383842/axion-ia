@@ -30,8 +30,8 @@ export const MARCK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marck : diagnostic adapté aux TPE artisanales, PME logistiques et entreprises portuaires du Calaisis. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Marck : diagnostic adapté aux TPE artisanales, PME logistiques et entreprises portuaires du Calaisis. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Marck : diagnostic adapté aux TPE artisanales, PME logistiques et entreprises portuaires du Calaisis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Marck : diagnostic adapté aux TPE artisanales, PME logistiques et entreprises portuaires du Calaisis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marck : formations pratiques adaptées à la logistique, au commerce ou à l'artisanat. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MARCK_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Marck  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du Calaisis. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du Calaisis. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les entreprises logistiques à Marck ?",
@@ -61,7 +61,7 @@ export const MARCK_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Marck ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du Calaisis. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du Calaisis. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour démarrer une mission à Marck ?",

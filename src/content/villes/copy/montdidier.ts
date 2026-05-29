@@ -30,8 +30,8 @@ export const MONTDIDIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, TPE artisans et commerçants de cette sous-préfecture picarde. Audit Flash 490 € HT.",
-      en: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, TPE artisans et commerçants de cette sous-préfecture picarde. Audit Flash 490 € HT.",
+      fr: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, TPE artisans et commerçants de cette sous-préfecture picarde. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montdidier : diagnostic adapté aux exploitations agricoles du Santerre, PME agroalimentaires, TPE artisans et commerçants de cette sous-préfecture picarde. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montdidier : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MONTDIDIER_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les exploitations agricoles du Santerre ?",
-      a: "Nous accompagnons les exploitations grandes cultures du Santerre sur leurs cas IA : prédiction rendements céréales/betteraves, optimisation intrants, classification photos parcellaire, automatisation comptabilité et traçabilité récoltes. Audit Flash 490 € HT.",
+      a: "Nous accompagnons les exploitations grandes cultures du Santerre sur leurs cas IA : prédiction rendements céréales/betteraves, optimisation intrants, classification photos parcellaire, automatisation comptabilité et traçabilité récoltes. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les TPE et PME agroalimentaires à Montdidier ?",
@@ -61,7 +61,7 @@ export const MONTDIDIER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Montdidier ?",
-      a: "L'audit Flash IA à Montdidier démarre à 490 € HT. Diagnostic complet de vos processus, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre secteur du Santerre.",
+      a: "L'audit Flash IA à Montdidier démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre secteur du Santerre.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Montdidier ?",

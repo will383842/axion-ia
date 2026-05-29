@@ -30,8 +30,8 @@ export const BRESSUIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit Flash 490 € HT.",
-      en: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bressuire : déploiement outils IA dans vos usines agroalimentaires, ateliers ou commerces. Traçabilité viande, optimisation production et gestion qualité.",
@@ -57,7 +57,7 @@ export const BRESSUIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Bressuire ?",
-      a: "L'audit Flash IA à Bressuire démarre à 490 € HT. Diagnostic de vos processus agroalimentaires, industriels ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Bressuire démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agroalimentaires, industriels ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les éleveurs du bocage bressuirais ?",

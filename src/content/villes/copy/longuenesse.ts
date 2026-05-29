@@ -30,8 +30,8 @@ export const LONGUENESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longuenesse : formations pratiques adaptées au commerce, cabinet ou entreprise de services. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LONGUENESSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Longuenesse  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME audomaroises. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME audomaroises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les commerces de Longuenesse ?",
@@ -61,7 +61,7 @@ export const LONGUENESSE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Saint-Omer ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du bassin audomarois. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du bassin audomarois. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour démarrer une mission à Longuenesse ?",

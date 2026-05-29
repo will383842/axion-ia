@@ -9,9 +9,9 @@ export const HOUILLES_COPY: VilleCopy = {
   pitchEn:
     "Houilles (78), commune des Yvelines située dans une boucle de la Seine à 7 km au nord-ouest de Paris, 33 983 habitants (Ovillois). Tissu économique tertiaire urbain : nombreuses TPE de services, PME du bâtiment, commerces de proximité, professions libérales, artisans. La gare de Houilles–Carrières-sur-Seine (RER A + Transilien L et J) draine 24 000 voyageurs/jour, plaçant la ville parmi les pôles résidentiels les plus actifs de l'ouest parisien. Axion-IA y accompagne les structures locales et celles des communes voisines Sartrouville, Carrières-sur-Seine et Bezons.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit Flash dès 490 € HT, interventions sur site dès 590 € HT. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit Flash dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit Flash dès 490 € HT, interventions sur site dès 590 € HT. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit Flash dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
   seoHook: "services aux entreprises & commerce de proximité",
   ecosystemFr:
     "Houilles est une ville résidentielle dense de la boucle de Seine, organisée autour d'une gare RER A très fréquentée. Le tissu local est dominé par les services aux entreprises (cadres et professions intermédiaires représentent plus de 38 % des actifs), le commerce de proximité, la restauration, le BTP de second œuvre et les artisans. Peu d'industrie lourde, mais une dense population de TPE familiales, professions libérales (santé, juridique, conseil) et petites PME tertiaires. La proximité immédiate de La Défense (6 min en RER A) attire de nombreux indépendants et structures de service.",
@@ -31,16 +31,16 @@ export const HOUILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Houilles : diagnostic 4 heures adapté aux TPE de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit Flash dès 490 € HT. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
-      en: "Audit IA à Houilles : diagnostic 4 heures adapté aux TPE de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit Flash dès 490 € HT. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
+      fr: "Audit IA à Houilles : diagnostic 4 heures adapté aux TPE de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit Flash dès {{price:audit-flash|flat}}. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
+      en: "Audit IA à Houilles : diagnostic 4 heures adapté aux TPE de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit Flash dès {{price:audit-flash|flat}}. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la TPE de service, au commerce. Intervention dès 590 € HT. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
-      en: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la TPE de service, au commerce. Intervention dès 590 € HT. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
+      fr: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la TPE de service, au commerce. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
+      en: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la TPE de service, au commerce. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
     },
     implementation: {
-      fr: "Implémentation IA à Houilles : automatisation devis-relances, classification email, agents conversationnels internes, OCR factures, planning de RDV. Code custom (pas no-code), hébergement Europe, conformité RGPD by design. Dès 990 € HT.",
-      en: "Implémentation IA à Houilles : automatisation devis-relances, classification email, agents conversationnels internes, OCR factures, planning de RDV. Code custom (pas no-code), hébergement Europe, conformité RGPD by design. Dès 990 € HT.",
+      fr: "Implémentation IA à Houilles : automatisation devis-relances, classification email, agents conversationnels internes, OCR factures, planning de RDV. Code custom (pas no-code), hébergement Europe, conformité RGPD by design. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Houilles : automatisation devis-relances, classification email, agents conversationnels internes, OCR factures, planning de RDV. Code custom (pas no-code), hébergement Europe, conformité RGPD by design. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Houilles : sessions dirigeants TPE, professions libérales, gérants commerçants pour intégrer l'IA dans le quotidien opérationnel. Adapté aux indépendants et petites équipes de la boucle de Seine.",
@@ -54,7 +54,7 @@ export const HOUILLES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Houilles ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, livrable écrit). Pour une PME, l'audit approfondi se situe entre 1 900 et 3 900 € HT. Implémentation dès 990 € HT. Tarifs publics, pas de devis caché.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, livrable écrit). Pour une PME, l'audit approfondi se situe entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Implémentation dès {{price:impl-poc|entry}}. Tarifs publics, pas de devis caché.",
     },
     {
       q: "Quels délais pour une intervention IA à Houilles ?",

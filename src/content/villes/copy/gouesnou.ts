@@ -30,8 +30,8 @@ export const GOUESNOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gouesnou : formats adaptés aux PME commerciales, logisticiens, prestataires de services ou TPE artisans des zones d'activités. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const GOUESNOU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et prestataires de Gouesnou ?",
-      a: "Oui, nous accompagnons les TPE artisans et prestataires de services de Gouesnou sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning équipes, optimisation facturation. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et prestataires de services de Gouesnou sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning équipes, optimisation facturation. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de Brest Métropole ?",

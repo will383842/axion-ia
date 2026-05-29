@@ -10,9 +10,9 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
     "Aulnoy-lez-Valenciennes (59), commune de l'agglomeration valenciennoise, reunit pres de 7 080 habitants. Elle accueille l'Universite Polytechnique Hauts-de-France (UPHF), moteur d'innovation locale. Tissu economique de TPE artisans, PME tertiaires, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "universite UPHF, tertiaire & innovation",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Aulnoy-lez-Valenciennes (59). Nous accompagnons les TPE, PME et ETI du Valenciennois : PME tertiaires, startups UPHF, artisans, commercants et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Aulnoy-lez-Valenciennes heberge le campus principal de l'UPHF (Universite Polytechnique Hauts-de-France), pole d'enseignement superieur et de recherche (ingenierie, numerique, transports). Ce voisinage universitaire nourrit un ecosysteme de startups, PME tertiaires, commerces etudiants et services aux entreprises du Valenciennois.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et TPE du Valenciennois. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et TPE du Valenciennois. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et TPE du Valenciennois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Aulnoy-lez-Valenciennes : diagnostic adapte aux PME tertiaires, startups UPHF et TPE du Valenciennois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Aulnoy-lez-Valenciennes : formations adaptees au bureau tertiaire, a la startup tech ou au commerce. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les startups issues de l'UPHF ?",
-      a: "Oui, nous accompagnons les startups et spin-offs de l'Universite Polytechnique Hauts-de-France sur leurs cas IA : prototypage, agents conversationnels, automatisation, integration outils IA dans leur produit. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les startups et spin-offs de l'Universite Polytechnique Hauts-de-France sur leurs cas IA : prototypage, agents conversationnels, automatisation, integration outils IA dans leur produit. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les TPE et commercants a Aulnoy ?",
-      a: "Oui, nous accompagnons les TPE artisans et commercants du Valenciennois : automatisation devis, agents IA prise de RDV, outils IA accessibles sans competence technique prealable. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les TPE artisans et commercants du Valenciennois : automatisation devis, agents IA prise de RDV, outils IA accessibles sans competence technique prealable. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Aulnoy-lez-Valenciennes ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Aulnoy-lez-Valenciennes ?",

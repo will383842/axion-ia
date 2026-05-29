@@ -30,8 +30,8 @@ export const BOUCAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit Flash 490 € HT.",
-      en: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boucau : déploiement outils IA dans vos ateliers industriels, entrepôts logistiques, commerces ou bureaux. Équipes formées et autonomes.",
@@ -57,7 +57,7 @@ export const BOUCAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Boucau ?",
-      a: "L'audit Flash IA à Boucau démarre à 490 € HT. Diagnostic de vos processus industriels, logistiques ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Boucau démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus industriels, logistiques ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les acteurs logistiques du port de Bayonne ?",

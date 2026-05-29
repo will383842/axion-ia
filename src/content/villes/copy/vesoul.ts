@@ -30,8 +30,8 @@ export const VESOUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vesoul : formats adaptés à l'atelier mécanique, au commerce de centre-ville, au bureau PME ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const VESOUL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile de Vesoul ?",
-      a: "Oui, nous accompagnons les TPE et PME de l'industrie automobile vésulienne : maintenance prédictive IA, gestion stocks pièces, automatisation qualité, planification production, traçabilité logistique. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME de l'industrie automobile vésulienne : maintenance prédictive IA, gestion stocks pièces, automatisation qualité, planification production, traçabilité logistique. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Vesoul  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la préfecture haut-saônoise, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la préfecture haut-saônoise, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Proposez-vous des formations IA pour les commerçants de Vesoul ?",

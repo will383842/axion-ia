@@ -30,8 +30,8 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Julien-de-Concelles : formats courts adaptés exploitations maraîchères, domaines viticoles, ateliers artisans et PME. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les maraîchers et vignerons ?",
-      a: "Oui, nous accompagnons les TPE maraîchères et vignerons de Saint-Julien-de-Concelles sur des cas IA concrets : automatisation traçabilité, gestion parcellaire, prévision récoltes, facturation, agents IA relation client. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE maraîchères et vignerons de Saint-Julien-de-Concelles sur des cas IA concrets : automatisation traçabilité, gestion parcellaire, prévision récoltes, facturation, agents IA relation client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "L'IA est-elle utile pour le maraîchage nantais ?",

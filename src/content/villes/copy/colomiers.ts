@@ -61,7 +61,7 @@ export const COLOMIERS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans et commerces de Colomiers ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès 490 € HT, formation sur une journée, coaching individuel.",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Quels services pour les bureaux d'études et l'informatique embarquée ?",

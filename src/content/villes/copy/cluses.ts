@@ -30,8 +30,8 @@ export const CLUSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cluses : formats adaptés à l'atelier d'usinage, au bureau d'études, à la TPE commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés industriel.",
@@ -57,7 +57,7 @@ export const CLUSES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cluses  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME industrielles vallée de l'Arve comme aux TPE artisans et commerçants.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles vallée de l'Arve comme aux TPE artisans et commerçants.",
     },
     {
       q: "L'IA peut-elle améliorer le contrôle qualité en décolletage ?",

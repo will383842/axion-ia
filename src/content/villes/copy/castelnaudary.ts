@@ -30,8 +30,8 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit Flash 490 € HT.",
-      en: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit Flash 490 € HT.",
+      fr: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castelnaudary : formats adaptés à la conserverie, l'exploitation céréalière, le commerce, le prestataire touristique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Castelnaudary  ?",
-      a: "L'audit Flash débute selon la taille de votre activité pour une TPE. Pour les PME agroalimentaire, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité des process. Tarifs publics, transparents.",
+      a: "L'audit Flash débute selon la taille de votre activité pour une TPE. Pour les PME agroalimentaire, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme canal du Midi ?",

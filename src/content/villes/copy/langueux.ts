@@ -30,8 +30,8 @@ export const LANGUEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langueux : formats adaptés commerce, entrepôt, bureau, restaurant. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const LANGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et PME de services ?",
-      a: "Oui, audit Flash 490 € HT, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents conversationnels pour artisans et PME de services.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents conversationnels pour artisans et PME de services.",
     },
     {
       q: "Quels services pour la logistique et distribution ?",

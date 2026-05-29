@@ -30,8 +30,8 @@ export const LA_GARNACHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash 490 € HT.",
-      en: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash 490 € HT.",
+      fr: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Garnache : formats adaptés à l'exploitation agricole, l'artisan, la PME agroalimentaire ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LA_GARNACHE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Garnache  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de La Garnache. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur rural ou artisanal.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de La Garnache. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur rural ou artisanal.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",
@@ -61,11 +61,11 @@ export const LA_GARNACHE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants de La Garnache ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, fidélisation client augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à La Garnache ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et exploitants à La Garnache. Format flexible : dans vos locaux, sur l'exploitation, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et exploitants à La Garnache. Format flexible : dans vos locaux, sur l'exploitation, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

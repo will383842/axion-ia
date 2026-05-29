@@ -30,8 +30,8 @@ export const CUERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cuers : diagnostic adapté aux TPE artisans, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Cuers : diagnostic adapté aux TPE artisans, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Cuers : diagnostic adapté aux TPE artisans, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cuers : diagnostic adapté aux TPE artisans, domaines viticoles Côtes de Provence, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cuers : formats adaptés aux domaines viticoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const CUERS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles Côtes de Provence de Cuers ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Côtes de Provence : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export et œnotourisme.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Côtes de Provence : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export et œnotourisme.",
     },
     {
       q: "Accompagnez-vous les caves coopératives et PME agroalimentaires du centre-Var ?",
@@ -61,7 +61,7 @@ export const CUERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cuers  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Cuers ?",

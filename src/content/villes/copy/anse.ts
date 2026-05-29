@@ -30,8 +30,8 @@ export const ANSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Anse : formats adaptés au domaine viticole, bureau, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const ANSE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Anse, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      a: "Pour les TPE artisans BTP et commerçants à Anse, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

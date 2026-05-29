@@ -30,8 +30,8 @@ export const LOCMARIA_PLOUZANE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Locmaria-Plouzané : diagnostic adapté aux TPE/PME tech du technopôle, sous-traitants défense, artisans et commerçants de l'ouest brestois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Locmaria-Plouzané : diagnostic adapté aux TPE/PME tech du technopôle, sous-traitants défense, artisans et commerçants de l'ouest brestois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Locmaria-Plouzané : diagnostic adapté aux TPE/PME tech du technopôle, sous-traitants défense, artisans et commerçants de l'ouest brestois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Locmaria-Plouzané : diagnostic adapté aux TPE/PME tech du technopôle, sous-traitants défense, artisans et commerçants de l'ouest brestois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Locmaria-Plouzané : formations adaptées aux équipes tech, ingénieurs R&D marine, sous-traitants défense et TPE locales. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const LOCMARIA_PLOUZANE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Locmaria-Plouzané  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de Locmaria-Plouzané ?",
-      a: "Pour les artisans et commerçants, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion planning et fidélisation client augmentée.",
+      a: "Pour les artisans et commerçants, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion planning et fidélisation client augmentée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Locmaria-Plouzané ?",

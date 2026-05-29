@@ -30,8 +30,8 @@ export const NOYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noyon : formats adaptés au commerce, à l'agroalimentaire, au BTP et aux services. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const NOYON_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Noyon ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les entreprises agroalimentaires du Noyonnais ?",

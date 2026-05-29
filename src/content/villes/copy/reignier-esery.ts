@@ -30,8 +30,8 @@ export const REIGNIER_ESERY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Reignier-Ésery : diagnostic adapté aux PME tertiaires, entreprises de services transfrontaliers, TPE artisans BTP, agriculteurs et commerçants du Grand Genève. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Reignier-Ésery : diagnostic adapté aux PME tertiaires, entreprises de services transfrontaliers, TPE artisans BTP, agriculteurs et commerçants du Grand Genève. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Reignier-Ésery : diagnostic adapté aux PME tertiaires, entreprises de services transfrontaliers, TPE artisans BTP, agriculteurs et commerçants du Grand Genève. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Reignier-Ésery : diagnostic adapté aux PME tertiaires, entreprises de services transfrontaliers, TPE artisans BTP, agriculteurs et commerçants du Grand Genève. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Reignier-Ésery : formats adaptés au bureau tertiaire, chantier BTP, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const REIGNIER_ESERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Reignier-Ésery ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT, adapté aux TPE et PME de Reignier-Ésery. Diagnostic complet des opportunités IA dans votre activité (services, BTP, agriculture, commerce), ROI chiffré sous 5 jours ouvrés.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME de Reignier-Ésery. Diagnostic complet des opportunités IA dans votre activité (services, BTP, agriculture, commerce), ROI chiffré sous 5 jours ouvrés.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Reignier-Ésery ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Reignier-Ésery sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning équipes. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Reignier-Ésery sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning équipes. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Proposez-vous des solutions IA pour l'agriculture à Reignier-Ésery ?",

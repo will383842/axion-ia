@@ -30,8 +30,8 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aixe-sur-Vienne : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Aixe-sur-Vienne ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE d'Aixe-sur-Vienne. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE d'Aixe-sur-Vienne. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les éleveurs et agriculteurs autour d'Aixe ?",
@@ -61,7 +61,7 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP et commerçants aixois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Aixe-sur-Vienne, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
+      a: "Pour les TPE artisans BTP et commerçants à Aixe-sur-Vienne, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
     },
     {
       q: "Comment se passe une mission depuis Limoges à Aixe-sur-Vienne ?",

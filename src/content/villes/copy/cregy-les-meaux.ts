@@ -30,8 +30,8 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crégy-lès-Meaux : formats adaptés commerce, bureau PME, chantier BTP, restaurant, cabinet libéral. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Crégy-lès-Meaux  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Meaux et Trilport ?",
