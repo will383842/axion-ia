@@ -184,10 +184,19 @@ jobs:
       # et « Lighthouse CI (pnpm lhci) gate les PR ».
       # Playwright et Gate C Docker restent continue-on-error: true tant que les
       # bugs UI (P1-2 dédié) + env fixture Gate C ne sont pas livrés.
-      - name: Bundle size
+      # NON-BLOQUANT (2026-05-29) : le gate size-limit est mal calibré et
+      # pré-existant-cassé — il SOMME tous les `page-*.js` du glob vs une limite
+      # « par route » (ex 275 KB vs 75 KB), et nécessitait Chrome (timeout CI).
+      # La doctrine `_size_limit_doctrine` (package.json) désigne d'ailleurs
+      # Lighthouse CI comme « autorité finale pour les seuils per-route ». On le
+      # garde en reporting (logue les tailles) sans bloquer ; Lighthouse (ci-dessous)
+      # reste STRICT. À recalibrer proprement dans un sprint dédié (per-route réel).
+      - name: Bundle size (reporting — gate per-route = Lighthouse)
         run: pnpm bundle:check
-      - name: Bundle delta vs main
+        continue-on-error: true
+      - name: Bundle delta vs main (reporting)
         uses: andresz1/size-limit-action@v1
+        continue-on-error: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           skip_step: install
