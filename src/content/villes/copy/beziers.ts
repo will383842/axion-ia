@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024, Wikipedia-grounded.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -54,7 +54,7 @@ export const BEZIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les délais pour une intervention à Béziers ?",
-      a: "Williams se déplace à Béziers sous 5 à 7 jours ouvrés après validation du brief. L'Audit Flash est livré en 4 heures sur site, les implémentations entre 2 et 6 semaines selon le périmètre.",
+      a: "William se déplace à Béziers sous 5 à 7 jours ouvrés après validation du brief. L'Audit Flash est livré en 4 heures sur site, les implémentations entre 2 et 6 semaines selon le périmètre.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Béziers ?",
@@ -69,7 +69,7 @@ export const BEZIERS_COPY: VilleCopy = {
       a: "Les TPE et PME viticoles (environ 2 000 ha autour de Béziers), l'hôtellerie-restauration touristique autour du Canal du Midi et de Fonseranes, le commerce de détail et la construction tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
-      q: "Williams se déplace-t-il vraiment chez les clients à Béziers ?",
+      q: "William se déplace-t-il vraiment chez les clients à Béziers ?",
       a: "Oui, déplacement systématique sur site à Béziers (gare ligne Montpellier-Perpignan ou aéroport Béziers Cap d'Agde à 15 km). Pas d'audit à distance pour les premières missions : nous observons les processus réels en présentiel.",
     },
   ],

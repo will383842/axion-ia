@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // MANUALLY CORRECTED 2026-05-28 — Sprint anti-doorway HCU 2024 (faits Wikipedia).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -10,9 +10,9 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Cagnes-sur-Mer, quatrième commune des Alpes-Maritimes avec 53 354 habitants, intégrée à la Métropole Nice Côte d'Azur. Située entre Saint-Laurent-du-Var et Villeneuve-Loubet sur le littoral méditerranéen, la ville s'appuie sur un tissu de près de 6 000 établissements actifs orientés commerce, tourisme, BTP et services. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier concrètes (devis, relances, planning, OCR factures), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
   directAnswerFr:
-    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. Williams se déplace sur site depuis Paris pour réaliser un Audit Flash 4h (490 € HT), une intervention ciblée (590 € HT) ou une implémentation complète (à partir de 990 € HT). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
+    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. William se déplace sur site depuis Paris pour réaliser un Audit Flash 4h (490 € HT), une intervention ciblée (590 € HT) ou une implémentation complète (à partir de 990 € HT). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
   directAnswerEn:
-    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. Williams se déplace sur site depuis Paris pour réaliser un Audit Flash 4h (490 € HT), une intervention ciblée (590 € HT) ou une implémentation complète (à partir de 990 € HT). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
+    "Axion-IA intervient à Cagnes-sur-Mer (Alpes-Maritimes, Métropole Nice Côte d'Azur) pour les TPE et PME locales du commerce de détail, de l'hôtellerie-restauration, du BTP et des activités immobilières. William se déplace sur site depuis Paris pour réaliser un Audit Flash 4h (490 € HT), une intervention ciblée (590 € HT) ou une implémentation complète (à partir de 990 € HT). Toutes nos missions sont conduites en code custom (Python, Node, n8n self-host), sans no-code propriétaire, avec respect strict du RGPD et hébergement Europe.",
   seoHook: "commerce, tourisme & BTP littoral",
   ecosystemFr:
     "Cagnes-sur-Mer concentre près de 6 000 établissements actifs autour du commerce de détail, du tourisme balnéaire (Cros-de-Cagnes), du BTP et des activités immobilières. La ville abrite l'Hippodrome de la Côte d'Azur inauguré en 1960, le Musée Renoir (ancienne résidence du peintre 1908-1919) et le Château-Musée Grimaldi. Sa position sur l'A8 (sorties 47 et 48) et ses deux gares SNCF (Cagnes-sur-Mer, Cros-de-Cagnes) la connectent au bassin d'emploi azuréen Nice-Antibes-Sophia Antipolis.",
@@ -54,8 +54,8 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
       a: "L'Audit Flash 4h sur site à Cagnes-sur-Mer démarre à 490 € HT (cartographie processus + 3 quick wins). Une intervention ciblée est facturée 590 € HT, une implémentation complète à partir de 990 € HT. Tarifs publics fixes, sans abonnement.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Cagnes-sur-Mer ?",
-      a: "Oui. Williams (fondateur Axion-IA) se déplace en personne à Cagnes-sur-Mer depuis Paris, généralement sous 5 jours ouvrés. L'accès s'effectue par l'A8 (sorties 47 ou 48), la gare SNCF de Cagnes-sur-Mer ou l'aéroport Nice Côte d'Azur situé à 13 km.",
+      q: "William se déplace-t-il vraiment à Cagnes-sur-Mer ?",
+      a: "Oui. William (fondateur Axion-IA) se déplace en personne à Cagnes-sur-Mer depuis Paris, généralement sous 5 jours ouvrés. L'accès s'effectue par l'A8 (sorties 47 ou 48), la gare SNCF de Cagnes-sur-Mer ou l'aéroport Nice Côte d'Azur situé à 13 km.",
     },
     {
       q: "Quelles communes proches de Cagnes-sur-Mer couvrez-vous lors d'un déplacement ?",

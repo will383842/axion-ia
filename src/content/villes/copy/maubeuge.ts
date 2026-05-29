@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024 pass.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -59,7 +59,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Maubeuge ?",
-      a: "Williams se déplace sur site à Maubeuge dans un délai de 5 jours ouvrés après validation de votre demande, via TER ou la N2.",
+      a: "William se déplace sur site à Maubeuge dans un délai de 5 jours ouvrés après validation de votre demande, via TER ou la N2.",
     },
     {
       q: "Axion-IA respecte-t-elle le RGPD lors des interventions à Maubeuge ?",

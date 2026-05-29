@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Hand-corrected 2026-05-28 — anti-doorway HCU 2024 (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const HALLUIN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. Williams intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
+    "Axion-IA accompagne les TPE et PME d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. William intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. Williams intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
+    "Axion-IA accompagne les TPE et PME d'Halluin, commune frontalière du Nord (20 715 habitants en 2023) intégrée à la Métropole européenne de Lille (MEL), située à 9 km de Tourcoing et 10 km de Mouscron en Belgique. Le tissu local s'appuie aujourd'hui sur le traitement et la valorisation des déchets (Triselec Lille, Galloo France), la logistique transfrontalière (Militzer und Münch France), l'agriculture périurbaine et le commerce de détail réparti dans quatre pôles. William intervient depuis Paris pour livrer du code sur mesure (Python/TypeScript), pas du no-code à l'année — adapté aux flux douaniers et opérations cross-border franco-belges.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME d'Halluin et de la zone frontalière Lille-Mouscron. Williams se déplace sur site dans le Nord pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris flux douaniers Belgique), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME d'Halluin et de la zone frontalière Lille-Mouscron. William se déplace sur site dans le Nord pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris flux douaniers Belgique), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME d'Halluin et de la zone frontalière Lille-Mouscron. Williams se déplace sur site dans le Nord pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris flux douaniers Belgique), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME d'Halluin et de la zone frontalière Lille-Mouscron. William se déplace sur site dans le Nord pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris flux douaniers Belgique), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : suivi logistique, déclarations DEB, relances B2B) et Implémentation longue (raccordement à WMS/TMS existant). Tous les tarifs sont publics. Contrat DPA signé, hébergement UE — important pour les opérateurs cross-border soumis au RGPD côté FR et au GDPR côté BE.",
   seoHook: "logistique transfrontalière, valorisation déchets et commerce",
   ecosystemFr:
     "Halluin a vu décliner ses filières textile et ameublement historiques dans les années 1980, et s'est repositionnée sur la valorisation des déchets (Triselec Lille SAEML, Galloo France), la logistique européenne (Militzer und Münch France) et le commerce de détail. La proximité immédiate de Menen et Wervik en Belgique, et la desserte par l'A22 Lille-Belgique, en font un nœud cross-border pertinent pour automatiser les déclarations douanières, EORI, DEB intracommunautaires et le suivi de tournées camion.",
@@ -54,7 +54,7 @@ export const HALLUIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur Halluin et la frontière belge ?",
-      a: "Williams se déplace à Halluin sous 5 à 10 jours ouvrés après signature. Pour les missions cross-border (Mouscron, Menen, Wervik côté BE), prévoir une matinée FR + après-midi BE optimisée en une journée.",
+      a: "William se déplace à Halluin sous 5 à 10 jours ouvrés après signature. Pour les missions cross-border (Mouscron, Menen, Wervik côté BE), prévoir une matinée FR + après-midi BE optimisée en une journée.",
     },
     {
       q: "Axion-IA intervient-il dans les communes limitrophes d'Halluin ?",
@@ -69,8 +69,8 @@ export const HALLUIN_COPY: VilleCopy = {
       a: "Logistique et transport routier cross-border, valorisation et tri des déchets, commerce de détail multi-sites, agriculture périurbaine, et PME industrielles héritières du tissu textile/ameublement reconverties.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Halluin ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Halluin pour les phases Audit et Implémentation (1 à 2 journées). Les développements code sont remote, avec démos hebdomadaires et recette finale sur site, y compris dans la zone des Cinq-Voies.",
+      q: "William se déplace-t-il vraiment sur site à Halluin ou tout se fait à distance ?",
+      a: "William se déplace physiquement à Halluin pour les phases Audit et Implémentation (1 à 2 journées). Les développements code sont remote, avec démos hebdomadaires et recette finale sur site, y compris dans la zone des Cinq-Voies.",
     },
   ],
 };

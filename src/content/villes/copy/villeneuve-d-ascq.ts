@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 58 — Model: gpt-4o.
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024 (Wikipedia-sourced facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -55,12 +55,12 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
       a: "L'Audit Flash 4 heures à Villeneuve-d'Ascq démarre à 490 € HT. Les interventions ciblées sur site commencent à 590 € HT. Tarifs publics complets sur notre page tarifs.",
     },
     {
-      q: "Comment Williams se déplace-t-il à Villeneuve-d'Ascq ?",
-      a: "Williams se déplace depuis Paris par TGV jusqu'à Lille-Europe ou Lille-Flandres (environ 1 h), puis métro VAL jusqu'à Villeneuve-d'Ascq (10 minutes). Intervention dans vos locaux.",
+      q: "Comment William se déplace-t-il à Villeneuve-d'Ascq ?",
+      a: "William se déplace depuis Paris par TGV jusqu'à Lille-Europe ou Lille-Flandres (environ 1 h), puis métro VAL jusqu'à Villeneuve-d'Ascq (10 minutes). Intervention dans vos locaux.",
     },
     {
       q: "Quels délais pour un audit IA à Villeneuve-d'Ascq ?",
-      a: "Williams intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit Flash remis sous 7 jours après la visite sur site.",
+      a: "William intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit Flash remis sous 7 jours après la visite sur site.",
     },
     {
       q: "Quelles communes voisines de Villeneuve-d'Ascq couvrez-vous ?",

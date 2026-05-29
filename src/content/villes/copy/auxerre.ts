@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 58 — Model: gpt-4o.
 // Manually corrected 2026-05-28 — Anti-doorway HCU 2024 (sources Wikipedia FR).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -55,8 +55,8 @@ export const AUXERRE_COPY: VilleCopy = {
       a: "Les audits IA à Auxerre démarrent à 490 € HT pour un Audit Flash de 4 heures sur site, puis 990 € HT pour un Audit Approfondi. Tarifs publics affichés, sans devis caché.",
     },
     {
-      q: "Williams se déplace-t-il à Auxerre depuis Paris ?",
-      a: "Oui, Williams se déplace à Auxerre depuis Paris (1h35 en train depuis Paris-Bercy, ou environ 170 km par l'A6) pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
+      q: "William se déplace-t-il à Auxerre depuis Paris ?",
+      a: "Oui, William se déplace à Auxerre depuis Paris (1h35 en train depuis Paris-Bercy, ou environ 170 km par l'A6) pour réaliser audits, interventions et implémentations directement chez vous, dans un délai de 5 jours ouvrés.",
     },
     {
       q: "Quels secteurs auxerrois Axion-IA accompagne-t-il ?",

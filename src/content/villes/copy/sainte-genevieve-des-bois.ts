@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
 // MANUALLY EDITED 2026-05-28 — anti-doorway HCU 2024 (sources : fr.wikipedia.org/wiki/Sainte-Geneviève-des-Bois_(Essonne)).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -11,9 +11,9 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   pitchEn:
     "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les TPE et PME locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). William se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
   directAnswerEn:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA flash à 590 € HT, des interventions sur site et des implémentations code custom (pas de no-code). William se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
   seoHook: "commerce de détail La Croix-Blanche & artisanat Essonne",
   ecosystemFr:
     "Sainte-Geneviève-des-Bois est siège de Cœur d'Essonne Agglomération. Le tissu économique est structuré autour du parc commercial La Croix-Blanche (premier parc commercial d'Île-de-France) où a ouvert le premier Carrefour de France en 1963. Les communes limitrophes incluent Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge. Le territoire est urbanisé à 74,9 %, avec 10,9 % d'espace rural.",
@@ -51,11 +51,11 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Sainte-Geneviève-des-Bois ?",
-      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à 590 € HT pour un Audit Flash de 4 heures sur site, déplacement Williams depuis Paris via RER C inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à 590 € HT pour un Audit Flash de 4 heures sur site, déplacement William depuis Paris via RER C inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Combien de temps faut-il pour une intervention IA à Sainte-Geneviève-des-Bois ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (24 km au sud de Paris). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
+      a: "William se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (24 km au sud de Paris). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
     },
     {
       q: "Axion-IA propose-t-il des solutions conformes au RGPD à Sainte-Geneviève-des-Bois ?",

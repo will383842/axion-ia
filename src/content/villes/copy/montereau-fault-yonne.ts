@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 — T4 anti-doorway rewrite Claude Code (Will).
+﻿// AUTO-GENERATED 2026-05-27 — T4 anti-doorway rewrite Claude Code (Will).
 // Montereau-Fault-Yonne (77, Seine-et-Marne) — 22 279 hab, confluent Seine-Yonne, port industriel.
 
 import type { VilleCopy } from "./types";
@@ -61,7 +61,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Montereau-Fault-Yonne ?",
-      a: "Williams se déplace à Montereau-Fault-Yonne sous 5 jours ouvrés en moyenne. Accès via gare directe (Paris-Lyon 1h) ou A5 / RD606. Mission dans vos locaux industriels, au port fluvial ou en boutique.",
+      a: "William se déplace à Montereau-Fault-Yonne sous 5 jours ouvrés en moyenne. Accès via gare directe (Paris-Lyon 1h) ou A5 / RD606. Mission dans vos locaux industriels, au port fluvial ou en boutique.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Montereau-Fault-Yonne ?",

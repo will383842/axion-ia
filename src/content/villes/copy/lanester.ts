@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
+﻿// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
 // Hallucinations LLM supprimées (Cap Digital/Inria non liés à Lanester).
 // Source : Wikipedia FR Lanester (2026-05-28).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -59,7 +59,7 @@ export const LANESTER_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Lanester ?",
-      a: "Williams se déplace à Lanester sous 5 jours ouvrés après confirmation. Audit Flash restitué sous 7 jours. Trajet depuis la gare de Lorient (5 min) ou aéroport Lorient Bretagne Sud (15 min).",
+      a: "William se déplace à Lanester sous 5 jours ouvrés après confirmation. Audit Flash restitué sous 7 jours. Trajet depuis la gare de Lorient (5 min) ou aéroport Lorient Bretagne Sud (15 min).",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Lanester ?",

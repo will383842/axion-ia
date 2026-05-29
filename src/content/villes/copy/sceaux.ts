@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 (anti-doorway HCU 2024, Wikipedia facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -55,7 +55,7 @@ export const SCEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Sceaux ?",
-      a: "Williams se déplace à Sceaux sous 5 jours ouvrés après validation du devis (RER B direct Châtelet-Sceaux ~25 min). Audit livré sous 5 jours après la visite. Implémentation : 2 à 6 semaines selon périmètre.",
+      a: "William se déplace à Sceaux sous 5 jours ouvrés après validation du devis (RER B direct Châtelet-Sceaux ~25 min). Audit livré sous 5 jours après la visite. Implémentation : 2 à 6 semaines selon périmètre.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Sceaux ?",

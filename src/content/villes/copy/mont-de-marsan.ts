@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
 // Manually corrected 2026-05-28 — Anti-doorway HCU 2024 (sources Wikipedia FR).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -55,8 +55,8 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
       a: "Nos interventions IA à Mont-de-Marsan démarrent à 590 € HT pour l'Intervention Essentielle, après un Audit Flash à 490 € HT. Tarifs publics affichés.",
     },
     {
-      q: "Williams se déplace-t-il à Mont-de-Marsan ?",
-      a: "Oui, Williams se déplace à Mont-de-Marsan (130 km de Bordeaux, 700 km de Paris) pour audits, interventions et implémentations sur site, dans un délai de 5 jours ouvrés.",
+      q: "William se déplace-t-il à Mont-de-Marsan ?",
+      a: "Oui, William se déplace à Mont-de-Marsan (130 km de Bordeaux, 700 km de Paris) pour audits, interventions et implémentations sur site, dans un délai de 5 jours ouvrés.",
     },
     {
       q: "Quels secteurs montois Axion-IA accompagne-t-il ?",

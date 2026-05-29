@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 63 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -11,9 +11,9 @@ export const MALAKOFF_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Malakoff (Hauts-de-Seine, environ 30 500 habitants), commune limitrophe des 14e et 15e arrondissements de Paris. Le tissu local s'est largement converti du secteur industriel vers les services tertiaires, avec une forte densité de cabinets professionnels, agences, sièges sociaux de PME et acteurs du numérique. Nous y proposons des audits, formations et implémentations IA en code custom, à destination des dirigeants des Hauts-de-Seine sud.",
   directAnswerFr:
-    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à 490 € HT pour un Audit Flash, 590 € HT pour une intervention et 990 € HT pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
+    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à 490 € HT pour un Audit Flash, 590 € HT pour une intervention et 990 € HT pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par William et l'équipe Axion-IA.",
   directAnswerEn:
-    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à 490 € HT pour un Audit Flash, 590 € HT pour une intervention et 990 € HT pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
+    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à 490 € HT pour un Audit Flash, 590 € HT pour une intervention et 990 € HT pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par William et l'équipe Axion-IA.",
   seoHook: "tertiaire & services aux entreprises",
   ecosystemFr:
     "Malakoff présente une trame urbaine mixte (pavillonnaire et collectif) et un tissu économique tertiarisé depuis la fermeture du site Thomson-CSF en 1993. La commune accueille des cabinets professionnels, agences, ESN, PME tertiaires et sièges sociaux à taille humaine, bénéficiant de la proximité immédiate de Paris. L'environnement reste à dimension humaine, avec quatre stations de la ligne 13, deux axes ferroviaires majeurs (Paris-Versailles et LGV Atlantique), et la frontière directe avec Vanves, Montrouge, Châtillon et Clamart.",
@@ -56,7 +56,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Malakoff ?",
-      a: "Williams et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis. La ligne 13 et la gare Transilien Vanves-Malakoff facilitent l'accès depuis le reste de l'Île-de-France.",
+      a: "William et l'équipe Axion-IA se déplacent sur site à Malakoff sous 5 jours ouvrés en moyenne après validation du devis. La ligne 13 et la gare Transilien Vanves-Malakoff facilitent l'accès depuis le reste de l'Île-de-France.",
     },
     {
       q: "Quels délais pour un audit IA à Malakoff ?",

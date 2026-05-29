@@ -1,14 +1,14 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 (anti-doorway HCU 2024 sprint).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
+  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. William se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. Williams se déplace depuis le réseau Avignon-TGV (30 km, 38 min de train) pour cadrer le besoin sur place, livrer du code custom Python ou TypeScript, et former l'équipe. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, accompagnement 1-à-1 990 € HT — tarifs publics, pas de licence cachée.";
+  "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. William se déplace depuis le réseau Avignon-TGV (30 km, 38 min de train) pour cadrer le besoin sur place, livrer du code custom Python ou TypeScript, et former l'équipe. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, accompagnement 1-à-1 990 € HT — tarifs publics, pas de licence cachée.";
 
 const ECOSYSTEM_FR =
   "Carpentras est la 4e commune du Vaucluse avec 31 619 habitants (Insee 2023, +11,69 % depuis 2017). Le tissu économique repose sur la viticulture (22,8 % de la surface communale en vignes AOC Ventoux et Côtes-du-Rhône-Villages), l'agroalimentaire (berlingot de Carpentras, truffe noire du Vaucluse, marché aux truffes hivernal), le commerce indépendant (marché hebdomadaire du vendredi matin, environ 350 forains) et les services aux entreprises. La sous-préfecture concentre administrations, professions libérales et un hôpital de bassin.";
@@ -57,8 +57,8 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit Flash 490 € HT (4 h sur site), Intervention Essentielle 590 € HT (cadrage + livraison d'un automatisme), accompagnement 1-à-1 990 € HT. Tarifs publics consultables, pas de licence SaaS récurrente : vous êtes propriétaire du code livré.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Carpentras ?",
-      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin. Frais de déplacement intégrés dans les forfaits publics.",
+      q: "William se déplace-t-il vraiment à Carpentras ?",
+      a: "Oui. William prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin. Frais de déplacement intégrés dans les forfaits publics.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Carpentras ?",

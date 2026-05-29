@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024 pass.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -59,7 +59,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Évry-Courcouronnes ?",
-      a: "Williams se déplace sur site à Évry-Courcouronnes dans un délai de 5 jours ouvrés après validation, par RER D ou A6 depuis Paris.",
+      a: "William se déplace sur site à Évry-Courcouronnes dans un délai de 5 jours ouvrés après validation, par RER D ou A6 depuis Paris.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Évry-Courcouronnes ?",

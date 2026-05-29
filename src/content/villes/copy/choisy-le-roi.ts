@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Corrected 2026-05-28 (anti-doorway HCU 2024 — faits Wikipedia, suppression hallucinations LLM).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -10,9 +10,9 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Choisy-le-Roi (45 946 habitants, Val-de-Marne) dans l'automatisation de leurs processus métiers. La commune, traversée par la Seine et desservie par le RER C, la ligne 9 du tramway et plusieurs lignes de bus dont le TVM, concentre un tissu de petites entreprises de commerce, transport et construction. Nous intervenons sur site, à 12 km de Paris, pour structurer devis, relances, reporting et traitement de documents avec du code IA sur mesure.",
   directAnswerFr:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. Williams Jullin se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de 590 € HT pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de 590 € HT pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   directAnswerEn:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. Williams Jullin se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de 590 € HT pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de 590 € HT pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Choisy-le-Roi (Val-de-Marne, 5,43 km², 8 462 habitants/km²) est limitrophe d'Alfortville, Créteil, Orly, Thiais, Valenton, Villeneuve-Saint-Georges et Vitry-sur-Seine. Le tissu économique mélange commerces de détail, transport routier, construction et services aux entreprises. La ville accueille le siège de la Fédération française de volley-ball et conserve une mémoire industrielle (faïencerie Boulenger, tuileries). La proximité immédiate du MIN de Rungis et de l'aéroport de Paris-Orly structure une partie de l'activité logistique locale.",
@@ -53,7 +53,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
       a: "Nos tarifs publics commencent à 490 € HT pour un Audit Flash (4 h sur site), 590 € HT pour une Intervention Essentielle et 990 € HT pour une implémentation ou une session un-à-un. Devis personnalisé envoyé sous 48 h.",
     },
     {
-      q: "Williams Jullin se déplace-t-il vraiment à Choisy-le-Roi ?",
+      q: "William se déplace-t-il vraiment à Choisy-le-Roi ?",
       a: "Oui. Choisy-le-Roi est accessible en 25 minutes depuis Paris via le RER C ou la ligne 9 du tramway. Les interventions se déroulent dans vos locaux, dans la commune ou les communes limitrophes (Vitry-sur-Seine, Thiais, Créteil, Orly, Alfortville).",
     },
     {

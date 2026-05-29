@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Corrected 2026-05-28 (anti-doorway HCU 2024 — faits Wikipedia, suppression hallucinations LLM).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -10,9 +10,9 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
   directAnswerFr:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams Jullin se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à 590 € HT pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à 590 € HT pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   directAnswerEn:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams Jullin se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à 590 € HT pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à 590 € HT pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   seoHook: "commerce détail & services aux entreprises",
   ecosystemFr:
     "Le Bouscat est limitrophe de Bordeaux, Bruges et Eysines, et membre de Bordeaux Métropole. Avec 4 750 habitants/km², la commune concentre commerces de proximité, professions libérales (santé, droit, expertise comptable), services aux entreprises et quelques unités artisanales. L'Hippodrome du Bouscat, le stade Sainte-Germaine et le Castel d'Andorte rythment la vie locale. L'accès rapide à la rocade bordelaise (sortie 7) connecte les entreprises locales à l'ensemble du bassin métropolitain.",
@@ -53,7 +53,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
       a: "Nos tarifs publics commencent à 490 € HT pour un Audit Flash (4 h sur site), 590 € HT pour une Intervention Essentielle et 990 € HT pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
     },
     {
-      q: "Williams Jullin se déplace-t-il vraiment au Bouscat ?",
+      q: "William se déplace-t-il vraiment au Bouscat ?",
       a: "Oui. Le Bouscat est accessible par le tramway TBM, la gare du Bouscat-Sainte-Germaine et la rocade A630 (sortie 7). Les interventions se déroulent dans vos locaux, au Bouscat ou dans les communes limitrophes (Bordeaux, Bruges, Eysines).",
     },
     {

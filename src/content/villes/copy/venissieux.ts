@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Hand-corrected 2026-05-28 — anti-doorway HCU 2024 (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const VENISSIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
+    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. William intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
+    "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. William intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. William se déplace sur site dans le Rhône pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. William se déplace sur site dans le Rhône pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Intervention Essentielle à 590 € HT (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   seoHook: "automobile (Renault Trucks), équipementiers et logistique",
   ecosystemFr:
     "Vénissieux a connu une industrialisation forte au XXe siècle, passant d'un village agricole et viticole à un pôle automobile majeur. Le site Renault Trucks au quartier du Parilly et la présence de Bosch ancrent une filière équipementier et métallurgie. Les zones d'activité Chêne-Velin (commerciale et industrielle) et Parilly concentrent la sous-traitance. La desserte par le métro D (terminus Gare de Vénissieux), le tramway T4 vers Lyon 8e, et le boulevard Urbain Sud relient la commune au reste de la Métropole de Lyon en moins de 25 minutes.",
@@ -54,7 +54,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur Vénissieux et la Métropole de Lyon ?",
-      a: "Williams se déplace à Vénissieux sous 5 à 10 jours ouvrés après signature. Pour les sous-traitants soumis aux audits qualité IATF 16949, un onboarding documentaire préalable peut allonger légèrement le démarrage.",
+      a: "William se déplace à Vénissieux sous 5 à 10 jours ouvrés après signature. Pour les sous-traitants soumis aux audits qualité IATF 16949, un onboarding documentaire préalable peut allonger légèrement le démarrage.",
     },
     {
       q: "Axion-IA intervient-il dans les communes limitrophes de Vénissieux ?",
@@ -69,8 +69,8 @@ export const VENISSIEUX_COPY: VilleCopy = {
       a: "Sous-traitance automobile (équipementiers Renault Trucks, Bosch), métallurgie et travail des métaux, logistique industrielle de la rocade Est, BTP et second œuvre, et négoce B2B des zones Chêne-Velin et Parilly.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Vénissieux ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Vénissieux (TGV Paris-Lyon Part-Dieu 2h + métro D direct) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
+      q: "William se déplace-t-il vraiment sur site à Vénissieux ou tout se fait à distance ?",
+      a: "William se déplace physiquement à Vénissieux (TGV Paris-Lyon Part-Dieu 2h + métro D direct) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
     },
   ],
 };

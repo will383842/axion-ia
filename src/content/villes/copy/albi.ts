@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 63 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -56,7 +56,7 @@ export const ALBI_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Albi ?",
-      a: "Williams se déplace sur Albi sous 5 jours ouvrés en moyenne après validation du devis, depuis notre base nationale. Les missions courtes (audit, formation) peuvent démarrer encore plus rapidement.",
+      a: "William se déplace sur Albi sous 5 jours ouvrés en moyenne après validation du devis, depuis notre base nationale. Les missions courtes (audit, formation) peuvent démarrer encore plus rapidement.",
     },
     {
       q: "Quelles communes autour d'Albi sont couvertes par Axion-IA ?",

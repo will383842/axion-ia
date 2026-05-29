@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — HCU 2024 anti-doorway sprint (Wikipedia-sourced).
 // Removed hallucinations Cap Digital/Inria (not present at Tremblay).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -55,7 +55,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il à Tremblay-en-France pour des audits ?",
-      a: "Oui, Williams se déplace sur site à Tremblay-en-France (Paris-Nord 2, Roissypôle, Tremblay-CDG ou centre-ville) dans un délai de 5 jours ouvrés à compter de la signature du devis.",
+      a: "Oui, William se déplace sur site à Tremblay-en-France (Paris-Nord 2, Roissypôle, Tremblay-CDG ou centre-ville) dans un délai de 5 jours ouvrés à compter de la signature du devis.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Tremblay-en-France ?",

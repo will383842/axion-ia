@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024, Wikipedia-grounded.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -54,7 +54,7 @@ export const MONTGERON_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Montgeron ?",
-      a: "Williams se déplace à Montgeron sous 5 à 7 jours ouvrés (RER D Montgeron-Crosne, RN6 ou Paris-Orly à 8 km). Audit Flash livré en 4 heures sur site, implémentations entre 2 et 6 semaines.",
+      a: "William se déplace à Montgeron sous 5 à 7 jours ouvrés (RER D Montgeron-Crosne, RN6 ou Paris-Orly à 8 km). Audit Flash livré en 4 heures sur site, implémentations entre 2 et 6 semaines.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Montgeron ?",
@@ -69,7 +69,7 @@ export const MONTGERON_COPY: VilleCopy = {
       a: "Les TPE et PME des commerces de proximité (RN6, centre-ville), les cabinets de santé et professions libérales, les agences immobilières et les artisans BTP du Val d'Yerres Val de Seine tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Montgeron ?",
+      q: "William se déplace-t-il vraiment sur site à Montgeron ?",
       a: "Oui, déplacement systématique sur site à Montgeron via RER D (gare Montgeron-Crosne) ou véhicule (19 km depuis Paris). Aucune mission initiale en distanciel : observation des processus réels dans vos locaux.",
     },
   ],

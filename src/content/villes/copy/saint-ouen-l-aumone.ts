@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 50 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -56,7 +56,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps pour une intervention sur site à Saint-Ouen-l'Aumône ?",
-      a: "Williams et l'équipe Axion-IA se déplacent à Saint-Ouen-l'Aumône sous 5 jours ouvrés en moyenne après validation du devis, via l'A15, la Francilienne ou les lignes Transilien H et J.",
+      a: "William et l'équipe Axion-IA se déplacent à Saint-Ouen-l'Aumône sous 5 jours ouvrés en moyenne après validation du devis, via l'A15, la Francilienne ou les lignes Transilien H et J.",
     },
     {
       q: "Comment Axion-IA respecte le RGPD à Saint-Ouen-l'Aumône ?",

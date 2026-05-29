@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (renforcement seuils HCU 2024).
+﻿// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (renforcement seuils HCU 2024).
 // Source : Wikipedia FR Pignan (2026-05-28).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -66,7 +66,7 @@ export const PIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée et les délais à Pignan ?",
-      a: "Audit Flash 490 € HT, Intervention Essentielle 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Williams se déplace à Pignan sous 5 jours ouvrés depuis Montpellier (15 min). Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash 490 € HT, Intervention Essentielle 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. William se déplace à Pignan sous 5 jours ouvrés depuis Montpellier (15 min). Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Pignan ?",

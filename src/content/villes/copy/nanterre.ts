@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 100 — Model: claude-sonnet-4-6.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -54,7 +54,7 @@ export const NANTERRE_COPY: VilleCopy = {
       a: "L'Audit Flash (4h) démarre à 490 € HT — il couvre la cartographie de vos processus et l'identification des chantiers IA prioritaires. Pour une PME du 92 avec plusieurs services à analyser, des formules étendues existent. Tarifs publics complets consultables sur axion-ia.fr/audits.",
     },
     {
-      q: "Williams se déplace-t-il physiquement à Nanterre ou l'intervention est-elle à distance ?",
+      q: "William se déplace-t-il physiquement à Nanterre ou l'intervention est-elle à distance ?",
       a: "Axion-IA intervient sur site chez le client à Nanterre — en présentiel dans vos locaux, que vous soyez sur ZAC Seine Arche, La Défense ou ailleurs dans le 92. Les formats hybrides (présentiel + distanciel) sont possibles selon le programme retenu.",
     },
     {

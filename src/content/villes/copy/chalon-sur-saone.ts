@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
+﻿// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
 // Hallucinations LLM supprimées (Areva/Nestlé non documentés à Chalon).
 // Source : Wikipedia FR Chalon-sur-Saône (2026-05-28).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -59,7 +59,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Chalon-sur-Saône ?",
-      a: "Williams se déplace à Chalon-sur-Saône sous 5 jours ouvrés après confirmation. L'Audit Flash est restitué sous 7 jours. Les interventions sur site démarrent selon planning convenu (généralement 2 à 4 semaines).",
+      a: "William se déplace à Chalon-sur-Saône sous 5 jours ouvrés après confirmation. L'Audit Flash est restitué sous 7 jours. Les interventions sur site démarrent selon planning convenu (généralement 2 à 4 semaines).",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Chalon ?",

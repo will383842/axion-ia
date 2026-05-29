@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 (anti-doorway HCU 2024, Wikipedia facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -10,9 +10,9 @@ export const AURILLAC_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. Williams intervient sous 5 jours ouvrés.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. William intervient sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. Williams intervient sous 5 jours ouvrés.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. William intervient sous 5 jours ouvrés.",
   seoHook: "agroalimentaire & commerce détail",
   ecosystemFr:
     "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les TPE et PME aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
@@ -36,8 +36,8 @@ export const AURILLAC_COPY: VilleCopy = {
       en: "Audit Flash 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de 490 € HT, livrable sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement Williams sous 5 jours.",
-      en: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement Williams sous 5 jours.",
+      fr: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement William sous 5 jours.",
+      en: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement William sous 5 jours.",
     },
     implementation: {
       fr: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de 990 € HT.",
@@ -55,7 +55,7 @@ export const AURILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Aurillac ?",
-      a: "Williams se déplace à Aurillac sous 5 jours ouvrés après validation du devis. Pour un Audit Flash, le livrable est remis sous 5 jours après la visite. Une implémentation complète dure de 2 à 6 semaines selon le périmètre.",
+      a: "William se déplace à Aurillac sous 5 jours ouvrés après validation du devis. Pour un Audit Flash, le livrable est remis sous 5 jours après la visite. Une implémentation complète dure de 2 à 6 semaines selon le périmètre.",
     },
     {
       q: "Intervenez-vous dans les communes proches d'Aurillac ?",

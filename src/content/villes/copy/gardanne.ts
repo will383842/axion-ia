@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024, Wikipedia-grounded.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -54,7 +54,7 @@ export const GARDANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Gardanne ?",
-      a: "Williams se déplace à Gardanne sous 5 à 7 jours ouvrés après brief. Audit Flash livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon la complexité.",
+      a: "William se déplace à Gardanne sous 5 à 7 jours ouvrés après brief. Audit Flash livré en 4 heures sur site, implémentations entre 2 et 6 semaines selon la complexité.",
     },
     {
       q: "Axion-IA couvre-t-elle les communes autour de Gardanne ?",
@@ -69,7 +69,7 @@ export const GARDANNE_COPY: VilleCopy = {
       a: "Les TPE et PME de la sous-traitance industrielle (gravitant autour d'Alteo), les artisans BTP, les bureaux d'études microélectronique liés à l'École des Mines, et les services tertiaires métropolitains gagnent le plus en automatisation IA custom.",
     },
     {
-      q: "Williams se déplace-t-il sur site à Gardanne ?",
+      q: "William se déplace-t-il sur site à Gardanne ?",
       a: "Oui, déplacement systématique sur site à Gardanne (gare SNCF directe, A51/A8/A52, TGV Aix à 20 min, aéroport Marseille-Provence à 25 min). Pas d'audit à distance pour les premières missions.",
     },
   ],

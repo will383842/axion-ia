@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
+﻿// AUTO-GENERATED 2026-05-27 — corrigée 2026-05-28 (anti-doorway HCU 2024).
 // Hallucinations LLM supprimées (LVMH/BNP Paribas pas implantés Vincennes).
 // Source : Wikipedia FR Vincennes (2026-05-28).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -59,7 +59,7 @@ export const VINCENNES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Vincennes ?",
-      a: "Williams se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit Flash restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
+      a: "William se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit Flash restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Vincennes ?",

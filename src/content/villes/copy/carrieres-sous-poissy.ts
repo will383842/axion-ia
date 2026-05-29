@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024 (Wikipedia-sourced facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   pitchFr:
-    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site, depuis Paris, pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
+    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. William se déplace sur site, depuis Paris, pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
   pitchEn:
-    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site, depuis Paris, pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
+    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. William se déplace sur site, depuis Paris, pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
   directAnswerFr:
     "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit Flash 4 heures (à partir de 490 € HT), les interventions ponctuelles à partir de 590 € HT, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
   directAnswerEn:
@@ -36,8 +36,8 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
       en: "Réaliser un audit Flash à Carrières-sous-Poissy permet aux TPE et PME des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de 490 € HT.",
     },
     interventions: {
-      fr: "Intervenir à Carrières-sous-Poissy pour automatiser les relances clients, la génération de devis et le suivi commercial dans le quartier des Trois Cèdres et les zones d'activité riveraines. Williams se déplace depuis Paris.",
-      en: "Intervenir à Carrières-sous-Poissy pour automatiser les relances clients, la génération de devis et le suivi commercial dans le quartier des Trois Cèdres et les zones d'activité riveraines. Williams se déplace depuis Paris.",
+      fr: "Intervenir à Carrières-sous-Poissy pour automatiser les relances clients, la génération de devis et le suivi commercial dans le quartier des Trois Cèdres et les zones d'activité riveraines. William se déplace depuis Paris.",
+      en: "Intervenir à Carrières-sous-Poissy pour automatiser les relances clients, la génération de devis et le suivi commercial dans le quartier des Trois Cèdres et les zones d'activité riveraines. William se déplace depuis Paris.",
     },
     implementation: {
       fr: "Implémenter des solutions IA clés en main à Carrières-sous-Poissy pour les TPE et PME, avec code custom Python/TypeScript et intégration aux outils existants (CRM, comptabilité, ERP).",
@@ -55,7 +55,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Carrières-sous-Poissy ?",
-      a: "Williams se déplace généralement sous 5 jours ouvrés après validation du brief. Pour un Audit Flash, le rapport est remis sous 7 jours après la visite sur site.",
+      a: "William se déplace généralement sous 5 jours ouvrés après validation du brief. Pour un Audit Flash, le rapport est remis sous 7 jours après la visite sur site.",
     },
     {
       q: "Quelles communes voisines de Carrières-sous-Poissy couvrez-vous également ?",
@@ -70,8 +70,8 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
       a: "Nous accompagnons en priorité les TPE et PME de la construction automobile (autour du centre technique PSA), du commerce de gros et de détail, de la logistique et de la construction implantées dans les zones d'activité du bord de Seine et des Trois Cèdres.",
     },
     {
-      q: "Williams se déplace-t-il sur site à Carrières-sous-Poissy ?",
-      a: "Oui, Williams se déplace depuis Paris (30 km, gare de Poissy RER A à proximité). Les interventions se font directement dans vos locaux, sans frais kilométriques supplémentaires sur l'Île-de-France.",
+      q: "William se déplace-t-il sur site à Carrières-sous-Poissy ?",
+      a: "Oui, William se déplace depuis Paris (30 km, gare de Poissy RER A à proximité). Les interventions se font directement dans vos locaux, sans frais kilométriques supplémentaires sur l'Île-de-France.",
     },
   ],
 };

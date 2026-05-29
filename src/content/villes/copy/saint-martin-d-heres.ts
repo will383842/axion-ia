@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -56,7 +56,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Saint-Martin-d'Hères ?",
-      a: "Williams se déplace sur Saint-Martin-d'Hères sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes peuvent démarrer plus rapidement selon disponibilités.",
+      a: "William se déplace sur Saint-Martin-d'Hères sous 5 jours ouvrés en moyenne après validation du devis. Les missions courtes peuvent démarrer plus rapidement selon disponibilités.",
     },
     {
       q: "Quelles communes autour de Saint-Martin-d'Hères sont couvertes ?",

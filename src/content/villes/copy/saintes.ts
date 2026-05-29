@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 (anti-doorway HCU 2024 — Wikipedia-sourced).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINTES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
+    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). William se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). Williams se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
+    "Axion-IA accompagne les TPE et PME de Saintes, sous-préfecture de Charente-Maritime de 25 400 habitants, deuxième pôle urbain du département après La Rochelle. Le tissu local est dominé par le tertiaire (administration, banque, santé, éducation), un pôle commercial régional, le siège de Coop Atlantique (première coopérative de consommateurs de France) et quelques activités industrielles ciblées (électronique, dépôt SNCF, levage). William se déplace sur site pour cadrer et déployer les cas d'usage IA en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. Williams réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace à Saintes (17100, Charente-Maritime) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype et implémente des solutions IA en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons le tertiaire administratif et bancaire, la santé, le siège de Coop Atlantique, le pôle commercial régional, le dépôt ferroviaire SNCF et le tissu touristique gallo-romain.",
   seoHook: "tertiaire & coopératif Charente-Maritime",
   ecosystemFr:
     "Saintes est sous-préfecture de Charente-Maritime et deuxième pôle urbain du département. L'économie repose sur le tertiaire (administration, justice, banques, éducation, santé), le commerce régional, le siège de Coop Atlantique (première coopérative de consommateurs de France), un dépôt ferroviaire SNCF et quelques industries de niche (électronique, équipements de levage). Le patrimoine gallo-romain et médiéval soutient un tissu touristique structurant.",
@@ -32,8 +32,8 @@ export const SAINTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
-      en: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. Williams se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
+      fr: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. William se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
+      en: "Audit IA à Saintes pour TPE/PME tertiaires, commerces, structures coopératives et acteurs touristiques. William se déplace sur site pour cartographier les processus métiers et prioriser 3 à 5 cas d'usage IA réalistes à 90 jours.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Saintes pour PME tertiaires, agences bancaires régionales, acteurs du tourisme patrimonial. Refonte prompts, intégration LLM via APIs, debug de pipelines IA existants.",
@@ -54,12 +54,12 @@ export const SAINTES_COPY: VilleCopy = {
       a: "Audits Flash à partir de 590 € HT pour 4 heures sur site à Saintes. Tarifs publics sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour missions plus longues.",
     },
     {
-      q: "Williams se déplace-t-il à Saintes pour intervenir sur site ?",
-      a: "Oui. Williams se déplace à Saintes (17100) et dans les communes limitrophes : Chaniers, Chermignac, Fontcouverte, Bussac-sur-Charente. Couvre également Cognac (25 km) et le département de Charente-Maritime, sans frais kilométriques additionnels dans un rayon de 50 km.",
+      q: "William se déplace-t-il à Saintes pour intervenir sur site ?",
+      a: "Oui. William se déplace à Saintes (17100) et dans les communes limitrophes : Chaniers, Chermignac, Fontcouverte, Bussac-sur-Charente. Couvre également Cognac (25 km) et le département de Charente-Maritime, sans frais kilométriques additionnels dans un rayon de 50 km.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saintes ?",
-      a: "Williams se déplace à Saintes dans les 5 à 7 jours ouvrés après signature du devis (distance Paris-Saintes prise en compte). L'Audit Flash débouche sur un rendu écrit sous 7 jours ouvrés post-intervention.",
+      a: "William se déplace à Saintes dans les 5 à 7 jours ouvrés après signature du devis (distance Paris-Saintes prise en compte). L'Audit Flash débouche sur un rendu écrit sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Comment Axion-IA assure-t-elle la conformité RGPD à Saintes ?",

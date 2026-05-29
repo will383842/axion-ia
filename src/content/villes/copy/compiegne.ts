@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 53 — Model: gpt-4o.
 // Hand-corrected 2026-05-28 — anti-doorway HCU 2024 (Wikipedia facts, no LLM hallucination).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -11,9 +11,9 @@ export const COMPIEGNE_COPY: VilleCopy = {
   pitchEn:
     "Compiègne, sous-préfecture de l'Oise (40 761 habitants en 2023), est un pôle universitaire et touristique à 71 km au nord de Paris. Axion-IA y accompagne les TPE et PME locales — commerces du centre-ville historique, prestataires de services autour du Château et de la Forêt domaniale, sous-traitants industriels du bassin de Margny-lès-Compiègne — dans la mise en place d'automatisations IA sur mesure : devis, relances, suivi client, reporting. Notre approche reste artisanale et codée maison, sans no-code, pour des dirigeants qui veulent garder la main sur leurs données.",
   directAnswerFr:
-    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des TPE et PME, et plus marginalement des ETI, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. Williams se déplace sur site depuis Paris pour des audits Flash à 590 € HT, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
+    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des TPE et PME, et plus marginalement des ETI, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. William se déplace sur site depuis Paris pour des audits Flash à 590 € HT, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des TPE et PME, et plus marginalement des ETI, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. Williams se déplace sur site depuis Paris pour des audits Flash à 590 € HT, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
+    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des TPE et PME, et plus marginalement des ETI, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. William se déplace sur site depuis Paris pour des audits Flash à 590 € HT, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
   seoHook: "UTC & tourisme patrimonial",
   ecosystemFr:
     "Le tissu économique compiégnois s'articule autour de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial lié au Château et à la Forêt domaniale (5ᵉ plus grande forêt d'État de France), et d'un réseau dense de TPE/PME dans le commerce, les services aux entreprises et la sous-traitance. Margny-lès-Compiègne, Venette, Clairoix, Choisy-au-Bac et Jaux complètent l'agglomération.",
@@ -55,7 +55,7 @@ export const COMPIEGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention Axion-IA à Compiègne ?",
-      a: "Williams se déplace à Compiègne sous 5 à 10 jours ouvrés après validation de la mission. Pour un Audit Flash, le rapport est livré sous 5 jours ouvrés après la visite sur site.",
+      a: "William se déplace à Compiègne sous 5 à 10 jours ouvrés après validation de la mission. Pour un Audit Flash, le rapport est livré sous 5 jours ouvrés après la visite sur site.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Compiègne ?",

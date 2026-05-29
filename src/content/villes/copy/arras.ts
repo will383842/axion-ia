@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024 pass.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -59,7 +59,7 @@ export const ARRAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai d'intervention d'Axion-IA à Arras ?",
-      a: "Williams se déplace sur site à Arras dans les 5 jours ouvrés après validation de votre demande, train direct depuis Paris-Nord en 50 minutes.",
+      a: "William se déplace sur site à Arras dans les 5 jours ouvrés après validation de votre demande, train direct depuis Paris-Nord en 50 minutes.",
     },
     {
       q: "Les interventions d'Axion-IA à Arras sont-elles conformes au RGPD ?",

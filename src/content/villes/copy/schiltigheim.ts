@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 65 — Model: gpt-4o.
 // Manually corrected 2026-05-28 — Anti-doorway HCU 2024 (sources Wikipedia FR).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -55,8 +55,8 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
       a: "Nos interventions IA à Schiltigheim démarrent à 590 € HT pour l'Intervention Essentielle, après un Audit Flash à 490 € HT. Tarifs publics affichés.",
     },
     {
-      q: "Williams se déplace-t-il à Schiltigheim depuis Paris ?",
-      a: "Oui, Williams se déplace à Schiltigheim (gare TGV de Strasbourg à 5 km, 1h45 de Paris en TGV) dans les 5 jours ouvrés suivant la signature, pour intervenir directement chez vous ou à l'Espace Européen de l'Entreprise.",
+      q: "William se déplace-t-il à Schiltigheim depuis Paris ?",
+      a: "Oui, William se déplace à Schiltigheim (gare TGV de Strasbourg à 5 km, 1h45 de Paris en TGV) dans les 5 jours ouvrés suivant la signature, pour intervenir directement chez vous ou à l'Espace Européen de l'Entreprise.",
     },
     {
       q: "Quels secteurs schilikois Axion-IA accompagne-t-il ?",

@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 58 — Model: gpt-4o.
 // Manually corrected 2026-05-28 — anti-doorway HCU 2024 (Wikipedia-sourced facts).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les TPE et PME isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. Williams se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit Flash, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
+    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les TPE et PME isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. William se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit Flash, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
   pitchEn:
-    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les TPE et PME isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. Williams se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit Flash, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
+    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les TPE et PME isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. William se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit Flash, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
   directAnswerFr:
-    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les TPE et PME du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit Flash 4 heures (à partir de 490 € HT), les missions ponctuelles à partir de 590 € HT, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
+    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les TPE et PME du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit Flash 4 heures (à partir de 490 € HT), les missions ponctuelles à partir de 590 € HT, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
   directAnswerEn:
-    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les TPE et PME du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit Flash 4 heures (à partir de 490 € HT), les missions ponctuelles à partir de 590 € HT, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
+    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les TPE et PME du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit Flash 4 heures (à partir de 490 € HT), les missions ponctuelles à partir de 590 € HT, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. William se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Issy-les-Moulineaux abrite le quartier d'affaires Val de Seine, l'un des principaux pôles tertiaires d'Île-de-France, qui accueille le siège mondial d'Orange (bâtiment Bridge) et de nombreux acteurs de la programmation informatique, des télécommunications et des médias. La commune appartient à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest, et bénéficie de la desserte du métro ligne 12 (deux stations), du RER C (Issy et Issy-Val-de-Seine) et du tramway T2 (quatre arrêts).",
@@ -55,12 +55,12 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
       a: "L'Audit Flash 4 heures à Issy-les-Moulineaux démarre à 490 € HT. Les interventions ciblées sur site commencent à 590 € HT. Tarifs publics complets sur notre page tarifs.",
     },
     {
-      q: "Comment Williams se déplace-t-il à Issy-les-Moulineaux ?",
-      a: "Williams se déplace depuis Paris en métro ligne 12 (stations Mairie d'Issy ou Corentin Celton), en RER C (Issy / Issy-Val-de-Seine) ou en tramway T2. Pas de frais kilométriques additionnels sur l'Île-de-France.",
+      q: "Comment William se déplace-t-il à Issy-les-Moulineaux ?",
+      a: "William se déplace depuis Paris en métro ligne 12 (stations Mairie d'Issy ou Corentin Celton), en RER C (Issy / Issy-Val-de-Seine) ou en tramway T2. Pas de frais kilométriques additionnels sur l'Île-de-France.",
     },
     {
       q: "Quels délais pour un audit à Issy-les-Moulineaux ?",
-      a: "Williams intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit Flash remis sous 7 jours après la visite sur site.",
+      a: "William intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit Flash remis sous 7 jours après la visite sur site.",
     },
     {
       q: "Quelles communes voisines d'Issy-les-Moulineaux couvrez-vous ?",

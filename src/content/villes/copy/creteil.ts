@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 95 — Model: claude-sonnet-4-6.
 // Manually corrected 2026-05-28 (anti-doorway HCU 2024, Wikipedia-sourced).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -52,7 +52,7 @@ export const CRETEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il physiquement à Créteil pour les audits et interventions ?",
-      a: "Oui. Williams et l'équipe Axion-IA se déplacent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes. Aucun surcoût de déplacement n'est appliqué en Île-de-France.",
+      a: "Oui. William et l'équipe Axion-IA se déplacent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes. Aucun surcoût de déplacement n'est appliqué en Île-de-France.",
     },
     {
       q: "Quels sont les tarifs pour un audit ou une intervention IA d'une TPE/PME cristolienne ?",

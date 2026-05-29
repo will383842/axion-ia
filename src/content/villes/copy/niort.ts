@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Hand-corrected 2026-05-28 — anti-doorway HCU 2024 (factual Wikipedia data).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const NIORT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Niort, préfecture des Deux-Sèvres (59 854 habitants en 2023) et quatrième place financière française en termes d'échanges de flux. La ville concentre les sièges des principales mutuelles d'assurance (MAIF, MACIF, MAAF, IMA), ce qui irrigue un écosystème dense de sous-traitants : courtiers, agences de communication, prestataires IT, expertise comptable, formation, traitement documentaire. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes ACPR, Solvabilité II et RGPD du secteur assurantiel niortais.",
+    "Axion-IA accompagne les TPE et PME de Niort, préfecture des Deux-Sèvres (59 854 habitants en 2023) et quatrième place financière française en termes d'échanges de flux. La ville concentre les sièges des principales mutuelles d'assurance (MAIF, MACIF, MAAF, IMA), ce qui irrigue un écosystème dense de sous-traitants : courtiers, agences de communication, prestataires IT, expertise comptable, formation, traitement documentaire. William intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes ACPR, Solvabilité II et RGPD du secteur assurantiel niortais.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Niort, préfecture des Deux-Sèvres (59 854 habitants en 2023) et quatrième place financière française en termes d'échanges de flux. La ville concentre les sièges des principales mutuelles d'assurance (MAIF, MACIF, MAAF, IMA), ce qui irrigue un écosystème dense de sous-traitants : courtiers, agences de communication, prestataires IT, expertise comptable, formation, traitement documentaire. Williams intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes ACPR, Solvabilité II et RGPD du secteur assurantiel niortais.",
+    "Axion-IA accompagne les TPE et PME de Niort, préfecture des Deux-Sèvres (59 854 habitants en 2023) et quatrième place financière française en termes d'échanges de flux. La ville concentre les sièges des principales mutuelles d'assurance (MAIF, MACIF, MAAF, IMA), ce qui irrigue un écosystème dense de sous-traitants : courtiers, agences de communication, prestataires IT, expertise comptable, formation, traitement documentaire. William intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes ACPR, Solvabilité II et RGPD du secteur assurantiel niortais.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Niort et du bassin niortais. Williams se déplace sur site en Deux-Sèvres pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris workflows liés aux donneurs d'ordre mutualistes), Intervention Essentielle à 590 € HT (automatisation d'un workflow : traitement de sinistres documentaires, relances courtiers, reporting réglementaire) et Implémentation longue (intégration aux ERP/CRM/GED existants). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Niort et du bassin niortais. William se déplace sur site en Deux-Sèvres pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris workflows liés aux donneurs d'ordre mutualistes), Intervention Essentielle à 590 € HT (automatisation d'un workflow : traitement de sinistres documentaires, relances courtiers, reporting réglementaire) et Implémentation longue (intégration aux ERP/CRM/GED existants). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Niort et du bassin niortais. Williams se déplace sur site en Deux-Sèvres pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris workflows liés aux donneurs d'ordre mutualistes), Intervention Essentielle à 590 € HT (automatisation d'un workflow : traitement de sinistres documentaires, relances courtiers, reporting réglementaire) et Implémentation longue (intégration aux ERP/CRM/GED existants). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Niort et du bassin niortais. William se déplace sur site en Deux-Sèvres pour livrer trois prestations : Audit Flash 4h à 490 € HT (cartographie des processus automatisables, y compris workflows liés aux donneurs d'ordre mutualistes), Intervention Essentielle à 590 € HT (automatisation d'un workflow : traitement de sinistres documentaires, relances courtiers, reporting réglementaire) et Implémentation longue (intégration aux ERP/CRM/GED existants). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   seoHook: "mutuelles d'assurance, services financiers et sous-traitance",
   ecosystemFr:
     "Niort structure son économie autour du tertiaire mutualiste (MAIF, MACIF, MAAF, IMA, Inter Mutuelles Assistance) qui en fait un pôle assurantiel de référence nationale. À ces sièges s'ajoutent Safran (aéronautique), Kraton Chemical (chimie), un écosystème logistique facilité par l'A10 et l'A83, et un tissu de TPE/PME sous-traitantes très orientées B2B. La pépinière Niort Tech accompagne les jeunes pousses numériques locales. Pour un cabinet IA, Niort combine clients-cibles à fort volume documentaire et exigences réglementaires fortes.",
@@ -54,7 +54,7 @@ export const NIORT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais d'intervention sur Niort et le bassin niortais ?",
-      a: "Williams se déplace à Niort sous 5 à 10 jours ouvrés après signature. Les missions chez les sous-traitants mutualistes peuvent nécessiter un onboarding sécurité préalable (NDA, ACPR, schéma directeur SI) — délai ajusté en conséquence.",
+      a: "William se déplace à Niort sous 5 à 10 jours ouvrés après signature. Les missions chez les sous-traitants mutualistes peuvent nécessiter un onboarding sécurité préalable (NDA, ACPR, schéma directeur SI) — délai ajusté en conséquence.",
     },
     {
       q: "Axion-IA intervient-il dans les communes proches de Niort ?",
@@ -69,8 +69,8 @@ export const NIORT_COPY: VilleCopy = {
       a: "Mutuelles et assurances (et leurs sous-traitants), courtage, expertise comptable, formation continue, agences de communication B2B, sous-traitance aéronautique Safran, et PME logistiques de l'A10/A83.",
     },
     {
-      q: "Williams se déplace-t-il vraiment sur site à Niort ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Niort (TGV Paris-Niort 2h) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site, y compris dans la ZAC de Chauray ou au siège d'une mutuelle.",
+      q: "William se déplace-t-il vraiment sur site à Niort ou tout se fait à distance ?",
+      a: "William se déplace physiquement à Niort (TGV Paris-Niort 2h) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site, y compris dans la ZAC de Chauray ou au siège d'une mutuelle.",
     },
   ],
 };

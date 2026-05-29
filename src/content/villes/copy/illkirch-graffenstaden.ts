@@ -1,14 +1,14 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 (anti-doorway HCU 2024 sprint).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME d'Illkirch-Graffenstaden, troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants. Williams se déplace sur site auprès des entreprises du Parc d'Innovation, des artisans du sud strasbourgeois et des PME bas-rhinoises pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
+  "Axion-IA accompagne les TPE et PME d'Illkirch-Graffenstaden, troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants. William se déplace sur site auprès des entreprises du Parc d'Innovation, des artisans du sud strasbourgeois et des PME bas-rhinoises pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Illkirch-Graffenstaden pour les TPE et PME bas-rhinoises : entreprises biotech et logicielles du Parc d'Innovation, artisans et commerçants du centre, sous-traitants industriels gravitant autour de Flender-Graffenstaden et du tissu mécanique alsacien, professions libérales et cabinets de la Krimmeri à Graffenstaden. Williams se déplace via la gare TGV de Strasbourg (10 km, tram A direct) pour cadrer les besoins, livrer du code custom et former l'équipe. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, 1-à-1 990 € HT.";
+  "Axion-IA intervient à Illkirch-Graffenstaden pour les TPE et PME bas-rhinoises : entreprises biotech et logicielles du Parc d'Innovation, artisans et commerçants du centre, sous-traitants industriels gravitant autour de Flender-Graffenstaden et du tissu mécanique alsacien, professions libérales et cabinets de la Krimmeri à Graffenstaden. William se déplace via la gare TGV de Strasbourg (10 km, tram A direct) pour cadrer les besoins, livrer du code custom et former l'équipe. Audit Flash 490 € HT, Intervention Essentielle 590 € HT, 1-à-1 990 € HT.";
 
 const ECOSYSTEM_FR =
   "Illkirch-Graffenstaden est la troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants (Insee 2023, densité 1 255 hab/km²). L'économie locale repose sur le Parc d'Innovation d'Illkirch (biotech, IT, cluster Alsace BioValley), des employeurs industriels historiques comme Flender-Graffenstaden (mécanique) et un tissu de TPE-PME en R&D, ingénierie et services. La proximité de l'Université de Strasbourg, de l'École nationale supérieure de physique et de l'IUT Robert-Schuman alimente le bassin de talents.";
@@ -57,8 +57,8 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit Flash 490 € HT (4 h sur site), Intervention Essentielle 590 € HT (cadrage + livraison d'un automatisme), accompagnement 1-à-1 990 € HT. Tarifs publics, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Illkirch-Graffenstaden ?",
-      a: "Oui. Williams arrive en TGV à Strasbourg (gare centrale) puis rejoint Illkirch-Graffenstaden en tram A ou E (15 min). Pour les missions au Parc d'Innovation, station « Parc d'Innovation » directe sur la ligne A. Frais de déplacement intégrés.",
+      q: "William se déplace-t-il vraiment à Illkirch-Graffenstaden ?",
+      a: "Oui. William arrive en TGV à Strasbourg (gare centrale) puis rejoint Illkirch-Graffenstaden en tram A ou E (15 min). Pour les missions au Parc d'Innovation, station « Parc d'Innovation » directe sur la ligne A. Frais de déplacement intégrés.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Illkirch-Graffenstaden ?",

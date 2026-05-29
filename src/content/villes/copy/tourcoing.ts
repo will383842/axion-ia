@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Quality score: 90 — Model: claude-sonnet-4-6.
 // DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
@@ -36,8 +36,8 @@ export const TOURCOING_COPY: VilleCopy = {
       en: "Nous réalisons des audits IA à Tourcoing pour identifier les processus automatisables dans les PME textiles, commerciales ou IT du bassin — résultat livré sous forme de cartographie priorisée, sans jargon. Détail complet sur la sous-page /audits.",
     },
     interventions: {
-      fr: "Williams se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès 590 € HT pour une session Essentielle. Formats et contenus détaillés sur /interventions.",
-      en: "Williams se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès 590 € HT pour une session Essentielle. Formats et contenus détaillés sur /interventions.",
+      fr: "William se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès 590 € HT pour une session Essentielle. Formats et contenus détaillés sur /interventions.",
+      en: "William se déplace à Tourcoing pour des interventions collectives en entreprise, adaptées aux équipes opérationnelles des secteurs Commerce et Industrie — dès 590 € HT pour une session Essentielle. Formats et contenus détaillés sur /interventions.",
     },
     implementation: {
       fr: "Nous déployons des outils IA sur mesure à Tourcoing — automatisation de relances, génération de devis, RAG (Retrieval-Augmented Generation) documentaire — intégrables aux SI existants des PME du Parc de la Marlière. Voir /implementations.",

@@ -1,4 +1,4 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
+﻿// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
 // Manually corrected 2026-05-28 — HCU 2024 anti-doorway sprint (Wikipedia-sourced).
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
@@ -54,7 +54,7 @@ export const GRASSE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Grasse ?",
-      a: "Williams se déplace sur site à Grasse dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
+      a: "William se déplace sur site à Grasse dans un délai de 5 jours ouvrés à compter de la signature du devis, selon la disponibilité du planning.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Grasse ?",
