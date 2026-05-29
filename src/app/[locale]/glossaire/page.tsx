@@ -17,6 +17,9 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+// ISR 1h (P1 audit KB 2026-05-29) — aligné /connaissances et /ressources.
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};

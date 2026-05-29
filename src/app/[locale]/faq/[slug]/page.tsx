@@ -20,6 +20,9 @@ interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
+// ISR 1h (P1 audit KB 2026-05-29) — aligné /connaissances et /ressources.
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   // KB-6.3 : utilise le reader unifié (FAQ_GLOBAL en mode legacy).
   const faqs = await listFaqs();
