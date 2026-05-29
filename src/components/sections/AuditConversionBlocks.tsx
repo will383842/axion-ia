@@ -119,7 +119,7 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: Wallet,
           title: "Tarifs publics, pas de black box",
-          body: "Notre pyramide est affichée. Pas de devis opaque qui revient à 30 k€ après 3 réunions de cadrage. Vous savez où vous allez avant de signer.",
+          body: "Notre pyramide est affichée. Pas de devis opaque qui revient à 30 k€ après 3 réunions de cadrage. Vous savez où vous allez avant de signer." /* price-exempt: devis opaque concurrent (repoussoir), pas un tarif Axion-IA */,
         },
         {
           icon: Layers,
@@ -146,7 +146,7 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: Wallet,
           title: "Public pricing, no black box",
-          body: "Our pyramid is published. No opaque quote landing at €30k after 3 framing meetings. You know where you're going before signing.",
+          body: "Our pyramid is published. No opaque quote landing at €30k after 3 framing meetings. You know where you're going before signing." /* price-exempt: competitor opaque quote (foil), not an Axion-IA price */,
         },
         {
           icon: Layers,
@@ -422,9 +422,11 @@ export function SignatureCard({ isFr }: { isFr: boolean }): ReactNode {
                 className="text-fg mt-3 text-[19px] leading-snug font-medium italic sm:text-xl"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr
-                  ? "« J'ai créé Axion-IA parce que les entreprises méritent mieux qu'un PowerPoint à 30 k€ et 6 mois de réunions. On va sur le terrain, on identifie ce qui marche, on chiffre, on remet un plan exécutable. »"
-                  : "“I built Axion-IA because companies deserve more than a €30k slide deck and 6 months of meetings. We go on site, identify what works, cost it, hand over an actionable plan.”"}
+                {
+                  isFr
+                    ? "« J'ai créé Axion-IA parce que les entreprises méritent mieux qu'un PowerPoint à 30 k€ et 6 mois de réunions. On va sur le terrain, on identifie ce qui marche, on chiffre, on remet un plan exécutable. »" /* price-exempt: citation fondateur, PowerPoint concurrent 30 k€ */
+                    : "“I built Axion-IA because companies deserve more than a €30k slide deck and 6 months of meetings. We go on site, identify what works, cost it, hand over an actionable plan.”" /* price-exempt: founder quote, competitor slide deck €30k */
+                }
               </blockquote>
               <p className="text-fg-soft mt-4 text-sm">
                 <span className="text-fg font-bold">Will</span>

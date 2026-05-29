@@ -27,6 +27,7 @@ import { SitesWebStackAdaptee } from "@/components/services/sites-web/SitesWebSt
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
 import { SitesWebFaq } from "@/components/services/sites-web/SitesWebFaq";
 import { SitesWebCtaBlock } from "@/components/services/sites-web/SitesWebCtaBlock";
+import { MAINTENANCE_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import {
   buildProductMetadata,
@@ -157,8 +158,8 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       {
         name: isFr ? "Lancement et monitoring" : "Launch and monitoring",
         text: isFr
-          ? "Mise en production, formation équipe interne, documentation. Monitoring Web Vitals et taux de conversion. Évolutions continues possibles en maintenance standard 290 € / mois."
-          : "Production launch, internal team training, documentation. Web Vitals and conversion rate monitoring. Continuous evolutions possible under standard maintenance €290/month.",
+          ? `Mise en production, formation équipe interne, documentation. Monitoring Web Vitals et taux de conversion. Évolutions continues possibles en maintenance standard ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })} / mois.`
+          : `Production launch, internal team training, documentation. Web Vitals and conversion rate monitoring. Continuous evolutions possible under standard maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}/month.`,
       },
     ],
   });

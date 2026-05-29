@@ -330,7 +330,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
         {
           title: "Génération d'articles SEO",
           benefit:
-            "Votre site remonte sur Google sur vos mots-clés métier, sans payer 1 500 €/mois à une agence.",
+            "Votre site remonte sur Google sur vos mots-clés métier, sans payer 1 500 €/mois à une agence." /* price-exempt: coût agence SEO concurrente, pas un tarif Axion-IA */,
           audience: "TPE → ETI",
         },
         {
@@ -391,7 +391,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
         {
           title: "SEO article generation",
           benefit:
-            "Your site climbs on Google on your industry keywords, without paying €1,500/month to an agency.",
+            "Your site climbs on Google on your industry keywords, without paying €1,500/month to an agency." /* price-exempt: competitor SEO agency cost, not an Axion-IA price */,
           audience: "Small business → mid-market",
         },
         {

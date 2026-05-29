@@ -147,7 +147,8 @@ export default async function CodageDeveloppementHub({ params }: Props) {
           id: "q-delai-cout",
           question: "Combien de temps et quel budget prévoir ?",
           answer:
-            "Un chatbot RAG greffé sur une plateforme existante : 3 semaines, à partir de 2 000 €. Une plateforme sur mesure complète avec IA intégrée : 6 à 12 semaines, devis sur mesure selon périmètre. Toujours en forfait fixe — pas de régie, pas de dépassement.",
+            // TODO(pricing SSOT): prestation codage/dev web absente de pricing.ts (Will : « je ne sais pas » au 2026-05-29). Prix gardés tels quels en attendant qu'un tier codage soit ajouté à la SSOT, puis dériver.
+            "Un chatbot RAG greffé sur une plateforme existante : 3 semaines, à partir de 2 000 €. Une plateforme sur mesure complète avec IA intégrée : 6 à 12 semaines, devis sur mesure selon périmètre. Toujours en forfait fixe — pas de régie, pas de dépassement." /* price-exempt: codage web hors SSOT (tier à fixer par Will) */,
         },
         {
           id: "q-proprio",
@@ -179,7 +180,7 @@ export default async function CodageDeveloppementHub({ params }: Props) {
           id: "q-time-cost",
           question: "How long and what budget should I plan for?",
           answer:
-            "A RAG chatbot grafted onto an existing platform: 3 weeks, from €2,000. A complete custom platform with integrated AI: 6 to 12 weeks, custom quote based on scope. Always fixed fee — no time-and-materials, no overruns.",
+            "A RAG chatbot grafted onto an existing platform: 3 weeks, from €2,000. A complete custom platform with integrated AI: 6 to 12 weeks, custom quote based on scope. Always fixed fee — no time-and-materials, no overruns." /* price-exempt: web coding outside SSOT (tier TBD by Will) */,
         },
         {
           id: "q-owner",

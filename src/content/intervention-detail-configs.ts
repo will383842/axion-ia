@@ -11,6 +11,7 @@
 
 import { Compass, Sparkles, TrendingUp, Target, Inbox, Eye, Lightbulb } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { INTERVENTION_TIERS, getTierById } from "./pricing";
 
 export type InterventionDetailSlug =
   | "dirigeant-productivite"
@@ -595,7 +596,7 @@ export const INTERVENTION_DETAIL_CONFIGS: Record<InterventionDetailSlug, Interve
       benefits: DIRIGEANT_PRODUCTIVITE_BENEFITS,
       schedule: DIRIGEANT_PRODUCTIVITE_SCHEDULE,
       faq: DIRIGEANT_PRODUCTIVITE_FAQ,
-      priceFlatEur: 990,
+      priceFlatEur: getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
       groupSizeFr: "1 dirigeant (1-to-1 strict)",
       groupSizeEn: "1 executive (strict 1-on-1)",
     },

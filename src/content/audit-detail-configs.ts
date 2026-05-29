@@ -20,6 +20,43 @@ import {
 import type { LucideIcon } from "lucide-react";
 import type { AuditTier } from "./audit-taxonomy";
 import type { InterventionSlug } from "@/lib/intervention-type";
+import {
+  formatAmount,
+  AUDIT_FLASH_SUB_TIERS,
+  AUDIT_CIBLE_SUB_TIERS,
+  AUDIT_STRATEGIQUE_PME_SUB_TIERS,
+  AUDIT_STRATEGIQUE_ETI_SUB_TIERS,
+  type PricingSubTier,
+} from "./pricing";
+
+// Lookup type-safe d'un sous-tier par id — throw si introuvable (erreur de
+// migration des ids → casse tôt). `getTierById` de pricing.ts cible
+// `PricingTier`, pas `PricingSubTier` (descriptionFr/En requis), d'où ce helper
+// local dédié aux AUDIT_*_SUB_TIERS.
+const subTierPrice = (tiers: ReadonlyArray<PricingSubTier>, id: string): number => {
+  const tier = tiers.find((t) => t.id === id);
+  if (!tier) {
+    throw new Error(`[audit-detail-configs] sous-tier introuvable : "${id}"`);
+  }
+  return tier.priceFlat;
+};
+
+// Raccourcis prix dérivés de la SSOT pricing.ts (priceFlat des sous-tiers).
+// Toute modification de tarif se fait dans pricing.ts — ces constantes suivent.
+const PRICE_FLASH_DISTANCE = subTierPrice(AUDIT_FLASH_SUB_TIERS, "audit-flash-distance");
+const PRICE_FLASH_ONSITE = subTierPrice(AUDIT_FLASH_SUB_TIERS, "audit-flash-onsite");
+const PRICE_CIBLE_SOLO = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-solo");
+const PRICE_CIBLE_STANDARD = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-standard");
+const PRICE_CIBLE_AVANCE = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-avance");
+const PRICE_PME_20_50 = subTierPrice(
+  AUDIT_STRATEGIQUE_PME_SUB_TIERS,
+  "audit-strategique-pme-20-50",
+);
+const PRICE_PME_50_250 = subTierPrice(
+  AUDIT_STRATEGIQUE_PME_SUB_TIERS,
+  "audit-strategique-pme-50-250",
+);
+const PRICE_ETI_BASE = subTierPrice(AUDIT_STRATEGIQUE_ETI_SUB_TIERS, "audit-strategique-eti-base");
 
 export interface AuditBenefit {
   icon: LucideIcon;
@@ -164,16 +201,16 @@ const FLASH_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
 
 const FLASH_FAQ: ReadonlyArray<AuditFaq> = [
   {
-    qFr: "Pourquoi 2 prix (490 € distance / 890 € sur site) ?",
-    qEn: "Why 2 prices (€490 remote / €890 on site)?",
+    qFr: `Pourquoi 2 prix (${formatAmount(PRICE_FLASH_DISTANCE, "fr", { compact: true })} distance / ${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })} sur site) ?`,
+    qEn: `Why 2 prices (${formatAmount(PRICE_FLASH_DISTANCE, "en", { compact: true })} remote / ${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })} on site)?`,
     aFr: "Sur site = 1 journée complète dans vos locaux, démos avec votre équipe, observation terrain. Distance = 2 sessions visio (2 h chacune) sur vos cas. Mêmes livrables, mais l'immersion sur site permet de capter ce qui ne s'écrit pas (frictions équipe, outils legacy, processus oraux).",
     aEn: "On site = full day on your premises, demos with your team, field observation. Remote = 2 video sessions (2 h each) on your cases. Same deliverables, but on-site immersion captures what isn't written down (team friction, legacy tools, oral processes).",
   },
   {
     qFr: "Pour qui est-ce vraiment fait ?",
     qEn: "Who is this really for?",
-    aFr: "TPE (1-19 salariés), indépendant·e·s, freelances, professions libérales. Si vous avez plus de 20 salariés et plusieurs services concernés, l'audit Ciblé (1900-3900 €) ou Stratégique PME (4900-9900 €) est mieux calibré.",
-    aEn: "Small businesses (1-19 staff), independents, freelancers. If you have 20+ staff and multiple departments concerned, the Targeted audit (€1900-3900) or Strategic SME (€4900-9900) is better calibrated.",
+    aFr: `TPE (1-19 salariés), indépendant·e·s, freelances, professions libérales. Si vous avez plus de 20 salariés et plusieurs services concernés, l'audit Ciblé (${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE} €) ou Stratégique PME (${PRICE_PME_20_50}-${PRICE_PME_50_250} €) est mieux calibré.`,
+    aEn: `Small businesses (1-19 staff), independents, freelancers. If you have 20+ staff and multiple departments concerned, the Targeted audit (€${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE}) or Strategic SME (€${PRICE_PME_20_50}-${PRICE_PME_50_250}) is better calibrated.`,
   },
   {
     qFr: "Que se passe-t-il après l'audit Flash ?",
@@ -190,8 +227,8 @@ const FLASH_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Flash remote",
     rangeFr: "1 zone d'usage · à distance",
     rangeEn: "1 use area · remote",
-    priceLabelFr: "490 € HT",
-    priceLabelEn: "€490",
+    priceLabelFr: formatAmount(PRICE_FLASH_DISTANCE, "fr"),
+    priceLabelEn: formatAmount(PRICE_FLASH_DISTANCE, "en", { compact: true }),
     bodyFr:
       "2 sessions visio (2 h chacune). Idéal si vous êtes indépendant·e, dans un bureau partagé, ou si votre besoin est très ciblé. Démarrage sous 7 jours ouvrés.",
     bodyEn:
@@ -206,8 +243,8 @@ const FLASH_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Flash on site",
     rangeFr: "Sur site · 1 jour",
     rangeEn: "On site · 1 day",
-    priceLabelFr: "890 € HT",
-    priceLabelEn: "€890",
+    priceLabelFr: formatAmount(PRICE_FLASH_ONSITE, "fr"),
+    priceLabelEn: formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true }),
     bodyFr:
       "1 journée complète dans vos locaux (9 h-17 h). Vous voyez l'IA opérer sur vos vrais cas avec votre équipe. Réservation directe sur le calendrier.",
     bodyEn:
@@ -288,8 +325,8 @@ const CIBLE_FAQ: ReadonlyArray<AuditFaq> = [
   {
     qFr: "Quelle différence entre les 3 sous-tiers Solo / Standard / Avancé ?",
     qEn: "What's the difference between Solo / Standard / Advanced sub-tiers?",
-    aFr: "Solo (1 900 €) : à distance, périmètre simple, 1 sous-fonction d'un département. Standard (2 900 €) : mix site + visio, 1 département complet. Avancé (3 900 €) : service complexe, multi-acteurs, intégrations techniques approfondies. Le cadrage 15 min permet de choisir ensemble.",
-    aEn: "Solo (€1,900): remote, simple scope, 1 sub-function of a department. Standard (€2,900): mix on-site + remote, 1 full department. Advanced (€3,900): complex service, multi-stakeholder, deep technical integrations. The 15-min framing helps choose together.",
+    aFr: `Solo (${formatAmount(PRICE_CIBLE_SOLO, "fr", { compact: true })}) : à distance, périmètre simple, 1 sous-fonction d'un département. Standard (${formatAmount(PRICE_CIBLE_STANDARD, "fr", { compact: true })}) : mix site + visio, 1 département complet. Avancé (${formatAmount(PRICE_CIBLE_AVANCE, "fr", { compact: true })}) : service complexe, multi-acteurs, intégrations techniques approfondies. Le cadrage 15 min permet de choisir ensemble.`,
+    aEn: `Solo (${formatAmount(PRICE_CIBLE_SOLO, "en", { compact: true })}): remote, simple scope, 1 sub-function of a department. Standard (${formatAmount(PRICE_CIBLE_STANDARD, "en", { compact: true })}): mix on-site + remote, 1 full department. Advanced (${formatAmount(PRICE_CIBLE_AVANCE, "en", { compact: true })}): complex service, multi-stakeholder, deep technical integrations. The 15-min framing helps choose together.`,
   },
   {
     qFr: "Combien de temps prend l'audit complet ?",
@@ -312,8 +349,8 @@ const CIBLE_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Targeted Solo",
     rangeFr: "À distance · périmètre simple",
     rangeEn: "Remote · simple scope",
-    priceLabelFr: "1 900 € HT",
-    priceLabelEn: "€1,900",
+    priceLabelFr: formatAmount(PRICE_CIBLE_SOLO, "fr"),
+    priceLabelEn: formatAmount(PRICE_CIBLE_SOLO, "en", { compact: true }),
     bodyFr:
       "1 sous-fonction d'un département (ex. : 1 typologie de mails du support). 100 % à distance, 2 semaines, rapport 10-15 pages.",
     bodyEn:
@@ -327,8 +364,8 @@ const CIBLE_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Targeted Standard",
     rangeFr: "Mix site + visio",
     rangeEn: "Mix on-site + remote",
-    priceLabelFr: "2 900 € HT",
-    priceLabelEn: "€2,900",
+    priceLabelFr: formatAmount(PRICE_CIBLE_STANDARD, "fr"),
+    priceLabelEn: formatAmount(PRICE_CIBLE_STANDARD, "en", { compact: true }),
     bodyFr:
       "1 département complet (marketing, RH, ops, finance, juridique, support). Mix site (2-3 jours) + visio. 3 semaines, rapport 20-25 pages.",
     bodyEn:
@@ -343,8 +380,8 @@ const CIBLE_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Targeted Advanced",
     rangeFr: "Service complexe, multi-acteurs",
     rangeEn: "Complex, multi-stakeholder",
-    priceLabelFr: "3 900 € HT",
-    priceLabelEn: "€3,900",
+    priceLabelFr: formatAmount(PRICE_CIBLE_AVANCE, "fr"),
+    priceLabelEn: formatAmount(PRICE_CIBLE_AVANCE, "en", { compact: true }),
     bodyFr:
       "Département avec intégrations techniques (CRM, ERP, outils legacy) ou multi-équipes. 4 semaines, rapport 30-40 pages, intégrations cartographiées.",
     bodyEn:
@@ -423,8 +460,8 @@ const PME_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
 
 const PME_FAQ: ReadonlyArray<AuditFaq> = [
   {
-    qFr: "Quelle différence entre 20-50 salariés (4 900 €) et 50-250 salariés (9 900 €) ?",
-    qEn: "What's the difference between 20-50 staff (€4,900) and 50-250 staff (€9,900)?",
+    qFr: `Quelle différence entre 20-50 salariés (${formatAmount(PRICE_PME_20_50, "fr", { compact: true })}) et 50-250 salariés (${formatAmount(PRICE_PME_50_250, "fr", { compact: true })}) ?`,
+    qEn: `What's the difference between 20-50 staff (${formatAmount(PRICE_PME_20_50, "en", { compact: true })}) and 50-250 staff (${formatAmount(PRICE_PME_50_250, "en", { compact: true })})?`,
     aFr: "20-50 : 2 services majeurs cartographiés, 8 interviews, plan 25-30 pages, 5 semaines. 50-250 : 3-4 services, 15 interviews, plan 40-60 pages, 6 semaines, restitution COMEX dédiée. La complexité organisationnelle croît exponentiellement avec la taille.",
     aEn: "20-50: 2 major services mapped, 8 interviews, 25-30 page plan, 5 weeks. 50-250: 3-4 services, 15 interviews, 40-60 page plan, 6 weeks, dedicated EXCOM restitution. Organisational complexity grows exponentially with size.",
   },
@@ -449,8 +486,8 @@ const PME_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "SME 20-50 staff",
     rangeFr: "2 services majeurs",
     rangeEn: "2 major services",
-    priceLabelFr: "4 900 € HT",
-    priceLabelEn: "€4,900",
+    priceLabelFr: formatAmount(PRICE_PME_20_50, "fr"),
+    priceLabelEn: formatAmount(PRICE_PME_20_50, "en", { compact: true }),
     bodyFr:
       "PME en croissance, 1er audit IA d'envergure. 2 services majeurs cartographiés, 8 interviews, plan 25-30 pages, 5 semaines.",
     bodyEn:
@@ -464,8 +501,8 @@ const PME_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "SME 50-250 staff",
     rangeFr: "3-4 services majeurs",
     rangeEn: "3-4 major services",
-    priceLabelFr: "9 900 € HT",
-    priceLabelEn: "€9,900",
+    priceLabelFr: formatAmount(PRICE_PME_50_250, "fr"),
+    priceLabelEn: formatAmount(PRICE_PME_50_250, "en", { compact: true }),
     bodyFr:
       "PME structurée multi-services, ambition IA forte. 3-4 services, 15 interviews, plan 40-60 pages, 6 semaines, restitution COMEX dédiée.",
     bodyEn:
@@ -547,16 +584,16 @@ const ETI_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
 
 const ETI_FAQ: ReadonlyArray<AuditFaq> = [
   {
-    qFr: "Pourquoi un prix d'entrée à 12 000 € HT ?",
-    qEn: "Why an entry price of €12,000?",
+    qFr: `Pourquoi un prix d'entrée à ${formatAmount(PRICE_ETI_BASE, "fr")} ?`,
+    qEn: `Why an entry price of ${formatAmount(PRICE_ETI_BASE, "en", { compact: true })}?`,
     aFr: "Un audit ETI 1-2 BU mobilise 9 semaines de cadrage, 20-30 interviews, livrables board-ready (note stratégique + business cases + plan investissement + charte gouvernance). Le ratio coût/valeur reste très favorable : un audit ETI évite des erreurs d'investissement IA chiffrées en centaines de milliers d'euros.",
     aEn: "A 1-2 BU mid-cap audit mobilises 9 weeks of framing, 20-30 interviews, board-ready deliverables (strategic note + business cases + investment plan + governance charter). Cost/value ratio remains very favourable: a mid-cap audit prevents AI investment mistakes worth hundreds of thousands of euros.",
   },
   {
     qFr: "Et pour les groupes très grands (3+ BU, multi-sites, multinational) ?",
     qEn: "What about very large groups (3+ BUs, multi-site, multinational)?",
-    aFr: "Sur devis selon le périmètre : nombre de BU, nombre de sites, langues (FR/EN/autres), profondeur sectorielle. On démarre toujours par 1 phase de cadrage (1-2 semaines) pour figer le périmètre avant engagement ferme. Possible 50k € à 200k € selon ambition.",
-    aEn: "On request based on scope: number of BUs, number of sites, languages (FR/EN/others), sector depth. Always start with 1 framing phase (1-2 weeks) to lock scope before firm commitment. Possible €50k to €200k depending on ambition.",
+    aFr: "Sur devis selon le périmètre : nombre de BU, nombre de sites, langues (FR/EN/autres), profondeur sectorielle. On démarre toujours par 1 phase de cadrage (1-2 semaines) pour figer le périmètre avant engagement ferme. Possible 50k € à 200k € selon ambition." /* price-exempt: fourchette indicative multi-BU hors tiers Axion-IA */,
+    aEn: "On request based on scope: number of BUs, number of sites, languages (FR/EN/others), sector depth. Always start with 1 framing phase (1-2 weeks) to lock scope before firm commitment. Possible €50k to €200k depending on ambition." /* price-exempt: fourchette indicative multi-BU hors tiers Axion-IA */,
   },
   {
     qFr: "Quels secteurs ou conformités spécifiques ?",
@@ -573,8 +610,8 @@ const ETI_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
     labelEn: "Mid-cap · 1-2 BU · 1-2 sites",
     rangeFr: "3-4 services majeurs",
     rangeEn: "3-4 major services",
-    priceLabelFr: "12 000 € HT",
-    priceLabelEn: "€12,000",
+    priceLabelFr: formatAmount(PRICE_ETI_BASE, "fr"),
+    priceLabelEn: formatAmount(PRICE_ETI_BASE, "en", { compact: true }),
     bodyFr:
       "Audit stratégique pour ETI 1-2 BU. 9 semaines, 20-30 interviews, plan 60-80 pages, restitution COMEX + board, 30 j d'accompagnement post-audit inclus.",
     bodyEn:
@@ -611,10 +648,8 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "Flash audit",
     titleEmFr: "1 zone d'usage · 48 h",
     titleEmEn: "1 use area · 48 h",
-    promiseFr:
-      "Diagnostic IA rapide pour TPE / indépendant·e. On cartographie 1 zone d'usage prioritaire (rédaction, support, reporting, recherche…), on teste l'IA en live sur vos vrais cas, on livre un plan d'action sous 48 h. À distance (490 €) ou sur site avec réservation calendrier (890 €).",
-    promiseEn:
-      "Quick AI diagnosis for small business / independent. We map 1 priority use area (writing, support, reporting, research…), test AI live on your real cases, deliver an action plan within 48 h. Remote (€490) or on site with calendar booking (€890).",
+    promiseFr: `Diagnostic IA rapide pour TPE / indépendant·e. On cartographie 1 zone d'usage prioritaire (rédaction, support, reporting, recherche…), on teste l'IA en live sur vos vrais cas, on livre un plan d'action sous 48 h. À distance (${formatAmount(PRICE_FLASH_DISTANCE, "fr", { compact: true })}) ou sur site avec réservation calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
+    promiseEn: `Quick AI diagnosis for small business / independent. We map 1 priority use area (writing, support, reporting, research…), test AI live on your real cases, deliver an action plan within 48 h. Remote (${formatAmount(PRICE_FLASH_DISTANCE, "en", { compact: true })}) or on site with calendar booking (${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })}).`,
     chipsFr: ["Plan sous 48 h", "Démos live · vos cas", "Confidentialité totale"],
     chipsEn: ["48-h plan", "Live demos · your cases", "Total confidentiality"],
     benefits: FLASH_BENEFITS,
@@ -636,10 +671,8 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "Targeted audit",
     titleEmFr: "1 département · 3 semaines",
     titleEmEn: "1 department · 3 weeks",
-    promiseFr:
-      "Audit IA focalisé sur 1 département précis (marketing, RH, opérations, finance, juridique, support). Cartographie complète, scoring opportunités ROI/complexité, plan d'exécution priorisé. 3 sous-tiers Solo (1 900 €) · Standard (2 900 €) · Avancé (3 900 €) selon la complexité.",
-    promiseEn:
-      "AI audit focused on 1 specific department (marketing, HR, ops, finance, legal, support). Complete mapping, ROI/complexity scoring, prioritised execution plan. 3 sub-tiers: Solo (€1,900) · Standard (€2,900) · Advanced (€3,900) depending on complexity.",
+    promiseFr: `Audit IA focalisé sur 1 département précis (marketing, RH, opérations, finance, juridique, support). Cartographie complète, scoring opportunités ROI/complexité, plan d'exécution priorisé. 3 sous-tiers Solo (${formatAmount(PRICE_CIBLE_SOLO, "fr", { compact: true })}) · Standard (${formatAmount(PRICE_CIBLE_STANDARD, "fr", { compact: true })}) · Avancé (${formatAmount(PRICE_CIBLE_AVANCE, "fr", { compact: true })}) selon la complexité.`,
+    promiseEn: `AI audit focused on 1 specific department (marketing, HR, ops, finance, legal, support). Complete mapping, ROI/complexity scoring, prioritised execution plan. 3 sub-tiers: Solo (${formatAmount(PRICE_CIBLE_SOLO, "en", { compact: true })}) · Standard (${formatAmount(PRICE_CIBLE_STANDARD, "en", { compact: true })}) · Advanced (${formatAmount(PRICE_CIBLE_AVANCE, "en", { compact: true })}) depending on complexity.`,
     chipsFr: ["Cartographie complète", "Scoring ROI/complexité", "Plan chiffré 3-12 mois"],
     chipsEn: ["Complete mapping", "ROI/complexity scoring", "3-12 month quantified plan"],
     benefits: CIBLE_BENEFITS,
@@ -661,10 +694,8 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "SME Strategic audit",
     titleEmFr: "multi-départements · roadmap 12-24 mois",
     titleEmEn: "multi-department · 12-24 month roadmap",
-    promiseFr:
-      "Audit IA complet multi-départements pour PME ambitieuses (20 à 250 salariés). Cartographie 2-4 services majeurs, plan d'exécution chiffré, roadmap stratégique 12-24 mois, restitution COMEX. 2 sous-tiers : 20-50 salariés (4 900 €) · 50-250 salariés (9 900 €).",
-    promiseEn:
-      "Full multi-department AI audit for ambitious SMEs (20 to 250 staff). Maps 2-4 major services, quantified execution plan, 12-24 month strategic roadmap, EXCOM restitution. 2 sub-tiers: 20-50 staff (€4,900) · 50-250 staff (€9,900).",
+    promiseFr: `Audit IA complet multi-départements pour PME ambitieuses (20 à 250 salariés). Cartographie 2-4 services majeurs, plan d'exécution chiffré, roadmap stratégique 12-24 mois, restitution COMEX. 2 sous-tiers : 20-50 salariés (${formatAmount(PRICE_PME_20_50, "fr", { compact: true })}) · 50-250 salariés (${formatAmount(PRICE_PME_50_250, "fr", { compact: true })}).`,
+    promiseEn: `Full multi-department AI audit for ambitious SMEs (20 to 250 staff). Maps 2-4 major services, quantified execution plan, 12-24 month strategic roadmap, EXCOM restitution. 2 sub-tiers: 20-50 staff (${formatAmount(PRICE_PME_20_50, "en", { compact: true })}) · 50-250 staff (${formatAmount(PRICE_PME_50_250, "en", { compact: true })}).`,
     chipsFr: ["2-4 services majeurs", "Restitution COMEX", "AI Act + RGPD by default"],
     chipsEn: ["2-4 major services", "EXCOM restitution", "AI Act + GDPR by default"],
     benefits: PME_BENEFITS,
@@ -686,10 +717,8 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     titleEn: "Mid-cap Strategic audit",
     titleEmFr: "transverse · gouvernance · board-ready",
     titleEmEn: "transverse · governance · board-ready",
-    promiseFr:
-      "Audit IA transverse pour ETI (250-5000 salariés) et grandes entreprises. Cartographie multi-BU, gouvernance IA + comité de pilotage, livrables board-ready, conformité AI Act 2026 + RGPD + sectoriel. À partir de 12 000 € HT pour 1-2 BU, sur devis pour multi-BU.",
-    promiseEn:
-      "Transverse AI audit for mid-cap (250-5000 staff) and large enterprises. Multi-BU mapping, AI governance + steering committee, board-ready deliverables, 2026 AI Act + GDPR + sector compliance. From €12,000 for 1-2 BU, on request for multi-BU.",
+    promiseFr: `Audit IA transverse pour ETI (250-5000 salariés) et grandes entreprises. Cartographie multi-BU, gouvernance IA + comité de pilotage, livrables board-ready, conformité AI Act 2026 + RGPD + sectoriel. À partir de ${formatAmount(PRICE_ETI_BASE, "fr")} pour 1-2 BU, sur devis pour multi-BU.`,
+    promiseEn: `Transverse AI audit for mid-cap (250-5000 staff) and large enterprises. Multi-BU mapping, AI governance + steering committee, board-ready deliverables, 2026 AI Act + GDPR + sector compliance. From ${formatAmount(PRICE_ETI_BASE, "en", { compact: true })} for 1-2 BU, on request for multi-BU.`,
     chipsFr: ["Multi-BU", "Gouvernance IA + comité", "Board-ready · 30 j accompagnement"],
     chipsEn: ["Multi-BU", "AI governance + committee", "Board-ready · 30-day support"],
     benefits: ETI_BENEFITS,

@@ -7,10 +7,18 @@ import { AuditDetailPage } from "@/components/sections/AuditDetailPage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { buildProductMetadata, buildImageGraphJsonLd } from "@/lib/seo";
+import { AUDIT_TIERS, getTierById, formatAmount, formatAmountRange } from "@/content/pricing";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Stratégique PME via template.
 
 const TIER = "audit-strategique-pme" as const;
+
+// SSOT prix — dérivé de pricing.ts (audit-strategique-pme : priceMin 4900, priceMax 9900).
+const PME_TIER = getTierById(AUDIT_TIERS, "audit-strategique-pme");
+const PME_MIN = PME_TIER.priceMin ?? 0;
+const PME_MAX = PME_TIER.priceMax ?? 0;
+// Format FR original « 4 900 → 9 900 € » : un seul « € » en fin (borne min sans « € »).
+const PME_RANGE_FR_SINGLE_EUR = `${formatAmount(PME_MIN, "fr", { compact: true }).replace(" €", "")} → ${formatAmount(PME_MAX, "fr", { compact: true })}`;
 
 export const revalidate = 3600;
 
@@ -27,8 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: isFr ? "/audit/strategique-pme" : "/audit/strategic-pme",
     title: isFr
-      ? "Audit Stratégique PME · 4 900 → 9 900 € · Axion-IA"
-      : "SME Strategic AI audit · €4,900 → €9,900 · Axion-IA",
+      ? `Audit Stratégique PME · ${PME_RANGE_FR_SINGLE_EUR} · Axion-IA`
+      : `SME Strategic AI audit · ${formatAmountRange(PME_MIN, PME_MAX, "en", { compact: true })} · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/strategique-pme", en: "/audit/strategic-pme" },
   });

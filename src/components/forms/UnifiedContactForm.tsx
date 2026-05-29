@@ -96,7 +96,8 @@ const LABELS = {
     companySector: "Secteur d'activité",
     companySectorPlaceholder: "Ex : industrie, retail, santé…",
     budgetIndicative: "Budget pressenti (optionnel)",
-    budgetIndicativePlaceholder: "Ex : 10-20 k€, à définir",
+    budgetIndicativePlaceholder:
+      "Ex : 10-20 k€, à définir" /* price-exempt: placeholder budget saisi par le visiteur, pas un tarif Axion-IA */,
     timingWeeks: "Timing souhaité",
     timingWeeksOptions: {
       "0-4": "0-4 semaines",
@@ -168,7 +169,8 @@ const LABELS = {
     companySector: "Sector",
     companySectorPlaceholder: "e.g. industry, retail, healthcare…",
     budgetIndicative: "Indicative budget (optional)",
-    budgetIndicativePlaceholder: "e.g. 10-20 k€, TBD",
+    budgetIndicativePlaceholder:
+      "e.g. 10-20 k€, TBD" /* price-exempt: visitor-entered budget placeholder, not an Axion-IA price */,
     timingWeeks: "Desired timing",
     timingWeeksOptions: {
       "0-4": "0-4 weeks",

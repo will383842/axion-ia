@@ -276,7 +276,11 @@ export default async function AuditHub({ params }: Props) {
       {/* STICKY CTA MOBILE */}
       <StickyMobileCta
         href="/reserver?intervention=audit-flash-onsite"
-        label={isFr ? `Flash terrain · 890 €` : `On-site Flash · €890`}
+        label={
+          isFr
+            ? `Flash terrain · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "fr", { compact: true })}`
+            : `On-site Flash · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "en", { compact: true })}`
+        }
         track="audit-flash-onsite-sticky"
         threshold={500}
       />

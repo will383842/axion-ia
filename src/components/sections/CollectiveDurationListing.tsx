@@ -33,6 +33,7 @@ import {
   quoteContactPath,
 } from "@/content/interventions-taxonomy";
 import { buildCourseJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { MAINTENANCE_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   durationId: CollectiveDuration;
@@ -116,8 +117,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
         {
           id: "4h-suivi",
           question: "Suivi inclus après la formation 4 heures ?",
-          answer:
-            "Oui — support 30 jours pour répondre aux questions post-formation par email. Option maintenance standard 290 €/mois pour aller plus loin.",
+          answer: `Oui — support 30 jours pour répondre aux questions post-formation par email. Option maintenance standard ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}/mois pour aller plus loin.`,
         },
       ],
       en: [
@@ -142,8 +142,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
         {
           id: "4h-suivi",
           question: "Follow-up included after the 4-hour session?",
-          answer:
-            "Yes — 30-day email support for post-training questions. Standard maintenance option €290/month for deeper work.",
+          answer: `Yes — 30-day email support for post-training questions. Standard maintenance option ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}/month for deeper work.`,
         },
       ],
     },
@@ -291,7 +290,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           id: "3jplus-tarif",
           question: "Quel est le prix d'une formation 3 jours et plus ?",
           answer:
-            "Sur devis — varie selon nombre de jours, effectif, complexité du contenu, frais de déplacement. À titre indicatif : un programme 3 jours pour 15 personnes démarre généralement à partir de 8 000 € HT.",
+            "Sur devis — varie selon nombre de jours, effectif, complexité du contenu et frais de déplacement. Programme cadré et chiffré précisément après notre échange (voir la page Tarifs pour les formats publics).",
         },
       ],
       en: [
@@ -317,7 +316,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           id: "3jplus-tarif",
           question: "What's the price for 3+ days training?",
           answer:
-            "On quote — varies by days, headcount, content complexity, travel expenses. As reference: a 3-day programme for 15 people typically starts from €8,000 ex VAT.",
+            "On quote — varies by days, headcount, content complexity and travel expenses. Programme framed and priced precisely after our call (see the Pricing page for public formats).",
         },
       ],
     },

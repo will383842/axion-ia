@@ -119,7 +119,7 @@ export default async function AiGuidePage({ params }: Props) {
                 icon: BookOpen,
                 label: isFr ? `${chapters.length} chapitres` : `${chapters.length} chapters`,
               },
-              { icon: Tag, label: isFr ? "Gratuit · 0 €" : "Free · €0" },
+              { icon: Tag, label: isFr ? "100 % gratuit" : "100% free" },
               { icon: RefreshCw, label: isFr ? "MAJ semestrielle" : "Bi-annual updates" },
             ].map((pill) => {
               const Icon = pill.icon;

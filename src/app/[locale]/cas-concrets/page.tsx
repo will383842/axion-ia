@@ -300,9 +300,11 @@ export default async function CaseStudiesListing({ params }: Props) {
                       sont des fourchettes marketing larges qui dépassent la grille pricing.ts officielle
                       (audits 490 → 12 000 €, implémentations 990 → 80 000 €). Ranges laissés intacts
                       car la conversion exacte est ambiguë (fourchettes marketing ≠ tiers SSOT). */}
-                  {isFr
-                    ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audits 3-15 k€, implémentations 5-50 k€. ROI documenté à chaque palier.`
-                    : `Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, audits €3-15k, implementations €5-50k. Documented ROI at every tier.`}
+                  {
+                    isFr
+                      ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audits 3-15 k€, implémentations 5-50 k€. ROI documenté à chaque palier.` /* price-exempt: fourchettes marketing ROI larges, hors tiers SSOT (cf. TODO ci-dessus) */
+                      : `Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, audits €3-15k, implementations €5-50k. Documented ROI at every tier.` /* price-exempt: broad marketing ROI ranges, outside SSOT tiers */
+                  }
                 </CardDescription>
               </CardHeader>
             </Card>

@@ -313,7 +313,8 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-cout",
           question: "Combien ça coûte d'intégrer l'IA dans un site web ?",
           answer:
-            "De 2 000 € (chatbot RAG sur une base documentaire) à 30 000 €+ (plateforme sur mesure complète avec IA intégrée). Toujours en forfait fixe, devis ferme avant démarrage.",
+            // TODO(pricing SSOT): codage/dev web absent de pricing.ts (Will « je ne sais pas » 2026-05-29). Garder tel quel jusqu'à l'ajout d'un tier codage, puis dériver.
+            "De 2 000 € (chatbot RAG sur une base documentaire) à 30 000 €+ (plateforme sur mesure complète avec IA intégrée). Toujours en forfait fixe, devis ferme avant démarrage." /* price-exempt: codage web hors SSOT (tier à fixer par Will) */,
         },
         {
           id: "q-proprio",
@@ -351,7 +352,7 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-cost",
           question: "How much does it cost to add AI to a website?",
           answer:
-            "From €2,000 (RAG chatbot on a knowledge base) to €30,000+ (full custom platform with integrated AI). Always fixed fee, firm quote before kick-off.",
+            "From €2,000 (RAG chatbot on a knowledge base) to €30,000+ (full custom platform with integrated AI). Always fixed fee, firm quote before kick-off." /* price-exempt: web coding outside SSOT (tier TBD by Will) */,
         },
         {
           id: "q-owner",

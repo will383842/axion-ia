@@ -7,11 +7,21 @@ import { AuditDetailPage } from "@/components/sections/AuditDetailPage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { buildProductMetadata, buildImageGraphJsonLd } from "@/lib/seo";
+import { AUDIT_TIERS, getTierById, formatAmount, formatAmountRange } from "@/content/pricing";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Ciblé via template SSOT.
 // Remplace /audit/process (renommé selon doctrine pricing.ts AUDIT_TIERS).
 
 const TIER = "audit-cible" as const;
+
+// SSOT prix — dérivé de pricing.ts (audit-cible : priceMin 1900, priceMax 3900).
+const CIBLE_TIER = getTierById(AUDIT_TIERS, "audit-cible");
+const CIBLE_MIN = CIBLE_TIER.priceMin ?? 0;
+const CIBLE_MAX = CIBLE_TIER.priceMax ?? 0;
+// Format FR original « 1 900 → 3 900 € » : un seul « € » en fin (la borne min
+// n'affiche pas son « € »). On dérive depuis formatAmount compact en retirant
+// le « € » de la borne min, puis « → » + borne max complète.
+const CIBLE_RANGE_FR_SINGLE_EUR = `${formatAmount(CIBLE_MIN, "fr", { compact: true }).replace(" €", "")} → ${formatAmount(CIBLE_MAX, "fr", { compact: true })}`;
 
 export const revalidate = 3600;
 
@@ -28,8 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: isFr ? "/audit/cible" : "/audit/targeted",
     title: isFr
-      ? "Audit IA Ciblé · 1 département · 1 900 → 3 900 € · Axion-IA"
-      : "Targeted AI audit · 1 department · €1,900 → €3,900 · Axion-IA",
+      ? `Audit IA Ciblé · 1 département · ${CIBLE_RANGE_FR_SINGLE_EUR} · Axion-IA`
+      : `Targeted AI audit · 1 department · ${formatAmountRange(CIBLE_MIN, CIBLE_MAX, "en", { compact: true })} · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/cible", en: "/audit/targeted" },
   });

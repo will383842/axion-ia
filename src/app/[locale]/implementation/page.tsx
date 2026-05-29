@@ -33,6 +33,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
+  MAINTENANCE_TIERS,
   formatAmount,
   getEntryPriceEur,
   getTierById,
@@ -193,8 +194,8 @@ export default async function ImplementationListing({ params }: Props) {
       {
         name: isFr ? "Mise en production et suivi" : "Production deployment and follow-up",
         text: isFr
-          ? "Déploiement en production avec monitoring, formation équipe et documentation. Suivi 30 jours inclus, option maintenance standard 290 € / mois pour évolutions continues."
-          : "Production deployment with monitoring, team training and documentation. 30-day follow-up included, standard maintenance option €290/month for continuous evolutions.",
+          ? `Déploiement en production avec monitoring, formation équipe et documentation. Suivi 30 jours inclus, option maintenance standard ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })} / mois pour évolutions continues.`
+          : `Production deployment with monitoring, team training and documentation. 30-day follow-up included, standard maintenance option ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}/month for continuous evolutions.`,
       },
     ],
   });
