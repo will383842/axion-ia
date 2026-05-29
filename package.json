@@ -203,6 +203,7 @@
     ]
   },
   "_size_limit_doctrine": "Sprint S6.3 P1-6 (2026-05-15) — refactor multi-bucket aligné AGENTS.md. 75 KB gz/route (cible interne stricte), 110 KB sur /reserver (calendrier client-heavy, ADR exception). Per-route strict path-matching n'est pas supporté nativement par size-limit (les page-*.js sont sommés sur tout le glob) ; on contrôle donc le shell partagé + les pages standard via globs séparés, et Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route LCP/INP/CLS.",
+  "_size_limit_running_note": "running:false sur chaque entrée (2026-05-29) — on ne mesure QUE la taille gz (le seuil du gate), pas le temps d'exécution JS qui exige un Chrome headless. size-limit lançait Chrome en CI et restait bloqué (« Running JS in headless Chrome » → SIGTERM Gate B). Lighthouse CI reste l'autorité perf (LCP/INP/CLS). Cf doctrine ci-dessous.",
   "size-limit": [
     {
       "name": "Shell partagé (framework + main + webpack + polyfills) — cible ≤ 100 KB gz cumulé",
@@ -213,17 +214,20 @@
         ".next/static/chunks/webpack-*.js",
         ".next/static/chunks/polyfills-*.js"
       ],
-      "limit": "100 KB"
+      "limit": "100 KB",
+      "running": false
     },
     {
       "name": "Routes /reserver (exception calendrier — 110 KB gz cumulé)",
       "path": ".next/static/chunks/app/**/reserver/**/page-*.js",
-      "limit": "110 KB"
+      "limit": "110 KB",
+      "running": false
     },
     {
       "name": "Routes /reserver — chunks dynamiques (Calendar SSR=false)",
       "path": ".next/static/chunks/app/**/reserver/**/*.js",
-      "limit": "150 KB"
+      "limit": "150 KB",
+      "running": false
     },
     {
       "name": "Pages standard (toutes routes hors /reserver) — page chunks individuels",
@@ -231,7 +235,8 @@
         ".next/static/chunks/app/**/page-*.js",
         "!.next/static/chunks/app/**/reserver/**"
       ],
-      "limit": "75 KB"
+      "limit": "75 KB",
+      "running": false
     },
     {
       "name": "Routes /galerie (image-bank V1) — page chunks ≤ 75 KB gz",
@@ -239,7 +244,8 @@
         ".next/static/chunks/app/**/galerie/**/page-*.js",
         ".next/static/chunks/app/**/gallery/**/page-*.js"
       ],
-      "limit": "75 KB"
+      "limit": "75 KB",
+      "running": false
     },
     {
       "name": "Routes /implantations hub villes (2157 pages, stratégie ISR T3/T4) — page chunks ≤ 72 KB gz stricter",
@@ -247,7 +253,8 @@
         ".next/static/chunks/app/**/implantations/**/page-*.js",
         ".next/static/chunks/app/**/locations/**/page-*.js"
       ],
-      "limit": "72 KB"
+      "limit": "72 KB",
+      "running": false
     }
   ],
   "pnpm": {
