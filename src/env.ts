@@ -73,11 +73,30 @@ export const env = createEnv({
     TURNSTILE_SECRET_KEY: z.string().optional(),
 
     // ────────────────────────────────────────────────────────────────
+    // Booking V1 toggle (2026-05-29) — Will : Booking/paiement Stripe ne sera
+    // activé que dans plusieurs mois. Tant que `BOOKING_ENABLED` != "true",
+    // les 3 clés Stripe NE sont PAS requises au boot prod (plus de placeholders
+    // à maintenir). Le jour de l'activation : poser `BOOKING_ENABLED=true` +
+    // les vraies clés dans Coolify → la validation ci-dessous les ré-exige
+    // automatiquement (fail-fast au boot si une clé manque/est invalide).
+    // Le code Stripe (`src/lib/stripe.ts`) est déjà lazy + `isStripeConfigured()`
+    // → aucun appel Stripe au boot, donc rien ne casse quand Booking est off.
+    // ────────────────────────────────────────────────────────────────
+    /// Active le module Booking V1 (réservation + paiement Stripe). Défaut OFF.
+    /// Quand `true` en prod → STRIPE_SECRET_KEY/PUBLISHABLE_KEY/WEBHOOK_SECRET
+    /// deviennent requis (cf. superRefine ci-dessous).
+    BOOKING_ENABLED: z
+      .string()
+      .optional()
+      .transform((v) => v === "true" || v === "1"),
+
+    // ────────────────────────────────────────────────────────────────
     // Stripe Checkout V1 (Sprint X.2 — Booking V1) + ADR 0013.
     // Cert plateforme 2026-05-16 — fail-fast au boot prod si une clé manque
     // (avant fix : throw lazy au premier appel SDK = revenu perdu sans alerte).
+    // 2026-05-29 — required UNIQUEMENT si BOOKING_ENABLED=true (cf. ci-dessus).
     // ────────────────────────────────────────────────────────────────
-    /// Secret Stripe (server-only). Format `sk_(live|test)_*`. Required en prod.
+    /// Secret Stripe (server-only). Format `sk_(live|test)_*`. Required si Booking actif.
     /// Si `STRIPE_LIVE_MODE=true` → DOIT être `sk_live_*` (refuse `sk_test_*`).
     STRIPE_SECRET_KEY: z
       .string()
@@ -85,10 +104,14 @@ export const env = createEnv({
       .optional()
       .superRefine((val, ctx) => {
         if (process.env.NODE_ENV !== "production") return;
+        const bookingOn =
+          process.env.BOOKING_ENABLED === "true" || process.env.BOOKING_ENABLED === "1";
+        if (!bookingOn) return;
         if (!val) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: "STRIPE_SECRET_KEY is required in production (Booking V1 Stripe Checkout)",
+            message:
+              "STRIPE_SECRET_KEY is required when BOOKING_ENABLED=true (Booking V1 Stripe Checkout)",
           });
           return;
         }
@@ -100,17 +123,20 @@ export const env = createEnv({
         }
       }),
     /// Clé publishable Stripe (server-validée mais exposable client via prop).
-    /// Format `pk_(live|test)_*`. Required en prod.
+    /// Format `pk_(live|test)_*`. Required si Booking actif.
     STRIPE_PUBLISHABLE_KEY: z
       .string()
       .regex(/^pk_(live|test)_/, "STRIPE_PUBLISHABLE_KEY must start with pk_live_ or pk_test_")
       .optional()
       .superRefine((val, ctx) => {
         if (process.env.NODE_ENV !== "production") return;
+        const bookingOn =
+          process.env.BOOKING_ENABLED === "true" || process.env.BOOKING_ENABLED === "1";
+        if (!bookingOn) return;
         if (!val) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: "STRIPE_PUBLISHABLE_KEY is required in production",
+            message: "STRIPE_PUBLISHABLE_KEY is required when BOOKING_ENABLED=true",
           });
           return;
         }
@@ -121,7 +147,7 @@ export const env = createEnv({
           });
         }
       }),
-    /// Secret webhook Stripe (HMAC `constructEvent`). Format `whsec_*`. Required prod.
+    /// Secret webhook Stripe (HMAC `constructEvent`). Format `whsec_*`. Required si Booking actif.
     STRIPE_WEBHOOK_SECRET: z
       .string()
       .regex(/^whsec_/, "STRIPE_WEBHOOK_SECRET must start with whsec_")
@@ -129,10 +155,13 @@ export const env = createEnv({
       .optional()
       .superRefine((val, ctx) => {
         if (process.env.NODE_ENV !== "production") return;
+        const bookingOn =
+          process.env.BOOKING_ENABLED === "true" || process.env.BOOKING_ENABLED === "1";
+        if (!bookingOn) return;
         if (!val) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: "STRIPE_WEBHOOK_SECRET is required in production",
+            message: "STRIPE_WEBHOOK_SECRET is required when BOOKING_ENABLED=true",
           });
         }
       }),
@@ -361,6 +390,7 @@ export const env = createEnv({
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     // Stripe Checkout V1 (Booking V1 — ADR 0013)
+    BOOKING_ENABLED: process.env.BOOKING_ENABLED,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
