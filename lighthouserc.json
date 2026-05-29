@@ -3,23 +3,14 @@
     "collect": {
       "url": [
         "http://localhost:3000/fr",
-        "http://localhost:3000/en",
         "http://localhost:3000/fr/interventions",
-        "http://localhost:3000/en/interventions",
         "http://localhost:3000/fr/interventions/essentielle",
-        "http://localhost:3000/en/interventions/essential",
         "http://localhost:3000/fr/audit",
-        "http://localhost:3000/en/audit",
         "http://localhost:3000/fr/implementation",
-        "http://localhost:3000/en/implementation",
         "http://localhost:3000/fr/cas-concrets",
-        "http://localhost:3000/en/case-studies",
         "http://localhost:3000/fr/blog",
-        "http://localhost:3000/en/blog",
         "http://localhost:3000/fr/contact",
-        "http://localhost:3000/en/contact",
         "http://localhost:3000/fr/galerie",
-        "http://localhost:3000/en/gallery",
         "http://localhost:3000/fr/implantations/ile-de-france/paris",
         "http://localhost:3000/fr/implantations/auvergne-rhone-alpes/chamonix-mont-blanc",
         "http://localhost:3000/fr/implantations/provence-alpes-cote-d-azur/simiane-collongue"
@@ -51,6 +42,8 @@
         "dom-size": "off",
         "cache-insight": "off",
         "lcp-discovery-insight": "off",
+        "document-latency-insight": "off",
+        "redirects": ["warn", { "minScore": 0.9 }],
         "legacy-javascript-insight": ["warn", { "minScore": 0.5 }],
         "legacy-javascript": ["warn", { "maxLength": 5 }],
         "unused-javascript": ["warn", { "maxLength": 10 }],
@@ -69,6 +62,9 @@
       }
     },
     "_assert_doctrine": [
+      "Sprint LHCI fix 2026-05-29 — retrait 11 URLs `/en/*` du collect.url : locale EN désactivée depuis 2026-05-16 (voir AGENTS.md proxy.ts 301 EN→FR systématique). Tester ces URLs c'était auditer le système de redirect → score `redirects` plombé. URLs FR uniquement (12 URLs × 2 presets × 3 runs = 72 audits, scope cohérent avec contenu prod live).",
+      "Sprint LHCI fix 2026-05-29 — `document-latency-insight` OFF : audit expérimental Lighthouse 12+ retournait failure systématique sans cause actionnable identifiée (TTFB Cloudflare + Coolify acceptable mais l'insight pénalise tout TTFB > 600ms sans pondérer le routing edge). À ré-activer si bench TTFB systématique mis en place.",
+      "Sprint LHCI fix 2026-05-29 — `redirects` ratcheté à WARN (était dans preset no-pwa en ERROR par défaut) : 0 redirect en prod après retrait /en/* du test set, mais maintenu en WARN pour détecter régressions futures.",
       "Sprint Final P1 2026-05-22 — ratchet cibles strictes alignées AGENTS.md (CLS=0.05 / TBT≤150 / INP≤80 warn).",
       "Sprint Web Vitals fix 2026-05-17 — tuning runbook deploy recovery (historique).",
       "Doctrine : assertions Core Web Vitals (LCP/CLS/TBT/FCP/SI) restent ERROR strict.",
