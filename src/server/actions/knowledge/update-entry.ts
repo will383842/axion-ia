@@ -21,7 +21,6 @@ import type {
   KbConfidentiality,
   KbDomain,
   KbPipelineStage,
-  KbStatus,
   KbType,
 } from "../../../../prisma/generated/client";
 
@@ -60,6 +59,15 @@ export async function updateEntryAction(input: UpdateEntryInput): Promise<Update
   });
   if (!existing || existing.deletedAt) {
     return { ok: false, error: "not_found" };
+  }
+
+  // P0 audit KB 2026-05-29 — anti-bypass state-machine : le statut ne peut PAS
+  // être changé via updateEntry (sinon draft→published saute PII/qualité/dedup).
+  // Tout changement de statut passe par les actions dédiées (submit/approve/
+  // publish/schedule/unpublish/archive). On rejette explicitement tout écart
+  // (pas de no-op silencieux) ; un payload renvoyant le statut inchangé est toléré.
+  if (data.status && data.status !== existing.status) {
+    return { ok: false, error: "status_change_forbidden_use_workflow" };
   }
 
   // Si slug change : vérifier unicité + créer ligne KnowledgeSlugHistory
@@ -101,7 +109,8 @@ export async function updateEntryAction(input: UpdateEntryInput): Promise<Update
           ...(data.confidentiality
             ? { confidentiality: data.confidentiality as KbConfidentiality }
             : {}),
-          ...(data.status ? { status: data.status as KbStatus } : {}),
+          // status volontairement non modifiable ici (P0 audit KB 2026-05-29) :
+          // garde anti-bypass en amont (voir plus haut). Statut = state-machine.
           ...(data.pipelineStage ? { pipelineStage: data.pipelineStage as KbPipelineStage } : {}),
           ...(data.slug ? { slug: data.slug } : {}),
           ...(data.briefMarkdown !== undefined ? { briefMarkdown: data.briefMarkdown } : {}),

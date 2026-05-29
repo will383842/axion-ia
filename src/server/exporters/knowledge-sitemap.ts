@@ -55,12 +55,19 @@ export async function listKnowledgeSitemapEntries(
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
     return [];
   }
+  const now = new Date();
   try {
     const entries = await prisma.knowledgeEntry.findMany({
       where: {
         audience: "public",
+        // P0 audit KB 2026-05-29 — anti-fuite sitemap (confidentialité + futur + embargo).
+        confidentiality: "public",
         status: { in: ["published", "deprecated"] },
         deletedAt: null,
+        AND: [
+          { OR: [{ publishedAt: null }, { publishedAt: { lte: now } }] },
+          { OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }] },
+        ],
       },
       select: {
         id: true,
@@ -224,12 +231,19 @@ export async function countKnowledgePublicEntries(): Promise<number> {
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
     return 0;
   }
+  const now = new Date();
   try {
     return await prisma.knowledgeEntry.count({
       where: {
         audience: "public",
+        // P0 audit KB 2026-05-29 — cohérence avec listKnowledgeSitemapEntries.
+        confidentiality: "public",
         status: { in: ["published", "deprecated"] },
         deletedAt: null,
+        AND: [
+          { OR: [{ publishedAt: null }, { publishedAt: { lte: now } }] },
+          { OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }] },
+        ],
       },
     });
   } catch {
