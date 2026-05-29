@@ -1,0 +1,98 @@
+# Seed KB facts (manuel) — peuple les ~340 faits KB des 5 services en PRODUCTION.
+#
+# CONTEXTE — pourquoi ce workflow existe :
+#   L'image runtime prod (Next standalone) ne contient NI pnpm/tsx NI les sources
+#   `src/server/content-gen/kb/*` → le seed ne peut pas tourner dans le conteneur.
+#   La base Postgres de prod n'est pas exposée publiquement (réseau interne Coolify).
+#   Ce job checkout le repo COMPLET (sources + tsx), ouvre un tunnel SSH vers la
+#   base via le VPS, puis exécute le runner `run-seed-kb.ts`.
+#
+# DÉCLENCHEMENT (manuel uniquement) :
+#   GitHub → Actions → "Seed KB (manuel)" → Run workflow → taper SEED dans le champ.
+#
+# PRÉ-REQUIS (à configurer 1 fois) — Settings → Secrets and variables → Actions :
+#   - VPS_SSH_KEY : la clé privée SSH ayant accès root au VPS (ex. contenu de
+#                   ~/.ssh/axion-ia-claude). C'est le SEUL secret nécessaire :
+#                   la DATABASE_URL est récupérée dynamiquement depuis le conteneur.
+#
+# SÉCURITÉ : la DATABASE_URL n'est jamais affichée dans les logs (utilisée
+#   uniquement en variable d'env de l'étape de seed). Idempotent (upsert).
+
+name: Seed KB (manuel)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Tape SEED pour confirmer le seed des faits KB en PRODUCTION'
+        required: true
+        default: ''
+
+concurrency:
+  group: seed-kb-prod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  seed-kb:
+    # Garde-fou : ne s'exécute QUE si l'utilisateur a tapé exactement "SEED".
+    if: ${{ github.event.inputs.confirm == 'SEED' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VPS_HOST: 178.105.55.15
+      PG_CONTAINER: u7zlql3bpb1xy5t4kg6jnvpm
+      # Le seed n'a pas besoin des 8 secrets prod (cf. contrat stub build) :
+      SKIP_ENV_VALIDATION: 'true'
+      BULLMQ_DISABLED: 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        run: pnpm exec prisma generate
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_vps
+          chmod 600 ~/.ssh/id_vps
+
+      - name: Tunnel SSH vers la base prod + seed-kb
+        run: |
+          set -euo pipefail
+          SSH="ssh -i ~/.ssh/id_vps -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15"
+
+          # IP du conteneur Postgres sur le réseau docker interne (joignable depuis le VPS)
+          PGIP=$($SSH "root@${VPS_HOST}" "docker inspect ${PG_CONTAINER} -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'")
+          echo "Postgres container IP: ${PGIP}"
+
+          # Détection robuste du conteneur app (celui qui contient le package.json axion-ia)
+          APP=$($SSH "root@${VPS_HOST}" "for C in \$(docker ps --format '{{.Names}}'); do docker exec \$C sh -lc 'test -f package.json && grep -q axion-ia package.json' 2>/dev/null && echo \$C && break; done")
+          echo "App container: ${APP}"
+
+          # DATABASE_URL prod (non loggée) — récupérée depuis le conteneur app
+          DBURL=$($SSH "root@${VPS_HOST}" "docker exec ${APP} printenv DATABASE_URL")
+          # Réécrit l'hôte interne -> tunnel local 127.0.0.1:15432 (préserve les query params)
+          LOCAL_DBURL=$(printf '%s' "$DBURL" | sed -E 's#@[^/]+/#@127.0.0.1:15432/#')
+
+          # Ouvre le tunnel en arrière-plan
+          $SSH -f -N -L 15432:"${PGIP}":5432 "root@${VPS_HOST}"
+          sleep 3
+
+          # Exécute le seed ciblé (KB facts uniquement)
+          DATABASE_URL="$LOCAL_DBURL" pnpm exec tsx prisma/seeds/content-gen/run-seed-kb.ts
