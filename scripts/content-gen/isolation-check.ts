@@ -227,6 +227,15 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/scripts\/delete-landing-ville-articles\.ts$/,
   /^src\/scripts\/scan-site-routes\.ts$/,
   /^src\/scripts\/test-ville-hub-copy-paris\.ts$/,
+  // Sprint Service-Binding KB V4.1 (2026-05-29). Ces fichiers mentionnent
+  // "content-gen" uniquement comme RÉFÉRENCE de chemin/consommateur, pas du
+  // code content-gen core :
+  // - seed-kb-manual.yml : workflow CI manuel qui exécute le seed KB
+  //   `prisma/seeds/content-gen/run-seed-kb.ts` (le chemin est obligatoire).
+  // - services.ts : SSOT mapping services KB ; commentaires citant
+  //   `src/server/content-gen/kb/*` (verticales des KbFact) — refs doc.
+  /^\.github\/workflows\/seed-kb-manual\.yml$/,
+  /^src\/content\/knowledge\/services\.ts$/,
 ];
 
 /**
