@@ -162,8 +162,10 @@ jobs:
             /usr/lib/firefox \
             /opt/az \
             /opt/microsoft \
-            /opt/google \
             /opt/pipx || true
+          # NB : on NE supprime PAS /opt/google — il contient Google Chrome dont
+          # `size-limit` (estimo/puppeteer) a besoin pour mesurer le JS au step
+          # « Bundle size ». Les suppressions ci-dessus libèrent déjà ~15 GB.
           sudo apt-get clean || true
           df -h /
       - name: Install Playwright browsers (avant build pour chrome dep)
