@@ -67,9 +67,14 @@ jobs:
         run: pnpm exec prisma generate
 
       - name: Setup SSH key
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_vps
+          # tr -d '\r' : si la cle est stockee en CRLF (upload depuis Windows),
+          # OpenSSH renvoie "error in libcrypto" / "Permission denied (publickey)".
+          # On force du LF pour rendre le workflow robuste quelle que soit la source.
+          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > ~/.ssh/id_vps
           chmod 600 ~/.ssh/id_vps
 
       - name: Tunnel SSH vers la base prod + seed-kb
