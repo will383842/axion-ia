@@ -104,7 +104,7 @@ export async function Header() {
               Serif italique pour cohérence éditoriale avec le « IA » du logo. */}
           <span
             aria-hidden="true"
-            className="text-mocha-fg/85 hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic lg:block"
+            className="text-mocha-fg hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic lg:block"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {taglineB2B}

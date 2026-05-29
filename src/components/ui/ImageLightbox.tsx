@@ -113,7 +113,7 @@ export function ImageLightbox({
                 priority
               />
               {caption ? (
-                <figcaption className="text-paper/85 mt-4 text-center text-sm leading-relaxed">
+                <figcaption className="text-paper mt-4 text-center text-sm leading-relaxed">
                   {caption}
                 </figcaption>
               ) : null}

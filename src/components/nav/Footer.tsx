@@ -65,8 +65,11 @@ export async function Footer() {
     })),
   ];
 
+  // A11y Sprint Phase 2 2026-05-29 : `/85` → `/100` pour passer WCAG 2.1 SC 1.4.3
+  // (4.5:1) sur le mocha-rich background. Ajout `min-h-[44px]` pour SC 2.5.5
+  // target size (44×44 mini cible mobile).
   const linkCn =
-    "text-mocha-fg/85 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+    "text-mocha-fg hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] items-center rounded-sm py-2 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
 
   return (
     <footer
@@ -111,7 +114,7 @@ export async function Footer() {
               </span>
             </Link>
             <p
-              className="text-mocha-fg/75 max-w-[14rem] text-sm leading-relaxed"
+              className="text-mocha-fg/90 max-w-[14rem] text-sm leading-relaxed"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {isFr ? (
@@ -234,7 +237,7 @@ function SocialLinks() {
           target="_blank"
           rel="noopener noreferrer external"
           aria-label="LinkedIn"
-          className="text-mocha-fg/60 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-9 w-9 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-11 w-11 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <LinkedinIcon className="h-[17px] w-[17px]" />
         </a>

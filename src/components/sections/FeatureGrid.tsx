@@ -36,7 +36,7 @@ export function FeatureGrid({ items, columns = 3, className }: FeatureGridProps)
             {item.title}
           </h3>
           {item.description ? (
-            <p className="text-fg-soft [.bg-mocha-rich_&]:text-mocha-fg/85 text-base leading-relaxed">
+            <p className="text-fg-soft [.bg-mocha-rich_&]:text-mocha-fg text-base leading-relaxed">
               {item.description}
             </p>
           ) : null}

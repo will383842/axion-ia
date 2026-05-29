@@ -53,7 +53,7 @@ export function LocaleSwitcher() {
               "inline-flex min-h-[28px] items-center rounded-full px-2.5 py-1.5 text-[11px] font-semibold tracking-[0.12em] uppercase transition",
               active
                 ? "bg-sand text-fg [[data-tone=dark]_&]:bg-mocha-fg [[data-tone=dark]_&]:text-mocha [[data-tone=terracotta]_&]:bg-mocha-fg [[data-tone=terracotta]_&]:text-terracotta"
-                : "text-fg-muted hover:text-fg [[data-tone=dark]_&]:text-mocha-fg/70 [[data-tone=dark]_&]:hover:text-mocha-fg [[data-tone=terracotta]_&]:text-mocha-fg/75 [[data-tone=terracotta]_&]:hover:text-mocha-fg",
+                : "text-fg-muted hover:text-fg [[data-tone=dark]_&]:text-mocha-fg/90 [[data-tone=dark]_&]:hover:text-mocha-fg [[data-tone=terracotta]_&]:text-mocha-fg/90 [[data-tone=terracotta]_&]:hover:text-mocha-fg",
             )}
           >
             {locale}
