@@ -144,7 +144,13 @@ jobs:
       - name: Install Playwright browsers (avant build pour chrome dep)
         run: pnpm exec playwright install --with-deps chromium
       - name: Build
-        run: pnpm build
+        # `next build` DIRECT (pas `pnpm build`) pour SKIPPER le `postbuild` :
+        # `scripts/precompress-static.ts` (Brotli-11 sur ~18k fichiers SSG) fait
+        # dépasser le timeout Gate B, et `indexnow-ping.ts` ne doit JAMAIS tourner
+        # en CI (il pingue les moteurs de recherche). La compression .br est
+        # refaite au vrai build de déploiement (Dockerfile / GH Actions deploy).
+        # Le Gate B ne valide QUE la compilation du build. (Fix 2026-05-29.)
+        run: pnpm exec next build --webpack
       # Sprint Final P1-8 (audit final 2026-05-22) — Bundle delta + LHCI passés
       # en STRICT (continue-on-error retiré) pour enforcer le contrat AGENTS.md :
       # « Bundle delta gate (size-limit) bloque les PR avec > +5 KB gz vs main »
