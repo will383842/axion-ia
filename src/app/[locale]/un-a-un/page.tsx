@@ -31,6 +31,7 @@ import { UnAUnTarget } from "@/components/services/un-a-un/UnAUnTarget";
 import { UnAUnMethodology } from "@/components/services/un-a-un/UnAUnMethodology";
 import { UnAUnFaq } from "@/components/services/un-a-un/UnAUnFaq";
 import { UnAUnCtaBlock } from "@/components/services/un-a-un/UnAUnCtaBlock";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -167,6 +168,10 @@ export default async function UnAUnHubPage({ params }: Props) {
       <LocalGeoFaqSection isFr={isFr} service="un-a-un" tone="sand" />
 
       <UnAUnFaq isFr={isFr} />
+
+      {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
+      <RelatedKnowledge service="un-a-un" />
+
       <UnAUnCtaBlock isFr={isFr} />
 
       {/* CTA mobile sticky — apparaît au scroll, masqué sur lg+ */}

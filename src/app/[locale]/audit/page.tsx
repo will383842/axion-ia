@@ -26,6 +26,7 @@ import { AuditMaturityLevels } from "@/components/services/audit/AuditMaturityLe
 import { AuditCrossModules } from "@/components/services/audit/AuditCrossModules";
 import { AuditMethodology } from "@/components/services/audit/AuditMethodology";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { AUDIT_TIERS, formatAmount, formatAmountRange, getTierById } from "@/content/pricing";
 import { AUDIT_BY_SIZE, AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
 import {
@@ -269,6 +270,9 @@ export default async function AuditHub({ params }: Props) {
 
       {/* FAQ GÉOLOCALISÉE (pSEO villes/régions) */}
       <LocalGeoFaqSection isFr={isFr} service="audit" tone="sand" />
+
+      {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
+      <RelatedKnowledge service="audit" />
 
       {/* CTA FINAL Flash terrain — Phase 2 SSOT */}
       <AuditCtaBlock isFr={isFr} />

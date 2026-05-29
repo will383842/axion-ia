@@ -14,7 +14,9 @@
 import { prisma } from "@/lib/prisma";
 import { isKbBackendUnifiedFor, type KbBackendTarget } from "./feature-flag";
 import { ALL_GLOSSARY_TERMS_EXTENDED } from "@/content/glossary-extension";
-import type { Locale } from "../../../prisma/generated/client";
+import { serviceTagSlug, type ServiceSlug } from "@/content/knowledge/services";
+import { buildKbPublicUrl } from "@/content/knowledge/routes";
+import type { KbType, Locale } from "../../../prisma/generated/client";
 
 /**
  * Façade uniforme pour le rendu public.
@@ -518,6 +520,85 @@ export async function findHelpArticleBySlug(
     publishedAt: translation.entry.publishedAt,
     updatedAt: translation.updatedAt,
   };
+}
+
+// ============================================================
+// SERVICE BINDING (KB V4.1) — connaissances liées à un service
+// ============================================================
+
+/** Carte publique minimale d'une entrée KB liée à un service. */
+export interface ServiceKnowledgeCard {
+  readonly entryId: string;
+  readonly type: KbType;
+  readonly slug: string;
+  readonly title: string;
+  readonly excerpt: string | null;
+  readonly href: string | null;
+  readonly publishedAt: Date | null;
+}
+
+/**
+ * Liste les entrées KB publiées rattachées à un service (tag `service:<slug>`).
+ *
+ * Triple filtre public strict (status+audience+confidentiality+deletedAt+
+ * publishedAt<=now+embargo) — aligné sur `public-fetch.ts`. Aucune fuite
+ * draft/team/internal/futur/embargo possible.
+ *
+ * Build-time : si DATABASE_URL = stub `stub.invalid`, le Proxy Prisma renvoie
+ * `[]` → le bloc « connaissances liées » est masqué, repeuplé par l'ISR de la
+ * page service sous son `revalidate`.
+ */
+export async function listEntriesByService(
+  serviceSlug: ServiceSlug,
+  opts?: { readonly locale?: Locale; readonly limit?: number; readonly types?: readonly KbType[] },
+): Promise<readonly ServiceKnowledgeCard[]> {
+  const locale: Locale = opts?.locale ?? "fr";
+  const limit = opts?.limit ?? 6;
+  const now = new Date();
+  try {
+    const rows = await prisma.knowledgeEntry.findMany({
+      where: {
+        status: "published",
+        audience: "public",
+        confidentiality: "public",
+        deletedAt: null,
+        publishedAt: { lte: now },
+        OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }],
+        tags: { some: { tag: { slug: serviceTagSlug(serviceSlug) } } },
+        ...(opts?.types && opts.types.length > 0 ? { type: { in: [...opts.types] } } : {}),
+      },
+      orderBy: [{ pinned: "desc" }, { featured: "desc" }, { publishedAt: "desc" }],
+      take: limit,
+      select: {
+        id: true,
+        type: true,
+        publishedAt: true,
+        translations: {
+          where: { locale },
+          select: { slug: true, title: true, excerpt: true },
+          take: 1,
+        },
+      },
+    });
+    return rows
+      .map((row): ServiceKnowledgeCard | null => {
+        const t = row.translations[0];
+        if (!t || !t.slug) return null;
+        return {
+          entryId: row.id,
+          type: row.type,
+          slug: t.slug,
+          title: t.title,
+          excerpt: t.excerpt,
+          href: buildKbPublicUrl(row.type, locale, t.slug),
+          publishedAt: row.publishedAt,
+        };
+      })
+      .filter((c): c is ServiceKnowledgeCard => c !== null);
+  } catch {
+    // Table absente bootstrap / DB down → bloc masqué (fail-soft).
+    return [];
+  }
 }
 
 // ============================================================

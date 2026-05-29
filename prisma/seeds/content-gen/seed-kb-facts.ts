@@ -18,6 +18,7 @@ import { KB_UN_A_UN } from "../../../src/server/content-gen/kb/un-a-un";
 import { KB_IMPLEMENTATIONS } from "../../../src/server/content-gen/kb/implementations";
 import { KB_SITES_WEB_AUGMENTES } from "../../../src/server/content-gen/kb/sites-web-augmentes";
 import type { KbFact } from "../../../src/server/content-gen/kb/audits";
+import { servicesForVerticales, serviceTagSlug } from "../../../src/content/knowledge/services";
 
 /** Tous les facts sectoriels à seeder. Idempotent : upsert sur slug unique. */
 const ALL_KB_FACTS: readonly KbFact[] = [
@@ -80,6 +81,27 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       wordCount: bodyText.split(/\s+/).length,
     },
   });
+
+  // KB V4.1 Service Binding — tags `service:*` dérivés de `fact.verticales`.
+  // Rend la KB requêtable par service (reader `listEntriesByService`) + alimente
+  // le bloc « connaissances liées » des pages services. Idempotent (upsert tag +
+  // upsert lien). Un fait peut appartenir à plusieurs services (multi-verticale).
+  for (const def of servicesForVerticales(fact.verticales)) {
+    const tag = await prisma.knowledgeTag.upsert({
+      where: { slug: serviceTagSlug(def.slug) },
+      update: { nameFr: def.tagNameFr, nameEn: def.tagNameEn },
+      create: {
+        slug: serviceTagSlug(def.slug),
+        nameFr: def.tagNameFr,
+        nameEn: def.tagNameEn,
+      },
+    });
+    await prisma.knowledgeTagOnEntry.upsert({
+      where: { entryId_tagId: { entryId: entry.id, tagId: tag.id } },
+      update: {},
+      create: { entryId: entry.id, tagId: tag.id },
+    });
+  }
 }
 
 export async function seedKbFacts(prisma: PrismaClient): Promise<number> {

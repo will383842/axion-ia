@@ -12,6 +12,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
@@ -1267,6 +1268,9 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           />
         </Container>
       </Section>
+
+      {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
+      <RelatedKnowledge service="interventions-formations" />
 
       <CtaBlock
         eyebrow={isFr ? "Formation IA en entreprise" : "Corporate AI training"}
