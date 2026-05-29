@@ -243,6 +243,10 @@ jobs:
           echo "auth_secret=$(openssl rand -base64 48 | tr -d '\n')" >> "$GITHUB_OUTPUT"
           echo "backup_pass=$(openssl rand -base64 48 | tr -d '\n')" >> "$GITHUB_OUTPUT"
           echo "redis_pass=$(openssl rand -hex 24)" >> "$GITHUB_OUTPUT"
+          # Secrets factices éphémères pour la validation Zod prod (src/env.ts).
+          # IP_HASH_SALT min 16 → hex 24 (48). PII_ENCRYPTION_KEY min 32 → base64 48.
+          echo "ip_hash_salt=$(openssl rand -hex 24)" >> "$GITHUB_OUTPUT"
+          echo "pii_key=$(openssl rand -base64 48 | tr -d '\n')" >> "$GITHUB_OUTPUT"
 
       - name: Start ephemeral Redis on host network
         run: |
@@ -258,13 +262,30 @@ jobs:
 
       - name: Build production Dockerfile
         run: |
+          # SKIP_ENV_VALIDATION + stubs DB/Redis au BUILD (contrat AGENTS.md,
+          # identique à deploy-coolify.yml) : le SSG ne dispose pas des secrets
+          # prod au build, et la DB/Redis stub.invalid court-circuite les appels
+          # Prisma/Redis au build. La VRAIE validation env tourne au runtime
+          # (étape « Run container » ci-dessous, avec les 8 secrets factices).
           docker build \
             --build-arg NEXT_PUBLIC_SITE_URL=https://smoke.test \
             --build-arg NEXT_PUBLIC_APP_ENV=production \
+            --build-arg SKIP_ENV_VALIDATION=true \
+            --build-arg DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub \
+            --build-arg REDIS_URL=redis://stub.invalid:6379 \
+            --build-arg BULLMQ_DISABLED=true \
             -t axion-ia:smoke .
 
       - name: Run container with smoke env
         run: |
+          # Runtime : NODE_ENV=production SANS SKIP_ENV_VALIDATION → la validation
+          # Zod (src/env.ts prodRequired) tourne réellement au boot. C'est l'intérêt
+          # du smoke test : détecter toute régression « env requis manquant ».
+          # Les 8 secrets sont des FACTICES éphémères (jamais les vrais — fuite CI).
+          # Contraintes respectées : AUTH_SECRET≥32, ADMIN_URL_PREFIX≥8,
+          # BACKUP≥16, IP_HASH_SALT≥16, PII≥32, STRIPE_* non-vides.
+          # DATABASE_URL=stub.invalid (proxy Prisma court-circuit) + BULLMQ_DISABLED
+          # (pas de worker au boot) ; healthz est DB/Redis-free.
           docker run -d --name axion-ia-smoke --network host \
             -e NODE_ENV=production \
             -e PORT=3000 \
@@ -274,7 +295,14 @@ jobs:
             -e NEXT_PUBLIC_DEFAULT_LOCALE=fr \
             -e AUTH_SECRET='${{ steps.secrets.outputs.auth_secret }}' \
             -e ADMIN_URL_PREFIX=admin-smoke-test-1234 \
+            -e STRIPE_SECRET_KEY=sk_test_smoke_ci_ephemeral \
+            -e STRIPE_PUBLISHABLE_KEY=pk_test_smoke_ci_ephemeral \
+            -e STRIPE_WEBHOOK_SECRET=whsec_smoke_ci_ephemeral \
             -e BACKUP_ENCRYPTION_PASSPHRASE='${{ steps.secrets.outputs.backup_pass }}' \
+            -e IP_HASH_SALT='${{ steps.secrets.outputs.ip_hash_salt }}' \
+            -e PII_ENCRYPTION_KEY='${{ steps.secrets.outputs.pii_key }}' \
+            -e DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub \
+            -e BULLMQ_DISABLED=true \
             -e REDIS_URL='redis://default:${{ steps.secrets.outputs.redis_pass }}@localhost:6379/0' \
             axion-ia:smoke
 
