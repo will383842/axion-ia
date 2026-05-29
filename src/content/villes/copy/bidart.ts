@@ -30,8 +30,8 @@ export const BIDART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit Flash 490 € HT.",
-      en: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit Flash 490 € HT.",
+      fr: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bidart : déploiement outils IA dans vos hébergements, restaurants, ateliers ou écoles de surf. Automatisation réservations, yield management et marketing saisonnier.",
@@ -57,7 +57,7 @@ export const BIDART_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Bidart ?",
-      a: "L'audit Flash IA à Bidart démarre à 490 € HT. Diagnostic de vos processus touristiques, de restauration ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Bidart démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus touristiques, de restauration ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les producteurs de piment d'Espelette ?",

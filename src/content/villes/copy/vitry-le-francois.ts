@@ -30,8 +30,8 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vitry-le-François : formats adaptés à la PME logistique, à l'industrie agroalimentaire, à la TPE artisanale ou à l'exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Vitry-le-François  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Vitry-le-François, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Vitry-le-François, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les PME logistique et transport de Vitry-le-François ?",
@@ -61,7 +61,7 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Vitry-le-François ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Vitry-le-François, à partir de 990 € HT. Sessions dans vos locaux industriels, logistiques ou en visio. Approche terrain adaptée à la Marne.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Vitry-le-François, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux industriels, logistiques ou en visio. Approche terrain adaptée à la Marne.",
     },
     {
       q: "Travaillez-vous avec les industries agroalimentaires de la Champagne ?",

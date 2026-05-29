@@ -30,8 +30,8 @@ export const TALANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Talant : diagnostic adapté aux cabinets médicaux, professions libérales, commerçants et TPE tertiaires de l'ouest dijonnais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Talant : diagnostic adapté aux cabinets médicaux, professions libérales, commerçants et TPE tertiaires de l'ouest dijonnais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Talant : diagnostic adapté aux cabinets médicaux, professions libérales, commerçants et TPE tertiaires de l'ouest dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Talant : diagnostic adapté aux cabinets médicaux, professions libérales, commerçants et TPE tertiaires de l'ouest dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Talant : formations pratiques pour professions libérales, commerces et prestataires tertiaires. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const TALANT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Talant  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et professions libérales talantaises, il inclut un diagnostic complet, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et professions libérales talantaises, il inclut un diagnostic complet, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les professions libérales de santé à Talant ?",
@@ -61,7 +61,7 @@ export const TALANT_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerçants talantais ?",
-      a: "Pour les commerçants de Talant, nous proposons Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA fidélité client, gestion stocks augmentée, automatisation commandes fournisseurs, marketing local IA.",
+      a: "Pour les commerçants de Talant, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA fidélité client, gestion stocks augmentée, automatisation commandes fournisseurs, marketing local IA.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Talant ?",

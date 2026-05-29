@@ -10,9 +10,9 @@ export const CHATILLON_COPY: VilleCopy = {
   pitchEn:
     "Châtillon (92320, 36 705 habitants en 2023) est une commune des Hauts-de-Seine en petite couronne parisienne, terminus de la ligne 13 et desservie par le tramway T6. Axion-IA accompagne les TPE et PME implantées sur le territoire — commerces, cabinets de services, artisans et structures intermédiaires installées à proximité du Campus Orange Gardens, des dépôts SNCF/RATP ou du siège d'Orano — pour automatiser devis, relances, reporting et flux administratifs. William se déplace sur site à Châtillon, Clamart, Malakoff, Montrouge, Bagneux ou Fontenay-aux-Roses pour des interventions concrètes en code custom Python/Node, sans no-code propriétaire ni dépendance plateforme.",
   directAnswerFr:
-    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. William se déplace dans les locaux des entreprises situées près du terminus métro 13 Châtillon-Montrouge, du tramway T6 ou de l'axe D906/A86. Nous proposons un Audit Flash de 4 heures dès 490 € HT pour cartographier vos processus, une Intervention Essentielle dès 590 € HT pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès 990 € HT. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
+    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. William se déplace dans les locaux des entreprises situées près du terminus métro 13 Châtillon-Montrouge, du tramway T6 ou de l'axe D906/A86. Nous proposons un Audit Flash de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Intervention Essentielle dès {{price:intervention-4h|flat}} pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
   directAnswerEn:
-    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. William se déplace dans les locaux des entreprises situées près du terminus métro 13 Châtillon-Montrouge, du tramway T6 ou de l'axe D906/A86. Nous proposons un Audit Flash de 4 heures dès 490 € HT pour cartographier vos processus, une Intervention Essentielle dès 590 € HT pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès 990 € HT. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
+    "Axion-IA intervient à Châtillon (Hauts-de-Seine, 92320) auprès des TPE et PME de la petite couronne sud parisienne. William se déplace dans les locaux des entreprises situées près du terminus métro 13 Châtillon-Montrouge, du tramway T6 ou de l'axe D906/A86. Nous proposons un Audit Flash de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Intervention Essentielle dès {{price:intervention-4h|flat}} pour automatiser une tâche répétitive (devis, factures, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Aucune dépendance no-code : code custom Python/Node, conforme RGPD et AI Act.",
   seoHook: "TPE & PME 92 · IA opérationnelle sur site",
   ecosystemFr:
     "Châtillon accueille le Campus Orange Gardens (Technocentre Orange), le siège d'AXA Assistance et celui d'Orano relocalisé en 2019, ainsi que des dépôts de maintenance SNCF et RATP. Autour de ces grands donneurs d'ordre gravite un tissu dense de TPE et PME : sous-traitants tech, cabinets de conseil, prestataires de services aux entreprises, commerces et artisans répartis entre Clamart, Malakoff, Montrouge, Bagneux et Fontenay-aux-Roses. La proximité immédiate de Paris via la ligne 13 et l'A86 facilite les déplacements et l'accès aux clients franciliens.",
@@ -32,26 +32,26 @@ export const CHATILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Châtillon dès 490 € HT — William se déplace dans vos locaux (terminus métro 13 ou T6) pour cartographier vos processus en 4 heures.",
-      en: "Audit Flash IA à Châtillon dès 490 € HT — William se déplace dans vos locaux (terminus métro 13 ou T6) pour cartographier vos processus en 4 heures.",
+      fr: "Audit Flash IA à Châtillon dès {{price:audit-flash|flat}} — William se déplace dans vos locaux (terminus métro 13 ou T6) pour cartographier vos processus en 4 heures.",
+      en: "Audit Flash IA à Châtillon dès {{price:audit-flash|flat}} — William se déplace dans vos locaux (terminus métro 13 ou T6) pour cartographier vos processus en 4 heures.",
     },
     interventions: {
-      fr: "Intervention Essentielle à Châtillon dès 590 € HT — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
-      en: "Intervention Essentielle à Châtillon dès 590 € HT — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
+      fr: "Intervention Essentielle à Châtillon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
+      en: "Intervention Essentielle à Châtillon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME des Hauts-de-Seine sud.",
     },
     implementation: {
-      fr: "Implémentation IA sur site à Châtillon dès 990 € HT — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
-      en: "Implémentation IA sur site à Châtillon dès 990 € HT — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
+      fr: "Implémentation IA sur site à Châtillon dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
+      en: "Implémentation IA sur site à Châtillon dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 dirigeant à Châtillon dès 990 € HT — accompagnement stratégique IA pour patrons de TPE et PME du 92 sud.",
-      en: "Sessions 1-to-1 dirigeant à Châtillon dès 990 € HT — accompagnement stratégique IA pour patrons de TPE et PME du 92 sud.",
+      fr: "Sessions 1-to-1 dirigeant à Châtillon dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME du 92 sud.",
+      en: "Sessions 1-to-1 dirigeant à Châtillon dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME du 92 sud.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Châtillon ?",
-      a: "À Châtillon, l'Audit Flash débute à 490 € HT (4 heures sur site), l'Intervention Essentielle à 590 € HT et l'accompagnement 1-to-1 dirigeant à 990 € HT. Tarifs publics consultables sur axion-ia.com.",
+      a: "À Châtillon, l'Audit Flash débute à {{price:audit-flash|flat}} (4 heures sur site), l'Intervention Essentielle à {{price:intervention-4h|flat}} et l'accompagnement 1-to-1 dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "William se déplace-t-il dans les entreprises de Châtillon ?",

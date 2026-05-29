@@ -11,9 +11,9 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
   pitchEn:
     "Le Kremlin-Bicêtre, 24 110 habitants dans le Val-de-Marne, jouxte Paris au sud-est près de la porte d'Italie. La commune accueille l'hôpital Bicêtre (AP-HP) et sa faculté de médecine rattachée à Paris-Saclay, ainsi que les écoles d'ingénieurs EPITA et EPITECH. Desservie par les lignes de métro 7 (Le Kremlin-Bicêtre) et 14 (Hôpital Bicêtre), la ville mêle tissu résidentiel dense et activités tertiaires. Axion-IA y intervient pour les TPE et PME locales — cabinets de santé, professions libérales, commerces, agences, ESN — avec du code custom (Python/TypeScript) plutôt que du no-code.",
   directAnswerFr:
-    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les TPE et PME implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de 590 € HT pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
+    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les TPE et PME implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de {{price:intervention-4h|flat}} pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
   directAnswerEn:
-    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les TPE et PME implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de 590 € HT pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
+    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les TPE et PME implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de {{price:intervention-4h|flat}} pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
   seoHook: "santé libérale, formation & TPE/PME",
   ecosystemFr:
     "Le Kremlin-Bicêtre est dominé par l'hôpital Bicêtre (AP-HP), gros employeur public, et sa faculté de médecine rattachée à l'université Paris-Saclay. À côté, les écoles d'ingénieurs EPITA et EPITECH attirent un écosystème de jeunes développeurs et de startups. Le tissu de TPE/PME est très dense : cabinets médicaux et paramédicaux gravitant autour de l'hôpital, professions libérales, commerces du centre-ville, agences de services. La proximité immédiate de Paris (porte d'Italie) et les métros 7 et 14 facilitent à la fois la clientèle et l'accès des consultants Axion-IA.",
@@ -32,12 +32,12 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de 490 € HT.",
-      en: "Audit Flash au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de 490 € HT.",
+      fr: "Audit Flash au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
+      en: "Audit Flash au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site au Kremlin-Bicêtre pour automatiser des cas concrets : génération de devis, relances clients, extraction de documents (PDF, scans), enrichissement CRM, exports comptables. Code Python/TypeScript livré et documenté, à partir de 590 € HT.",
-      en: "Interventions sur site au Kremlin-Bicêtre pour automatiser des cas concrets : génération de devis, relances clients, extraction de documents (PDF, scans), enrichissement CRM, exports comptables. Code Python/TypeScript livré et documenté, à partir de 590 € HT.",
+      fr: "Interventions sur site au Kremlin-Bicêtre pour automatiser des cas concrets : génération de devis, relances clients, extraction de documents (PDF, scans), enrichissement CRM, exports comptables. Code Python/TypeScript livré et documenté, à partir de {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site au Kremlin-Bicêtre pour automatiser des cas concrets : génération de devis, relances clients, extraction de documents (PDF, scans), enrichissement CRM, exports comptables. Code Python/TypeScript livré et documenté, à partir de {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation au Kremlin-Bicêtre de briques IA durables : connecteurs entre vos outils (compta, CRM, agenda), agents internes pour le support et la qualification, pipelines de reporting. Architecture pensée pour rester maintenable, sans dépendance no-code propriétaire.",
@@ -51,7 +51,7 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA au Kremlin-Bicêtre ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 h), une intervention sur site à 590 € HT. Tous nos prix sont publiés sur la page Tarifs, sans engagement ni abonnement caché.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à {{price:intervention-4h|flat}}. Tous nos prix sont publiés sur la page Tarifs, sans engagement ni abonnement caché.",
     },
     {
       q: "Vos consultants se déplacent-ils sur site au Kremlin-Bicêtre ?",

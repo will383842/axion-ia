@@ -30,8 +30,8 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crépy-en-Valois : formats adaptés au commerce, à l'artisanat, au BTP et aux services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Crépy-en-Valois ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants du Valois ?",

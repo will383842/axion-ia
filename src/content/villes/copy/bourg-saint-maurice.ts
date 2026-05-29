@@ -30,8 +30,8 @@ export const BOURG_SAINT_MAURICE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-Saint-Maurice : ateliers dans vos locaux hôteliers, bureau exploitation ou commerce de station. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et montagne.",
@@ -61,7 +61,7 @@ export const BOURG_SAINT_MAURICE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE commerces de station et saisonniers ?",
-      a: "Pour les TPE commerces de station et prestataires saisonniers à Bourg-Saint-Maurice, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saison, automatisation location matériel, agents IA réservation.",
+      a: "Pour les TPE commerces de station et prestataires saisonniers à Bourg-Saint-Maurice, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saison, automatisation location matériel, agents IA réservation.",
     },
     {
       q: "Comment se déroule une mission à Bourg-Saint-Maurice ?",

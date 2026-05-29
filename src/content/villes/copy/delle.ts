@@ -30,8 +30,8 @@ export const DELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Delle : formats adaptés atelier industriel, commerce, cabinet, bureau, contexte transfrontalier. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const DELLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitance ?",
-      a: "Oui, audit Flash 490 € HT, automatisation production et qualité, maintenance prédictive, gestion stocks et logistique, reporting commercial, optimisation cycles production pour donneurs d'ordre Aire urbaine Belfort-Montbéliard.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation production et qualité, maintenance prédictive, gestion stocks et logistique, reporting commercial, optimisation cycles production pour donneurs d'ordre Aire urbaine Belfort-Montbéliard.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants ?",
@@ -61,7 +61,7 @@ export const DELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les prestataires transfrontaliers ?",
-      a: "Audit Flash 490 € HT, outils relation client multilingue FR/DE, gestion devis et facturation transfrontalière, automatisation reporting, optimisation cycles commerciaux Suisse-France.",
+      a: "Audit Flash {{price:audit-flash|flat}}, outils relation client multilingue FR/DE, gestion devis et facturation transfrontalière, automatisation reporting, optimisation cycles commerciaux Suisse-France.",
     },
     {
       q: "Comment se déroule une mission depuis Belfort ou Bâle ?",

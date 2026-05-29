@@ -30,8 +30,8 @@ export const USSEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ussel : diagnostic adapté aux TPE/PME du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit Flash 490 € HT.",
-      en: "Audit IA à Ussel : diagnostic adapté aux TPE/PME du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ussel : diagnostic adapté aux TPE/PME du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ussel : diagnostic adapté aux TPE/PME du commerce, de la filière bois, des services de santé et du tourisme haute Corrèze. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ussel : formations pratiques pour commerçants, artisans bois, professionnels de santé et gérants du tourisme nature.",
@@ -53,7 +53,7 @@ export const USSEL_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ussel  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la haute Corrèze. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la haute Corrèze. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider la filière bois autour d'Ussel ?",
@@ -65,7 +65,7 @@ export const USSEL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel à Ussel ?",
-      a: "Oui, coaching 1-to-1 adapté aux dirigeants de TPE/PME usselois. Sur site dans votre bureau ou en visio. Sessions à partir de 990 € HT.",
+      a: "Oui, coaching 1-to-1 adapté aux dirigeants de TPE/PME usselois. Sur site dans votre bureau ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

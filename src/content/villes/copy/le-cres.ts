@@ -30,8 +30,8 @@ export const LE_CRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Crès : diagnostic pour TPE commerçants, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Crès : diagnostic pour TPE commerçants, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Crès : diagnostic pour TPE commerçants, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Crès : diagnostic pour TPE commerçants, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Crès : ateliers adaptés PME tertiaire, commerce, cabinet libéral ou artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const LE_CRES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les PME de services ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux PME de services et tertiaire : automatisation processus, chatbot client, classification emails et documents, optimisation CRM. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux PME de services et tertiaire : automatisation processus, chatbot client, classification emails et documents, optimisation CRM. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE et commerces au Crès ?",
-      a: "Pour les TPE et commerces au Crès, audit Flash 490 € HT, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE et commerces au Crès, audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de l'est Montpellier ?",
@@ -65,7 +65,7 @@ export const LE_CRES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA au Crès ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

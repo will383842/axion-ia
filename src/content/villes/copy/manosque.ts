@@ -57,7 +57,7 @@ export const MANOSQUE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE du tourisme et de la cosmétique ?",
-      a: "Oui, les TPE sont notre priorité : agents conversationnels multilingues pour l'hôtellerie, automatisation des réservations, contrôle qualité cosmétique. Audit Flash dès 490 € HT.",
+      a: "Oui, les TPE sont notre priorité : agents conversationnels multilingues pour l'hôtellerie, automatisation des réservations, contrôle qualité cosmétique. Audit Flash dès {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les prestataires de Cadarache et ITER ?",

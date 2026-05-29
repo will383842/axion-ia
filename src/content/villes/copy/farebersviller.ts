@@ -30,8 +30,8 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Farébersviller : formats adaptés au bureau, commerce, entrepôt, chantier. Vos équipes maîtrisent les outils déployés.",
@@ -53,11 +53,11 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et la grande distribution ?",
-      a: "Oui, nous accompagnons les TPE/PME commerce et grande distribution de Farébersviller : gestion stocks IA, optimisation approvisionnement, chatbots clients, analyse données vente. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE/PME commerce et grande distribution de Farébersviller : gestion stocks IA, optimisation approvisionnement, chatbots clients, analyse données vente. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Farébersviller ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Travaillez-vous avec les artisans et le BTP ?",

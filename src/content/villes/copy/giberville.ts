@@ -30,8 +30,8 @@ export const GIBERVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Giberville : formats adaptés à l'entrepôt logistique, l'atelier industriel, le cabinet, le commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const GIBERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerces et professions libérales à Giberville, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : chatbot accueil, automatisation facturation, gestion agenda, classification documents.",
+      a: "Pour les commerces et professions libérales à Giberville, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : chatbot accueil, automatisation facturation, gestion agenda, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",

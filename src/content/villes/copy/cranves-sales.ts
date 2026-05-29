@@ -30,8 +30,8 @@ export const CRANVES_SALES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cranves-Sales : formats adaptés aux PME de services transfrontaliers, cabinets conseil, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const CRANVES_SALES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Cranves-Sales  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annémassien, il identifie les cas d'usage IA à fort ROI pour votre activité (services, BTP, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annémassien, il identifie les cas d'usage IA à fort ROI pour votre activité (services, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Cranves-Sales ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Cranves-Sales (construction résidentielle, second oeuvre, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi de chantier photo, gestion planning et stocks. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Cranves-Sales (construction résidentielle, second oeuvre, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi de chantier photo, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Cranves-Sales ?",

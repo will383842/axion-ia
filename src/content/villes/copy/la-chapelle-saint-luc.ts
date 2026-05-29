@@ -30,8 +30,8 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Chapelle-Saint-Luc : formats adaptés bureau PME, cabinet libéral, commerce, atelier artisan. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Chapelle-Saint-Luc  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME services de l'agglo Troyes.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME services de l'agglo Troyes.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets santé ?",

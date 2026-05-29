@@ -30,8 +30,8 @@ export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Puy-en-Velay : formats adaptés à l'hébergement pèlerin, atelier dentelle, exploitation agroalimentaire, commerce. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

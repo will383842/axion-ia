@@ -10,9 +10,9 @@ export const ALBERT_COPY: VilleCopy = {
     "Albert (80), sous-prefecture de la Somme, reunit environ 9 520 habitants. Ville de memoire liee a la Bataille de la Somme 1916, elle est aussi un pole industriel aeronautique majeur (site Meaulte-Albert). Son economie associe TPE artisanales, PME aeronautiques, tourisme memoriel, agriculture picarde et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "aeronautique, memoire 14-18 & industrie",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Albert (80). Nous accompagnons les TPE, PME et ETI du bassin albertin : sous-traitants aeronautiques, industriels, artisans, agriculteurs, acteurs du tourisme memoriel et commercants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Albert est un pole industriel de la Somme, centre du bassin aeronautique Meaulte-Albert (sous-traitance Airbus). Tissu economique diversifie : PME aeronautiques et mecaniques, TPE artisanat BTP, agriculture picarde (grandes cultures, betteraves), tourisme de memoire (Bataille de la Somme 1916, Musee Somme 1916) et commerces de centre-ville.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const ALBERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Albert : diagnostic adapte aux PME aeronautiques, sous-traitants industriels, agriculteurs et commercants du bassin albertin. ROI chiffre, Audit Flash 490 EUR HT.",
-      en: "Audit IA a Albert : diagnostic adapte aux PME aeronautiques, sous-traitants industriels, agriculteurs et commercants du bassin albertin. ROI chiffre, Audit Flash 490 EUR HT.",
+      fr: "Audit IA a Albert : diagnostic adapte aux PME aeronautiques, sous-traitants industriels, agriculteurs et commercants du bassin albertin. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Albert : diagnostic adapte aux PME aeronautiques, sous-traitants industriels, agriculteurs et commercants du bassin albertin. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Albert : formations adaptees a l'usine aeronautique, a l'exploitation agricole, au commerce ou a l'office de tourisme. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const ALBERT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Albert ?",
-      a: "L'Audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Quels services IA pour les sous-traitants aeronautiques d'Albert ?",
-      a: "Pour les PME aeronautiques du bassin Meaulte-Albert, nous proposons : automatisation chaines production, IA predictive qualite, classification documents techniques, gestion supply chain augmentee. Audit Flash 490 EUR HT.",
+      a: "Pour les PME aeronautiques du bassin Meaulte-Albert, nous proposons : automatisation chaines production, IA predictive qualite, classification documents techniques, gestion supply chain augmentee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme memoriel de la Somme ?",

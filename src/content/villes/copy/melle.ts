@@ -30,8 +30,8 @@ export const MELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Melle : diagnostic adapté aux TPE artisans et commerçants du centre-bourg, PME agricoles/agroalimentaires du Mellois, professions libérales et acteurs tourisme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Melle : diagnostic adapté aux TPE artisans et commerçants du centre-bourg, PME agricoles/agroalimentaires du Mellois, professions libérales et acteurs tourisme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Melle : diagnostic adapté aux TPE artisans et commerçants du centre-bourg, PME agricoles/agroalimentaires du Mellois, professions libérales et acteurs tourisme. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Melle : diagnostic adapté aux TPE artisans et commerçants du centre-bourg, PME agricoles/agroalimentaires du Mellois, professions libérales et acteurs tourisme. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Melle : formats adaptés à l'exploitation agricole, au commerce, au cabinet ou à l'office de tourisme. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const MELLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants mellois ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Melle sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit Flash 490 € HT adapté aux petites structures rurales.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de Melle sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures rurales.",
     },
     {
       q: "Quels services pour les acteurs du tourisme patrimonial ?",

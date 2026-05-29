@@ -30,8 +30,8 @@ export const BAIN_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bain-de-Bretagne : diagnostic adapté aux TPE/PME, commerçants, artisans et exploitations agricoles du pays de Bain. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
-      en: "Audit IA à Bain-de-Bretagne : diagnostic adapté aux TPE/PME, commerçants, artisans et exploitations agricoles du pays de Bain. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
+      fr: "Audit IA à Bain-de-Bretagne : diagnostic adapté aux TPE/PME, commerçants, artisans et exploitations agricoles du pays de Bain. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      en: "Audit IA à Bain-de-Bretagne : diagnostic adapté aux TPE/PME, commerçants, artisans et exploitations agricoles du pays de Bain. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bain-de-Bretagne : formations adaptées aux équipes TPE/PME, commerçants, artisans et professions libérales locales. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const BAIN_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bain-de-Bretagne  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME, commerçants, artisans et exploitations agricoles bainaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME, commerçants, artisans et exploitations agricoles bainaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les commerçants et artisans de Bain-de-Bretagne ?",
-      a: "Pour les commerçants et artisans bainais, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks, fidélisation client et présence en ligne.",
+      a: "Pour les commerçants et artisans bainais, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks, fidélisation client et présence en ligne.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles du pays de Bain ?",

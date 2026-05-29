@@ -30,8 +30,8 @@ export const FAYENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fayence : ateliers pour hôteliers, gîtes ruraux, artisans d'art, oléiculteurs et commerçants. Outils IA configurés métier réel rural et touristique.",
@@ -53,7 +53,7 @@ export const FAYENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un gîte ou un hôtel à Fayence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux gîtes ruraux, chambres d'hôtes et petits hôtels fayençois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux gîtes ruraux, chambres d'hôtes et petits hôtels fayençois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les oléiculteurs et viticulteurs du Pays de Fayence ?",

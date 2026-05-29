@@ -30,8 +30,8 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mesnils-sur-Iton : formats adaptés au bureau, à l'exploitation agricole, à l'atelier, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et professions libérales ?",
-      a: "Pour les TPE artisans et professions libérales à Mesnils-sur-Iton, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, facturation.",
+      a: "Pour les TPE artisans et professions libérales à Mesnils-sur-Iton, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",

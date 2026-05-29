@@ -30,8 +30,8 @@ export const BAUVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bauvin : diagnostic adapté aux TPE artisans, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Bauvin : diagnostic adapté aux TPE artisans, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Bauvin : diagnostic adapté aux TPE artisans, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Bauvin : diagnostic adapté aux TPE artisans, PME logistiques, exploitants agricoles et commerçants du sud Lillois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bauvin : formats adaptés à l'atelier, l'entrepôt, l'exploitation agricole ou le commerce. Vos équipes repartent avec des outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const BAUVIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitants agricoles de la plaine de la Deûle ?",
-      a: "Oui, nous accompagnons les exploitants agricoles et maraîchers de la plaine de la Deûle sur leurs cas IA : prédiction récoltes, classification photos cultures, traçabilité parcelles, optimisation vente directe. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitants agricoles et maraîchers de la plaine de la Deûle sur leurs cas IA : prédiction récoltes, classification photos cultures, traçabilité parcelles, optimisation vente directe. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Bauvin ?",
-      a: "Pour les TPE artisans et commerçants de Bauvin, nous proposons audit Flash 490 € HT, interventions formation sur site, implémentation agents IA (chatbot, automatisation devis, gestion planning) et coaching 1-to-1 dirigeants.",
+      a: "Pour les TPE artisans et commerçants de Bauvin, nous proposons audit Flash {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation devis, gestion planning) et coaching 1-to-1 dirigeants.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

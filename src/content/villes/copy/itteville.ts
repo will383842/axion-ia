@@ -30,8 +30,8 @@ export const ITTEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Itteville : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const ITTEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et TPE ruraux ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",

@@ -30,8 +30,8 @@ export const HAUBOURDIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Haubourdin : diagnostic adapté aux TPE artisans, PME logistique, commerçants et professions libérales de l'ouest lillois, bords de Deûle. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Haubourdin : diagnostic adapté aux TPE artisans, PME logistique, commerçants et professions libérales de l'ouest lillois, bords de Deûle. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Haubourdin : diagnostic adapté aux TPE artisans, PME logistique, commerçants et professions libérales de l'ouest lillois, bords de Deûle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Haubourdin : diagnostic adapté aux TPE artisans, PME logistique, commerçants et professions libérales de l'ouest lillois, bords de Deûle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Haubourdin : formations adaptées TPE/PME logistique et services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const HAUBOURDIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Haubourdin  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Haubourdin souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Haubourdin souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME logistique à Haubourdin ?",
@@ -61,7 +61,7 @@ export const HAUBOURDIN_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Haubourdin ?",
-      a: "Nous proposons audit Flash 4h (490 € HT), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
+      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Haubourdin ?",

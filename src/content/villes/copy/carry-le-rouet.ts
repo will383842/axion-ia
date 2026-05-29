@@ -30,8 +30,8 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carry-le-Rouet : ateliers pour équipes tourisme, restauration, plaisance et commerces. Outils IA configurés métier réel, dans vos locaux face au port.",
@@ -53,7 +53,7 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Carry-le-Rouet  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE tourisme, hôteliers, restaurateurs et commerces carryens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, hôteliers, restaurateurs et commerces carryens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie indépendante et les locations saisonnières ?",

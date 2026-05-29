@@ -31,26 +31,26 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Flash à Saint-Jean-de-Braye (490 € HT, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
-      en: "Audit IA Flash à Saint-Jean-de-Braye (490 € HT, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
+      fr: "Audit IA Flash à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
+      en: "Audit IA Flash à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
     },
     interventions: {
-      fr: "Interventions à Saint-Jean-de-Braye dès 590 € HT : automatisation de la facturation, planning, support client et reporting pour TPE et PME du tissu orléanais.",
-      en: "Interventions à Saint-Jean-de-Braye dès 590 € HT : automatisation de la facturation, planning, support client et reporting pour TPE et PME du tissu orléanais.",
+      fr: "Interventions à Saint-Jean-de-Braye dès {{price:intervention-4h|flat}} : automatisation de la facturation, planning, support client et reporting pour TPE et PME du tissu orléanais.",
+      en: "Interventions à Saint-Jean-de-Braye dès {{price:intervention-4h|flat}} : automatisation de la facturation, planning, support client et reporting pour TPE et PME du tissu orléanais.",
     },
     implementation: {
-      fr: "Implémentation IA à Saint-Jean-de-Braye dès 990 € HT : développement de modules sur-mesure en code custom (pas de no-code) — intégrations ERP, gestion documentaire, outils métiers pour PME du Loiret.",
-      en: "Implémentation IA à Saint-Jean-de-Braye dès 990 € HT : développement de modules sur-mesure en code custom (pas de no-code) — intégrations ERP, gestion documentaire, outils métiers pour PME du Loiret.",
+      fr: "Implémentation IA à Saint-Jean-de-Braye dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) — intégrations ERP, gestion documentaire, outils métiers pour PME du Loiret.",
+      en: "Implémentation IA à Saint-Jean-de-Braye dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) — intégrations ERP, gestion documentaire, outils métiers pour PME du Loiret.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Saint-Jean-de-Braye dès 990 € HT : coaching individuel des dirigeants de TPE et PME pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
-      en: "Sessions 1-to-1 à Saint-Jean-de-Braye dès 990 € HT : coaching individuel des dirigeants de TPE et PME pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
+      fr: "Sessions 1-to-1 à Saint-Jean-de-Braye dès {{price:intervention-dirigeants|flat}} : coaching individuel des dirigeants de TPE et PME pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
+      en: "Sessions 1-to-1 à Saint-Jean-de-Braye dès {{price:intervention-dirigeants|flat}} : coaching individuel des dirigeants de TPE et PME pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA à Saint-Jean-de-Braye ?",
-      a: "Audit Flash dès 490 € HT (4 h sur site), interventions dès 590 € HT, implémentations et sessions 1-to-1 dès 990 € HT. Détail complet sur la page Tarifs.",
+      a: "Audit Flash dès {{price:audit-flash|flat}} (4 h sur site), interventions dès {{price:intervention-4h|flat}}, implémentations et sessions 1-to-1 dès {{price:intervention-dirigeants|flat}}. Détail complet sur la page Tarifs.",
     },
     {
       q: "Quel est le délai pour une intervention à Saint-Jean-de-Braye ?",

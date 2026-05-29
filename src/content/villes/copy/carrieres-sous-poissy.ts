@@ -11,9 +11,9 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   pitchEn:
     "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. William se déplace sur site, depuis Paris, pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
   directAnswerFr:
-    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit Flash 4 heures (à partir de 490 € HT), les interventions ponctuelles à partir de 590 € HT, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
+    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit Flash 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
   directAnswerEn:
-    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit Flash 4 heures (à partir de 490 € HT), les interventions ponctuelles à partir de 590 € HT, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
+    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit Flash 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
   seoHook: "commerce véhicules & commerce gros",
   ecosystemFr:
     "L'économie de Carrières-sous-Poissy s'appuie sur le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et sur les zones d'activité du bord de Seine et du quartier des Trois Cèdres, qui couvrent environ 15 hectares. La ville est rattachée à la communauté urbaine Grand Paris Seine et Oise et bénéficie d'une desserte ferroviaire via la gare de Poissy (RER A et Transilien J).",
@@ -32,8 +32,8 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit Flash à Carrières-sous-Poissy permet aux TPE et PME des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de 490 € HT.",
-      en: "Réaliser un audit Flash à Carrières-sous-Poissy permet aux TPE et PME des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de 490 € HT.",
+      fr: "Réaliser un audit Flash à Carrières-sous-Poissy permet aux TPE et PME des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit Flash à Carrières-sous-Poissy permet aux TPE et PME des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Carrières-sous-Poissy pour automatiser les relances clients, la génération de devis et le suivi commercial dans le quartier des Trois Cèdres et les zones d'activité riveraines. William se déplace depuis Paris.",
@@ -51,7 +51,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention à Carrières-sous-Poissy ?",
-      a: "L'Audit Flash 4 heures à Carrières-sous-Poissy démarre à 490 € HT. Les interventions ciblées sur site commencent à 590 € HT. Les tarifs publics complets sont consultables sur notre page tarifs.",
+      a: "L'Audit Flash 4 heures à Carrières-sous-Poissy démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Les tarifs publics complets sont consultables sur notre page tarifs.",
     },
     {
       q: "Quels délais pour une intervention IA à Carrières-sous-Poissy ?",

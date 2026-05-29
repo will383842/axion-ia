@@ -30,8 +30,8 @@ export const BIGANOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit Flash 490 € HT.",
-      en: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biganos : ateliers adaptés aux process industriels, ostréiculture, artisanat et commerce. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BIGANOS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Biganos  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du Bassin d'Arcachon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs à Biganos ?",
@@ -61,7 +61,7 @@ export const BIGANOS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME industrielles à Biganos ?",
-      a: "Pour les PME industrielles de Biganos : audit IA 490 € HT, interventions sur site, implémentation prédiction maintenance et automatisation processus. Coaching dirigeants.",
+      a: "Pour les PME industrielles de Biganos : audit IA {{price:audit-flash|flat}}, interventions sur site, implémentation prédiction maintenance et automatisation processus. Coaching dirigeants.",
     },
     {
       q: "Comment se déroule une mission à Biganos ?",

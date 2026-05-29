@@ -9,9 +9,9 @@ export const AMILLY_COPY: VilleCopy = {
   pitchEn:
     "Amilly (45), commune de l'agglomeration montargoise dans le Loiret, accueille d'importantes zones d'activites commerciales et artisanales du Gatinais. Tissu de TPE et PME du commerce, de la logistique, des services aux entreprises, de l'artisanat et de l'industrie legere. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit Flash des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Amilly est une commune dynamique de l'agglomeration montargoise, dotee de zones d'activites commerciales et artisanales structurantes pour le Gatinais. Son economie repose sur le commerce, la logistique liee au carrefour A77/D943, les services aux entreprises, l'artisanat du batiment et l'industrie legere. Communes voisines : Montargis, Chalette-sur-Loing, Villemandeur, Paucourt, Treilles-en-Gatinais.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const AMILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Amilly : diagnostic adapte aux TPE commerces, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Amilly : diagnostic adapte aux TPE commerces, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Amilly : diagnostic adapte aux TPE commerces, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Amilly : diagnostic adapte aux TPE commerces, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Amilly : formats adaptes aux zones d'activites, entrepots logistiques, commerces et PME de services du bassin montargois.",
@@ -53,7 +53,7 @@ export const AMILLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Amilly ?",
-      a: "L'Audit Flash IA a Amilly demarre a 490 euros HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus metier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffre avec ROI estime.",
+      a: "L'Audit Flash IA a Amilly demarre a {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus metier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffre avec ROI estime.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique a Amilly ?",
@@ -61,7 +61,7 @@ export const AMILLY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les TPE a Amilly ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Amilly a partir de 990 euros HT. Sessions dans vos locaux en zone d'activites ou en visio, adaptees a votre secteur d'activite.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Amilly a partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux en zone d'activites ou en visio, adaptees a votre secteur d'activite.",
     },
     {
       q: "L'IA peut-elle aider les commerces d'Amilly ?",

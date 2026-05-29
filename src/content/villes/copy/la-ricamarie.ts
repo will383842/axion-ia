@@ -30,8 +30,8 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Ricamarie : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ricamarie : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const LA_RICAMARIE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les indépendants ricamandois ?",
-      a: "Pour les indépendants et professions libérales à La Ricamarie, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
+      a: "Pour les indépendants et professions libérales à La Ricamarie, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

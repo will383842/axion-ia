@@ -31,8 +31,8 @@ export const SERVIAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash 490 € HT, ROI chiffré, 4 h sur site ou visio.",
-      en: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash 490 € HT, ROI chiffré, 4 h sur site ou visio.",
+      fr: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      en: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
     },
     interventions: {
       fr: "Interventions IA sur site à Servian : ateliers adaptés au format de votre TPE/PME — domaine viticole, cave coopérative « Les Vignerons de l'Occitane », entreprise ZAC La Baume, commerce, atelier artisan. Équipes formées et autonomes après une journée.",
@@ -54,7 +54,7 @@ export const SERVIAN_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une mission IA à Servian ?",
-      a: "Audit Flash 490 € HT (4 h diagnostic + ROI chiffré). Intervention sur site dès 590 € HT par journée. Coaching 1-to-1 dès 590 € HT par séance. Tarifs publics affichés.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics affichés.",
     },
     {
       q: "Quels délais d'intervention sur Servian ?",
@@ -66,7 +66,7 @@ export const SERVIAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises de la ZAC La Baume (TMF Transports, Ame'ric, Savim) ?",
-      a: "Oui, audit Flash 490 € HT puis implémentation : optimisation logistique, classification documents, automatisation devis, planification interventions. Cible PME industrielles et tertiaires.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}} puis implémentation : optimisation logistique, classification documents, automatisation devis, planification interventions. Cible PME industrielles et tertiaires.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Servian ?",

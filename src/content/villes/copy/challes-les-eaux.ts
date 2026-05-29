@@ -30,8 +30,8 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Challes-les-Eaux : formats adaptés aux centres thermaux, hôtels de cure, cabinets de santé ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel de cure à Challes-les-Eaux ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour une TPE hôtelière à Challes-les-Eaux. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (10 min).",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE hôtelière à Challes-les-Eaux. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (10 min).",
     },
     {
       q: "Comment se déroule une mission IA à Challes-les-Eaux ?",

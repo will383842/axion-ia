@@ -30,8 +30,8 @@ export const SASSENAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sassenage : formats adaptés à la fromagerie, au château touristique, atelier artisan ou cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SASSENAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans sassenageois ?",
-      a: "Pour les TPE et artisans à Sassenage (BTP, commerces, services), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Adapté aux petites structures.",
+      a: "Pour les TPE et artisans à Sassenage (BTP, commerces, services), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Adapté aux petites structures.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Lyon ?",

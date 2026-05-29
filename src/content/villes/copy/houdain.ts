@@ -10,9 +10,9 @@ export const HOUDAIN_COPY: VilleCopy = {
     "Houdain (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 950 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Houdain (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Houdain est situee dans le bassin minier entre Bethune (8 km) et Bruay-la-Buissiere (5 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-ville, professions de sante et petites industries. Proximite du pole hospitalier bethunois.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HOUDAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Houdain : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Houdain : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Houdain : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Houdain : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Houdain : formations adaptees aux ateliers artisanaux, aux commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const HOUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE artisanales de Houdain ?",
-      a: "Pour les TPE artisanales du bassin minier, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, suivi chantiers numerique. Audit Flash 490 EUR HT.",
+      a: "Pour les TPE artisanales du bassin minier, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, suivi chantiers numerique. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Houdain ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les commercants de Houdain ?",
-      a: "Oui, nous accompagnons les commercants de Houdain et du bassin bethunois : IA pour gestion stocks, agents conversationnels, fidelisation client, automatisation comptabilite. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les commercants de Houdain et du bassin bethunois : IA pour gestion stocks, agents conversationnels, fidelisation client, automatisation comptabilite. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Houdain ?",

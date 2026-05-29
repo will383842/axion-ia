@@ -30,8 +30,8 @@ export const SALLANCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sallanches : formats adaptés aux hôtels, commerces, artisans BTP montagne. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et services.",
@@ -57,7 +57,7 @@ export const SALLANCHES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sallanches  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE tourisme montagne comme aux PME services et artisans BTP du bassin.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE tourisme montagne comme aux PME services et artisans BTP du bassin.",
     },
     {
       q: "L'IA est-elle utile pour gérer la saisonnalité touristique ?",

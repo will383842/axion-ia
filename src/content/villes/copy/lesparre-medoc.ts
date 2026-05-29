@@ -30,8 +30,8 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit Flash 490 € HT.",
-      en: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lesparre-Médoc : ateliers adaptés aux chais, commerces et cabinets. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lesparre-Médoc  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux vignerons AOC Médoc et commerçants de la sous-préfecture.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons AOC Médoc et commerçants de la sous-préfecture.",
     },
     {
       q: "Accompagnez-vous les vignerons du Médoc ?",
@@ -61,7 +61,7 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Lesparre ?",
-      a: "Pour les commerçants : audit IA 490 € HT, agents conversationnels, automatisation gestion stocks et facturation, CRM client augmenté.",
+      a: "Pour les commerçants : audit IA {{price:audit-flash|flat}}, agents conversationnels, automatisation gestion stocks et facturation, CRM client augmenté.",
     },
     {
       q: "Comment se déroule une mission à Lesparre-Médoc ?",

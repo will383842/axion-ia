@@ -30,8 +30,8 @@ export const MARSEILLAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, TPE commerçants, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, TPE commerçants, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, TPE commerçants, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Marseillan : diagnostic pour PME ostréicoles et viticoles, TPE commerçants, acteurs tourisme balnéaire et hôtellerie-restauration du bassin de Thau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marseillan : ateliers adaptés exploitation ostréicole, domaine viticole, camping, restaurant ou commerce. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MARSEILLAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les ostréiculteurs et conchyliculteurs ?",
-      a: "Oui, nous réalisons des audits IA adaptés à la conchyliculture : traçabilité automatisée, prédiction qualité eau, gestion stocks, automatisation commandes et vente directe. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés à la conchyliculture : traçabilité automatisée, prédiction qualité eau, gestion stocks, automatisation commandes et vente directe. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les campings et l'hôtellerie de plage ?",
@@ -65,7 +65,7 @@ export const MARSEILLAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Marseillan ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

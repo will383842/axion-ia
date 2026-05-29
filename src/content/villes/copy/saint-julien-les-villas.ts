@@ -30,8 +30,8 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux TPE/PME tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux TPE/PME tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux TPE/PME tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Julien-les-Villas : diagnostic adapté aux TPE/PME tertiaires agglo Troyes, commerçants, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Julien-les-Villas : formats adaptés au bureau tertiaire, commerce de zone, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Julien-les-Villas  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants et artisans de l'agglomération troyenne.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants et artisans de l'agglomération troyenne.",
     },
     {
       q: "Accompagnez-vous les commerces de zone et de proximité ?",

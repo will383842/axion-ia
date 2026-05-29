@@ -30,8 +30,8 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux TPE commerçants, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit Flash 490 € HT accessible à toutes les structures locales.",
-      en: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux TPE commerçants, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit Flash 490 € HT accessible à toutes les structures locales.",
+      fr: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux TPE commerçants, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      en: "Audit IA aux Clayes-sous-Bois : diagnostic adapté aux TPE commerçants, artisans, professions libérales et PME tertiaires de l'ouest yvelinois. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Clayes-sous-Bois : formats adaptés aux commerces, PME tertiaires, artisans et cabinets. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -53,7 +53,7 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un commerce aux Clayes-sous-Bois ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour 4 heures. Adapté aux commerces, artisans et TPE des Clayes-sous-Bois. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux commerces, artisans et TPE des Clayes-sous-Bois. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les PME proches de Saint-Quentin-en-Yvelines ?",
@@ -65,7 +65,7 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerçants des Clayes-sous-Bois ?",
-      a: "Pour les commerçants des Clayes-sous-Bois, nous proposons Audit Flash 490 € HT, intervention formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, gestion stocks prédictive, automatisation commandes, CRM augmentés.",
+      a: "Pour les commerçants des Clayes-sous-Bois, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, gestion stocks prédictive, automatisation commandes, CRM augmentés.",
     },
   ],
 };

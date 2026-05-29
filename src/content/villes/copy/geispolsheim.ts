@@ -30,8 +30,8 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Geispolsheim : formats adaptés à l'atelier agroalimentaire, exploitation arboricole, chantier, bureau ou commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants geispolsheimois ?",
-      a: "Oui, les artisans BTP, commerçants et professions de services de Geispolsheim bénéficient de l'audit Flash 490 € HT et d'interventions sur site adaptées aux TPE. Automatisation devis, relances, gestion clients, prospection locale.",
+      a: "Oui, les artisans BTP, commerçants et professions de services de Geispolsheim bénéficient de l'audit Flash {{price:audit-flash|flat}} et d'interventions sur site adaptées aux TPE. Automatisation devis, relances, gestion clients, prospection locale.",
     },
     {
       q: "Quels tarifs pour un audit IA à Geispolsheim ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Geispolsheim ?",

@@ -30,8 +30,8 @@ export const AVON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avon : diagnostic adapté aux TPE artisans, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Avon : diagnostic adapté aux TPE artisans, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Avon : diagnostic adapté aux TPE artisans, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Avon : diagnostic adapté aux TPE artisans, PME services, commerçants, professions libérales et acteurs santé du bassin Fontainebleau-Avon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avon : formats adaptés au cabinet médical, au commerce ou à l'entreprise de services. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const AVON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Avon ?",
-      a: "L'Audit Flash IA à Avon démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Avon démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales et la santé à Avon ?",

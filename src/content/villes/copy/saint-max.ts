@@ -30,8 +30,8 @@ export const SAINT_MAX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Max : formats adaptés au bureau tertiaire, commerce de proximité, atelier BTP, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_MAX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Max  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants, artisans et professions libérales de l'est nancéien.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants, artisans et professions libérales de l'est nancéien.",
     },
     {
       q: "Accompagnez-vous les TPE/PME tertiaires et commerces de proximité ?",

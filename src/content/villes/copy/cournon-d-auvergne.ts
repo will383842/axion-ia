@@ -30,8 +30,8 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cournon-d'Auvergne : formats adaptés au bureau, atelier, zone d'activités, commerce. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Quels services pour les professions libérales ?",

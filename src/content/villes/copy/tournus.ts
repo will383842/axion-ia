@@ -30,8 +30,8 @@ export const TOURNUS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tournus : diagnostic adapté aux restaurateurs, hôteliers, viticulteurs, commerçants et artisans du bord de Saône en Saône-et-Loire. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Tournus : diagnostic adapté aux restaurateurs, hôteliers, viticulteurs, commerçants et artisans du bord de Saône en Saône-et-Loire. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Tournus : diagnostic adapté aux restaurateurs, hôteliers, viticulteurs, commerçants et artisans du bord de Saône en Saône-et-Loire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Tournus : diagnostic adapté aux restaurateurs, hôteliers, viticulteurs, commerçants et artisans du bord de Saône en Saône-et-Loire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tournus : formats adaptés au restaurant, à l'hôtel, au domaine viticole ou au commerce de centre-ville. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const TOURNUS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Tournus  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Tournus, il identifie les cas d'usage IA à fort ROI pour votre restaurant, hôtel, domaine ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Tournus, il identifie les cas d'usage IA à fort ROI pour votre restaurant, hôtel, domaine ou commerce.",
     },
     {
       q: "Accompagnez-vous les restaurateurs et hôteliers de Tournus ?",
@@ -65,7 +65,7 @@ export const TOURNUS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Tournus ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Tournus, à partir de 990 € HT. Sessions dans votre établissement, domaine viticole ou en visio. Approche terrain adaptée au secteur gastronomie et tourisme.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Tournus, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre établissement, domaine viticole ou en visio. Approche terrain adaptée au secteur gastronomie et tourisme.",
     },
   ],
 };

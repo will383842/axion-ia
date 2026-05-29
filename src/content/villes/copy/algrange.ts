@@ -30,8 +30,8 @@ export const ALGRANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Algrange : formats adaptés à l''atelier industriel, chantier BTP, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const ALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les frontaliers vers le Luxembourg ?",
-      a: "Oui, nombreux frontaliers et entrepreneurs algrangeois travaillant avec le Luxembourg : automatisation administrative transfrontalière, gestion multilingue FR/DE/EN, conformité, outils collaboratifs. Audit Flash 490 € HT.",
+      a: "Oui, nombreux frontaliers et entrepreneurs algrangeois travaillant avec le Luxembourg : automatisation administrative transfrontalière, gestion multilingue FR/DE/EN, conformité, outils collaboratifs. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Algrange ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Comment se passe une mission à Algrange ?",

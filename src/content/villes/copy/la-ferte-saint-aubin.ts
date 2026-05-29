@@ -30,8 +30,8 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
-      en: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferté-Saint-Aubin : formats adaptés au commerce, à la PME forestière, à l'hébergement touristique ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de La Ferté-Saint-Aubin ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de La Ferté-Saint-Aubin sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier, facturation automatisée. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de La Ferté-Saint-Aubin sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier, facturation automatisée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les PME de la filière bois-forêt solognote ?",
@@ -61,7 +61,7 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hébergeurs tourisme Sologne ?",
-      a: "Pour les hébergeurs et restaurateurs tourisme nature de La Ferté-Saint-Aubin (château, chasse, pêche, randonnée Sologne), audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, tarification dynamique.",
+      a: "Pour les hébergeurs et restaurateurs tourisme nature de La Ferté-Saint-Aubin (château, chasse, pêche, randonnée Sologne), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, tarification dynamique.",
     },
     {
       q: "Comment se déroule une mission sur site à La Ferté-Saint-Aubin ?",

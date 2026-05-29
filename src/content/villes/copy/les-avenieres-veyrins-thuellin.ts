@@ -30,8 +30,8 @@ export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Avenières : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants aux Avenières, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants aux Avenières, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",

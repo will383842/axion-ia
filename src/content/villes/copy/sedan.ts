@@ -30,8 +30,8 @@ export const SEDAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sedan : formations pratiques pour équipes industrielles, agroalimentaire, commerce et tourisme du Sedanais. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -53,15 +53,15 @@ export const SEDAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles et métallurgiques de Sedan ?",
-      a: "Oui, nous accompagnons les PME industrielles, fonderies et acteurs métallurgiques du Sedanais avec des solutions IA adaptées : maintenance prédictive, contrôle qualité visuel, optimisation des flux production. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME industrielles, fonderies et acteurs métallurgiques du Sedanais avec des solutions IA adaptées : maintenance prédictive, contrôle qualité visuel, optimisation des flux production. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Sedan  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME sedanaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME sedanaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs touristiques du château de Sedan ?",
-      a: "Pour les acteurs touristiques de Sedan (hôtels, restaurants, sites patrimoniaux, château fort), nous proposons : agents IA réservation et accueil multilingue, automatisation billetterie, chatbot visiteurs, gestion avis. Audit Flash 490 € HT.",
+      a: "Pour les acteurs touristiques de Sedan (hôtels, restaurants, sites patrimoniaux, château fort), nous proposons : agents IA réservation et accueil multilingue, automatisation billetterie, chatbot visiteurs, gestion avis. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Sedan ?",

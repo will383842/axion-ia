@@ -30,8 +30,8 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quincy-Voisins : formats adaptés chantier BTP, commerce, cabinet libéral, siège PME, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Quincy-Voisins  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Meaux et alentours ?",

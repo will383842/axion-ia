@@ -36,7 +36,7 @@ import {
 } from "@/content/pricing";
 
 /** Modes de rendu d'un token prix. */
-export type PriceTokenMode = "full" | "flat" | "onsite" | "range" | "from" | "entry";
+export type PriceTokenMode = "full" | "flat" | "onsite" | "range" | "from" | "entry" | "compact";
 
 const VALID_MODES: ReadonlySet<string> = new Set<PriceTokenMode>([
   "full",
@@ -45,6 +45,7 @@ const VALID_MODES: ReadonlySet<string> = new Set<PriceTokenMode>([
   "range",
   "from",
   "entry",
+  "compact",
 ]);
 
 /**
@@ -106,6 +107,7 @@ function renderEntry(entry: RegistryEntry, mode: PriceTokenMode, locale: Locale)
     // Un sous-tier n'a qu'un prix fixe — tous les modes retombent dessus.
     const sub = entry.subTier;
     if (mode === "from") return `${fromPrefix(locale)} ${formatAmount(sub.priceFlat, locale)}`;
+    if (mode === "compact") return formatAmount(sub.priceFlat, locale, { compact: true });
     return formatAmount(sub.priceFlat, locale);
   }
 
@@ -130,6 +132,11 @@ function renderEntry(entry: RegistryEntry, mode: PriceTokenMode, locale: Locale)
       const entryPrice = tierEntryPrice(tier);
       if (entryPrice == null) return onQuoteLabel(locale);
       return formatAmount(entryPrice, locale);
+    }
+    case "compact": {
+      const entryPrice = tierEntryPrice(tier);
+      if (entryPrice == null) return onQuoteLabel(locale);
+      return formatAmount(entryPrice, locale, { compact: true });
     }
     case "full":
     default:

@@ -30,8 +30,8 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit Flash 490 € HT.",
-      en: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit Flash 490 € HT.",
+      fr: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cambo-les-Bains : déploiement outils IA dans vos thermes, hébergements, ateliers artisanaux ou commerces. Automatisation parcours curistes et gestion saisonnière.",
@@ -57,7 +57,7 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Cambo-les-Bains ?",
-      a: "L'audit Flash IA à Cambo-les-Bains démarre à 490 € HT. Diagnostic de vos processus thermaux, touristiques ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Cambo-les-Bains démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus thermaux, touristiques ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les hébergeurs thermaux de Cambo ?",

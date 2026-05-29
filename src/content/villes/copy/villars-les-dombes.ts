@@ -30,8 +30,8 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villars-les-Dombes : formats adaptés au parc animalier, exploitation piscicole, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

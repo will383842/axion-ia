@@ -30,8 +30,8 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-sur-Lot : diagnostic adapté aux agriculteurs, conserveries, artisans et TPE/PME du Lot-et-Garonne. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux exploitations.",
-      en: "Audit IA à Villeneuve-sur-Lot : diagnostic adapté aux agriculteurs, conserveries, artisans et TPE/PME du Lot-et-Garonne. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux exploitations.",
+      fr: "Audit IA à Villeneuve-sur-Lot : diagnostic adapté aux agriculteurs, conserveries, artisans et TPE/PME du Lot-et-Garonne. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux exploitations.",
+      en: "Audit IA à Villeneuve-sur-Lot : diagnostic adapté aux agriculteurs, conserveries, artisans et TPE/PME du Lot-et-Garonne. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux exploitations.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve : sessions dans votre verger, conserverie, atelier ou bureau. Vos équipes (agriculteurs, ouvriers conserverie, commerçants) repartent avec outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants villeneuvois ?",
-      a: "Pour les TPE artisans et commerçants à Villeneuve (BTP, bastide commerçante, services), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA pour relation client, classification photos, gestion stocks et planning.",
+      a: "Pour les TPE artisans et commerçants à Villeneuve (BTP, bastide commerçante, services), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA pour relation client, classification photos, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Bordeaux ?",

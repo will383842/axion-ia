@@ -30,8 +30,8 @@ export const MURS_ERIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mûrs-Erigné : diagnostic adapté aux professions libérales, PME tertiaires et commerçants du sud angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Mûrs-Erigné : diagnostic adapté aux professions libérales, PME tertiaires et commerçants du sud angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Mûrs-Erigné : diagnostic adapté aux professions libérales, PME tertiaires et commerçants du sud angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Mûrs-Erigné : diagnostic adapté aux professions libérales, PME tertiaires et commerçants du sud angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mûrs-Erigné : formations pour cabinets, commerces et PME services. Ateliers pratiques adaptés aux professionnels du sud angevin.",
@@ -53,7 +53,7 @@ export const MURS_ERIGNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mûrs-Erigné  ?",
-      a: "L'Audit Flash IA à Mûrs-Erigné démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Mûrs-Erigné démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les professions de santé à Mûrs-Erigné ?",

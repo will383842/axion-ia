@@ -30,8 +30,8 @@ export const GAREOULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Garéoult : ateliers pour viticulteurs, maraîchers, artisans BTP, commerçants et restaurateurs. Outils IA configurés métier réel agricole et services.",
@@ -53,7 +53,7 @@ export const GAREOULT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole AOC Côtes-de-Provence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles AOC, maraîchers et artisans garéoultais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC, maraîchers et artisans garéoultais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons AOC du centre-Var ?",

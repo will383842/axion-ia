@@ -30,8 +30,8 @@ export const EMERAINVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Émerainville : formats adaptés entrepôt logistique, bureau tertiaire, commerce et atelier artisan. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const EMERAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Émerainville  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME des zones d'activités d'Émerainville, nous proposons des audits approfondis adaptés aux enjeux logistique et services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME des zones d'activités d'Émerainville, nous proposons des audits approfondis adaptés aux enjeux logistique et services.",
     },
     {
       q: "Travaillez-vous avec les entreprises logistique et transport ?",
@@ -65,7 +65,7 @@ export const EMERAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Émerainville ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Émerainville, à partir de 990 € HT. Sessions sur site dans votre entreprise ou en visio, adaptées à votre secteur d'activité.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Émerainville, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans votre entreprise ou en visio, adaptées à votre secteur d'activité.",
     },
   ],
 };

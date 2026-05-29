@@ -30,8 +30,8 @@ export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Meung-sur-Loire : diagnostic adapté aux TPE artisans, commerçants, PME agricoles/viticoles et acteurs tourisme patrimonial du bourg ligérien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Meung-sur-Loire : diagnostic adapté aux TPE artisans, commerçants, PME agricoles/viticoles et acteurs tourisme patrimonial du bourg ligérien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Meung-sur-Loire : diagnostic adapté aux TPE artisans, commerçants, PME agricoles/viticoles et acteurs tourisme patrimonial du bourg ligérien. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Meung-sur-Loire : diagnostic adapté aux TPE artisans, commerçants, PME agricoles/viticoles et acteurs tourisme patrimonial du bourg ligérien. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Meung-sur-Loire : formats adaptés à l'exploitation agricole, commerce, site touristique ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants à Meung-sur-Loire ?",
-      a: "Pour les TPE artisans BTP et commerçants à Meung-sur-Loire, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Meung-sur-Loire, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission à Meung-sur-Loire ?",

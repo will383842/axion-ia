@@ -10,9 +10,9 @@ export const DIVION_COPY: VilleCopy = {
     "Divion (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 770 habitants. Situee entre Bruay-la-Buissiere et Houdain, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les activites liees au patrimoine minier. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Divion (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans BTP, commercants, prestataires de services et petits industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Divion est situee dans le bassin minier entre Bruay-la-Buissiere (3 km) et Houdain (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, garages automobiles et petites industries. Heritage minier reconverti en activites tertiaires.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DIVION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Divion : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Divion : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Divion : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Divion : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Divion : formations adaptees aux ateliers artisanaux, garages, commerces et bureaux PME du bassin minier. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const DIVION_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les artisans BTP de Divion ?",
-      a: "Pour les artisans BTP du bassin minier, nous proposons : automatisation devis et facturation, planning chantiers IA, suivi client numerique, gestion stocks materiaux. Audit Flash 490 EUR HT.",
+      a: "Pour les artisans BTP du bassin minier, nous proposons : automatisation devis et facturation, planning chantiers IA, suivi client numerique, gestion stocks materiaux. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Divion ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle aider les garages automobiles de Divion ?",

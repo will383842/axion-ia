@@ -30,8 +30,8 @@ export const BEAUCOUZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaucouzé : diagnostic adapté aux TPE de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Beaucouzé : diagnostic adapté aux TPE de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Beaucouzé : diagnostic adapté aux TPE de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beaucouzé : diagnostic adapté aux TPE de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaucouzé : formations adaptées aux PME numériques, prestataires B2B, commerces et professions libérales du pôle ouest angevin. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const BEAUCOUZE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Beaucouzé ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE de services, PME du numérique et commerces de l'ouest angevin. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE de services, PME du numérique et commerces de l'ouest angevin. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME numériques ?",

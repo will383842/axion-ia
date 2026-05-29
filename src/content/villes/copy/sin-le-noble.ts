@@ -30,8 +30,8 @@ export const SIN_LE_NOBLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sin-le-Noble : diagnostic adapté aux sous-traitants automobile-ferroviaire, PME logistiques, artisans BTP et commerçants du Douaisis. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Sin-le-Noble : diagnostic adapté aux sous-traitants automobile-ferroviaire, PME logistiques, artisans BTP et commerçants du Douaisis. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Sin-le-Noble : diagnostic adapté aux sous-traitants automobile-ferroviaire, PME logistiques, artisans BTP et commerçants du Douaisis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sin-le-Noble : diagnostic adapté aux sous-traitants automobile-ferroviaire, PME logistiques, artisans BTP et commerçants du Douaisis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sin-le-Noble : formats adaptés à l'atelier sous-traitant, à la PME logistique, à l'artisan BTP ou au commerce de proximité. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SIN_LE_NOBLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sin-le-Noble  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Sin-le-Noble et du Nord, il identifie les cas d'usage IA à fort ROI pour votre atelier sous-traitant, PME logistique, artisan BTP ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Sin-le-Noble et du Nord, il identifie les cas d'usage IA à fort ROI pour votre atelier sous-traitant, PME logistique, artisan BTP ou commerce.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile et ferroviaire du Douaisis ?",
@@ -65,7 +65,7 @@ export const SIN_LE_NOBLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Sin-le-Noble ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Sin-le-Noble, à partir de 990 € HT. Sessions à l'atelier, au bureau ou en visio. Approche terrain adaptée au tissu industriel reconverti et commerçant du Douaisis.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Sin-le-Noble, à partir de {{price:intervention-dirigeants|flat}}. Sessions à l'atelier, au bureau ou en visio. Approche terrain adaptée au tissu industriel reconverti et commerçant du Douaisis.",
     },
   ],
 };

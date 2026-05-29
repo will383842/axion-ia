@@ -30,8 +30,8 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nogent-sur-Seine : formats adaptés à l'industrie nucléaire, à la TPE artisanale, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Nogent-sur-Seine  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Nogent-sur-Seine, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Nogent-sur-Seine, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les sous-traitants nucléaires de Nogent-sur-Seine ?",
@@ -61,11 +61,11 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Nogent-sur-Seine ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Nogent-sur-Seine, à partir de 990 € HT. Sessions dans vos locaux ou en visio. Approche terrain adaptée à l'industrie nucléaire et aux TPE/PME auboises.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Nogent-sur-Seine, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux ou en visio. Approche terrain adaptée à l'industrie nucléaire et aux TPE/PME auboises.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles de la plaine de Champagne ?",
-      a: "Oui, nous accompagnons les exploitants céréaliers autour de Nogent-sur-Seine : suivi parcelles IA, prédiction rendements, automatisation traçabilité, optimisation intrants. Audit Flash adapté dès 490 € HT.",
+      a: "Oui, nous accompagnons les exploitants céréaliers autour de Nogent-sur-Seine : suivi parcelles IA, prédiction rendements, automatisation traçabilité, optimisation intrants. Audit Flash adapté dès {{price:audit-flash|flat}}.",
     },
   ],
 };

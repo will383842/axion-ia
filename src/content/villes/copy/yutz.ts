@@ -30,8 +30,8 @@ export const YUTZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Yutz : formats adaptés à l'usine, à l'entrepôt logistique, au commerce ou à la TPE de services frontaliers. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const YUTZ_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Yutz  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Yutz et du bassin de Thionville, il identifie les cas d'usage IA à fort ROI pour votre activité industrielle, logistique, commerciale ou de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Yutz et du bassin de Thionville, il identifie les cas d'usage IA à fort ROI pour votre activité industrielle, logistique, commerciale ou de services.",
     },
     {
       q: "Accompagnez-vous les industriels et logisticiens du bassin de Thionville ?",
@@ -65,7 +65,7 @@ export const YUTZ_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Yutz ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Yutz, à partir de 990 € HT. Sessions sur site industriel, en entrepôt ou en visio. Approche terrain adaptée au tissu économique mosellan et transfrontalier luxembourgeois.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Yutz, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site industriel, en entrepôt ou en visio. Approche terrain adaptée au tissu économique mosellan et transfrontalier luxembourgeois.",
     },
   ],
 };

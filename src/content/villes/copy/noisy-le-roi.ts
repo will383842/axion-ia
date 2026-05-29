@@ -30,8 +30,8 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noisy-le-Roi : diagnostic adapté aux TPE de services, professions libérales, PME tertiaires et artisans de l'ouest yvelinois entre Versailles et Saint-Germain. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Noisy-le-Roi : diagnostic adapté aux TPE de services, professions libérales, PME tertiaires et artisans de l'ouest yvelinois entre Versailles et Saint-Germain. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Noisy-le-Roi : diagnostic adapté aux TPE de services, professions libérales, PME tertiaires et artisans de l'ouest yvelinois entre Versailles et Saint-Germain. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noisy-le-Roi : diagnostic adapté aux TPE de services, professions libérales, PME tertiaires et artisans de l'ouest yvelinois entre Versailles et Saint-Germain. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noisy-le-Roi : formats adaptés aux cabinets professionnels, PME tertiaires et artisans de la zone Marly-Versailles. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Noisy-le-Roi  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (services, santé, artisanat, commerce). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (services, santé, artisanat, commerce). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans du secteur Marly-Versailles ?",

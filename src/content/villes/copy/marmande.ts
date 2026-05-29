@@ -30,8 +30,8 @@ export const MARMANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marmande : diagnostic adapté aux TPE/PME agroalimentaires, exploitations agricoles, commerçants et artisans du Marmandais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Marmande : diagnostic adapté aux TPE/PME agroalimentaires, exploitations agricoles, commerçants et artisans du Marmandais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Marmande : diagnostic adapté aux TPE/PME agroalimentaires, exploitations agricoles, commerçants et artisans du Marmandais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Marmande : diagnostic adapté aux TPE/PME agroalimentaires, exploitations agricoles, commerçants et artisans du Marmandais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marmande : formats adaptés à l'exploitation agricole, l'usine agroalimentaire, le commerce ou le cabinet. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MARMANDE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Marmande  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME marmandaises : exploitations agricoles, entreprises agroalimentaires, commerçants, artisans et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME marmandaises : exploitations agricoles, entreprises agroalimentaires, commerçants, artisans et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les entreprises agroalimentaires de Marmande ?",
@@ -61,7 +61,7 @@ export const MARMANDE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Marmande ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Marmande, à partir de 990 € HT. Sessions dans votre exploitation, usine, commerce ou en visio. Approche terrain adaptée aux métiers du Marmandais.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Marmande, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre exploitation, usine, commerce ou en visio. Approche terrain adaptée aux métiers du Marmandais.",
     },
     {
       q: "Comment se déroule une mission IA à Marmande ?",

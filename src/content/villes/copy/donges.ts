@@ -30,8 +30,8 @@ export const DONGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit Flash 490 € HT.",
-      en: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit Flash 490 € HT.",
+      fr: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Donges : formats adaptés atelier, site industriel, bureau ou commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const DONGES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans de Donges ?",
-      a: "Pour les TPE artisans de Donges, nous proposons audit IA Flash (490 € HT), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés artisans et commerçants.",
+      a: "Pour les TPE artisans de Donges, nous proposons audit IA Flash ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés artisans et commerçants.",
     },
     {
       q: "L'IA est-elle adaptée au secteur industriel estuarien ?",

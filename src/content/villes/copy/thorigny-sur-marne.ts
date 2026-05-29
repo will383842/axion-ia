@@ -30,8 +30,8 @@ export const THORIGNY_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thorigny-sur-Marne : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const THORIGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Thorigny-sur-Marne ?",
-      a: "L'Audit Flash IA à Thorigny-sur-Marne démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Thorigny-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de Thorigny-sur-Marne ?",

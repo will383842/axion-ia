@@ -30,8 +30,8 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rosny-sur-Seine : formats adaptés à l'atelier artisan, l'entrepôt logistique, le commerce ou le cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rosny-sur-Seine  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, industrie, commerce, services). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, industrie, commerce, services). Tarifs publics.",
     },
     {
       q: "Intervenez-vous auprès des artisans et commerçants de Rosny-sur-Seine ?",

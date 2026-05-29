@@ -30,8 +30,8 @@ export const GAMBSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gambsheim : formats adaptés à l'exploitation agricole, au site touristique, à l'atelier artisanal, au chantier BTP ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const GAMBSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gambsheim  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Gambsheim : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Gambsheim : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme fluvial et de l'écotourisme ?",
@@ -65,7 +65,7 @@ export const GAMBSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Gambsheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Gambsheim, à partir de 990 € HT. Sessions sur votre exploitation, site touristique, atelier ou en visio. Approche terrain adaptée aux métiers du Ried Nord alsacien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Gambsheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur votre exploitation, site touristique, atelier ou en visio. Approche terrain adaptée aux métiers du Ried Nord alsacien.",
     },
   ],
 };

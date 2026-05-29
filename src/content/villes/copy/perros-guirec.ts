@@ -30,8 +30,8 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Perros-Guirec : formats adaptés hôtel, restaurant, commerce, cabinet libéral, centre thalasso. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerçants et artisans locaux ?",
-      a: "Oui, audit Flash 490 € HT, CRM augmenté, gestion stocks saisonniers IA, fidélisation clients, automatisation devis artisans, agents IA prise de rendez-vous.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, CRM augmenté, gestion stocks saisonniers IA, fidélisation clients, automatisation devis artisans, agents IA prise de rendez-vous.",
     },
     {
       q: "Quels services pour le secteur tourisme et loisirs ?",

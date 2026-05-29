@@ -30,8 +30,8 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, TPE artisans, exploitants agricoles et commerçants du Haut-Anjou. Audit Flash 490 € HT pour les petites structures.",
-      en: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, TPE artisans, exploitants agricoles et commerçants du Haut-Anjou. Audit Flash 490 € HT pour les petites structures.",
+      fr: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, TPE artisans, exploitants agricoles et commerçants du Haut-Anjou. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
+      en: "Audit IA à Segré-en-Anjou Bleu : diagnostic adapté aux PME industrielles, TPE artisans, exploitants agricoles et commerçants du Haut-Anjou. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Segré-en-Anjou Bleu : formations PME agroalimentaires et manufacturières, ateliers artisans et exploitants agricoles. Autonomie IA de vos équipes terrain.",
@@ -53,7 +53,7 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME agroalimentaire à Segré ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, adapté aux TPE. Pour les PME agroalimentaires, l'Audit Stratégique complet offre un diagnostic approfondi : automatisation qualité, traçabilité, optimisation production et supply chain. ROI chiffré.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE. Pour les PME agroalimentaires, l'Audit Stratégique complet offre un diagnostic approfondi : automatisation qualité, traçabilité, optimisation production et supply chain. ROI chiffré.",
     },
     {
       q: "L'IA peut-elle aider les éleveurs laitiers de l'Anjou bleu ?",

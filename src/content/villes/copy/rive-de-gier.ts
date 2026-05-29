@@ -30,8 +30,8 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rive-de-Gier : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les indépendants ripagériens ?",
-      a: "Pour les indépendants et professions libérales à Rive-de-Gier, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
+      a: "Pour les indépendants et professions libérales à Rive-de-Gier, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

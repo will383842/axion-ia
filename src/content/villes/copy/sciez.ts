@@ -30,8 +30,8 @@ export const SCIEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, TPE artisans et hébergeurs du Chablais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, TPE artisans et hébergeurs du Chablais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, TPE artisans et hébergeurs du Chablais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sciez : diagnostic adapté aux acteurs touristiques lacustres Léman, viticulteurs AOC Crépy, commerces saisonniers, TPE artisans et hébergeurs du Chablais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sciez : formats adaptés hôtel-restaurant, domaine viticole, commerce saisonnier ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const SCIEZ_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Genève ou Thonon ?",

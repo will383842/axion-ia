@@ -30,8 +30,8 @@ export const ROSPORDEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rosporden : formats adaptés à la biscuiterie, l'atelier artisan, le commerce ou l'hébergement touristique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const ROSPORDEN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants rospordinois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Rosporden, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Rosporden, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert ?",

@@ -30,8 +30,8 @@ export const MONTAUROUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montauroux : ateliers pour artisans, restaurateurs, professionnels du golf et hôteliers ruraux. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const MONTAUROUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE artisanale à Montauroux ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux artisans, restaurateurs et professionnels du tourisme montaurousien. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, restaurateurs et professionnels du tourisme montaurousien. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professionnels du golf et des loisirs ?",

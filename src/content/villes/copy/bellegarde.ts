@@ -30,8 +30,8 @@ export const BELLEGARDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit Flash 490 € HT.",
-      en: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit Flash 490 € HT.",
+      fr: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellegarde : formats adaptés aux caves viticoles, exploitations agricoles, entreprises logistique et commerces des Costières.",
@@ -57,7 +57,7 @@ export const BELLEGARDE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bellegarde  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles ?",

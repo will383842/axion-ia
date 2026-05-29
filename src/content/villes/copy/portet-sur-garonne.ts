@@ -30,8 +30,8 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, TPE artisans et entreprises logistiques du pôle sud Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, TPE artisans et entreprises logistiques du pôle sud Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, TPE artisans et entreprises logistiques du pôle sud Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Portet-sur-Garonne : diagnostic adapté aux PME commerciales, TPE artisans et entreprises logistiques du pôle sud Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Portet-sur-Garonne : formats adaptés au commerce, à la logistique, à l'artisan. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Portet-sur-Garonne  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME commerciales, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider un commerce à Portet-sur-Garonne ?",

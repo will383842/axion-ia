@@ -30,8 +30,8 @@ export const FEIGNIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Feignies : formats adaptés à l'atelier industriel, chantier BTP, commerce, bureau. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const FEIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Feignies ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les PME industrie métallurgique et sous-traitance auto ?",

@@ -30,8 +30,8 @@ export const SAINT_LO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Lô : formats adaptés à la laiterie, l'exploitation agricole, le commerce, l'administration départementale. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_LO_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et PME agroalimentaires de Saint-Lô ?",
-      a: "Oui, nous accompagnons les TPE et PME agroalimentaires de Saint-Lô et du bocage manchois : automatisation traçabilité, prédiction rendements laitiers, optimisation logistique, classification qualité. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME agroalimentaires de Saint-Lô et du bocage manchois : automatisation traçabilité, prédiction rendements laitiers, optimisation logistique, classification qualité. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les acteurs de la filière équine ?",

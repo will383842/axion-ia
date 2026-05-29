@@ -30,8 +30,8 @@ export const HABSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Habsheim : formats adaptés au domaine viticole, à l'atelier artisanal, à l'usine ou au commerce. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const HABSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Habsheim  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Habsheim et du sud-est mulhousien, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, atelier artisanal, commerce ou unité de production.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Habsheim et du sud-est mulhousien, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, atelier artisanal, commerce ou unité de production.",
     },
     {
       q: "Accompagnez-vous les viticulteurs et acteurs œnotouristiques ?",
@@ -65,7 +65,7 @@ export const HABSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Habsheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Habsheim, à partir de 990 € HT. Sessions dans votre domaine, atelier, commerce ou en visio. Approche terrain adaptée au tissu viticole, artisanal et industriel du sud-est mulhousien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Habsheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre domaine, atelier, commerce ou en visio. Approche terrain adaptée au tissu viticole, artisanal et industriel du sud-est mulhousien.",
     },
   ],
 };

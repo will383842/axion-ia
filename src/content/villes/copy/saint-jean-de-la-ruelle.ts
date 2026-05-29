@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
   seoHook: "industrie, services & commerce urbain",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux TPE artisans, PME industrielles et de services de l'ouest orléanais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux TPE artisans, PME industrielles et de services de l'ouest orléanais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux TPE artisans, PME industrielles et de services de l'ouest orléanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux TPE artisans, PME industrielles et de services de l'ouest orléanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-la-Ruelle : formations en atelier industriel, bureau PME ou commerce. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Jean-de-la-Ruelle  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Saint-Jean-de-la-Ruelle ?",

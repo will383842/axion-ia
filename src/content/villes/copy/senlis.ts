@@ -30,8 +30,8 @@ export const SENLIS_COPY: VilleCopy = {
   seoHook: "tourisme patrimonial & aéronautique",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Senlis : formats adaptés à l'hôtel, au restaurant, à l'atelier d'art, au commerce historique, au cabinet libéral, au site industriel aéronautique. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const SENLIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans métiers d'art et patrimoine ?",
-      a: "Pour les TPE artisans métiers d'art à Senlis, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation devis restauration, gestion commandes, visibilité en ligne.",
+      a: "Pour les TPE artisans métiers d'art à Senlis, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation devis restauration, gestion commandes, visibilité en ligne.",
     },
     {
       q: "Travaillez-vous avec les PME aéronautique-défense du bassin senlisien ?",

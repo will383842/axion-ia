@@ -30,8 +30,8 @@ export const CHENOVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chenôve : formations pratiques pour commerçants, artisans, logisticiens et viticulteurs. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CHENOVE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Chenôve  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME chenevelières, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME chenevelières, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les acteurs viticoles autour de Chenôve ?",
@@ -61,7 +61,7 @@ export const CHENOVE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerçants et artisans de Chenôve ?",
-      a: "Pour les commerçants et artisans cheneveliers, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation devis BTP, gestion planning et stocks augmentés.",
+      a: "Pour les commerçants et artisans cheneveliers, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation devis BTP, gestion planning et stocks augmentés.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Chenôve ?",

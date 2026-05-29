@@ -30,8 +30,8 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lys-lez-Lannoy : formats adaptés au commerce, à la sous-traitance industrielle, au prestataire B2B ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lys-lez-Lannoy  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo roubaisienne, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, textile, services B2B, logistique, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo roubaisienne, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, textile, services B2B, logistique, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les sous-traitants textile à Lys-lez-Lannoy ?",

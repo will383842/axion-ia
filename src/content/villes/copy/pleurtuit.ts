@@ -30,8 +30,8 @@ export const PLEURTUIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pleurtuit : formations adaptées aux professionnels du tourisme, hôteliers, commerçants et artisans de la Côte d'Émeraude. Ateliers pratiques outils IA métier.",
@@ -53,7 +53,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Pleurtuit  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de la Côte d'Émeraude souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de la Côte d'Émeraude souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme à Pleurtuit ?",
@@ -61,7 +61,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans à Pleurtuit ?",
-      a: "Pour les TPE artisans BTP et commerçants de Pleurtuit, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning chantiers.",
+      a: "Pour les TPE artisans BTP et commerçants de Pleurtuit, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning chantiers.",
     },
     {
       q: "L'aéroport Dinard-Bretagne facilite-t-il vos déplacements ?",

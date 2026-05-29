@@ -30,8 +30,8 @@ export const SOMMIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sommières : diagnostic adapté aux domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine gardois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sommières : diagnostic adapté aux domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine gardois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sommières : diagnostic adapté aux domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine gardois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sommières : diagnostic adapté aux domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine gardois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sommières : formats adaptés aux domaines viticoles, commerces patrimoine, restaurants ou ateliers artisanaux. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const SOMMIERES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants du centre médiéval ?",
-      a: "Pour les TPE artisans et commerçants à Sommières, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, visibilité web locale, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Sommières, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, visibilité web locale, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimoine ?",

@@ -30,8 +30,8 @@ export const ESBLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Esbly : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME de services de l'est Seine-et-Marne. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const ESBLY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Esbly  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME d'Esbly et de l'est Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d'Esbly et de l'est Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants à Esbly ?",

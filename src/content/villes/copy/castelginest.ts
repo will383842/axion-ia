@@ -30,8 +30,8 @@ export const CASTELGINEST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelginest : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Castelginest : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Castelginest : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelginest : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castelginest : formats adaptés à l'artisan, au commerce, à la PME logistique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const CASTELGINEST_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Castelginest  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Castelginest ?",

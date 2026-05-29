@@ -12,9 +12,9 @@ export const CHOLET_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Choletais dans l'automatisation de leurs opérations. Sous-préfecture de Maine-et-Loire (54 404 habitants en 2023, deuxième ville du département après Angers), Cholet rassemble un tissu industriel diversifié : chaussure, textile (mouchoirs, prêt-à-porter), électronique, équipement automobile, agroalimentaire. Notre équipe se déplace sur site pour cadrer chaque chantier IA avec les dirigeants locaux, dans une logique de code custom — sans no-code — et de mise en production rapide.",
   directAnswerFr:
-    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès 490 € HT), des interventions ciblées (dès 590 € HT) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
+    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
   directAnswerEn:
-    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès 490 € HT), des interventions ciblées (dès 590 € HT) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
+    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
   seoHook: "chaussure, textile & équipement automobile",
   ecosystemFr:
     "Le Choletais, situé aux confins du Maine-et-Loire, de la Vendée, de la Loire-Atlantique et des Deux-Sèvres, constitue un bassin industriel dense. Historiquement spécialisé dans le mouchoir et le tissage, il s'est diversifié vers la chaussure, l'électronique, l'équipement automobile et l'agroalimentaire. L'A87 et deux liaisons SNCF (vers Nantes et Angers) structurent les flux logistiques de ce deuxième bassin d'emploi des Pays de la Loire.",
@@ -34,26 +34,26 @@ export const CHOLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès 490 € HT, livrable PDF + plan d'action.",
-      en: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès 490 € HT, livrable PDF + plan d'action.",
+      fr: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      en: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
     },
     interventions: {
-      fr: "Intervention sur site à Cholet pour automatiser un goulot précis (devis, ordonnancement atelier, contrôle qualité, reporting) — dès 590 € HT, code custom remis au client.",
-      en: "Intervention sur site à Cholet pour automatiser un goulot précis (devis, ordonnancement atelier, contrôle qualité, reporting) — dès 590 € HT, code custom remis au client.",
+      fr: "Intervention sur site à Cholet pour automatiser un goulot précis (devis, ordonnancement atelier, contrôle qualité, reporting) — dès {{price:intervention-4h|flat}}, code custom remis au client.",
+      en: "Intervention sur site à Cholet pour automatiser un goulot précis (devis, ordonnancement atelier, contrôle qualité, reporting) — dès {{price:intervention-4h|flat}}, code custom remis au client.",
     },
     implementation: {
-      fr: "Implémentation IA sur mesure à Cholet pour les PME industrielles du Choletais : intégration ERP, suivi production, prévision de la demande — dès 990 € HT.",
-      en: "Implémentation IA sur mesure à Cholet pour les PME industrielles du Choletais : intégration ERP, suivi production, prévision de la demande — dès 990 € HT.",
+      fr: "Implémentation IA sur mesure à Cholet pour les PME industrielles du Choletais : intégration ERP, suivi production, prévision de la demande — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA sur mesure à Cholet pour les PME industrielles du Choletais : intégration ERP, suivi production, prévision de la demande — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès 990 € HT, sessions sur site ou visio.",
-      en: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès 990 € HT, sessions sur site ou visio.",
+      fr: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Cholet ?",
-      a: "Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour une Intervention Essentielle et 990 € HT pour une Implémentation ou un accompagnement un-à-un. Le déplacement à Cholet depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement à Cholet depuis Paris est inclus pour ces formats.",
     },
     {
       q: "Quels délais pour une intervention IA à Cholet après prise de contact ?",

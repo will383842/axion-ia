@@ -30,8 +30,8 @@ export const LEOGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, TPE artisans et professions libérales du sud bordelais. Audit Flash 490 € HT.",
-      en: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, TPE artisans et professions libérales du sud bordelais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, TPE artisans et professions libérales du sud bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Léognan : diagnostic pour domaines viticoles grands crus, PME agroalimentaires, TPE artisans et professions libérales du sud bordelais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Léognan : ateliers adaptés aux chais, domaines viticoles et PME agroalimentaires. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LEOGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole à Léognan ?",
-      a: "L'Audit Flash démarre à 490 € HT. Adapté aux domaines viticoles de toute taille (TPE familiales à grands crus classés). Tarifs publics, ROI chiffré.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles de toute taille (TPE familiales à grands crus classés). Tarifs publics, ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les grands crus de Pessac-Léognan ?",

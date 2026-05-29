@@ -30,8 +30,8 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Chamas : ateliers pratiques pour artisans, commerçants et exploitants agricoles. Vos équipes repartent avec des outils IA configurés pour votre métier réel.",
@@ -53,7 +53,7 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Chamas  ?",
-      a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, commerçants et exploitants agricoles saint-chamasséens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et exploitants agricoles saint-chamasséens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles autour de Saint-Chamas ?",

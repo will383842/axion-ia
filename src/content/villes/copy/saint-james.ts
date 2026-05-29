@@ -30,8 +30,8 @@ export const SAINT_JAMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-James : formats adaptés à l'exploitation agricole, l'atelier artisanal, le commerce, le prestataire touristique. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,11 +53,11 @@ export const SAINT_JAMES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les éleveurs et agriculteurs du bocage ?",
-      a: "Oui, nous accompagnons les TPE éleveurs et agriculteurs du bocage : traçabilité troupeau, prédiction rendements, automatisation PAC, suivi sanitaire IA, optimisation assolement. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE éleveurs et agriculteurs du bocage : traçabilité troupeau, prédiction rendements, automatisation PAC, suivi sanitaire IA, optimisation assolement. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerçants et artisans de Saint-James ?",
-      a: "Pour les TPE commerçants et artisans BTP à Saint-James, audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, fidélisation client.",
+      a: "Pour les TPE commerçants et artisans BTP à Saint-James, audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, fidélisation client.",
     },
     {
       q: "Travaillez-vous avec les prestataires tourisme mémoriel ?",

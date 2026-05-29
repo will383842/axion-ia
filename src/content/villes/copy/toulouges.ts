@@ -30,8 +30,8 @@ export const TOULOUGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Toulouges : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const TOULOUGES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Toulouges, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Toulouges, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Toulouges ?",

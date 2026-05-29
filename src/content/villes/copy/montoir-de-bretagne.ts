@@ -30,8 +30,8 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux TPE sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux TPE sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux TPE sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux TPE sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montoir-de-Bretagne : formats adaptés à l'atelier industriel, au bureau logistique ou à l'entrepôt portuaire. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles et sous-traitants ?",
-      a: "Oui, nous accompagnons les TPE sous-traitants et PME industrielles du bassin nazairien sur des cas IA : maintenance prédictive, automatisation qualité, gestion flux logistiques, extraction données techniques. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE sous-traitants et PME industrielles du bassin nazairien sur des cas IA : maintenance prédictive, automatisation qualité, gestion flux logistiques, extraction données techniques. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour la logistique portuaire ?",
@@ -61,7 +61,7 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Montoir-de-Bretagne  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du bassin nazairien.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du bassin nazairien.",
     },
     {
       q: "Intervenez-vous dans les zones industrielles et portuaires ?",

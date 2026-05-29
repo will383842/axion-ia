@@ -30,8 +30,8 @@ export const CHESSY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chessy : diagnostic adapté aux hôteliers, restaurateurs, commerçants Val d'Europe, prestataires tourisme et événementiel. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Chessy : diagnostic adapté aux hôteliers, restaurateurs, commerçants Val d'Europe, prestataires tourisme et événementiel. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Chessy : diagnostic adapté aux hôteliers, restaurateurs, commerçants Val d'Europe, prestataires tourisme et événementiel. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chessy : diagnostic adapté aux hôteliers, restaurateurs, commerçants Val d'Europe, prestataires tourisme et événementiel. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chessy : formats adaptés hôtel, restaurant, boutique, bureau prestataire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CHESSY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Chessy  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME du secteur tourisme et hôtellerie-restauration, nous proposons des audits approfondis adaptés aux enjeux saisonniers et multilingues.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME du secteur tourisme et hôtellerie-restauration, nous proposons des audits approfondis adaptés aux enjeux saisonniers et multilingues.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs du pôle Disneyland ?",
@@ -65,7 +65,7 @@ export const CHESSY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Chessy ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chessy, à partir de 990 € HT. Sessions sur site dans votre établissement ou en visio, adaptées au contexte tourisme et commerce.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chessy, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans votre établissement ou en visio, adaptées au contexte tourisme et commerce.",
     },
   ],
 };

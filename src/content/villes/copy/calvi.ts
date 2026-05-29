@@ -30,8 +30,8 @@ export const CALVI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Calvi : diagnostic adapté aux TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques de Balagne. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Calvi : diagnostic adapté aux TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques de Balagne. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Calvi : diagnostic adapté aux TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques de Balagne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Calvi : diagnostic adapté aux TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques de Balagne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Calvi : formations pratiques pour équipes hôtellerie, restauration, commerces saisonniers et nautisme de Balagne. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -53,15 +53,15 @@ export const CALVI_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs saisonniers de Calvi ?",
-      a: "Oui, nous accompagnons les hôteliers, restaurateurs et activités saisonnières de Calvi avec des solutions IA adaptées au pic d'été : réservation multilingue, planning équipes, gestion avis clients. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les hôteliers, restaurateurs et activités saisonnières de Calvi avec des solutions IA adaptées au pic d'été : réservation multilingue, planning équipes, gestion avis clients. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Calvi  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME calvaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME calvaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs nautiques de Calvi ?",
-      a: "Pour les acteurs nautiques de Calvi (loueurs bateaux, écoles voile, plongée, ports), nous proposons : agents IA réservation et accueil multilingue, automatisation planning saisonnier, chatbot météo et activités, gestion documentaire flotte. Audit Flash 490 € HT.",
+      a: "Pour les acteurs nautiques de Calvi (loueurs bateaux, écoles voile, plongée, ports), nous proposons : agents IA réservation et accueil multilingue, automatisation planning saisonnier, chatbot météo et activités, gestion documentaire flotte. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Calvi ?",

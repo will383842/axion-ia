@@ -57,7 +57,7 @@ export const CANEJAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans BTP de Canéjan ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et gestion du planning.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et gestion du planning.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires du sud Bordeaux ?",

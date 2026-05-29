@@ -30,8 +30,8 @@ export const BERCK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Berck : formats adaptés à l'hôtel, au cabinet paramédical, au commerce, à l'établissement de rééducation. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const BERCK_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE tourisme et hôtellerie de Berck ?",
-      a: "Oui, nous accompagnons les TPE hôtellerie-restauration et tourisme balnéaire à Berck sur leurs cas IA : automatisation réservations, chatbots accueil client, optimisation stocks saisonniers. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE hôtellerie-restauration et tourisme balnéaire à Berck sur leurs cas IA : automatisation réservations, chatbots accueil client, optimisation stocks saisonniers. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les établissements de santé et rééducation ?",
@@ -61,7 +61,7 @@ export const BERCK_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et paramédicaux berckois ?",
-      a: "Pour les commerçants et professions paramédicales à Berck, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation client.",
+      a: "Pour les commerçants et professions paramédicales à Berck, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation client.",
     },
     {
       q: "Comment se passe une mission à Berck depuis Lille ou Boulogne ?",

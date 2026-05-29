@@ -30,8 +30,8 @@ export const DECAZEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Decazeville : diagnostic adapté aux PME industrielles reconverties, TPE artisans, commerçants et services du bassin minier aveyronnais. Audit Flash 490 € HT.",
-      en: "Audit IA à Decazeville : diagnostic adapté aux PME industrielles reconverties, TPE artisans, commerçants et services du bassin minier aveyronnais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Decazeville : diagnostic adapté aux PME industrielles reconverties, TPE artisans, commerçants et services du bassin minier aveyronnais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Decazeville : diagnostic adapté aux PME industrielles reconverties, TPE artisans, commerçants et services du bassin minier aveyronnais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Decazeville : formats adaptés à l'atelier industriel, au commerce, au service à la personne ou à l'artisan BTP. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const DECAZEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Decazeville  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'économie sociale et solidaire ?",
@@ -65,7 +65,7 @@ export const DECAZEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Decazeville ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Decazeville. Format flexible : dans vos locaux, en visio ou à Rodez. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Decazeville. Format flexible : dans vos locaux, en visio ou à Rodez. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trans-en-Provence : ateliers pour artisans, BTP, restaurateurs, commerçants et PME services. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE artisanale à Trans-en-Provence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux artisans, BTP, commerçants et restaurateurs transians. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, BTP, commerçants et restaurateurs transians. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les TPE BTP de l'agglomération dracénoise ?",

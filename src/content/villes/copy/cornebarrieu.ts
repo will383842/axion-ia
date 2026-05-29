@@ -30,8 +30,8 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit Flash 490 € HT.",
-      en: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit Flash 490 € HT.",
+      fr: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cornebarrieu : formats adaptés au sous-traitant aéronautique, à la PME tech, au cabinet de conseil. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cornebarrieu  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME aéronautiques, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME aéronautiques, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider un sous-traitant aéronautique à Cornebarrieu ?",

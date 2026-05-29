@@ -30,8 +30,8 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Victoret : diagnostic adapté aux PME logistique aéroportuaire, prestataires handling, TPE artisans et commerçants de la zone Marseille-Provence. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Victoret : diagnostic adapté aux PME logistique aéroportuaire, prestataires handling, TPE artisans et commerçants de la zone Marseille-Provence. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Victoret : diagnostic adapté aux PME logistique aéroportuaire, prestataires handling, TPE artisans et commerçants de la zone Marseille-Provence. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Victoret : diagnostic adapté aux PME logistique aéroportuaire, prestataires handling, TPE artisans et commerçants de la zone Marseille-Provence. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Victoret : ateliers pratiques pour équipes logistique, maintenance aéroportuaire et services aux entreprises. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique aéroportuaire ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE/PME de logistique, transport et handling de la zone Marseille-Provence. Tarifs publics.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE/PME de logistique, transport et handling de la zone Marseille-Provence. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les entreprises de la zone aéroportuaire ?",

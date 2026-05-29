@@ -30,8 +30,8 @@ export const BEYNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beynes : formats adaptés aux artisans, professions libérales et PME de services de l'ouest Yvelines. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const BEYNES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Beynes  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
     },
     {
       q: "Intervenez-vous en présentiel à Beynes ?",

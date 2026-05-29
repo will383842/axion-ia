@@ -30,8 +30,8 @@ export const YSSINGEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Yssingeaux : formats adaptés à l'atelier bois, exploitation agroalimentaire, administration, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const YSSINGEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",

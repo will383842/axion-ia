@@ -30,8 +30,8 @@ export const LE_BLANC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site au Blanc : formats adaptés aux exploitations agricoles, TPE artisans BTP, acteurs du tourisme Brenne et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LE_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants du Blanc ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du Blanc sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du Blanc sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour le tourisme nature de la Brenne ?",

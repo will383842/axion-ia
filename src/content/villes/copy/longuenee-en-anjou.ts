@@ -30,8 +30,8 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longuenée-en-Anjou : formations pour équipes agricoles, artisanales et tertiaires. Ateliers pratiques adaptés au contexte semi-rural nord-angevin.",
@@ -53,11 +53,11 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Longuenée-en-Anjou  ?",
-      a: "L'Audit Flash IA à Longuenée-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Longuenée-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de Longuenée-en-Anjou ?",
-      a: "Oui, nous accompagnons les exploitants agricoles à Longuenée-en-Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitants agricoles à Longuenée-en-Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels secteurs ciblez-vous à Longuenée-en-Anjou ?",

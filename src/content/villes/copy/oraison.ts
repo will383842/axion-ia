@@ -30,8 +30,8 @@ export const ORAISON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oraison : formats adaptés aux exploitations fruitières, ateliers agroalimentaires, commerces ou artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const ORAISON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Oraison  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, agriculteurs et PME de la Moyenne Durance. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, agriculteurs et PME de la Moyenne Durance. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Oraison ?",

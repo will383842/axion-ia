@@ -30,8 +30,8 @@ export const CALVISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Calvisson : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans de la Vaunage.",
@@ -57,7 +57,7 @@ export const CALVISSON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Calvisson  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP ?",

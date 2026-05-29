@@ -30,8 +30,8 @@ export const SAINT_OMER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Omer : formats adaptés à l'exploitation maraîchère, atelier artisanal, commerce, hôtel ou bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const SAINT_OMER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Saint-Omer ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Omer, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      a: "Pour les TPE artisans et commerçants à Saint-Omer, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de l'Audomarois ?",

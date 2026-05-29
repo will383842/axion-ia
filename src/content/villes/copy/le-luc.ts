@@ -28,8 +28,8 @@ export const LE_LUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Luc : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et services à la base aéronavale du centre Var. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Luc : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et services à la base aéronavale du centre Var. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Luc : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et services à la base aéronavale du centre Var. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Luc : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et services à la base aéronavale du centre Var. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Luc : formations pratiques adaptées viticulture, logistique, artisanat, commerces et services aux entreprises. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LE_LUC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Luc ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous la logistique et les domaines viticoles au Luc ?",
@@ -59,7 +59,7 @@ export const LE_LUC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants au Luc ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, vignerons et gérants logistique du centre Var. Sur site ou visio, dès 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, vignerons et gérants logistique du centre Var. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission au Luc ?",

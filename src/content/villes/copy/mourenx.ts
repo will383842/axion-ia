@@ -30,8 +30,8 @@ export const MOURENX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit Flash 490 € HT.",
-      en: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit Flash 490 € HT.",
+      fr: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mourenx : déploiement outils IA dans vos usines, ateliers ou bureaux. Maintenance prédictive, contrôle qualité, sécurité industrielle et optimisation processus.",
@@ -57,7 +57,7 @@ export const MOURENX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Mourenx ?",
-      a: "L'audit Flash IA à Mourenx démarre à 490 € HT. Diagnostic de vos processus industriels, identification cas d'usage IA prioritaires (maintenance, qualité, sécurité) et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Mourenx démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus industriels, identification cas d'usage IA prioritaires (maintenance, qualité, sécurité) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME sous-traitantes de Lacq ?",

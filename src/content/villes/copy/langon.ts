@@ -30,8 +30,8 @@ export const LANGON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit Flash 490 € HT.",
-      en: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit Flash 490 € HT.",
+      fr: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langon : ateliers adaptés aux chais, commerces, cabinets et ateliers. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LANGON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Langon  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du sud-Gironde.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du sud-Gironde.",
     },
     {
       q: "Accompagnez-vous les vignerons de Sauternes ?",
@@ -61,7 +61,7 @@ export const LANGON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Langon ?",
-      a: "Pour les commerçants : audit IA 490 € HT, intervention 1 journée, implémentation agents conversationnels, automatisation gestion stocks et facturation, CRM client augmenté.",
+      a: "Pour les commerçants : audit IA {{price:audit-flash|flat}}, intervention 1 journée, implémentation agents conversationnels, automatisation gestion stocks et facturation, CRM client augmenté.",
     },
     {
       q: "Comment se déroule une mission à Langon ?",

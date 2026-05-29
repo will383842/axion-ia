@@ -30,8 +30,8 @@ export const REICHSHOFFEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Reichshoffen : formats adaptés à l'industrie ferroviaire, atelier métallurgie, PME sous-traitante, commerce local. Vos collaborateurs sont autonomes ensuite.",
@@ -61,11 +61,11 @@ export const REICHSHOFFEN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Audit Flash 490 € HT, automatisation administrative, classification factures, agents conversationnels clients multilingue (FR/DE), optimisation planning et stocks.",
+      a: "Audit Flash {{price:audit-flash|flat}}, automatisation administrative, classification factures, agents conversationnels clients multilingue (FR/DE), optimisation planning et stocks.",
     },
     {
       q: "Quel est le tarif d'entrée pour une TPE à Reichshoffen ?",
-      a: "L'audit Flash débute selon la taille de votre activité. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash débute selon la taille de votre activité. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

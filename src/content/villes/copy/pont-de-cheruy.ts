@@ -30,8 +30,8 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-de-Chéruy : formats adaptés à l'atelier industriel, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans chérulane ?",
-      a: "Pour les TPE artisans BTP et commerçants à Pont-de-Chéruy, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Pont-de-Chéruy, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

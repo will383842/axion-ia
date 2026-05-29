@@ -30,8 +30,8 @@ export const L_AIGLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Aigle : formats adaptés à l'atelier mécanique, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const L_AIGLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans aiglons ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de L'Aigle sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de L'Aigle sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

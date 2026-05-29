@@ -30,8 +30,8 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquefort-les-Pins : formats adaptés à l'atelier artisan, cabinet libéral ou bureau à domicile. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP locaux ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Roquefort-les-Pins sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Roquefort-les-Pins sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les indépendants et télétravailleurs ?",
@@ -61,7 +61,7 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales de Roquefort-les-Pins (avocats, médecins, comptables, architectes), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit Flash 490 € HT.",
+      a: "Pour les professions libérales de Roquefort-les-Pins (avocats, médecins, comptables, architectes), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission depuis le littoral ?",

@@ -30,8 +30,8 @@ export const CESTAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cestas : ateliers adaptés aux entreprises tech, industriels, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const CESTAS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Cestas  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux startups tech du technopôle comme aux TPE artisans de Cestas.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux startups tech du technopôle comme aux TPE artisans de Cestas.",
     },
     {
       q: "Accompagnez-vous les entreprises tech du technopôle ?",
@@ -61,7 +61,7 @@ export const CESTAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans à Cestas ?",
-      a: "Pour les TPE artisans de Cestas : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans de Cestas : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se passe une mission à Cestas ?",

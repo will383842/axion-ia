@@ -30,8 +30,8 @@ export const PASSY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, TPE commerces. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, TPE commerces. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, TPE commerces. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Passy : diagnostic adapté aux hébergeurs Mont-Blanc, acteurs tourisme montagne, artisans vallée de l'Arve, TPE commerces. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Passy : formats adaptés hébergements, hôtels, commerces, ateliers artisans. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const PASSY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Passy  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME de la vallée de l'Arve.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME de la vallée de l'Arve.",
     },
     {
       q: "Accompagnez-vous les acteurs tourisme montagne Mont-Blanc ?",
@@ -61,11 +61,11 @@ export const PASSY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans et TPE de Passy ?",
-      a: "Oui, audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants TPE.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants TPE.",
     },
     {
       q: "Proposez-vous des formations IA individuelles à Passy ?",
-      a: "Oui, coaching 1-to-1 dans vos locaux à Passy ou en visio. Sessions adaptées aux dirigeants hébergeurs, hôteliers et artisans. À partir de 990 € HT.",
+      a: "Oui, coaching 1-to-1 dans vos locaux à Passy ou en visio. Sessions adaptées aux dirigeants hébergeurs, hôteliers et artisans. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

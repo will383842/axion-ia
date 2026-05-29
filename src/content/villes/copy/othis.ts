@@ -30,8 +30,8 @@ export const OTHIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Othis : diagnostic adapté aux TPE artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Othis : diagnostic adapté aux TPE artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Othis : diagnostic adapté aux TPE artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Othis : diagnostic adapté aux TPE artisanales, PME logistiques et de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Othis : formats adaptés à la PME logistique, au transporteur, à l'artisan ou au commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const OTHIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME logistiques du bassin Roissy ?",
-      a: "Oui, nous accompagnons les TPE et PME de transport et logistique du bassin Roissy-CDG (Othis, Dammartin, Moussy) sur des cas IA concrets : optimisation tournées, automatisation tracking, agents IA dispatch, planification équipes. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME de transport et logistique du bassin Roissy-CDG (Othis, Dammartin, Moussy) sur des cas IA concrets : optimisation tournées, automatisation tracking, agents IA dispatch, planification équipes. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Othis  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne et du bassin Roissy, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne et du bassin Roissy, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP à Othis ?",

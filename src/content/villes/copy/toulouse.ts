@@ -39,7 +39,7 @@ export const TOULOUSE_COPY: VilleCopy = {
       en: "AI implementation in Toulouse: we deploy AI into your existing tools (PLM, ERP, email, technical documentation) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée 990 € HT.",
+      fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
       en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
     },
     sitesWeb: {
@@ -719,7 +719,7 @@ export const TOULOUSE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Toulouse s'adresse aux dirigeants, ingénieurs et managers de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA), aux cadres des PME et ETI de l'Aerospace Valley, aux responsables des scale-ups French Tech Toulouse et aux dirigeants du tissu industriel toulousain. Pas de programme collectif : chaque séance part de vos vrais dossiers, vos vraies décisions, votre réalité métier. Tarif d'entrée 990 € HT.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Toulouse s'adresse aux dirigeants, ingénieurs et managers de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA), aux cadres des PME et ETI de l'Aerospace Valley, aux responsables des scale-ups French Tech Toulouse et aux dirigeants du tissu industriel toulousain. Pas de programme collectif : chaque séance part de vos vrais dossiers, vos vraies décisions, votre réalité métier. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
         whyHere: [
           "Toulouse concentre une densité exceptionnelle d'ingénieurs et de managers techniques dans l'aérospatiale (Airbus, CNES, Thales Alenia Space, ATR, ONERA) qui ont besoin d'intégrer l'IA dans leur pratique sans passer par une formation collective inadaptée à leur niveau.",
           "L'écosystème French Tech Toulouse et IoT Valley à Labège-Innopole génère des dirigeants de scale-ups et des fondateurs techniques pour qui une montée en compétence IA rapide et personnalisée est souvent plus pertinente qu'un programme de groupe.",
@@ -758,7 +758,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "à partir de 990 € HT",
+            price: "à partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Pour indépendants, bureaux d'études et dirigeants de TPE du bassin toulousain. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires.",
           },
@@ -806,7 +806,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Quel est le tarif d'entrée et comment est facturé le coaching ?",
-            a: "Le tarif d'entrée est de 990 € HT pour un parcours court (2-3 séances). Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Toulouse intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
+            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court (2-3 séances). Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Toulouse intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
           },
           {
             q: "Les séances se déroulent-elles en présentiel à Toulouse ou à distance ?",

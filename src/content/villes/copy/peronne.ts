@@ -10,9 +10,9 @@ export const PERONNE_COPY: VilleCopy = {
     "Peronne (80), ville de la Haute Somme, reunit environ 7 090 habitants. Connue pour l'Historial de la Grande Guerre et ses etangs de la Haute Somme, elle est un pole de services et de tourisme memoriel. Son economie associe TPE artisanales, PME de services, agriculture picarde, tourisme et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "memoire 14-18, tourisme & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Peronne (80). Nous accompagnons les TPE, PME et ETI de la Haute Somme : acteurs du tourisme memoriel, agriculteurs, artisans, commercants et professions de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Peronne est le pole de services de la Haute Somme, au carrefour de l'A1 et de l'A29. Tissu economique tertiaire et agricole : PME de services, TPE artisanat BTP, exploitations agricoles (grandes cultures, maraichage), tourisme de memoire (Historial de la Grande Guerre), loisirs nautiques (etangs de la Haute Somme) et commerces de centre-ville.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PERONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Peronne : diagnostic adapte aux TPE et PME de la Haute Somme, acteurs du tourisme memoriel, exploitants agricoles et commercants. ROI chiffre, Audit Flash 490 EUR HT.",
-      en: "Audit IA a Peronne : diagnostic adapte aux TPE et PME de la Haute Somme, acteurs du tourisme memoriel, exploitants agricoles et commercants. ROI chiffre, Audit Flash 490 EUR HT.",
+      fr: "Audit IA a Peronne : diagnostic adapte aux TPE et PME de la Haute Somme, acteurs du tourisme memoriel, exploitants agricoles et commercants. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Peronne : diagnostic adapte aux TPE et PME de la Haute Somme, acteurs du tourisme memoriel, exploitants agricoles et commercants. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Peronne : formations adaptees au musee, a l'exploitation agricole, au commerce ou au bureau. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const PERONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Peronne ?",
-      a: "L'Audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Quels services IA pour les acteurs du tourisme memoriel en Somme ?",
-      a: "Pour les musees, offices de tourisme et hebergeurs de la Somme, nous proposons : chatbots visiteurs multilingues, billetterie augmentee, analyse de frequentation, CRM tourisme. Audit Flash 490 EUR HT.",
+      a: "Pour les musees, offices de tourisme et hebergeurs de la Somme, nous proposons : chatbots visiteurs multilingues, billetterie augmentee, analyse de frequentation, CRM tourisme. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de la Haute Somme ?",

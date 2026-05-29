@@ -30,8 +30,8 @@ export const BENFELD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Benfeld : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const BENFELD_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Benfeld ?",
-      a: "Oui, commerçants, artisans et restaurateurs benfeldois : gestion stocks, prise de réservations, relation client, automatisation comptabilité, présence en ligne. Audit Flash 490 € HT.",
+      a: "Oui, commerçants, artisans et restaurateurs benfeldois : gestion stocks, prise de réservations, relation client, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Benfeld ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Benfeld ?",

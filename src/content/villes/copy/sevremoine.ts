@@ -11,9 +11,9 @@ export const SEVREMOINE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Sèvremoine (25 797 habitants, Maine-et-Loire, Pays de la Loire), commune nouvelle créée le 15 décembre 2015 par la fusion de dix communes déléguées dont Saint-Macaire-en-Mauges (chef-lieu). Située dans l'arrondissement de Cholet, au cœur des Mauges, Sèvremoine accueille notamment le Groupe Grimaud, leader mondial de la sélection génétique animale. Notre cabinet national s'y déplace pour mener audits IA et automatisations en code custom adaptés au tissu agroalimentaire et industriel local.",
   directAnswerFr:
-    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
+    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à 590 € HT, dans le respect du RGPD et de l'AI Act.",
+    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   seoHook: "Groupe Grimaud, Mauges agroalimentaires & gare TER Torfou",
   ecosystemFr:
     "Sèvremoine, commune nouvelle des Mauges, regroupe dix communes déléguées (Saint-Macaire-en-Mauges siège administratif, plus Torfou et huit autres). Elle s'inscrit dans le bassin économique de Cholet, marqué par l'agroalimentaire, la fabrication de produits métalliques et la sous-traitance industrielle. Le Groupe Grimaud, spécialiste mondial de la biologie humaine et animale, y est un employeur majeur. La commune borde Beaupréau-en-Mauges, Bégrolles-en-Mauges et La Séguinière, formant un bassin de TPE et PME industrielles dense.",
@@ -32,26 +32,26 @@ export const SEVREMOINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès 490 € HT.",
-      en: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès 490 € HT.",
+      fr: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès 590 € HT.",
-      en: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès 590 € HT.",
+      fr: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
+      en: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès 990 € HT.",
-      en: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès 990 € HT.",
+      fr: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA à Sèvremoine ?",
-      a: "Nos tarifs publics démarrent à 490 € HT pour un Audit Flash et 590 € HT pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à 990 € HT, sans frais cachés.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit Flash et {{price:intervention-4h|flat}} pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Sèvremoine (Maine-et-Loire) ?",

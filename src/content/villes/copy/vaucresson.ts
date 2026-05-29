@@ -30,8 +30,8 @@ export const VAUCRESSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaucresson : formations pratiques dans votre cabinet, bureau ou local professionnel. Équipes formées sur outils IA configurés métier, autonomes dès la fin de journée.",
@@ -53,7 +53,7 @@ export const VAUCRESSON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vaucresson  ?",
-      a: "L'Audit Flash IA à Vaucresson débute à 490 € HT pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
+      a: "L'Audit Flash IA à Vaucresson débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les professions libérales vaucressonnaises ?",

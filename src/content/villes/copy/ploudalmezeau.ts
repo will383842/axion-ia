@@ -30,8 +30,8 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploudalmézeau : formats adaptés aux goémoniers, TPE artisans, PME agricoles ou commerces de bourg du pays d'Iroise. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Ploudalmézeau ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Ploudalmézeau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning saisonnier. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de Ploudalmézeau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning saisonnier. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME du pays d'Iroise ?",

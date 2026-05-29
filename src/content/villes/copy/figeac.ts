@@ -30,8 +30,8 @@ export const FIGEAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Figeac : formats adaptés à l'atelier aéronautique, commerce patrimoine, hôtellerie ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const FIGEAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants du centre médiéval ?",
-      a: "Pour les TPE artisans et commerçants à Figeac, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, visibilité web locale, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Figeac, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, visibilité web locale, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme et pèlerinage ?",

@@ -30,8 +30,8 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bormes-les-Mimosas : ateliers pour vignerons, mimosistes, restaurateurs et hôteliers du village fleuri. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole à Bormes-les-Mimosas ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles, mimosistes et hôteliers borméens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, mimosistes et hôteliers borméens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les mimosistes et horticulteurs ?",

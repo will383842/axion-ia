@@ -30,8 +30,8 @@ export const CHAUNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chauny : diagnostic adapté aux TPE/PME industrie chimique, agroalimentaire, logistique, commerce et services du sud de l'Aisne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Chauny : diagnostic adapté aux TPE/PME industrie chimique, agroalimentaire, logistique, commerce et services du sud de l'Aisne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Chauny : diagnostic adapté aux TPE/PME industrie chimique, agroalimentaire, logistique, commerce et services du sud de l'Aisne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Chauny : diagnostic adapté aux TPE/PME industrie chimique, agroalimentaire, logistique, commerce et services du sud de l'Aisne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chauny : formats adaptés au site chimique, à l'usine agroalimentaire, à l'entrepôt logistique, au commerce ou au bureau. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const CHAUNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chauny  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME chaunoises : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME chaunoises : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises de l'industrie chimique ?",
@@ -65,7 +65,7 @@ export const CHAUNY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Chauny ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chauny, à partir de 990 € HT. Sessions dans votre usine, entrepôt, commerce ou en visio. Approche terrain adaptée aux métiers industriels et de services du sud de l'Aisne.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Chauny, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, entrepôt, commerce ou en visio. Approche terrain adaptée aux métiers industriels et de services du sud de l'Aisne.",
     },
   ],
 };

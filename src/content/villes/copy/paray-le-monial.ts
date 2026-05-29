@@ -30,8 +30,8 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paray-le-Monial : formats adaptés commerce, hébergement pèlerins, site religieux, restaurant. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hébergeurs et restaurateurs parodiens ?",
-      a: "Oui, automatisation réservations, gestion avis clients, yield management saisonnier (pics pèlerinage), CRM fidélisation. Audit Flash 490 € HT pour démarrer.",
+      a: "Oui, automatisation réservations, gestion avis clients, yield management saisonnier (pics pèlerinage), CRM fidélisation. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Quels services pour les TPE commerçants de Paray-le-Monial ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",

@@ -30,8 +30,8 @@ export const WALLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wallers : formats adaptés à la PME industrielle reconvertie, à l'acteur touristique, à l'artisan ou au commerce de proximité. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const WALLERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Wallers  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier et du Parc Scarpe-Escaut, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie reconvertie, tourisme, commerce, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier et du Parc Scarpe-Escaut, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie reconvertie, tourisme, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME industrielles reconverties du bassin minier ?",

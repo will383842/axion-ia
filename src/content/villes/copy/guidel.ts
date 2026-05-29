@@ -30,8 +30,8 @@ export const GUIDEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guidel : diagnostic adapté aux TPE artisans, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Guidel : diagnostic adapté aux TPE artisans, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Guidel : diagnostic adapté aux TPE artisans, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Guidel : diagnostic adapté aux TPE artisans, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guidel : formats adaptés hôtel-restaurant de plage, boutique de proximité, chantier BTP, exploitation agricole. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const GUIDEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guidel  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME tourisme balnéaire de Guidel-Plages.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME tourisme balnéaire de Guidel-Plages.",
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants de Guidel-Plages ?",

@@ -30,8 +30,8 @@ export const ALTKIRCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Altkirch : formats adaptés à l'atelier industriel, à l'exploitation agricole, au commerce ou au bureau administratif. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const ALTKIRCH_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Altkirch  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Sundgau, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, exploitation agricole, commerce ou cabinet de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Sundgau, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, exploitation agricole, commerce ou cabinet de services.",
     },
     {
       q: "Accompagnez-vous les industriels et artisans du Sundgau ?",
@@ -65,7 +65,7 @@ export const ALTKIRCH_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Altkirch ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Altkirch, à partir de 990 € HT. Sessions dans votre atelier, exploitation, commerce ou en visio. Approche terrain adaptée au tissu rural et industriel du Sundgau.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Altkirch, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, exploitation, commerce ou en visio. Approche terrain adaptée au tissu rural et industriel du Sundgau.",
     },
   ],
 };

@@ -40,7 +40,7 @@ export const REIMS_COPY: VilleCopy = {
       en: "AI implementation in Reims: we deploy AI into your existing tools (CRM, ERP, email, winery systems) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Reims : accompagnement 1-to-1 ancré dans votre réalité — Champagne, bioéconomie, agroalimentaire ou tertiaire académique. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Coaching IA individuel à Reims : accompagnement 1-to-1 ancré dans votre réalité — Champagne, bioéconomie, agroalimentaire ou tertiaire académique. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Reims: 1-to-1 support rooted in your reality — Champagne, bioeconomy, agri-food or academic tertiary. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -721,7 +721,7 @@ export const REIMS_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Reims est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants de maisons de Champagne, experts bioéconomie, managers agroalimentaires et responsables académiques du bassin rémois. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Reims est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants de maisons de Champagne, experts bioéconomie, managers agroalimentaires et responsables académiques du bassin rémois. Frais de logement, repas et forfait trajet en sus.",
         whyHere: [
           "Reims concentre des profils très spécialisés — responsable export d'une maison de Champagne, directeur qualité en bioéconomie (Pomacle-Bazancourt), directeur de programme à NEOMA — qui ont besoin d'un coaching ancré dans leurs contraintes sectorielles précises.",
           "Le secteur Champagne impose des workflows multilingues (fiches export, étiquetage AOC, certificats d'origine) que seul un coaching individuel permet d'intégrer dans chaque exercice pratique.",
@@ -760,7 +760,7 @@ export const REIMS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Entrée coaching 1-to-1 — viticulteur indépendant, artisan, dirigeant TPE de services ou négoce du Grand Reims.",
           },
@@ -820,7 +820,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
-            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression.",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à {{price:intervention-dirigeants|flat}}. La suite se décide à l'issue de chaque séance selon votre progression.",
           },
         ],
         guarantees:

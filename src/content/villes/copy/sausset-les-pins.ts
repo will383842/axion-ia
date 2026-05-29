@@ -30,8 +30,8 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sausset-les-Pins : ateliers pratiques pour restaurateurs, hôteliers et commerçants. Gestion réservations, marketing saisonnier, outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un restaurant à Sausset-les-Pins ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE restaurateurs, commerçants et hébergeurs touristiques de la Côte Bleue. Tarifs publics.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE restaurateurs, commerçants et hébergeurs touristiques de la Côte Bleue. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les hébergements touristiques saisonniers ?",

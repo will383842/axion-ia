@@ -30,8 +30,8 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-lès-Nancy : formats adaptés au bureau, cabinet, labo ou commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions de santé à Villers-lès-Nancy ?",
-      a: "Oui, cabinets médicaux, paramédicaux, pharmacies : gestion documentaire, aide au diagnostic, automatisation secrétariat, relation patient. Audit Flash 490 € HT.",
+      a: "Oui, cabinets médicaux, paramédicaux, pharmacies : gestion documentaire, aide au diagnostic, automatisation secrétariat, relation patient. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Villers-lès-Nancy ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Villers-lès-Nancy ?",

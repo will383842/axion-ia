@@ -30,8 +30,8 @@ export const GLEIZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gleizé : formats adaptés au bureau, domaine viticole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const GLEIZE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Gleizé, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      a: "Pour les TPE artisans BTP et commerçants à Gleizé, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

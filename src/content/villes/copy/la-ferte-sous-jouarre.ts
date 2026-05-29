@@ -30,8 +30,8 @@ export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferté-sous-Jouarre : formats adaptés au commerce, atelier artisan ou PME agroalimentaire. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à La Ferté-sous-Jouarre ?",
-      a: "L'Audit Flash IA à La Ferté-sous-Jouarre démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à La Ferté-sous-Jouarre démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de La Ferté-sous-Jouarre ?",

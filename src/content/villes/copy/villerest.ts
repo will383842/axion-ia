@@ -30,8 +30,8 @@ export const VILLEREST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villerest : formats adaptés au site touristique, bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const VILLEREST_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Villerest, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Villerest, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

@@ -9,9 +9,9 @@ export const LA_ROCHE_SUR_FORON_COPY: VilleCopy = {
   pitchEn:
     "La Roche-sur-Foron (74), cite medievale et centre du Pays Rochois, est connue pour sa Foire de Haute-Savoie et sa position strategique entre Annecy et Geneve. Tissu TPE/PME agricoles, evenementiel, commerces de bourg et artisanat. Axion-IA y intervient pour tous types d'activites du Pays Rochois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a La Roche-sur-Foron (74). Nous accompagnons TPE et PME : agriculture et elevage du Pays Rochois, evenementiel (Foire de Haute-Savoie), commercants de bourg, artisans et entreprises de services entre Annecy et Geneve. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a La Roche-sur-Foron (74). Nous accompagnons TPE et PME : agriculture et elevage du Pays Rochois, evenementiel (Foire de Haute-Savoie), commercants de bourg, artisans et entreprises de services entre Annecy et Geneve. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a La Roche-sur-Foron (74). Nous accompagnons TPE et PME : agriculture et elevage du Pays Rochois, evenementiel (Foire de Haute-Savoie), commercants de bourg, artisans et entreprises de services entre Annecy et Geneve. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a La Roche-sur-Foron (74). Nous accompagnons TPE et PME : agriculture et elevage du Pays Rochois, evenementiel (Foire de Haute-Savoie), commercants de bourg, artisans et entreprises de services entre Annecy et Geneve. Audit Flash des {{price:audit-flash|flat}}.",
   seoHook: "agriculture elevage & evenementiel",
   ecosystemFr:
     "La Roche-sur-Foron est le chef-lieu du Pays Rochois, entre Annecy (25 min) et Geneve (35 min). Ville a forte identite agricole et evenementielle grace a la Foire de Haute-Savoie (plus grande foire departementale). Tissu de PME de services, commerces de centre historique medieval, artisanat et petite industrie. Carrefour Bonneville-Annecy sur l'axe A41.",
@@ -30,8 +30,8 @@ export const LA_ROCHE_SUR_FORON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a La Roche-sur-Foron : diagnostic adapte aux TPE/PME agricoles, commercants, artisans et acteurs de l'evenementiel du Pays Rochois. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a La Roche-sur-Foron : diagnostic adapte aux TPE/PME agricoles, commercants, artisans et acteurs de l'evenementiel du Pays Rochois. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a La Roche-sur-Foron : diagnostic adapte aux TPE/PME agricoles, commercants, artisans et acteurs de l'evenementiel du Pays Rochois. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a La Roche-sur-Foron : diagnostic adapte aux TPE/PME agricoles, commercants, artisans et acteurs de l'evenementiel du Pays Rochois. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a La Roche-sur-Foron : formats adaptes a l'exploitation agricole, au commerce de bourg et aux organisateurs evenementiels. Equipes autonomes sur outils IA configures metier.",
@@ -57,7 +57,7 @@ export const LA_ROCHE_SUR_FORON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a La Roche-sur-Foron ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE/PME du Pays Rochois, nous proposons des audits adaptes aux enjeux agricoles, commerciaux et evenementiels locaux.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE/PME du Pays Rochois, nous proposons des audits adaptes aux enjeux agricoles, commerciaux et evenementiels locaux.",
     },
     {
       q: "Accompagnez-vous les commercants et artisans a La Roche-sur-Foron ?",
@@ -65,7 +65,7 @@ export const LA_ROCHE_SUR_FORON_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a La Roche-sur-Foron ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et gerants a La Roche-sur-Foron, a partir de 990 euros HT. Sessions dans votre exploitation, commerce ou en visio, adaptees au contexte du Pays Rochois.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et gerants a La Roche-sur-Foron, a partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre exploitation, commerce ou en visio, adaptees au contexte du Pays Rochois.",
     },
   ],
 };

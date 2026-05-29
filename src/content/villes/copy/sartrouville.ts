@@ -10,9 +10,9 @@ export const SARTROUVILLE_COPY: VilleCopy = {
   pitchEn:
     "Sartrouville (78), 52 763 habitants en 2023, deuxième commune des Yvelines après Versailles, située à 10 km au nord-ouest de Paris dans la boucle de la Seine. Limitrophe d'Argenteuil, Bezons, Houilles, Carrières-sur-Seine, Montesson, Cormeilles-en-Parisis et Maisons-Laffitte. Tissu TPE commerçants, PME services et BTP, professions libérales, activités tertiaires. Zones industrielles au nord (Le Prunay, Les Perriers, Les Trembleaux). Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sartrouville (78). Nous accompagnons en priorité les TPE commerçants et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sartrouville (78). Nous accompagnons en priorité les TPE commerçants et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sartrouville (78). Nous accompagnons en priorité les TPE commerçants et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit Flash dès 490 € HT, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sartrouville (78). Nous accompagnons en priorité les TPE commerçants et artisans, puis les PME services, BTP et logistique installées sur les zones Le Prunay, Les Perriers ou Les Trembleaux, ainsi que les professions libérales de la Boucle de Seine. Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   seoHook: "TPE/PME services & zones industrielles Boucle de Seine",
   ecosystemFr:
     "Sartrouville, deuxième commune des Yvelines, structure une partie de l'économie de la Boucle de Seine. Ses zones industrielles du nord (Le Prunay, Les Perriers, Les Trembleaux) accueillent PME services, logistique et activités tertiaires. Héritière d'une histoire industrielle (construction navale Chantier Jouët de 1873 à 1965, hydravions CAMS dans les années 1920), la ville polarise aujourd'hui commerce de détail, services aux particuliers, BTP et professions libérales.",
@@ -31,8 +31,8 @@ export const SARTROUVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sartrouville : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Sartrouville : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Sartrouville : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Sartrouville : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et acteurs logistique de la Boucle de Seine. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sartrouville : ateliers adaptés aux commerces centre-ville, artisans BTP, PME services et cabinets libéraux. Vos équipes repartent autonomes sur outils IA métier.",
@@ -54,7 +54,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Sartrouville ?",
-      a: "L'Audit Flash démarre à 490 € HT. L'Intervention Essentielle débute à 590 € HT. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. L'Intervention Essentielle débute à {{price:intervention-4h|flat}}. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour un audit IA à Sartrouville ?",

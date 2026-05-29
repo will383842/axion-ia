@@ -30,8 +30,8 @@ export const ORGERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orgères : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const ORGERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Orgères ?",
-      a: "L'Audit Flash démarre à 490 € HT pour les TPE orgéroises. Diagnostic complet de vos processus métier, identification des cas d'usage IA prioritaires et feuille de route chiffrée avec ROI estimé.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour les TPE orgéroises. Diagnostic complet de vos processus métier, identification des cas d'usage IA prioritaires et feuille de route chiffrée avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces de proximité ?",

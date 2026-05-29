@@ -30,8 +30,8 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soisy-sur-Seine : formats adaptés au cabinet, commerce ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Soisy-sur-Seine  : quel budget prévoir ?",
-      a: "L'audit Flash IA à Soisy-sur-Seine débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
+      a: "L'audit Flash IA à Soisy-sur-Seine débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Soisy-sur-Seine ?",

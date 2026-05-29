@@ -30,8 +30,8 @@ export const YFFINIAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Yffiniac : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Yffiniac : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Yffiniac : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Yffiniac : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Yffiniac : formats adaptés aux PME de services, artisans BTP, exploitants agricoles et professions libérales de l'agglomération briochine. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const YFFINIAC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et exploitants agricoles d'Yffiniac ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, exploitants agricoles et commerçants d'Yffiniac sur des cas IA pratiques : automatisation devis, gestion parcellaire assistée, agents IA prise de rendez-vous, optimisation planning. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, exploitants agricoles et commerçants d'Yffiniac sur des cas IA pratiques : automatisation devis, gestion parcellaire assistée, agents IA prise de rendez-vous, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de la baie de Saint-Brieuc ?",

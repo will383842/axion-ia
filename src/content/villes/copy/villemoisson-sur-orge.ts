@@ -30,8 +30,8 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villemoisson-sur-Orge : formats adaptés au cabinet libéral, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Villemoisson-sur-Orge  ?",
-      a: "L'audit Flash IA à Villemoisson-sur-Orge débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
+      a: "L'audit Flash IA à Villemoisson-sur-Orge débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Villemoisson-sur-Orge ?",
@@ -61,7 +61,7 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans de la vallée de l'Orge ?",
-      a: "Pour les TPE artisans BTP et commerçants de la vallée de l'Orge, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants de la vallée de l'Orge, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",

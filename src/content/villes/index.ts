@@ -76,6 +76,7 @@ import { VILLEURBANNE_COPY } from "./copy/villeurbanne";
 // GeneratedVilleCopy.status='approved'. Mergé avec les copies manuelles
 // ci-dessous (les manuelles gagnent en cas de slug collision via spread order).
 import { AUTO_GENERATED_COPIES_BY_SLUG } from "./copy/_auto-generated-index";
+import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 
 export type { VilleData } from "./data/types";
 export type { VilleCopy, VilleFaq } from "./copy/types";
@@ -160,7 +161,11 @@ export const VILLES: ReadonlyArray<Ville> = RAW_VILLES.map((v) => {
   const copy = COPY_BY_SLUG[v.slug];
   const economicData = getVilleEconomicData(v.slug);
   const base: Ville = { ...v };
-  if (copy) base.copy = copy;
+  // Résolution des tokens prix {{price:<tierId>}} → valeur SSOT (pricing.ts),
+  // appliquée ICI (couche données) pour couvrir TOUS les consommateurs de
+  // `.copy` — hub ville (async), pages région/sitemap/opengraph (sync direct),
+  // VilleServicePageTemplate — sans dépendre d'un point de rendu unique.
+  if (copy) base.copy = resolvePriceTokensDeep(copy, "fr");
   if (economicData) base.economicData = economicData;
   return base;
 });

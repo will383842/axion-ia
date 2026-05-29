@@ -30,8 +30,8 @@ export const COURSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit Flash 490 € HT.",
-      en: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coursan : formats adaptés au domaine viticole, au négoce, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,15 +57,15 @@ export const COURSAN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Coursan  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME négoce ou viticoles, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME négoce ou viticoles, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels formats d'intervention proposez-vous à Coursan ?",
-      a: "Audit Flash (1 jour, 490 € HT), intervention sur site (1-3 jours), implémentation IA complète, coaching 1-to-1 dirigeant. Tous formats adaptables au domaine viticole, commerce ou cabinet.",
+      a: "Audit Flash (1 jour, {{price:audit-flash|flat}}), intervention sur site (1-3 jours), implémentation IA complète, coaching 1-to-1 dirigeant. Tous formats adaptables au domaine viticole, commerce ou cabinet.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Coursan ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Coursan. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Coursan. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

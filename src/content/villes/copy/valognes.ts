@@ -30,8 +30,8 @@ export const VALOGNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valognes : formats adaptés à la cidrerie, au commerce, à l'exploitation d'élevage, au site patrimonial. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,11 +53,11 @@ export const VALOGNES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les producteurs cidricoles du Cotentin ?",
-      a: "Oui, nous accompagnons les PME cidricoles du Cotentin (cidre, calvados, poiré) : automatisation traçabilité AOC, prédiction fermentation, optimisation logistique, classification qualité, marketing digital. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME cidricoles du Cotentin (cidre, calvados, poiré) : automatisation traçabilité AOC, prédiction fermentation, optimisation logistique, classification qualité, marketing digital. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerçants de Valognes ?",
-      a: "Pour les TPE commerçants et artisans du centre historique de Valognes, audit Flash 490 € HT, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA accueil, fidélisation client, automatisation comptabilité.",
+      a: "Pour les TPE commerçants et artisans du centre historique de Valognes, audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA accueil, fidélisation client, automatisation comptabilité.",
     },
     {
       q: "Travaillez-vous avec les éleveurs normands ?",

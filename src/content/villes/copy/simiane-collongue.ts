@@ -32,8 +32,8 @@ export const SIMIANE_COLLONGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Simiane-Collongue : diagnostic conçu pour cabinets libéraux santé (gestion patients, dictée comptes-rendus), juristes (rédaction actes, veille juridique), experts-comptables et consultants indépendants du nord aixois. Audit Flash 490 € HT, ROI chiffré sur 90 jours.",
-      en: "Audit IA à Simiane-Collongue : diagnostic conçu pour cabinets libéraux santé (gestion patients, dictée comptes-rendus), juristes (rédaction actes, veille juridique), experts-comptables et consultants indépendants du nord aixois. Audit Flash 490 € HT, ROI chiffré sur 90 jours.",
+      fr: "Audit IA à Simiane-Collongue : diagnostic conçu pour cabinets libéraux santé (gestion patients, dictée comptes-rendus), juristes (rédaction actes, veille juridique), experts-comptables et consultants indépendants du nord aixois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur 90 jours.",
+      en: "Audit IA à Simiane-Collongue : diagnostic conçu pour cabinets libéraux santé (gestion patients, dictée comptes-rendus), juristes (rédaction actes, veille juridique), experts-comptables et consultants indépendants du nord aixois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur 90 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Simiane-Collongue : ateliers en cabinet libéral, coaching individuel consultant indépendant, séminaire équipe expertise comptable. Outils IA paramétrés métier (RGPD santé strict, secret professionnel avocat). Possibilité d'organiser à Aix-en-Provence ou Bouc-Bel-Air.",

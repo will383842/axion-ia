@@ -30,8 +30,8 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-les-Vergers : formats adaptés boutique, restaurant, bureau PME, atelier sous-traitant. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-André-les-Vergers  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE commerce et PME retail de l'agglo Troyes.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE commerce et PME retail de l'agglo Troyes.",
     },
     {
       q: "Travaillez-vous avec les magasins d'usine et commerces de zone ?",

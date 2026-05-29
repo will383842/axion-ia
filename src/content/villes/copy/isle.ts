@@ -30,8 +30,8 @@ export const ISLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Isle : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const ISLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Isle ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE d'Isle. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE d'Isle. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME des zones d'activités d'Isle ?",
@@ -61,7 +61,7 @@ export const ISLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants islois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Isle, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
+      a: "Pour les TPE artisans BTP et commerçants à Isle, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
     },
     {
       q: "Comment se passe une mission à Isle depuis Limoges ?",

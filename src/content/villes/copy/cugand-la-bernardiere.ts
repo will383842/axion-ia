@@ -30,8 +30,8 @@ export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cugand-la-Bernardière : formats adaptés aux domaines viticoles, artisans, PME et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE et PME de Cugand-la-Bernardière ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans, viticulteurs, PME et commerçants de la commune nouvelle.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans, viticulteurs, PME et commerçants de la commune nouvelle.",
     },
     {
       q: "Combien coûte un audit IA à Cugand-la-Bernardière  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Cugand-la-Bernardière ?",

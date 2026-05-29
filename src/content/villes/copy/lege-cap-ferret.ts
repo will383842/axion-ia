@@ -30,8 +30,8 @@ export const LEGE_CAP_FERRET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lège-Cap-Ferret : diagnostic pour ostréiculteurs, hébergeurs prestige, restaurateurs et artisans BTP de la presqu'île. Audit Flash 490 € HT.",
-      en: "Audit IA à Lège-Cap-Ferret : diagnostic pour ostréiculteurs, hébergeurs prestige, restaurateurs et artisans BTP de la presqu'île. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lège-Cap-Ferret : diagnostic pour ostréiculteurs, hébergeurs prestige, restaurateurs et artisans BTP de la presqu'île. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lège-Cap-Ferret : diagnostic pour ostréiculteurs, hébergeurs prestige, restaurateurs et artisans BTP de la presqu'île. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lège-Cap-Ferret : ateliers adaptés aux villages ostréicoles, hôtels, restaurants et ateliers. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LEGE_CAP_FERRET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lège-Cap-Ferret  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE ostréicoles et hébergeurs prestige du Cap-Ferret.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE ostréicoles et hébergeurs prestige du Cap-Ferret.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs du Cap-Ferret ?",

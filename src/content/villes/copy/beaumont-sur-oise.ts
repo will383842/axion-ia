@@ -30,8 +30,8 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaumont-sur-Oise : formats adaptés au cabinet médical, au commerce, à l'atelier artisan ou au bureau PME. Vos équipes repartent avec des outils IA opérationnels.",
@@ -57,7 +57,7 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Beaumont-sur-Oise ?",
-      a: "L'Audit Flash IA à Beaumont-sur-Oise démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Beaumont-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants du centre-ville ?",

@@ -30,8 +30,8 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marly-la-Ville : formats adaptés boutique, cabinet, entrepôt logistique, bureau PME. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Roissy ou Paris ?",

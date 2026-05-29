@@ -728,7 +728,7 @@ export const ANNECY_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Annecy accompagne individuellement les dirigeants et cadres des PME outdoor/sport, de la mécanique de précision et du tissu industriel de Haute-Savoie. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — gestion de catalogues produits outdoor, documentation technique de précision, développement commercial grand compte ou pilotage RH en PME. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Annecy accompagne individuellement les dirigeants et cadres des PME outdoor/sport, de la mécanique de précision et du tissu industriel de Haute-Savoie. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — gestion de catalogues produits outdoor, documentation technique de précision, développement commercial grand compte ou pilotage RH en PME. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Annecy concentre des PME et ETI industrielles de précision (décolletage, mécatronique) dont les dirigeants ont des agendas très contraints : le coaching 1-to-1 s'adapte à leur rythme, en visio ou en présentiel à Annecy ou dans la Vallée de l'Arve.",
           "Les acteurs du cluster Outdoor Sports Valley (Salomon, Mavic, sous-traitants) ont des besoins IA spécifiques sur la documentation produit, la gestion supply chain et le marketing B2B à l'international — le coaching individuel cible ces enjeux précisément.",
@@ -767,7 +767,7 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Programme d'entrée pour les gérants de TPE, artisans et indépendants du bassin annécien souhaitant intégrer l'IA dans leur activité quotidienne.",
           },
@@ -834,7 +834,7 @@ export const ANNECY_COPY: VilleCopy = {
           "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Annecy individually supports executives and managers at outdoor/sport SMEs, precision mechanics firms and the industrial fabric of Haute-Savoie. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — outdoor product catalogue management, precision technical documentation, key-account business development or HR management in an SME. You progress at your own pace, without superfluous theory.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Annecy individually supports executives and managers at outdoor/sport SMEs, precision mechanics firms and the industrial fabric of Haute-Savoie. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — outdoor product catalogue management, precision technical documentation, key-account business development or HR management in an SME. You progress at your own pace, without superfluous theory.",
         whyHere: [
           "Annecy concentrates precision industrial SMEs and mid-caps (machining, mechatronics) whose executives have very constrained agendas: 1-to-1 coaching adapts to their rhythm, by video or in person in Annecy or the Arve Valley.",
           "Outdoor Sports Valley cluster players (Salomon, Mavic, subcontractors) have specific AI needs around product documentation, supply-chain management and international B2B marketing — individual coaching targets these challenges precisely.",
@@ -873,7 +873,7 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry programme for micro-business owners, craft firms and freelancers in the Annecy basin wishing to integrate AI into their daily activity.",
           },

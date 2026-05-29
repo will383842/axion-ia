@@ -30,8 +30,8 @@ export const LE_PELLERIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit Flash 490 € HT.",
-      en: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit Flash 490 € HT.",
+      fr: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pellerin : formations pratiques pour exploitants viticoles, artisans, commerçants et opérateurs logistiques de l'estuaire. Autonomie IA de vos équipes.",
@@ -53,7 +53,7 @@ export const LE_PELLERIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation viticole au Pellerin ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, parfaitement adapté aux exploitations viticoles muscadet et maraîchères. Il identifie les opportunités IA : traçabilité parcellaire, prédiction rendements, gestion commerciale et automatisation administrative.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux exploitations viticoles muscadet et maraîchères. Il identifie les opportunités IA : traçabilité parcellaire, prédiction rendements, gestion commerciale et automatisation administrative.",
     },
     {
       q: "L'IA est-elle utile pour la logistique portuaire de l'estuaire ?",

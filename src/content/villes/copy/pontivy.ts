@@ -30,8 +30,8 @@ export const PONTIVY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pontivy : formats adaptés site agroalimentaire, atelier industriel, chantier BTP, boutique de centre-ville. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const PONTIVY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Pontivy  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME agroalimentaire/industrie du Centre Bretagne.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME agroalimentaire/industrie du Centre Bretagne.",
     },
     {
       q: "Travaillez-vous avec les industries agroalimentaires du Centre Bretagne ?",

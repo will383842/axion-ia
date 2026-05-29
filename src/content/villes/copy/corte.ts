@@ -30,8 +30,8 @@ export const CORTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Corte : diagnostic adapté aux TPE artisans, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Corte : diagnostic adapté aux TPE artisans, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Corte : diagnostic adapté aux TPE artisans, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Corte : diagnostic adapté aux TPE artisans, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Corte : formations pratiques pour équipes tourisme, commerçants, artisans et professions libérales du centre Corse. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const CORTE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Corte  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME cortenaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME cortenaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs touristiques de Corte ?",
-      a: "Pour les acteurs touristiques de Corte (hébergeurs, restaurateurs, guides), nous proposons : agents IA réservation et accueil multilingue, automatisation planning saisonnier, chatbot visiteurs citadelle et Restonica. Audit Flash 490 € HT.",
+      a: "Pour les acteurs touristiques de Corte (hébergeurs, restaurateurs, guides), nous proposons : agents IA réservation et accueil multilingue, automatisation planning saisonnier, chatbot visiteurs citadelle et Restonica. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Corte ?",

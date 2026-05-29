@@ -10,9 +10,9 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Chemillé-en-Anjou, commune nouvelle de 21 999 habitants en Maine-et-Loire (Pays de la Loire). Née en 2015 du regroupement de 13 communes déléguées (Chemillé, Chanzeaux, Cossé-d'Anjou, La Jumellière, Valanjou, Melay, La Tourlandry, etc.), elle figure parmi les plus vastes communes de France métropolitaine (323,98 km²). Membre de Mauges Communauté, dans l'arrondissement de Cholet, son tissu économique repose sur l'horticulture, l'agroalimentaire, l'artisanat et le commerce de proximité. Axion-IA y intervient en cabinet IA pour automatiser tâches répétitives et flux administratifs des structures locales.",
   directAnswerFr:
-    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès 490 € HT. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
+    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès {{price:audit-flash|flat}}. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
   directAnswerEn:
-    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès 490 € HT. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
+    "À Chemillé-en-Anjou, Axion-IA propose aux TPE et PME des Mauges des audits IA, interventions terrain et accompagnements 1-to-1, dès {{price:audit-flash|flat}}. Nous développons du code custom adapté aux particularités locales (horticulture, agroalimentaire, artisanat, viticulture du Layon en bordure). Nos consultants se déplacent sur les 13 communes déléguées — Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou, La Tourlandry — pour automatiser devis, factures, planning et flux RH des structures locales sans dépendance no-code.",
   seoHook: "horticulture & agroalimentaire Mauges",
   ecosystemFr:
     "Chemillé-en-Anjou, membre de Mauges Communauté dans l'arrondissement de Cholet, s'étend sur 323,98 km² (4ᵉ plus grande commune de France métropolitaine). Son économie repose sur l'horticulture (la ville est historiquement réputée pour la culture des plantes médicinales et semences), l'agroalimentaire, l'artisanat, le commerce de proximité et la viticulture des AOC Anjou et Coteaux du Layon. Le tissu est dominé par les TPE et PME familiales réparties sur 13 communes déléguées.",
@@ -32,26 +32,26 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA flash 4h à Chemillé-en-Anjou dès 490 € HT — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
-      en: "Audit IA flash 4h à Chemillé-en-Anjou dès 490 € HT — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
+      fr: "Audit IA flash 4h à Chemillé-en-Anjou dès {{price:audit-flash|flat}} — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
+      en: "Audit IA flash 4h à Chemillé-en-Anjou dès {{price:audit-flash|flat}} — cartographie des tâches automatisables pour TPE et PME des Mauges (horticulture, agroalimentaire, artisanat).",
     },
     interventions: {
-      fr: "Intervention sur site à Chemillé-en-Anjou dès 590 € HT — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
-      en: "Intervention sur site à Chemillé-en-Anjou dès 590 € HT — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
+      fr: "Intervention sur site à Chemillé-en-Anjou dès {{price:intervention-4h|flat}} — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
+      en: "Intervention sur site à Chemillé-en-Anjou dès {{price:intervention-4h|flat}} — déplacement consultant sur les 13 communes déléguées (Chemillé bourg, Chanzeaux, Valanjou, Cossé-d'Anjou).",
     },
     implementation: {
-      fr: "Implémentation code custom à Chemillé-en-Anjou dès 990 € HT — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",
-      en: "Implémentation code custom à Chemillé-en-Anjou dès 990 € HT — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",
+      fr: "Implémentation code custom à Chemillé-en-Anjou dès {{price:impl-poc|entry}} — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",
+      en: "Implémentation code custom à Chemillé-en-Anjou dès {{price:impl-poc|entry}} — automatisations devis, factures, stocks pour structures agroalimentaires et horticoles.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès 990 € HT — feuille de route IA réaliste, ROI mesurable, formation interne.",
-      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès 990 € HT — feuille de route IA réaliste, ROI mesurable, formation interne.",
+      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès {{price:intervention-dirigeants|flat}} — feuille de route IA réaliste, ROI mesurable, formation interne.",
+      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Chemillé-en-Anjou dès {{price:intervention-dirigeants|flat}} — feuille de route IA réaliste, ROI mesurable, formation interne.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Chemillé-en-Anjou ?",
-      a: "Audit Flash 4h dès 490 € HT, intervention sur site dès 590 € HT, implémentation code custom dès 990 € HT. Tarifs publics consultables sur notre page Pricing — aucun forfait caché.",
+      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Tarifs publics consultables sur notre page Pricing — aucun forfait caché.",
     },
     {
       q: "Vos consultants se déplacent-ils dans toutes les communes déléguées de Chemillé-en-Anjou ?",
@@ -71,7 +71,7 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous aussi avec les TPE artisanales ou seulement les PME industrielles ?",
-      a: "Axion-IA cible en priorité les TPE (1-9 salariés) puis les PME (10-249 salariés) francophones. Les ETI sont l'exception, pas la cible. Notre forfait 590 € HT est calibré pour les structures artisanales et familiales.",
+      a: "Axion-IA cible en priorité les TPE (1-9 salariés) puis les PME (10-249 salariés) francophones. Les ETI sont l'exception, pas la cible. Notre forfait {{price:intervention-4h|flat}} est calibré pour les structures artisanales et familiales.",
     },
   ],
 };

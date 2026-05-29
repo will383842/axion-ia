@@ -30,8 +30,8 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-en-Faucigny : formats adaptés à l'atelier industriel, chantier BTP, exploitation agricole ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Saint-Pierre-en-Faucigny ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT, adapté aux TPE et PME de Saint-Pierre-en-Faucigny. Diagnostic complet des opportunités IA dans votre activité (industrie, BTP, agriculture, commerce), ROI chiffré sous 5 jours ouvrés.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME de Saint-Pierre-en-Faucigny. Diagnostic complet des opportunités IA dans votre activité (industrie, BTP, agriculture, commerce), ROI chiffré sous 5 jours ouvrés.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Pierre-en-Faucigny ?",

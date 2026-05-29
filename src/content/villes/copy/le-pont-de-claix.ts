@@ -30,8 +30,8 @@ export const LE_PONT_DE_CLAIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pont-de-Claix : diagnostic adapté aux industriels, sous-traitants techniques, TPE artisans et PME services du sud grenoblois. ROI chiffré sur production et back-office, audit Flash 490 € HT accessible.",
-      en: "Audit IA au Pont-de-Claix : diagnostic adapté aux industriels, sous-traitants techniques, TPE artisans et PME services du sud grenoblois. ROI chiffré sur production et back-office, audit Flash 490 € HT accessible.",
+      fr: "Audit IA au Pont-de-Claix : diagnostic adapté aux industriels, sous-traitants techniques, TPE artisans et PME services du sud grenoblois. ROI chiffré sur production et back-office, audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA au Pont-de-Claix : diagnostic adapté aux industriels, sous-traitants techniques, TPE artisans et PME services du sud grenoblois. ROI chiffré sur production et back-office, audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pont-de-Claix : formats adaptés à l'atelier industriel (avec exigences sécurité), ou aux PME services et artisans. Vos équipes (ouvriers, techniciens, commerciaux) repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LE_PONT_DE_CLAIX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans BTP pontois ?",
-      a: "Pour les TPE artisans BTP au Pont-de-Claix, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP au Pont-de-Claix, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning.",
     },
     {
       q: "Comment se déroule une mission industrielle avec exigences sécurité ?",

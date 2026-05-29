@@ -30,8 +30,8 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montivilliers : formats adaptés au bureau, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans montivillons ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Montivilliers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Montivilliers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Montivilliers ?",

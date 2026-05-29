@@ -30,8 +30,8 @@ export const WINTZENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wintzenheim : formats adaptés au domaine viticole, à l'hôtel-restaurant, à la TPE œnotouristique ou à l'artisan local. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const WINTZENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Wintzenheim  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Wintzenheim et de la Route des Vins, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, hôtel, restaurant ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wintzenheim et de la Route des Vins, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, hôtel, restaurant ou commerce.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et œnotouristiques de Wintzenheim ?",
@@ -65,7 +65,7 @@ export const WINTZENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Wintzenheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants viticulteurs et hôteliers-restaurateurs à Wintzenheim, à partir de 990 € HT. Sessions dans votre domaine, hôtel ou en visio. Approche terrain adaptée au tissu viticole et œnotouristique de Colmar Agglomération.",
+      a: "Oui, coaching 1-to-1 pour dirigeants viticulteurs et hôteliers-restaurateurs à Wintzenheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre domaine, hôtel ou en visio. Approche terrain adaptée au tissu viticole et œnotouristique de Colmar Agglomération.",
     },
   ],
 };

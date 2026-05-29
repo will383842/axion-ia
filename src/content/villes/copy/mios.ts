@@ -30,8 +30,8 @@ export const MIOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit Flash 490 € HT.",
-      en: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mios : ateliers adaptés aux artisans BTP, commerces et services du bassin sud. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MIOS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Mios  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et commerçants du sud Bassin d'Arcachon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et commerçants du sud Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Mios ?",
@@ -61,7 +61,7 @@ export const MIOS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de Mios ?",
-      a: "Pour les commerces de Mios : audit IA 490 € HT, intervention 1 journée, implémentation agents conversationnels, automatisation gestion stocks, CRM client augmenté.",
+      a: "Pour les commerces de Mios : audit IA {{price:audit-flash|flat}}, intervention 1 journée, implémentation agents conversationnels, automatisation gestion stocks, CRM client augmenté.",
     },
     {
       q: "Comment se déroule une mission à Mios ?",

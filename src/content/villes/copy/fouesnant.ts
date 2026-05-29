@@ -30,8 +30,8 @@ export const FOUESNANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fouesnant : formats adaptés à l'hôtel, au camping, à la cidrerie ou au commerce saisonnier. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const FOUESNANT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants fouesnantais ?",
-      a: "Pour les TPE artisans BTP et commerçants à Fouesnant, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Fouesnant, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
     },
     {
       q: "Comment gérez-vous la saisonnalité touristique dans vos missions ?",

@@ -10,9 +10,9 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Charenton-le-Pont, commune de 28 830 habitants du Val-de-Marne située à la porte sud-est de Paris. Membre de l'établissement public territorial Paris-Est-Marne et Bois, Charenton-le-Pont accueille le siège historique des vins Nicolas, un technicentre SNCF dédié à la maintenance des TGV et le centre commercial Bercy 2. Nous intervenons sur site auprès des commerces, sociétés de services et PME du tissu local pour automatiser leurs processus métier avec du code custom adapté à leurs outils existants.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les TPE et PME locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les TPE et PME du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit Flash dès 490 € HT et des interventions code custom dès 590 € HT.",
+    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les TPE et PME locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les TPE et PME du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit Flash dès {{price:audit-flash|flat}} et des interventions code custom dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les TPE et PME locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les TPE et PME du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit Flash dès 490 € HT et des interventions code custom dès 590 € HT.",
+    "Axion-IA est un cabinet IA qui se déplace à Charenton-le-Pont (Val-de-Marne, 28 830 habitants) pour auditer, intervenir et implémenter des solutions sur mesure chez les TPE et PME locales. Limitrophe de Paris, Saint-Maurice, Maisons-Alfort, Ivry-sur-Seine et Alfortville, la commune est desservie par la ligne 8 du métro (Liberté, Charenton-Écoles) et l'autoroute A4. Nous y servons en priorité les TPE et PME du commerce, des services, du négoce de vins et spiritueux, et de la logistique, avec un audit Flash dès {{price:audit-flash|flat}} et des interventions code custom dès {{price:intervention-4h|flat}}.",
   seoHook: "TPE & PME · code custom · commerce, services, négoce",
   ecosystemFr:
     "Charenton-le-Pont fait partie de la Métropole du Grand Paris via l'établissement public territorial Paris-Est-Marne et Bois. Le tissu local mêle le siège des vins Nicolas (négoce installé depuis 1920), un technicentre SNCF de maintenance TGV, le centre commercial Bercy 2 et de nombreuses TPE/PME de commerce, services et logistique. La commune profite de la ligne 8 du métro, du tramway T3a tout proche et de l'autoroute A4 pour rayonner sur l'est parisien.",
@@ -32,12 +32,12 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash chez les TPE et PME de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès 490 € HT pour cartographier vos process et identifier les automatisations rentables.",
-      en: "Audit Flash chez les TPE et PME de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès 490 € HT pour cartographier vos process et identifier les automatisations rentables.",
+      fr: "Audit Flash chez les TPE et PME de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès {{price:audit-flash|flat}} pour cartographier vos process et identifier les automatisations rentables.",
+      en: "Audit Flash chez les TPE et PME de Charenton-le-Pont (commerces de Bercy 2, négoce, services) dès {{price:audit-flash|flat}} pour cartographier vos process et identifier les automatisations rentables.",
     },
     interventions: {
-      fr: "Intervention sur site à Charenton-le-Pont dès 590 € HT : développement code custom pour automatiser devis, relances, factures et reportings des TPE/PME locales.",
-      en: "Intervention sur site à Charenton-le-Pont dès 590 € HT : développement code custom pour automatiser devis, relances, factures et reportings des TPE/PME locales.",
+      fr: "Intervention sur site à Charenton-le-Pont dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, relances, factures et reportings des TPE/PME locales.",
+      en: "Intervention sur site à Charenton-le-Pont dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, relances, factures et reportings des TPE/PME locales.",
     },
     implementation: {
       fr: "Implémentation IA chez les PME de Charenton-le-Pont : connecteurs sur mesure entre vos ERP, CRM et outils métiers, sans recours au no-code.",
@@ -51,7 +51,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA à Charenton-le-Pont ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 h sur site). Les interventions de développement code custom démarrent à 590 € HT. Les sessions un-à-un dirigeants débutent à 990 € HT. Tous les tarifs sont publiés sur axion-ia.com.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h sur site). Les interventions de développement code custom démarrent à {{price:intervention-4h|flat}}. Les sessions un-à-un dirigeants débutent à {{price:intervention-dirigeants|flat}}. Tous les tarifs sont publiés sur axion-ia.com.",
     },
     {
       q: "Quels délais pour intervenir à Charenton-le-Pont ?",

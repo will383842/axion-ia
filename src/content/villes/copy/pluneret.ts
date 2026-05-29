@@ -30,8 +30,8 @@ export const PLUNERET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. Audit Flash 490 € HT avec ROI quantifié accessible à toute structure.",
-      en: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. Audit Flash 490 € HT avec ROI quantifié accessible à toute structure.",
+      fr: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
+      en: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pluneret : formats adaptés à l'entreprise nautique, au commerce de proximité ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -57,11 +57,11 @@ export const PLUNERET_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et PME de services de Pluneret ?",
-      a: "Oui, nous accompagnons TPE artisanales et PME de services de Pluneret sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion documentaire, agents IA prise de RDV. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons TPE artisanales et PME de services de Pluneret sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion documentaire, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Tarifs audit IA à Pluneret  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Pluneret et du Pays d'Auray. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Pluneret et du Pays d'Auray. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Pluneret ?",

@@ -30,8 +30,8 @@ export const MONTESSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montesson : formats adaptés boutique, bureau PME, cabinet, restaurant, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const MONTESSON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",

@@ -30,8 +30,8 @@ export const AUDENGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Audenge : diagnostic pour TPE artisans BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit Flash 490 € HT.",
-      en: "Audit IA à Audenge : diagnostic pour TPE artisans BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Audenge : diagnostic pour TPE artisans BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Audenge : diagnostic pour TPE artisans BTP, ostréiculteurs, commerçants et professions libérales du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Audenge : ateliers adaptés aux artisans BTP, ostréiculteurs et commerces du Bassin. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const AUDENGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Audenge  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et ostréiculteurs du Bassin d'Arcachon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et ostréiculteurs du Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Audenge ?",
@@ -61,7 +61,7 @@ export const AUDENGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les ostréiculteurs à Audenge ?",
-      a: "Pour les ostréiculteurs d'Audenge : audit IA 490 € HT, traçabilité production, agents IA gestion commandes, automatisation facturation, prédiction stocks.",
+      a: "Pour les ostréiculteurs d'Audenge : audit IA {{price:audit-flash|flat}}, traçabilité production, agents IA gestion commandes, automatisation facturation, prédiction stocks.",
     },
     {
       q: "Comment se déroule une mission à Audenge ?",

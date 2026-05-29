@@ -30,8 +30,8 @@ export const DOUE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et TPE/PME du Douessin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et TPE/PME du Douessin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et TPE/PME du Douessin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Doué-en-Anjou : diagnostic adapté aux horticulteurs, acteurs touristiques et TPE/PME du Douessin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Doué-en-Anjou : formations pour équipes tourisme, horticulture et commerces. Ateliers métier adaptés au tissu économique douésien.",
@@ -53,7 +53,7 @@ export const DOUE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Doué-en-Anjou  ?",
-      a: "L'Audit Flash IA à Doué-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Doué-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme douésien ?",

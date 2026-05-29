@@ -30,8 +30,8 @@ export const LABRUGUIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Labruguière : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerçants et professions libérales de l'agglo de Castres. Audit Flash 490 € HT.",
-      en: "Audit IA à Labruguière : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerçants et professions libérales de l'agglo de Castres. Audit Flash 490 € HT.",
+      fr: "Audit IA à Labruguière : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerçants et professions libérales de l'agglo de Castres. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Labruguière : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerçants et professions libérales de l'agglo de Castres. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Labruguière : formats adaptés à l'artisan BTP, PME industrielle, commerce de bourg ou cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LABRUGUIERE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un artisan à Labruguière ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE artisans de Labruguière. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier BTP.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE artisans de Labruguière. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier BTP.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment ?",
@@ -61,11 +61,11 @@ export const LABRUGUIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Labruguière ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de commandes, automatisation comptabilité, fidélisation client augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de commandes, automatisation comptabilité, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Labruguière ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Labruguière. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Labruguière. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

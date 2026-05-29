@@ -30,8 +30,8 @@ export const LONGUEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, TPE artisans et commerces de l'agglomération amiénoise. Audit Flash 490 € HT.",
-      en: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, TPE artisans et commerces de l'agglomération amiénoise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, TPE artisans et commerces de l'agglomération amiénoise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, TPE artisans et commerces de l'agglomération amiénoise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longueau : formats adaptés à l'atelier ferroviaire, l'entrepôt logistique, le commerce ou le bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const LONGUEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Longueau ?",
-      a: "L'audit Flash IA à Longueau démarre à 490 € HT. Diagnostic complet de vos processus transport, logistique ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Longueau démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus transport, logistique ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Quels avantages de la proximité d'Amiens pour une mission IA ?",

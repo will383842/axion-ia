@@ -30,8 +30,8 @@ export const PLOEREN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploeren : diagnostic adapté aux TPE artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Ploeren : diagnostic adapté aux TPE artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Ploeren : diagnostic adapté aux TPE artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ploeren : diagnostic adapté aux TPE artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploeren : formations pratiques pour équipes de PME de services, artisans BTP et prestataires tertiaires du bassin vannetais. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const PLOEREN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA proposez-vous aux PME de services à Ploeren ?",
-      a: "Nous proposons l'Audit Flash dès 490 € HT, des interventions formation sur site, l'implémentation d'outils IA métier (CRM augmenté, automatisation facturation, agents IA) et du coaching individuel. Adapté aux PME de services et prestataires tertiaires du bassin vannetais.",
+      a: "Nous proposons l'Audit Flash dès {{price:audit-flash|flat}}, des interventions formation sur site, l'implémentation d'outils IA métier (CRM augmenté, automatisation facturation, agents IA) et du coaching individuel. Adapté aux PME de services et prestataires tertiaires du bassin vannetais.",
     },
     {
       q: "Combien coûte un audit IA à Ploeren  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME ploerennaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME ploerennaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Ploeren ?",

@@ -30,8 +30,8 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bon-Encontre : formats adaptés à l'atelier, au commerce, au cabinet ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bon-Encontre  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bon-Encontre : artisans, commerçants, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bon-Encontre : artisans, commerçants, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les artisans de Bon-Encontre ?",
@@ -61,7 +61,7 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Bon-Encontre ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bon-Encontre, à partir de 990 € HT. Sessions dans votre atelier, commerce, cabinet ou en visio. Approche terrain adaptée aux métiers de l'agglomération agenaise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bon-Encontre, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, commerce, cabinet ou en visio. Approche terrain adaptée aux métiers de l'agglomération agenaise.",
     },
     {
       q: "Comment se déroule une mission IA à Bon-Encontre ?",

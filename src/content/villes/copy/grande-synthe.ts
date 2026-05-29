@@ -32,26 +32,26 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Grande-Synthe (4 h sur site) dès 490 € HT : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
-      en: "Audit Flash IA à Grande-Synthe (4 h sur site) dès 490 € HT : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
+      fr: "Audit Flash IA à Grande-Synthe (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
+      en: "Audit Flash IA à Grande-Synthe (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
     },
     interventions: {
-      fr: "Interventions à Grande-Synthe dès 590 € HT pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
-      en: "Interventions à Grande-Synthe dès 590 € HT pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
+      fr: "Interventions à Grande-Synthe dès {{price:intervention-4h|flat}} pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
+      en: "Interventions à Grande-Synthe dès {{price:intervention-4h|flat}} pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
     },
     implementation: {
-      fr: "Implémentation IA à Grande-Synthe dès 990 € HT : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
-      en: "Implémentation IA à Grande-Synthe dès 990 € HT : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
+      fr: "Implémentation IA à Grande-Synthe dès {{price:impl-poc|entry}} : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
+      en: "Implémentation IA à Grande-Synthe dès {{price:impl-poc|entry}} : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Grande-Synthe dès 990 € HT pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
-      en: "Accompagnement un-à-un à Grande-Synthe dès 990 € HT pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
+      fr: "Accompagnement un-à-un à Grande-Synthe dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
+      en: "Accompagnement un-à-un à Grande-Synthe dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Grande-Synthe ?",
-      a: "Les interventions Axion-IA à Grande-Synthe démarrent à 590 € HT (Intervention Essentielle). L'Audit Flash 4 h est à 490 € HT, l'implémentation dès 990 € HT. Tarifs publics et fixes.",
+      a: "Les interventions Axion-IA à Grande-Synthe démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Grande-Synthe ?",

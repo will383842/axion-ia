@@ -30,8 +30,8 @@ export const FLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Flers : formats adaptés à l'atelier mécanique, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const FLERS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans flériens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Flers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Flers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission IA à Flers depuis Paris ?",

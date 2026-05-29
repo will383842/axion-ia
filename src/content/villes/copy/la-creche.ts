@@ -30,8 +30,8 @@ export const LA_CRECHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Crèche : formats adaptés au bureau, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LA_CRECHE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans BTP de La Crèche ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP (plombiers, électriciens, maçons, menuisiers) sur des cas IA pratiques : automatisation devis et factures, agents IA prise de RDV, prédiction plannings chantier, classification photos chantier. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP (plombiers, électriciens, maçons, menuisiers) sur des cas IA pratiques : automatisation devis et factures, agents IA prise de RDV, prédiction plannings chantier, classification photos chantier. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires liées aux mutuelles niortaises ?",

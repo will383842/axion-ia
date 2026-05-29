@@ -30,8 +30,8 @@ export const DOUARNENEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Douarnenez : formats adaptés à la conserverie, au commerce, à l'hôtel ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const DOUARNENEZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Douarnenez  ?",
-      a: "L'Audit Flash IA à Douarnenez démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Douarnenez démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous la filière pêche à Douarnenez ?",

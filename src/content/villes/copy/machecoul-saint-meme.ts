@@ -30,8 +30,8 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Machecoul-Saint-Même : formats courts adaptés usine agroalimentaire, atelier artisan, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans du sud 44 ?",
-      a: "Pour les TPE artisans de Machecoul-Saint-Même, nous proposons audit IA Flash (490 € HT), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés aux petites structures rurales.",
+      a: "Pour les TPE artisans de Machecoul-Saint-Même, nous proposons audit IA Flash ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés aux petites structures rurales.",
     },
     {
       q: "L'IA est-elle adaptée aux activités rurales et agricoles ?",

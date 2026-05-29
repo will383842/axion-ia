@@ -10,9 +10,9 @@ export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
     "Sains-en-Gohelle (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 950 habitants. Situee entre Lens et Bethune, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, artisanat & sante",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sains-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Sains-en-Gohelle est situee dans le bassin minier entre Lens (8 km) et Bethune (10 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Commune residentielle avec activites de proximite.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Sains-en-Gohelle : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier Lens-Bethune. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Sains-en-Gohelle : formations adaptees aux ateliers artisanaux, commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const SAINS_EN_GOHELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les professionnels de sante de Sains-en-Gohelle ?",
-      a: "Pour les professionnels de sante, nous proposons : agenda intelligent, automatisation dossiers patients, agents conversationnels prise de rendez-vous, gestion cabinet IA. Audit Flash 490 EUR HT.",
+      a: "Pour les professionnels de sante, nous proposons : agenda intelligent, automatisation dossiers patients, agents conversationnels prise de rendez-vous, gestion cabinet IA. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Sains-en-Gohelle ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Sains-en-Gohelle ?",
-      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash 490 EUR HT.",
+      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Sains-en-Gohelle ?",

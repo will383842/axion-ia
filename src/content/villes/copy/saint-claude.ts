@@ -30,8 +30,8 @@ export const SAINT_CLAUDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Claude : diagnostic adapté aux TPE artisans, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Saint-Claude : diagnostic adapté aux TPE artisans, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Saint-Claude : diagnostic adapté aux TPE artisans, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Claude : diagnostic adapté aux TPE artisans, PME de tournerie et plasturgie du Haut-Jura, commerçants, acteurs du tourisme de montagne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Claude : formats adaptés à l'atelier de tournerie, plasturgie, TPE artisan d'art ou commerce de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const SAINT_CLAUDE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans d'art et commerçants sanclaudiens ?",
-      a: "Oui, nous accompagnons les TPE artisans d'art (pipiers, diamantaires, tourneurs) et commerçants de Saint-Claude sur des cas IA pratiques : automatisation devis, agents IA prise de commande, gestion stocks, mise en valeur savoir-faire en ligne. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans d'art (pipiers, diamantaires, tourneurs) et commerçants de Saint-Claude sur des cas IA pratiques : automatisation devis, agents IA prise de commande, gestion stocks, mise en valeur savoir-faire en ligne. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour le tourisme de montagne du Haut-Jura ?",

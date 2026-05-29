@@ -30,8 +30,8 @@ export const ROUSSET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rousset : ateliers pour équipes microélectronique, sous-traitants industriels, TPE et PME locales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
@@ -53,7 +53,7 @@ export const ROUSSET_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Rousset  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME industrielles microélectronique, sous-traitants high-tech et commerces roussetains. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME industrielles microélectronique, sous-traitants high-tech et commerces roussetains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME microélectronique et sous-traitants semi-conducteurs ?",

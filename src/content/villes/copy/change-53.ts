@@ -30,8 +30,8 @@ export const CHANGE_53_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Changé (53) : diagnostic adapté aux TPE artisans, PME industrielles, entreprises technologiques et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Changé (53) : diagnostic adapté aux TPE artisans, PME industrielles, entreprises technologiques et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Changé (53) : diagnostic adapté aux TPE artisans, PME industrielles, entreprises technologiques et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Changé (53) : diagnostic adapté aux TPE artisans, PME industrielles, entreprises technologiques et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Changé (53) : formations adaptées aux PME industrielles, entreprises tech, artisans et commerces du bassin lavallois. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const CHANGE_53_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Changé ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et tech du bassin lavallois. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et tech du bassin lavallois. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME numériques ?",

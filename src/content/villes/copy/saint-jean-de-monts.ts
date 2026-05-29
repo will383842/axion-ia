@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Monts : formats adaptés aux campings, hôtels, restaurants, commerces saisonniers et centres bien-être. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les campings de Saint-Jean-de-Monts ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas campings : yield management, réservation IA multilingue, prédiction affluence, gestion saisonnalité, marketing automatisé.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas campings : yield management, réservation IA multilingue, prédiction affluence, gestion saisonnalité, marketing automatisé.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants de la station ?",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Jean-de-Monts  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Jean-de-Monts ?",

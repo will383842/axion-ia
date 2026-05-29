@@ -30,8 +30,8 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et TPE/PME chalonnaises. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et TPE/PME chalonnaises. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et TPE/PME chalonnaises. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Chalonnes-sur-Loire : diagnostic adapté aux domaines viticoles, acteurs touristiques Loire et TPE/PME chalonnaises. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chalonnes-sur-Loire : formations pour équipes viticoles, touristiques et commerciales. Ateliers métier adaptés au vignoble corniche angevine.",
@@ -53,7 +53,7 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Chalonnes-sur-Loire  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Chalonnes-sur-Loire démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Chalonnes-sur-Loire démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les vignerons de la corniche angevine ?",

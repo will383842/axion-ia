@@ -32,26 +32,26 @@ export const BRUNOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Brunoy (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
-      en: "Audit Flash IA à Brunoy (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
+      fr: "Audit Flash IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
+      en: "Audit Flash IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
     },
     interventions: {
-      fr: "Interventions à Brunoy dès 590 € HT pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
-      en: "Interventions à Brunoy dès 590 € HT pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
+      fr: "Interventions à Brunoy dès {{price:intervention-4h|flat}} pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
+      en: "Interventions à Brunoy dès {{price:intervention-4h|flat}} pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémentation IA à Brunoy dès 990 € HT : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
-      en: "Implémentation IA à Brunoy dès 990 € HT : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
+      fr: "Implémentation IA à Brunoy dès {{price:impl-poc|entry}} : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
+      en: "Implémentation IA à Brunoy dès {{price:impl-poc|entry}} : intégration sur-mesure dans vos outils existants (CRM, ERP, comptabilité), conformité RGPD garantie.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Brunoy dès 990 € HT pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
-      en: "Accompagnement un-à-un à Brunoy dès 990 € HT pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
+      fr: "Accompagnement un-à-un à Brunoy dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
+      en: "Accompagnement un-à-un à Brunoy dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou visioconférence.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Brunoy ?",
-      a: "Les interventions Axion-IA à Brunoy démarrent à 590 € HT (Intervention Essentielle). L'Audit Flash 4 h est à 490 € HT, l'implémentation dès 990 € HT. Tous nos tarifs sont publics et fixes.",
+      a: "Les interventions Axion-IA à Brunoy démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Brunoy ?",

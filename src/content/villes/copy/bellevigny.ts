@@ -30,8 +30,8 @@ export const BELLEVIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellevigny : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Bellevigny : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Bellevigny : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Bellevigny : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellevigny : formats adaptés aux PME industrielles, artisans BTP, exploitations agricoles et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const BELLEVIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE et PME de Bellevigny ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux PME industrielles, artisans, exploitants agricoles et commerçants.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux PME industrielles, artisans, exploitants agricoles et commerçants.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de l'agglomération ?",
@@ -61,7 +61,7 @@ export const BELLEVIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bellevigny  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Bellevigny ?",

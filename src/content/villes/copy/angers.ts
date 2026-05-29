@@ -730,7 +730,7 @@ export const ANGERS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Angers accompagne individuellement les dirigeants et cadres de la filière végétale, de l'industrie (Scania, Eviden/Atos, Thales), de l'agroalimentaire (Cointreau) et des startups de la French Tech Angers. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — rapports R&D végétal, données industrielles, gestion commerciale Anjou. Vous progressez à votre rythme, sans théorie superflue.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Angers accompagne individuellement les dirigeants et cadres de la filière végétale, de l'industrie (Scania, Eviden/Atos, Thales), de l'agroalimentaire (Cointreau) et des startups de la French Tech Angers. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — rapports R&D végétal, données industrielles, gestion commerciale Anjou. Vous progressez à votre rythme, sans théorie superflue.",
         whyHere: [
           "Angers est un écosystème plurisectoriel unique : ingénieurs R&D Vegepolys Valley, techniciens Scania/Eviden/Thales, fondateurs French Tech Angers, viticulteurs Anjou. Le coaching 1-to-1 est le seul format qui s'adapte précisément à chacun de ces profils très différents.",
           "Les dirigeants de PME de la filière végétale (semenciers, producteurs, prestataires phytosanitaires) ont des besoins IA très spécifiques — documentation réglementaire, suivi R&D, reporting export. Le coaching individuel cible ces enjeux directement.",
@@ -769,7 +769,7 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Programme d'entrée pour les gérants de TPE, artisans, startups French Tech Angers et indépendants de la filière végétale ou du tertiaire angevin.",
           },
@@ -836,7 +836,7 @@ export const ANGERS_COPY: VilleCopy = {
           "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Angers individually supports executives and managers in the plant industry, manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau) and French Tech Angers startups. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — plant R&D reports, industrial data, Anjou commercial management. You progress at your own pace, without superfluous theory.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Angers individually supports executives and managers in the plant industry, manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau) and French Tech Angers startups. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — plant R&D reports, industrial data, Anjou commercial management. You progress at your own pace, without superfluous theory.",
         whyHere: [
           "Angers is a unique multi-sector ecosystem: Vegepolys Valley R&D engineers, Scania/Eviden/Thales technicians, French Tech Angers founders, Anjou wine growers. 1-to-1 coaching is the only format that precisely adapts to each of these very different profiles.",
           "Plant-sector SME executives (seed companies, producers, phytosanitary providers) have highly specific AI needs — regulatory documentation, R&D tracking, export reporting. Individual coaching targets these challenges directly.",
@@ -875,7 +875,7 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry programme for micro-business owners, craft firms, French Tech Angers startups and freelancers in the plant sector or Angers services.",
           },

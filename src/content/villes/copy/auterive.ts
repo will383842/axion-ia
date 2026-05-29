@@ -30,8 +30,8 @@ export const AUTERIVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auterive : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit Flash 490 € HT.",
-      en: "Audit IA à Auterive : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit Flash 490 € HT.",
+      fr: "Audit IA à Auterive : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auterive : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auterive : formats adaptés à l'atelier industriel, à l'exploitation agroalimentaire, au commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const AUTERIVE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Auterive  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "L'IA peut-elle aider une PME agroalimentaire à Auterive ?",

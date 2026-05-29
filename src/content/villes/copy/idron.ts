@@ -30,8 +30,8 @@ export const IDRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Idron : diagnostic adapté aux professions libérales, TPE artisans, PME de services et commerçants de l'agglomération paloise sud. Audit Flash 490 € HT.",
-      en: "Audit IA à Idron : diagnostic adapté aux professions libérales, TPE artisans, PME de services et commerçants de l'agglomération paloise sud. Audit Flash 490 € HT.",
+      fr: "Audit IA à Idron : diagnostic adapté aux professions libérales, TPE artisans, PME de services et commerçants de l'agglomération paloise sud. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Idron : diagnostic adapté aux professions libérales, TPE artisans, PME de services et commerçants de l'agglomération paloise sud. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Idron : déploiement outils IA dans vos cabinets, bureaux ou commerces. Automatisation gestion agenda, dossiers patients/clients et facturation.",
@@ -57,7 +57,7 @@ export const IDRON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Idron ?",
-      a: "L'audit Flash IA à Idron démarre à 490 € HT. Diagnostic de vos processus métier, identification gains IA prioritaires, ROI chiffré et plan d'action adapté à votre activité.",
+      a: "L'audit Flash IA à Idron démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus métier, identification gains IA prioritaires, ROI chiffré et plan d'action adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les TPE artisans d'Idron ?",

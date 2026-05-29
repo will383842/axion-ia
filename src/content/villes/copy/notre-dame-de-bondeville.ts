@@ -10,9 +10,9 @@ export const NOTRE_DAME_DE_BONDEVILLE_COPY: VilleCopy = {
     "Notre-Dame-de-Bondeville (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 7 070 habitants. Ville residentielle et commercante au nord de Rouen, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Rouen nord",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Notre-Dame-de-Bondeville fait partie de la Metropole Rouen Normandie, au nord de Rouen. Tissu economique de proximite : commerces de centre-ville, TPE de services, artisanat, professions liberales et PME tertiaires. Acces direct tramway T1 et A150 vers Le Havre.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NOTRE_DAME_DE_BONDEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Notre-Dame-de-Bondeville : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Notre-Dame-de-Bondeville : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Notre-Dame-de-Bondeville : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Notre-Dame-de-Bondeville : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Notre-Dame-de-Bondeville : formations adaptees aux commerces, cabinets, PME tertiaires et artisans de l'agglo rouennaise. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const NOTRE_DAME_DE_BONDEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Notre-Dame-de-Bondeville ?",
-      a: "Pour les commercants, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee, analyse ventes. Audit Flash 490 EUR HT.",
+      a: "Pour les commercants, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee, analyse ventes. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Notre-Dame-de-Bondeville ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires de Notre-Dame-de-Bondeville ?",

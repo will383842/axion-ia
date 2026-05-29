@@ -30,8 +30,8 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Paul-lès-Dax : formations adaptées aux établissements thermaux, centres bien-être, commerces, professions de santé. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les établissements thermaux ?",
-      a: "Oui, audit Flash 490 € HT adapté aux établissements thermaux et centres de bien-être. Diagnostic automatisation réservations curistes, gestion planning soins, chatbot multilingue, classification retours patients, optimisation parcours de soin.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux établissements thermaux et centres de bien-être. Diagnostic automatisation réservations curistes, gestion planning soins, chatbot multilingue, classification retours patients, optimisation parcours de soin.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone Grand Dax ?",
@@ -61,7 +61,7 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions de santé saint-pauloises ?",
-      a: "Pour les professions de santé et paramédicales à Saint-Paul-lès-Dax, audit Flash 490 € HT, coaching 1-to-1 outils IA métier. Cas typiques : automatisation secrétariat, tri documents patients, aide rédaction comptes-rendus, gestion agenda.",
+      a: "Pour les professions de santé et paramédicales à Saint-Paul-lès-Dax, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1 outils IA métier. Cas typiques : automatisation secrétariat, tri documents patients, aide rédaction comptes-rendus, gestion agenda.",
     },
     {
       q: "Comment se passe une mission depuis Bayonne ou Bordeaux ?",

@@ -30,8 +30,8 @@ export const LOUVROIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louvroil : formats adaptés à l'atelier métallurgique, l'usine mécanique, le chantier BTP, le commerce. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const LOUVROIL_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Louvroil ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les PME métallurgie et mécanique de Louvroil ?",

@@ -72,6 +72,17 @@ const ENABLED_ROOTS: ReadonlyArray<SurfaceRoot> = [
       !p.endsWith(".spec.ts") &&
       !p.endsWith(".spec.tsx"),
   },
+  // ── DÉFÉRÉ : prose villes `content/villes/copy/**` ──────────────────────────
+  // La PROSE FR est tokenisée en Phase 2 (codemod tokenize-ville-prices →
+  // ~8 700 tokens). Mais la surface n'est PAS activée ici car il reste, sur les
+  // ~12 villes pilotes, des PRIX EN dans les champs long-form `services.*.en`
+  // (« from €990 excl. VAT »). Les tokeniser les rendrait en FR dans un champ EN
+  // (« 990 € HT excl. VAT », cassé) et la règle Will est de NE JAMAIS investir
+  // sur l'EN (locale 301→FR). Restent aussi des € FR légitimes non-Axion (revenu
+  // médian INSEE, prix immobilier) qui demanderaient des marqueurs price-exempt.
+  // → Activer cette surface quand l'EN sera retiré OU que le résolveur gérera la
+  //   locale par champ. La régression FR est couverte par le codemod (idempotent)
+  //   + le générateur villes qui émet désormais des tokens (Phase 2.3).
 ];
 
 // Routes prix explicites (hors page.tsx).

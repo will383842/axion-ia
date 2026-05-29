@@ -30,8 +30,8 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaurepaire : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans beaurepairois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Beaurepaire, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Beaurepaire, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

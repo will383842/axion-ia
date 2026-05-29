@@ -30,8 +30,8 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux TPE artisans, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux TPE artisans, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux TPE artisans, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux TPE artisans, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Condé-sur-l'Escaut : formats adaptés commerce, cabinet, bureau, restaurant. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Condé-sur-l'Escaut ?",
-      a: "Oui, audit Flash 490 € HT, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
     },
     {
       q: "Accompagnez-vous les commerces et restaurateurs ?",
@@ -61,7 +61,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et PME ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

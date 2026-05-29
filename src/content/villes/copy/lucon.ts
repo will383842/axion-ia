@@ -30,8 +30,8 @@ export const LUCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luçon : formats adaptés aux exploitations agricoles, PME agroalimentaires, commerces et professions libérales. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const LUCON_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les exploitations agricoles de la plaine de Luçon ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion parcellaire prédictive, optimisation intrants, traçabilité récoltes, automatisation facturation.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion parcellaire prédictive, optimisation intrants, traçabilité récoltes, automatisation facturation.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires de Luçon ?",
@@ -61,7 +61,7 @@ export const LUCON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Luçon  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Luçon ?",

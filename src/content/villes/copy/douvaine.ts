@@ -30,8 +30,8 @@ export const DOUVAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Douvaine : formats adaptés au domaine viticole, à l'exploitation agricole, au cabinet conseil transfrontalier ou au commerce local. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const DOUVAINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Douvaine  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité (viticulture, services, agriculture, commerce). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité (viticulture, services, agriculture, commerce). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les entreprises transfrontalières ?",

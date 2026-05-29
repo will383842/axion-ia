@@ -30,8 +30,8 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mesnil-Saint-Denis : formats adaptés au bureau IT, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Mesnil-Saint-Denis ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (IT, artisanat, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (IT, artisanat, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants du Mesnil-Saint-Denis ?",

@@ -30,8 +30,8 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bohain-en-Vermandois : formats adaptés à l'atelier industriel ou textile, chantier, boutique, exploitation ou bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles du Vermandois ?",
-      a: "Oui, exploitations agricoles céréalières du Vermandois : gestion parcellaire, planification cultures, traçabilité, conformité PAC, optimisation matériel et fournisseurs. Audit Flash 490 € HT.",
+      a: "Oui, exploitations agricoles céréalières du Vermandois : gestion parcellaire, planification cultures, traçabilité, conformité PAC, optimisation matériel et fournisseurs. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Bohain-en-Vermandois ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Bohain-en-Vermandois ?",

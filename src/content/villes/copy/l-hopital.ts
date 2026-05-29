@@ -30,8 +30,8 @@ export const L_HOPITAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Hôpital : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à L'Hôpital : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à L'Hôpital : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à L'Hôpital : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Hôpital : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, l'agence artisanale, le bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const L_HOPITAL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de L'Hôpital ?",
-      a: "Oui, commerçants et artisans hospitaliens : gestion stocks, relation client, automatisation comptabilité, présence en ligne, agents conversationnels bilingues FR/DE. Audit Flash 490 € HT.",
+      a: "Oui, commerçants et artisans hospitaliens : gestion stocks, relation client, automatisation comptabilité, présence en ligne, agents conversationnels bilingues FR/DE. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à L'Hôpital ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à L'Hôpital ?",

@@ -30,8 +30,8 @@ export const SCAER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Scaër : formations pratiques pour équipes agroalimentaires, exploitants agricoles et artisans. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const SCAER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Scaër  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME scaëroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME scaëroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les agriculteurs et artisans de Scaër ?",
-      a: "Pour les exploitants agricoles et artisans, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : suivi parcellaire IA, automatisation devis BTP, gestion planning saisonnier et stocks augmentés.",
+      a: "Pour les exploitants agricoles et artisans, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : suivi parcellaire IA, automatisation devis BTP, gestion planning saisonnier et stocks augmentés.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Scaër ?",

@@ -30,8 +30,8 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Marcel : formats adaptés à l'atelier industriel, entrepôt, bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises de logistique ?",
-      a: "Oui, optimisation flux logistiques, automatisation gestion stocks, classification documents, agents conversationnels B2B. Audit Flash 490 € HT.",
+      a: "Oui, optimisation flux logistiques, automatisation gestion stocks, classification documents, agents conversationnels B2B. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Saint-Marcel ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Saint-Marcel ?",

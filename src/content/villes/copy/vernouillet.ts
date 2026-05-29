@@ -30,8 +30,8 @@ export const VERNOUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vernouillet : formats adaptés au bureau tertiaire, commerce, site industriel. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces de proximité ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
       q: "Comment se passe une mission depuis Chartres ou Paris ?",

@@ -30,8 +30,8 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Orens : formats adaptés à l'artisan, au cabinet libéral, à la PME de services. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Orens  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une intervention IA à Saint-Orens ?",
@@ -65,7 +65,7 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel à Saint-Orens ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Orens. Format flexible : dans vos locaux, en visio. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Orens. Format flexible : dans vos locaux, en visio. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

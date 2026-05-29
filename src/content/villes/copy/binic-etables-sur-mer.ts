@@ -30,8 +30,8 @@ export const BINIC_ETABLES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Binic-Étables-sur-Mer : diagnostic adapté aux TPE du nautisme, PME hôtelières, commerces saisonniers et prestataires touristiques du littoral. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Binic-Étables-sur-Mer : diagnostic adapté aux TPE du nautisme, PME hôtelières, commerces saisonniers et prestataires touristiques du littoral. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Binic-Étables-sur-Mer : diagnostic adapté aux TPE du nautisme, PME hôtelières, commerces saisonniers et prestataires touristiques du littoral. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Binic-Étables-sur-Mer : diagnostic adapté aux TPE du nautisme, PME hôtelières, commerces saisonniers et prestataires touristiques du littoral. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Binic-Étables-sur-Mer : formats adaptés aux équipes saisonnières, hôteliers, restaurateurs et commerçants du port. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const BINIC_ETABLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Binic-Étables-sur-Mer ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Binic-Étables-sur-Mer sur des cas IA concrets : automatisation devis, gestion planning chantiers, agents IA prise de rendez-vous. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Binic-Étables-sur-Mer sur des cas IA concrets : automatisation devis, gestion planning chantiers, agents IA prise de rendez-vous. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME du littoral briochin ?",

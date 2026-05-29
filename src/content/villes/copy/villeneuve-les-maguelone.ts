@@ -30,8 +30,8 @@ export const VILLENEUVE_LES_MAGUELONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-lès-Maguelone : diagnostic pour TPE commerçants, PME viticoles AOC Languedoc, acteurs touristiques littoral et patrimoine (cathédrale Maguelone). Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Villeneuve-lès-Maguelone : diagnostic pour TPE commerçants, PME viticoles AOC Languedoc, acteurs touristiques littoral et patrimoine (cathédrale Maguelone). Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Villeneuve-lès-Maguelone : diagnostic pour TPE commerçants, PME viticoles AOC Languedoc, acteurs touristiques littoral et patrimoine (cathédrale Maguelone). Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Villeneuve-lès-Maguelone : diagnostic pour TPE commerçants, PME viticoles AOC Languedoc, acteurs touristiques littoral et patrimoine (cathédrale Maguelone). Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-lès-Maguelone : ateliers adaptés caveau viticole, commerce littoral, hôtel ou cabinet libéral. Équipes autonomes sur outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const VILLENEUVE_LES_MAGUELONE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les domaines viticoles AOC Languedoc ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services IA pour les commerces et TPE du littoral ?",
-      a: "Pour les TPE et commerces littoraux de Villeneuve-lès-Maguelone, nous proposons audit Flash 490 € HT, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, chatbot client, gestion stocks saisonniers.",
+      a: "Pour les TPE et commerces littoraux de Villeneuve-lès-Maguelone, nous proposons audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, chatbot client, gestion stocks saisonniers.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial ?",
@@ -65,7 +65,7 @@ export const VILLENEUVE_LES_MAGUELONE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Villeneuve-lès-Maguelone ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

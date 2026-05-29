@@ -30,8 +30,8 @@ export const BOLLENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bollène : ateliers pour équipes TPE/PME, vignerons, logisticiens, sous-traitants industriels, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
@@ -53,7 +53,7 @@ export const BOLLENE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bollène  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle et commerces bollénois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle et commerces bollénois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et entreprises logistiques ?",

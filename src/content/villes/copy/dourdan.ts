@@ -30,8 +30,8 @@ export const DOURDAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dourdan : formats adaptés boutique centre-ville, cabinet, structure touristique, exploitation agricole, bureau PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const DOURDAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et PME ?",
-      a: "Audit IA (Flash 490 € HT à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
+      a: "Audit IA (Flash {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

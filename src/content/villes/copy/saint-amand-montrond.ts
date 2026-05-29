@@ -30,8 +30,8 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Amand-Montrond : formats adaptés aux bijoutiers, artisans d'art, PME industrielles, commerçants. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerçants centre-ville ?",
-      a: "Oui, pour les TPE et commerçants de Saint-Amand-Montrond : audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, marketing local IA.",
+      a: "Oui, pour les TPE et commerçants de Saint-Amand-Montrond : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, marketing local IA.",
     },
     {
       q: "Comment se déroule une mission à Saint-Amand-Montrond ?",

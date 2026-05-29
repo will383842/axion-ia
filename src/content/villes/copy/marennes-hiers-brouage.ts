@@ -30,8 +30,8 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et TPE/PME du bassin de Marennes. Audit Flash 490 € HT.",
-      en: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et TPE/PME du bassin de Marennes. Audit Flash 490 € HT.",
+      fr: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et TPE/PME du bassin de Marennes. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et TPE/PME du bassin de Marennes. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marennes-Hiers-Brouage : formats adaptés au parc ostréicole, au site touristique, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Marennes-Hiers-Brouage ?",
-      a: "L'audit Flash IA à Marennes-Hiers-Brouage démarre à 490 € HT. Diagnostic complet de vos processus ostréicoles, touristiques ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Marennes-Hiers-Brouage démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus ostréicoles, touristiques ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Marennes ?",

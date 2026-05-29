@@ -32,26 +32,26 @@ export const TAVERNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Taverny (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
-      en: "Audit Flash IA à Taverny (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
+      fr: "Audit Flash IA à Taverny (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
+      en: "Audit Flash IA à Taverny (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
     },
     interventions: {
-      fr: "Interventions à Taverny dès 590 € HT pour automatiser devis, relances, ordres de fabrication et reporting qualité des TPE et PME industrielles — code custom.",
-      en: "Interventions à Taverny dès 590 € HT pour automatiser devis, relances, ordres de fabrication et reporting qualité des TPE et PME industrielles — code custom.",
+      fr: "Interventions à Taverny dès {{price:intervention-4h|flat}} pour automatiser devis, relances, ordres de fabrication et reporting qualité des TPE et PME industrielles — code custom.",
+      en: "Interventions à Taverny dès {{price:intervention-4h|flat}} pour automatiser devis, relances, ordres de fabrication et reporting qualité des TPE et PME industrielles — code custom.",
     },
     implementation: {
-      fr: "Implémentation IA à Taverny dès 990 € HT : intégration sur-mesure dans ERP industriels, GMAO et CRM, conformité RGPD garantie.",
-      en: "Implémentation IA à Taverny dès 990 € HT : intégration sur-mesure dans ERP industriels, GMAO et CRM, conformité RGPD garantie.",
+      fr: "Implémentation IA à Taverny dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP industriels, GMAO et CRM, conformité RGPD garantie.",
+      en: "Implémentation IA à Taverny dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP industriels, GMAO et CRM, conformité RGPD garantie.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Taverny dès 990 € HT pour dirigeants TPE et PME : prise en main des outils IA déployés, sessions sur site ou en visio.",
-      en: "Accompagnement un-à-un à Taverny dès 990 € HT pour dirigeants TPE et PME : prise en main des outils IA déployés, sessions sur site ou en visio.",
+      fr: "Accompagnement un-à-un à Taverny dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main des outils IA déployés, sessions sur site ou en visio.",
+      en: "Accompagnement un-à-un à Taverny dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main des outils IA déployés, sessions sur site ou en visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Taverny ?",
-      a: "Les interventions Axion-IA à Taverny démarrent à 590 € HT (Intervention Essentielle). L'Audit Flash 4 h est à 490 € HT, l'implémentation dès 990 € HT. Tarifs publics et fixes.",
+      a: "Les interventions Axion-IA à Taverny démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Taverny ?",

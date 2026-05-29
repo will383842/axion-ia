@@ -30,8 +30,8 @@ export const COURTHEZON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courthézon : ateliers pour équipes TPE/PME viticoles, oenotouristiques, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
@@ -53,7 +53,7 @@ export const COURTHEZON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Courthézon  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, vignerons AOC, PME oenotouristiques et commerces courthézonais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, vignerons AOC, PME oenotouristiques et commerces courthézonais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons AOC Châteauneuf-du-Pape ?",

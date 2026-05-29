@@ -30,8 +30,8 @@ export const VALENTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valenton : formats adaptés plateforme logistique, entrepôt, chantier BTP, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const VALENTON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Valenton ?",
-      a: "L'audit Flash IA à Valenton démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Valenton démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP de Valenton ?",

@@ -30,8 +30,8 @@ export const GOUVIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gouvieux : diagnostic adapté aux TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Gouvieux : diagnostic adapté aux TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Gouvieux : diagnostic adapté aux TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gouvieux : diagnostic adapté aux TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gouvieux : formats adaptés au centre d'entraînement, à l'hôtel, au restaurant, à l'atelier ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const GOUVIEUX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Gouvieux  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME gouvieusiennes : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME gouvieusiennes : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les centres d'entraînement hippiques à Gouvieux ?",
@@ -65,7 +65,7 @@ export const GOUVIEUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Gouvieux ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Gouvieux, à partir de 990 € HT. Sessions dans votre centre d'entraînement, hôtel, restaurant ou en visio. Approche terrain adaptée aux métiers du bassin de Chantilly.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Gouvieux, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre centre d'entraînement, hôtel, restaurant ou en visio. Approche terrain adaptée aux métiers du bassin de Chantilly.",
     },
   ],
 };

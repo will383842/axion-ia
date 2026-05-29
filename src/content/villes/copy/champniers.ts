@@ -30,8 +30,8 @@ export const CHAMPNIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
-      en: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
+      fr: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champniers : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const CHAMPNIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Champniers ?",
-      a: "L'audit Flash IA à Champniers démarre à 490 € HT. Diagnostic complet de vos processus logistiques, industriels ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Champniers démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus logistiques, industriels ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Champniers ?",

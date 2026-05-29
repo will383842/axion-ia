@@ -30,8 +30,8 @@ export const GRUISSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gruissan : diagnostic adapté aux TPE tourisme balnéaire, PME hébergement saisonnier, viticulteurs La Clape et commerçants du littoral audois. Audit Flash 490 € HT.",
-      en: "Audit IA à Gruissan : diagnostic adapté aux TPE tourisme balnéaire, PME hébergement saisonnier, viticulteurs La Clape et commerçants du littoral audois. Audit Flash 490 € HT.",
+      fr: "Audit IA à Gruissan : diagnostic adapté aux TPE tourisme balnéaire, PME hébergement saisonnier, viticulteurs La Clape et commerçants du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gruissan : diagnostic adapté aux TPE tourisme balnéaire, PME hébergement saisonnier, viticulteurs La Clape et commerçants du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gruissan : formats adaptés au camping, à la résidence de tourisme, au domaine viticole ou au commerce saisonnier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const GRUISSAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gruissan  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tourisme ou hébergement saisonnier, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tourisme ou hébergement saisonnier, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs de La Clape ?",
@@ -65,7 +65,7 @@ export const GRUISSAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Gruissan ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Gruissan. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Gruissan. Format flexible : dans vos locaux, au domaine, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

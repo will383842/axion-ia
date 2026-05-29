@@ -30,8 +30,8 @@ export const PONT_SAINT_ESPRIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit Flash 490 € HT.",
-      en: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit Flash 490 € HT.",
+      fr: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pont-Saint-Esprit : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Côtes du Rhône, commerçants et artisans nord Gard. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Saint-Esprit : formats adaptés aux entreprises logistique, viticulteurs, commerçants et artisans BTP nord Gard / sud Ardèche.",
@@ -57,7 +57,7 @@ export const PONT_SAINT_ESPRIT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Pont-Saint-Esprit  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Côtes du Rhône ?",

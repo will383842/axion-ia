@@ -30,8 +30,8 @@ export const BANNALEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bannalec : diagnostic adapté aux TPE agricoles, éleveurs avicoles, PME agroalimentaires, artisans et commerçants de l'Est Cornouaille. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Bannalec : diagnostic adapté aux TPE agricoles, éleveurs avicoles, PME agroalimentaires, artisans et commerçants de l'Est Cornouaille. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Bannalec : diagnostic adapté aux TPE agricoles, éleveurs avicoles, PME agroalimentaires, artisans et commerçants de l'Est Cornouaille. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Bannalec : diagnostic adapté aux TPE agricoles, éleveurs avicoles, PME agroalimentaires, artisans et commerçants de l'Est Cornouaille. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bannalec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const BANNALEC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants bannalécois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Bannalec, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
+      a: "Pour les TPE artisans BTP et commerçants à Bannalec, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
     },
     {
       q: "Comment se passe une mission depuis Quimper ou Lorient ?",

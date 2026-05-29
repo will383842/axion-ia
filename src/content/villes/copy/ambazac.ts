@@ -30,8 +30,8 @@ export const AMBAZAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambazac : diagnostic adapté aux TPE artisans, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit Flash 490 € HT.",
-      en: "Audit IA à Ambazac : diagnostic adapté aux TPE artisans, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ambazac : diagnostic adapté aux TPE artisans, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ambazac : diagnostic adapté aux TPE artisans, PME bois et granit, commerçants, agriculteurs et acteurs tourisme vert des Monts d'Ambazac. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambazac : formats adaptés à la scierie, l'atelier granit, l'exploitation agricole, le gîte rural. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const AMBAZAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ambazac  ?",
-      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME filière bois ou granit, un audit approfondi est proposé entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, sans surprise.",
+      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME filière bois ou granit, un audit approfondi est proposé entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, sans surprise.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert ?",

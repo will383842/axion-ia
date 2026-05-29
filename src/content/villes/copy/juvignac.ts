@@ -30,8 +30,8 @@ export const JUVIGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Juvignac : formats adaptés à l'enseigne commerciale, au cabinet, au restaurant ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const JUVIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Juvignac  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Juvignac : enseignes commerciales, prestataires de services, professions libérales et restaurateurs. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Juvignac : enseignes commerciales, prestataires de services, professions libérales et restaurateurs. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les commerces de Juvignac ?",
@@ -61,7 +61,7 @@ export const JUVIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Juvignac ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Juvignac, à partir de 990 € HT. Sessions sur site dans votre commerce, cabinet, bureau ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier ouest.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Juvignac, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans votre commerce, cabinet, bureau ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier ouest.",
     },
     {
       q: "Comment se déroule une mission IA à Juvignac ?",

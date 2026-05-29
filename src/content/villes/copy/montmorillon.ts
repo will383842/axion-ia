@@ -30,8 +30,8 @@ export const MONTMORILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montmorillon : formats adaptés aux ateliers du livre, sites agroalimentaires, offices tourisme ou commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Montmorillon, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
+      a: "Pour les TPE artisans BTP et commerçants à Montmorillon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

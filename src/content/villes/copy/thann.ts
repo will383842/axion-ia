@@ -30,8 +30,8 @@ export const THANN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thann : formats adaptés au site industriel, au domaine viticole, à l'hôtel patrimonial ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const THANN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Thann  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Thann et du sud du vignoble alsacien, il identifie les cas d'usage IA à fort ROI pour votre site industriel, domaine viticole, hôtel ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Thann et du sud du vignoble alsacien, il identifie les cas d'usage IA à fort ROI pour votre site industriel, domaine viticole, hôtel ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et domaines viticoles de Thann ?",
@@ -65,7 +65,7 @@ export const THANN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Thann ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants industriels, viticulteurs et hôteliers à Thann, à partir de 990 € HT. Sessions dans votre usine, domaine, hôtel ou en visio. Approche terrain adaptée au tissu industriel, viticole et touristique de la vallée de la Thur.",
+      a: "Oui, coaching 1-to-1 pour dirigeants industriels, viticulteurs et hôteliers à Thann, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, domaine, hôtel ou en visio. Approche terrain adaptée au tissu industriel, viticole et touristique de la vallée de la Thur.",
     },
   ],
 };

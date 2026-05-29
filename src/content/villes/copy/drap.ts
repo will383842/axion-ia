@@ -30,8 +30,8 @@ export const DRAP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Drap : formats adaptés à l'atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,15 +53,15 @@ export const DRAP_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Drap ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Drap sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash 490 € HT adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Drap sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les commerces et services de proximité ?",
-      a: "Oui, nous accompagnons les commerces et services de proximité de Drap sur leurs cas IA : gestion stocks, agents conversationnels client, automatisation commandes, CRM fidélisation. Coaching 1-to-1 ou audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les commerces et services de proximité de Drap sur leurs cas IA : gestion stocks, agents conversationnels client, automatisation commandes, CRM fidélisation. Coaching 1-to-1 ou audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales de Drap (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit Flash 490 € HT ou coaching 1-to-1 personnalisé.",
+      a: "Pour les professions libérales de Drap (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}} ou coaching 1-to-1 personnalisé.",
     },
     {
       q: "Comment se déroule une mission à Drap depuis Nice ?",

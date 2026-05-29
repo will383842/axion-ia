@@ -30,8 +30,8 @@ export const ERGUE_GABERIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ergué-Gabéric : formats adaptés à l'atelier industriel, au bureau PME tertiaire ou à la TPE artisan. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const ERGUE_GABERIC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants d'Ergué-Gabéric ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP (maçons, plombiers, électriciens) et commerçants d'Ergué-Gabéric sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP (maçons, plombiers, électriciens) et commerçants d'Ergué-Gabéric sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ergué-Gabéric  ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME d'Ergué-Gabéric et de l'agglomération quimpéroise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME d'Ergué-Gabéric et de l'agglomération quimpéroise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Ergué-Gabéric ?",

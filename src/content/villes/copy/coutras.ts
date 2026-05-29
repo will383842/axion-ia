@@ -30,8 +30,8 @@ export const COUTRAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coutras : diagnostic pour vignerons, PME industrielles, TPE artisans et commerçants du nord Libournais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Coutras : diagnostic pour vignerons, PME industrielles, TPE artisans et commerçants du nord Libournais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Coutras : diagnostic pour vignerons, PME industrielles, TPE artisans et commerçants du nord Libournais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Coutras : diagnostic pour vignerons, PME industrielles, TPE artisans et commerçants du nord Libournais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coutras : ateliers adaptés aux chais, usines, ateliers BTP et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const COUTRAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Coutras  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et PME industrielles du Libournais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et PME industrielles du Libournais.",
     },
     {
       q: "Accompagnez-vous les PME industrielles à Coutras ?",
@@ -61,7 +61,7 @@ export const COUTRAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les vignerons à Coutras ?",
-      a: "Pour les vignerons : audit IA 490 € HT, traçabilité parcelles, prédiction vendanges, agents IA oenotourisme, automatisation gestion chai et commandes.",
+      a: "Pour les vignerons : audit IA {{price:audit-flash|flat}}, traçabilité parcelles, prédiction vendanges, agents IA oenotourisme, automatisation gestion chai et commandes.",
     },
     {
       q: "Comment se déroule une mission à Coutras ?",

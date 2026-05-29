@@ -10,9 +10,9 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Choisy-le-Roi (45 946 habitants, Val-de-Marne) dans l'automatisation de leurs processus métiers. La commune, traversée par la Seine et desservie par le RER C, la ligne 9 du tramway et plusieurs lignes de bus dont le TVM, concentre un tissu de petites entreprises de commerce, transport et construction. Nous intervenons sur site, à 12 km de Paris, pour structurer devis, relances, reporting et traitement de documents avec du code IA sur mesure.",
   directAnswerFr:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de 590 € HT pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   directAnswerEn:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de 590 € HT pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une Intervention Essentielle, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Choisy-le-Roi (Val-de-Marne, 5,43 km², 8 462 habitants/km²) est limitrophe d'Alfortville, Créteil, Orly, Thiais, Valenton, Villeneuve-Saint-Georges et Vitry-sur-Seine. Le tissu économique mélange commerces de détail, transport routier, construction et services aux entreprises. La ville accueille le siège de la Fédération française de volley-ball et conserve une mémoire industrielle (faïencerie Boulenger, tuileries). La proximité immédiate du MIN de Rungis et de l'aéroport de Paris-Orly structure une partie de l'activité logistique locale.",
@@ -31,26 +31,26 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit Flash dès 490 € HT (4 h).",
-      en: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit Flash dès 490 € HT (4 h).",
+      fr: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
-      fr: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Intervention Essentielle dès 590 € HT.",
-      en: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      en: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA sur mesure à Choisy-le-Roi — code propriétaire intégré à vos outils existants (ERP, CRM, comptabilité). Pas de no-code, pas de dépendance fournisseur tiers. Dès 990 € HT.",
-      en: "Implémentation de solutions IA sur mesure à Choisy-le-Roi — code propriétaire intégré à vos outils existants (ERP, CRM, comptabilité). Pas de no-code, pas de dépendance fournisseur tiers. Dès 990 € HT.",
+      fr: "Implémentation de solutions IA sur mesure à Choisy-le-Roi — code propriétaire intégré à vos outils existants (ERP, CRM, comptabilité). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation de solutions IA sur mesure à Choisy-le-Roi — code propriétaire intégré à vos outils existants (ERP, CRM, comptabilité). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès 990 € HT.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Choisy-le-Roi ?",
-      a: "Nos tarifs publics commencent à 490 € HT pour un Audit Flash (4 h sur site), 590 € HT pour une Intervention Essentielle et 990 € HT pour une implémentation ou une session un-à-un. Devis personnalisé envoyé sous 48 h.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit Flash (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé envoyé sous 48 h.",
     },
     {
       q: "William se déplace-t-il vraiment à Choisy-le-Roi ?",

@@ -30,8 +30,8 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit Flash 490 € HT.",
-      en: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Onet-le-Château : formats adaptés à la PME tertiaire, au commerce, au cabinet libéral ou à l'atelier artisan. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Onet-le-Château  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME commerciales ou tertiaires, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales ou tertiaires, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA sur site à Onet-le-Château ?",
@@ -65,7 +65,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Onet-le-Château ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Onet-le-Château. Format flexible : dans vos locaux, en visio ou à Rodez. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Onet-le-Château. Format flexible : dans vos locaux, en visio ou à Rodez. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

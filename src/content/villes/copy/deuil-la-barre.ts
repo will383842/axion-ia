@@ -31,26 +31,26 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Flash sur site à Deuil-la-Barre (490 € HT, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
-      en: "Audit IA Flash sur site à Deuil-la-Barre (490 € HT, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
+      fr: "Audit IA Flash sur site à Deuil-la-Barre ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
+      en: "Audit IA Flash sur site à Deuil-la-Barre ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
     },
     interventions: {
-      fr: "Interventions à Deuil-la-Barre dès 590 € HT : automatisation de la facturation, prise de rendez-vous et relances pour TPE et PME du commerce, de la restauration et des professions libérales.",
-      en: "Interventions à Deuil-la-Barre dès 590 € HT : automatisation de la facturation, prise de rendez-vous et relances pour TPE et PME du commerce, de la restauration et des professions libérales.",
+      fr: "Interventions à Deuil-la-Barre dès {{price:intervention-4h|flat}} : automatisation de la facturation, prise de rendez-vous et relances pour TPE et PME du commerce, de la restauration et des professions libérales.",
+      en: "Interventions à Deuil-la-Barre dès {{price:intervention-4h|flat}} : automatisation de la facturation, prise de rendez-vous et relances pour TPE et PME du commerce, de la restauration et des professions libérales.",
     },
     implementation: {
-      fr: "Implémentation IA à Deuil-la-Barre dès 990 € HT : développement de modules sur-mesure en code custom (pas de no-code) pour PME locales du Val-d'Oise — gestion documentaire, CRM, planning.",
-      en: "Implémentation IA à Deuil-la-Barre dès 990 € HT : développement de modules sur-mesure en code custom (pas de no-code) pour PME locales du Val-d'Oise — gestion documentaire, CRM, planning.",
+      fr: "Implémentation IA à Deuil-la-Barre dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) pour PME locales du Val-d'Oise — gestion documentaire, CRM, planning.",
+      en: "Implémentation IA à Deuil-la-Barre dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) pour PME locales du Val-d'Oise — gestion documentaire, CRM, planning.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Deuil-la-Barre dès 990 € HT : coaching des dirigeants de TPE et PME pour prioriser les cas d'usage IA et structurer leur feuille de route.",
-      en: "Sessions 1-to-1 à Deuil-la-Barre dès 990 € HT : coaching des dirigeants de TPE et PME pour prioriser les cas d'usage IA et structurer leur feuille de route.",
+      fr: "Sessions 1-to-1 à Deuil-la-Barre dès {{price:intervention-dirigeants|flat}} : coaching des dirigeants de TPE et PME pour prioriser les cas d'usage IA et structurer leur feuille de route.",
+      en: "Sessions 1-to-1 à Deuil-la-Barre dès {{price:intervention-dirigeants|flat}} : coaching des dirigeants de TPE et PME pour prioriser les cas d'usage IA et structurer leur feuille de route.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA à Deuil-la-Barre ?",
-      a: "Audit Flash sur site à partir de 490 € HT (4 h), interventions dès 590 € HT, implémentations et sessions 1-to-1 dès 990 € HT. Tarifs publics consultables sur la page Tarifs.",
+      a: "Audit Flash sur site à partir de {{price:audit-flash|flat}} (4 h), interventions dès {{price:intervention-4h|flat}}, implémentations et sessions 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur la page Tarifs.",
     },
     {
       q: "Quel est le délai pour une intervention à Deuil-la-Barre ?",

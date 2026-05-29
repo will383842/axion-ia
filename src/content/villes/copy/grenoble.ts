@@ -36,8 +36,8 @@ export const GRENOBLE_COPY: VilleCopy = {
       en: "AI implementation in Grenoble: deployment of AI use cases in your existing tools (PLM, ERP, R&D toolchains, business IT) with contractually-costed ROI. Your teams stay in control, no vendor dependency.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Grenoble — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux de la Presqu'île scientifique, d'Inovallée ou du bassin grenoblois : ingénieur deeptech, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser seul, sur ses propres données et contraintes.",
-      en: "Individual AI coaching in Grenoble — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Science Peninsula, Inovallée or Grenoble basin premises: deep-tech engineer, researcher, R&D director or spin-off founder who wants to progress alone, on their own data and constraints.",
+      fr: "Coaching IA individuel à Grenoble — à partir de {{price:intervention-dirigeants|flat}}. Un consultant senior dédié à votre cas, dans vos locaux de la Presqu'île scientifique, d'Inovallée ou du bassin grenoblois : ingénieur deeptech, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser seul, sur ses propres données et contraintes.",
+      en: "Individual AI coaching in Grenoble — from {{price:intervention-dirigeants|compact}} excl. VAT. A senior consultant dedicated to your case, at your Science Peninsula, Inovallée or Grenoble basin premises: deep-tech engineer, researcher, R&D director or spin-off founder who wants to progress alone, on their own data and constraints.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI grenobloises — site vitrine premium pour deeptech Minatec et spin-offs CEA-Leti, espace client interactif, dashboard métier connecté à votre CRM/ERP/PLM. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -720,7 +720,7 @@ export const GRENOBLE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA individuel Axion-IA à Grenoble s'adresse à l'ingénieur, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser sur l'IA à son rythme, sur ses propres données techniques — sans session collective. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux de la Presqu'île scientifique, d'Inovallée, de Meylan ou du bassin grenoblois. Frais de logement, repas et forfait trajet facturés en sus.",
+        hero: "Le coaching IA individuel Axion-IA à Grenoble s'adresse à l'ingénieur, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser sur l'IA à son rythme, sur ses propres données techniques — sans session collective. À partir de {{price:intervention-dirigeants|flat}}, un consultant senior est entièrement dédié à vous dans vos locaux de la Presqu'île scientifique, d'Inovallée, de Meylan ou du bassin grenoblois. Frais de logement, repas et forfait trajet facturés en sus.",
         whyHere: [
           "Grenoble héberge une forte densité d'ingénieurs et chercheurs (CEA-Leti, Ensimag, Phelma, Inria) dont le niveau technique est trop élevé pour une session collective standardisée — le coaching individuel est calibré sur leur expertise.",
           "Les spin-offs de la Presqu'île scientifique et de Minalogic traitent souvent des données industrielles propriétaires (spécifications semi-conducteurs, brevets, rapports ESRF) trop sensibles pour un cadre collectif.",
@@ -759,7 +759,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Coaching individuel entrée pour spin-offs, start-ups Minalogic et indépendants du bassin grenoblois — une journée, un consultant dédié.",
           },
@@ -799,7 +799,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Qu'est-ce que le coaching IA individuel Axion-IA à Grenoble ?",
-            a: "C'est une session IA sur-mesure dédiée à une seule personne dans vos locaux grenoblois. Un consultant senior vous accompagne sur vos propres cas techniques ou business — spin-off, PME deeptech, ETI industrielle — pendant une journée entière. À partir de 990 € HT.",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne dans vos locaux grenoblois. Un consultant senior vous accompagne sur vos propres cas techniques ou business — spin-off, PME deeptech, ETI industrielle — pendant une journée entière. À partir de {{price:intervention-dirigeants|flat}}.",
           },
           {
             q: "Pourquoi un format individuel pour un ingénieur ou chercheur grenoblois ?",
@@ -826,7 +826,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           "Confidentialité stricte : vos données techniques et enjeux stratégiques ne quittent pas vos locaux grenoblois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions grenobloises).",
       },
       en: {
-        hero: "Axion-IA's individual AI coaching in Grenoble is for the engineer, researcher, R&D director or spin-off founder who wants to progress on AI at their own pace, on their own technical data — without a group session. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Science Peninsula, Inovallée, Meylan or Grenoble basin premises. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's individual AI coaching in Grenoble is for the engineer, researcher, R&D director or spin-off founder who wants to progress on AI at their own pace, on their own technical data — without a group session. From {{price:intervention-dirigeants|compact}} excl. VAT, a senior consultant is entirely dedicated to you at your Science Peninsula, Inovallée, Meylan or Grenoble basin premises. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Grenoble hosts a high density of engineers and researchers (CEA-Leti, Ensimag, Phelma, Inria) whose technical level is too high for a standardised group session — individual coaching is calibrated to their expertise.",
           "Science Peninsula and Minalogic spin-offs often handle proprietary industrial data (semiconductor specifications, patents, ESRF reports) too sensitive for a group setting.",
@@ -865,7 +865,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry individual coaching for Grenoble basin spin-offs, Minalogic start-ups and independents — one day, one dedicated consultant.",
           },
@@ -905,7 +905,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "What is Axion-IA's individual AI coaching in Grenoble?",
-            a: "It is a bespoke AI session dedicated to one person at your Grenoble premises. A senior consultant accompanies you on your own technical or business cases — spin-off, deep-tech SME, industrial mid-cap — for a full day. From 990 € excl. VAT.",
+            a: "It is a bespoke AI session dedicated to one person at your Grenoble premises. A senior consultant accompanies you on your own technical or business cases — spin-off, deep-tech SME, industrial mid-cap — for a full day. From {{price:intervention-dirigeants|compact}} excl. VAT.",
           },
           {
             q: "Why an individual format for a Grenoble engineer or researcher?",

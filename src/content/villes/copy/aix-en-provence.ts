@@ -726,7 +726,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Aix-en-Provence accompagne individuellement les dirigeants et cadres dirigeants des PME industrielles, ETI aérospatiales et cabinets de conseil du bassin Aix-Marseille. À partir de 990 € HT pour les TPE, chaque programme est construit autour de votre réalité métier — technopôle Arbois, Les Milles, Marignane, Rousset. Vous accélérez votre montée en compétence IA sans perdre de temps sur du théorique non applicable.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Aix-en-Provence accompagne individuellement les dirigeants et cadres dirigeants des PME industrielles, ETI aérospatiales et cabinets de conseil du bassin Aix-Marseille. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme est construit autour de votre réalité métier — technopôle Arbois, Les Milles, Marignane, Rousset. Vous accélérez votre montée en compétence IA sans perdre de temps sur du théorique non applicable.",
         whyHere: [
           "Le bassin Aix-Marseille concentre des dirigeants d'ETI aérospatiales, énergétiques et industrielles avec des agendas très contraints : le coaching 1-to-1 s'adapte à leurs plages disponibles, y compris en visio depuis leur bureau ou en présentiel dans leurs locaux.",
           "Les cabinets d'ingénierie et sociétés de conseil du Technopôle Arbois et de Les Milles ont des cas d'usage IA très précis (qualification d'appels d'offres, rédaction de rapports techniques) — le coaching individuel cible exactement leurs enjeux réels.",
@@ -765,7 +765,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Programme d'entrée pour les indépendants, gérants de TPE et fondateurs de startups de la French Tech Aix-Marseille souhaitant intégrer l'IA dans leur activité quotidienne.",
           },
@@ -832,7 +832,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour le présentiel. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Aix-en-Provence individually supports executives and senior managers at industrial SMEs, aerospace mid-caps and consulting firms across the Aix-Marseille basin. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your specific business reality — Arbois technopole, Les Milles, Marignane, Rousset. You accelerate your AI proficiency without wasting time on non-applicable theory.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Aix-en-Provence individually supports executives and senior managers at industrial SMEs, aerospace mid-caps and consulting firms across the Aix-Marseille basin. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your specific business reality — Arbois technopole, Les Milles, Marignane, Rousset. You accelerate your AI proficiency without wasting time on non-applicable theory.",
         whyHere: [
           "The Aix-Marseille basin concentrates aerospace, energy and industrial mid-cap executives with highly constrained agendas: 1-to-1 coaching adapts to their available slots, including by video from their desk or in person at their premises.",
           "Engineering firms and consulting companies at Arbois technopole and Les Milles have very specific AI use cases (RFP qualification, technical report writing) — individual coaching targets their actual challenges precisely.",
@@ -871,7 +871,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry programme for freelancers, micro-business owners and French Tech Aix-Marseille startup founders wishing to integrate AI into their daily work.",
           },

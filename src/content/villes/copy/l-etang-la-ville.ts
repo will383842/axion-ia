@@ -30,8 +30,8 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Étang-la-Ville : formats adaptés commerce, bureau conseil, cabinet ou espace bien-être. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à L'Étang-la-Ville  ?",
-      a: "L'Audit Flash IA à L'Étang-la-Ville démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à L'Étang-la-Ville démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et commerçants à L'Étang-la-Ville ?",

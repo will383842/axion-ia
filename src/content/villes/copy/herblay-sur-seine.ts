@@ -30,8 +30,8 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Herblay : diagnostic adapté aux TPE artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Herblay : diagnostic adapté aux TPE artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Herblay : diagnostic adapté aux TPE artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Herblay : diagnostic adapté aux TPE artisanales, indépendants et PME tertiaires herblaysiennes. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Herblay : formats courts adaptés aux TPE et indépendants. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés.",
@@ -53,11 +53,11 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans d'Herblay ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Herblay sur des cas IA accessibles : automatisation devis, agents IA pour prise de RDV, classification photos chantier, gestion administrative simplifiée. Audit Flash à 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Herblay sur des cas IA accessibles : automatisation devis, agents IA pour prise de RDV, classification photos chantier, gestion administrative simplifiée. Audit Flash à {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME herblaysiennes ?",
-      a: "Pour les PME tertiaires d'Herblay, nous proposons les 5 services Axion-IA : audit IA (Flash 490 € à Stratégique selon taille), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les PME tertiaires d'Herblay, nous proposons les 5 services Axion-IA : audit IA (Flash {{price:audit-flash|compact}} à Stratégique selon taille), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une intervention pour un cabinet professionnel ?",
@@ -65,7 +65,7 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Les frais de déplacement depuis Paris sont-ils élevés ?",
-      a: "Non, Herblay est à 30 min de Paris (Transilien J ou voiture). Les frais de déplacement (train ou voiture, repas si journée complète) sont facturés à part du forfait journée, tarifs publics. Pour les TPE/PME, l'audit Flash 490 € reste accessible.",
+      a: "Non, Herblay est à 30 min de Paris (Transilien J ou voiture). Les frais de déplacement (train ou voiture, repas si journée complète) sont facturés à part du forfait journée, tarifs publics. Pour les TPE/PME, l'audit Flash {{price:audit-flash|compact}} reste accessible.",
     },
   ],
 };

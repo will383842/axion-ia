@@ -718,7 +718,7 @@ export const MARSEILLE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Marseille est un accompagnement individuel sur mesure, conçu pour les dirigeants, managers et entrepreneurs du tissu économique marseillais — ETI maritimes d'Euroméditerranée, PME logistiques de la Joliette, dirigeants de Centrale Méditerranée et d'AMU, professionnels de santé de Luminy. Sessions en présentiel dans vos locaux ou en visio selon vos contraintes. Tarif d'entrée à partir de 990 € HT. Vous progressez à votre rythme, sur vos propres cas business réels.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Marseille est un accompagnement individuel sur mesure, conçu pour les dirigeants, managers et entrepreneurs du tissu économique marseillais — ETI maritimes d'Euroméditerranée, PME logistiques de la Joliette, dirigeants de Centrale Méditerranée et d'AMU, professionnels de santé de Luminy. Sessions en présentiel dans vos locaux ou en visio selon vos contraintes. Tarif d'entrée à partir de {{price:intervention-dirigeants|flat}}. Vous progressez à votre rythme, sur vos propres cas business réels.",
         whyHere: [
           "Marseille concentre des profils de dirigeants à fort potentiel IA : PDG d'ETI CMA CGM-orbite, DG de PME transitaires Joliette, responsables formation AMU/Centrale Méditerranée, directeurs médicaux Luminy. Chacun de ces profils mérite un accompagnement calibré sur ses réalités métier, pas une session générique.",
           "Le tissu PME/ETI des Bouches-du-Rhône génère des besoins très spécifiques en coaching IA : automatisation de la gestion documentaire portuaire, assistance à la négociation commerciale export, optimisation des process de soins, structuration de la veille concurrentielle maritime.",
@@ -757,7 +757,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Session découverte à partir de 990 € HT",
+            price: "Session découverte à partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Idéal pour l'indépendant, le consultant ou le dirigeant de TPE marseillaise qui veut évaluer l'apport du coaching 1-to-1 IA avant de s'engager sur un programme. Frais de déplacement en sus pour le présentiel.",
           },
@@ -812,8 +812,8 @@ export const MARSEILLE_COPY: VilleCopy = {
             a: "Les deux sont possibles. Le présentiel dans vos locaux marseillais (Joliette, Euroméditerranée, Château-Gombert, Luminy) est idéal pour les sessions avec démos sur vos infrastructures. La visio est efficace pour les sessions de progression et les suivis. La cadence hybride est la plus courante. Frais de déplacement en sus pour le présentiel.",
           },
           {
-            q: "Le tarif d'entrée à 990 € HT inclut-il tout ?",
-            a: "Le tarif de 990 € HT couvre la session de travail elle-même (diagnostic + session pilote). Les frais de logement, repas et forfait trajet pour les sessions en présentiel à Marseille sont facturés en sus sur justificatifs. Pour les programmes multi-sessions, un devis forfaitaire est établi après le diagnostic initial.",
+            q: "Le tarif d'entrée à {{price:intervention-dirigeants|flat}} inclut-il tout ?",
+            a: "Le tarif de {{price:impl-poc|entry}} couvre la session de travail elle-même (diagnostic + session pilote). Les frais de logement, repas et forfait trajet pour les sessions en présentiel à Marseille sont facturés en sus sur justificatifs. Pour les programmes multi-sessions, un devis forfaitaire est établi après le diagnostic initial.",
           },
           {
             q: "Puis-je impliquer un collaborateur clé dans certaines sessions ?",
@@ -824,7 +824,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           "Première session pilote : si après cette session vous estimez que le format ne correspond pas à vos attentes, remboursement intégral sans condition. Programme multi-sessions : devis forfaitaire fixe à la signature, aucune dérive. Confidentialité totale dès le démarrage, vos cas business, données et documents traités en session ne quittent jamais notre périmètre. Tout ce que vous construisez en session (prompts, workflows, fiches méthode adaptées à votre secteur maritime, logistique ou santé) vous appartient en propriété exclusive. Après la dernière session, vous êtes autonome.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Marseille is a tailored individual programme designed for executives, managers and entrepreneurs in the Marseille business ecosystem — Euroméditerranée maritime mid-caps, Joliette logistics SMEs, Centrale Méditerranée and AMU leadership, Luminy health professionals. Sessions in person at your offices or by video depending on your schedule. Entry price from 990 € excl. VAT. You progress at your own pace, on your own real business cases. Lodging, meals and travel allowance billed separately for on-site sessions.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Marseille is a tailored individual programme designed for executives, managers and entrepreneurs in the Marseille business ecosystem — Euroméditerranée maritime mid-caps, Joliette logistics SMEs, Centrale Méditerranée and AMU leadership, Luminy health professionals. Sessions in person at your offices or by video depending on your schedule. Entry price from {{price:intervention-dirigeants|compact}} excl. VAT. You progress at your own pace, on your own real business cases. Lodging, meals and travel allowance billed separately for on-site sessions.",
         whyHere: [
           "Marseille concentrates executive profiles with high AI potential: CEOs of CMA CGM-orbit mid-caps, freight forwarder GMs at Joliette, AMU/Centrale Méditerranée training directors, Luminy medical directors. Each profile deserves coaching calibrated to their specific business realities, not a generic session.",
           "The SME/mid-cap fabric of Bouches-du-Rhône generates very specific AI coaching needs: port document management automation, export commercial negotiation support, health process optimization, maritime competitive intelligence structuring.",
@@ -863,7 +863,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Discovery session from 990 € excl. VAT",
+            price: "Discovery session from {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Ideal for the freelancer, consultant or Marseille micro-business owner who wants to evaluate the value of 1-to-1 AI coaching before committing to a programme. Travel costs billed separately for in-person sessions.",
           },
@@ -918,8 +918,8 @@ export const MARSEILLE_COPY: VilleCopy = {
             a: "Both are possible. In-person at your Marseille offices (Joliette, Euroméditerranée, Château-Gombert, Luminy) is ideal for sessions with demos on your infrastructure. Video is effective for progression sessions and follow-ups. The hybrid cadence is most common. Travel costs billed separately for in-person sessions.",
           },
           {
-            q: "Does the 990 € excl. VAT entry price include everything?",
-            a: "The 990 € excl. VAT covers the working session itself (diagnosis + pilot session). Lodging, meals and travel allowance for in-person sessions in Marseille are billed separately on receipts. For multi-session programmes, a fixed-rate quote is established after the initial diagnosis.",
+            q: "Does the {{price:intervention-dirigeants|compact}} excl. VAT entry price include everything?",
+            a: "The {{price:intervention-dirigeants|compact}} excl. VAT covers the working session itself (diagnosis + pilot session). Lodging, meals and travel allowance for in-person sessions in Marseille are billed separately on receipts. For multi-session programmes, a fixed-rate quote is established after the initial diagnosis.",
           },
           {
             q: "Can I involve a key colleague in some sessions?",

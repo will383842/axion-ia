@@ -28,8 +28,8 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Beausset : formations pratiques adaptées viticulture, œnotourisme, artisanat, commerces et professions libérales. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Beausset ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME varoises. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les domaines AOC Bandol et l'œnotourisme au Beausset ?",
@@ -59,7 +59,7 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants au Beausset ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, vignerons et artisans de l'arrière-pays bandolais. Sur site ou visio, dès 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, vignerons et artisans de l'arrière-pays bandolais. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission au Beausset ?",

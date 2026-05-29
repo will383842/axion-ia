@@ -30,8 +30,8 @@ export const BRECH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brech : diagnostic adapté aux TPE artisanales, PME touristiques, exploitants agricoles et commerçants du pays d'Auray. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Brech : diagnostic adapté aux TPE artisanales, PME touristiques, exploitants agricoles et commerçants du pays d'Auray. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Brech : diagnostic adapté aux TPE artisanales, PME touristiques, exploitants agricoles et commerçants du pays d'Auray. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Brech : diagnostic adapté aux TPE artisanales, PME touristiques, exploitants agricoles et commerçants du pays d'Auray. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brech : formations pratiques pour équipes de PME touristiques, artisans, exploitants agricoles et commerçants du pays d'Auray. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const BRECH_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE et PME touristiques de Brech ?",
-      a: "Nous proposons l'Audit Flash dès 490 € HT, des interventions formation sur site, l'implémentation d'outils IA métier (réservation, accueil visiteurs, gestion flux) et du coaching individuel pour les dirigeants du secteur touristique.",
+      a: "Nous proposons l'Audit Flash dès {{price:audit-flash|flat}}, des interventions formation sur site, l'implémentation d'outils IA métier (réservation, accueil visiteurs, gestion flux) et du coaching individuel pour les dirigeants du secteur touristique.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Brech  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME brécharoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME brécharoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles autour de Brech ?",

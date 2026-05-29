@@ -30,8 +30,8 @@ export const CLERMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clermont : formats adaptés au commerce, au cabinet médical, à l'atelier artisan, au bureau ou à la collectivité. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const CLERMONT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Clermont  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME clermontoises : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME clermontoises : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans de Clermont ?",
@@ -65,7 +65,7 @@ export const CLERMONT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Clermont ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Clermont, à partir de 990 € HT. Sessions dans votre commerce, cabinet médical, atelier ou en visio. Approche terrain adaptée aux métiers du Clermontois.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Clermont, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre commerce, cabinet médical, atelier ou en visio. Approche terrain adaptée aux métiers du Clermontois.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const CIBOURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit Flash 490 € HT.",
-      en: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ciboure : déploiement outils IA dans vos restaurants, hébergements, ateliers marins ou locaux de mareyage. Équipes formées et autonomes.",
@@ -57,7 +57,7 @@ export const CIBOURE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Ciboure ?",
-      a: "L'audit Flash IA à Ciboure démarre à 490 € HT. Diagnostic de vos processus pêche, restauration ou touristiques, identification gains IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Ciboure démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus pêche, restauration ou touristiques, identification gains IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les restaurateurs de Ciboure ?",

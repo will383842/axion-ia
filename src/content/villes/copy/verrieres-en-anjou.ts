@@ -30,8 +30,8 @@ export const VERRIERES_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verrières-en-Anjou : diagnostic adapté aux PME tertiaires, artisans et entreprises logistiques du nord-est angevin. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Verrières-en-Anjou : diagnostic adapté aux PME tertiaires, artisans et entreprises logistiques du nord-est angevin. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Verrières-en-Anjou : diagnostic adapté aux PME tertiaires, artisans et entreprises logistiques du nord-est angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Verrières-en-Anjou : diagnostic adapté aux PME tertiaires, artisans et entreprises logistiques du nord-est angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verrières-en-Anjou : formations pour équipes PME, artisans et commerces. Ateliers pratiques dans vos locaux nord-est angevin.",
@@ -53,7 +53,7 @@ export const VERRIERES_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Verrières-en-Anjou  ?",
-      a: "L'Audit Flash IA à Verrières-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Verrières-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires de Verrières-en-Anjou ?",

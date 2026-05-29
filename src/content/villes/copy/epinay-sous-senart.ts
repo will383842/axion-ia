@@ -30,8 +30,8 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épinay-sous-Sénart : formats adaptés atelier BTP, boutique, cabinet, bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP du secteur ?",
-      a: "Oui, nous accompagnons les artisans BTP (plombiers, électriciens, maçons, peintres) sur des cas IA concrets : automatisation devis chantier, planning intelligent, gestion photos chantier, facturation automatisée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les artisans BTP (plombiers, électriciens, maçons, peintres) sur des cas IA concrets : automatisation devis chantier, planning intelligent, gestion photos chantier, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les commerçants et professions libérales ?",
@@ -61,7 +61,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME du bassin Sénart ?",
-      a: "Audit IA (Flash 490 € HT à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
+      a: "Audit IA (Flash {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",

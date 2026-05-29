@@ -9,9 +9,9 @@ export const SAINT_JULIEN_EN_GENEVOIS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Julien-en-Genevois (74), porte d'entree francaise du Grand Geneve, est un pole transfrontalier majeur a 10 minutes de Geneve centre. Tissu TPE/PME tertiaires, professions liberales, commerce frontalier et artisanat. Axion-IA y intervient pour tous types d'activites du bassin genevois francais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit Flash des {{price:audit-flash|flat}}.",
   seoHook: "agglomération geneve",
   ecosystemFr:
     "Saint-Julien-en-Genevois est la principale ville francaise du Grand Geneve, a la frontiere suisse. Son economie est fortement liee au bassin genevois : nombreux frontaliers, services tertiaires, professions liberales (avocats, fiduciaires, conseil), commerces de proximite et artisanat. Dynamisme porte par le Leman Express et l'autoroute A40.",
@@ -30,8 +30,8 @@ export const SAINT_JULIEN_EN_GENEVOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Saint-Julien-en-Genevois : diagnostic adapte aux TPE/PME transfrontalieres, professions liberales et commercants du Grand Geneve. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Saint-Julien-en-Genevois : diagnostic adapte aux TPE/PME transfrontalieres, professions liberales et commercants du Grand Geneve. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Saint-Julien-en-Genevois : diagnostic adapte aux TPE/PME transfrontalieres, professions liberales et commercants du Grand Geneve. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Saint-Julien-en-Genevois : diagnostic adapte aux TPE/PME transfrontalieres, professions liberales et commercants du Grand Geneve. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Saint-Julien-en-Genevois : formats adaptes aux cabinets, commerces frontaliers et entreprises de services. Equipes autonomes sur outils IA configures metier.",
@@ -57,7 +57,7 @@ export const SAINT_JULIEN_EN_GENEVOIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Saint-Julien-en-Genevois ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE/PME transfrontalieres, nous proposons aussi des audits approfondis adaptes aux enjeux bilingues et multi-juridictions du Grand Geneve.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE/PME transfrontalieres, nous proposons aussi des audits approfondis adaptes aux enjeux bilingues et multi-juridictions du Grand Geneve.",
     },
     {
       q: "Accompagnez-vous les professions liberales a Saint-Julien-en-Genevois ?",
@@ -65,7 +65,7 @@ export const SAINT_JULIEN_EN_GENEVOIS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Saint-Julien-en-Genevois ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Saint-Julien-en-Genevois, a partir de 990 euros HT. Sessions en cabinet, en entreprise ou en visio, adaptees au contexte transfrontalier Grand Geneve.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Saint-Julien-en-Genevois, a partir de {{price:intervention-dirigeants|flat}}. Sessions en cabinet, en entreprise ou en visio, adaptees au contexte transfrontalier Grand Geneve.",
     },
   ],
 };

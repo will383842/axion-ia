@@ -12,9 +12,9 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Romans-sur-Isère dans l'automatisation de leurs opérations. Sous-préfecture de la Drôme (33 464 habitants en 2023, environ 58 000 avec Bourg-de-Péage en unité urbaine), Romans est historiquement associée à la chaussure (Charles Jourdan, Stéphane Kélian, Robert Clergerie) et au cuir, complétés par l'agroalimentaire (ravioles), la métallurgie et le commerce. Nous livrons du code custom — sans no-code — adapté aux PME industrielles drômoises.",
   directAnswerFr:
-    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les TPE, PME et, en complément, les ETI de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès 490 € HT), des interventions ciblées (dès 590 € HT) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
+    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les TPE, PME et, en complément, les ETI de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
   directAnswerEn:
-    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les TPE, PME et, en complément, les ETI de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès 490 € HT), des interventions ciblées (dès 590 € HT) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
+    "Axion-IA intervient à Romans-sur-Isère (Drôme, Auvergne-Rhône-Alpes) pour les TPE, PME et, en complément, les ETI de l'unité urbaine Romans–Bourg-de-Péage. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour la chaussure et le cuir, l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. Nos consultants se déplacent depuis Paris via la gare TGV de Valence (20 km) ou Valence-Ville, dans le respect strict du RGPD, avec remise du code applicatif au client.",
   seoHook: "chaussure, cuir & agroalimentaire",
   ecosystemFr:
     "Romans-sur-Isère est le berceau historique de la chaussure française : Charles Jourdan, Stéphane Kélian, Robert Clergerie et plusieurs ateliers de tannerie ont structuré son économie. Le bassin s'est diversifié vers l'agroalimentaire (ravioles, salaisons), la métallurgie et le commerce. L'unité urbaine Romans–Bourg-de-Péage rassemble environ 58 000 habitants, dans la basse vallée du Rhône à 20 km de Valence.",
@@ -34,26 +34,26 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès 490 € HT, livrable PDF + plan d'action.",
-      en: "Audit Flash 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès 490 € HT, livrable PDF + plan d'action.",
+      fr: "Audit Flash 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      en: "Audit Flash 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
     },
     interventions: {
-      fr: "Intervention sur site à Romans-sur-Isère pour automatiser un goulot précis : ordonnancement atelier, contrôle qualité, traçabilité cuir, reporting commercial — dès 590 € HT.",
-      en: "Intervention sur site à Romans-sur-Isère pour automatiser un goulot précis : ordonnancement atelier, contrôle qualité, traçabilité cuir, reporting commercial — dès 590 € HT.",
+      fr: "Intervention sur site à Romans-sur-Isère pour automatiser un goulot précis : ordonnancement atelier, contrôle qualité, traçabilité cuir, reporting commercial — dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Romans-sur-Isère pour automatiser un goulot précis : ordonnancement atelier, contrôle qualité, traçabilité cuir, reporting commercial — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA sur mesure à Romans-sur-Isère pour les PME de la chaussure, du cuir et de l'agroalimentaire : intégration ERP, suivi production, prévision de la demande — dès 990 € HT.",
-      en: "Implémentation IA sur mesure à Romans-sur-Isère pour les PME de la chaussure, du cuir et de l'agroalimentaire : intégration ERP, suivi production, prévision de la demande — dès 990 € HT.",
+      fr: "Implémentation IA sur mesure à Romans-sur-Isère pour les PME de la chaussure, du cuir et de l'agroalimentaire : intégration ERP, suivi production, prévision de la demande — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA sur mesure à Romans-sur-Isère pour les PME de la chaussure, du cuir et de l'agroalimentaire : intégration ERP, suivi production, prévision de la demande — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching un-à-un d'un dirigeant de TPE-PME romanaise pour identifier les premiers chantiers IA réalistes — dès 990 € HT, sessions sur site ou visio.",
-      en: "Coaching un-à-un d'un dirigeant de TPE-PME romanaise pour identifier les premiers chantiers IA réalistes — dès 990 € HT, sessions sur site ou visio.",
+      fr: "Coaching un-à-un d'un dirigeant de TPE-PME romanaise pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant de TPE-PME romanaise pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Romans-sur-Isère ?",
-      a: "Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour une Intervention Essentielle et 990 € HT pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
     },
     {
       q: "Quels délais pour une intervention IA à Romans-sur-Isère après prise de contact ?",

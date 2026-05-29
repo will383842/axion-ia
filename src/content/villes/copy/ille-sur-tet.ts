@@ -30,8 +30,8 @@ export const ILLE_SUR_TET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ille-sur-Têt : formats adaptés à l'exploitation fruitière, commerce, atelier, hébergement tourisme. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const ILLE_SUR_TET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Ille-sur-Têt, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Ille-sur-Têt, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Ille-sur-Têt ?",

@@ -30,8 +30,8 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, TPE artisans, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, TPE artisans, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, TPE artisans, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, TPE artisans, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Yrieix-sur-Charente : formats adaptés au cabinet, au bureau, au commerce ou à l'atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Yrieix-sur-Charente ?",
-      a: "L'audit Flash IA à Saint-Yrieix-sur-Charente démarre à 490 € HT. Diagnostic complet de vos processus tertiaires, commerciaux ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Saint-Yrieix-sur-Charente démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires, commerciaux ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Yrieix ?",

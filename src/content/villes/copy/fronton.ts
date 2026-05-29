@@ -30,8 +30,8 @@ export const FRONTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit Flash 490 € HT.",
-      en: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fronton : formats adaptés au domaine viticole, au commerce, à l'hébergement touristique. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const FRONTON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Fronton  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider un domaine viticole à Fronton ?",

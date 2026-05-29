@@ -30,8 +30,8 @@ export const GARONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit Flash 490 € HT.",
-      en: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit Flash 490 € HT.",
+      fr: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Garons : formats adaptés aux entreprises logistique, services, caves viticoles et artisans de la zone aéroport Nîmes.",
@@ -57,7 +57,7 @@ export const GARONS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Garons  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Costières ?",

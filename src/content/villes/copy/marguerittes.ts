@@ -30,8 +30,8 @@ export const MARGUERITTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit Flash 490 € HT.",
-      en: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit Flash 490 € HT.",
+      fr: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marguerittes : formats adaptés aux entreprises de services, commerces, cabinets et artisans de l'agglomération nîmoise.",
@@ -53,7 +53,7 @@ export const MARGUERITTES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Marguerittes  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises de services ?",

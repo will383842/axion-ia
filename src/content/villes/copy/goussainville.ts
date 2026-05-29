@@ -30,8 +30,8 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Goussainville : diagnostic des tâches automatisables pour logistique Roissy, entreposage, transport et services. Audit Flash dès 490 € HT, livrable priorisé.",
-      en: "Audit IA à Goussainville : diagnostic des tâches automatisables pour logistique Roissy, entreposage, transport et services. Audit Flash dès 490 € HT, livrable priorisé.",
+      fr: "Audit IA à Goussainville : diagnostic des tâches automatisables pour logistique Roissy, entreposage, transport et services. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Goussainville : diagnostic des tâches automatisables pour logistique Roissy, entreposage, transport et services. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Goussainville : ateliers pratiques pour exploitation logistique, planning et administration, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Goussainville ?",
-      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME val-d'oisiennes : logistique, transport, entreposage et services aux entreprises.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME val-d'oisiennes : logistique, transport, entreposage et services aux entreprises.",
     },
     {
       q: "Comment l'IA aide-t-elle les entreprises logistiques de Roissy ?",

@@ -30,8 +30,8 @@ export const ELVEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, TPE artisans, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, TPE artisans, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, TPE artisans, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, TPE artisans, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Elven : formats adaptés exploitation agricole, atelier artisan, commerce, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const ELVEN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Vannes ou Rennes ?",

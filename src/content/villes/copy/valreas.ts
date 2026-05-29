@@ -30,8 +30,8 @@ export const VALREAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valréas : diagnostic adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Valréas : diagnostic adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Valréas : diagnostic adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Valréas : diagnostic adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valréas : ateliers pour équipes TPE/PME cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
@@ -53,7 +53,7 @@ export const VALREAS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Valréas  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et commerces valréassiens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et commerces valréassiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les viticulteurs AOC Côtes du Rhône ?",

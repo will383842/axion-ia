@@ -10,9 +10,9 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Blanc-Mesnil (Seine-Saint-Denis, 62 376 habitants en 2023), commune membre de la métropole du Grand Paris et de l'établissement public territorial Paris Terres d'Envol depuis 2016. Située à 7 km de Paris, entre l'aéroport de Roissy-Charles-de-Gaulle et le Stade de France, la ville héberge un tissu varié de PME commerçantes, artisanales et de services. Notre cabinet conçoit du code IA sur mesure, sans no-code, adapté aux contraintes d'une commune dense d'Île-de-France.",
   directAnswerFr:
-    "Axion-IA se déplace au Blanc-Mesnil pour accompagner en priorité les TPE et PME locales, puis les ETI, dans la conception de solutions IA codées sur mesure. Située en Seine-Saint-Denis, dans l'établissement public territorial Paris Terres d'Envol, la commune compte 62 376 habitants en 2023 et bénéficie d'un positionnement stratégique entre Paris, Roissy-CDG et Le Bourget. Nos prestations (Audit Flash 590 € HT, interventions ciblées, implémentation, sessions un-à-un) sont calibrées pour le tissu local : commerce, artisanat, logistique légère et services aux entreprises.",
+    "Axion-IA se déplace au Blanc-Mesnil pour accompagner en priorité les TPE et PME locales, puis les ETI, dans la conception de solutions IA codées sur mesure. Située en Seine-Saint-Denis, dans l'établissement public territorial Paris Terres d'Envol, la commune compte 62 376 habitants en 2023 et bénéficie d'un positionnement stratégique entre Paris, Roissy-CDG et Le Bourget. Nos prestations (Audit Flash {{price:intervention-4h|flat}}, interventions ciblées, implémentation, sessions un-à-un) sont calibrées pour le tissu local : commerce, artisanat, logistique légère et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA se déplace au Blanc-Mesnil pour accompagner en priorité les TPE et PME locales, puis les ETI, dans la conception de solutions IA codées sur mesure. Située en Seine-Saint-Denis, dans l'établissement public territorial Paris Terres d'Envol, la commune compte 62 376 habitants en 2023 et bénéficie d'un positionnement stratégique entre Paris, Roissy-CDG et Le Bourget. Nos prestations (Audit Flash 590 € HT, interventions ciblées, implémentation, sessions un-à-un) sont calibrées pour le tissu local : commerce, artisanat, logistique légère et services aux entreprises.",
+    "Axion-IA se déplace au Blanc-Mesnil pour accompagner en priorité les TPE et PME locales, puis les ETI, dans la conception de solutions IA codées sur mesure. Située en Seine-Saint-Denis, dans l'établissement public territorial Paris Terres d'Envol, la commune compte 62 376 habitants en 2023 et bénéficie d'un positionnement stratégique entre Paris, Roissy-CDG et Le Bourget. Nos prestations (Audit Flash {{price:intervention-4h|flat}}, interventions ciblées, implémentation, sessions un-à-un) sont calibrées pour le tissu local : commerce, artisanat, logistique légère et services aux entreprises.",
   seoHook: "commerce, artisanat & services Grand Paris",
   ecosystemFr:
     "Le Blanc-Mesnil appartient à la métropole du Grand Paris et à l'établissement public territorial Paris Terres d'Envol. La commune a connu une historique d'industrialisation autour de la zone de la Molette (créée en 1858), puis une transition vers les services et le commerce après 1973. Le tissu économique actuel s'appuie sur les TPE/PME commerçantes, artisanales, logistiques et de services aux entreprises, avec une connexion forte aux pôles voisins (Le Bourget, Aulnay-sous-Bois, Drancy, Bondy, Dugny, Gonesse, Bonneuil-en-France).",
@@ -32,8 +32,8 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA au Blanc-Mesnil (590 € HT) pour TPE/PME — diagnostic ciblé pour un commerce de proximité, un artisan du BTP ou un prestataire de services aux entreprises situé en Seine-Saint-Denis.",
-      en: "Audit Flash IA au Blanc-Mesnil (590 € HT) pour TPE/PME — diagnostic ciblé pour un commerce de proximité, un artisan du BTP ou un prestataire de services aux entreprises situé en Seine-Saint-Denis.",
+      fr: "Audit Flash IA au Blanc-Mesnil ({{price:intervention-4h|flat}}) pour TPE/PME — diagnostic ciblé pour un commerce de proximité, un artisan du BTP ou un prestataire de services aux entreprises situé en Seine-Saint-Denis.",
+      en: "Audit Flash IA au Blanc-Mesnil ({{price:intervention-4h|flat}}) pour TPE/PME — diagnostic ciblé pour un commerce de proximité, un artisan du BTP ou un prestataire de services aux entreprises situé en Seine-Saint-Denis.",
     },
     interventions: {
       fr: "Interventions ciblées au Blanc-Mesnil pour TPE/PME — automatisation des devis, relances clients, suivi logistique pour les acteurs du commerce, de l'artisanat ou de la logistique légère.",
@@ -51,7 +51,7 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA au Blanc-Mesnil ?",
-      a: "Nos tarifs publics démarrent à 590 € HT pour une Intervention Essentielle et 590 € HT pour un Audit Flash IA. La grille complète (audit, interventions, implémentation, un-à-un) est publiée sur la page tarifs du site Axion-IA.",
+      a: "Nos tarifs publics démarrent à {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-4h|flat}} pour un Audit Flash IA. La grille complète (audit, interventions, implémentation, un-à-un) est publiée sur la page tarifs du site Axion-IA.",
     },
     {
       q: "Quels délais pour une intervention IA au Blanc-Mesnil ?",

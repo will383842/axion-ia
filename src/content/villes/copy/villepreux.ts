@@ -30,8 +30,8 @@ export const VILLEPREUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villepreux : formats adaptés chantier, bureau, commerce, cabinet, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const VILLEPREUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

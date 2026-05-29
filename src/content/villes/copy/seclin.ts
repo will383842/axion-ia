@@ -30,8 +30,8 @@ export const SECLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Seclin : diagnostic adapté aux TPE et PME de la santé, logistique aéroportuaire, agroalimentaire, commerce et services aux entreprises du sud lillois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Seclin : diagnostic adapté aux TPE et PME de la santé, logistique aéroportuaire, agroalimentaire, commerce et services aux entreprises du sud lillois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Seclin : diagnostic adapté aux TPE et PME de la santé, logistique aéroportuaire, agroalimentaire, commerce et services aux entreprises du sud lillois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Seclin : diagnostic adapté aux TPE et PME de la santé, logistique aéroportuaire, agroalimentaire, commerce et services aux entreprises du sud lillois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Seclin : formats adaptés aux établissements de santé, logisticiens, PME agroalimentaires ou commerçants. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const SECLIN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Seclin  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, logistique, agroalimentaire, commerce, services). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, logistique, agroalimentaire, commerce, services). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les logisticiens de la zone aéroportuaire Seclin-Lesquin ?",

@@ -30,8 +30,8 @@ export const SAINT_MANDRIER_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Mandrier-sur-Mer : ateliers pour restaurateurs, hôteliers, commerçants et artisans. Outils IA configurés métier réel touristique et services.",
@@ -53,7 +53,7 @@ export const SAINT_MANDRIER_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un restaurant ou hôtel mandréen ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux restaurants, hôtels et commerces de la presqu'île de Saint-Mandrier. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux restaurants, hôtels et commerces de la presqu'île de Saint-Mandrier. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les TPE de la pêche artisanale et du nautisme ?",

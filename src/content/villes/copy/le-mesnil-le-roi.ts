@@ -30,8 +30,8 @@ export const LE_MESNIL_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mesnil-le-Roi : formats adaptés au cabinet, au bureau ou en visio. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LE_MESNIL_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Mesnil-le-Roi ?",
-      a: "L'Audit Flash IA au Mesnil-le-Roi démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA au Mesnil-le-Roi démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales au Mesnil-le-Roi ?",

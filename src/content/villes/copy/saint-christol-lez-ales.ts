@@ -30,8 +30,8 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Christol-lez-Alès : formats adaptés aux entreprises industrielles, commerces, cabinets et artisans Alès Agglomération.",
@@ -53,7 +53,7 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Christol-lez-Alès  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bassin alésien ?",

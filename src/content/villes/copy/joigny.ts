@@ -30,8 +30,8 @@ export const JOIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Joigny : diagnostic adapté aux commerçants, artisans BTP, prestataires de services, viticulteurs et professions libérales de la sous-préfecture de l'Yonne. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Joigny : diagnostic adapté aux commerçants, artisans BTP, prestataires de services, viticulteurs et professions libérales de la sous-préfecture de l'Yonne. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Joigny : diagnostic adapté aux commerçants, artisans BTP, prestataires de services, viticulteurs et professions libérales de la sous-préfecture de l'Yonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Joigny : diagnostic adapté aux commerçants, artisans BTP, prestataires de services, viticulteurs et professions libérales de la sous-préfecture de l'Yonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Joigny : formats adaptés au commerce, à l'artisan BTP, au cabinet libéral ou à l'exploitation viticole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const JOIGNY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Joigny  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Joigny et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre commerce, artisanat ou cabinet.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Joigny et du nord Yonne, il identifie les cas d'usage IA à fort ROI pour votre commerce, artisanat ou cabinet.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans de Joigny ?",
@@ -65,7 +65,7 @@ export const JOIGNY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Joigny ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Joigny, à partir de 990 € HT. Sessions dans vos locaux commerciaux, artisanaux, bureau ou en visio. Approche terrain adaptée au tissu économique icaunais.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Joigny, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux commerciaux, artisanaux, bureau ou en visio. Approche terrain adaptée au tissu économique icaunais.",
     },
   ],
 };

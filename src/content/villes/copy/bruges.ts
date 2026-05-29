@@ -30,8 +30,8 @@ export const BRUGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruges : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const BRUGES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP brugeais ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Bruges (plombiers, électriciens, peintres, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Bruges (plombiers, électriciens, peintres, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales nord-bordelaises ?",
-      a: "Pour les professions libérales à Bruges et nord Bordeaux (médecins, avocats, expertise-comptable, consultants), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
+      a: "Pour les professions libérales à Bruges et nord Bordeaux (médecins, avocats, expertise-comptable, consultants), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

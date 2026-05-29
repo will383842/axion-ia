@@ -9,9 +9,9 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
   pitchEn:
     "Six-Fours-les-Plages (83), 37 109 habitants, 7ᵉ ville du Var, station balnéaire de la Métropole Toulon Provence Méditerranée. Façade méditerranéenne (Cap Sicié, Cap Nègre, îles des Embiez et du Gaou), limitrophe d'Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer. Tissu TPE commerce et restauration littoral, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence. Axion-IA, cabinet d'architectes IA seniors, y accompagne TPE saisonnières, PME services et artisans avec des solutions IA codées sur mesure.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Six-Fours-les-Plages (83) pour accompagner TPE commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Six-Fours-les-Plages (83) pour accompagner TPE commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Six-Fours-les-Plages (83) pour accompagner TPE commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Six-Fours-les-Plages (83) pour accompagner TPE commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
   seoHook: "TPE balnéaires, restauration & artisanat littoral",
   ecosystemFr:
     "Six-Fours-les-Plages s'étend sur 26,58 km² (1 396 hab/km²) le long du littoral méditerranéen varois, intégrée à la Métropole Toulon Provence Méditerranée. Trois communes limitrophes : Ollioules (vallée du Reppe), Sanary-sur-Mer et La Seyne-sur-Mer. Patrimoine naturel marquant : Cap Sicié, Cap Nègre (basalte volcanique), îles des Embiez et du Gaou, chapelle Notre-Dame-du-Mai (357 m), collégiale Saint-Pierre, fort XIXᵉ. Tissu économique : TPE commerce et restauration saisonnière, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence, tourisme balnéaire. Accès A50.",
@@ -30,20 +30,20 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Six-Fours-les-Plages : diagnostic pour TPE commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit Flash 4 h à 490 € HT, livrable ROI chiffré, prise en compte saisonnalité touristique.",
-      en: "Audit IA à Six-Fours-les-Plages : diagnostic pour TPE commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit Flash 4 h à 490 € HT, livrable ROI chiffré, prise en compte saisonnalité touristique.",
+      fr: "Audit IA à Six-Fours-les-Plages : diagnostic pour TPE commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit Flash 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré, prise en compte saisonnalité touristique.",
+      en: "Audit IA à Six-Fours-les-Plages : diagnostic pour TPE commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit Flash 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré, prise en compte saisonnalité touristique.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour TPE commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Intervention Essentielle à 590 € HT.",
-      en: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour TPE commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Intervention Essentielle à 590 € HT.",
+      fr: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour TPE commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Intervention Essentielle à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour TPE commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Intervention Essentielle à {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour TPE commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de 990 € HT.",
-      en: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour TPE commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de 990 € HT.",
+      fr: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour TPE commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour TPE commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants TPE balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de 990 € HT.",
-      en: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants TPE balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants TPE balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants TPE balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Six-Fours-les-Plages ?",
-      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à 490 € HT, Intervention Essentielle sur site à 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Pas de devis opaque, pas de surcoût géographique sur le Var littoral.",
+      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à {{price:audit-flash|flat}}, Intervention Essentielle sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Pas de devis opaque, pas de surcoût géographique sur le Var littoral.",
     },
     {
       q: "Quels délais d'intervention sur Six-Fours-les-Plages ?",

@@ -30,8 +30,8 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Fare-les-Oliviers : ateliers pour moulins à huile, domaines viticoles, cabinets libéraux, commerces et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Fare-les-Oliviers  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, oléiculteurs, viticulteurs et PME farencques. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, oléiculteurs, viticulteurs et PME farencques. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les moulins à huile et oléiculteurs ?",

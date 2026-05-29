@@ -30,8 +30,8 @@ export const LES_ACHARDS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Achards : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA aux Achards : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA aux Achards : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Achards : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Achards : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bocage vendéen. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const LES_ACHARDS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE aux Achards ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du bocage vendéen. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du bocage vendéen. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les artisans et commerces locaux ?",

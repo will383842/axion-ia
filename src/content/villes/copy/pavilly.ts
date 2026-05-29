@@ -10,9 +10,9 @@ export const PAVILLY_COPY: VilleCopy = {
     "Pavilly (76), commune du pays de Caux en Seine-Maritime, reunit pres de 6 030 habitants. Bourg-centre entre Rouen et Yvetot, elle accueille des TPE de services, des commerces de proximite, des artisans, des professions liberales et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, artisanat & pays de Caux",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Pavilly (76). Nous accompagnons les TPE, PME et independants du pays de Caux : commercants, artisans, professions liberales, prestataires de services et exploitants agricoles. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Pavilly est un bourg-centre du pays de Caux, a mi-chemin entre Rouen et Yvetot. Pole de services et de commerce pour un bassin rural : commerces de proximite, artisanat, professions liberales, TPE de services et activites agricoles. Acces D6015 et proximite A150.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PAVILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Pavilly : diagnostic adapte aux TPE de services, commercants et artisans du pays de Caux entre Rouen et Yvetot. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Pavilly : diagnostic adapte aux TPE de services, commercants et artisans du pays de Caux entre Rouen et Yvetot. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Pavilly : diagnostic adapte aux TPE de services, commercants et artisans du pays de Caux entre Rouen et Yvetot. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Pavilly : diagnostic adapte aux TPE de services, commercants et artisans du pays de Caux entre Rouen et Yvetot. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Pavilly : formations adaptees aux commerces, cabinets, ateliers artisanaux et exploitations agricoles du pays de Caux. Equipes autonomes.",
@@ -53,11 +53,11 @@ export const PAVILLY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Pavilly ?",
-      a: "Pour les commercants de Pavilly, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Audit Flash 490 EUR HT.",
+      a: "Pour les commercants de Pavilly, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Pavilly ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans de Pavilly ?",

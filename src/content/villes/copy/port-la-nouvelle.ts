@@ -30,8 +30,8 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit Flash 490 € HT.",
-      en: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit Flash 490 € HT.",
+      fr: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Port-la-Nouvelle : formats adaptés à l'activité portuaire, au commerce saisonnier, à l'hôtellerie balnéaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Port-la-Nouvelle  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME logistique portuaire, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistique portuaire, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme balnéaire ?",
@@ -65,7 +65,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Port-la-Nouvelle ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Port-la-Nouvelle. Format flexible : dans vos locaux, en visio ou à Narbonne. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Port-la-Nouvelle. Format flexible : dans vos locaux, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ombrée d'Anjou : formations pour équipes agricoles, artisanales et commerciales. Ateliers pratiques adaptés au contexte rural de l'Anjou bleu.",
@@ -53,7 +53,7 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ombrée d'Anjou  ?",
-      a: "L'Audit Flash IA à Ombrée d'Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Ombrée d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les exploitants laitiers de l'Anjou bleu ?",

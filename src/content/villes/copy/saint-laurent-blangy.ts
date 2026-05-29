@@ -10,9 +10,9 @@ export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
     "Saint-Laurent-Blangy (62), commune de l'agglomeration d'Arras au bord de la Scarpe, reunit pres de 6 460 habitants. Son economie beneficie de la proximite d'Arras : PME tertiaires, TPE de services, commerces, professions liberales et activites liees aux zones d'activites. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras, tertiaire & Scarpe",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Laurent-Blangy (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise : entreprises tertiaires, commercants, professions liberales et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Laurent-Blangy jouxte Arras (3 km) au bord de la Scarpe. Tissu economique dynamique : PME tertiaires en zones d'activites, TPE de services, professions liberales, commerces et artisanat. Proximite de la CUA (communaute urbaine d'Arras) et de ses equipements.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Saint-Laurent-Blangy : diagnostic adapte aux PME tertiaires, professions liberales et TPE de l'agglomeration arrageoise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Saint-Laurent-Blangy : formations adaptees aux bureaux tertiaires, cabinets liberaux, commerces et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME tertiaires de Saint-Laurent-Blangy ?",
-      a: "Pour les PME tertiaires de l'agglo d'Arras, nous proposons : automatisation administrative, IA redaction documents, agents conversationnels B2B, CRM intelligent. Audit Flash 490 EUR HT.",
+      a: "Pour les PME tertiaires de l'agglo d'Arras, nous proposons : automatisation administrative, IA redaction documents, agents conversationnels B2B, CRM intelligent. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Saint-Laurent-Blangy ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professions liberales de l'Arrageois ?",

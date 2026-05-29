@@ -10,9 +10,9 @@ export const SAINT_AUBIN_LES_ELBEUF_COPY: VilleCopy = {
     "Saint-Aubin-les-Elbeuf (76), commune de l'agglomeration d'Elbeuf en Seine-Maritime, reunit pres de 8 440 habitants. Ville residentielle et commercante en bord de Seine, elle accueille des TPE de services, des PME commerciales, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Elbeuf",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Aubin-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Aubin-les-Elbeuf fait partie de la Metropole Rouen Normandie, dans le secteur d'Elbeuf. Tissu economique de proximite : commerces, TPE de services, artisanat, professions liberales et PME de l'agglo elbeuvienne. Gare ferroviaire et acces A13.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_AUBIN_LES_ELBEUF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Saint-Aubin-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Saint-Aubin-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Saint-Aubin-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Saint-Aubin-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Saint-Aubin-les-Elbeuf : formations adaptees aux commerces, cabinets, ateliers et PME tertiaires de l'agglo elbeuvienne. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const SAINT_AUBIN_LES_ELBEUF_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Saint-Aubin-les-Elbeuf ?",
-      a: "Pour les commercants, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee. Audit Flash 490 EUR HT.",
+      a: "Pour les commercants, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Saint-Aubin-les-Elbeuf ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de l'agglo d'Elbeuf ?",

@@ -30,8 +30,8 @@ export const LUDRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ludres : formats adaptés à l'atelier, l'entrepôt logistique, le bureau, le commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const LUDRES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans ludréens ?",
-      a: "Oui, commerçants et artisans de Ludres : gestion stocks, relation client, automatisation comptabilité, présence en ligne. Audit Flash 490 € HT.",
+      a: "Oui, commerçants et artisans de Ludres : gestion stocks, relation client, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Ludres ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Ludres ?",

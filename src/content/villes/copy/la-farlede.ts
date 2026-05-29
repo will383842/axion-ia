@@ -28,8 +28,8 @@ export const LA_FARLEDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Farlède : diagnostic adapté aux TPE artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à La Farlède : diagnostic adapté aux TPE artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à La Farlède : diagnostic adapté aux TPE artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à La Farlède : diagnostic adapté aux TPE artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Farlède : formations pratiques adaptées maraîchage, agroalimentaire, artisanat, commerces et professions libérales. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LA_FARLEDE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à La Farlède  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous le maraîchage et l'agroalimentaire à La Farlède ?",
@@ -59,7 +59,7 @@ export const LA_FARLEDE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à La Farlède ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, maraîchers et gérants agroalimentaires de la vallée du Gapeau. Sur site ou visio, dès 990 € HT. Prise en main outils IA métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, maraîchers et gérants agroalimentaires de la vallée du Gapeau. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA métier.",
     },
     {
       q: "Quels délais pour une mission à La Farlède ?",

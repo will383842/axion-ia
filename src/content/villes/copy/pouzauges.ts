@@ -30,8 +30,8 @@ export const POUZAUGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pouzauges : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Pouzauges : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Pouzauges : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pouzauges : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pouzauges : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const POUZAUGES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Pouzauges ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les industries mécaniques vendéennes ?",

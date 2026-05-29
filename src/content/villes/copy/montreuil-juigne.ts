@@ -30,8 +30,8 @@ export const MONTREUIL_JUIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montreuil-Juigné : diagnostic adapté aux PME tertiaires, professions libérales et commerçants de la rive nord-ouest Angers. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Montreuil-Juigné : diagnostic adapté aux PME tertiaires, professions libérales et commerçants de la rive nord-ouest Angers. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Montreuil-Juigné : diagnostic adapté aux PME tertiaires, professions libérales et commerçants de la rive nord-ouest Angers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Montreuil-Juigné : diagnostic adapté aux PME tertiaires, professions libérales et commerçants de la rive nord-ouest Angers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montreuil-Juigné : formations pour cabinets, commerces et PME services. Ateliers pratiques dans vos locaux en bords de Mayenne.",
@@ -53,7 +53,7 @@ export const MONTREUIL_JUIGNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Montreuil-Juigné  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Montreuil-Juigné démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Montreuil-Juigné démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Montreuil-Juigné ?",

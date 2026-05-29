@@ -30,8 +30,8 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Controis-en-Sologne : diagnostic adapté aux TPE viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Controis-en-Sologne : diagnostic adapté aux TPE viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Controis-en-Sologne : diagnostic adapté aux TPE viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Controis-en-Sologne : diagnostic adapté aux TPE viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Controis-en-Sologne : formations dans votre exploitation viticole, bureau ou commerce. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Controis-en-Sologne ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les viticulteurs AOC Touraine ?",

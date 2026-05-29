@@ -44,14 +44,14 @@ export const NANTERRE_COPY: VilleCopy = {
       en: "Implémentation IA à Nanterre : déploiement d'outils RAG (Retrieval-Augmented Generation), automatisation et intégration SI pour ETI et PME du bassin Puteaux–Courbevoie–Rueil-Malmaison. Détail sur /implementations.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 dirigeant à Nanterre : sessions individuelles pour DG, Dir. Transformation ou fondateurs — cadrage stratégie IA, priorisation, gouvernance. Tarif public dès 990 € HT. Détail sur /un-a-un.",
-      en: "Coaching 1-to-1 dirigeant à Nanterre : sessions individuelles pour DG, Dir. Transformation ou fondateurs — cadrage stratégie IA, priorisation, gouvernance. Tarif public dès 990 € HT. Détail sur /un-a-un.",
+      fr: "Coaching 1-to-1 dirigeant à Nanterre : sessions individuelles pour DG, Dir. Transformation ou fondateurs — cadrage stratégie IA, priorisation, gouvernance. Tarif public dès {{price:intervention-dirigeants|flat}}. Détail sur /un-a-un.",
+      en: "Coaching 1-to-1 dirigeant à Nanterre : sessions individuelles pour DG, Dir. Transformation ou fondateurs — cadrage stratégie IA, priorisation, gouvernance. Tarif public dès {{price:intervention-dirigeants|flat}}. Détail sur /un-a-un.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA pour une PME basée à Nanterre ?",
-      a: "L'Audit Flash (4h) démarre à 490 € HT — il couvre la cartographie de vos processus et l'identification des chantiers IA prioritaires. Pour une PME du 92 avec plusieurs services à analyser, des formules étendues existent. Tarifs publics complets consultables sur axion-ia.fr/audits.",
+      a: "L'Audit Flash (4h) démarre à {{price:audit-flash|flat}} — il couvre la cartographie de vos processus et l'identification des chantiers IA prioritaires. Pour une PME du 92 avec plusieurs services à analyser, des formules étendues existent. Tarifs publics complets consultables sur axion-ia.fr/audits.",
     },
     {
       q: "William se déplace-t-il physiquement à Nanterre ou l'intervention est-elle à distance ?",
@@ -59,7 +59,7 @@ export const NANTERRE_COPY: VilleCopy = {
     },
     {
       q: "Une ETI multi-sites avec siège à Nanterre peut-elle déployer l'IA progressivement ?",
-      a: "Oui. Notre approche pour les ETI commence par un audit de gouvernance IA, puis un pilote sur un périmètre restreint avant déploiement multi-sites. Cela inclut la formation des managers et la conformité AI Act. L'implémentation démarre à 990 € HT ; le périmètre ETI est cadré en amont.",
+      a: "Oui. Notre approche pour les ETI commence par un audit de gouvernance IA, puis un pilote sur un périmètre restreint avant déploiement multi-sites. Cela inclut la formation des managers et la conformité AI Act. L'implémentation démarre à {{price:impl-poc|entry}} ; le périmètre ETI est cadré en amont.",
     },
     {
       q: "Quel délai entre la prise de contact et le premier audit à Nanterre ?",
@@ -71,7 +71,7 @@ export const NANTERRE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA propose-t-il des interventions collectives pour les équipes financières de Nanterre ?",
-      a: "Oui. Nos interventions collectives sont adaptables aux métiers de la finance, de l'assurance et du conseil — secteurs dominants à Nanterre. Le format Intervention Essentielle démarre à 590 € HT. Les contenus couvrent les usages IA concrets : analyse de données, automatisation de reporting, assistance documentaire.",
+      a: "Oui. Nos interventions collectives sont adaptables aux métiers de la finance, de l'assurance et du conseil — secteurs dominants à Nanterre. Le format Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Les contenus couvrent les usages IA concrets : analyse de données, automatisation de reporting, assistance documentaire.",
     },
   ],
 };

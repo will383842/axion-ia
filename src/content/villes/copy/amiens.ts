@@ -720,7 +720,7 @@ export const AMIENS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Amiens accompagne individuellement les dirigeants et cadres des PME industrielles, des entreprises logistiques et du tissu tertiaire des Hauts-de-France. À partir de 990 € HT pour les TPE, chaque programme cible vos cas d'usage réels — gestion de production, documentation fournisseurs, reporting, R&D agroalimentaire. Vous progressez à votre rythme sans lâcher votre activité.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Amiens accompagne individuellement les dirigeants et cadres des PME industrielles, des entreprises logistiques et du tissu tertiaire des Hauts-de-France. À partir de {{price:intervention-dirigeants|flat}} pour les TPE, chaque programme cible vos cas d'usage réels — gestion de production, documentation fournisseurs, reporting, R&D agroalimentaire. Vous progressez à votre rythme sans lâcher votre activité.",
         whyHere: [
           "Amiens est un bassin industriel où les dirigeants de PME manufacturières (équipement, sous-traitance, agroalimentaire) ont des agendas très chargés : le coaching 1-to-1 s'adapte à leur rythme, en visio ou en présentiel à Amiens.",
           "Le tissu logistique (Longueau, Camon, Glisy) concentre des responsables d'exploitation confrontés à des cas IA concrets : traçabilité, préparation de commandes, reporting automatisé. Le coaching individuel ancre ces sujets dans leur réalité quotidienne.",
@@ -759,7 +759,7 @@ export const AMIENS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Programme d'entrée pour les gérants de TPE, artisans et indépendants du bassin amiénois souhaitant intégrer l'IA dans leur activité quotidienne.",
           },
@@ -826,7 +826,7 @@ export const AMIENS_COPY: VilleCopy = {
           "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Amiens individually supports executives and managers at manufacturing SMEs, logistics companies and service firms across Hauts-de-France. Starting from 990 € excl. VAT for micro-businesses, each programme targets your real use cases — production management, supplier documentation, reporting, agri-food R&D. You progress at your own pace without halting your operations.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Amiens individually supports executives and managers at manufacturing SMEs, logistics companies and service firms across Hauts-de-France. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme targets your real use cases — production management, supplier documentation, reporting, agri-food R&D. You progress at your own pace without halting your operations.",
         whyHere: [
           "Amiens is an industrial basin where manufacturing SME executives have very busy agendas: 1-to-1 coaching adapts to their rhythm, by video or in person in Amiens.",
           "The logistics cluster (Longueau, Camon, Glisy) concentrates operations managers facing concrete AI use cases: traceability, order preparation, automated reporting. Individual coaching anchors these topics in their daily reality.",
@@ -865,7 +865,7 @@ export const AMIENS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From 990 € excl. VAT",
+            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
             detail:
               "Entry programme for micro-business owners, craft firms and freelancers in the Amiens basin wishing to integrate AI into their daily activity.",
           },

@@ -30,8 +30,8 @@ export const LIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ligné : formats adaptés à l'exploitation, au bureau, au commerce ou au cabinet. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,15 +53,15 @@ export const LIGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",
-      a: "Oui, nous accompagnons les exploitations agricoles de Ligné sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks, optimisation logistique, agents IA vente directe. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitations agricoles de Ligné sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks, optimisation logistique, agents IA vente directe. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants de Ligné, nous proposons audit IA (Flash 490 € HT), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
+      a: "Pour les TPE artisans et commerçants de Ligné, nous proposons audit IA (Flash {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
     },
     {
       q: "Combien coûte un audit IA à Ligné  ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",

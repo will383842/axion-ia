@@ -30,8 +30,8 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Faches-Thumesnil : diagnostic adapté aux commerçants de la RN17, artisans BTP, PME de services et professions libérales de l'agglomération lilloise sud. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Faches-Thumesnil : diagnostic adapté aux commerçants de la RN17, artisans BTP, PME de services et professions libérales de l'agglomération lilloise sud. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Faches-Thumesnil : diagnostic adapté aux commerçants de la RN17, artisans BTP, PME de services et professions libérales de l'agglomération lilloise sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Faches-Thumesnil : diagnostic adapté aux commerçants de la RN17, artisans BTP, PME de services et professions libérales de l'agglomération lilloise sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Faches-Thumesnil : formats adaptés à la concession auto, au commerce de zone, à la PME de services ou à l'artisan BTP. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Faches-Thumesnil  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Faches-Thumesnil et du Nord, il identifie les cas d'usage IA à fort ROI pour votre commerce, atelier artisan, PME de services ou cabinet libéral.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Faches-Thumesnil et du Nord, il identifie les cas d'usage IA à fort ROI pour votre commerce, atelier artisan, PME de services ou cabinet libéral.",
     },
     {
       q: "Accompagnez-vous les commerçants de la RN17 et les concessions auto ?",
@@ -65,7 +65,7 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Faches-Thumesnil ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Faches-Thumesnil, à partir de 990 € HT. Sessions sur site, en zone commerciale ou en visio. Approche terrain adaptée au tissu commerçant, artisan et PME de l'agglomération lilloise sud.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Faches-Thumesnil, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site, en zone commerciale ou en visio. Approche terrain adaptée au tissu commerçant, artisan et PME de l'agglomération lilloise sud.",
     },
   ],
 };

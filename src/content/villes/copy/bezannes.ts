@@ -30,8 +30,8 @@ export const BEZANNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bezannes : formats adaptés bureau tertiaire, espace coworking, salle de formation. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const BEZANNES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bezannes  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE startups et PME tertiaires du pôle Bezannes.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE startups et PME tertiaires du pôle Bezannes.",
     },
     {
       q: "Travaillez-vous avec les startups et ESN de Bezannes ?",

@@ -32,26 +32,26 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
-      en: "Audit Flash 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
+      fr: "Audit Flash 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit Flash 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès 590 € HT, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès 590 € HT, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      en: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
-      fr: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de 990 € HT, hébergement RGPD France.",
-      en: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de 990 € HT, hébergement RGPD France.",
+      fr: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
+      en: "Implémentation IA en code source à Maisons-Alfort (intégration logiciel métier santé, ERP, CRM, outils laboratoire) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de 990 € HT.",
-      en: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de 990 € HT.",
+      fr: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Maisons-Alfort pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA, sélection des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Maisons-Alfort ?",
-      a: "Les interventions Axion-IA à Maisons-Alfort démarrent à 590 € HT, l'Audit Flash 4h à 490 € HT, et l'implémentation à 990 € HT. Les tarifs publics complets sont disponibles sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Maisons-Alfort démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Les tarifs publics complets sont disponibles sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Maisons-Alfort ?",
@@ -71,7 +71,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA sur site à Maisons-Alfort ?",
-      a: "Oui, nous animons des ateliers en présentiel à Maisons-Alfort (demi-journée ou journée complète) pour les équipes des TPE et PME, et des sessions 1-to-1 pour dirigeants à partir de 990 € HT.",
+      a: "Oui, nous animons des ateliers en présentiel à Maisons-Alfort (demi-journée ou journée complète) pour les équipes des TPE et PME, et des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

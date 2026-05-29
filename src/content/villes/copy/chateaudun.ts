@@ -30,8 +30,8 @@ export const CHATEAUDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaudun : formats adaptés à l'atelier industriel, bureau tertiaire, exploitation agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const CHATEAUDUN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE/PME industrielles de Châteaudun ?",
-      a: "Oui, automatisation processus, maintenance prédictive, classification qualité, optimisation chaîne logistique. Audit Flash 490 € HT.",
+      a: "Oui, automatisation processus, maintenance prédictive, classification qualité, optimisation chaîne logistique. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les acteurs agroalimentaires Beauce ?",
@@ -61,7 +61,7 @@ export const CHATEAUDUN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces du centre-ville ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
       q: "Comment se passe une mission depuis Chartres ou Orléans ?",

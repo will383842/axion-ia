@@ -30,8 +30,8 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pré-Saint-Gervais : formations pratiques dans votre commerce, atelier ou bureau. Équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Pré-Saint-Gervais ?",
-      a: "L'Audit Flash IA au Pré-Saint-Gervais débute à 490 € HT pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
+      a: "L'Audit Flash IA au Pré-Saint-Gervais débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans du Pré-Saint-Gervais ?",

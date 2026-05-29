@@ -30,8 +30,8 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Maurice : formats adaptés cabinet médical, commerce, restaurant, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Maurice ?",
-      a: "L'audit Flash IA à Saint-Maurice démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Saint-Maurice démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Quels services pour les commerces et restaurants ?",
-      a: "CRM augmenté, gestion stocks prédictive, prise de commande automatisée, fidélisation client IA, présence digitale optimisée, automatisation réservations. Audit Flash 490 € HT pour identifier vos priorités.",
+      a: "CRM augmenté, gestion stocks prédictive, prise de commande automatisée, fidélisation client IA, présence digitale optimisée, automatisation réservations. Audit Flash {{price:audit-flash|flat}} pour identifier vos priorités.",
     },
     {
       q: "Comment se déroule un coaching 1-to-1 à Saint-Maurice ?",

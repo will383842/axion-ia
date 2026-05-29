@@ -13,9 +13,9 @@ export const MEAUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Meaux (56 905 habitants, sous-préfecture de Seine-et-Marne) dans l'adoption concrète de l'IA. Ancienne capitale de la Brie, la ville reste liée au terroir fromager du brie de Meaux et concentre commerces, industries, services aux entreprises et activités agroalimentaires à 41 km à l'est de Paris. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi production et reporting. Notre approche s'adapte aussi aux ETI du bassin meldois.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Intervention Essentielle dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Intervention Essentielle dès 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Intervention Essentielle dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "agroalimentaire briard & commerce de proximité",
   ecosystemFr:
     "Sous-préfecture de Seine-et-Marne, Meaux structure le bassin économique briard avec une économie diversifiée mêlant filière agroalimentaire (brie de Meaux AOP, moutarde), commerce, industrie légère, construction et services aux entreprises. La ligne P du Transilien relie Meaux à Paris-Est en 25 minutes et l'autoroute A4 dessert la zone via la bretelle A140, ouvrant le territoire vers Marne-la-Vallée et la métropole parisienne. Le port fluvial sur la Marne complète l'offre logistique.",
@@ -35,26 +35,26 @@ export const MEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4 h à Meaux dès 490 € HT : cartographie des processus automatisables côté agroalimentaire, commerce ou services, livré sous 5 jours ouvrés.",
-      en: "Audit Flash 4 h à Meaux dès 490 € HT : cartographie des processus automatisables côté agroalimentaire, commerce ou services, livré sous 5 jours ouvrés.",
+      fr: "Audit Flash 4 h à Meaux dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté agroalimentaire, commerce ou services, livré sous 5 jours ouvrés.",
+      en: "Audit Flash 4 h à Meaux dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté agroalimentaire, commerce ou services, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervention Essentielle dès 590 € HT à Meaux pour automatiser devis, relances clients et suivi production — code custom, pas de no-code.",
-      en: "Intervention Essentielle dès 590 € HT à Meaux pour automatiser devis, relances clients et suivi production — code custom, pas de no-code.",
+      fr: "Intervention Essentielle dès {{price:intervention-4h|flat}} à Meaux pour automatiser devis, relances clients et suivi production — code custom, pas de no-code.",
+      en: "Intervention Essentielle dès {{price:intervention-4h|flat}} à Meaux pour automatiser devis, relances clients et suivi production — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémentation IA sur site à Meaux à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
-      en: "Implémentation IA sur site à Meaux à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      fr: "Implémentation IA sur site à Meaux à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      en: "Implémentation IA sur site à Meaux à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Session 1-to-1 dirigeant TPE/PME à Meaux dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
-      en: "Session 1-to-1 dirigeant TPE/PME à Meaux dès 990 € HT : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      fr: "Session 1-to-1 dirigeant TPE/PME à Meaux dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeant TPE/PME à Meaux dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Meaux ?",
-      a: "À Meaux, l'Audit Flash 4 h démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Les implémentations et sessions 1-to-1 commencent à 990 € HT. Tous nos tarifs sont publics et sans engagement.",
+      a: "À Meaux, l'Audit Flash 4 h démarre à {{price:audit-flash|flat}} et l'Intervention Essentielle à {{price:intervention-4h|flat}}. Les implémentations et sessions 1-to-1 commencent à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et sans engagement.",
     },
     {
       q: "Sous quel délai Axion-IA intervient à Meaux ?",
@@ -74,7 +74,7 @@ export const MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions IA pour dirigeants à Meaux ?",
-      a: "Oui, nos sessions 1-to-1 dirigeants à Meaux démarrent à 990 € HT et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Meaux démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
     },
   ],
 };

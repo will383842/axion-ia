@@ -30,8 +30,8 @@ export const AURAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auray : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie du golfe du Morbihan, commerces du port Saint-Goustan, ostréiculteurs, nautisme, agences immobilières. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Auray : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie du golfe du Morbihan, commerces du port Saint-Goustan, ostréiculteurs, nautisme, agences immobilières. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Auray : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie du golfe du Morbihan, commerces du port Saint-Goustan, ostréiculteurs, nautisme, agences immobilières. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auray : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie du golfe du Morbihan, commerces du port Saint-Goustan, ostréiculteurs, nautisme, agences immobilières. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auray : formats adaptés hôtel-restaurant, boutique de port, chantier ostréicole, agence immobilière. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const AURAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Auray  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME tourisme/hôtellerie du golfe du Morbihan.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME tourisme/hôtellerie du golfe du Morbihan.",
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants du port Saint-Goustan ?",

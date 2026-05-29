@@ -30,8 +30,8 @@ export const BEAUZELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beauzelle : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Beauzelle  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Beauzelle ?",
@@ -65,7 +65,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à Beauzelle ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Beauzelle. Format flexible : locaux, visio. À partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Beauzelle. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

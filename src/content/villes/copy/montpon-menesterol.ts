@@ -30,8 +30,8 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit Flash 490 € HT.",
-      en: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit Flash 490 € HT.",
+      fr: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montpon-Ménestérol : formations pratiques pour commerçants, artisans BTP et exploitants agroalimentaires de la Double.",
@@ -53,7 +53,7 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Montpon-Ménestérol  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'ouest Dordogne. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'ouest Dordogne. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les artisans BTP à Montpon-Ménestérol ?",
@@ -65,7 +65,7 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel dans la Double ?",
-      a: "Oui, coaching 1-to-1 adapté aux dirigeants TPE/PME de Montpon-Ménestérol et de la Double périgourdine. Sur site ou en visio. Sessions dès 990 € HT.",
+      a: "Oui, coaching 1-to-1 adapté aux dirigeants TPE/PME de Montpon-Ménestérol et de la Double périgourdine. Sur site ou en visio. Sessions dès {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

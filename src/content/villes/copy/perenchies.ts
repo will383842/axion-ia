@@ -30,8 +30,8 @@ export const PERENCHIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pérenchies : formats adaptés au commerce, à l'artisan ou au prestataire B2B de l'agglo lilloise. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const PERENCHIES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pérenchies  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la MEL ouest, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, artisanat, services B2B, profession libérale). Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la MEL ouest, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, artisanat, services B2B, profession libérale). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME B2B prestataires de l'agglo lilloise ?",

@@ -45,8 +45,8 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
       en: "Déploiement d'outils IA sur mesure (RAG documentaire, automatisation, agents) chez vos équipes à Saint-Germain-en-Laye — code custom intégré dans votre SI, sans dépendance éditeur. Détail complet sur la sous-page /implementations.",
     },
     unAUn: {
-      fr: "Accompagnement individuel dirigeant TPE/PME à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de 990 € HT — détail sur la sous-page /un-a-un.",
-      en: "Accompagnement individuel dirigeant TPE/PME à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de 990 € HT — détail sur la sous-page /un-a-un.",
+      fr: "Accompagnement individuel dirigeant TPE/PME à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
+      en: "Accompagnement individuel dirigeant TPE/PME à Saint-Germain-en-Laye : cadrage stratégique IA, feuille de route, arbitrages make-or-buy. Format intensif sur site. À partir de {{price:intervention-dirigeants|flat}} — détail sur la sous-page /un-a-un.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention IA d'une TPE/PME saint-germanoise ?",
-      a: "Une intervention collective démarre à 590 € HT pour 5 à 20 personnes. Un accompagnement dirigeant 1-to-1 démarre à 990 € HT. L'audit complet est cadré sur mesure selon le périmètre. Tarifs publics consultables sur axion-ia.fr.",
+      a: "Une intervention collective démarre à {{price:intervention-4h|flat}} pour 5 à 20 personnes. Un accompagnement dirigeant 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. L'audit complet est cadré sur mesure selon le périmètre. Tarifs publics consultables sur axion-ia.fr.",
     },
     {
       q: "Quels délais pour démarrer un premier projet IA à Saint-Germain-en-Laye ?",

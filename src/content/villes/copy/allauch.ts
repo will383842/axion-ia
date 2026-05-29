@@ -11,9 +11,9 @@ export const ALLAUCH_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Allauch, commune de 21 443 habitants située à 12 km de Marseille dans les Bouches-du-Rhône. Nous intervenons auprès des artisans, commerçants et petites industries de la zone d'activités de Fontvieille (agro-alimentaire, nougats, cafés, petite industrie de pointe) ainsi que des laboratoires pharmaceutiques type Laphal. Nos consultants se déplacent sur site pour auditer vos processus, automatiser vos tâches administratives et former vos équipes à l'IA opérationnelle.",
   directAnswerFr:
-    "À Allauch, Axion-IA intervient directement sur site pour les TPE et PME locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès 490 € HT, des interventions d'automatisation dès 590 € HT et des formations dirigeants dès 990 € HT. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
+    "À Allauch, Axion-IA intervient directement sur site pour les TPE et PME locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès {{price:audit-flash|flat}}, des interventions d'automatisation dès {{price:intervention-4h|flat}} et des formations dirigeants dès {{price:intervention-dirigeants|flat}}. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
   directAnswerEn:
-    "À Allauch, Axion-IA intervient directement sur site pour les TPE et PME locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès 490 € HT, des interventions d'automatisation dès 590 € HT et des formations dirigeants dès 990 € HT. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
+    "À Allauch, Axion-IA intervient directement sur site pour les TPE et PME locales — artisans nougatiers, producteurs de chips, fromagers de chèvre, commerces des trois centres urbains et entreprises de la zone d'activités de Fontvieille (créée en 1981). Notre cabinet propose des audits IA dès {{price:audit-flash|flat}}, des interventions d'automatisation dès {{price:intervention-4h|flat}} et des formations dirigeants dès {{price:intervention-dirigeants|flat}}. Code source custom par défaut, conformité RGPD garantie. Nous couvrons également Aubagne, Plan-de-Cuques, Marseille, Mimet, Peypin, Roquevaire, Cadolive et Saint-Savournin.",
   seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Le tissu économique d'Allauch s'appuie sur la zone d'activités de Fontvieille spécialisée en agro-alimentaire et petite industrie de pointe, le laboratoire pharmaceutique Laphal (plus de 130 emplois) ainsi que des entreprises complémentaires comme Irex et IPP Pharma. La commune compte environ 100 commerces répartis sur trois centres urbains, et un artisanat dynamique autour du nougat provençal, de La Chips d'Allauch (depuis 1976) et des fromages de chèvre. La majorité des actifs travaille sur l'agglomération Aix-Marseille.",
@@ -33,26 +33,26 @@ export const ALLAUCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit Flash dès 490 € HT.",
+      fr: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA en code source à Allauch, adaptées aux PME pharma (Laphal, IPP Pharma) ou aux producteurs locaux — à partir de 990 € HT.",
-      en: "Implémenter des solutions IA en code source à Allauch, adaptées aux PME pharma (Laphal, IPP Pharma) ou aux producteurs locaux — à partir de 990 € HT.",
+      fr: "Implémenter des solutions IA en code source à Allauch, adaptées aux PME pharma (Laphal, IPP Pharma) ou aux producteurs locaux — à partir de {{price:impl-poc|entry}}.",
+      en: "Implémenter des solutions IA en code source à Allauch, adaptées aux PME pharma (Laphal, IPP Pharma) ou aux producteurs locaux — à partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour TPE/PME — à partir de 990 € HT.",
-      en: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour TPE/PME — à partir de 990 € HT.",
+      fr: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour TPE/PME — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner en un-à-un les dirigeants d'Allauch — sessions personnalisées pour TPE/PME — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Allauch ?",
-      a: "Les interventions IA à Allauch débutent à 590 € HT pour une Intervention Essentielle. Un Audit Flash est proposé dès 490 € HT et une implémentation complète à partir de 990 € HT. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Les interventions IA à Allauch débutent à {{price:intervention-4h|flat}} pour une Intervention Essentielle. Un Audit Flash est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Allauch ?",
@@ -72,7 +72,7 @@ export const ALLAUCH_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les équipes à Allauch ?",
-      a: "Oui, nous proposons des formations sur site à Allauch en format 1-to-1 dirigeants (dès 990 € HT) ou en sessions collectives pour équipes opérationnelles, adaptées aux PME et TPE locales.",
+      a: "Oui, nous proposons des formations sur site à Allauch en format 1-to-1 dirigeants (dès {{price:intervention-dirigeants|flat}}) ou en sessions collectives pour équipes opérationnelles, adaptées aux PME et TPE locales.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mignaloux-Beauvoir : formats adaptés au cabinet libéral, bureau tertiaire, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Mignaloux-Beauvoir ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE de Mignaloux-Beauvoir. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Mignaloux-Beauvoir. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales près du CHU ?",

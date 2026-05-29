@@ -30,8 +30,8 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Sébastien-de-Morsent : formats adaptés au cabinet, au bureau, au commerce, à l'atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Sébastien-de-Morsent, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
+      a: "Pour les TPE artisans et commerçants à Saint-Sébastien-de-Morsent, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",

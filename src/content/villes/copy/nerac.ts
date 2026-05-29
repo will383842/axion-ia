@@ -30,8 +30,8 @@ export const NERAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nérac : formats adaptés au domaine viticole, à l'hôtel-restaurant, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const NERAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Nérac  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME néracaises : acteurs du tourisme, viticulteurs, agroalimentaire, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME néracaises : acteurs du tourisme, viticulteurs, agroalimentaire, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les viticulteurs et producteurs autour de Nérac ?",
@@ -61,7 +61,7 @@ export const NERAC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Nérac ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Nérac, à partir de 990 € HT. Sessions dans votre domaine, hôtel, commerce ou en visio. Approche terrain adaptée aux métiers du pays d'Albret.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Nérac, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre domaine, hôtel, commerce ou en visio. Approche terrain adaptée aux métiers du pays d'Albret.",
     },
     {
       q: "Comment se déroule une mission IA à Nérac ?",

@@ -30,8 +30,8 @@ export const ARQUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arques : diagnostic adapté aux PME industrielles, TPE artisanales et professions libérales de l'agglomération audomaroise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Arques : diagnostic adapté aux PME industrielles, TPE artisanales et professions libérales de l'agglomération audomaroise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Arques : diagnostic adapté aux PME industrielles, TPE artisanales et professions libérales de l'agglomération audomaroise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Arques : diagnostic adapté aux PME industrielles, TPE artisanales et professions libérales de l'agglomération audomaroise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arques : formations pratiques adaptées à l'atelier industriel, au commerce ou au cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const ARQUES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arques  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et TPE du bassin audomarois.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et TPE du bassin audomarois.",
     },
     {
       q: "L'IA peut-elle aider les PME industrielles d'Arques ?",
@@ -61,7 +61,7 @@ export const ARQUES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Arques ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants PME industrielles et TPE. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants PME industrielles et TPE. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Arques ?",

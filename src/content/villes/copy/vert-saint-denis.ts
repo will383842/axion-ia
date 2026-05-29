@@ -30,8 +30,8 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vert-Saint-Denis : formats adaptés au cabinet, commerce ou atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Vert-Saint-Denis ?",
-      a: "L'Audit Flash IA à Vert-Saint-Denis démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Vert-Saint-Denis démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans à Vert-Saint-Denis ?",

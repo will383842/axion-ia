@@ -13,9 +13,9 @@ export const ATHIS_MONS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Athis-Mons (36 613 habitants, Essonne) dans l'adoption concrète de l'IA. Située à 12 km au sud de Paris, la commune accueille 13,6 % de l'emprise de l'aéroport Paris-Orly sur son territoire et regroupe commerces de proximité, logistique aéroportuaire et services. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi client et reporting. Notre approche s'adapte aussi aux ETI implantées dans le territoire Grand-Orly Seine Bièvre.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Intervention Essentielle à partir de 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Intervention Essentielle à partir de {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à 490 € HT qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Intervention Essentielle à partir de 590 € HT. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Intervention Essentielle à partir de {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "commerce détail & logistique aéroportuaire",
   ecosystemFr:
     "Athis-Mons s'étend sur 8,56 km² avec une densité de 4 277 hab/km² et appartient à l'Établissement public territorial Grand-Orly Seine Bièvre, au sein de la métropole du Grand Paris. Son tissu économique combine commerces de proximité, restauration, services aux entreprises et un poids important de la logistique liée à l'aéroport Paris-Orly. La gare d'Athis-Mons sur le RER C et l'arrivée du tramway T7 en 2013 ouvrent le bassin d'emploi vers Villejuif et Paris.",
@@ -35,26 +35,26 @@ export const ATHIS_MONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4 h à Athis-Mons dès 490 € HT : cartographie des processus automatisables côté commerce, logistique Orly ou services, livré sous 5 jours ouvrés.",
-      en: "Audit Flash 4 h à Athis-Mons dès 490 € HT : cartographie des processus automatisables côté commerce, logistique Orly ou services, livré sous 5 jours ouvrés.",
+      fr: "Audit Flash 4 h à Athis-Mons dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté commerce, logistique Orly ou services, livré sous 5 jours ouvrés.",
+      en: "Audit Flash 4 h à Athis-Mons dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté commerce, logistique Orly ou services, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervention Essentielle dès 590 € HT à Athis-Mons pour automatiser devis, relances clients et suivi terrain — code custom, pas de no-code.",
-      en: "Intervention Essentielle dès 590 € HT à Athis-Mons pour automatiser devis, relances clients et suivi terrain — code custom, pas de no-code.",
+      fr: "Intervention Essentielle dès {{price:intervention-4h|flat}} à Athis-Mons pour automatiser devis, relances clients et suivi terrain — code custom, pas de no-code.",
+      en: "Intervention Essentielle dès {{price:intervention-4h|flat}} à Athis-Mons pour automatiser devis, relances clients et suivi terrain — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémentation IA sur site à Athis-Mons à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
-      en: "Implémentation IA sur site à Athis-Mons à partir de 990 € HT : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      fr: "Implémentation IA sur site à Athis-Mons à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
+      en: "Implémentation IA sur site à Athis-Mons à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès 990 € HT : feuille de route IA prioritisée sur 90 jours, sans jargon.",
-      en: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès 990 € HT : feuille de route IA prioritisée sur 90 jours, sans jargon.",
+      fr: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès {{price:intervention-dirigeants|flat}} : feuille de route IA prioritisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès {{price:intervention-dirigeants|flat}} : feuille de route IA prioritisée sur 90 jours, sans jargon.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Athis-Mons ?",
-      a: "À Athis-Mons, l'Audit Flash 4 h démarre à 490 € HT et l'Intervention Essentielle à 590 € HT. Les implémentations et sessions 1-to-1 commencent à 990 € HT. Tous nos tarifs sont publics et sans engagement.",
+      a: "À Athis-Mons, l'Audit Flash 4 h démarre à {{price:audit-flash|flat}} et l'Intervention Essentielle à {{price:intervention-4h|flat}}. Les implémentations et sessions 1-to-1 commencent à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et sans engagement.",
     },
     {
       q: "Sous quel délai Axion-IA intervient à Athis-Mons ?",
@@ -74,7 +74,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions IA pour dirigeants à Athis-Mons ?",
-      a: "Oui, nos sessions 1-to-1 dirigeants à Athis-Mons démarrent à 990 € HT et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Athis-Mons démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
     },
   ],
 };

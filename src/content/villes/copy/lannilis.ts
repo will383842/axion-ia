@@ -30,8 +30,8 @@ export const LANNILIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lannilis : diagnostic adapté aux TPE agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Lannilis : diagnostic adapté aux TPE agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Lannilis : diagnostic adapté aux TPE agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lannilis : diagnostic adapté aux TPE agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lannilis : formats adaptés exploitation agricole, atelier ostréicole, chantier artisan, commerce de bourg, gîte ou hôtel. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const LANNILIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lannilis  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE agricoles, ostréiculteurs et artisans du Pays des Abers.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE agricoles, ostréiculteurs et artisans du Pays des Abers.",
     },
     {
       q: "Travaillez-vous avec les ostréiculteurs et exploitations agricoles ?",

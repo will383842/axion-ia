@@ -30,8 +30,8 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux TPE artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux TPE artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux TPE artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Romilly-sur-Seine : diagnostic adapté aux TPE artisanales, PME textile et confection, sous-traitants industriels, commerces, acteurs logistiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Romilly-sur-Seine : formats adaptés atelier confection, entrepôt logistique, bureau PME, commerce. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Romilly-sur-Seine  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME textile auboises.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME textile auboises.",
     },
     {
       q: "Travaillez-vous avec les ateliers bonneterie et confection ?",

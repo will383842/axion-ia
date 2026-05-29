@@ -30,8 +30,8 @@ export const L_ARBRESLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Arbresle : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const L_ARBRESLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à L'Arbresle, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Pour les TPE artisans BTP et commerçants à L'Arbresle, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

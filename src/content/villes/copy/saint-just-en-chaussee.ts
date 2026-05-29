@@ -30,8 +30,8 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Just-en-Chaussée : formats adaptés à l'exploitation agricole, au silo céréalier, à l'atelier mécanique ou au commerce. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Just-en-Chaussée  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME saint-justois : exploitants agricoles, agroalimentaires, mécaniciens, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME saint-justois : exploitants agricoles, agroalimentaires, mécaniciens, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles du plateau picard ?",
@@ -65,7 +65,7 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Saint-Just-en-Chaussée ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Just-en-Chaussée, à partir de 990 € HT. Sessions dans votre exploitation, silo, atelier, commerce ou en visio. Approche terrain adaptée aux métiers agricoles et industriels du plateau picard.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Just-en-Chaussée, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre exploitation, silo, atelier, commerce ou en visio. Approche terrain adaptée aux métiers agricoles et industriels du plateau picard.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gilles : formats adaptés cabinet libéral, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Gilles (35)  ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Saint-Gilles et du bassin ouest-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Saint-Gilles et du bassin ouest-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants ?",

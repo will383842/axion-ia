@@ -30,8 +30,8 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux TPE artisanales, exploitations agricoles, PME industrielles et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE et PME de Parigné-l'Évêque ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans, PME industrielles, exploitants agricoles et commerçants de la commune.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans, PME industrielles, exploitants agricoles et commerçants de la commune.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles autour de Parigné-l'Évêque ?",
@@ -61,7 +61,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Parigné-l'Évêque  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Parigné-l'Évêque ?",

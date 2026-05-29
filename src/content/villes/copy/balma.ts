@@ -30,8 +30,8 @@ export const BALMA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Balma : diagnostic adapté aux TPE de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit Flash 490 € HT.",
-      en: "Audit IA à Balma : diagnostic adapté aux TPE de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit Flash 490 € HT.",
+      fr: "Audit IA à Balma : diagnostic adapté aux TPE de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Balma : diagnostic adapté aux TPE de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Balma : formats adaptés au cabinet de conseil, au commerce de quartier, au siège PME tertiaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const BALMA_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Balma  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tertiaires, un audit approfondi est proposé entre 1 900 et 3 900 € HT selon la complexité des process. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tertiaires, un audit approfondi est proposé entre 1 900 et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA sur site à Balma ?",
@@ -65,7 +65,7 @@ export const BALMA_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Balma ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants de TPE et PME à Balma. Format flexible : dans vos locaux, en visio ou en espace de coworking. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants de TPE et PME à Balma. Format flexible : dans vos locaux, en visio ou en espace de coworking. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

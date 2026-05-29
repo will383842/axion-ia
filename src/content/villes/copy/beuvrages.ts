@@ -30,8 +30,8 @@ export const BEUVRAGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beuvrages : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BEUVRAGES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP beuvrageois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Beuvrages sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash 490 € HT, intervention 1 journée formation.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Beuvrages sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du bassin valenciennois ?",
@@ -61,7 +61,7 @@ export const BEUVRAGES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Beuvrages, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
+      a: "Pour les commerçants et professions libérales à Beuvrages, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

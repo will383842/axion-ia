@@ -30,8 +30,8 @@ export const JONQUIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jonquières : diagnostic adapté aux TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Jonquières : diagnostic adapté aux TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Jonquières : diagnostic adapté aux TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Jonquières : diagnostic adapté aux TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jonquières : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const JONQUIERES_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles Côtes-du-Rhône de Jonquières ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Côtes-du-Rhône : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export, fiches Google Business multilingues et oenotourisme.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Côtes-du-Rhône : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export, fiches Google Business multilingues et oenotourisme.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et exploitations agricoles autour de Jonquières ?",
@@ -61,7 +61,7 @@ export const JONQUIERES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Jonquières  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Jonquières ?",

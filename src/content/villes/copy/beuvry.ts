@@ -30,8 +30,8 @@ export const BEUVRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit Flash 490 € HT.",
-      en: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit Flash 490 € HT.",
+      fr: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beuvry : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BEUVRY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Beuvry  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Beuvry ?",
@@ -61,7 +61,7 @@ export const BEUVRY_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Beuvry ?",
-      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du bassin minier. Sur site ou visio, à partir de 990 € HT. Prise en main outils IA adaptés à votre métier.",
+      a: "Oui, sessions 1-to-1 adaptées aux dirigeants TPE/PME du bassin minier. Sur site ou visio, à partir de {{price:intervention-dirigeants|flat}}. Prise en main outils IA adaptés à votre métier.",
     },
     {
       q: "Quels délais pour une mission à Beuvry ?",

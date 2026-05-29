@@ -30,8 +30,8 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Val d'Hazey : formats adaptés à l'usine, l'entrepôt logistique, l'exploitation agricole, le commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants du Val d'Hazey ?",
-      a: "Pour les TPE artisans et commerçants au Val d'Hazey, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
+      a: "Pour les TPE artisans et commerçants au Val d'Hazey, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",

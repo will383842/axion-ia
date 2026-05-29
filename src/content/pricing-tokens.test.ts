@@ -68,6 +68,15 @@ describe("resolvePriceTokens — modes", () => {
     );
   });
 
+  it("compact → montant sans « HT » (tier flat et sous-tier)", () => {
+    expect(resolvePriceTokens("{{price:audit-flash|compact}}", "fr")).toBe(
+      formatAmount(flash.priceFlat!, "fr", { compact: true }),
+    );
+    expect(resolvePriceTokens("{{price:audit-cible-solo|compact}}", "fr")).toBe(
+      formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true }),
+    );
+  });
+
   it("tier onQuote → « Sur devis » / « On request »", () => {
     expect(resolvePriceTokens("{{price:intervention-conference}}", "fr")).toBe(
       formatPrice(conference, "fr"),
@@ -139,9 +148,7 @@ describe("resolvePriceTokensDeep", () => {
     const out = resolvePriceTokensDeep(input, "fr");
     expect(out.title).toBe("Offre");
     expect(out.price).toBe(formatAmount(flash.priceFlat!, "fr"));
-    expect(out.nested.faq[1]).toContain(
-      formatAmountRange(cible.priceMin!, cible.priceMax!, "fr"),
-    );
+    expect(out.nested.faq[1]).toContain(formatAmountRange(cible.priceMin!, cible.priceMax!, "fr"));
     expect(out.keep).toBe(42);
     // immutabilité : l'entrée n'est pas mutée
     expect(input.price).toBe("{{price:audit-flash|flat}}");

@@ -30,8 +30,8 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noyant-Villages : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Noyant-Villages : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Noyant-Villages : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noyant-Villages : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noyant-Villages : formations adaptées aux exploitations agricoles, artisans, commerces et hébergeurs touristiques du Baugeois. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Noyant-Villages ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et commerçants du Baugeois. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et commerçants du Baugeois. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial ?",

@@ -31,8 +31,8 @@ export const BESSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bessan : diagnostic priorisé TPE (commerçants centre ancien, artisans BTP, professions libérales) puis PME (viticulteurs cave coopérative ou domaines indépendants AOC, exploitations agricoles). Audit Flash 490 € HT, ROI chiffré, 4 h sur site ou visio.",
-      en: "Audit IA à Bessan : diagnostic priorisé TPE (commerçants centre ancien, artisans BTP, professions libérales) puis PME (viticulteurs cave coopérative ou domaines indépendants AOC, exploitations agricoles). Audit Flash 490 € HT, ROI chiffré, 4 h sur site ou visio.",
+      fr: "Audit IA à Bessan : diagnostic priorisé TPE (commerçants centre ancien, artisans BTP, professions libérales) puis PME (viticulteurs cave coopérative ou domaines indépendants AOC, exploitations agricoles). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      en: "Audit IA à Bessan : diagnostic priorisé TPE (commerçants centre ancien, artisans BTP, professions libérales) puis PME (viticulteurs cave coopérative ou domaines indépendants AOC, exploitations agricoles). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bessan : ateliers adaptés au format de votre TPE/PME — domaine viticole, cave coopérative, atelier artisan, commerce de centre ancien, cabinet libéral. Équipes formées et autonomes sur outils IA métier après une journée.",
@@ -54,7 +54,7 @@ export const BESSAN_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une mission IA à Bessan ?",
-      a: "Audit Flash 490 € HT (4 h diagnostic + ROI chiffré). Intervention sur site dès 590 € HT par journée. Coaching 1-to-1 dès 590 € HT par séance. Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais d'intervention sur Bessan depuis votre première prise de contact ?",

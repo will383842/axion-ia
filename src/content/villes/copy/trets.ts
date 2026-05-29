@@ -30,8 +30,8 @@ export const TRETS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trets : diagnostic adapté aux TPE viticulteurs, artisans et PME de services de l'est aixois, pied Sainte-Victoire. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Trets : diagnostic adapté aux TPE viticulteurs, artisans et PME de services de l'est aixois, pied Sainte-Victoire. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Trets : diagnostic adapté aux TPE viticulteurs, artisans et PME de services de l'est aixois, pied Sainte-Victoire. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Trets : diagnostic adapté aux TPE viticulteurs, artisans et PME de services de l'est aixois, pied Sainte-Victoire. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trets : formats adaptés au domaine viticole, à l'atelier artisan et au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const TRETS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Trets ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les domaines viticoles et PME, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les domaines viticoles et PME, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
     },
     {
       q: "L'IA est-elle utile pour les viticulteurs de Trets ?",
-      a: "Oui, l'IA aide les viticulteurs AOC Sainte-Victoire : traçabilité parcellaire automatisée, gestion cave, optimisation vendanges, facturation, suivi clients export. Audit Flash 490 € HT.",
+      a: "Oui, l'IA aide les viticulteurs AOC Sainte-Victoire : traçabilité parcellaire automatisée, gestion cave, optimisation vendanges, facturation, suivi clients export. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Trets ?",

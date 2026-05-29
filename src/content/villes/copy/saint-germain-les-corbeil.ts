@@ -30,8 +30,8 @@ export const SAINT_GERMAIN_LES_CORBEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Germain-lès-Corbeil : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de la vallée de Seine essonnienne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Germain-lès-Corbeil : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de la vallée de Seine essonnienne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Germain-lès-Corbeil : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de la vallée de Seine essonnienne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Germain-lès-Corbeil : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de la vallée de Seine essonnienne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Germain-lès-Corbeil : formats adaptés au cabinet, commerce ou bureau PME. Vos équipes acquièrent l'autonomie sur les outils IA déployés réel.",
@@ -53,7 +53,7 @@ export const SAINT_GERMAIN_LES_CORBEIL_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Germain-lès-Corbeil  : quel budget prévoir ?",
-      a: "L'audit Flash IA à Saint-Germain-lès-Corbeil débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
+      a: "L'audit Flash IA à Saint-Germain-lès-Corbeil débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Saint-Germain-lès-Corbeil ?",

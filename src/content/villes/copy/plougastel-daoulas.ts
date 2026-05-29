@@ -30,8 +30,8 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plougastel-Daoulas : formats adaptés à l'exploitation agricole, l'atelier ostréicole ou le commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de la presqu'île ?",
-      a: "Pour les TPE artisans BTP et commerçants à Plougastel-Daoulas, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Plougastel-Daoulas, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission sur la presqu'île depuis Brest ?",

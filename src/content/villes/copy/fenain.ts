@@ -30,8 +30,8 @@ export const FENAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fenain : formats adaptés aux entrepôts logistique, ateliers artisans BTP, commerces et cabinets. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const FENAIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Fenain  ?",
-      a: "L'audit Flash IA à Fenain démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit Flash IA à Fenain démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les PME logistique du bassin minier ?",

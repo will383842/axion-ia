@@ -30,8 +30,8 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boulay-Moselle : formats adaptés au bureau, atelier artisanal, chantier BTP, commerce, exploitation agricole ou hébergement touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et le tourisme vert ?",
-      a: "Oui, exploitations agricoles, gîtes ruraux, fermes-auberges et hébergements touristiques du pays de Nied : traçabilité, gestion réservations, agents conversationnels multilingues, marketing local. Audit Flash 490 € HT.",
+      a: "Oui, exploitations agricoles, gîtes ruraux, fermes-auberges et hébergements touristiques du pays de Nied : traçabilité, gestion réservations, agents conversationnels multilingues, marketing local. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Boulay-Moselle ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME rurales. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME rurales. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Comment se passe une mission à Boulay-Moselle ?",

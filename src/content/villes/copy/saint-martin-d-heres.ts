@@ -11,9 +11,9 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne à Saint-Martin-d'Hères, deuxième ville de l'Isère après Grenoble, les TPE et PME du domaine universitaire et des zones commerciales de l'avenue Gabriel-Péri. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des artisans, des cabinets de services, des structures liées au campus universitaire et des viticulteurs IGP Isère. Quelques ETI martinéroises sollicitent également nos services en complément.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès 590 € HT.",
+    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès 590 € HT.",
+    "Axion-IA intervient à Saint-Martin-d'Hères auprès des TPE et PME implantées dans les zones commerciales de l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre et leurs sous-traitants), des services liés au domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), ainsi que des viticulteurs IGP Isère et des acteurs du Bois de Chartreuse AOC. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Quelques ETI font également appel à nos services. Tarifs publics dès {{price:intervention-4h|flat}}.",
   seoHook: "campus universitaire & zones commerciales",
   ecosystemFr:
     "Saint-Martin-d'Hères, 37 695 habitants, accueille la majeure partie du domaine universitaire de Grenoble (Polytech Grenoble, bibliothèque interuniversitaire), une concentration commerciale notable sur l'avenue Gabriel-Péri (Géant Casino, Darty, Castorama, Ikea, Lapeyre) et une activité viticole IGP Isère. Le Bois de Chartreuse, première AOC de la filière bois en France, couvre partiellement la commune.",
@@ -33,8 +33,8 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès 490 € HT.",
-      en: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès 490 € HT.",
+      fr: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
+      en: "Auditer une TPE ou PME martinéroise (commerce avenue Gabriel-Péri, services campus, viticulture) pour cartographier les automatisations IA prioritaires — dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir sur site à Saint-Martin-d'Hères pour automatiser devis, suivi client, gestion stock et tâches administratives des TPE/PME.",
@@ -45,14 +45,14 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
       en: "Implémenter des outils IA en code source propriétaire à Saint-Martin-d'Hères, livrés au client final, intégrables aux logiciels métier existants.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
-      en: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
+      fr: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants de TPE/PME martinéroises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Martin-d'Hères ?",
-      a: "Nos audits flash débutent à 490 € HT, nos interventions essentielles à 590 € HT et nos sessions 1-to-1 à 990 € HT. Tarifs publics consultables sur notre site.",
+      a: "Nos audits flash débutent à {{price:audit-flash|flat}}, nos interventions essentielles à {{price:intervention-4h|flat}} et nos sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Saint-Martin-d'Hères ?",

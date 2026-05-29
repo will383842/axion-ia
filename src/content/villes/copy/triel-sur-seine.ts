@@ -30,8 +30,8 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Triel-sur-Seine : formats adaptés bureau, commerce, cabinet, restaurant. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et professions libérales ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

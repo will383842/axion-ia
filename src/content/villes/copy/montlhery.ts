@@ -30,8 +30,8 @@ export const MONTLHERY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montlhéry : formats adaptés commerce, atelier artisan, restaurant, bureau ou salle événementielle. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const MONTLHERY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans montlhériens ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, facturation assistée, gestion planning chantiers.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, facturation assistée, gestion planning chantiers.",
     },
     {
       q: "Accompagnez-vous les acteurs événementiels de l'autodrome ?",

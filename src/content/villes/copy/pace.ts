@@ -30,8 +30,8 @@ export const PACE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pacé : formats adaptés aux cabinets, TPE de services, commerces, exploitations agricoles. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PACE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans pacéens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Pacé sur leurs cas IA. Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Pacé sur leurs cas IA. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Pacé ?",
@@ -61,7 +61,7 @@ export const PACE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME de services de l'ouest Rennes ?",
-      a: "Pour les PME de services à Pacé et ouest Rennes, audit complet processus IA, implémentation outils sur mesure (RAG, agents, automatisation), formation équipes. ROI chiffré dès l'audit Flash 490 € HT.",
+      a: "Pour les PME de services à Pacé et ouest Rennes, audit complet processus IA, implémentation outils sur mesure (RAG, agents, automatisation), formation équipes. ROI chiffré dès l'audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Pacé ?",

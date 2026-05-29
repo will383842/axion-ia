@@ -30,8 +30,8 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vire Normandie : diagnostic adapté aux PME agroalimentaires (andouille de Vire IGP, laiteries), TPE artisans, commerçants et industriels du bocage. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vire Normandie : diagnostic adapté aux PME agroalimentaires (andouille de Vire IGP, laiteries), TPE artisans, commerçants et industriels du bocage. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vire Normandie : diagnostic adapté aux PME agroalimentaires (andouille de Vire IGP, laiteries), TPE artisans, commerçants et industriels du bocage. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vire Normandie : diagnostic adapté aux PME agroalimentaires (andouille de Vire IGP, laiteries), TPE artisans, commerçants et industriels du bocage. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vire Normandie : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants virois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Vire Normandie, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Vire Normandie, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Combien coûte un audit IA à Vire Normandie  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA depuis Caen ?",

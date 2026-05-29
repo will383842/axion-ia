@@ -30,8 +30,8 @@ export const PERTUIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pertuis : ateliers pour équipes TPE/PME, maraîchers, arboriculteurs, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
@@ -53,7 +53,7 @@ export const PERTUIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pertuis  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises et commerces pertuisiens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises et commerces pertuisiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les maraîchers, arboriculteurs et exploitations agricoles ?",

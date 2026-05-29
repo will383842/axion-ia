@@ -30,8 +30,8 @@ export const LAMORLAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lamorlaye : diagnostic adapté aux TPE/PME filière équestre, commerce, services aux particuliers et professions libérales du bassin de Chantilly. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Lamorlaye : diagnostic adapté aux TPE/PME filière équestre, commerce, services aux particuliers et professions libérales du bassin de Chantilly. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Lamorlaye : diagnostic adapté aux TPE/PME filière équestre, commerce, services aux particuliers et professions libérales du bassin de Chantilly. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lamorlaye : diagnostic adapté aux TPE/PME filière équestre, commerce, services aux particuliers et professions libérales du bassin de Chantilly. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lamorlaye : formats adaptés au centre d'entraînement, au commerce, au cabinet libéral ou en visio. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const LAMORLAYE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lamorlaye  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Lamorlaye : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Lamorlaye : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous la filière équestre à Lamorlaye ?",
@@ -65,7 +65,7 @@ export const LAMORLAYE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Lamorlaye ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Lamorlaye, à partir de 990 € HT. Sessions dans votre centre équestre, cabinet, commerce ou en visio. Approche terrain adaptée aux métiers du bassin de Chantilly.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Lamorlaye, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre centre équestre, cabinet, commerce ou en visio. Approche terrain adaptée aux métiers du bassin de Chantilly.",
     },
   ],
 };

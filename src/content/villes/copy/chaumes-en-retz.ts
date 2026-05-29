@@ -30,8 +30,8 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux TPE artisans, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux TPE artisans, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux TPE artisans, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux TPE artisans, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chaumes-en-Retz : formats adaptés à l'exploitation agricole, au commerce, au bureau ou à l'hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles de Chaumes-en-Retz ?",
-      a: "Oui, nous accompagnons les exploitations agricoles sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks et commandes, optimisation logistique récoltes, agents IA relation client. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les exploitations agricoles sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks et commandes, optimisation logistique récoltes, agents IA relation client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME tourisme littoral ?",
@@ -61,7 +61,7 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Chaumes-en-Retz  ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du Pays de Retz.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du Pays de Retz.",
     },
     {
       q: "Comment se déroule une intervention sur site à Chaumes-en-Retz ?",

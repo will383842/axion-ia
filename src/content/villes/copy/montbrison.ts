@@ -30,8 +30,8 @@ export const MONTBRISON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montbrison : formats adaptés à l'administration, fromagerie AOP, exploitation agricole, atelier artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const MONTBRISON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Montbrison, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Montbrison, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

@@ -44,7 +44,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
       en: "AI implementation in Saint-Étienne: we integrate AI into your existing tools (industrial ERP, CRM, email, CMMS) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Saint-Étienne : accompagnement 1-to-1 ancré dans votre réalité stéphanoise — industrie, design, textile médical ou distribution. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Coaching IA individuel à Saint-Étienne : accompagnement 1-to-1 ancré dans votre réalité stéphanoise — industrie, design, textile médical ou distribution. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Saint-Étienne: 1-to-1 support rooted in your Loire reality — manufacturing, design, medical textiles or distribution. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -728,7 +728,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Saint-Étienne est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants industriels, designers, responsables textile médical et managers de distribution de la Loire. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Saint-Étienne est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants industriels, designers, responsables textile médical et managers de distribution de la Loire. Frais de logement, repas et forfait trajet en sus.",
         whyHere: [
           "Saint-Étienne est la seule ville française UNESCO Creative City en design : les profils sont très spécialisés — ingénieur mécanique, designer industriel, responsable qualité textile médical — et ont besoin d'un coaching ancré dans leur réalité métier, pas d'un cours générique.",
           "Le tissu industriel stéphanois (mécanique de précision, aciers spéciaux, textile médical) génère des workflows documentaires denses (plans techniques, fiches qualité, bons de commande) : chaque séance travaille directement sur vos vrais documents.",
@@ -767,7 +767,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Entrée coaching 1-to-1 — artisan, designer indépendant, dirigeant TPE industrielle ou de services stéphanois.",
           },
@@ -827,7 +827,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
-            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression.",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à {{price:intervention-dirigeants|flat}}. La suite se décide à l'issue de chaque séance selon votre progression.",
           },
         ],
         guarantees:

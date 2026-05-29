@@ -10,9 +10,9 @@ export const CORBIE_COPY: VilleCopy = {
     "Corbie (80), commune de la vallee de la Somme, reunit environ 5 980 habitants. Connue pour son abbaye millenaire et sa position sur les bords de Somme, c'est un bourg de services entre Amiens et Albert. Son economie associe TPE artisanales, PME de services, agriculture picarde, patrimoine et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "patrimoine, agriculture & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Corbie (80). Nous accompagnons les TPE, PME et ETI de la vallee de la Somme : artisans, agriculteurs, commercants, professions de services et acteurs du patrimoine. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Corbie est situee dans la vallee de la Somme, entre Amiens (15 km) et Albert (20 km). Tissu economique de bourg relais : TPE artisanat BTP, PME services aux entreprises, exploitations agricoles (grandes cultures, maraichage), activites liees au patrimoine (abbaye de Corbie, tourisme fluvial) et commerces de centre-bourg.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CORBIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Corbie : diagnostic adapte aux TPE artisanales, PME de services, exploitants agricoles et commercants de la vallee de la Somme. ROI chiffre, Audit Flash 490 EUR HT.",
-      en: "Audit IA a Corbie : diagnostic adapte aux TPE artisanales, PME de services, exploitants agricoles et commercants de la vallee de la Somme. ROI chiffre, Audit Flash 490 EUR HT.",
+      fr: "Audit IA a Corbie : diagnostic adapte aux TPE artisanales, PME de services, exploitants agricoles et commercants de la vallee de la Somme. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Corbie : diagnostic adapte aux TPE artisanales, PME de services, exploitants agricoles et commercants de la vallee de la Somme. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Corbie : formations adaptees a l'exploitation agricole, a l'atelier, au commerce ou au bureau. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const CORBIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Corbie ?",
-      a: "L'Audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Quels services IA pour les TPE et PME de Corbie ?",
-      a: "Pour les TPE et PME de Corbie, nous proposons : automatisation administrative, agents conversationnels, CRM augmente, IA predictive, formations equipes et coaching dirigeants. Audit Flash 490 EUR HT.",
+      a: "Pour les TPE et PME de Corbie, nous proposons : automatisation administrative, agents conversationnels, CRM augmente, IA predictive, formations equipes et coaching dirigeants. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de la vallee de la Somme ?",

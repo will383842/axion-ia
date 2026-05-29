@@ -28,8 +28,8 @@ export const COGOLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cogolin : formations pratiques adaptées artisanat, nautisme, hôtellerie, restauration et commerces. Équipes autonomes sur outils IA métier.",
@@ -51,7 +51,7 @@ export const COGOLIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cogolin  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME nautisme. Tarifs publics.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME nautisme. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie et le nautisme à Cogolin ?",
@@ -59,7 +59,7 @@ export const COGOLIN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à Cogolin ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, artisans d'art et hôteliers du Golfe de Saint-Tropez. Sur site ou visio, dès 990 € HT. Prise en main outils IA métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, artisans d'art et hôteliers du Golfe de Saint-Tropez. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA métier.",
     },
     {
       q: "Quels délais pour une mission à Cogolin ?",

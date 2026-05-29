@@ -30,8 +30,8 @@ export const ORTHEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit Flash 490 € HT.",
-      en: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit Flash 490 € HT.",
+      fr: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orthez : formation et déploiement outils IA dans vos exploitations, ateliers, commerces ou établissements de santé. Équipes autonomes sur outils configurés métier.",
@@ -57,7 +57,7 @@ export const ORTHEZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Orthez ?",
-      a: "L'audit Flash IA à Orthez démarre à 490 € HT. Diagnostic complet de vos processus agroalimentaires, artisanaux ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Orthez démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, artisanaux ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les commerçants d'Orthez ?",

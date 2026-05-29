@@ -30,8 +30,8 @@ export const LOON_PLAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loon-Plage : diagnostic adapté aux TPE artisans maintenance, PME logistique portuaire, sous-traitants industriels du Dunkerquois. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Loon-Plage : diagnostic adapté aux TPE artisans maintenance, PME logistique portuaire, sous-traitants industriels du Dunkerquois. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Loon-Plage : diagnostic adapté aux TPE artisans maintenance, PME logistique portuaire, sous-traitants industriels du Dunkerquois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Loon-Plage : diagnostic adapté aux TPE artisans maintenance, PME logistique portuaire, sous-traitants industriels du Dunkerquois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loon-Plage : formations pratiques adaptées aux métiers portuaires, logistique et industrie lourde. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const LOON_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Loon-Plage  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Loon-Plage souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Loon-Plage souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les entreprises logistique portuaire et transport maritime ?",
@@ -61,7 +61,7 @@ export const LOON_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats pour les sous-traitants industriels du Dunkerquois ?",
-      a: "Nous proposons audit Flash 4h (490 € HT), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Prédiction maintenance, contrôle qualité vision, optimisation production.",
+      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Prédiction maintenance, contrôle qualité vision, optimisation production.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Loon-Plage ?",

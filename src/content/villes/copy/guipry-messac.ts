@@ -30,8 +30,8 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guipry-Messac : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants du sud rennais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Guipry-Messac : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants du sud rennais. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Guipry-Messac : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants du sud rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Guipry-Messac : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires, commerçants du sud rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guipry-Messac : formations adaptées aux exploitants agricoles, TPE artisans BTP et commerçants de bourg. Ateliers pratiques, équipes autonomes en outils IA métier.",
@@ -53,7 +53,7 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guipry-Messac  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME rurales de Guipry-Messac souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME rurales de Guipry-Messac souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles de Guipry-Messac ?",
@@ -61,7 +61,7 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans à Guipry-Messac ?",
-      a: "Pour les TPE artisans BTP et commerçants de Guipry-Messac, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants de Guipry-Messac, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se passe une mission sur un territoire rural comme Guipry-Messac ?",

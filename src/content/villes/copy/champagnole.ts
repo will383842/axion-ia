@@ -30,8 +30,8 @@ export const CHAMPAGNOLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champagnole : diagnostic adapté aux TPE plasturgistes, lunettiers, sous-traitants industriels, commerçants et professions libérales du plateau jurassien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Champagnole : diagnostic adapté aux TPE plasturgistes, lunettiers, sous-traitants industriels, commerçants et professions libérales du plateau jurassien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Champagnole : diagnostic adapté aux TPE plasturgistes, lunettiers, sous-traitants industriels, commerçants et professions libérales du plateau jurassien. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Champagnole : diagnostic adapté aux TPE plasturgistes, lunettiers, sous-traitants industriels, commerçants et professions libérales du plateau jurassien. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champagnole : formats adaptés à l'atelier industriel, au commerce de centre-ville, au cabinet ou au bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const CHAMPAGNOLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les plasturgistes et lunettiers de Champagnole ?",
-      a: "Oui, nous accompagnons les TPE et PME de la plasturgie et de la lunetterie jurassienne sur des cas IA concrets : contrôle qualité vision, automatisation production, maintenance prédictive, gestion stocks, traçabilité. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME de la plasturgie et de la lunetterie jurassienne sur des cas IA concrets : contrôle qualité vision, automatisation production, maintenance prédictive, gestion stocks, traçabilité. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Champagnole  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du plateau jurassien, il identifie les cas d'usage IA à fort ROI pour votre activité industrielle, commerciale ou libérale. Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du plateau jurassien, il identifie les cas d'usage IA à fort ROI pour votre activité industrielle, commerciale ou libérale. Tarifs publics.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME industrielles ?",

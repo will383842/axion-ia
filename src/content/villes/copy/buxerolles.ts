@@ -30,8 +30,8 @@ export const BUXEROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. Audit Flash 490 € HT avec ROI quantifié accessible.",
-      en: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      fr: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Buxerolles : formats adaptés aux cabinets libéraux, commerces, PME tertiaires ou associations. Vos équipes administratives et terrain repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BUXEROLLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales à Buxerolles ?",
-      a: "Oui, nous accompagnons les professions libérales à Buxerolles (médecins, avocats, experts-comptables, kinés) sur leurs cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers, dictée IA rapports. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les professions libérales à Buxerolles (médecins, avocats, experts-comptables, kinés) sur leurs cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers, dictée IA rapports. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires du Grand Poitiers ?",
@@ -61,7 +61,7 @@ export const BUXEROLLES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Buxerolles, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos produits.",
+      a: "Pour les TPE artisans et commerçants à Buxerolles, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos produits.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

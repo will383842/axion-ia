@@ -30,8 +30,8 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champagne-sur-Oise : formats adaptés boutique, cabinet, restaurant, bureau PME, chantier BTP. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et prestataires BTP ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {
       q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",

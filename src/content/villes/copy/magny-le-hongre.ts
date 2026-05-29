@@ -30,8 +30,8 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magny-le-Hongre : formats adaptés hôtel, restaurant, commerce ou bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier tourisme et services.",
@@ -53,7 +53,7 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Magny-le-Hongre ?",
-      a: "L'Audit Flash IA à Magny-le-Hongre démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Magny-le-Hongre démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants du Val d'Europe ?",

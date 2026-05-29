@@ -30,8 +30,8 @@ export const KERVIGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Kervignac : diagnostic adapté aux TPE artisanales, PME de services, commerces et ostréiculteurs du bassin lorientais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Kervignac : diagnostic adapté aux TPE artisanales, PME de services, commerces et ostréiculteurs du bassin lorientais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Kervignac : diagnostic adapté aux TPE artisanales, PME de services, commerces et ostréiculteurs du bassin lorientais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Kervignac : diagnostic adapté aux TPE artisanales, PME de services, commerces et ostréiculteurs du bassin lorientais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Kervignac : formations pratiques pour équipes de PME, artisans BTP et professionnels des services de l'agglomération lorientaise. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const KERVIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA proposez-vous aux TPE et PME de Kervignac ?",
-      a: "Nous proposons l'Audit Flash dès 490 € HT, des interventions formation sur site, l'implémentation d'outils IA métier et du coaching individuel. TPE artisanales, PME de services, commerces et professions libérales de Kervignac sont accompagnés avec un ROI chiffré.",
+      a: "Nous proposons l'Audit Flash dès {{price:audit-flash|flat}}, des interventions formation sur site, l'implémentation d'outils IA métier et du coaching individuel. TPE artisanales, PME de services, commerces et professions libérales de Kervignac sont accompagnés avec un ROI chiffré.",
     },
     {
       q: "Tarifs audit IA à Kervignac  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME kervignacaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME kervignacaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs et professionnels de la ria d'Étel ?",

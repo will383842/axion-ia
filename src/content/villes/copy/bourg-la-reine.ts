@@ -9,9 +9,9 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
   pitchEn:
     "Bourg-la-Reine (92), commune de 21 019 habitants au sud de Paris, traversée par l'ex-RN20 (D920). Desservie par le RER B, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Tissu résidentiel et commercial dense, professions libérales, services et TPE-PME des Hauts-de-Seine sud. Axion-IA, cabinet d'architectes IA seniors, y accompagne dirigeants TPE, gérants PME et professions libérales avec des solutions IA codées sur mesure, sans no-code.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit Flash 4 h à 490 € HT, Intervention Essentielle 590 € HT et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit Flash 4 h à {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit Flash 4 h à 490 € HT, Intervention Essentielle 590 € HT et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Bourg-la-Reine (92) pour accompagner les TPE, PME et professions libérales du sud des Hauts-de-Seine. Présence directe sur l'axe RER B Sceaux-Antony-Massy : nous intervenons sur site chez les commerçants, cabinets libéraux, agences de services et PME du tissu local. Nos prestations incluent Audit Flash 4 h à {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}} et coaching 1-to-1 dirigeants. Code IA sur mesure, pas de no-code.",
   seoHook: "professions libérales, commerce & PME services",
   ecosystemFr:
     "Bourg-la-Reine est une commune de 21 019 habitants des Hauts-de-Seine, limitrophe d'Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses. Desservie par la ligne B du RER et la D920 (ex-RN20 reliant Paris à Orléans), elle s'inscrit dans la métropole du Grand Paris depuis 2016. Tissu économique mixte : commerces de proximité le long de l'avenue du Général-Leclerc, professions libérales (santé, droit, conseil), TPE de services et PME résidentielles. Héritage historique de la faïencerie (XVIIIᵉ-XIXᵉ). Proximité du lycée Lakanal à Sceaux.",
@@ -30,20 +30,20 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit Flash 4 h à 490 € HT, livrable ROI chiffré.",
-      en: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit Flash 4 h à 490 € HT, livrable ROI chiffré.",
+      fr: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit Flash 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
+      en: "Audit IA à Bourg-la-Reine : diagnostic pour TPE commerçants, cabinets libéraux (médecins, avocats, experts-comptables), agences de services et PME du sud 92. Audit Flash 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Intervention Essentielle à 590 € HT.",
-      en: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Intervention Essentielle à 590 € HT.",
+      fr: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Intervention Essentielle à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Bourg-la-Reine, accès direct RER B. Ateliers ciblés pour TPE commerce, professions libérales et PME : automatisation gestion clients, classification documents, IA métier sur mesure. Intervention Essentielle à {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
-      en: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
+      fr: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Bourg-la-Reine : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et professions libérales. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de 990 € HT.",
-      en: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Bourg-la-Reine : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Adoption IA progressive, transfert de compétences, autonomie équipes. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Bourg-la-Reine ?",
-      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à 490 € HT, Intervention Essentielle sur site à 590 € HT, Implémentation et coaching 1-to-1 à partir de 990 € HT. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
+      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à {{price:audit-flash|flat}}, Intervention Essentielle sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
     },
     {
       q: "Quels délais d'intervention sur Bourg-la-Reine ?",

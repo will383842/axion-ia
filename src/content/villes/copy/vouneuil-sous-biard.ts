@@ -30,8 +30,8 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, TPE artisans, agriculteurs et commerçants du Grand Poitiers ouest. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, TPE artisans, agriculteurs et commerçants du Grand Poitiers ouest. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, TPE artisans, agriculteurs et commerçants du Grand Poitiers ouest. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, TPE artisans, agriculteurs et commerçants du Grand Poitiers ouest. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vouneuil-sous-Biard : formats adaptés aux bureaux PME, entrepôts logistiques, exploitation agricole ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Vouneuil-sous-Biard, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
+      a: "Pour les TPE artisans et commerçants à Vouneuil-sous-Biard, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

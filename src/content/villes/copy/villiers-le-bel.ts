@@ -31,20 +31,20 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit Flash dès 490 € HT, livrable sous 5 jours.",
-      en: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit Flash dès 490 € HT, livrable sous 5 jours.",
+      fr: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit Flash dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      en: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit Flash dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention IA sur site à Villiers-le-Bel : automatisation devis-facture, relances, classification documents et workflows pour TPE/PME commerce, BTP et services nord-franciliens. Dès 590 € HT.",
-      en: "Intervention IA sur site à Villiers-le-Bel : automatisation devis-facture, relances, classification documents et workflows pour TPE/PME commerce, BTP et services nord-franciliens. Dès 590 € HT.",
+      fr: "Intervention IA sur site à Villiers-le-Bel : automatisation devis-facture, relances, classification documents et workflows pour TPE/PME commerce, BTP et services nord-franciliens. Dès {{price:intervention-4h|flat}}.",
+      en: "Intervention IA sur site à Villiers-le-Bel : automatisation devis-facture, relances, classification documents et workflows pour TPE/PME commerce, BTP et services nord-franciliens. Dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Villiers-le-Bel : agents conversationnels B2B, traitement courriers, automatisation back-office et intégration ERP pour PME services et logistique de Roissy Pays de France. Dès 990 € HT.",
-      en: "Implémentation IA à Villiers-le-Bel : agents conversationnels B2B, traitement courriers, automatisation back-office et intégration ERP pour PME services et logistique de Roissy Pays de France. Dès 990 € HT.",
+      fr: "Implémentation IA à Villiers-le-Bel : agents conversationnels B2B, traitement courriers, automatisation back-office et intégration ERP pour PME services et logistique de Roissy Pays de France. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Villiers-le-Bel : agents conversationnels B2B, traitement courriers, automatisation back-office et intégration ERP pour PME services et logistique de Roissy Pays de France. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villiers-le-Bel : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME du Val-d'Oise et de Roissy Pays de France. Dès 990 € HT.",
-      en: "Coaching 1-to-1 à Villiers-le-Bel : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME du Val-d'Oise et de Roissy Pays de France. Dès 990 € HT.",
+      fr: "Coaching 1-to-1 à Villiers-le-Bel : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME du Val-d'Oise et de Roissy Pays de France. Dès {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Villiers-le-Bel : sessions dans votre commerce, atelier, bureau ou en visio, pour dirigeants TPE/PME du Val-d'Oise et de Roissy Pays de France. Dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
@@ -54,7 +54,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Villiers-le-Bel ?",
-      a: "Audit Flash dès 490 € HT, Intervention Essentielle dès 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit Flash dès {{price:audit-flash|flat}}, Intervention Essentielle dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Villiers-le-Bel ?",

@@ -30,8 +30,8 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-Macé : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à La Ferté-Macé : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à La Ferté-Macé : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Ferté-Macé : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs tourisme vert Station Verte et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferté-Macé : formats adaptés au bureau, atelier, commerce, hébergement touristique. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans ferthois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de La Ferté-Macé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de La Ferté-Macé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission depuis Caen ou Paris ?",

@@ -30,8 +30,8 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Roque-d'Anthéron : ateliers pour équipes tourisme, restauration, événementiel festival et TPE locales. Outils IA configurés métier réel, dans vos locaux.",
@@ -53,7 +53,7 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à La Roque-d'Anthéron  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE tourisme, restaurateurs, hébergeurs et commerces roquassiers. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, hébergeurs et commerces roquassiers. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les hébergeurs et restaurateurs pendant le Festival international de piano ?",

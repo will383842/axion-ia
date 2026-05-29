@@ -30,8 +30,8 @@ export const LE_PASSAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Passage : formats adaptés au commerce, à l'atelier, au cabinet ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_PASSAGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Passage ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME passageoises : commerçants, artisans, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME passageoises : commerçants, artisans, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les commerces du Passage ?",
@@ -61,7 +61,7 @@ export const LE_PASSAGE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA au Passage ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres au Passage, à partir de 990 € HT. Sessions dans votre commerce, cabinet, bureau ou en visio. Approche terrain adaptée aux métiers de l'agglomération agenaise.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres au Passage, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre commerce, cabinet, bureau ou en visio. Approche terrain adaptée aux métiers de l'agglomération agenaise.",
     },
     {
       q: "Comment se déroule une mission IA au Passage ?",

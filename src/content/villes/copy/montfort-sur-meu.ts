@@ -30,8 +30,8 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montfort-sur-Meu : formats adaptés aux TPE artisans, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Montfort-sur-Meu  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du pays de Montfort, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays de Montfort, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans et commerçants de Montfort ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de centre-bourg de Montfort-sur-Meu sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, relation client. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de centre-bourg de Montfort-sur-Meu sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, relation client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Montfort-sur-Meu ?",

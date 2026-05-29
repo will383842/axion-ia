@@ -30,8 +30,8 @@ export const PARENTIS_EN_BORN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parentis-en-Born : formations adaptées aux sites industriels pétroliers, exploitations forestières, hébergeurs lacustres et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PARENTIS_EN_BORN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE du tourisme lacustre ?",
-      a: "Pour les TPE hébergeurs et prestataires du lac de Parentis-Biscarrosse, audit Flash 490 € HT, coaching 1-to-1. Cas typiques : chatbot réservation, gestion saisonnalité, automatisation communication clients, prédiction affluence.",
+      a: "Pour les TPE hébergeurs et prestataires du lac de Parentis-Biscarrosse, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : chatbot réservation, gestion saisonnalité, automatisation communication clients, prédiction affluence.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission à Parentis-en-Born ?",

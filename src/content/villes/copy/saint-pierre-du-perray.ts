@@ -30,8 +30,8 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-du-Perray : formats adaptés atelier BTP, boutique, cabinet, bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Saint-Pierre-du-Perray ?",
-      a: "Oui, nous accompagnons les artisans BTP (plombiers, électriciens, maçons, menuisiers) sur des cas IA concrets : automatisation devis chantier, planning intelligent, gestion photos chantier, facturation automatisée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les artisans BTP (plombiers, électriciens, maçons, menuisiers) sur des cas IA concrets : automatisation devis chantier, planning intelligent, gestion photos chantier, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les professions libérales et commerçants ?",
@@ -61,7 +61,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME du bassin Évry-Sénart ?",
-      a: "Audit IA (Flash 490 € HT à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
+      a: "Audit IA (Flash {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",

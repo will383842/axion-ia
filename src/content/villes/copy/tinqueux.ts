@@ -30,8 +30,8 @@ export const TINQUEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, TPE artisanales et professions libérales de l'agglo rémoise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, TPE artisanales et professions libérales de l'agglo rémoise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, TPE artisanales et professions libérales de l'agglo rémoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, TPE artisanales et professions libérales de l'agglo rémoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la TPE artisanale ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const TINQUEUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Tinqueux  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Tinqueux et de l'agglo rémoise, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Tinqueux et de l'agglo rémoise, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les enseignes commerciales et le retail ?",
@@ -61,7 +61,7 @@ export const TINQUEUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Tinqueux ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Tinqueux, à partir de 990 € HT. Sessions dans vos locaux commerciaux ou en visio. Approche terrain retail, services et professions libérales.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Tinqueux, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux commerciaux ou en visio. Approche terrain retail, services et professions libérales.",
     },
     {
       q: "Travaillez-vous avec les PME de services de l'agglo rémoise ?",

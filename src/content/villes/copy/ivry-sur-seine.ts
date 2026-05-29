@@ -32,26 +32,26 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit Flash 4h dès 490 € HT.",
-      en: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit Flash 4h dès 490 € HT.",
+      fr: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit Flash 4h dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès 590 € HT.",
-      en: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès 990 € HT.",
-      en: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès 990 € HT.",
+      fr: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès 990 € HT.",
-      en: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Ivry-sur-Seine : cadrage stratégique IA pour dirigeants de TPE et PME — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Ivry-sur-Seine ?",
-      a: "Tarifs publics : Audit Flash 4h dès 490 € HT, Intervention Essentielle dès 590 € HT, implémentation ou 1-to-1 dès 990 € HT. Mêmes tarifs partout en France, sans surcoût de déplacement caché.",
+      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Intervention Essentielle dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Mêmes tarifs partout en France, sans surcoût de déplacement caché.",
     },
     {
       q: "Quels délais pour une intervention à Ivry-sur-Seine ?",

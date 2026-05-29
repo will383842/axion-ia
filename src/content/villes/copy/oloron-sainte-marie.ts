@@ -30,8 +30,8 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit Flash 490 € HT.",
-      en: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit Flash 490 € HT.",
+      fr: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oloron-Sainte-Marie : formation et déploiement outils IA dans vos ateliers textile, fromageries, commerces ou hébergements touristiques pyrénéens.",
@@ -57,7 +57,7 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Oloron-Sainte-Marie ?",
-      a: "L'audit Flash IA à Oloron-Sainte-Marie démarre à 490 € HT. Diagnostic complet de vos processus artisanaux, agroalimentaires ou touristiques, identification cas d'usage IA et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Oloron-Sainte-Marie démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus artisanaux, agroalimentaires ou touristiques, identification cas d'usage IA et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme pyrénéen à Oloron ?",

@@ -30,8 +30,8 @@ export const PALAVAS_LES_FLOTS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, TPE commerçants saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, TPE commerçants saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, TPE commerçants saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Palavas-les-Flots : diagnostic pour PME hôtelières, TPE commerçants saisonniers, restaurateurs et acteurs du tourisme balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Palavas-les-Flots : ateliers adaptés hôtel, restaurant, commerce saisonnier ou port. Équipes autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const PALAVAS_LES_FLOTS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour l'hôtellerie-restauration balnéaire ?",
-      a: "Oui, nous réalisons des audits IA adaptés à l'hôtellerie-restauration : chatbot réservation multilingue, tarification dynamique, gestion avis en ligne, optimisation planning saisonnier. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés à l'hôtellerie-restauration : chatbot réservation multilingue, tarification dynamique, gestion avis en ligne, optimisation planning saisonnier. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerces saisonniers ?",
-      a: "Pour les commerces saisonniers à Palavas, audit Flash 490 € HT, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, gestion stocks saisonniers, marketing digital, agents IA.",
+      a: "Pour les commerces saisonniers à Palavas, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, gestion stocks saisonniers, marketing digital, agents IA.",
     },
     {
       q: "Accompagnez-vous les professionnels de la pêche ?",
@@ -65,7 +65,7 @@ export const PALAVAS_LES_FLOTS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Palavas ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

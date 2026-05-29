@@ -30,8 +30,8 @@ export const MEYREUIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de l'est aixois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de l'est aixois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de l'est aixois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Meyreuil : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de l'est aixois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Meyreuil : ateliers pratiques pour domaines viticoles, cabinets libéraux et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const MEYREUIL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Meyreuil  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, viticulteurs et PME meyreuilloises. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs et PME meyreuilloises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de Sainte-Victoire ?",

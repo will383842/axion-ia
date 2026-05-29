@@ -30,8 +30,8 @@ export const AUSSILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit Flash 490 € HT.",
-      en: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit Flash 490 € HT.",
+      fr: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aussillon : formats adaptés à l'atelier artisan, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const AUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Aussillon ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE d'Aussillon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE d'Aussillon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "L'IA est-elle adaptée aux petites communes ?",
@@ -65,7 +65,7 @@ export const AUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Aussillon ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Aussillon. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Aussillon. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

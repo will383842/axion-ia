@@ -10,9 +10,9 @@ export const REZE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Rezé, 4ᵉ commune la plus peuplée de Loire-Atlantique (43 556 habitants) en Pays de la Loire, intégrée à Nantes Métropole. Située rive sud de la Loire à 3 km du centre de Nantes, entre la Sèvre Nantaise et l'Ilette, Rezé concentre une activité économique soutenue autour de la zone Atout-Sud (commerciale et industrielle), la ZAC de la Jaguère et la ZAC de la Brosse qui accueille le Marché d'Intérêt National depuis 2019. Notre cabinet IA développe du code custom pour les commerces, services et structures industrielles locales.",
   directAnswerFr:
-    "À Rezé, Axion-IA propose aux TPE et PME des audits IA flash dès 490 € HT, des interventions terrain dès 590 € HT et des implémentations code custom dès 990 € HT. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
+    "À Rezé, Axion-IA propose aux TPE et PME des audits IA flash dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
   directAnswerEn:
-    "À Rezé, Axion-IA propose aux TPE et PME des audits IA flash dès 490 € HT, des interventions terrain dès 590 € HT et des implémentations code custom dès 990 € HT. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
+    "À Rezé, Axion-IA propose aux TPE et PME des audits IA flash dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nos consultants se déplacent sur la zone Atout-Sud (entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse (MIN) et la ZAC de la Jaguère, ainsi qu'à Nantes, Vertou, Les Sorinières, Bouguenais et Pont-Saint-Martin. Spécialisés sur les flux administratifs, la gestion commerciale et la logistique des structures locales.",
   seoHook: "Atout-Sud, MIN & rive sud Nantes Métropole",
   ecosystemFr:
     "Rezé, intégrée à Nantes Métropole (24 communes, 660 000 habitants) et à l'aire urbaine de Nantes (700 000+ habitants), concentre son activité économique sur trois pôles structurants : la zone Atout-Sud (commerciale et industrielle entre Trentemoult et Pont-Rousseau), la ZAC de la Brosse qui héberge le Marché d'Intérêt National depuis mars 2019, et la ZAC de la Jaguère. Le tissu local est dominé par les TPE et PME : commerce de détail, logistique agroalimentaire (MIN), construction, restauration, services aux entreprises et transports terrestres.",
@@ -32,26 +32,26 @@ export const REZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA flash 4h à Rezé dès 490 € HT — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
-      en: "Audit IA flash 4h à Rezé dès 490 € HT — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
+      fr: "Audit IA flash 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
+      en: "Audit IA flash 4h à Rezé dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la zone Atout-Sud, du MIN et des artisans locaux.",
     },
     interventions: {
-      fr: "Intervention sur site à Rezé dès 590 € HT — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
-      en: "Intervention sur site à Rezé dès 590 € HT — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
+      fr: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
+      en: "Intervention sur site à Rezé dès {{price:intervention-4h|flat}} — déplacement consultant Atout-Sud, ZAC de la Brosse, ZAC de la Jaguère, et communes limitrophes (Nantes, Vertou, Bouguenais).",
     },
     implementation: {
-      fr: "Implémentation code custom à Rezé dès 990 € HT — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
-      en: "Implémentation code custom à Rezé dès 990 € HT — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
+      fr: "Implémentation code custom à Rezé dès {{price:impl-poc|entry}} — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
+      en: "Implémentation code custom à Rezé dès {{price:impl-poc|entry}} — automatisations devis, factures, stock et logistique pour commerces et structures du MIN.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès 990 € HT — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
-      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès 990 € HT — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
+      fr: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès {{price:intervention-dirigeants|flat}} — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
+      en: "Accompagnement 1-to-1 dirigeants TPE/PME de Rezé dès {{price:intervention-dirigeants|flat}} — feuille de route IA opérationnelle, ROI mesurable, formation des équipes en interne.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Rezé ?",
-      a: "Audit Flash 4h dès 490 € HT, intervention sur site dès 590 € HT, implémentation code custom dès 990 € HT. Grille publique disponible sur notre page Pricing, sans frais cachés ni abonnement imposé.",
+      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille publique disponible sur notre page Pricing, sans frais cachés ni abonnement imposé.",
     },
     {
       q: "Vos consultants se déplacent-ils sur Atout-Sud, le MIN et les communes voisines ?",
@@ -71,7 +71,7 @@ export const REZE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE de Rezé ou uniquement les PME ?",
-      a: "Axion-IA cible prioritairement les TPE (1-9 salariés), puis les PME (10-249 salariés) de Rezé et Nantes Métropole. Les ETI restent l'exception. Notre forfait 590 € HT est calibré pour artisans, commerçants et petites structures de services.",
+      a: "Axion-IA cible prioritairement les TPE (1-9 salariés), puis les PME (10-249 salariés) de Rezé et Nantes Métropole. Les ETI restent l'exception. Notre forfait {{price:intervention-4h|flat}} est calibré pour artisans, commerçants et petites structures de services.",
     },
   ],
 };

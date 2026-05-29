@@ -30,8 +30,8 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Sigolène : formats adaptés à l'atelier plasturgie, exploitation, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",

@@ -30,8 +30,8 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Berthevin : diagnostic adapté aux TPE artisans, PME industrielles, prestataires B2B et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Berthevin : diagnostic adapté aux TPE artisans, PME industrielles, prestataires B2B et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Berthevin : diagnostic adapté aux TPE artisans, PME industrielles, prestataires B2B et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Berthevin : diagnostic adapté aux TPE artisans, PME industrielles, prestataires B2B et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Berthevin : formations adaptées aux PME industrielles, prestataires B2B, artisans BTP et commerces du bassin lavallois. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Saint-Berthevin ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et prestataires B2B du bassin lavallois. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et prestataires B2B du bassin lavallois. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les entreprises B2B ?",

@@ -30,8 +30,8 @@ export const DIGOIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Digoin : formats adaptés atelier céramique, commerce centre-bourg, site touristique fluvial, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const DIGOIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants de Digoin ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation gestion stock, CRM clients.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation gestion stock, CRM clients.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",

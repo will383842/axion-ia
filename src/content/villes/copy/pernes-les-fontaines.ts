@@ -30,8 +30,8 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux TPE artisans, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux TPE artisans, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux TPE artisans, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux TPE artisans, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes TPE/PME tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
@@ -53,7 +53,7 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pernes-les-Fontaines  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME tourisme, viticulteurs et commerces pernois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME tourisme, viticulteurs et commerces pernois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les hôteliers, restaurateurs et acteurs du tourisme patrimonial ?",

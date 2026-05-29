@@ -30,8 +30,8 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Memmie : formats adaptés commerce, entrepôt, bureau, cabinet. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Memmie  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME des zones d'activités de Saint-Memmie.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME des zones d'activités de Saint-Memmie.",
     },
     {
       q: "Travaillez-vous avec les TPE et PME distribution de Saint-Memmie ?",

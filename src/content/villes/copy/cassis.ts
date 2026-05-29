@@ -30,8 +30,8 @@ export const CASSIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cassis : ateliers pour domaines viticoles, restaurants gastronomiques, hôtels et commerces. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const CASSIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole AOC Cassis ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles, restaurateurs et hôteliers cassidains. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, restaurateurs et hôteliers cassidains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons de l'AOC Cassis ?",

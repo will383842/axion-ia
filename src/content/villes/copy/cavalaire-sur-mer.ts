@@ -30,8 +30,8 @@ export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cavalaire-sur-Mer : ateliers pour restaurateurs, hôteliers de plein air, professionnels du nautisme et commerçants. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un camping à Cavalaire-sur-Mer ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux campings, hôteliers, restaurateurs et professionnels du nautisme cavalairois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux campings, hôteliers, restaurateurs et professionnels du nautisme cavalairois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les hôtelleries de plein air haut de gamme ?",

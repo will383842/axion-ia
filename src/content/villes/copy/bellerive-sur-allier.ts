@@ -61,7 +61,7 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerçants bellerivois ?",
-      a: "Oui, les TPE sont notre priorité : commerçants, artisans BTP, professions libérales. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      a: "Oui, les TPE sont notre priorité : commerçants, artisans BTP, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de l'agglomération ?",

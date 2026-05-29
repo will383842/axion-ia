@@ -30,8 +30,8 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Saulve : formats adaptés à l'atelier automobile, l'entrepôt logistique, le chantier BTP ou le cabinet de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Saulve  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour la logistique dans le Valenciennois ?",

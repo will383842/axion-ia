@@ -30,8 +30,8 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, TPE artisans, commerçants et professions libérales du Val de Sèvre. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, TPE artisans, commerçants et professions libérales du Val de Sèvre. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, TPE artisans, commerçants et professions libérales du Val de Sèvre. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Maixent-l'École : diagnostic adapté aux PME de services, TPE artisans, commerçants et professions libérales du Val de Sèvre. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Maixent : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et optimisation planning.",
@@ -57,7 +57,7 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Maixent-l'École ?",
-      a: "L'audit Flash IA à Saint-Maixent-l'École démarre à 490 € HT. Diagnostic de vos processus métier, identification gains IA prioritaires, ROI chiffré et plan d'action adapté à votre activité.",
+      a: "L'audit Flash IA à Saint-Maixent-l'École démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus métier, identification gains IA prioritaires, ROI chiffré et plan d'action adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les commerçants de Saint-Maixent ?",

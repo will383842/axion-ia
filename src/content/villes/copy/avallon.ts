@@ -30,8 +30,8 @@ export const AVALLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avallon : formats adaptés hôtel, restaurant, commerce, cabinet, exploitation viticole. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const AVALLON_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs du Morvan ?",
-      a: "Oui, audit Flash 490 € HT, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, outils relation client multilingue.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, outils relation client multilingue.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants du centre-bourg ?",
@@ -61,7 +61,7 @@ export const AVALLON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME agroalimentaires et viticoles ?",
-      a: "Audit Flash 490 € HT, automatisation traçabilité, outils viticulture, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
+      a: "Audit Flash {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Dijon ?",

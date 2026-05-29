@@ -30,8 +30,8 @@ export const POURRIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pourrières : ateliers pour équipes TPE/PME, vignerons Sainte-Victoire, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
@@ -53,7 +53,7 @@ export const POURRIERES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Pourrières  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces pourriérois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces pourriérois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOP Sainte-Victoire ?",

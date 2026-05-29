@@ -30,8 +30,8 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Motte-Servolex : ateliers dans vos locaux tertiaires, cabinet ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME tertiaires des zones d'activités ?",
-      a: "Nous accompagnons les PME tertiaires de La Motte-Servolex sur leurs cas IA : automatisation processus administratifs, agents conversationnels clients, classification documents, tableaux de bord prédictifs, optimisation relation client. Audit Flash 490 € HT pour démarrer.",
+      a: "Nous accompagnons les PME tertiaires de La Motte-Servolex sur leurs cas IA : automatisation processus administratifs, agents conversationnels clients, classification documents, tableaux de bord prédictifs, optimisation relation client. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Accompagnez-vous les professions libérales à La Motte-Servolex ?",
@@ -61,7 +61,7 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à La Motte-Servolex, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      a: "Pour les TPE artisans BTP et commerçants à La Motte-Servolex, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à La Motte-Servolex ?",

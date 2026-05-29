@@ -30,8 +30,8 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit Flash 490 € HT.",
-      en: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit Flash 490 € HT.",
+      fr: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ramonville : formats adaptés à la startup tech, au cabinet libéral, à la PME spatial. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ramonville-Saint-Agne  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tech, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tech, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention sur site à Ramonville ?",
@@ -65,7 +65,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les startups tech de Ramonville ?",
-      a: "Oui, nous accompagnons les startups deeptech et PME tech du pôle Rangueil/CNES. Formats adaptés : audit rapide, coaching 1-to-1, implémentation IA. À partir de 490 € HT.",
+      a: "Oui, nous accompagnons les startups deeptech et PME tech du pôle Rangueil/CNES. Formats adaptés : audit rapide, coaching 1-to-1, implémentation IA. À partir de {{price:audit-flash|flat}}.",
     },
   ],
 };

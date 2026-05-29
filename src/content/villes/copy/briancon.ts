@@ -30,8 +30,8 @@ export const BRIANCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Briançon : formats adaptés aux hébergements montagne, gestionnaires de station, commerces ou artisans BTP altitude. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const BRIANCON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Briançon  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME du Briançonnais. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME du Briançonnais. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Briançon en altitude ?",

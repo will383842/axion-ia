@@ -10,9 +10,9 @@ export const PETIT_CAUX_COPY: VilleCopy = {
     "Petit-Caux (76), commune nouvelle de la cote d'Albatre en Seine-Maritime, reunit pres de 9 510 habitants. Issue de la fusion de plusieurs villages littoraux, elle accueille des TPE de services, des PME touristiques, des commerces, des artisans et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "tourisme littoral, agriculture & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Petit-Caux (76). Nous accompagnons les TPE, PME et independants de la cote d'Albatre : acteurs du tourisme, commercants, artisans, exploitants agricoles et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Petit-Caux est une commune nouvelle littorale issue de la fusion de Belleville-sur-Mer, Berneval-le-Grand et d'autres villages entre Dieppe et Le Treport. Economie mixte : tourisme balneaire, agriculture, artisanat, commerces et services. Plages de galets et falaises de craie.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PETIT_CAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Petit-Caux : diagnostic adapte aux TPE touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Petit-Caux : diagnostic adapte aux TPE touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Petit-Caux : diagnostic adapte aux TPE touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Petit-Caux : diagnostic adapte aux TPE touristiques, commercants, artisans et exploitants agricoles de la cote d'Albatre. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Petit-Caux : formations adaptees aux hebergeurs, commercants, artisans et exploitants agricoles du littoral. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const PETIT_CAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hebergeurs touristiques de Petit-Caux ?",
-      a: "Pour les hebergeurs de Petit-Caux, nous proposons : automatisation reservations, agents conversationnels multilingues, gestion avis clients IA, revenue management. Audit Flash 490 EUR HT.",
+      a: "Pour les hebergeurs de Petit-Caux, nous proposons : automatisation reservations, agents conversationnels multilingues, gestion avis clients IA, revenue management. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Petit-Caux ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles de Petit-Caux ?",

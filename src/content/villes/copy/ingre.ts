@@ -9,9 +9,9 @@ export const INGRE_COPY: VilleCopy = {
   pitchEn:
     "Ingre (45), commune de l'agglomeration d'Orleans au nord-ouest, s'inscrit dans le paysage beauceron aux portes de la metropole ligérienne. Tissu TPE/PME services, commerce, artisanat, logistique, agriculture cerealiere. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit Flash des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Ingre fait partie d'Orleans Metropole, en lisiere de la Beauce cerealiere. L'economie locale s'appuie sur les services aux entreprises, le commerce de proximite, l'artisanat du batiment, la logistique liee au pole routier de l'A10/A71 et l'agriculture cerealiere de la plaine beauceronne.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const INGRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Ingre : formats adaptes aux TPE/PME de services, commerces, ateliers artisanaux et entrepots logistiques de la zone ouest d'Orleans Metropole.",
@@ -53,7 +53,7 @@ export const INGRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Ingre ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE et PME d'Ingre, nous proposons des audits approfondis adaptes aux enjeux services, commerce ou logistique.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME d'Ingre, nous proposons des audits approfondis adaptes aux enjeux services, commerce ou logistique.",
     },
     {
       q: "L'IA peut-elle aider les commerces de proximite a Ingre ?",
@@ -61,7 +61,7 @@ export const INGRE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Ingre ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Ingre, a partir de 990 euros HT. Sessions dans vos locaux professionnels, en centre-ville d'Orleans ou en visio.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Ingre, a partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux professionnels, en centre-ville d'Orleans ou en visio.",
     },
     {
       q: "Quels secteurs accompagnez-vous a Ingre ?",

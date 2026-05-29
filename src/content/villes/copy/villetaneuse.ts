@@ -30,8 +30,8 @@ export const VILLETANEUSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villetaneuse : diagnostic adapté aux TPE commerçantes, PME de services, professions libérales et structures universitaires du nord Seine-Saint-Denis. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Villetaneuse : diagnostic adapté aux TPE commerçantes, PME de services, professions libérales et structures universitaires du nord Seine-Saint-Denis. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Villetaneuse : diagnostic adapté aux TPE commerçantes, PME de services, professions libérales et structures universitaires du nord Seine-Saint-Denis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Villetaneuse : diagnostic adapté aux TPE commerçantes, PME de services, professions libérales et structures universitaires du nord Seine-Saint-Denis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villetaneuse : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent avec des outils IA configurés pour leur métier réel.",
@@ -57,11 +57,11 @@ export const VILLETANEUSE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerçants de Villetaneuse ?",
-      a: "Oui, nous accompagnons les TPE artisanales et commerçantes de Villetaneuse sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, comptabilité assistée. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisanales et commerçantes de Villetaneuse sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, comptabilité assistée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour un audit IA à Villetaneuse ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une session de 4 heures sur site. Pour les audits plus approfondis (Audit Stratégique), comptez entre 1 900 et 3 900 € HT selon le périmètre. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site. Pour les audits plus approfondis (Audit Stratégique), comptez entre 1 900 et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Villetaneuse ?",

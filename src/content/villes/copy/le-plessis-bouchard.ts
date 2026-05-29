@@ -30,8 +30,8 @@ export const LE_PLESSIS_BOUCHARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Plessis-Bouchard : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération Val-et-Forêt. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
-      en: "Audit IA au Plessis-Bouchard : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération Val-et-Forêt. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA au Plessis-Bouchard : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération Val-et-Forêt. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA au Plessis-Bouchard : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération Val-et-Forêt. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site au Plessis-Bouchard : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,11 +53,11 @@ export const LE_PLESSIS_BOUCHARD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA au Plessis-Bouchard ?",
-      a: "L'audit Flash IA au Plessis-Bouchard démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA au Plessis-Bouchard démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME au Plessis-Bouchard ?",
-      a: "Oui, nous accompagnons les TPE artisanales et les PME de services du Plessis-Bouchard sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning, comptabilité assistée. Audit Flash 490 € HT accessible.",
+      a: "Oui, nous accompagnons les TPE artisanales et les PME de services du Plessis-Bouchard sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning, comptabilité assistée. Audit Flash {{price:audit-flash|flat}} accessible.",
     },
     {
       q: "Quels formats de formation IA proposez-vous au Plessis-Bouchard ?",

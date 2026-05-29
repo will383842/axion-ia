@@ -37,7 +37,7 @@ export const NIMES_COPY: VilleCopy = {
       en: "AI implementation in Nîmes: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Nîmes : accompagnement 1-to-1 ancré dans votre réalité gardoise — BTP, logistique, agroalimentaire ou services. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Coaching IA individuel à Nîmes : accompagnement 1-to-1 ancré dans votre réalité gardoise — BTP, logistique, agroalimentaire ou services. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Nîmes: 1-to-1 support rooted in your Gard reality — construction, logistics, agri-food or services. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -720,7 +720,7 @@ export const NIMES_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Nîmes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier gardois, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants de PME BTP, gérants de négoce, responsables logistique et experts agroalimentaires du Gard. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Nîmes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier gardois, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants de PME BTP, gérants de négoce, responsables logistique et experts agroalimentaires du Gard. Frais de logement, repas et forfait trajet en sus.",
         whyHere: [
           "Nîmes est un bassin de TPE et PME indépendantes où le dirigeant porte souvent plusieurs casquettes : le coaching 1-to-1 s'adapte à votre agenda chargé, à votre rythme réel et à vos cas opérationnels immédiats.",
           "Le BTP et les services aux entreprises nîmois génèrent un volume documentaire quotidien élevé (devis, bons de commande, comptes-rendus de chantier) : chaque séance travaille sur vos vrais documents pour des gains immédiats.",
@@ -759,7 +759,7 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Entrée coaching 1-to-1 — artisan, commerçant, dirigeant TPE de services ou BTP nîmois.",
           },
@@ -819,7 +819,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
-            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression.",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à {{price:intervention-dirigeants|flat}}. La suite se décide à l'issue de chaque séance selon votre progression.",
           },
         ],
         guarantees:

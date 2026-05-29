@@ -30,8 +30,8 @@ export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Dié-des-Vosges : diagnostic adapté aux TPE/PME textile, bois, papeterie, mécanique, commerce et services du massif vosgien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-Dié-des-Vosges : diagnostic adapté aux TPE/PME textile, bois, papeterie, mécanique, commerce et services du massif vosgien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-Dié-des-Vosges : diagnostic adapté aux TPE/PME textile, bois, papeterie, mécanique, commerce et services du massif vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Dié-des-Vosges : diagnostic adapté aux TPE/PME textile, bois, papeterie, mécanique, commerce et services du massif vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Dié-des-Vosges : formats adaptés à l'usine textile, la scierie, l'atelier mécanique, le commerce ou le bureau. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Dié-des-Vosges  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME déodatiennes : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME déodatiennes : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les industriels du textile et du bois vosgiens ?",
@@ -65,7 +65,7 @@ export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Saint-Dié-des-Vosges ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Dié-des-Vosges, à partir de 990 € HT. Sessions dans votre usine, atelier, commerce ou en visio. Approche terrain adaptée aux métiers industriels et de services du massif vosgien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Dié-des-Vosges, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre usine, atelier, commerce ou en visio. Approche terrain adaptée aux métiers industriels et de services du massif vosgien.",
     },
   ],
 };

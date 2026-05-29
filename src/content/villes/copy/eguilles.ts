@@ -30,8 +30,8 @@ export const EGUILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Éguilles : ateliers adaptés aux cabinets libéraux, bureaux PME ou en visio pour indépendants en télétravail. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const EGUILLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un cabinet libéral à Éguilles ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Parfaitement adapté aux professions libérales et TPE indépendants éguillens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux professions libérales et TPE indépendants éguillens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les indépendants en télétravail à Éguilles ?",

@@ -9,9 +9,9 @@ export const MONTROUGE_COPY: VilleCopy = {
   pitchEn:
     "Montrouge (92), commune de 46 324 habitants au sud-ouest de Paris, limitrophe du 14ᵉ arrondissement. Densité 22 379 hab/km² sur 2,07 km², desservie par M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge). Siège social du Crédit Agricole SA, présence d'Orange et de nombreuses ETI, PME et TPE tertiaires. Axion-IA, cabinet d'architectes IA seniors, y accompagne dirigeants TPE, gérants PME et cabinets libéraux du Grand Paris avec des solutions IA codées sur mesure.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit Flash 490 € HT, Intervention Essentielle 590 € HT, coaching 1-to-1 dès 990 € HT. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes IA seniors, se déplace à Montrouge (92) pour accompagner TPE, PME et professions libérales. Présence directe métro M4 (Mairie de Montrouge, Barbara) et M13 (Châtillon-Montrouge) : nous intervenons chez les commerçants, agences de services, cabinets libéraux et PME tertiaires du sud du Grand Paris, incluant Arcueil, Bagneux, Châtillon, Gentilly et Malakoff limitrophes. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
   seoHook: "TPE & PME tertiaires · sud Grand Paris",
   ecosystemFr:
     "Montrouge est une commune dense (46 324 hab. sur 2,07 km²) des Hauts-de-Seine, sud-ouest de Paris, limitrophe du 14ᵉ arrondissement, d'Arcueil, Bagneux, Châtillon, Gentilly et Malakoff. Métropole du Grand Paris depuis 2016. Tissu économique riche : siège social du Crédit Agricole SA (Évergreen Campus), siège historique d'Orange (Bridge Campus à Châtillon-Montrouge), nombreuses agences de services, cabinets de conseil, TPE commerce et professions libérales. Desserte exceptionnelle métro M4 (terminus Mairie de Montrouge depuis 2013, prolongement Bagneux 2022) et M13 (Châtillon-Montrouge), tramway T6 à proximité.",
@@ -30,20 +30,20 @@ export const MONTROUGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit Flash 4 h à 490 € HT, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
-      en: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit Flash 4 h à 490 € HT, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
+      fr: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit Flash 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
+      en: "Audit IA à Montrouge : diagnostic pour TPE commerce, cabinets libéraux, agences de services et PME tertiaires du sud Grand Paris. Audit Flash 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré. Adapté aux écosystèmes financier et télécoms du territoire.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Intervention Essentielle à 590 € HT.",
-      en: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Intervention Essentielle à 590 € HT.",
+      fr: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Intervention Essentielle à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Montrouge, accès direct métro M4/M13. Ateliers ciblés pour TPE, PME et professions libérales : automatisation back-office, classification emails, IA métier. Intervention Essentielle à {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
-      en: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de 990 € HT.",
+      fr: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Montrouge : intégration aux outils existants (CRM, ERP, bureautique) pour PME tertiaires et cabinets libéraux. Code propriétaire client, pas de no-code, pas de SaaS verrouillé. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de 990 € HT.",
-      en: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Montrouge : sessions sur site ou en visio pour dirigeants TPE, gérants PME et professions libérales. Stratégie IA, sélection d'outils, transfert de compétences. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MONTROUGE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Montrouge ?",
-      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à 490 € HT, Intervention Essentielle sur site à 590 € HT, Implémentation et coaching 1-to-1 dès 990 € HT. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
+      a: "Tarifs publics identiques partout en France : Audit Flash 4 h à {{price:audit-flash|flat}}, Intervention Essentielle sur site à {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Pas de devis opaque, pas de surcoût géographique en Île-de-France.",
     },
     {
       q: "Quels délais d'intervention sur Montrouge ?",

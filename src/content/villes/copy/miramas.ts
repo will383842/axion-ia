@@ -30,8 +30,8 @@ export const MIRAMAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Miramas : diagnostic adapté à tous types d'activités — logistique, industrie, agriculture Crau, artisanat, commerce. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Miramas : diagnostic adapté à tous types d'activités — logistique, industrie, agriculture Crau, artisanat, commerce. ROI chiffré pragmatique, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Miramas : diagnostic adapté à tous types d'activités — logistique, industrie, agriculture Crau, artisanat, commerce. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Miramas : diagnostic adapté à tous types d'activités — logistique, industrie, agriculture Crau, artisanat, commerce. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Miramas : formats adaptés au site (entrepôt logistique, atelier industriel, exploitation agricole). Vos équipes terrain et back-office repartent avec outils IA configurés métier réel.",
@@ -65,7 +65,7 @@ export const MIRAMAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans miramassais ?",
-      a: "Pour les TPE et artisans à Miramas (BTP, commerces, services), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion administrative simplifiée.",
+      a: "Pour les TPE et artisans à Miramas (BTP, commerces, services), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion administrative simplifiée.",
     },
   ],
 };

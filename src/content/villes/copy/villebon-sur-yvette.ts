@@ -30,8 +30,8 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villebon-sur-Yvette : formats adaptés bureau zone Courtaboeuf, enseigne commerciale, cabinet ou siège. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans villebonnais ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {
       q: "Accompagnez-vous les PME de la zone Courtaboeuf ?",

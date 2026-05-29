@@ -30,8 +30,8 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit Flash 490 € HT.",
-      en: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit Flash 490 € HT.",
+      fr: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boulazac Isle Manoire : formations pratiques pour commerçants, artisans BTP, professionnels agroalimentaire et gérants PME.",
@@ -53,7 +53,7 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Boulazac Isle Manoire  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider l'agroalimentaire périgourdin ?",
@@ -65,7 +65,7 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA individuel dans l'agglo Périgueux ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants TPE/PME de Boulazac et de l'agglo Périgueux. Sur site ou en visio. Sessions à partir de 990 € HT.",
+      a: "Oui, coaching 1-to-1 pour dirigeants TPE/PME de Boulazac et de l'agglo Périgueux. Sur site ou en visio. Sessions à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

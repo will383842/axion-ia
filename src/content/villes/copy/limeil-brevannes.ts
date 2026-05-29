@@ -31,26 +31,26 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Flash à Limeil-Brévannes (490 € HT, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
-      en: "Audit IA Flash à Limeil-Brévannes (490 € HT, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
+      fr: "Audit IA Flash à Limeil-Brévannes ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
+      en: "Audit IA Flash à Limeil-Brévannes ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
     },
     interventions: {
-      fr: "Interventions à Limeil-Brévannes dès 590 € HT : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
-      en: "Interventions à Limeil-Brévannes dès 590 € HT : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
+      fr: "Interventions à Limeil-Brévannes dès {{price:intervention-4h|flat}} : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
+      en: "Interventions à Limeil-Brévannes dès {{price:intervention-4h|flat}} : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",
     },
     implementation: {
-      fr: "Implémentation IA à Limeil-Brévannes dès 990 € HT : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
-      en: "Implémentation IA à Limeil-Brévannes dès 990 € HT : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
+      fr: "Implémentation IA à Limeil-Brévannes dès {{price:impl-poc|entry}} : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
+      en: "Implémentation IA à Limeil-Brévannes dès {{price:impl-poc|entry}} : développement en code custom (pas de no-code) — modules métiers, intégrations ERP, outils de gestion documentaire pour PME du Val-de-Marne.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Limeil-Brévannes dès 990 € HT : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
-      en: "Sessions 1-to-1 à Limeil-Brévannes dès 990 € HT : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
+      fr: "Sessions 1-to-1 à Limeil-Brévannes dès {{price:intervention-dirigeants|flat}} : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
+      en: "Sessions 1-to-1 à Limeil-Brévannes dès {{price:intervention-dirigeants|flat}} : accompagnement personnalisé des dirigeants de TPE et PME pour cadrer leur stratégie IA et prioriser les chantiers à fort ROI.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA à Limeil-Brévannes ?",
-      a: "Audit Flash dès 490 € HT (4 h sur site), interventions dès 590 € HT, implémentations et sessions 1-to-1 dès 990 € HT. Tarifs publics détaillés sur la page Tarifs.",
+      a: "Audit Flash dès {{price:audit-flash|flat}} (4 h sur site), interventions dès {{price:intervention-4h|flat}}, implémentations et sessions 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics détaillés sur la page Tarifs.",
     },
     {
       q: "Quel est le délai pour une intervention à Limeil-Brévannes ?",

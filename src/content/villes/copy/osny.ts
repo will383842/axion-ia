@@ -30,8 +30,8 @@ export const OSNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Osny : formats adaptés boutique, bureau conseil, cabinet, restaurant, centre de formation. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const OSNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",

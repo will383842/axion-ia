@@ -30,8 +30,8 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
-      en: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Isle-d'Abeau : formats adaptés à l'entrepôt logistique, atelier industriel ou bureau. Vos équipes (logisticiens, commerciaux, artisans) repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de la ville nouvelle ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à L'Isle-d'Abeau sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion administrative simplifiée. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à L'Isle-d'Abeau sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour le siège CAPI et services publics ?",

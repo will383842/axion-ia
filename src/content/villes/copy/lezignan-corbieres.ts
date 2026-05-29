@@ -30,8 +30,8 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit Flash 490 € HT.",
-      en: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lézignan-Corbières : formats adaptés à la cave viticole, le commerce, l'exploitation agricole, l'entrepôt logistique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Lézignan-Corbières  ?",
-      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Les zones d'activités de Lézignan bénéficient-elles de l'IA ?",

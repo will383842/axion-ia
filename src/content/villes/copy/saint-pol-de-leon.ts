@@ -30,8 +30,8 @@ export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pol-de-Léon : formats adaptés aux coopératives maraîchères, TPE agricoles, PME agroalimentaires ou commerces de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE agricoles et commerçants de Saint-Pol-de-Léon ?",
-      a: "Oui, nous accompagnons les TPE maraîchères et commerçants de Saint-Pol-de-Léon sur des cas IA pratiques : automatisation devis, agents IA prise de commandes, gestion stocks saisonniers, optimisation planning récoltes. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE maraîchères et commerçants de Saint-Pol-de-Léon sur des cas IA pratiques : automatisation devis, agents IA prise de commandes, gestion stocks saisonniers, optimisation planning récoltes. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de la Ceinture dorée ?",

@@ -11,9 +11,9 @@ export const DUNKERQUE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des TPE et PME du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
   directAnswerFr:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. William se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès 590 € HT pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. William se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. William se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès 590 € HT pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. William se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   seoHook: "port, métallurgie & sous-traitance",
   ecosystemFr:
     "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de TPE et PME de sous-traitance, logistique, maintenance et services.",
@@ -45,14 +45,14 @@ export const DUNKERQUE_COPY: VilleCopy = {
       en: "Implémenter des outils IA en code source propriétaire à Dunkerque, livrés au client, intégrables aux ERP et logiciels métier existants.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
-      en: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès 990 € HT.",
+      fr: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Dunkerque ?",
-      a: "Nos interventions essentielles débutent à 590 € HT, les audits flash à 490 € HT et les sessions 1-to-1 à 990 € HT. Les tarifs publics sont consultables sur notre site.",
+      a: "Nos interventions essentielles débutent à {{price:intervention-4h|flat}}, les audits flash à {{price:audit-flash|flat}} et les sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Les tarifs publics sont consultables sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Dunkerque ?",

@@ -10,9 +10,9 @@ export const SEVRES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Sèvres (22 303 habitants, Hauts-de-Seine), commune située à 12 km à l'ouest de Paris, au coeur du sud-ouest francilien. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, commerçants, professions libérales et PME tertiaires installés entre la Manufacture nationale de Sèvres, Strate École de Design et le pôle Boulogne-Billancourt – Issy-les-Moulineaux.",
   directAnswerFr:
-    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès 490 € HT, interventions dès 590 € HT.",
+    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès 490 € HT, interventions dès 590 € HT.",
+    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
   seoHook: "artisanat d'art, design & PME tertiaires",
   ecosystemFr:
     "Sèvres est marquée par la Manufacture nationale de Sèvres (porcelaine, héritage de 1756) et le Musée national de la Céramique, qui structurent un écosystème rare d'artisans d'art, de céramistes et de métiers de patrimoine. La présence de Strate École de Design et de l'ESFF (École supérieure de fonderie et forge) attire un tissu de PME d'ingénierie et de design produit. La proximité immédiate de Boulogne-Billancourt, Issy-les-Moulineaux, Meudon, Chaville, Saint-Cloud et Ville-d'Avray ouvre l'accès à un bassin de PME tertiaires denses.",
@@ -31,26 +31,26 @@ export const SEVRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sèvres pour les artisans d'art, les cabinets de design et les TPE tertiaires — cartographie des automatisations à 490 € HT.",
-      en: "Audit IA à Sèvres pour les artisans d'art, les cabinets de design et les TPE tertiaires — cartographie des automatisations à 490 € HT.",
+      fr: "Audit IA à Sèvres pour les artisans d'art, les cabinets de design et les TPE tertiaires — cartographie des automatisations à {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sèvres pour les artisans d'art, les cabinets de design et les TPE tertiaires — cartographie des automatisations à {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions à Sèvres pour automatiser devis, factures et relances des PME tertiaires et des artisans locaux — dès 590 € HT.",
-      en: "Interventions à Sèvres pour automatiser devis, factures et relances des PME tertiaires et des artisans locaux — dès 590 € HT.",
+      fr: "Interventions à Sèvres pour automatiser devis, factures et relances des PME tertiaires et des artisans locaux — dès {{price:intervention-4h|flat}}.",
+      en: "Interventions à Sèvres pour automatiser devis, factures et relances des PME tertiaires et des artisans locaux — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA codées sur mesure à Sèvres (pas de no-code) pour les PME de design, d'ingénierie et de conseil — dès 990 € HT.",
-      en: "Implémentation de solutions IA codées sur mesure à Sèvres (pas de no-code) pour les PME de design, d'ingénierie et de conseil — dès 990 € HT.",
+      fr: "Implémentation de solutions IA codées sur mesure à Sèvres (pas de no-code) pour les PME de design, d'ingénierie et de conseil — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation de solutions IA codées sur mesure à Sèvres (pas de no-code) pour les PME de design, d'ingénierie et de conseil — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Sèvres pour dirigeants de TPE/PME : roadmap IA, priorisation des cas d'usage, conformité RGPD — dès 990 € HT.",
-      en: "Sessions 1-to-1 à Sèvres pour dirigeants de TPE/PME : roadmap IA, priorisation des cas d'usage, conformité RGPD — dès 990 € HT.",
+      fr: "Sessions 1-to-1 à Sèvres pour dirigeants de TPE/PME : roadmap IA, priorisation des cas d'usage, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Sèvres pour dirigeants de TPE/PME : roadmap IA, priorisation des cas d'usage, conformité RGPD — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Sèvres ?",
-      a: "L'Audit Flash 4 h démarre à 490 € HT, l'Intervention Essentielle à 590 € HT et l'implémentation sur mesure à 990 € HT. Tous nos tarifs publics sont consultables en ligne.",
+      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, l'Intervention Essentielle à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Sèvres ?",

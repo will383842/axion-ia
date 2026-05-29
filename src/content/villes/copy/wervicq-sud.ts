@@ -30,8 +30,8 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wervicq-Sud : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Wervicq-Sud  ?",
-      a: "L'audit Flash IA à Wervicq-Sud démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit Flash IA à Wervicq-Sud démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières à Wervicq-Sud ?",

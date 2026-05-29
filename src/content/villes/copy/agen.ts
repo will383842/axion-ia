@@ -30,8 +30,8 @@ export const AGEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
-      en: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès 490 € HT.",
+      fr: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Agen : formats adaptés à l'atelier de transformation, à la coopérative ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -61,7 +61,7 @@ export const AGEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Agen ?",
-      a: "L'Audit Flash sur mesure démarre à 490 € HT. Tous nos tarifs sont publics et sans devis opaque. Nous chiffrons ensuite chaque chantier d'implémentation au cas par cas selon le ROI identifié.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}}. Tous nos tarifs sont publics et sans devis opaque. Nous chiffrons ensuite chaque chantier d'implémentation au cas par cas selon le ROI identifié.",
     },
     {
       q: "Intervenez-vous autour d'Agen, à Boé ou Le Passage ?",

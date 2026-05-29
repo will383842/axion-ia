@@ -30,8 +30,8 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bons-en-Chablais : formats adaptés commerce, atelier artisan, cabinet libéral ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos chantier.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos chantier.",
     },
     {
       q: "Comment se passe une mission depuis Thonon ou Annemasse ?",

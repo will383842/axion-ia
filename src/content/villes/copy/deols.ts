@@ -30,8 +30,8 @@ export const DEOLS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Déols : formats adaptés aux entreprises logistiques, ateliers de maintenance aéronautique, TPE artisans BTP et commerces de proximité. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const DEOLS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Déols ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Déols sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Déols sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME industrielles du bassin castelroussin ?",

@@ -30,8 +30,8 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Templeuve-en-Pévèle : formats adaptés à l'atelier artisan, l'exploitation agricole, le commerce, la PME. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -61,7 +61,7 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants de Templeuve-en-Pévèle ?",
-      a: "Pour les TPE commerçants à Templeuve-en-Pévèle, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
+      a: "Pour les TPE commerçants à Templeuve-en-Pévèle, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",

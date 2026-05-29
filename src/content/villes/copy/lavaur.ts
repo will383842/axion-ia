@@ -30,8 +30,8 @@ export const LAVAUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lavaur : diagnostic adapté aux TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit Flash 490 € HT.",
-      en: "Audit IA à Lavaur : diagnostic adapté aux TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Lavaur : diagnostic adapté aux TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lavaur : diagnostic adapté aux TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lavaur : formats adaptés au commerce de centre-ville, cabinet libéral, exploitation agricole ou PME de services. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LAVAUR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Lavaur ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Lavaur. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur d'activité.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Lavaur. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur d'activité.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du Vaurais ?",
@@ -61,11 +61,11 @@ export const LAVAUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Lavaur centre ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée pour les commerces vauréens.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée pour les commerces vauréens.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Lavaur ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Lavaur. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Lavaur. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

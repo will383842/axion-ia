@@ -30,8 +30,8 @@ export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Mars-du-Désert : diagnostic adapté aux TPE artisans, PME tertiaires, exploitations agricoles et professions libérales du nord-est nantais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Mars-du-Désert : diagnostic adapté aux TPE artisans, PME tertiaires, exploitations agricoles et professions libérales du nord-est nantais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Mars-du-Désert : diagnostic adapté aux TPE artisans, PME tertiaires, exploitations agricoles et professions libérales du nord-est nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Mars-du-Désert : diagnostic adapté aux TPE artisans, PME tertiaires, exploitations agricoles et professions libérales du nord-est nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Mars-du-Désert : formats adaptés au bureau, au cabinet, au commerce ou à l'exploitation. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires du nord-est nantais ?",
-      a: "Oui, nous accompagnons les PME tertiaires sur des cas IA : automatisation workflow, agents conversationnels B2B, extraction données, gestion planning. Audit Flash 490 € HT adapté aux petites et moyennes structures.",
+      a: "Oui, nous accompagnons les PME tertiaires sur des cas IA : automatisation workflow, agents conversationnels B2B, extraction données, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites et moyennes structures.",
     },
     {
       q: "Quels services pour les exploitations agricoles ?",
@@ -61,7 +61,7 @@ export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Mars-du-Désert  ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
     },
     {
       q: "Comment se déroule une mission depuis Nantes ?",

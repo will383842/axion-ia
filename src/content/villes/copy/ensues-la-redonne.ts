@@ -30,8 +30,8 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ensuès-la-Redonne : ateliers pour équipes tourisme, restauration, plaisance et TPE locales. Outils IA configurés métier réel, dans vos locaux ou à Carry.",
@@ -53,7 +53,7 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Ensuès-la-Redonne  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE tourisme, restaurateurs, plaisanciers et commerces de la Côte Bleue. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, plaisanciers et commerces de la Côte Bleue. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les locations saisonnières et la restauration de bord de mer ?",

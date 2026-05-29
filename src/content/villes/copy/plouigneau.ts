@@ -30,8 +30,8 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouigneau : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Plouigneau : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Plouigneau : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plouigneau : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et transporteurs du Trégor finistérien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouigneau : formations pratiques pour exploitants agricoles, équipes agroalimentaires, artisans et transporteurs. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Plouigneau  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les PME agroalimentaires autour de Plouigneau ?",
-      a: "Pour les PME agroalimentaires, nous proposons : Audit Flash 490 € HT, intervention formation, implémentation sur mesure. Cas typiques : traçabilité production, contrôle qualité augmenté, agents IA relation fournisseurs, optimisation logistique et planning.",
+      a: "Pour les PME agroalimentaires, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation, implémentation sur mesure. Cas typiques : traçabilité production, contrôle qualité augmenté, agents IA relation fournisseurs, optimisation logistique et planning.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Plouigneau ?",

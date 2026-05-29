@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Védas : diagnostic adapté aux TPE/PME tertiaires, commerciales, professions libérales et artisans de l'agglo Montpellier sud-ouest. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-Jean-de-Védas : diagnostic adapté aux TPE/PME tertiaires, commerciales, professions libérales et artisans de l'agglo Montpellier sud-ouest. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-Jean-de-Védas : diagnostic adapté aux TPE/PME tertiaires, commerciales, professions libérales et artisans de l'agglo Montpellier sud-ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Jean-de-Védas : diagnostic adapté aux TPE/PME tertiaires, commerciales, professions libérales et artisans de l'agglo Montpellier sud-ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Védas : formats adaptés au bureau tertiaire, à l'enseigne commerciale, au cabinet ou à l'atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Védas  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Saint-Jean-de-Védas : entreprises tertiaires Via Domitia, commerces, professions libérales et artisans. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Saint-Jean-de-Védas : entreprises tertiaires Via Domitia, commerces, professions libérales et artisans. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les entreprises tertiaires de Saint-Jean-de-Védas ?",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Saint-Jean-de-Védas ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Jean-de-Védas, à partir de 990 € HT. Sessions sur site dans vos bureaux, commerce, cabinet ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Saint-Jean-de-Védas, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans vos bureaux, commerce, cabinet ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Jean-de-Védas ?",

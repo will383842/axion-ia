@@ -45,7 +45,7 @@ export const NANTES_COPY: VilleCopy = {
       en: "AI implementation in Nantes: we deploy AI into your existing tools (CRM, ERP, email, industrial PLM) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Nantes : accompagnement 1-to-1 ancré dans votre réalité — aéronautique, agroalimentaire, numérique ou biotech. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Coaching IA individuel à Nantes : accompagnement 1-to-1 ancré dans votre réalité — aéronautique, agroalimentaire, numérique ou biotech. À partir de {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Nantes: 1-to-1 support rooted in your reality — aeronautics, agri-food, digital or biotech. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -740,7 +740,7 @@ export const NANTES_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Nantes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants, managers et experts des secteurs aéronautique, agroalimentaire, numérique et biotech du Grand Ouest. Frais de logement, repas et forfait trajet en sus.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Nantes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de {{price:intervention-dirigeants|flat}}. Adapté aux dirigeants, managers et experts des secteurs aéronautique, agroalimentaire, numérique et biotech du Grand Ouest. Frais de logement, repas et forfait trajet en sus.",
         whyHere: [
           "Nantes concentre des profils très hétérogènes — ingénieur aéronautique chez Airbus, directeur qualité dans une PME agroalimentaire, CTO d'une scale-up French Tech — qui n'ont ni le même rythme ni les mêmes cas : le 1-to-1 est la seule formule qui s'adapte à chacun.",
           "L'industrie aéronautique (Airbus Bouguenais, IRT Jules Verne, sous-traitants pôle EMC2) impose des contraintes qualité et réglementaires spécifiques que seul un coaching individuel peut intégrer dans chaque exercice pratique.",
@@ -779,7 +779,7 @@ export const NANTES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "À partir de 990 € HT",
+            price: "À partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Entrée coaching 1-to-1 — dirigeant, indépendant ou expert TPE du numérique, de l'agro ou de l'artisanat nantais.",
           },
@@ -839,7 +839,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
-            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression et vos besoins.",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à {{price:intervention-dirigeants|flat}}. La suite se décide à l'issue de chaque séance selon votre progression et vos besoins.",
           },
         ],
         guarantees:

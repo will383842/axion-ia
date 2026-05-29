@@ -30,8 +30,8 @@ export const OBERNAI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Obernai : formats adaptés au domaine viticole, à la brasserie, à l'hôtel-restaurant ou au commerce du centre historique. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const OBERNAI_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Obernai  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME d'Obernai et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, brasserie, hôtel-restaurant ou commerce médiéval.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d'Obernai et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, brasserie, hôtel-restaurant ou commerce médiéval.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la Route des Vins ?",
@@ -65,7 +65,7 @@ export const OBERNAI_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Obernai ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Obernai, à partir de 990 € HT. Sessions au domaine, à l'hôtel ou en visio. Approche terrain adaptée au tissu viticole et touristique du Piémont des Vosges.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Obernai, à partir de {{price:intervention-dirigeants|flat}}. Sessions au domaine, à l'hôtel ou en visio. Approche terrain adaptée au tissu viticole et touristique du Piémont des Vosges.",
     },
   ],
 };

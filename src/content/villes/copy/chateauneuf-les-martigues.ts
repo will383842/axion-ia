@@ -30,8 +30,8 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, TPE artisans et commerces du pourtour de l'étang de Berre. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, TPE artisans et commerces du pourtour de l'étang de Berre. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, TPE artisans et commerces du pourtour de l'étang de Berre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Châteauneuf-les-Martigues : diagnostic adapté aux PME industrielles, sous-traitants aéronautiques, TPE artisans et commerces du pourtour de l'étang de Berre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteauneuf-les-Martigues : ateliers pour équipes industrielles, sous-traitants aéro, TPE artisans et PME logistiques. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Châteauneuf-les-Martigues  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME industrielles et sous-traitants aéronautiques châteauneuvais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME industrielles et sous-traitants aéronautiques châteauneuvais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les sous-traitants aéronautiques de la zone Marignane ?",

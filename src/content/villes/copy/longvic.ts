@@ -30,8 +30,8 @@ export const LONGVIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longvic : formats adaptés atelier industriel, entrepôt logistique, commerce, cabinet, bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const LONGVIC_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques de Longvic ?",
-      a: "Oui, audit Flash 490 € HT, automatisation production et qualité, maintenance prédictive, optimisation flux logistiques et entrepôts, gestion stocks, reporting commercial pour les zones d'activités sud Dijon.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation production et qualité, maintenance prédictive, optimisation flux logistiques et entrepôts, gestion stocks, reporting commercial pour les zones d'activités sud Dijon.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de centre-bourg ?",
@@ -61,7 +61,7 @@ export const LONGVIC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les prestataires aéronautiques et défense ?",
-      a: "Audit Flash 490 € HT, automatisation reporting et conformité, gestion documentaire, suivi qualité, optimisation cycles production pour la filière aéronautique et défense liée à l'ancienne base aérienne 102.",
+      a: "Audit Flash {{price:audit-flash|flat}}, automatisation reporting et conformité, gestion documentaire, suivi qualité, optimisation cycles production pour la filière aéronautique et défense liée à l'ancienne base aérienne 102.",
     },
     {
       q: "Comment se déroule une mission depuis Dijon ou Paris ?",

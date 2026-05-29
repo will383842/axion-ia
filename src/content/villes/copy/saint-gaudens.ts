@@ -30,8 +30,8 @@ export const SAINT_GAUDENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gaudens : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et acteurs du tourisme du Comminges. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Gaudens : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et acteurs du tourisme du Comminges. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Gaudens : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et acteurs du tourisme du Comminges. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Gaudens : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et acteurs du tourisme du Comminges. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gaudens : formats adaptés à l'usine, au commerce de centre-ville, à l'hébergement touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const SAINT_GAUDENS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Gaudens  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "L'IA est-elle utile pour le tourisme pyrénéen ?",

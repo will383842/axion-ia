@@ -30,8 +30,8 @@ export const ARES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit Flash 490 € HT.",
-      en: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arès : ateliers adaptés aux campings, hébergements, ports ostréicoles et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const ARES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arès  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux hébergeurs et TPE du nord Bassin d'Arcachon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux hébergeurs et TPE du nord Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les campings et hébergeurs ?",
@@ -61,7 +61,7 @@ export const ARES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les ostréiculteurs à Arès ?",
-      a: "Pour les ostréiculteurs d'Arès : audit IA 490 € HT, traçabilité production, agents IA gestion commandes, automatisation facturation.",
+      a: "Pour les ostréiculteurs d'Arès : audit IA {{price:audit-flash|flat}}, traçabilité production, agents IA gestion commandes, automatisation facturation.",
     },
     {
       q: "Comment se déroule une mission à Arès ?",

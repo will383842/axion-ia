@@ -30,8 +30,8 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verrières-le-Buisson : formats adaptés cabinet, bureau PME, boutique, atelier artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants et artisans ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Antony ou Paris ?",

@@ -30,8 +30,8 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Cannet-des-Maures : ateliers pour équipes TPE/PME, vignerons, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
@@ -53,7 +53,7 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Cannet-des-Maures ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME viticoles, services logistiques et commerces cannétois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles, services logistiques et commerces cannétois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et entreprises logistiques ?",

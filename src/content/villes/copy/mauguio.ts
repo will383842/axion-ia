@@ -30,8 +30,8 @@ export const MAUGUIO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mauguio : diagnostic adapté aux TPE/PME de la zone aéroport, viticulteurs, commerçants et prestataires de services de l'agglo Montpellier est. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Mauguio : diagnostic adapté aux TPE/PME de la zone aéroport, viticulteurs, commerçants et prestataires de services de l'agglo Montpellier est. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Mauguio : diagnostic adapté aux TPE/PME de la zone aéroport, viticulteurs, commerçants et prestataires de services de l'agglo Montpellier est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Mauguio : diagnostic adapté aux TPE/PME de la zone aéroport, viticulteurs, commerçants et prestataires de services de l'agglo Montpellier est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mauguio : formats adaptés à l'entreprise aéroportuaire, au domaine viticole, au commerce ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MAUGUIO_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mauguio  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Mauguio : entreprises zone aéroport, viticulteurs, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Mauguio : entreprises zone aéroport, viticulteurs, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les viticulteurs de Mauguio ?",
@@ -61,7 +61,7 @@ export const MAUGUIO_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Mauguio ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Mauguio, à partir de 990 € HT. Sessions sur site dans votre entreprise, domaine viticole, commerce ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Mauguio, à partir de {{price:intervention-dirigeants|flat}}. Sessions sur site dans votre entreprise, domaine viticole, commerce ou en visio. Approche terrain adaptée aux métiers de l'agglo Montpellier.",
     },
     {
       q: "Comment se déroule une mission IA à Mauguio ?",

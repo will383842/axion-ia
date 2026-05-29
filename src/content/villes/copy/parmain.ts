@@ -30,8 +30,8 @@ export const PARMAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parmain : formats adaptés boutique, cabinet, restaurant, bureau PME bords de l'Oise. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const PARMAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",

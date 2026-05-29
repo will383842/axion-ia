@@ -9,9 +9,9 @@ export const GAILLAC_COPY: VilleCopy = {
   pitchEn:
     "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit Flash dès 490 € HT, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit Flash dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit Flash dès 490 € HT, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit Flash dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   seoHook: "viticulture oenologie & commerce détail",
   ecosystemFr:
     "Gaillac (16 162 hab) est la capitale historique de l'AOC Gaillac, le plus ancien vignoble de France. Économie structurée autour de la viticulture, de l'agroalimentaire, du tourisme oenotouristique et des commerces de centre-ville. Proximité Albi (25 min) et Toulouse (50 min via A68). Tissu TPE vignerons et caves coopératives, PME négoce et transformation, artisans, professions libérales.",
@@ -30,8 +30,8 @@ export const GAILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gaillac : diagnostic adapté aux TPE viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit Flash 490 € HT.",
-      en: "Audit IA à Gaillac : diagnostic adapté aux TPE viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit Flash 490 € HT.",
+      fr: "Audit IA à Gaillac : diagnostic adapté aux TPE viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gaillac : diagnostic adapté aux TPE viticoles, PME agroalimentaires, caves coopératives, commerçants et professions libérales du Gaillacois. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gaillac : formats adaptés au domaine viticole, cave coopérative, commerce de centre-ville ou PME agroalimentaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const GAILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE viticole à Gaillac ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE viticoles de Gaillac. Diagnostic complet des processus, cartographie IA (traçabilité, gestion cave, vente directe) et plan d'action ROI chiffré.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE viticoles de Gaillac. Diagnostic complet des processus, cartographie IA (traçabilité, gestion cave, vente directe) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les caves coopératives du Gaillacois ?",
@@ -61,7 +61,7 @@ export const GAILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerçants de Gaillac centre ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée pour les commerces gaillacois.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée pour les commerces gaillacois.",
     },
     {
       q: "L'IA peut-elle aider la filière agroalimentaire gaillacoise ?",

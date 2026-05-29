@@ -30,8 +30,8 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-de-la-Roche : formats adaptés à l'atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,15 +53,15 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de la commune ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Saint-André-de-la-Roche sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Saint-André-de-la-Roche sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les commerces et services de proximité ?",
-      a: "Oui, nous accompagnons les commerces et services de proximité de Saint-André-de-la-Roche sur leurs cas IA : gestion stocks, agents conversationnels client, automatisation commandes, CRM fidélisation. Coaching 1-to-1 ou audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les commerces et services de proximité de Saint-André-de-la-Roche sur leurs cas IA : gestion stocks, agents conversationnels client, automatisation commandes, CRM fidélisation. Coaching 1-to-1 ou audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales de Saint-André-de-la-Roche (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit Flash 490 € HT ou coaching 1-to-1.",
+      a: "Pour les professions libérales de Saint-André-de-la-Roche (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
       q: "Comment se déroule une mission depuis Nice ?",

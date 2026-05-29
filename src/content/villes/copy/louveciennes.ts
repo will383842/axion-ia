@@ -30,8 +30,8 @@ export const LOUVECIENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louveciennes : formats adaptés au cabinet, au bureau ou en visio. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LOUVECIENNES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Louveciennes ?",
-      a: "L'Audit Flash IA à Louveciennes démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Louveciennes démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Louveciennes ?",

@@ -30,8 +30,8 @@ export const HEILLECOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Heillecourt : formats adaptés au bureau, au cabinet, à l'atelier, au commerce. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const HEILLECOURT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans heillecourtois ?",
-      a: "Oui, commerçants et artisans de Heillecourt : gestion stocks, relation client, automatisation comptabilité, présence en ligne. Audit Flash 490 € HT.",
+      a: "Oui, commerçants et artisans de Heillecourt : gestion stocks, relation client, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Heillecourt ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Heillecourt ?",

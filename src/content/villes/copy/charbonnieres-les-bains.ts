@@ -30,8 +30,8 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Charbonnières-les-Bains : formats adaptés à l'hôtel thermal, casino, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

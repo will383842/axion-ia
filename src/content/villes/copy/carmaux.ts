@@ -30,8 +30,8 @@ export const CARMAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carmaux : diagnostic adapté aux TPE artisans, PME en reconversion, commerçants, acteurs ESS et professions libérales du bassin carmausin. Audit Flash 490 € HT.",
-      en: "Audit IA à Carmaux : diagnostic adapté aux TPE artisans, PME en reconversion, commerçants, acteurs ESS et professions libérales du bassin carmausin. Audit Flash 490 € HT.",
+      fr: "Audit IA à Carmaux : diagnostic adapté aux TPE artisans, PME en reconversion, commerçants, acteurs ESS et professions libérales du bassin carmausin. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Carmaux : diagnostic adapté aux TPE artisans, PME en reconversion, commerçants, acteurs ESS et professions libérales du bassin carmausin. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carmaux : formats adaptés à la PME en reconversion, commerce, association ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const CARMAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Carmaux ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Carmaux. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Carmaux. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les structures ESS du Carmausin ?",
@@ -65,7 +65,7 @@ export const CARMAUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Carmaux ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Carmaux. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Carmaux. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const CHATEAULIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaulin : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Châteaulin : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Châteaulin : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châteaulin : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales de la vallée de l'Aulne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaulin : formations pratiques pour équipes agroalimentaires, artisans, commerçants et acteurs touristiques. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const CHATEAULIN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Châteaulin  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME châteaulinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME châteaulinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de Châteaulin ?",
-      a: "Pour les artisans et commerçants, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks et fidélisation client augmentée.",
+      a: "Pour les artisans et commerçants, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks et fidélisation client augmentée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Châteaulin ?",

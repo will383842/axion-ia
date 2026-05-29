@@ -30,8 +30,8 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit Flash 490 € HT.",
-      en: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit Flash 490 € HT.",
+      fr: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aigues-Mortes : formats adaptés aux hôtels, restaurants, caves viticoles, boutiques artisanales et structures touristiques Camargue.",
@@ -57,7 +57,7 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Aigues-Mortes  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs des sables ?",

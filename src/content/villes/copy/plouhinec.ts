@@ -30,8 +30,8 @@ export const PLOUHINEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouhinec : formats adaptés à l'exploitation ostréicole, camping, gîte littoral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PLOUHINEC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants plouhinécois ?",
-      a: "Pour les TPE artisans BTP, maritimes et commerçants à Plouhinec, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers.",
+      a: "Pour les TPE artisans BTP, maritimes et commerçants à Plouhinec, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers.",
     },
     {
       q: "Comment se déroule une mission à Plouhinec depuis Lorient ?",

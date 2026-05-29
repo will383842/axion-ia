@@ -30,8 +30,8 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-de-Cubzac : ateliers adaptés aux domaines viticoles, commerces et artisanat. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-André-de-Cubzac  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du Cubzaguais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du Cubzaguais.",
     },
     {
       q: "Accompagnez-vous les vignerons du Cubzaguais ?",
@@ -61,7 +61,7 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants à Saint-André-de-Cubzac ?",
-      a: "Pour les commerçants : audit IA 490 € HT, intervention 1 journée, implémentation agents conversationnels, automatisation gestion stocks et facturation, CRM client augmenté.",
+      a: "Pour les commerçants : audit IA {{price:audit-flash|flat}}, intervention 1 journée, implémentation agents conversationnels, automatisation gestion stocks et facturation, CRM client augmenté.",
     },
     {
       q: "Comment se déroule une mission à Saint-André-de-Cubzac ?",

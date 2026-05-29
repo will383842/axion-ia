@@ -30,8 +30,8 @@ export const PLOEMEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
-      en: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
+      fr: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      en: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploemeur : formations adaptées aux équipes TPE/PME, hôteliers, restaurateurs, professionnels nautiques et artisans locaux. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PLOEMEUR_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ploemeur  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants ploemeurois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants ploemeurois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les professionnels du nautisme et de la plaisance à Ploemeur ?",
@@ -61,7 +61,7 @@ export const PLOEMEUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hôteliers et restaurateurs de Ploemeur ?",
-      a: "Pour les hôteliers et restaurateurs ploemeurois, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA réservation, yield management saisonnier, fidélisation, traduction multilingue, automatisation menus et avis clients.",
+      a: "Pour les hôteliers et restaurateurs ploemeurois, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA réservation, yield management saisonnier, fidélisation, traduction multilingue, automatisation menus et avis clients.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Ploemeur ?",

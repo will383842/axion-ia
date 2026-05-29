@@ -30,8 +30,8 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux TPE artisans, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux TPE artisans, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux TPE artisans, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux TPE artisans, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
@@ -53,7 +53,7 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Peyrolles-en-Provence  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME services, agriculteurs et commerces peyrollais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME services, agriculteurs et commerces peyrollais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les agriculteurs provençaux (viticulture, oléiculture, maraîchage) ?",

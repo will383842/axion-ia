@@ -11,9 +11,9 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Schiltigheim, commune du Bas-Rhin limitrophe nord de Strasbourg (34 708 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Surnommée la « cité des Brasseurs » pour son héritage industriel (Kronenbourg, Fischer, Adelshoffen, Schützenberger), la ville accueille aujourd'hui l'Espace Européen de l'Entreprise et un tissu de services, commerces et activités tertiaires. Notre cabinet code en custom, sans no-code, pour les dirigeants schilikois.",
   directAnswerFr:
-    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès 490 € HT.",
+    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès 490 € HT.",
+    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   seoHook: "services aux entreprises, commerce gros & agroalimentaire",
   ecosystemFr:
     "Schiltigheim, intégrée à l'Eurométropole de Strasbourg, héberge l'Espace Européen de l'Entreprise (EEE), parc d'activités créé en 1994 sur 96 hectares regroupant environ 500 sociétés et 9 000 emplois (services, conseil, BtoB, IT). La ville conserve son identité de « cité des Brasseurs » avec un héritage agroalimentaire historique (Kronenbourg, Fischer, Adelshoffen, Schützenberger, L'Espérance). Elle est traversée par les axes ferroviaires Paris-Strasbourg et Strasbourg-Lauterbourg.",
@@ -33,26 +33,26 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès 490 € HT.",
-      en: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès 490 € HT.",
+      fr: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès 590 € HT.",
-      en: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès 990 € HT.",
-      en: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès 990 € HT.",
+      fr: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Schiltigheim pour dirigeants schilikois — stratégie IA et adoption opérationnelle, dès 990 € HT.",
-      en: "Accompagnement 1-to-1 à Schiltigheim pour dirigeants schilikois — stratégie IA et adoption opérationnelle, dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Schiltigheim pour dirigeants schilikois — stratégie IA et adoption opérationnelle, dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Schiltigheim pour dirigeants schilikois — stratégie IA et adoption opérationnelle, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Schiltigheim ?",
-      a: "Nos interventions IA à Schiltigheim démarrent à 590 € HT pour l'Intervention Essentielle, après un Audit Flash à 490 € HT. Tarifs publics affichés.",
+      a: "Nos interventions IA à Schiltigheim démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, après un Audit Flash à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
       q: "William se déplace-t-il à Schiltigheim depuis Paris ?",

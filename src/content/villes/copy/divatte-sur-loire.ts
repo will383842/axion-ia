@@ -30,8 +30,8 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux TPE viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux TPE viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux TPE viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux TPE viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Divatte-sur-Loire : formats adaptés au domaine viticole, à l'exploitation maraîchère, au commerce ou au bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les viticulteurs et maraîchers ?",
-      a: "Oui, nous accompagnons les TPE viticulteurs et maraîchers sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks, optimisation logistique récoltes, agents IA vente directe. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE viticulteurs et maraîchers sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks, optimisation logistique récoltes, agents IA vente directe. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME agroalimentaires ?",
@@ -61,7 +61,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Divatte-sur-Loire  ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du vignoble nantais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du vignoble nantais.",
     },
     {
       q: "Comment se déroule une intervention à Divatte-sur-Loire ?",

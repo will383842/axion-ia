@@ -9,9 +9,9 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
   pitchEn:
     "Bruay-la-Buissière (62), 21 424 habitants, ancien bassin minier UNESCO du Pas-de-Calais, à 8 km au sud-ouest de Béthune. Issue de la fusion Bruay-en-Artois–Labuissière (1987), la ville conserve son patrimoine corons, fosses et cités minières classées Patrimoine mondial. Tissu économique aujourd'hui dominé par le commerce de détail, la construction, la plasturgie héritée de la reconversion post-mine, les transports et la restauration. Axion-IA accompagne les TPE et PME locales sur leurs cas IA concrets, depuis l'audit jusqu'à l'implémentation.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des TPE, PME et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit Flash 490 € HT, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des TPE, PME et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des TPE, PME et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit Flash 490 € HT, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Bruay-la-Buissière (Pas-de-Calais, communauté d'agglomération Béthune-Bruay) auprès des TPE, PME et artisans : commerces de détail, entreprises BTP, plasturgistes, transporteurs et restaurateurs. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA et coaching 1-to-1 dirigeants. Code custom, pas de no-code, conformité RGPD intégrée.",
   seoHook: "commerce, BTP & plasturgie post-mine",
   ecosystemFr:
     "Bruay-la-Buissière fait partie de la communauté d'agglomération Béthune-Bruay Artois Lys Romane. Le territoire, marqué par un siècle d'exploitation charbonnière (Compagnie des mines de Bruay, 1850-1978), a opéré une reconversion vers la plasturgie, le commerce de détail et le BTP. Le patrimoine minier inscrit UNESCO (six fosses et corons) structure une économie touristique et culturelle. Tissu TPE dense : artisans BTP, commerces de proximité, garages, restauration. PME industrielles en plasturgie et logistique.",
@@ -31,8 +31,8 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruay-la-Buissière : diagnostic concret pour commerces, artisans BTP, plasturgistes et transporteurs du bassin minier. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Bruay-la-Buissière : diagnostic concret pour commerces, artisans BTP, plasturgistes et transporteurs du bassin minier. Audit Flash 490 € HT, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Bruay-la-Buissière : diagnostic concret pour commerces, artisans BTP, plasturgistes et transporteurs du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Bruay-la-Buissière : diagnostic concret pour commerces, artisans BTP, plasturgistes et transporteurs du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruay-la-Buissière : ateliers TPE/PME locales, formation équipes sur cas métier (devis BTP, facturation, gestion stock commerce, planification logistique).",
@@ -43,14 +43,14 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
       en: "Implémentation IA à Bruay-la-Buissière : automatisation devis BTP, classification photos chantier, agents IA service client commerce, optimisation tournées transporteurs. Code custom.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants TPE, gérants commerce, artisans et patrons PME industrielles. À partir de 990 € HT.",
-      en: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants TPE, gérants commerce, artisans et patrons PME industrielles. À partir de 990 € HT.",
+      fr: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants TPE, gérants commerce, artisans et patrons PME industrielles. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Bruay-la-Buissière : sessions sur site ou visio pour dirigeants TPE, gérants commerce, artisans et patrons PME industrielles. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Bruay-la-Buissière ?",
-      a: "Audit Flash 490 € HT (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de 590 € HT la demi-journée, coaching 1-to-1 dirigeant à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de {{price:intervention-4h|flat}} la demi-journée, coaching 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Axion-IA se déplace-t-il à Bruay-la-Buissière depuis Lille ou Paris ?",
@@ -70,7 +70,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour dirigeants à Bruay-la-Buissière ?",
-      a: "Oui, sessions 1-to-1 sur site ou en visio à partir de 990 € HT, format 2 h, sujets adaptés au dirigeant (stratégie IA, ROI, choix outils, gouvernance données, AI Act EU 2026).",
+      a: "Oui, sessions 1-to-1 sur site ou en visio à partir de {{price:intervention-dirigeants|flat}}, format 2 h, sujets adaptés au dirigeant (stratégie IA, ROI, choix outils, gouvernance données, AI Act EU 2026).",
     },
   ],
 };

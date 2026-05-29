@@ -30,8 +30,8 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Nicolas-de-Port : formats adaptés au bureau tertiaire, au commerce, au restaurant ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et professions libérales de Saint-Nicolas-de-Port ?",
-      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Nicolas-de-Port  ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Saint-Nicolas-de-Port et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Saint-Nicolas-de-Port et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Nicolas-de-Port ?",

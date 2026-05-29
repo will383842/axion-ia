@@ -30,8 +30,8 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit Flash 490 € HT.",
-      en: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit Flash 490 € HT.",
+      fr: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Grau-du-Roi : formats adaptés aux hôtels, restaurants, entreprises nautiques, criée et commerces littoral gardois.",
@@ -57,7 +57,7 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Grau-du-Roi ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les professionnels de la pêche ?",

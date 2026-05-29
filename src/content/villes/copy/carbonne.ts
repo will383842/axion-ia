@@ -9,9 +9,9 @@ export const CARBONNE_COPY: VilleCopy = {
   pitchEn:
     "Carbonne (31), bastide médiévale fondée en 1256 dans un méandre protecteur de la Garonne, 5 563 habitants (Carbonnais), au sud de Toulouse en Haute-Garonne. Tissu économique équilibré dominé par le commerce et la restauration (25 % des actifs), l'administration-éducation-santé (16 %), la construction (15 %) et les services spécialisés (15 %). On y trouve plusieurs entreprises notables : Agronutrition (fertilisants spécialisés), Carbonne Distribution (hypermarché) et Cazorro Matériaux (négoce BTP). Axion-IA y accompagne les TPE, PME et commerces du Volvestre et du sud Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du Volvestre, ainsi que les PME locales (négoce BTP, agroalimentaire, fabrication) et les exploitations agricoles. Audit Flash dès 490 € HT, code custom (jamais de no-code). Nos consultants se déplacent en 40 min depuis Toulouse via l'A64, ou par train sur la ligne Toulouse–Tarbes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du Volvestre, ainsi que les PME locales (négoce BTP, agroalimentaire, fabrication) et les exploitations agricoles. Audit Flash dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nos consultants se déplacent en 40 min depuis Toulouse via l'A64, ou par train sur la ligne Toulouse–Tarbes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du Volvestre, ainsi que les PME locales (négoce BTP, agroalimentaire, fabrication) et les exploitations agricoles. Audit Flash dès 490 € HT, code custom (jamais de no-code). Nos consultants se déplacent en 40 min depuis Toulouse via l'A64, ou par train sur la ligne Toulouse–Tarbes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du Volvestre, ainsi que les PME locales (négoce BTP, agroalimentaire, fabrication) et les exploitations agricoles. Audit Flash dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nos consultants se déplacent en 40 min depuis Toulouse via l'A64, ou par train sur la ligne Toulouse–Tarbes.",
   seoHook: "commerce, négoce BTP & agroalimentaire",
   ecosystemFr:
     "Carbonne est un pôle structurant du Volvestre, héritage de sa fondation en bastide royale de 1256 dans un méandre défensif de la Garonne (le Barrage de Mancies, premier barrage en amont de Toulouse, est implanté ici). Le tissu économique se répartit entre commerce-restauration (25 %), services publics et de santé (16 %), construction (15 %) et services spécialisés (15 %). Quelques PME marquantes structurent le bassin : Agronutrition (fertilisants spécialisés, leader régional), Carbonne Distribution (grande distribution), Cazorro Matériaux (négoce BTP), accompagnées de nombreuses TPE artisanales, exploitations agricoles et professions libérales. La proximité de Toulouse via l'A64 nourrit aussi une économie résidentielle.",
@@ -31,16 +31,16 @@ export const CARBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carbonne : diagnostic 4 heures adapté aux TPE artisans, commerçants du centre-bourg, PME du négoce BTP, agroalimentaire et exploitants agricoles du Volvestre. Audit Flash dès 490 € HT, livrable écrit avec 3 cas d'usage prioritaires.",
-      en: "Audit IA à Carbonne : diagnostic 4 heures adapté aux TPE artisans, commerçants du centre-bourg, PME du négoce BTP, agroalimentaire et exploitants agricoles du Volvestre. Audit Flash dès 490 € HT, livrable écrit avec 3 cas d'usage prioritaires.",
+      fr: "Audit IA à Carbonne : diagnostic 4 heures adapté aux TPE artisans, commerçants du centre-bourg, PME du négoce BTP, agroalimentaire et exploitants agricoles du Volvestre. Audit Flash dès {{price:audit-flash|flat}}, livrable écrit avec 3 cas d'usage prioritaires.",
+      en: "Audit IA à Carbonne : diagnostic 4 heures adapté aux TPE artisans, commerçants du centre-bourg, PME du négoce BTP, agroalimentaire et exploitants agricoles du Volvestre. Audit Flash dès {{price:audit-flash|flat}}, livrable écrit avec 3 cas d'usage prioritaires.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Carbonne : ateliers pratiques chez vous, format adapté à l'artisan, au commerce, à la PME industrielle ou à l'exploitant agricole. Intervention dès 590 € HT. Vos collaborateurs maîtrisent les outils déployés en autonomie.",
-      en: "Interventions IA sur site à Carbonne : ateliers pratiques chez vous, format adapté à l'artisan, au commerce, à la PME industrielle ou à l'exploitant agricole. Intervention dès 590 € HT. Vos collaborateurs maîtrisent les outils déployés en autonomie.",
+      fr: "Interventions IA sur site à Carbonne : ateliers pratiques chez vous, format adapté à l'artisan, au commerce, à la PME industrielle ou à l'exploitant agricole. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent les outils déployés en autonomie.",
+      en: "Interventions IA sur site à Carbonne : ateliers pratiques chez vous, format adapté à l'artisan, au commerce, à la PME industrielle ou à l'exploitant agricole. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent les outils déployés en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Carbonne : automatisation devis-relances négoce, gestion stocks matériaux, OCR factures fournisseurs agroalimentaires, classification documents techniques, agents conversationnels SAV. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès 990 € HT.",
-      en: "Implémentation IA à Carbonne : automatisation devis-relances négoce, gestion stocks matériaux, OCR factures fournisseurs agroalimentaires, classification documents techniques, agents conversationnels SAV. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès 990 € HT.",
+      fr: "Implémentation IA à Carbonne : automatisation devis-relances négoce, gestion stocks matériaux, OCR factures fournisseurs agroalimentaires, classification documents techniques, agents conversationnels SAV. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Carbonne : automatisation devis-relances négoce, gestion stocks matériaux, OCR factures fournisseurs agroalimentaires, classification documents techniques, agents conversationnels SAV. Code custom (pas de no-code), hébergement Europe, RGPD by design. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Carbonne : sessions dirigeants TPE artisans, gérants commerces, exploitants agricoles, gérants PME négoce du Volvestre. Format adapté aux structures familiales du sud Haute-Garonne.",
@@ -54,7 +54,7 @@ export const CARBONNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Carbonne ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 heures, livrable écrit, 3 cas d'usage prioritaires). Pour une PME du négoce ou de l'agroalimentaire, audit approfondi entre 1 900 et 3 900 € HT. Implémentation dès 990 € HT. Tarifs publics affichés.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, livrable écrit, 3 cas d'usage prioritaires). Pour une PME du négoce ou de l'agroalimentaire, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Implémentation dès {{price:impl-poc|entry}}. Tarifs publics affichés.",
     },
     {
       q: "Quels délais pour une intervention IA à Carbonne ?",

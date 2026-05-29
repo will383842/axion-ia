@@ -30,8 +30,8 @@ export const VILLARD_BONNOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villard-Bonnot : formats adaptés à l'atelier industriel, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const VILLARD_BONNOT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans villardo-bonnotains ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Villard-Bonnot sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Villard-Bonnot sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales à Villard-Bonnot, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
+      a: "Pour les professions libérales à Villard-Bonnot, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",

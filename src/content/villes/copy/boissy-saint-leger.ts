@@ -30,8 +30,8 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boissy-Saint-Léger : formats adaptés commerce, cabinet, atelier artisan, bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Boissy-Saint-Léger ?",
-      a: "L'audit Flash IA à Boissy-Saint-Léger démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Boissy-Saint-Léger démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Quels services pour les commerces de centre-ville ?",
-      a: "CRM augmenté, gestion stocks prédictive, fidélisation client IA, automatisation commandes fournisseurs, présence digitale optimisée. Audit Flash 490 € HT pour identifier vos priorités.",
+      a: "CRM augmenté, gestion stocks prédictive, fidélisation client IA, automatisation commandes fournisseurs, présence digitale optimisée. Audit Flash {{price:audit-flash|flat}} pour identifier vos priorités.",
     },
     {
       q: "Comment se déroule un coaching 1-to-1 à Boissy-Saint-Léger ?",

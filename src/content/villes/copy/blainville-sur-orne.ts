@@ -30,8 +30,8 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blainville-sur-Orne : formats adaptés à l'entrepôt logistique, atelier industriel, bureau tertiaire ou commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Blainville ?",
-      a: "Pour les TPE artisans BTP et commerçants à Blainville-sur-Orne, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Blainville-sur-Orne, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Combien coûte un audit IA à Blainville-sur-Orne  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Blainville-sur-Orne ?",

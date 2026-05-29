@@ -11,9 +11,9 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Saint-Michel-sur-Orge, ville de 21 776 habitants en Essonne, à 24 km au sud-ouest de Paris. La commune longe l'Orge sur plus de 2 km et bénéficie d'une population jeune (39,7 % de moins de 30 ans). Nous intervenons auprès des commerces de proximité, artisans du bâtiment, sociétés de transport et professionnels des services qui constituent l'essentiel du tissu économique local.",
   directAnswerFr:
-    "À Saint-Michel-sur-Orge, Axion-IA propose des prestations d'IA opérationnelle pour les TPE et PME locales : commerces du centre, artisans du BTP, entreprises de transport et de services. Le tissu économique repose à 40,4 % sur les services, 21,9 % sur le commerce et 9,9 % sur la construction. Nos audits débutent à 490 € HT, nos interventions à 590 € HT, nos implémentations à 990 € HT. Code source custom, hébergement EU, conformité RGPD garantie pour toutes les missions.",
+    "À Saint-Michel-sur-Orge, Axion-IA propose des prestations d'IA opérationnelle pour les TPE et PME locales : commerces du centre, artisans du BTP, entreprises de transport et de services. Le tissu économique repose à 40,4 % sur les services, 21,9 % sur le commerce et 9,9 % sur la construction. Nos audits débutent à {{price:audit-flash|flat}}, nos interventions à {{price:intervention-4h|flat}}, nos implémentations à {{price:impl-poc|entry}}. Code source custom, hébergement EU, conformité RGPD garantie pour toutes les missions.",
   directAnswerEn:
-    "À Saint-Michel-sur-Orge, Axion-IA propose des prestations d'IA opérationnelle pour les TPE et PME locales : commerces du centre, artisans du BTP, entreprises de transport et de services. Le tissu économique repose à 40,4 % sur les services, 21,9 % sur le commerce et 9,9 % sur la construction. Nos audits débutent à 490 € HT, nos interventions à 590 € HT, nos implémentations à 990 € HT. Code source custom, hébergement EU, conformité RGPD garantie pour toutes les missions.",
+    "À Saint-Michel-sur-Orge, Axion-IA propose des prestations d'IA opérationnelle pour les TPE et PME locales : commerces du centre, artisans du BTP, entreprises de transport et de services. Le tissu économique repose à 40,4 % sur les services, 21,9 % sur le commerce et 9,9 % sur la construction. Nos audits débutent à {{price:audit-flash|flat}}, nos interventions à {{price:intervention-4h|flat}}, nos implémentations à {{price:impl-poc|entry}}. Code source custom, hébergement EU, conformité RGPD garantie pour toutes les missions.",
   seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Le tissu économique de Saint-Michel-sur-Orge est dominé par les services (40,4 % de l'emploi), le commerce (21,9 %) et la construction (9,9 %). Les actifs se répartissent entre employés (29,9 %), professions intermédiaires (27,9 %), ouvriers (19,3 %), cadres (17,5 %) et artisans-commerçants (5,3 %). Le revenu médian par foyer s'élevait à 34 972 € en 2010. La ville investit dans le sport de haut niveau (handball Nationale 1 féminine, basket, tennis), ce qui structure également l'activité associative et événementielle locale.",
@@ -33,26 +33,26 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Saint-Michel-sur-Orge — adapté aux TPE/PME des services, commerces et BTP — Audit Flash dès 490 € HT.",
-      en: "Réaliser un audit IA à Saint-Michel-sur-Orge — adapté aux TPE/PME des services, commerces et BTP — Audit Flash dès 490 € HT.",
+      fr: "Réaliser un audit IA à Saint-Michel-sur-Orge — adapté aux TPE/PME des services, commerces et BTP — Audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit IA à Saint-Michel-sur-Orge — adapté aux TPE/PME des services, commerces et BTP — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Intervention Essentielle dès 590 € HT.",
-      en: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA en code source à Saint-Michel-sur-Orge — intégration aux outils existants (compta, CRM, ERP BTP) — dès 990 € HT.",
-      en: "Implémenter des solutions IA en code source à Saint-Michel-sur-Orge — intégration aux outils existants (compta, CRM, ERP BTP) — dès 990 € HT.",
+      fr: "Implémenter des solutions IA en code source à Saint-Michel-sur-Orge — intégration aux outils existants (compta, CRM, ERP BTP) — dès {{price:impl-poc|entry}}.",
+      en: "Implémenter des solutions IA en code source à Saint-Michel-sur-Orge — intégration aux outils existants (compta, CRM, ERP BTP) — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner en 1-to-1 les dirigeants de TPE/PME à Saint-Michel-sur-Orge — sessions personnalisées — à partir de 990 € HT.",
-      en: "Accompagner en 1-to-1 les dirigeants de TPE/PME à Saint-Michel-sur-Orge — sessions personnalisées — à partir de 990 € HT.",
+      fr: "Accompagner en 1-to-1 les dirigeants de TPE/PME à Saint-Michel-sur-Orge — sessions personnalisées — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner en 1-to-1 les dirigeants de TPE/PME à Saint-Michel-sur-Orge — sessions personnalisées — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Saint-Michel-sur-Orge ?",
-      a: "Nos interventions à Saint-Michel-sur-Orge démarrent à 590 € HT (Intervention Essentielle), un Audit Flash est proposé dès 490 € HT et une implémentation complète à partir de 990 € HT. Tous les tarifs sont publics sur axion-ia.com.",
+      a: "Nos interventions à Saint-Michel-sur-Orge démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle), un Audit Flash est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous les tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Axion-IA peut-il se déplacer rapidement à Saint-Michel-sur-Orge ?",
@@ -72,7 +72,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les équipes à Saint-Michel-sur-Orge ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants à partir de 990 € HT et des formations collectives sur site adaptées aux équipes opérationnelles des TPE/PME michelloises.",
+      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}} et des formations collectives sur site adaptées aux équipes opérationnelles des TPE/PME michelloises.",
     },
   ],
 };

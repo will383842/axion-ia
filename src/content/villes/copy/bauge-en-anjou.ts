@@ -30,8 +30,8 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME agroalimentaires du Baugeois. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME agroalimentaires du Baugeois. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME agroalimentaires du Baugeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME agroalimentaires du Baugeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baugé-en-Anjou : formations pour équipes agricoles, artisanales et commerciales du Baugeois. Ateliers pratiques adaptés au contexte rural.",
@@ -53,11 +53,11 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Baugé-en-Anjou  ?",
-      a: "L'Audit Flash IA à Baugé-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Baugé-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les agriculteurs du Baugeois ?",
-      a: "Oui, nous accompagnons les exploitants agricoles à Baugé-en-Anjou : IA pour gestion parcellaire, traçabilité récoltes, optimisation assolement, maintenance prédictive matériel, gestion administrative PAC. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les exploitants agricoles à Baugé-en-Anjou : IA pour gestion parcellaire, traçabilité récoltes, optimisation assolement, maintenance prédictive matériel, gestion administrative PAC. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels secteurs ciblez-vous à Baugé-en-Anjou ?",

@@ -30,8 +30,8 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash 490 € HT.",
-      en: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mouilleron-le-Captif : formats adaptés à la PME industrielle, le bureau d'études, l'artisan ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mouilleron-le-Captif  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Mouilleron-le-Captif. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou services.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Mouilleron-le-Captif. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou services.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et services ?",
@@ -61,11 +61,11 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants de Mouilleron-le-Captif ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Mouilleron-le-Captif ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Mouilleron-le-Captif. Format flexible : dans vos locaux, en visio ou en espace partagé à La Roche-sur-Yon. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Mouilleron-le-Captif. Format flexible : dans vos locaux, en visio ou en espace partagé à La Roche-sur-Yon. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

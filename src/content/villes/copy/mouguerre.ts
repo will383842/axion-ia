@@ -30,8 +30,8 @@ export const MOUGUERRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouguerre : diagnostic adapté aux PME logistique, TPE artisans, entreprises de services et commerçants de l'agglomération bayonnaise. Audit Flash 490 € HT.",
-      en: "Audit IA à Mouguerre : diagnostic adapté aux PME logistique, TPE artisans, entreprises de services et commerçants de l'agglomération bayonnaise. Audit Flash 490 € HT.",
+      fr: "Audit IA à Mouguerre : diagnostic adapté aux PME logistique, TPE artisans, entreprises de services et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mouguerre : diagnostic adapté aux PME logistique, TPE artisans, entreprises de services et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mouguerre : déploiement outils IA dans vos entrepôts, ateliers ou bureaux. Automatisation logistique, gestion stocks et optimisation tournées.",
@@ -57,7 +57,7 @@ export const MOUGUERRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Mouguerre ?",
-      a: "L'audit Flash IA à Mouguerre démarre à 490 € HT. Diagnostic de vos processus logistiques ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Mouguerre démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus logistiques ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Mouguerre ?",

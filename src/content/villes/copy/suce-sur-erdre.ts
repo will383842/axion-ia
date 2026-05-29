@@ -30,8 +30,8 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit Flash 490 € HT.",
-      en: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit Flash 490 € HT.",
+      fr: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sucé-sur-Erdre : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes repartent avec outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et professions libérales ?",
-      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sucé-sur-Erdre sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning, classification dossiers. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sucé-sur-Erdre sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning, classification dossiers. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du nord nantais ?",
@@ -65,7 +65,7 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "L'audit Flash est-il adapté aux petites structures ?",
-      a: "Oui, l'audit Flash 490 € HT est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
+      a: "Oui, l'audit Flash {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
     },
   ],
 };

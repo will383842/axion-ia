@@ -30,8 +30,8 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marolles-en-Hurepoix : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans marollais ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion administrative simplifiée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {
       q: "Accompagnez-vous les professions libérales du secteur ?",

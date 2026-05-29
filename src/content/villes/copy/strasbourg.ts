@@ -46,7 +46,7 @@ export const STRASBOURG_COPY: VilleCopy = {
       en: "AI implementation in Strasbourg: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Cross-border specificity: FR/DE/EN multilingualism natively handled. Your teams stay in control.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Strasbourg : accompagnement individuel pour dirigeants et managers des institutions européennes, du biotech PII et des ETI industrielles de l'Eurométropole. Sessions confidentielles en présentiel (Wacken, Presqu'île, Illkirch) ou à distance. Tarif d'entrée 990 € HT. Frais de déplacement hors Strasbourg intra-muros en sus.",
+      fr: "Coaching IA 1-to-1 à Strasbourg : accompagnement individuel pour dirigeants et managers des institutions européennes, du biotech PII et des ETI industrielles de l'Eurométropole. Sessions confidentielles en présentiel (Wacken, Presqu'île, Illkirch) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}. Frais de déplacement hors Strasbourg intra-muros en sus.",
       en: "1-to-1 AI coaching in Strasbourg: individual coaching for executives and managers from European institutions, PII biotech firms and Eurométropole industrial mid-caps. Confidential sessions on-site (Wacken, Presqu'île, Illkirch) or remote. Entry rate from €990 excl. VAT. Travel expenses outside central Strasbourg billed separately.",
     },
     sitesWeb: {
@@ -730,7 +730,7 @@ export const STRASBOURG_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Strasbourg s'adresse aux dirigeants, managers et experts des institutions européennes (Parlement, Conseil de l'Europe, CEDH), des structures biotech du Parc d'Innovation d'Illkirch et des ETI industrielles de l'Eurométropole. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels, dans votre langue de travail (FR, DE ou EN). Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel hors Strasbourg intra-muros.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Strasbourg s'adresse aux dirigeants, managers et experts des institutions européennes (Parlement, Conseil de l'Europe, CEDH), des structures biotech du Parc d'Innovation d'Illkirch et des ETI industrielles de l'Eurométropole. Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels, dans votre langue de travail (FR, DE ou EN). Tarif d'entrée {{price:intervention-dirigeants|flat}}. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel hors Strasbourg intra-muros.",
         whyHere: [
           "Strasbourg concentre une densité unique de profils pour le coaching IA 1-to-1 : fonctionnaires et cadres des institutions européennes, directeurs R&D des biotech du PII, managers franco-allemands d'ETI industrielles transfrontalières — autant de profils qui ne trouvent pas leurs pairs pour parler IA librement.",
           "La dimension trilingue FR/DE/EN de l'Eurodistrict fait de Strasbourg un cas particulier : nous conduisons les séances dans la langue de travail du dirigeant, y compris en mode bilingue pour les profils franco-allemands de l'Eurodistrict Strasbourg-Ortenau.",
@@ -769,7 +769,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "à partir de 990 € HT",
+            price: "à partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Pour indépendants, gérants de TPE et professions libérales strasbourgeoises. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel hors Strasbourg intra-muros.",
           },
@@ -817,7 +817,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Quel est le tarif d'entrée et comment est facturé le coaching ?",
-            a: "Le tarif d'entrée est de 990 € HT pour un parcours court. Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Strasbourg intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
+            a: "Le tarif d'entrée est de {{price:intervention-dirigeants|flat}} pour un parcours court. Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Strasbourg intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
           },
           {
             q: "La confidentialité est-elle garantie pour les profils institutionnels ou biotech ?",

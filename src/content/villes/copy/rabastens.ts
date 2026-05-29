@@ -30,8 +30,8 @@ export const RABASTENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit Flash 490 € HT.",
-      en: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit Flash 490 € HT.",
+      fr: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rabastens : formats adaptés au domaine viticole, commerce de bourg, cabinet libéral ou exploitation agricole. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const RABASTENS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un vigneron à Rabastens ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE vignerons de Rabastens. Diagnostic complet : traçabilité parcellaire, gestion cave, vente directe, administratif. Plan d'action IA avec ROI chiffré.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE vignerons de Rabastens. Diagnostic complet : traçabilité parcellaire, gestion cave, vente directe, administratif. Plan d'action IA avec ROI chiffré.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles du Tarnais ?",
@@ -61,11 +61,11 @@ export const RABASTENS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Rabastens ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Rabastens ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Rabastens. Format flexible : dans vos locaux, en visio ou sur votre domaine viticole. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Rabastens. Format flexible : dans vos locaux, en visio ou sur votre domaine viticole. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

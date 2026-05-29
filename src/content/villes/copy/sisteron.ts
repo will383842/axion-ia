@@ -30,8 +30,8 @@ export const SISTERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sisteron : formats adaptés aux hébergements touristiques, exploitations fruitières, ateliers artisanaux ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const SISTERON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Sisteron  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, commerçants et PME sisteronaises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, commerçants et PME sisteronaises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Sisteron ?",

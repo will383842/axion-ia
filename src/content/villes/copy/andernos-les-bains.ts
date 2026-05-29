@@ -30,8 +30,8 @@ export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Andernos-les-Bains : diagnostic pour ostréiculteurs, hébergeurs touristiques, commerçants saisonniers et TPE artisans du Bassin d'Arcachon. Audit Flash 490 € HT.",
-      en: "Audit IA à Andernos-les-Bains : diagnostic pour ostréiculteurs, hébergeurs touristiques, commerçants saisonniers et TPE artisans du Bassin d'Arcachon. Audit Flash 490 € HT.",
+      fr: "Audit IA à Andernos-les-Bains : diagnostic pour ostréiculteurs, hébergeurs touristiques, commerçants saisonniers et TPE artisans du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Andernos-les-Bains : diagnostic pour ostréiculteurs, hébergeurs touristiques, commerçants saisonniers et TPE artisans du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Andernos-les-Bains : ateliers adaptés aux saisonnalités du Bassin (ostréiculture, tourisme, commerce). Équipes autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Andernos-les-Bains  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles du Bassin d'Arcachon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles du Bassin d'Arcachon.",
     },
     {
       q: "Quels services pour les hébergeurs touristiques à Andernos ?",
-      a: "Pour les hébergeurs touristiques d'Andernos : audit IA 490 € HT, intervention 1 journée, implémentation agents conversationnels réservation, automatisation check-in/check-out, CRM saisonnier augmenté.",
+      a: "Pour les hébergeurs touristiques d'Andernos : audit IA {{price:audit-flash|flat}}, intervention 1 journée, implémentation agents conversationnels réservation, automatisation check-in/check-out, CRM saisonnier augmenté.",
     },
     {
       q: "Comment se passe une mission à Andernos-les-Bains ?",

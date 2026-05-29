@@ -30,8 +30,8 @@ export const ARGENTAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Argentan : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Argentan : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Argentan : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Argentan : diagnostic adapté aux TPE artisans, PME agroalimentaires, acteurs filière équine et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Argentan : formats adaptés au bureau, atelier, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA.",

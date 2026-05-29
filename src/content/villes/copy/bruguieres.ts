@@ -30,8 +30,8 @@ export const BRUGUIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruguières : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const BRUGUIERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bruguières  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Bruguières ?",
@@ -65,7 +65,7 @@ export const BRUGUIERES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à Bruguières ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Bruguières. Format flexible : locaux, visio. À partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Bruguières. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

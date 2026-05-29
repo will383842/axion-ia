@@ -30,8 +30,8 @@ export const LONGUYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longuyon : diagnostic adapté aux TPE/PME commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Longuyon : diagnostic adapté aux TPE/PME commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Longuyon : diagnostic adapté aux TPE/PME commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Longuyon : diagnostic adapté aux TPE/PME commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longuyon : formats adaptés au commerce, à l'atelier, au transport, au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const LONGUYON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans longuyonnais ?",
-      a: "Oui, commerçants et artisans de Longuyon : gestion stocks, relation client transfrontalière, automatisation comptabilité, présence en ligne. Audit Flash 490 € HT.",
+      a: "Oui, commerçants et artisans de Longuyon : gestion stocks, relation client transfrontalière, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Longuyon ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Longuyon ?",

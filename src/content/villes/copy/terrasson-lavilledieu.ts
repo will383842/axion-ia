@@ -30,8 +30,8 @@ export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Terrasson-Lavilledieu : diagnostic adapté aux TPE/PME du commerce, de l'agroalimentaire, du tourisme et de l'artisanat en Périgord Noir. Audit Flash 490 € HT.",
-      en: "Audit IA à Terrasson-Lavilledieu : diagnostic adapté aux TPE/PME du commerce, de l'agroalimentaire, du tourisme et de l'artisanat en Périgord Noir. Audit Flash 490 € HT.",
+      fr: "Audit IA à Terrasson-Lavilledieu : diagnostic adapté aux TPE/PME du commerce, de l'agroalimentaire, du tourisme et de l'artisanat en Périgord Noir. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Terrasson-Lavilledieu : diagnostic adapté aux TPE/PME du commerce, de l'agroalimentaire, du tourisme et de l'artisanat en Périgord Noir. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Terrasson : formations pratiques pour commerçants, artisans, producteurs agroalimentaires et gérants d'hébergements touristiques.",
@@ -53,7 +53,7 @@ export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Terrasson  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du Périgord Noir. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du Périgord Noir. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les producteurs de noix en Dordogne ?",
@@ -65,7 +65,7 @@ export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour le tourisme en Périgord ?",
-      a: "Oui, coaching 1-to-1 adapté aux gérants d'hébergements et acteurs du tourisme en vallée de la Vézère. Sur site ou en visio. Sessions dès 990 € HT.",
+      a: "Oui, coaching 1-to-1 adapté aux gérants d'hébergements et acteurs du tourisme en vallée de la Vézère. Sur site ou en visio. Sessions dès {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

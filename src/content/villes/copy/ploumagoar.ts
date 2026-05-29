@@ -30,8 +30,8 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploumagoar : diagnostic adapté aux TPE artisans, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Ploumagoar : diagnostic adapté aux TPE artisans, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Ploumagoar : diagnostic adapté aux TPE artisans, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Ploumagoar : diagnostic adapté aux TPE artisans, PME de services et agroalimentaires du bassin guingampais, professions libérales et commerces. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploumagoar : formats adaptés aux PME agroalimentaires, artisans BTP et professions libérales du bassin guingampais. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et professions libérales de Ploumagoar ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, professions libérales et commerçants de Ploumagoar sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning, optimisation comptabilité. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, professions libérales et commerçants de Ploumagoar sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning, optimisation comptabilité. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME du bassin guingampais ?",

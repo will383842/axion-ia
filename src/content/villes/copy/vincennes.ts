@@ -11,9 +11,9 @@ export const VINCENNES_COPY: VilleCopy = {
   pitchEn:
     "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de TPE et PME — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les TPE/PME vincennoises et de l'est parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash 490 € HT, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash 490 € HT, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
   seoHook: "commerce de centre-ville, professions libérales & services",
   ecosystemFr:
     "Vincennes occupe un territoire restreint (1,91 km²) avec la 2e densité de population de France (25 232 hab/km²). La population active est dominée par les cadres (15 352 résidents en 2022). Le tissu économique est typique des communes de petite couronne très denses : commerces de proximité dynamiques (avenue de Paris, rue de Fontenay), nombreuses professions libérales et services aux particuliers, restauration, agences immobilières. Patrimoine : Château de Vincennes (ancienne résidence royale) et Bois de Vincennes. Festival America (littérature, années paires).",
@@ -32,16 +32,16 @@ export const VINCENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle 590 € HT.",
-      en: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle 590 € HT.",
+      fr: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès 990 € HT.",
-      en: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès 990 € HT.",
+      fr: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Vincennes : sessions sur site (RER A, métro 1) ou en visio pour dirigeants TPE-PME, professions libérales et commerçants de centre-ville. Cadrage stratégique IA personnalisé.",
@@ -55,7 +55,7 @@ export const VINCENNES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention IA à Vincennes ?",
-      a: "Audit Flash 490 € HT (4h). Intervention Essentielle 590 € HT. Implémentation et coaching 1-to-1 sur devis dès 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4h). Intervention Essentielle {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Vincennes ?",

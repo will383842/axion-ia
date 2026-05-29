@@ -30,8 +30,8 @@ export const AUBAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubagne : diagnostic des tâches automatisables pour santonniers, agroalimentaire, commerces et artisans de l'Huveaune. Audit Flash dès 490 € HT, livrable priorisé.",
-      en: "Audit IA à Aubagne : diagnostic des tâches automatisables pour santonniers, agroalimentaire, commerces et artisans de l'Huveaune. Audit Flash dès 490 € HT, livrable priorisé.",
+      fr: "Audit IA à Aubagne : diagnostic des tâches automatisables pour santonniers, agroalimentaire, commerces et artisans de l'Huveaune. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Aubagne : diagnostic des tâches automatisables pour santonniers, agroalimentaire, commerces et artisans de l'Huveaune. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubagne : ateliers pratiques pour ateliers céramique, lignes agroalimentaires et commerces, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const AUBAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Aubagne ?",
-      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME aubagnaises : artisanat d'art, agroalimentaire et commerces de proximité.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME aubagnaises : artisanat d'art, agroalimentaire et commerces de proximité.",
     },
     {
       q: "Accompagnez-vous les santonniers et céramistes d'Aubagne ?",

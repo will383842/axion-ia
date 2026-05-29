@@ -30,8 +30,8 @@ export const AVRILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avrillé : formations pratiques pour cabinets, commerces et PME services. Ateliers adaptés aux équipes tertiaires du bassin nord-angevin.",
@@ -53,7 +53,7 @@ export const AVRILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Avrillé  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Avrillé démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Avrillé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les professions de santé avrillaises ?",

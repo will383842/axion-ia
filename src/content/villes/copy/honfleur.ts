@@ -30,8 +30,8 @@ export const HONFLEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Honfleur : formats adaptés à l'hôtel de charme, restaurant gastronomique, galerie d'art ou commerce touristique. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const HONFLEUR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Honfleur  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Honfleur ?",

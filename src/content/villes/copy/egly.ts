@@ -30,8 +30,8 @@ export const EGLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Égly : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud Essonne / Hurepoix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Égly : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud Essonne / Hurepoix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Égly : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud Essonne / Hurepoix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Égly : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud Essonne / Hurepoix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Égly : formats adaptés au cabinet, commerce, atelier ou exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure réel.",
@@ -53,11 +53,11 @@ export const EGLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Égly  ?",
-      a: "L'audit Flash IA à Égly débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
+      a: "L'audit Flash IA à Égly débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans d'Égly ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Égly et du Hurepoix. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion planning. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Égly et du Hurepoix. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME du sud Essonne ?",

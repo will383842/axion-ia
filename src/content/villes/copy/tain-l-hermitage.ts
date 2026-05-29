@@ -30,8 +30,8 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tain-l'Hermitage : formats adaptés au domaine viticole, négoce en vins, atelier agroalimentaire. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces oenotouristiques ?",
-      a: "Pour les TPE artisans et commerçants oenotouristiques à Tain-l'Hermitage, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels multilingue, automatisation réservations dégustations.",
+      a: "Pour les TPE artisans et commerçants oenotouristiques à Tain-l'Hermitage, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels multilingue, automatisation réservations dégustations.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

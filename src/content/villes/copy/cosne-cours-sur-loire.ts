@@ -30,8 +30,8 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cosne-Cours-sur-Loire : formats adaptés à l'atelier industriel, au commerce, au cabinet ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,11 +53,11 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les industriels et artisans de Cosne-Cours-sur-Loire ?",
-      a: "Oui, nous accompagnons les TPE et PME industrielles (métallurgie, mécanique) et les artisans BTP de Cosne-Cours-sur-Loire : maintenance prédictive, automatisation qualité, gestion chantiers, devis IA. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE et PME industrielles (métallurgie, mécanique) et les artisans BTP de Cosne-Cours-sur-Loire : maintenance prédictive, automatisation qualité, gestion chantiers, devis IA. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Cosne-Cours-sur-Loire  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Val de Loire nivernais, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Val de Loire nivernais, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs et agriculteurs du secteur ?",

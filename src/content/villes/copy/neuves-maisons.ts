@@ -30,8 +30,8 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Neuves-Maisons  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Neuves-Maisons et de la vallée de la Moselle, il identifie les cas d'usage IA à fort ROI pour votre aciérie, atelier ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Neuves-Maisons et de la vallée de la Moselle, il identifie les cas d'usage IA à fort ROI pour votre aciérie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels métallurgistes de Neuves-Maisons ?",
@@ -65,7 +65,7 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Neuves-Maisons ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Neuves-Maisons, à partir de 990 € HT. Sessions dans votre site industriel, atelier ou en visio. Approche terrain adaptée au tissu économique de la vallée de la Moselle.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Neuves-Maisons, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre site industriel, atelier ou en visio. Approche terrain adaptée au tissu économique de la vallée de la Moselle.",
     },
   ],
 };

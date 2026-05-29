@@ -30,8 +30,8 @@ export const AJACCIO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ajaccio pour hôtels, restaurants et acteurs du tourisme insulaire : nous identifions les leviers (yield saisonnier, gestion des réservations, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
-      en: "Audit IA à Ajaccio pour hôtels, restaurants et acteurs du tourisme insulaire : nous identifions les leviers (yield saisonnier, gestion des réservations, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès 490 € HT.",
+      fr: "Audit IA à Ajaccio pour hôtels, restaurants et acteurs du tourisme insulaire : nous identifions les leviers (yield saisonnier, gestion des réservations, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ajaccio pour hôtels, restaurants et acteurs du tourisme insulaire : nous identifions les leviers (yield saisonnier, gestion des réservations, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ajaccio : formats adaptés à l'hôtel, au restaurant ou au commerce de saison. Vos collaborateurs gèrent ensuite les outils en autonomie, sans dépendance prestataire.",
@@ -61,7 +61,7 @@ export const AJACCIO_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ajaccio ?",
-      a: "L'Audit Flash sur mesure démarre à 490 € HT, tarifs publics et sans devis opaque. Les chantiers d'implémentation sont ensuite chiffrés au cas par cas selon le ROI identifié pour votre activité.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}}, tarifs publics et sans devis opaque. Les chantiers d'implémentation sont ensuite chiffrés au cas par cas selon le ROI identifié pour votre activité.",
     },
     {
       q: "Comment gérez-vous la saisonnalité touristique de l'IA ?",

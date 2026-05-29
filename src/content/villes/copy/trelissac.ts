@@ -30,8 +30,8 @@ export const TRELISSAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trélissac : formations pratiques pour commerçants, artisans et équipes logistique de l'agglomération Périgueux.",
@@ -53,7 +53,7 @@ export const TRELISSAC_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Trélissac  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les commerces des zones de Trélissac ?",

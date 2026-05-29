@@ -30,8 +30,8 @@ export const LANDIVISIAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Landivisiau : diagnostic adapté aux TPE artisans, PME agroalimentaires, sous-traitants aéronautiques et commerçants du Pays de Léon. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Landivisiau : diagnostic adapté aux TPE artisans, PME agroalimentaires, sous-traitants aéronautiques et commerçants du Pays de Léon. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Landivisiau : diagnostic adapté aux TPE artisans, PME agroalimentaires, sous-traitants aéronautiques et commerçants du Pays de Léon. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Landivisiau : diagnostic adapté aux TPE artisans, PME agroalimentaires, sous-traitants aéronautiques et commerçants du Pays de Léon. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Landivisiau : formats adaptés à l'atelier agroalimentaire, au bureau sous-traitant ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention réel.",
@@ -61,7 +61,7 @@ export const LANDIVISIAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants landivisiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Landivisiau, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos chantier.",
+      a: "Pour les TPE artisans BTP et commerçants à Landivisiau, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos chantier.",
     },
     {
       q: "Comment se déroule une mission IA à Landivisiau ?",

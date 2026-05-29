@@ -32,26 +32,26 @@ export const CONCARNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "À Concarneau, l'audit Axion-IA cible les conserveries, mareyeurs et hôtels-restaurants saisonniers : cartographie des tâches manuelles (saisie criée, facturation, devis, planning saisonnier) et chiffrage des automatisations rentables. Audit Flash 4h à partir de 490 € HT sur site.",
-      en: "À Concarneau, l'audit Axion-IA cible les conserveries, mareyeurs et hôtels-restaurants saisonniers : cartographie des tâches manuelles (saisie criée, facturation, devis, planning saisonnier) et chiffrage des automatisations rentables. Audit Flash 4h à partir de 490 € HT sur site.",
+      fr: "À Concarneau, l'audit Axion-IA cible les conserveries, mareyeurs et hôtels-restaurants saisonniers : cartographie des tâches manuelles (saisie criée, facturation, devis, planning saisonnier) et chiffrage des automatisations rentables. Audit Flash 4h à partir de {{price:audit-flash|flat}} sur site.",
+      en: "À Concarneau, l'audit Axion-IA cible les conserveries, mareyeurs et hôtels-restaurants saisonniers : cartographie des tâches manuelles (saisie criée, facturation, devis, planning saisonnier) et chiffrage des automatisations rentables. Audit Flash 4h à partir de {{price:audit-flash|flat}} sur site.",
     },
     interventions: {
-      fr: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès 590 € HT, équipe nationale déplacée sur site.",
-      en: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès 590 € HT, équipe nationale déplacée sur site.",
+      fr: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site.",
+      en: "Nos interventions à Concarneau couvrent les TPE-PME du port de pêche et de la Ville Close : automatisation des bons de commande mareyage, devis chantiers navals, suivi des réservations hôtelières via OTA. Intervention essentielle dès {{price:intervention-4h|flat}}, équipe nationale déplacée sur site.",
     },
     implementation: {
-      fr: "L'implémentation à Concarneau s'adresse aux PME de l'agroalimentaire et de l'industrie navale qui veulent un outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement Zapier ou Make. Dès 990 € HT, code livré et documenté.",
-      en: "L'implémentation à Concarneau s'adresse aux PME de l'agroalimentaire et de l'industrie navale qui veulent un outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement Zapier ou Make. Dès 990 € HT, code livré et documenté.",
+      fr: "L'implémentation à Concarneau s'adresse aux PME de l'agroalimentaire et de l'industrie navale qui veulent un outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement Zapier ou Make. Dès {{price:impl-poc|entry}}, code livré et documenté.",
+      en: "L'implémentation à Concarneau s'adresse aux PME de l'agroalimentaire et de l'industrie navale qui veulent un outil IA codé sur mesure (Python/Node), hébergé en France, sans abonnement Zapier ou Make. Dès {{price:impl-poc|entry}}, code livré et documenté.",
     },
     unAUn: {
-      fr: "Sessions un-à-un à Concarneau pour les dirigeants de conserveries, chantiers et hôtels qui veulent monter en compétence sur l'IA appliquée (ChatGPT pro, Claude, scripting). À partir de 990 € HT la demi-journée.",
-      en: "Sessions un-à-un à Concarneau pour les dirigeants de conserveries, chantiers et hôtels qui veulent monter en compétence sur l'IA appliquée (ChatGPT pro, Claude, scripting). À partir de 990 € HT la demi-journée.",
+      fr: "Sessions un-à-un à Concarneau pour les dirigeants de conserveries, chantiers et hôtels qui veulent monter en compétence sur l'IA appliquée (ChatGPT pro, Claude, scripting). À partir de {{price:intervention-dirigeants|flat}} la demi-journée.",
+      en: "Sessions un-à-un à Concarneau pour les dirigeants de conserveries, chantiers et hôtels qui veulent monter en compétence sur l'IA appliquée (ChatGPT pro, Claude, scripting). À partir de {{price:intervention-dirigeants|flat}} la demi-journée.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention IA à Concarneau ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, l'intervention essentielle sur site à 590 € HT, et une implémentation codée sur mesure à 990 € HT. Les tarifs sont publiés sur axion-ia.com/tarifs et identiques en Finistère.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, l'intervention essentielle sur site à {{price:intervention-4h|flat}}, et une implémentation codée sur mesure à {{price:impl-poc|entry}}. Les tarifs sont publiés sur axion-ia.com/tarifs et identiques en Finistère.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes limitrophes de Concarneau ?",

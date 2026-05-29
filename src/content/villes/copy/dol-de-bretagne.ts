@@ -30,8 +30,8 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dol-de-Bretagne : formations pratiques pour hôteliers, restaurateurs, commerçants, artisans et exploitants agricoles. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel-restaurant à Dol ?",
-      a: "L'Audit Flash démarre à 490 € HT. Pour l'hôtellerie-restauration doloise, il couvre l'analyse des process réservation, channel management, gestion des avis en ligne et optimisation du yield.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Pour l'hôtellerie-restauration doloise, il couvre l'analyse des process réservation, channel management, gestion des avis en ligne et optimisation du yield.",
     },
     {
       q: "Accompagnez-vous les commerces du centre historique ?",

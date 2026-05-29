@@ -30,8 +30,8 @@ export const VERNOUILLET_78_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vernouillet : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'agglomération Seine & Vexin. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Vernouillet : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'agglomération Seine & Vexin. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Vernouillet : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'agglomération Seine & Vexin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vernouillet : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'agglomération Seine & Vexin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vernouillet : formats adaptés au commerce, à l'atelier ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VERNOUILLET_78_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vernouillet  ?",
-      a: "L'Audit Flash IA à Vernouillet démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Vernouillet démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans à Vernouillet ?",

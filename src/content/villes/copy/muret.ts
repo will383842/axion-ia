@@ -32,26 +32,26 @@ export const MURET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Muret (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
-      en: "Audit Flash IA à Muret (4 h sur site) dès 490 € HT : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
+      fr: "Audit Flash IA à Muret (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
+      en: "Audit Flash IA à Muret (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
     },
     interventions: {
-      fr: "Interventions à Muret dès 590 € HT pour automatiser devis, relances, reporting qualité et gestion documentaire des TPE et PME locales — code custom Python/Node.js.",
-      en: "Interventions à Muret dès 590 € HT pour automatiser devis, relances, reporting qualité et gestion documentaire des TPE et PME locales — code custom Python/Node.js.",
+      fr: "Interventions à Muret dès {{price:intervention-4h|flat}} pour automatiser devis, relances, reporting qualité et gestion documentaire des TPE et PME locales — code custom Python/Node.js.",
+      en: "Interventions à Muret dès {{price:intervention-4h|flat}} pour automatiser devis, relances, reporting qualité et gestion documentaire des TPE et PME locales — code custom Python/Node.js.",
     },
     implementation: {
-      fr: "Implémentation IA à Muret dès 990 € HT : intégration sur-mesure dans ERP métier (aéronautique, pharma, commerce), conformité RGPD garantie.",
-      en: "Implémentation IA à Muret dès 990 € HT : intégration sur-mesure dans ERP métier (aéronautique, pharma, commerce), conformité RGPD garantie.",
+      fr: "Implémentation IA à Muret dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP métier (aéronautique, pharma, commerce), conformité RGPD garantie.",
+      en: "Implémentation IA à Muret dès {{price:impl-poc|entry}} : intégration sur-mesure dans ERP métier (aéronautique, pharma, commerce), conformité RGPD garantie.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Muret dès 990 € HT pour dirigeants TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
-      en: "Accompagnement un-à-un à Muret dès 990 € HT pour dirigeants TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
+      fr: "Accompagnement un-à-un à Muret dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
+      en: "Accompagnement un-à-un à Muret dès {{price:intervention-dirigeants|flat}} pour dirigeants TPE et PME : prise en main concrète des outils IA déployés, sessions sur site ou en visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Muret ?",
-      a: "Les interventions Axion-IA à Muret démarrent à 590 € HT (Intervention Essentielle). L'Audit Flash 4 h est à 490 € HT, l'implémentation dès 990 € HT. Tarifs publics et fixes.",
+      a: "Les interventions Axion-IA à Muret démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Muret ?",

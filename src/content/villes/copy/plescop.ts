@@ -30,8 +30,8 @@ export const PLESCOP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
-      en: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
+      fr: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plescop : formats adaptés au cabinet libéral, au bureau PME ou au commerce de proximité. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -57,11 +57,11 @@ export const PLESCOP_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerces de proximité de Plescop ?",
-      a: "Oui, nous accompagnons TPE et commerces de Plescop sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons TPE et commerces de Plescop sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Plescop  ?",
-      a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Plescop et de l'agglomération vannetaise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Plescop et de l'agglomération vannetaise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Plescop ?",

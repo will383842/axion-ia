@@ -30,8 +30,8 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chevigny-Saint-Sauveur : diagnostic adapté aux PME logistique, industries, négoces et prestataires B2B des zones d'activités est-dijonnaises. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Chevigny-Saint-Sauveur : diagnostic adapté aux PME logistique, industries, négoces et prestataires B2B des zones d'activités est-dijonnaises. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Chevigny-Saint-Sauveur : diagnostic adapté aux PME logistique, industries, négoces et prestataires B2B des zones d'activités est-dijonnaises. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chevigny-Saint-Sauveur : diagnostic adapté aux PME logistique, industries, négoces et prestataires B2B des zones d'activités est-dijonnaises. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chevigny-Saint-Sauveur : formations pratiques pour logisticiens, industriels, négoces et services B2B. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chevigny-Saint-Sauveur  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME des zones d'activités de Chevigny, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME des zones d'activités de Chevigny, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de Chevigny ?",
@@ -61,7 +61,7 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles de Chevigny ?",
-      a: "Pour les PME industrielles de Chevigny, nous proposons Audit Flash 490 € HT, intervention formation équipe, implémentation sur mesure. Cas typiques : maintenance prédictive, contrôle qualité IA, automatisation planification production, agents IA fournisseurs.",
+      a: "Pour les PME industrielles de Chevigny, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation équipe, implémentation sur mesure. Cas typiques : maintenance prédictive, contrôle qualité IA, automatisation planification production, agents IA fournisseurs.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Chevigny-Saint-Sauveur ?",

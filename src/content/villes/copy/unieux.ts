@@ -30,8 +30,8 @@ export const UNIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Unieux : formats adaptés à l'atelier métallurgique, bureau, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const UNIEUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les indépendants uniarois ?",
-      a: "Pour les indépendants et professions libérales à Unieux, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
+      a: "Pour les indépendants et professions libérales à Unieux, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

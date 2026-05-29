@@ -30,8 +30,8 @@ export const CHINON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), TPE artisans, commerçants et PME agroalimentaires du Chinonais. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), TPE artisans, commerçants et PME agroalimentaires du Chinonais. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), TPE artisans, commerçants et PME agroalimentaires du Chinonais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), TPE artisans, commerçants et PME agroalimentaires du Chinonais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chinon : formats adaptés au domaine viticole, à la cave troglodytique, au restaurant ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const CHINON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants chinonais ?",
-      a: "Pour les TPE et commerçants à Chinon, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos produits. Adapté aux petites structures.",
+      a: "Pour les TPE et commerçants à Chinon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos produits. Adapté aux petites structures.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Chinon ?",

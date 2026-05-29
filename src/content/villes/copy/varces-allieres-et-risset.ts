@@ -30,8 +30,8 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Varces : formats adaptés au commerce, atelier artisan, cabinet professionnel ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans varcéens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Varces (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Varces (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Travaillez-vous avec les professions libérales du sud-grenoblois ?",
@@ -61,7 +61,7 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les agriculteurs et éleveurs locaux ?",
-      a: "Pour les agriculteurs et éleveurs résiduels de la vallée de la Gresse autour de Varces, nous proposons audit Flash 490 € HT, intervention 1 journée formation pratique. Cas IA : prédiction météo locale, classification photos animaux/cultures, automatisation traçabilité, vente directe e-commerce.",
+      a: "Pour les agriculteurs et éleveurs résiduels de la vallée de la Gresse autour de Varces, nous proposons audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique. Cas IA : prédiction météo locale, classification photos animaux/cultures, automatisation traçabilité, vente directe e-commerce.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",

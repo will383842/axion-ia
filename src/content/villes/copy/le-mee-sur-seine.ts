@@ -30,8 +30,8 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mée-sur-Seine : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Melun ou Paris ?",

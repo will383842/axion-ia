@@ -30,8 +30,8 @@ export const CHAUVIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chauvigny : formats adaptés aux ateliers de taille de pierre, exploitations carrières, sites touristiques ou commerces. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHAUVIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chauvigny, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos chantiers.",
+      a: "Pour les TPE artisans BTP et commerçants à Chauvigny, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos chantiers.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

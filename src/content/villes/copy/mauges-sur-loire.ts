@@ -30,8 +30,8 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit Flash 490 € HT.",
-      en: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit Flash 490 € HT.",
+      fr: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mauges-sur-Loire : ateliers PME industrielles, formations artisans BTP, sessions viticulteurs et commerçants. Autonomie IA de vos équipes terrain et back-office.",
@@ -53,7 +53,7 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle des Mauges ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, adapté aux TPE. Pour les PME industrielles, l'Audit Stratégique complet offre un diagnostic plus poussé avec ROI chiffré sur les processus de production, qualité et supply chain.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE. Pour les PME industrielles, l'Audit Stratégique complet offre un diagnostic plus poussé avec ROI chiffré sur les processus de production, qualité et supply chain.",
     },
     {
       q: "L'IA peut-elle aider les viticulteurs des coteaux-d'ancenis ?",

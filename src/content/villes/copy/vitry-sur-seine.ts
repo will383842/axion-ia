@@ -44,14 +44,14 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA à Vitry-sur-Seine : déploiement d'outils RAG (Retrieval-Augmented Generation), automatisation de workflows et intégration dans votre SI existant — sans dépendance à un éditeur unique. Détail sur /implementations.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 dirigeant à Vitry-sur-Seine : sessions individuelles pour DG, Dir.Opérations ou fondateurs souhaitant cadrer leur stratégie IA sans passer par un comité. À partir de 990 € HT. Détail sur /un-a-un.",
-      en: "Accompagnement 1-to-1 dirigeant à Vitry-sur-Seine : sessions individuelles pour DG, Dir.Opérations ou fondateurs souhaitant cadrer leur stratégie IA sans passer par un comité. À partir de 990 € HT. Détail sur /un-a-un.",
+      fr: "Accompagnement 1-to-1 dirigeant à Vitry-sur-Seine : sessions individuelles pour DG, Dir.Opérations ou fondateurs souhaitant cadrer leur stratégie IA sans passer par un comité. À partir de {{price:intervention-dirigeants|flat}}. Détail sur /un-a-un.",
+      en: "Accompagnement 1-to-1 dirigeant à Vitry-sur-Seine : sessions individuelles pour DG, Dir.Opérations ou fondateurs souhaitant cadrer leur stratégie IA sans passer par un comité. À partir de {{price:intervention-dirigeants|flat}}. Détail sur /un-a-un.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Vitry-sur-Seine ?",
-      a: "Les tarifs Axion-IA sont publics : Audit Flash (4h) à partir de 490 € HT, intervention collective à partir de 590 € HT, implémentation à partir de 990 € HT, accompagnement 1-to-1 dirigeant à partir de 990 € HT. Aucun surcoût lié au déplacement à Vitry-sur-Seine n'est appliqué — consultez la grille complète sur le site.",
+      a: "Les tarifs Axion-IA sont publics : Audit Flash (4h) à partir de {{price:audit-flash|flat}}, intervention collective à partir de {{price:intervention-4h|flat}}, implémentation à partir de {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Aucun surcoût lié au déplacement à Vitry-sur-Seine n'est appliqué — consultez la grille complète sur le site.",
     },
     {
       q: "Axion-IA se déplace-t-il réellement sur site à Vitry-sur-Seine ?",
@@ -59,7 +59,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Une PME vitriote sans DSI peut-elle bénéficier d'une implémentation IA clés en main ?",
-      a: "C'est précisément le profil que nous accompagnons le plus souvent. L'implémentation Axion-IA est conçue pour des structures sans équipe technique interne : nous cadrons le besoin, choisissons les outils, les intégrons et formons les utilisateurs. Tarif à partir de 990 € HT, détail sur /implementations.",
+      a: "C'est précisément le profil que nous accompagnons le plus souvent. L'implémentation Axion-IA est conçue pour des structures sans équipe technique interne : nous cadrons le besoin, choisissons les outils, les intégrons et formons les utilisateurs. Tarif à partir de {{price:impl-poc|entry}}, détail sur /implementations.",
     },
     {
       q: "Les entreprises du secteur pharmaceutique à Vitry-sur-Seine ont-elles des besoins IA spécifiques ?",
@@ -71,7 +71,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel format d'intervention est adapté à un artisan ou une TPE de Vitry-sur-Seine ?",
-      a: "Pour une TPE ou un artisan, l'Audit Flash (4h, à partir de 490 € HT) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. L'intervention Essentielle (à partir de 590 € HT) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
+      a: "Pour une TPE ou un artisan, l'Audit Flash (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. L'intervention Essentielle (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
     },
   ],
 };

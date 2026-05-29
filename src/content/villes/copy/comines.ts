@@ -30,8 +30,8 @@ export const COMINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Comines : diagnostic adapté aux TPE artisans, PME industrielles et logistiques transfrontalières, commerçants et professions libérales du nord lillois. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Comines : diagnostic adapté aux TPE artisans, PME industrielles et logistiques transfrontalières, commerçants et professions libérales du nord lillois. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Comines : diagnostic adapté aux TPE artisans, PME industrielles et logistiques transfrontalières, commerçants et professions libérales du nord lillois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Comines : diagnostic adapté aux TPE artisans, PME industrielles et logistiques transfrontalières, commerçants et professions libérales du nord lillois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Comines : formations adaptées TPE/PME industrielles et logistiques, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const COMINES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Comines  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Comines souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Comines souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et logistiques à Comines ?",
@@ -61,7 +61,7 @@ export const COMINES_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Comines ?",
-      a: "Nous proposons audit Flash 4h (490 € HT), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants transfrontaliers.",
+      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants transfrontaliers.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Comines ?",

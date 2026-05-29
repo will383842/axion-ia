@@ -30,8 +30,8 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Dizier : formats adaptés à votre activité (atelier industriel, exploitation agricole, commerce). Vos équipes (ouvriers, agriculteurs, commerciaux) repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants bragards ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Dizier (BTP, commerces, services), audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : automatisation devis, agents IA pour relation client, gestion stocks, classification photos chantier.",
+      a: "Pour les TPE artisans et commerçants à Saint-Dizier (BTP, commerces, services), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : automatisation devis, agents IA pour relation client, gestion stocks, classification photos chantier.",
     },
     {
       q: "Quels formats pour les PME tertiaires et services publics ?",

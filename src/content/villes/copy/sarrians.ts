@@ -30,8 +30,8 @@ export const SARRIANS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sarrians : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Sarrians : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Sarrians : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sarrians : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sarrians : formats adaptés aux domaines viticoles muscat, maraîchers, PME agroalimentaires, coopératives et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const SARRIANS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Beaumes-de-Venise ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture muscat Beaumes-de-Venise : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export, oenotourisme et fiches Google Business multilingues.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture muscat Beaumes-de-Venise : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export, oenotourisme et fiches Google Business multilingues.",
     },
     {
       q: "Accompagnez-vous les maraîchers et coopératives de la plaine du Comtat ?",
@@ -61,7 +61,7 @@ export const SARRIANS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Sarrians  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Sarrians ?",

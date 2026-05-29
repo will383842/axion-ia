@@ -30,8 +30,8 @@ export const LIEUSAINT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lieusaint : formats adaptés au commerce, à l'entrepôt logistique ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LIEUSAINT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Lieusaint ?",
-      a: "L'Audit Flash IA à Lieusaint démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Lieusaint démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces et PME du Carré Sénart ?",

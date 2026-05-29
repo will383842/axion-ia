@@ -30,8 +30,8 @@ export const SENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Séné : diagnostic adapté aux TPE maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Séné : diagnostic adapté aux TPE maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Séné : diagnostic adapté aux TPE maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Séné : diagnostic adapté aux TPE maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Séné : formations pratiques pour équipes maritimes, acteurs touristiques, PME de services et artisans de l'agglomération vannetaise. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const SENE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Séné  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME sénéennes, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME sénéennes, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs du tourisme à Séné ?",
-      a: "Pour les acteurs de l'écotourisme et du nautisme, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : chatbot accueil multilingue, yield management, réservation automatisée et marketing local augmenté.",
+      a: "Pour les acteurs de l'écotourisme et du nautisme, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : chatbot accueil multilingue, yield management, réservation automatisée et marketing local augmenté.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Séné ?",

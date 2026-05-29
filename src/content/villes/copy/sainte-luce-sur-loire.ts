@@ -30,8 +30,8 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit Flash 490 € HT.",
-      en: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit Flash 490 € HT.",
+      fr: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Luce-sur-Loire : formats adaptés aux PME de services, artisans, sociétés de conseil et cabinets libéraux de Nantes Métropole est. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sainte-Luce-sur-Loire  ?",
-      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Sainte-Luce-sur-Loire. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Sainte-Luce-sur-Loire. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les PME de services de l'est nantais ?",
@@ -61,11 +61,11 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Sainte-Luce ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée sur site, coaching 1-to-1. Cas typiques : automatisation devis-facturation, agents IA prise de RDV, CRM clients, gestion planning augmentée.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée sur site, coaching 1-to-1. Cas typiques : automatisation devis-facturation, agents IA prise de RDV, CRM clients, gestion planning augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Sainte-Luce-sur-Loire ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Sainte-Luce-sur-Loire. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Sainte-Luce-sur-Loire. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

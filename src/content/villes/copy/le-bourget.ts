@@ -30,8 +30,8 @@ export const LE_BOURGET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site au Bourget : formations pratiques dans votre atelier, bureau ou local commercial. Équipes terrain et back-office repartent autonomes sur outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LE_BOURGET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Bourget ?",
-      a: "L'Audit Flash IA au Bourget débute à 490 € HT pour 4 heures de diagnostic. Il identifie les processus automatisables dans votre activité, chiffre le ROI attendu et produit un plan d'action priorisé.",
+      a: "L'Audit Flash IA au Bourget débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il identifie les processus automatisables dans votre activité, chiffre le ROI attendu et produit un plan d'action priorisé.",
     },
     {
       q: "Accompagnez-vous les sous-traitants aéronautiques du Bourget ?",

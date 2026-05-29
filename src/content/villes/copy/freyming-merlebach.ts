@@ -30,8 +30,8 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Freyming-Merlebach : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les frontaliers et entrepreneurs vers la Sarre ?",
-      a: "Oui, nombreux frontaliers et entrepreneurs locaux travaillant avec la Sarre allemande : automatisation administrative transfrontalière, gestion multilingue (français/allemand), conformité, outils collaboratifs. Audit Flash 490 € HT.",
+      a: "Oui, nombreux frontaliers et entrepreneurs locaux travaillant avec la Sarre allemande : automatisation administrative transfrontalière, gestion multilingue (français/allemand), conformité, outils collaboratifs. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Freyming-Merlebach ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Freyming-Merlebach ?",

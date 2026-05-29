@@ -30,8 +30,8 @@ export const ALLINGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Allinges : formats adaptés aux PME tertiaires, cabinets, hébergements touristiques et artisans du Chablais. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const ALLINGES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Allinges  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, tourisme, BTP, professions libérales). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, tourisme, BTP, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP d'Allinges ?",

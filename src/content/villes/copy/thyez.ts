@@ -30,8 +30,8 @@ export const THYEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thyez : diagnostic adapté aux TPE artisans du décolletage, PME industrielles de la vallée de l'Arve, commerçants et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Thyez : diagnostic adapté aux TPE artisans du décolletage, PME industrielles de la vallée de l'Arve, commerçants et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Thyez : diagnostic adapté aux TPE artisans du décolletage, PME industrielles de la vallée de l'Arve, commerçants et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Thyez : diagnostic adapté aux TPE artisans du décolletage, PME industrielles de la vallée de l'Arve, commerçants et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thyez : formats adaptés à l'atelier de décolletage, commerce ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const THYEZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Thyez ?",
-      a: "L'audit Flash IA à Thyez démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit Flash IA à Thyez démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME industrielles ?",

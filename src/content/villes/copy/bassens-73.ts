@@ -30,8 +30,8 @@ export const BASSENS_73_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bassens : diagnostic adapté aux PME tertiaires, cabinets libéraux, TPE artisans BTP et commerçants du Grand Chambéry. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Bassens : diagnostic adapté aux PME tertiaires, cabinets libéraux, TPE artisans BTP et commerçants du Grand Chambéry. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Bassens : diagnostic adapté aux PME tertiaires, cabinets libéraux, TPE artisans BTP et commerçants du Grand Chambéry. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bassens : diagnostic adapté aux PME tertiaires, cabinets libéraux, TPE artisans BTP et commerçants du Grand Chambéry. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bassens : formats adaptés aux cabinets libéraux, PME conseil, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const BASSENS_73_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bassens  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
     },
     {
       q: "Quels services pour les TPE artisans BTP à Bassens ?",
-      a: "Pour les TPE artisans BTP à Bassens : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Cas typiques : automatisation devis, suivi chantier IA, classification photos, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP à Bassens : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : automatisation devis, suivi chantier IA, classification photos, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se passe une mission à Bassens ?",

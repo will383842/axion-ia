@@ -30,8 +30,8 @@ export const ARPAJON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arpajon : diagnostic adapté aux commerçants du marché, artisans, PME services, professions libérales et restaurateurs du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Arpajon : diagnostic adapté aux commerçants du marché, artisans, PME services, professions libérales et restaurateurs du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Arpajon : diagnostic adapté aux commerçants du marché, artisans, PME services, professions libérales et restaurateurs du Hurepoix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arpajon : diagnostic adapté aux commerçants du marché, artisans, PME services, professions libérales et restaurateurs du Hurepoix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arpajon : formats adaptés boutique centre-ville, cabinet, restaurant, bureau PME. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales arpajonnaises ?",
-      a: "Oui, avocats, notaires, médecins, experts-comptables d'Arpajon : automatisation gestion cabinet, secrétariat IA, CRM patients/clients, classification dossiers, facturation automatisée. Audit Flash 490 € HT.",
+      a: "Oui, avocats, notaires, médecins, experts-comptables d'Arpajon : automatisation gestion cabinet, secrétariat IA, CRM patients/clients, classification dossiers, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du Hurepoix ?",
-      a: "Audit IA (Flash 490 € HT à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
+      a: "Audit IA (Flash {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Évry ?",

@@ -30,8 +30,8 @@ export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brissac Loire Aubance : formations pour équipes viticoles, touristiques et commerciales. Ateliers métier adaptés au vignoble de l'Aubance.",
@@ -53,7 +53,7 @@ export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Brissac Loire Aubance  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Brissac Loire Aubance démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Brissac Loire Aubance démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de l'Aubance ?",

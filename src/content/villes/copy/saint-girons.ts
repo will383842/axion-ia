@@ -30,8 +30,8 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Girons : diagnostic adapté aux TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Girons : diagnostic adapté aux TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Girons : diagnostic adapté aux TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Girons : diagnostic adapté aux TPE artisans, PME agroalimentaire et fromageries, commerçants, acteurs tourisme et éleveurs du Couserans. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Girons : formats adaptés à la fromagerie, l'exploitation agricole, le commerce, l'hébergement touristique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Girons  ?",
-      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME agroalimentaire ou tourisme, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, transparents.",
+      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME agroalimentaire ou tourisme, un audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et thermalisme ?",

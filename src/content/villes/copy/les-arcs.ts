@@ -30,8 +30,8 @@ export const LES_ARCS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Arcs : ateliers pour vignerons Côtes de Provence, artisans, restaurateurs et PME services. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LES_ARCS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole aux Arcs ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux domaines viticoles Côtes de Provence, artisans et restaurateurs arcois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles Côtes de Provence, artisans et restaurateurs arcois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la Maison des Vins du Var ?",

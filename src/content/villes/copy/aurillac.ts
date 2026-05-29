@@ -10,9 +10,9 @@ export const AURILLAC_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Aurillac, préfecture du Cantal en Auvergne-Rhône-Alpes, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 680 mètres d'altitude au pied des monts du Cantal et comptant 26 214 habitants (2023), la ville concentre des acteurs de l'agroalimentaire (fromage de Cantal, charcuterie, distilleries), du commerce de détail et de la santé — le Centre Hospitalier Henri-Mondor emploie environ 1 800 personnes. Nous intervenons sur site pour auditer, prototyper et déployer des solutions IA adaptées aux dirigeants locaux.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. William intervient sous 5 jours ouvrés.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h et {{price:intervention-4h|flat}} pour l'Intervention Essentielle. William intervient sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h et 590 € HT pour l'Intervention Essentielle. William intervient sous 5 jours ouvrés.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Aurillac (Cantal, Auvergne-Rhône-Alpes) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu agroalimentaire, commerçant et hospitalier local (transformation laitière, charcuterie, distilleries, fromage de Cantal AOP, commerce de centre-ville, Centre Hospitalier Henri-Mondor). Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h et {{price:intervention-4h|flat}} pour l'Intervention Essentielle. William intervient sous 5 jours ouvrés.",
   seoHook: "agroalimentaire & commerce détail",
   ecosystemFr:
     "Aurillac bénéficie d'un tissu économique structuré autour de la transformation agroalimentaire (fromage de Cantal AOP, charcuterie, distilleries), du commerce de détail et de l'administration publique. Le Centre Hospitalier Henri-Mondor (~1 800 emplois) constitue le premier employeur du bassin. La ville fut historiquement un pôle de la parapluierie française. Les TPE et PME aurillacoises évoluent dans une aire urbaine d'environ 33 900 habitants, avec un maillage de communes proches (Arpajon-sur-Cère, Ytrac, Naucelles, Saint-Simon, Giou-de-Mamou) bien desservies.",
@@ -32,26 +32,26 @@ export const AURILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de 490 € HT, livrable sous 5 jours ouvrés.",
-      en: "Audit Flash 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de 490 € HT, livrable sous 5 jours ouvrés.",
+      fr: "Audit Flash 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
+      en: "Audit Flash 4h à Aurillac pour TPE et PME du Cantal — diagnostic des processus administratifs et métiers (gestion des commandes, facturation, suivi qualité agroalimentaire). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement William sous 5 jours.",
-      en: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de 590 € HT, déplacement William sous 5 jours.",
+      fr: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
+      en: "Intervention Essentielle sur site à Aurillac pour automatiser un goulot d'étranglement précis (saisie commandes producteurs laitiers, devis touristiques, relances clients). Tarif public à partir de {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de 990 € HT.",
-      en: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de 990 € HT.",
+      fr: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de {{price:impl-poc|entry}}.",
+      en: "Implémentation de solutions IA code-first à Aurillac : intégration API métier, agents conversationnels internes, automatisations sur mesure pour PME agroalimentaires ou commerces. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de 990 € HT.",
-      en: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de 990 € HT.",
+      fr: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions un-à-un avec les dirigeants de TPE et PME aurillacoises pour cadrer la feuille de route IA : priorisation des cas d'usage, ROI estimé, conformité RGPD. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Aurillac ?",
-      a: "Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour l'Intervention Essentielle et 990 € HT pour l'implémentation ou les sessions un-à-un. Frais de déplacement à Aurillac (Cantal) inclus dans le devis.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour l'Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour l'implémentation ou les sessions un-à-un. Frais de déplacement à Aurillac (Cantal) inclus dans le devis.",
     },
     {
       q: "Quels délais pour une intervention sur site à Aurillac ?",

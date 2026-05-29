@@ -11,9 +11,9 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Ouen-sur-Seine (93), commune de 53 615 habitants en bord de Seine, est limitrophe des 17e et 18e arrondissements de Paris. Très bien desservie par les métros 13 et 14 (prolongée en décembre 2020), le RER C et le tramway T3b. Tissu de TPE artisans, PME industrielles et tertiaires, sièges sociaux (Alstom) et marché aux puces historique. Axion-IA accompagne ces entreprises dans leur transition IA.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner TPE artisans et commerçants des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit Flash à partir de 490 € HT, sur tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner TPE artisans et commerçants des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit Flash à partir de {{price:audit-flash|flat}}, sur tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner TPE artisans et commerçants des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit Flash à partir de 490 € HT, sur tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner TPE artisans et commerçants des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit Flash à partir de {{price:audit-flash|flat}}, sur tarifs publics.",
   seoHook: "TPE & PME nord Paris — Docks, Puces & Alstom",
   ecosystemFr:
     "Saint-Ouen-sur-Seine concentre plusieurs pôles économiques distincts. Le siège social d'Alstom y est implanté. La ZAC des Docks, ancien secteur industriel de 100 hectares, accueille un éco-quartier mixte avec un parc de 12 hectares et de nouveaux bureaux. Le Marché aux Puces (plus grand marché d'antiquités au monde) regroupe des centaines de commerçants TPE. Depuis 2018, le Conseil régional d'Île-de-France a installé son siège à Saint-Ouen. Les ateliers de maintenance de la ligne 4 du métro complètent ce tissu.",
@@ -32,8 +32,8 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour TPE des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit Flash 490 € HT avec ROI chiffré.",
-      en: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour TPE des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit Flash 490 € HT avec ROI chiffré.",
+      fr: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour TPE des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI chiffré.",
+      en: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour TPE des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Ouen-sur-Seine : automatisation gestion stock antiquités, facturation BTP, suivi commercial PME industrielles, transcription réunions tertiaires.",
@@ -55,7 +55,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Saint-Ouen-sur-Seine ?",
-      a: "Audit Flash à partir de 490 € HT, Intervention Essentielle à partir de 590 € HT. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
+      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Intervention Essentielle à partir de {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Saint-Ouen ?",

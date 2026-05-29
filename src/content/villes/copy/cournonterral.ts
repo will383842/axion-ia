@@ -9,9 +9,9 @@ export const COURNONTERRAL_COPY: VilleCopy = {
   pitchEn:
     "Cournonterral (34, Hérault), commune de 7 359 habitants (2023) à 15 km au nord-est de Montpellier, en forte croissance démographique (+20 % depuis 2017). Vignoble AOC Languedoc, garrigue, célèbre carnaval des Pailhasses du mercredi des Cendres. Tissu de TPE commerçants (23,3 % des établissements), artisans BTP (22,5 %), professions libérales, et PME viticoles. Axion-IA y accompagne le tissu professionnel local sur l'IA.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournonterral (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Languedoc et caves coopératives, avec des tarifs publics dès 490 € HT et des consultants qui se déplacent depuis Montpellier en 20 min via la D5.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournonterral (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Languedoc et caves coopératives, avec des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent depuis Montpellier en 20 min via la D5.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournonterral (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Languedoc et caves coopératives, avec des tarifs publics dès 490 € HT et des consultants qui se déplacent depuis Montpellier en 20 min via la D5.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournonterral (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Languedoc et caves coopératives, avec des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent depuis Montpellier en 20 min via la D5.",
   ecosystemFr:
     "Cournonterral est une commune viticole et résidentielle de Montpellier Méditerranée Métropole, en forte croissance (1 887 hab. en 1962, 7 359 en 2023). Vignoble AOC Languedoc, garrigue méditerranéenne, accès par la D5 vers Montpellier et la D114 vers Frontignan. Le tissu économique est dominé par le commerce (23,3 % des établissements) et la construction (22,5 %), au-dessus de la moyenne départementale. Cave coopérative active, agriculture en repli (104 exploitations en 1988, 30 en 2020).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const COURNONTERRAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès 490 € HT.",
-      en: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès 490 € HT.",
+      fr: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cournonterral : ateliers adaptés au commerce de proximité, à l'artisan BTP, au cabinet libéral, au domaine viticole ou à la cave coopérative. Équipes formées et autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const COURNONTERRAL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Cournonterral ?",
-      a: "L'Audit Flash démarre à 490 € HT (diagnostic 2 jours). L'Intervention Essentielle démarre à 590 € HT. Le coaching 1-to-1 démarre à 990 € HT. Tarifs publics affichés, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
       q: "Quels délais pour une implémentation IA à Cournonterral ?",
@@ -65,7 +65,7 @@ export const COURNONTERRAL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs et la cave coopérative AOC Languedoc ?",
-      a: "Oui. Cas d'usage IA viticoles : automatisation suivi parcelles, relation client export, prédiction vendanges, classification d'avis, marketing digital. Format Audit Flash 490 € HT ou intervention sur mesure.",
+      a: "Oui. Cas d'usage IA viticoles : automatisation suivi parcelles, relation client export, prédiction vendanges, classification d'avis, marketing digital. Format Audit Flash {{price:audit-flash|flat}} ou intervention sur mesure.",
     },
   ],
 };

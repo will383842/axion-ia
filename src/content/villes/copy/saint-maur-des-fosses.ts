@@ -32,26 +32,26 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
-      en: "Audit Flash 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de 490 € HT.",
+      fr: "Audit Flash 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit Flash 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès 590 € HT, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès 590 € HT, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
-      fr: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de 990 € HT, hébergement RGPD France.",
-      en: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de 990 € HT, hébergement RGPD France.",
+      fr: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
+      en: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de 990 € HT.",
-      en: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de 990 € HT.",
+      fr: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Saint-Maur-des-Fossés ?",
-      a: "Les interventions Axion-IA à Saint-Maur-des-Fossés démarrent à 590 € HT, l'Audit Flash 4h à 490 € HT, et l'implémentation à 990 € HT. Tous les tarifs publics figurent sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Saint-Maur-des-Fossés démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous les tarifs publics figurent sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Saint-Maur-des-Fossés ?",
@@ -71,7 +71,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA sur site à Saint-Maur-des-Fossés ?",
-      a: "Oui, nous animons des ateliers en présentiel à Saint-Maur-des-Fossés (demi-journée ou journée complète) pour les équipes des TPE et PME, ainsi que des sessions 1-to-1 pour dirigeants à partir de 990 € HT.",
+      a: "Oui, nous animons des ateliers en présentiel à Saint-Maur-des-Fossés (demi-journée ou journée complète) pour les équipes des TPE et PME, ainsi que des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

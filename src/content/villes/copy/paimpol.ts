@@ -30,8 +30,8 @@ export const PAIMPOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paimpol : formats adaptés exploitation conchylicole, commerce de port, hôtel, restaurant, atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PAIMPOL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et restaurateurs ?",
-      a: "Audit Flash 490 € HT, CRM augmenté, gestion commandes et réservations IA, fidélisation clients, optimisation stocks saisonniers, agents IA prise de commande pour restaurateurs.",
+      a: "Audit Flash {{price:audit-flash|flat}}, CRM augmenté, gestion commandes et réservations IA, fidélisation clients, optimisation stocks saisonniers, agents IA prise de commande pour restaurateurs.",
     },
     {
       q: "Comment se déroule une mission à Paimpol ?",

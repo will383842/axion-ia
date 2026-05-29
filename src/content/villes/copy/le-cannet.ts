@@ -12,9 +12,9 @@ export const LE_CANNET_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
   directAnswerFr:
-    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès 490 € HT), des interventions sur site (dès 590 € HT) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
   directAnswerEn:
-    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès 490 € HT), des interventions sur site (dès 590 € HT) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
   seoHook: "commerce, hôtellerie-restauration & événementiel",
   ecosystemFr:
     "Le Cannet est situé à environ 2 km au nord de Cannes et appartient à la Communauté d'agglomération Cannes Pays de Lérins. Son tissu économique est dominé par le commerce, l'hôtellerie-restauration, les services et un secteur événementiel structuré par les grands rendez-vous cannois (Festival, MIPIM, MIPCOM). La commune accueille également le musée Bonnard, témoin de son patrimoine culturel.",
@@ -34,26 +34,26 @@ export const LE_CANNET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès 490 € HT, livrable PDF + plan d'action.",
-      en: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès 490 € HT, livrable PDF + plan d'action.",
+      fr: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      en: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
     },
     interventions: {
-      fr: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès 590 € HT.",
-      en: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès 590 € HT.",
+      fr: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès 990 € HT.",
-      en: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès 990 € HT.",
+      fr: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA sur mesure au Cannet pour les TPE-PME locales : back-office hôtelier, CRM hôtellerie-restauration, automatisation administrative — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès 990 € HT, sessions sur site ou visio.",
-      en: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès 990 € HT, sessions sur site ou visio.",
+      fr: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant TPE-PME cannettan pour cadrer ses premiers chantiers IA — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir au Cannet ?",
-      a: "Nos tarifs publics démarrent à 490 € HT pour l'Audit Flash 4h, 590 € HT pour une Intervention Essentielle et 990 € HT pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
     },
     {
       q: "Quels délais pour une intervention IA au Cannet après prise de contact ?",

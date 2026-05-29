@@ -30,8 +30,8 @@ export const LA_GRANDE_MOTTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Grande-Motte : diagnostic pour PME hôtelières, TPE commerçants, acteurs tourisme balnéaire, palais des congrès et professions libérales du littoral. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à La Grande-Motte : diagnostic pour PME hôtelières, TPE commerçants, acteurs tourisme balnéaire, palais des congrès et professions libérales du littoral. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à La Grande-Motte : diagnostic pour PME hôtelières, TPE commerçants, acteurs tourisme balnéaire, palais des congrès et professions libérales du littoral. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à La Grande-Motte : diagnostic pour PME hôtelières, TPE commerçants, acteurs tourisme balnéaire, palais des congrès et professions libérales du littoral. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Grande-Motte : ateliers adaptés hôtel, restaurant, commerce saisonnier ou organisateur événementiel. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const LA_GRANDE_MOTTE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour l'hôtellerie-restauration ?",
-      a: "Oui, nous réalisons des audits IA adaptés à l'hôtellerie-restauration : automatisation réservations, chatbot multilingue, tarification dynamique, gestion avis en ligne, optimisation planning saisonnier. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés à l'hôtellerie-restauration : automatisation réservations, chatbot multilingue, tarification dynamique, gestion avis en ligne, optimisation planning saisonnier. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerces saisonniers ?",
-      a: "Pour les commerces saisonniers à La Grande-Motte, audit Flash 490 € HT, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, gestion stocks saisonniers, agents IA prise de RDV, marketing digital.",
+      a: "Pour les commerces saisonniers à La Grande-Motte, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, gestion stocks saisonniers, agents IA prise de RDV, marketing digital.",
     },
     {
       q: "Accompagnez-vous les acteurs de l'événementiel et congrès ?",
@@ -65,7 +65,7 @@ export const LA_GRANDE_MOTTE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à La Grande-Motte ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

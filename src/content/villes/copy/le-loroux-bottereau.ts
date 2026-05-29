@@ -30,8 +30,8 @@ export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Loroux-Bottereau : diagnostic adapté aux TPE viticoles, artisans, commerçants et PME du vignoble nantais. ROI chiffré pragmatique, audit Flash 490 € HT.",
-      en: "Audit IA au Loroux-Bottereau : diagnostic adapté aux TPE viticoles, artisans, commerçants et PME du vignoble nantais. ROI chiffré pragmatique, audit Flash 490 € HT.",
+      fr: "Audit IA au Loroux-Bottereau : diagnostic adapté aux TPE viticoles, artisans, commerçants et PME du vignoble nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Loroux-Bottereau : diagnostic adapté aux TPE viticoles, artisans, commerçants et PME du vignoble nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Loroux-Bottereau : formats courts adaptés vignerons, artisans, commerçants et PME. Vos équipes repartent avec outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les vignerons et exploitants du Muscadet ?",
-      a: "Oui, nous accompagnons les TPE viticoles du Muscadet sur des cas IA concrets : automatisation traçabilité parcellaire, gestion stocks, facturation, agents IA relation client caveau. Audit Flash 490 € HT adapté aux domaines viticoles.",
+      a: "Oui, nous accompagnons les TPE viticoles du Muscadet sur des cas IA concrets : automatisation traçabilité parcellaire, gestion stocks, facturation, agents IA relation client caveau. Audit Flash {{price:audit-flash|flat}} adapté aux domaines viticoles.",
     },
     {
       q: "Quels services pour les artisans et commerçants du vignoble ?",
-      a: "Pour les artisans et commerçants du vignoble nantais, nous proposons audit IA Flash (490 € HT), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants. Tarifs publics et transparents.",
+      a: "Pour les artisans et commerçants du vignoble nantais, nous proposons audit IA Flash ({{price:audit-flash|flat}}), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants. Tarifs publics et transparents.",
     },
     {
       q: "Comment se déroule une mission au Loroux-Bottereau ?",

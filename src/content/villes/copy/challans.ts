@@ -30,8 +30,8 @@ export const CHALLANS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Challans : diagnostic des tâches automatisables pour filière volaille, agroalimentaire, commerce et tourisme du littoral. Audit Flash dès 490 € HT, livrable priorisé.",
-      en: "Audit IA à Challans : diagnostic des tâches automatisables pour filière volaille, agroalimentaire, commerce et tourisme du littoral. Audit Flash dès 490 € HT, livrable priorisé.",
+      fr: "Audit IA à Challans : diagnostic des tâches automatisables pour filière volaille, agroalimentaire, commerce et tourisme du littoral. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Challans : diagnostic des tâches automatisables pour filière volaille, agroalimentaire, commerce et tourisme du littoral. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Challans : ateliers pratiques pour exploitations avicoles, ateliers agroalimentaires, commerces et BTP, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const CHALLANS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Challans ?",
-      a: "L'Audit Flash démarre à 490 € HT, avec une grille tarifaire publique. Il est adapté aux TPE et PME challandaises : filière volaille, agroalimentaire, commerce, artisanat et tourisme.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME challandaises : filière volaille, agroalimentaire, commerce, artisanat et tourisme.",
     },
     {
       q: "Comment l'IA aide-t-elle la filière volaille de Challans ?",

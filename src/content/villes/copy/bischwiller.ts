@@ -30,8 +30,8 @@ export const BISCHWILLER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bischwiller : formats adaptés à l'atelier industriel, à la PME mécanique, au sous-traitant automobile ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BISCHWILLER_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Bischwiller  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bischwiller et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, PME mécanique, sous-traitance ou commerce.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bischwiller et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, PME mécanique, sous-traitance ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants automobile du Nord Alsace ?",
@@ -65,7 +65,7 @@ export const BISCHWILLER_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Bischwiller ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bischwiller, à partir de 990 € HT. Sessions à l'atelier, au bureau ou en visio. Approche terrain adaptée au tissu industriel et commerçant du Nord Alsace.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bischwiller, à partir de {{price:intervention-dirigeants|flat}}. Sessions à l'atelier, au bureau ou en visio. Approche terrain adaptée au tissu industriel et commerçant du Nord Alsace.",
     },
   ],
 };

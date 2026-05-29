@@ -11,9 +11,9 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
   pitchEn:
     "Saint-Chamond, 35 646 habitants dans la Loire (Auvergne-Rhône-Alpes), est la troisième commune du département, au cœur de la vallée du Gier entre Saint-Étienne (12 km) et Lyon (49 km). Capitale historique du lacet (jusqu'à 75 % de la production nationale dans les années 1920) puis bassin métallurgique (Forges et aciéries de la Marine, plus tard Creusot-Loire jusqu'en 1985), la ville garde aujourd'hui un tissu de PME industrielles, de sous-traitants mécaniques et de commerces. Axion-IA y accompagne les TPE et PME locales avec du code custom (Python/TypeScript), sans no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de 590 € HT pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
+    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de 590 € HT pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
+    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
   seoHook: "PME industrielles & sous-traitance mécanique",
   ecosystemFr:
     "Saint-Chamond a hérité d'une longue tradition industrielle : capitale du lacet au tournant du XXe siècle, puis bassin métallurgique structuré par les Forges et aciéries de la Marine (devenues Creusot-Loire, fermées en 1985). Le tissu actuel est dominé par les PME de mécanique, de fonderie, de plasturgie, de transport et logistique, complété par les commerces du centre-ville et les services aux entreprises. La vallée du Gier concentre une sous-traitance industrielle dense, irriguée par l'A47 et la ligne TER Saint-Étienne–Lyon. C'est ce maillage de TPE et PME qui constitue le cœur de cible d'Axion-IA.",
@@ -32,12 +32,12 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de 490 € HT.",
-      en: "Audit Flash à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de 490 € HT.",
+      fr: "Audit Flash à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
+      en: "Audit Flash à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site à Saint-Chamond pour automatiser des cas concrets : génération de devis depuis Excel ou ERP, extraction de PDF fournisseurs, suivi qualité, relances clients, exports comptables. Code Python/TypeScript livré et documenté, à partir de 590 € HT.",
-      en: "Interventions sur site à Saint-Chamond pour automatiser des cas concrets : génération de devis depuis Excel ou ERP, extraction de PDF fournisseurs, suivi qualité, relances clients, exports comptables. Code Python/TypeScript livré et documenté, à partir de 590 € HT.",
+      fr: "Interventions sur site à Saint-Chamond pour automatiser des cas concrets : génération de devis depuis Excel ou ERP, extraction de PDF fournisseurs, suivi qualité, relances clients, exports comptables. Code Python/TypeScript livré et documenté, à partir de {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site à Saint-Chamond pour automatiser des cas concrets : génération de devis depuis Excel ou ERP, extraction de PDF fournisseurs, suivi qualité, relances clients, exports comptables. Code Python/TypeScript livré et documenté, à partir de {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation à Saint-Chamond de briques IA durables : connecteurs entre vos outils (ERP, GMAO, compta), agents internes pour la qualification et le support, pipelines de reporting hebdomadaire. Architecture pensée pour rester maintenable par votre équipe ou un prestataire local.",
@@ -51,7 +51,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Saint-Chamond ?",
-      a: "L'Audit Flash démarre à 490 € HT (4 h), une intervention sur site à Saint-Chamond démarre à 590 € HT. Tous nos prix sont publics sur la page Tarifs, sans abonnement caché.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Saint-Chamond démarre à {{price:intervention-4h|flat}}. Tous nos prix sont publics sur la page Tarifs, sans abonnement caché.",
     },
     {
       q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",

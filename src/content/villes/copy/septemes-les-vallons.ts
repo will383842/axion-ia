@@ -30,8 +30,8 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Septèmes-les-Vallons : formats adaptés au bureau, commerce et atelier. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Septèmes-les-Vallons ?",
-      a: "L'Audit Flash de 4 heures est proposé à 490 € HT. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
+      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans de Septèmes-les-Vallons ?",
@@ -61,7 +61,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux professions libérales ?",
-      a: "Absolument. Nous accompagnons les professions libérales de Septèmes-les-Vallons : automatisation gestion cabinet, rédaction assistée, classification documents, planning intelligent. Audit Flash 490 € HT.",
+      a: "Absolument. Nous accompagnons les professions libérales de Septèmes-les-Vallons : automatisation gestion cabinet, rédaction assistée, classification documents, planning intelligent. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Septèmes-les-Vallons ?",

@@ -30,8 +30,8 @@ export const VERGEZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vergèze : diagnostic adapté aux TPE/PME agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit Flash 490 € HT.",
-      en: "Audit IA à Vergèze : diagnostic adapté aux TPE/PME agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit Flash 490 € HT.",
+      fr: "Audit IA à Vergèze : diagnostic adapté aux TPE/PME agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vergèze : diagnostic adapté aux TPE/PME agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vergèze : formats adaptés aux sous-traitants industriels, caves viticoles, commerces et artisans de la Vaunage.",
@@ -57,7 +57,7 @@ export const VERGEZE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vergèze  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs de la Vaunage ?",

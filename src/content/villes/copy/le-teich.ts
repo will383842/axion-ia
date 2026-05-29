@@ -30,8 +30,8 @@ export const LE_TEICH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit Flash 490 € HT.",
-      en: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit Flash 490 € HT.",
+      fr: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Teich : ateliers adaptés aux hébergeurs, ostréiculteurs et artisans. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_TEICH_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Teich ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux hébergeurs écotouristiques et TPE du Bassin d'Arcachon.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux hébergeurs écotouristiques et TPE du Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les hébergeurs touristiques au Teich ?",

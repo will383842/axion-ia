@@ -30,8 +30,8 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Grégoire : formats adaptés au bureau tertiaire, plateau entreprise, cabinet conseil ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,15 +53,15 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires de Saint-Grégoire ?",
-      a: "Oui, nous accompagnons les PME tertiaires et services B2B des zones d'activités de Saint-Grégoire (Espace Performance, Saint-Sulpice) : automatisation workflow, agents conversationnels, veille augmentée, CRM. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME tertiaires et services B2B des zones d'activités de Saint-Grégoire (Espace Performance, Saint-Sulpice) : automatisation workflow, agents conversationnels, veille augmentée, CRM. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Saint-Grégoire  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du nord rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, conseil, services, BTP). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, conseil, services, BTP). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les cabinets de conseil du secteur ?",
-      a: "Oui, nous accompagnons les cabinets de conseil et services B2B de Saint-Grégoire : analyse documentaire augmentée, veille concurrentielle IA, automatisation reporting, agents conversationnels client. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les cabinets de conseil et services B2B de Saint-Grégoire : analyse documentaire augmentée, veille concurrentielle IA, automatisation reporting, agents conversationnels client. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Saint-Grégoire ?",

@@ -30,8 +30,8 @@ export const BIGUGLIA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biguglia : formats adaptés commerce agglo Bastia, atelier artisan, exploitation agricole plaine orientale, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et exploitants agricoles ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis le continent ?",

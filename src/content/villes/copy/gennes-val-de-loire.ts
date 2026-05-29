@@ -30,8 +30,8 @@ export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gennes-Val-de-Loire : formations pour équipes tourisme, viticulture et commerces. Ateliers pratiques adaptés au contexte Loire UNESCO.",
@@ -53,7 +53,7 @@ export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Gennes-Val-de-Loire  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Gennes-Val-de-Loire démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Gennes-Val-de-Loire démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les hébergeurs touristiques du Val de Loire ?",

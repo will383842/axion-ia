@@ -30,8 +30,8 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-Saint-Paul : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Villers-Saint-Paul  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités villeroises : logisticiens, industriels, grossistes, artisans BTP. ROI chiffré dès le diagnostic.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités villeroises : logisticiens, industriels, grossistes, artisans BTP. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique et industrie ?",
@@ -65,7 +65,7 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Villers-Saint-Paul ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Villers-Saint-Paul, à partir de 990 € HT. Sessions dans votre entrepôt, atelier, commerce ou en visio. Approche terrain adaptée aux métiers logistique et industrie du bassin creillois.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Villers-Saint-Paul, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre entrepôt, atelier, commerce ou en visio. Approche terrain adaptée aux métiers logistique et industrie du bassin creillois.",
     },
   ],
 };

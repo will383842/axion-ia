@@ -30,8 +30,8 @@ export const MOUY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI mesurable, audit Flash dès 490 € HT accessible.",
-      en: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      fr: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mouy : formats adaptés à l'atelier artisanal, PME industrielle, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MOUY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Mouy ?",
-      a: "Pour les TPE artisans BTP et commerçants à Mouy, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Mouy, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Accompagnez-vous les agriculteurs du Pays de Thelle ?",

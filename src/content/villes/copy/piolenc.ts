@@ -30,8 +30,8 @@ export const PIOLENC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Piolenc : diagnostic adapté aux TPE artisans, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Piolenc : diagnostic adapté aux TPE artisans, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Piolenc : diagnostic adapté aux TPE artisans, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Piolenc : diagnostic adapté aux TPE artisans, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Piolenc : formats adaptés aux exploitations agricoles ail et maraîchage, domaines viticoles, PME agroalimentaires, coopératives et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const PIOLENC_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les producteurs d'ail et maraîchers de Piolenc ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture Piolenc : traçabilité parcellaire, gestion récoltes, optimisation circuits courts, fiches Google Business marchés, content marketing Foire à l'ail et commercialisation B2B.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture Piolenc : traçabilité parcellaire, gestion récoltes, optimisation circuits courts, fiches Google Business marchés, content marketing Foire à l'ail et commercialisation B2B.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles Côtes-du-Rhône autour de Piolenc ?",
@@ -61,7 +61,7 @@ export const PIOLENC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Piolenc  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Piolenc ?",

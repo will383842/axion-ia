@@ -30,8 +30,8 @@ export const FEGERSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fegersheim : diagnostic adapté aux TPE/PME des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Fegersheim : diagnostic adapté aux TPE/PME des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Fegersheim : diagnostic adapté aux TPE/PME des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fegersheim : diagnostic adapté aux TPE/PME des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la TPE de services ou à l''artisan BTP. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const FEGERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Fegersheim ?",
-      a: "L''Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Fegersheim et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, logistique, BTP ou de services.",
+      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Fegersheim et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, logistique, BTP ou de services.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Fegersheim ?",
@@ -65,7 +65,7 @@ export const FEGERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Fegersheim ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Fegersheim, à partir de 990 € HT. Sessions dans votre entreprise ou en visio. Approche terrain adaptée au tissu économique industriel et logistique alsacien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Fegersheim, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre entreprise ou en visio. Approche terrain adaptée au tissu économique industriel et logistique alsacien.",
     },
   ],
 };

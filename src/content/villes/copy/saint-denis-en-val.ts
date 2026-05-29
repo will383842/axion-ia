@@ -30,8 +30,8 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Denis-en-Val : formats adaptés au cabinet libéral, au commerce de proximité ou à la PME tertiaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales de Saint-Denis-en-Val ?",
-      a: "Oui, nous accompagnons les professions libérales de Saint-Denis-en-Val (médecins, avocats, consultants, kinés) sur des cas IA concrets : automatisation secrétariat, agents conversationnels patients, classification dossiers, rédaction assistée. Audit Flash 490 € HT adapté aux cabinets.",
+      a: "Oui, nous accompagnons les professions libérales de Saint-Denis-en-Val (médecins, avocats, consultants, kinés) sur des cas IA concrets : automatisation secrétariat, agents conversationnels patients, classification dossiers, rédaction assistée. Audit Flash {{price:audit-flash|flat}} adapté aux cabinets.",
     },
     {
       q: "Accompagnez-vous les PME de services de l'agglo Orléans sud ?",
@@ -61,7 +61,7 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des solutions pour le maraîchage et l'horticulture ?",
-      a: "Oui, nous accompagnons les maraîchers et horticulteurs du Val de Loire autour de Saint-Denis-en-Val. Cas IA : gestion parcellaire, prédiction récoltes, automatisation commandes et facturation, classification photos cultures. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les maraîchers et horticulteurs du Val de Loire autour de Saint-Denis-en-Val. Cas IA : gestion parcellaire, prédiction récoltes, automatisation commandes et facturation, classification photos cultures. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission sur site à Saint-Denis-en-Val ?",

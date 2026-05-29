@@ -51,7 +51,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Maubeuge ?",
-      a: "Les interventions à Maubeuge commencent à partir de 590 € HT (Intervention Essentielle). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
+      a: "Les interventions à Maubeuge commencent à partir de {{price:intervention-4h|flat}} (Intervention Essentielle). Tous nos tarifs sont publics et consultables sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines de Maubeuge ?",
@@ -71,7 +71,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les dirigeants à Maubeuge ?",
-      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME de Maubeuge, à partir de 990 € HT, pour bâtir une feuille de route IA concrète.",
+      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME de Maubeuge, à partir de {{price:intervention-dirigeants|flat}}, pour bâtir une feuille de route IA concrète.",
     },
   ],
 };

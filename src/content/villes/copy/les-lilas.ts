@@ -10,9 +10,9 @@ export const LES_LILAS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME des Lilas, commune de 23 800 habitants en Seine-Saint-Denis, limitrophe du 19e arrondissement de Paris. Le tissu local mêle services aux entreprises, santé (Maternité des Lilas, 180 salariés), télécoms (TDF, tour 124 m), industrie spécialisée (Drieux-Combaluzier, ascenseurs, 220 salariés) et transports (Centre Bus RATP, ~800 salariés). William se déplace sur site pour cadrer et déployer les cas d'usage IA des dirigeants lilasiens en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de {{price:intervention-4h|flat}}. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de 590 € HT. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
+    "Axion-IA est un cabinet d'IA appliquée qui se déplace aux Lilas (93260, Seine-Saint-Denis) pour accompagner les TPE et PME locales. William réalise des audits de processus, prototype des solutions IA et implémente en code custom (Python/TypeScript, pas de no-code). Audits Flash à partir de {{price:intervention-4h|flat}}. Nous couvrons les services aux entreprises, la santé de proximité (autour de la Maternité des Lilas), les télécoms et le tissu commercial de Mairie des Lilas et Serge Gainsbourg (métro 11).",
   seoHook: "TPE/PME Seine-Saint-Denis Paris Est",
   ecosystemFr:
     "Les Lilas accueillent plusieurs employeurs structurants : Centre Bus RATP (~800 salariés, premier employeur), Drieux-Combaluzier (ascenseurs, 220 salariés), Maternité des Lilas (180 salariés), TDF (télécoms, 150 salariés, tour de 124 m). Le commerce de proximité s'organise autour de la mairie et des deux stations de la ligne 11 du métro. Tissu dense de TPE/PME tertiaires en lien direct avec Paris Est et le 19e arrondissement.",
@@ -44,14 +44,14 @@ export const LES_LILAS_COPY: VilleCopy = {
       en: "Implémentation IA aux Lilas en code custom : assistants administratifs, automatisation back-office services aux entreprises, outils internes pour PME santé/RGPD-first.",
     },
     unAUn: {
-      fr: "Coaching un-à-un aux Lilas pour dirigeants de TPE/PME : poser la stratégie IA, comprendre les coûts réels d'un déploiement, éviter les dépendances no-code. 1h30 à 990 € HT, sur site ou visio.",
-      en: "Coaching un-à-un aux Lilas pour dirigeants de TPE/PME : poser la stratégie IA, comprendre les coûts réels d'un déploiement, éviter les dépendances no-code. 1h30 à 990 € HT, sur site ou visio.",
+      fr: "Coaching un-à-un aux Lilas pour dirigeants de TPE/PME : poser la stratégie IA, comprendre les coûts réels d'un déploiement, éviter les dépendances no-code. 1h30 à {{price:intervention-dirigeants|flat}}, sur site ou visio.",
+      en: "Coaching un-à-un aux Lilas pour dirigeants de TPE/PME : poser la stratégie IA, comprendre les coûts réels d'un déploiement, éviter les dépendances no-code. 1h30 à {{price:intervention-dirigeants|flat}}, sur site ou visio.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA aux Lilas ?",
-      a: "Audits Flash à partir de 590 € HT pour 4 heures sur site aux Lilas. Tarifs publics sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour les missions plus longues.",
+      a: "Audits Flash à partir de {{price:intervention-4h|flat}} pour 4 heures sur site aux Lilas. Tarifs publics sur axion-ia.com/tarifs. Devis personnalisé sous 48 h pour les missions plus longues.",
     },
     {
       q: "William se déplace-t-il aux Lilas pour intervenir sur site ?",
@@ -71,7 +71,7 @@ export const LES_LILAS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions 1-to-1 pour dirigeants lilasiens ?",
-      a: "Oui. Sessions un-à-un aux Lilas à 990 € HT (1h30), sur site ou visio. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA en code custom sans dépendance no-code.",
+      a: "Oui. Sessions un-à-un aux Lilas à {{price:intervention-dirigeants|flat}} (1h30), sur site ou visio. Cible : dirigeants de TPE/PME souhaitant cadrer leur feuille de route IA en code custom sans dépendance no-code.",
     },
   ],
 };

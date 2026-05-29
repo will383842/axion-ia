@@ -30,8 +30,8 @@ export const CANTELEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Canteleu : formats adaptés au bureau, entrepôt bords de Seine, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const CANTELEU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Canteleu ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Canteleu sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Canteleu sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Canteleu ?",

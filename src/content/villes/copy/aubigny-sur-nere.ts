@@ -30,8 +30,8 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubigny-sur-Nère : formats adaptés au commerce, exploitation agroalimentaire, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
       q: "Comment se passe une mission depuis Bourges ou Orléans ?",

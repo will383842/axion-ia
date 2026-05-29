@@ -30,8 +30,8 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et TPE/PME de la Côte de Beauté. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et TPE/PME de la Côte de Beauté. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et TPE/PME de la Côte de Beauté. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et TPE/PME de la Côte de Beauté. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Georges-de-Didonne : formats adaptés à l'hôtel, au camping, au restaurant, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Georges-de-Didonne ?",
-      a: "L'audit Flash IA à Saint-Georges-de-Didonne démarre à 490 € HT. Diagnostic complet de vos processus touristiques ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit Flash IA à Saint-Georges-de-Didonne démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus touristiques ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Georges ?",

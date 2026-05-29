@@ -30,8 +30,8 @@ export const GORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit Flash 490 € HT pour les petites structures.",
-      en: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit Flash 490 € HT pour les petites structures.",
+      fr: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
+      en: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gorges : formations viticulteurs, ateliers PME industrielles Clisson, sessions commerçants. Vos équipes repartent autonomes sur les outils IA adaptés à votre métier.",
@@ -57,7 +57,7 @@ export const GORGES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE viticole ?",
-      a: "L'Audit Flash 4h démarre à 490 € HT, parfaitement adapté aux TPE viticoles et petits domaines. Il identifie les opportunités IA concrètes sur votre exploitation : traçabilité, automatisation administrative, gestion commerciale.",
+      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux TPE viticoles et petits domaines. Il identifie les opportunités IA concrètes sur votre exploitation : traçabilité, automatisation administrative, gestion commerciale.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de la zone de Clisson ?",

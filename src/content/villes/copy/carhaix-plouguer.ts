@@ -30,8 +30,8 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carhaix-Plouguer : formats adaptés à la laiterie, l'atelier artisan, le commerce ou l'organisation événementielle. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants carhaisiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Carhaix-Plouguer, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Carhaix-Plouguer, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Carhaix-Plouguer ?",

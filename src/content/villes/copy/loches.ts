@@ -30,8 +30,8 @@ export const LOCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loches : formats adaptés au site touristique patrimonial, à l'hôtel-restaurant, au commerce ou à l'atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const LOCHES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans lochois ?",
-      a: "Pour les TPE et artisans à Loches, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents. Adapté aux petites structures.",
+      a: "Pour les TPE et artisans à Loches, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents. Adapté aux petites structures.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Loches ?",

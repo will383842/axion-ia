@@ -30,8 +30,8 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtillon-sur-Seine : formats adaptés artisan, commerce, exploitation viticole, hôtel, restaurant, cabinet. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs et PME agroalimentaires du Châtillonnais ?",
-      a: "Oui, audit Flash 490 € HT, automatisation traçabilité, outils viticulture et Crémant de Bourgogne, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture et Crémant de Bourgogne, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de centre-bourg ?",
@@ -61,7 +61,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour l'hôtellerie-restauration et le tourisme patrimonial ?",
-      a: "Audit Flash 490 € HT, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Musée du Châtillonnais et du Vase de Vix.",
+      a: "Audit Flash {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Musée du Châtillonnais et du Vase de Vix.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Dijon ?",

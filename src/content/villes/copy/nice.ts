@@ -41,7 +41,7 @@ export const NICE_COPY: VilleCopy = {
       en: "AI implementation in Nice: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control — no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Nice et Sophia Antipolis : accompagnement individuel intensif d'un dirigeant ou d'un expert métier pour maîtriser et déployer l'IA dans son quotidien professionnel. Séances sur site ou à distance selon votre rythme. Tarif d'entrée 990 € HT.",
+      fr: "Coaching IA 1-to-1 à Nice et Sophia Antipolis : accompagnement individuel intensif d'un dirigeant ou d'un expert métier pour maîtriser et déployer l'IA dans son quotidien professionnel. Séances sur site ou à distance selon votre rythme. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
       en: "1-to-1 AI coaching in Nice and Sophia Antipolis: intensive individual support for a manager or expert to master and deploy AI in their professional practice. On-site or remote sessions at your pace. Entry rate from €990 excl. VAT. On-site travel expenses billed separately.",
     },
     sitesWeb: {
@@ -719,7 +719,7 @@ export const NICE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Nice et Sophia Antipolis est un accompagnement individuel intensif conçu pour les dirigeants, managers et experts métiers qui veulent maîtriser l'IA dans leur pratique quotidienne — sans passer par une formation de groupe. Chaque séance est centrée sur VOS dossiers, VOS données, VOS workflows. Présentiel à Nice, Grand Arénas, Sophia Antipolis ou à distance selon votre agenda. Frais de déplacement pour les séances sur site en sus. Tarif d'entrée 990 € HT.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Nice et Sophia Antipolis est un accompagnement individuel intensif conçu pour les dirigeants, managers et experts métiers qui veulent maîtriser l'IA dans leur pratique quotidienne — sans passer par une formation de groupe. Chaque séance est centrée sur VOS dossiers, VOS données, VOS workflows. Présentiel à Nice, Grand Arénas, Sophia Antipolis ou à distance selon votre agenda. Frais de déplacement pour les séances sur site en sus. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
         whyHere: [
           "Nice et le bassin Sophia Antipolis concentrent une densité exceptionnelle de dirigeants et experts exposés à la transformation IA : PDG de scale-ups tech, CTO de R&D Amadeus/IBM/SAP, directeurs d'ETI hôtelières, partners de cabinets conseil.",
           "Le coaching 1-to-1 s'adapte à des profils très spécifiques : dirigeant anglophone d'une filiale internationale à Sophia, DAF d'une ETI touristique qui veut dérisquer son P&L, DG de PME niçoise qui veut passer à l'action sans équipe dédiée.",
@@ -758,7 +758,7 @@ export const NICE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Séance découverte — à partir de 990 € HT",
+            price: "Séance découverte — à partir de {{price:intervention-dirigeants|flat}}",
             detail:
               "Pour indépendants, professions libérales et dirigeants de micro-structures niçoises : une séance intensive sur site ou distance pour débloquer un cas IA concret. Frais de déplacement en sus pour le présentiel.",
           },
@@ -802,7 +802,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Combien faut-il de séances pour voir des résultats concrets ?",
-            a: "La séance découverte à 990 € HT produit déjà un livrable utilisable en fin de journée. Un programme de plusieurs séances structure une montée en compétences sur 4 à 8 semaines selon le rythme choisi. Nous ne chiffrons pas de délai : le rythme est défini ensemble dès l'entretien de positionnement.",
+            a: "La séance découverte à {{price:intervention-dirigeants|flat}} produit déjà un livrable utilisable en fin de journée. Un programme de plusieurs séances structure une montée en compétences sur 4 à 8 semaines selon le rythme choisi. Nous ne chiffrons pas de délai : le rythme est défini ensemble dès l'entretien de positionnement.",
           },
           {
             q: "Les séances sont-elles en présentiel à Nice / Sophia ou à distance ?",
@@ -822,7 +822,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tarif d'entrée fixe à 990 € HT pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. Confidentialité stricte dès le démarrage, particulièrement adaptée aux dirigeants tourisme d'affaires et tech Sophia sensibles aux fuites stratégiques. À l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire, sans contrat récurrent ni licence à renouveler.",
+          "Tarif d'entrée fixe à {{price:intervention-dirigeants|flat}} pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. Confidentialité stricte dès le démarrage, particulièrement adaptée aux dirigeants tourisme d'affaires et tech Sophia sensibles aux fuites stratégiques. À l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire, sans contrat récurrent ni licence à renouveler.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Nice and Sophia Antipolis is an intensive individual programme designed for executives, managers and domain experts who want to master AI in their daily professional practice — without going through group training. Each session focuses on YOUR files, YOUR data, YOUR workflows. On-site in Nice, Grand Arénas, Sophia Antipolis, or remote at your pace. On-site travel expenses billed separately. Entry rate from €990 excl. VAT.",

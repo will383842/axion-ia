@@ -30,8 +30,8 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eckbolsheim : formats adaptés au commerce, au cabinet libéral, à l'atelier d'artisan, au restaurant. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE/PME services d'Eckbolsheim ?",
-      a: "Oui, TPE/PME services et professions libérales eckbolsheimoises : automatisation administrative, agents conversationnels, gestion documentaire, devis et facturation. Audit Flash 490 € HT.",
+      a: "Oui, TPE/PME services et professions libérales eckbolsheimoises : automatisation administrative, agents conversationnels, gestion documentaire, devis et facturation. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Eckbolsheim ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Eckbolsheim ?",

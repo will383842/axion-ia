@@ -30,8 +30,8 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verneuil d'Avre et d'Iton : formats adaptés à l'exploitation agricole, l'atelier, le commerce, le cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants de Verneuil ?",
-      a: "Pour les TPE et commerçants à Verneuil d'Avre et d'Iton, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, chatbot accueil, automatisation facturation, agents IA prise de RDV.",
+      a: "Pour les TPE et commerçants à Verneuil d'Avre et d'Iton, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, chatbot accueil, automatisation facturation, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",

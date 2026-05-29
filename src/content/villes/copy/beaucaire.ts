@@ -30,8 +30,8 @@ export const BEAUCAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaucaire : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit Flash 490 € HT.",
-      en: "Audit IA à Beaucaire : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit Flash 490 € HT.",
+      fr: "Audit IA à Beaucaire : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beaucaire : diagnostic adapté aux TPE/PME logistique Rhône, viticulteurs Costières, commerçants et artisans BTP du Gard rhodanien. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaucaire : formats adaptés aux entreprises logistique, viticulteurs, commerçants. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BEAUCAIRE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Beaucaire  ?",
-      a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Costières de Nîmes ?",

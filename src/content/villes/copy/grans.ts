@@ -30,8 +30,8 @@ export const GRANS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grans : diagnostic adapté aux TPE artisans, PME services, agriculteurs (foin de Crau, oléiculteurs) et commerces de l'agglo salonaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Grans : diagnostic adapté aux TPE artisans, PME services, agriculteurs (foin de Crau, oléiculteurs) et commerces de l'agglo salonaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Grans : diagnostic adapté aux TPE artisans, PME services, agriculteurs (foin de Crau, oléiculteurs) et commerces de l'agglo salonaise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Grans : diagnostic adapté aux TPE artisans, PME services, agriculteurs (foin de Crau, oléiculteurs) et commerces de l'agglo salonaise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grans : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Salon.",
@@ -53,7 +53,7 @@ export const GRANS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Grans  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME services, agriculteurs et commerces grannais. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME services, agriculteurs et commerces grannais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les agriculteurs (foin de Crau AOP, oléiculteurs) ?",

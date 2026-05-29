@@ -30,8 +30,8 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, TPE artisans, acteurs du tourisme camarguais et industries du golfe de Fos. Audit Flash 490 € HT.",
-      en: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, TPE artisans, acteurs du tourisme camarguais et industries du golfe de Fos. Audit Flash 490 € HT.",
+      fr: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, TPE artisans, acteurs du tourisme camarguais et industries du golfe de Fos. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, TPE artisans, acteurs du tourisme camarguais et industries du golfe de Fos. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Port-Saint-Louis-du-Rhône : ateliers pratiques pour équipes logistique, maintenance industrielle, accueil touristique. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME portuaire ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE/PME de logistique portuaire, transport maritime et industries du golfe de Fos. Tarifs publics.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE/PME de logistique portuaire, transport maritime et industries du golfe de Fos. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les entreprises industrielles du golfe de Fos ?",

@@ -30,8 +30,8 @@ export const TULLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tulle : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Tulle : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Tulle : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Tulle : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tulle : formations pratiques adaptées au commerce, à l'artisanat et aux services publics corréziens. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const TULLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Tulle  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME corréziennes. Tarifs publics et transparents.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME corréziennes. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les entreprises agroalimentaires à Tulle ?",

@@ -30,8 +30,8 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jouy-en-Josas : formats adaptés aux cabinets conseil, startups, PME tech et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Jouy-en-Josas  ?",
-      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de la Bièvre, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, tech, santé, commerce). Tarifs publics.",
+      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de la Bièvre, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, tech, santé, commerce). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les professions libérales de Jouy-en-Josas ?",

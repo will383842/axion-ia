@@ -30,8 +30,8 @@ export const BOUAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit Flash 490 € HT.",
-      en: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit Flash 490 € HT.",
+      fr: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouaye : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes repartent avec outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BOUAYE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Bouaye ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants de Bouaye sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisanales et indépendants de Bouaye sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME du sud-ouest nantais ?",

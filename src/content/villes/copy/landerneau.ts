@@ -30,8 +30,8 @@ export const LANDERNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Landerneau : formats adaptés à l'atelier, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LANDERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Landerneau  ?",
-      a: "L'Audit Flash IA à Landerneau démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Landerneau démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires à Landerneau ?",

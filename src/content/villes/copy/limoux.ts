@@ -30,8 +30,8 @@ export const LIMOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit Flash 490 € HT.",
-      en: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit Flash 490 € HT.",
+      fr: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Limoux : formats adaptés à la cave viticole, l'exploitation agricole, le commerce, le domaine oenotouristique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LIMOUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Limoux  ?",
-      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'oenotourisme ?",

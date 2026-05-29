@@ -30,8 +30,8 @@ export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Romorantin-Lanthenay : diagnostic adapté aux PME industrielles en reconversion, TPE artisans, acteurs tourisme solognot, commerçants et professions libérales de la sous-préfecture. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Romorantin-Lanthenay : diagnostic adapté aux PME industrielles en reconversion, TPE artisans, acteurs tourisme solognot, commerçants et professions libérales de la sous-préfecture. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Romorantin-Lanthenay : diagnostic adapté aux PME industrielles en reconversion, TPE artisans, acteurs tourisme solognot, commerçants et professions libérales de la sous-préfecture. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Romorantin-Lanthenay : diagnostic adapté aux PME industrielles en reconversion, TPE artisans, acteurs tourisme solognot, commerçants et professions libérales de la sous-préfecture. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Romorantin-Lanthenay : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants romorantinais ?",
-      a: "Pour les TPE artisans BTP et commerçants à Romorantin-Lanthenay, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
+      a: "Pour les TPE artisans BTP et commerçants à Romorantin-Lanthenay, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
       q: "Comment se déroule une mission à Romorantin-Lanthenay ?",

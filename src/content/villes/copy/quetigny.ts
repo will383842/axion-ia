@@ -30,8 +30,8 @@ export const QUETIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quetigny : formations pratiques pour commerçants, restaurateurs, prestataires B2B et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const QUETIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Quetigny  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME quetignois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quetignois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les commerçants et restaurateurs de Quetigny ?",
@@ -61,7 +61,7 @@ export const QUETIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME des zones d'activités de Quetigny ?",
-      a: "Pour les PME des zones d'activités de Quetigny, nous proposons Audit Flash 490 € HT, intervention formation équipe, implémentation sur mesure. Cas typiques : CRM augmenté, automatisation facturation, agents IA service client, gestion documentaire IA.",
+      a: "Pour les PME des zones d'activités de Quetigny, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation équipe, implémentation sur mesure. Cas typiques : CRM augmenté, automatisation facturation, agents IA service client, gestion documentaire IA.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Quetigny ?",

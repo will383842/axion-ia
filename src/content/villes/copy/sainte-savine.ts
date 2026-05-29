@@ -30,8 +30,8 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Savine : diagnostic adapté aux TPE artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Sainte-Savine : diagnostic adapté aux TPE artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Sainte-Savine : diagnostic adapté aux TPE artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sainte-Savine : diagnostic adapté aux TPE artisanales, PME commerces centre-ville, services, restauration, professions libérales, santé, sous-traitants. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Savine : formats adaptés boutique, restaurant, cabinet libéral, bureau PME, atelier artisan. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sainte-Savine  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME commerces de l'agglo Troyes.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME commerces de l'agglo Troyes.",
     },
     {
       q: "Travaillez-vous avec les commerces et restaurateurs du centre-ville ?",

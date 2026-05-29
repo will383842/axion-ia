@@ -30,8 +30,8 @@ export const JURANCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit Flash 490 € HT.",
-      en: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jurançon : déploiement outils IA dans vos domaines viticoles, caves, commerces ou bureaux. Gestion parcellaire, vinification, e-commerce vin et relation client.",
@@ -57,7 +57,7 @@ export const JURANCON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Jurançon ?",
-      a: "L'audit Flash IA à Jurançon démarre à 490 € HT. Diagnostic de vos processus viticoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit Flash IA à Jurançon démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus viticoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les caves coopératives du Jurançonnais ?",

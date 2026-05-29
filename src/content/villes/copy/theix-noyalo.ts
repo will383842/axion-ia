@@ -30,8 +30,8 @@ export const THEIX_NOYALO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Theix-Noyalo : diagnostic adapté aux TPE de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Theix-Noyalo : diagnostic adapté aux TPE de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Theix-Noyalo : diagnostic adapté aux TPE de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Theix-Noyalo : diagnostic adapté aux TPE de services, PME artisanales, commerçants et professions libérales de l'agglomération vannetaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Theix-Noyalo : formations pratiques pour équipes PME, artisans, exploitants agricoles et professionnels de santé de l'agglomération vannetaise. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const THEIX_NOYALO_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Theix-Noyalo  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME de Theix-Noyalo, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME de Theix-Noyalo, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et professions libérales à Theix-Noyalo ?",
-      a: "Pour les artisans et professions libérales, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : automatisation devis et factures, gestion planning, CRM intelligent, comptabilité augmentée et marketing local.",
+      a: "Pour les artisans et professions libérales, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : automatisation devis et factures, gestion planning, CRM intelligent, comptabilité augmentée et marketing local.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Theix-Noyalo ?",

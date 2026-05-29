@@ -30,8 +30,8 @@ export const LES_HERBIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Herbiers : formats adaptés aux usines mécaniques, ateliers agroalimentaires, TPE artisanales et acteurs tourisme Puy du Fou. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LES_HERBIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles des Herbiers ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, optimisation production, automatisation chaîne logistique.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, optimisation production, automatisation chaîne logistique.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme autour du Puy du Fou ?",
@@ -61,7 +61,7 @@ export const LES_HERBIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Herbiers ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA aux Herbiers ?",

@@ -30,8 +30,8 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maizières-lès-Metz : formats adaptés au commerce, l'entrepôt logistique, l'atelier industriel, le bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les logisticiens et sous-traitants industriels ?",
-      a: "Oui, logisticiens et sous-traitants industriels maizièrois : optimisation tournées, gestion entrepôts, traçabilité, workflow sous-traitance, agents B2B. Audit Flash 490 € HT.",
+      a: "Oui, logisticiens et sous-traitants industriels maizièrois : optimisation tournées, gestion entrepôts, traçabilité, workflow sous-traitance, agents B2B. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Maizières-lès-Metz ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Maizières-lès-Metz ?",

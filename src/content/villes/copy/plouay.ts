@@ -30,8 +30,8 @@ export const PLOUAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouay : formats adaptés à l'exploitation agricole, atelier agroalimentaire, structure sportive ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PLOUAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants plouaysiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Plouay, audit Flash 490 € HT, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Plouay, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks.",
     },
     {
       q: "Comment se passe une mission à Plouay depuis Lorient ?",

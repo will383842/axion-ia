@@ -10,9 +10,9 @@ export const DOUVRIN_COPY: VilleCopy = {
     "Douvrin (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 870 habitants. Situee pres de Bethune et de la zone industrielle de Douvrin-Billy-Berclau, son economie associe PME industrielles, TPE de services, artisanat, commerce et sous-traitance automobile. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie auto, bassin minier & PME",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Douvrin (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : industriels, sous-traitants auto, artisans, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Douvrin abrite une zone industrielle historique (moteurs automobiles) et des PME sous-traitantes. Tissu economique mixte : PME industrielles, TPE artisanales BTP, commerces de proximite et services. Proximite de Bethune (8 km) et de la Gohelle.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DOUVRIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Douvrin : diagnostic adapte aux PME industrielles, sous-traitants automobiles et TPE artisanales du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Douvrin : diagnostic adapte aux PME industrielles, sous-traitants automobiles et TPE artisanales du bassin minier bethunois. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Douvrin : diagnostic adapte aux PME industrielles, sous-traitants automobiles et TPE artisanales du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Douvrin : diagnostic adapte aux PME industrielles, sous-traitants automobiles et TPE artisanales du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Douvrin : formations adaptees aux ateliers industriels, lignes de production, bureaux PME et commerces. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const DOUVRIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles de Douvrin ?",
-      a: "Pour les PME industrielles de Douvrin, nous proposons : maintenance predictive, automatisation controle qualite, optimisation supply chain, agents IA production. Audit Flash 490 EUR HT.",
+      a: "Pour les PME industrielles de Douvrin, nous proposons : maintenance predictive, automatisation controle qualite, optimisation supply chain, agents IA production. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Douvrin ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle optimiser la sous-traitance automobile a Douvrin ?",

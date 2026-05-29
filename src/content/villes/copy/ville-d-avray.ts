@@ -30,8 +30,8 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ville-d'Avray : formations pratiques dans votre cabinet, bureau ou local commercial. Équipes repartent autonomes sur outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ville-d'Avray  ?",
-      a: "L'Audit Flash IA à Ville-d'Avray débute à 490 € HT pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
+      a: "L'Audit Flash IA à Ville-d'Avray débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
     },
     {
       q: "Travaillez-vous avec les professions libérales à Ville-d'Avray ?",

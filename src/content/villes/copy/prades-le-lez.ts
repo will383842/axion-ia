@@ -30,8 +30,8 @@ export const PRADES_LE_LEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Prades-le-Lez : diagnostic pour professions libérales, PME services, artisans et commerces du nord Montpellier. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Prades-le-Lez : diagnostic pour professions libérales, PME services, artisans et commerces du nord Montpellier. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Prades-le-Lez : diagnostic pour professions libérales, PME services, artisans et commerces du nord Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Prades-le-Lez : diagnostic pour professions libérales, PME services, artisans et commerces du nord Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Prades-le-Lez : ateliers adaptés cabinet libéral, PME services, commerce ou artisan. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const PRADES_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les professions libérales ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux cabinets de professions libérales : automatisation plannings, classification dossiers, agents IA réponse patient/client. Audit Flash à 490 € HT.",
+      a: "Oui, nous réalisons des audits IA adaptés aux cabinets de professions libérales : automatisation plannings, classification dossiers, agents IA réponse patient/client. Audit Flash à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME de services ?",
@@ -61,11 +61,11 @@ export const PRADES_LE_LEZ_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerces ?",
-      a: "Oui, pour les artisans et commerces à Prades-le-Lez, audit Flash 490 € HT, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Oui, pour les artisans et commerces à Prades-le-Lez, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Prades-le-Lez ?",
-      a: "L'Audit Flash démarre à 490 € HT. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

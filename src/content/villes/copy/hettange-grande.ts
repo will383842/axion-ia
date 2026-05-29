@@ -30,8 +30,8 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hettange-Grande : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou dépôt logistique. Vos équipes maîtrisent les outils déployés.",
@@ -53,11 +53,11 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises liées au flux frontalier Luxembourg ?",
-      a: "Oui, nous accompagnons les TPE/PME qui servent les travailleurs frontaliers Luxembourg : services immobiliers, commerces, restauration, services à la personne, transport et conseil. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE/PME qui servent les travailleurs frontaliers Luxembourg : services immobiliers, commerces, restauration, services à la personne, transport et conseil. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Hettange-Grande ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les professions libérales et le conseil transfrontalier ?",

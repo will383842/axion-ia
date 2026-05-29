@@ -30,8 +30,8 @@ export const GUINGAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guingamp : formats adaptés site agroalimentaire, commerce, cabinet, atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const GUINGAMP_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants ?",
-      a: "Oui, audit Flash 490 € HT, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents IA prise de rendez-vous pour artisans et commerçants de centre-ville.",
+      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents IA prise de rendez-vous pour artisans et commerçants de centre-ville.",
     },
     {
       q: "Quels services pour les professions libérales et PME de services ?",
-      a: "Audit Flash 490 € HT, implémentation outils IA métier, coaching 1-to-1, CRM augmenté, automatisation tâches administratives, prise de rendez-vous et secrétariat IA, reporting intelligent.",
+      a: "Audit Flash {{price:audit-flash|flat}}, implémentation outils IA métier, coaching 1-to-1, CRM augmenté, automatisation tâches administratives, prise de rendez-vous et secrétariat IA, reporting intelligent.",
     },
     {
       q: "Comment se déroule une mission à Guingamp ?",

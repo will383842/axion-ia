@@ -30,8 +30,8 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oberhausbergen : formats adaptés à l''atelier industriel, au prestataire de services, au commerce ou à la TPE BTP. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Oberhausbergen ?",
-      a: "L''Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME d''Oberhausbergen et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, BTP, commerciale ou de services.",
+      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d''Oberhausbergen et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, BTP, commerciale ou de services.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels d''Oberhausbergen ?",
@@ -65,7 +65,7 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Oberhausbergen ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Oberhausbergen, à partir de 990 € HT. Sessions dans votre entreprise ou en visio. Approche terrain adaptée au tissu économique périurbain strasbourgeois.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Oberhausbergen, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre entreprise ou en visio. Approche terrain adaptée au tissu économique périurbain strasbourgeois.",
     },
   ],
 };

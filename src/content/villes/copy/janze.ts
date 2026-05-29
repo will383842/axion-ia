@@ -30,8 +30,8 @@ export const JANZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Janzé : diagnostic adapté aux TPE éleveurs label rouge, ateliers agroalimentaires, artisans, commerces de centre-bourg, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Janzé : diagnostic adapté aux TPE éleveurs label rouge, ateliers agroalimentaires, artisans, commerces de centre-bourg, professions libérales. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Janzé : diagnostic adapté aux TPE éleveurs label rouge, ateliers agroalimentaires, artisans, commerces de centre-bourg, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Janzé : diagnostic adapté aux TPE éleveurs label rouge, ateliers agroalimentaires, artisans, commerces de centre-bourg, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Janzé : formats adaptés exploitation avicole, atelier agroalimentaire, chantier artisan, commerce de centre-bourg ou cabinet libéral. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const JANZE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Janzé  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE éleveurs label rouge, ateliers agroalimentaires et artisans de Janzé.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE éleveurs label rouge, ateliers agroalimentaires et artisans de Janzé.",
     },
     {
       q: "Travaillez-vous avec les éleveurs label rouge et la filière poulet de Janzé ?",

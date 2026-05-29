@@ -30,8 +30,8 @@ export const FOIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit Flash 490 € HT.",
-      en: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit Flash 490 € HT.",
+      fr: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Foix : formats adaptés au site touristique, commerce, cabinet libéral, exploitation agricole. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const FOIX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Foix  ?",
-      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME tertiaire ou tourisme, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME tertiaire ou tourisme, un audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs de montagne ariégeois ?",

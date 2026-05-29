@@ -11,9 +11,9 @@ export const VALLAURIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Vallauris (06220, Alpes-Maritimes, 29 259 habitants en 2023), commune réputée pour sa céramique d'art revitalisée par Pablo Picasso et abritant le Musée national Picasso. À 13,04 km² et 2 244 habitants au km², Vallauris combine ateliers de poterie, commerces touristiques, hôtellerie-restauration et services tertiaires, à proximité immédiate du pôle technologique de Sophia Antipolis. William se déplace sur site pour automatiser vos processus en code custom — pas de no-code.",
   directAnswerFr:
-    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les TPE et PME locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. William se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit Flash dès 490 € HT, une Intervention Essentielle dès 590 € HT, ou un accompagnement un-à-un dès 990 € HT.",
+    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les TPE et PME locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. William se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit Flash dès {{price:audit-flash|flat}}, une Intervention Essentielle dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les TPE et PME locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. William se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit Flash dès 490 € HT, une Intervention Essentielle dès 590 € HT, ou un accompagnement un-à-un dès 990 € HT.",
+    "À Vallauris (Alpes-Maritimes, 06220), Axion-IA conçoit des automatisations IA sur mesure en code custom pour les TPE et PME locales — ateliers de céramique d'art, commerces touristiques, hôtels et restaurants, agences immobilières, services tertiaires et acteurs proches du pôle Sophia Antipolis. William se déplace sur site depuis l'aéroport Nice-Côte d'Azur (20 km) ou via la gare Golfe-Juan-Vallauris (ligne Grasse-Vintimille) pour un Audit Flash dès {{price:audit-flash|flat}}, une Intervention Essentielle dès {{price:intervention-4h|flat}}, ou un accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   seoHook: "céramique d'art, tourisme & services",
   ecosystemFr:
     "Vallauris, 29 259 habitants en 2023 dans les Alpes-Maritimes, présente une économie tertiaire dominante structurée autour de l'artisanat céramique (héritage Picasso, Musée national Picasso, biennale de céramique), du tourisme côtier à Golfe-Juan, de l'hôtellerie-restauration, et des services liés à la proximité du pôle technologique de Sophia Antipolis. La commune est limitrophe d'Antibes, Mougins, Valbonne, Le Cannet et Cannes, ce qui en fait un carrefour économique de la Côte d'Azur.",
@@ -33,30 +33,30 @@ export const VALLAURIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Vallauris dès 490 € HT — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
-      en: "Audit Flash IA à Vallauris dès 490 € HT — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
+      fr: "Audit Flash IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
+      en: "Audit Flash IA à Vallauris dès {{price:audit-flash|flat}} — 4 heures pour cartographier vos processus TPE/PME (atelier céramique, hôtel, agence immobilière, commerce touristique).",
     },
     interventions: {
-      fr: "Intervention Essentielle à Vallauris dès 590 € HT — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
-      en: "Intervention Essentielle à Vallauris dès 590 € HT — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
+      fr: "Intervention Essentielle à Vallauris dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
+      en: "Intervention Essentielle à Vallauris dès {{price:intervention-4h|flat}} — William se déplace sur site depuis Nice ou Antibes pour automatiser réservations, devis ou suivi clients.",
     },
     implementation: {
-      fr: "Implémentation IA en code custom à Vallauris dès 990 € HT — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",
-      en: "Implémentation IA en code custom à Vallauris dès 990 € HT — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",
+      fr: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",
+      en: "Implémentation IA en code custom à Vallauris dès {{price:impl-poc|entry}} — développement sur mesure et hébergement Europe pour les TPE et PME des Alpes-Maritimes.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un dirigeant à Vallauris dès 990 € HT — sessions stratégiques pour intégrer l'IA dans votre artisanat, commerce ou service.",
-      en: "Accompagnement un-à-un dirigeant à Vallauris dès 990 € HT — sessions stratégiques pour intégrer l'IA dans votre artisanat, commerce ou service.",
+      fr: "Accompagnement un-à-un dirigeant à Vallauris dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre artisanat, commerce ou service.",
+      en: "Accompagnement un-à-un dirigeant à Vallauris dès {{price:intervention-dirigeants|flat}} — sessions stratégiques pour intégrer l'IA dans votre artisanat, commerce ou service.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour un audit à Vallauris ?",
-      a: "Nos audits à Vallauris débutent à 490 € HT pour un Audit Flash de 4 heures sur site. L'Intervention Essentielle démarre à 590 € HT et l'accompagnement un-à-un dirigeant à 990 € HT. Tarifs publics et fermes.",
+      a: "Nos audits à Vallauris débutent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures sur site. L'Intervention Essentielle démarre à {{price:intervention-4h|flat}} et l'accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Tarifs publics et fermes.",
     },
     {
       q: "Comment se déroule une intervention IA à Vallauris ?",
-      a: "William se déplace à Vallauris depuis l'aéroport Nice-Côte d'Azur (20 km) ou par l'A8, généralement sous 5 jours ouvrés. L'Intervention Essentielle (dès 590 € HT) cible un workflow concret : facturation, planning, relances, intégration CRM.",
+      a: "William se déplace à Vallauris depuis l'aéroport Nice-Côte d'Azur (20 km) ou par l'A8, généralement sous 5 jours ouvrés. L'Intervention Essentielle (dès {{price:intervention-4h|flat}}) cible un workflow concret : facturation, planning, relances, intégration CRM.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Vallauris ?",

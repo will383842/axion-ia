@@ -30,8 +30,8 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Colle-sur-Loup : formats adaptés à l'hôtel, restaurant, atelier ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",
@@ -53,7 +53,7 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants de l'arrière-pays ?",
-      a: "Oui, nous accompagnons les TPE hôtellerie-restauration de La Colle-sur-Loup et environs sur leurs cas IA : agents conversationnels multilingues, automatisation réservations et check-in, gestion avis clients, personnalisation séjour. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les TPE hôtellerie-restauration de La Colle-sur-Loup et environs sur leurs cas IA : agents conversationnels multilingues, automatisation réservations et check-in, gestion avis clients, personnalisation séjour. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces du village ?",
@@ -61,7 +61,7 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales du moyen-pays ?",
-      a: "Pour les professions libérales du moyen-pays azuréen (avocats, médecins, architectes, consultants), nous proposons : automatisation secrétariat, transcription, classification documents, agents IA prise de RDV. Audit Flash 490 € HT.",
+      a: "Pour les professions libérales du moyen-pays azuréen (avocats, médecins, architectes, consultants), nous proposons : automatisation secrétariat, transcription, classification documents, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission depuis Nice ou Cagnes ?",

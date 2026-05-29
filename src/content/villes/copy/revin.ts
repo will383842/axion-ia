@@ -30,8 +30,8 @@ export const REVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Revin : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Revin : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Revin : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Revin : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Revin : formations pratiques pour équipes industrielles métallurgie, commerce, tourisme nature et services de la vallée de la Meuse. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -53,15 +53,15 @@ export const REVIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME métallurgiques et industrielles de Revin ?",
-      a: "Oui, nous accompagnons les PME métallurgiques, visseries et industriels de Revin avec des solutions IA adaptées : maintenance prédictive lignes, contrôle qualité visuel, optimisation flux production, gestion documentaire. Audit Flash 490 € HT.",
+      a: "Oui, nous accompagnons les PME métallurgiques, visseries et industriels de Revin avec des solutions IA adaptées : maintenance prédictive lignes, contrôle qualité visuel, optimisation flux production, gestion documentaire. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Revin  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME revinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME revinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs du tourisme nature à Revin ?",
-      a: "Pour les acteurs du tourisme nature à Revin (hébergeurs, loueurs activités outdoor, guides), nous proposons : agents IA réservation et accueil multilingue, automatisation planning saisonnier, chatbot itinéraires randonnée. Audit Flash 490 € HT.",
+      a: "Pour les acteurs du tourisme nature à Revin (hébergeurs, loueurs activités outdoor, guides), nous proposons : agents IA réservation et accueil multilingue, automatisation planning saisonnier, chatbot itinéraires randonnée. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Revin ?",

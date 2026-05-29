@@ -30,8 +30,8 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash 490 € HT, ROI documenté en chiffres.",
-      en: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      fr: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fos-sur-Mer : ateliers pour équipes logistiques portuaires, sous-traitants industriels, transporteurs et PME locales. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Fos-sur-Mer  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME logistiques et sous-traitants industriels fosséens. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques et sous-traitants industriels fosséens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les transporteurs et logisticiens du port de Fos ?",

@@ -30,8 +30,8 @@ export const LE_RAINCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
-      en: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
+      fr: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site au Raincy : formations pratiques dans votre cabinet, commerce ou bureau. Équipes formées sur outils IA configurés métier, autonomes dès la fin de journée.",
@@ -53,7 +53,7 @@ export const LE_RAINCY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Raincy ?",
-      a: "L'Audit Flash IA au Raincy débute à 490 € HT pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
+      a: "L'Audit Flash IA au Raincy débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les professions libérales au Raincy ?",
@@ -61,7 +61,7 @@ export const LE_RAINCY_COPY: VilleCopy = {
     },
     {
       q: "Quels cas d'usage IA pour les commerçants et artisans du Raincy ?",
-      a: "Pour les commerçants et artisans du Raincy : agents conversationnels vitrine en ligne, automatisation gestion stocks et commandes fournisseurs, outils planning et réservation, classification comptable automatisée. Audit Flash 490 € HT adapté aux petites structures.",
+      a: "Pour les commerçants et artisans du Raincy : agents conversationnels vitrine en ligne, automatisation gestion stocks et commandes fournisseurs, outils planning et réservation, classification comptable automatisée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Comment se passe le déplacement pour une mission au Raincy ?",

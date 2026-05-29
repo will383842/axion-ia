@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, TPE artisans et commerçants de la vallée de la Maurienne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, TPE artisans et commerçants de la vallée de la Maurienne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, TPE artisans et commerçants de la vallée de la Maurienne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, TPE artisans et commerçants de la vallée de la Maurienne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Maurienne : ateliers en usine, site touristique, administration ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure, formats adaptés vallée alpine.",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE artisans et commerçants de vallée ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Jean-de-Maurienne, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      a: "Pour les TPE artisans et commerçants à Saint-Jean-de-Maurienne, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission en vallée de la Maurienne ?",

@@ -65,7 +65,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE touristiques, restaurateurs et commerçants ?",
-      a: "Oui, les TPE sont notre priorité : restaurateurs, hôteliers, commerçants. Audit Flash 490 € HT, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
+      a: "Oui, les TPE sont notre priorité : restaurateurs, hôteliers, commerçants. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
     },
     {
       q: "Comment se déroule une mission depuis Montpellier ?",

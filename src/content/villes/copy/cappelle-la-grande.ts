@@ -30,8 +30,8 @@ export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cappelle-la-Grande : formats adaptés au bureau de services, au commerce, à l'atelier artisanal, au restaurant, à l'atelier sous-traitant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et restaurateurs de Cappelle-la-Grande ?",
-      a: "Oui, artisans, restaurateurs et professions libérales cappellois : gestion stocks, prise de réservations, comptabilité, relation client, présence locale en ligne. Audit Flash 490 € HT.",
+      a: "Oui, artisans, restaurateurs et professions libérales cappellois : gestion stocks, prise de réservations, comptabilité, relation client, présence locale en ligne. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Cappelle-la-Grande ?",
-      a: "Audit Flash 490 € HT. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Cappelle-la-Grande ?",

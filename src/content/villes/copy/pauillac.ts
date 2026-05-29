@@ -30,8 +30,8 @@ export const PAUILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pauillac : diagnostic pour domaines grands crus, oenotourisme, commerçants et TPE artisans du Médoc viticole. Audit Flash 490 € HT.",
-      en: "Audit IA à Pauillac : diagnostic pour domaines grands crus, oenotourisme, commerçants et TPE artisans du Médoc viticole. Audit Flash 490 € HT.",
+      fr: "Audit IA à Pauillac : diagnostic pour domaines grands crus, oenotourisme, commerçants et TPE artisans du Médoc viticole. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pauillac : diagnostic pour domaines grands crus, oenotourisme, commerçants et TPE artisans du Médoc viticole. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pauillac : ateliers adaptés aux grands chais, domaines viticoles et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const PAUILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole à Pauillac ?",
-      a: "L'Audit Flash démarre à 490 € HT. Adapté aux domaines de toute taille (crus bourgeois aux premiers crus classés). Tarifs publics, ROI chiffré.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Adapté aux domaines de toute taille (crus bourgeois aux premiers crus classés). Tarifs publics, ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les premiers crus classés du Médoc ?",

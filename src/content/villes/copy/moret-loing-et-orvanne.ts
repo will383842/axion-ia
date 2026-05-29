@@ -9,9 +9,9 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
   pitchEn:
     "Moret-Loing-et-Orvanne (77), commune nouvelle creee en 2017, reunit la cite medievale de Moret-sur-Loing (ville des impressionnistes, Sisley) et les bourgs d'Ecuelles, Episy et Orvanne. Tissu TPE/PME tourisme patrimonial, artisanat d'art, commerce, agriculture, services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit Flash des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit Flash des 490 euros HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Moret-Loing-et-Orvanne (77). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial et culturel (cite medievale, impressionnistes), artisans d'art, commercants, agriculteurs et prestataires de services du sud Seine-et-Marne. Audit Flash des {{price:audit-flash|flat}}.",
   seoHook: "tourisme patrimonial & artisanat d'art",
   ecosystemFr:
     "Moret-Loing-et-Orvanne est une commune nouvelle (2017) du sud Seine-et-Marne, dont le coeur historique est la cite medievale de Moret-sur-Loing, celebre pour les peintres impressionnistes (Alfred Sisley). Tourisme patrimonial, artisanat d'art (sucre d'orge de Moret), commerce de proximite, agriculture et services composent le tissu economique local.",
@@ -30,8 +30,8 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Moret-Loing-et-Orvanne : diagnostic adapte aux acteurs tourisme patrimonial, artisans d'art, commercants de proximite et agriculteurs du sud Seine-et-Marne. ROI chiffre, Audit Flash 490 euros HT.",
-      en: "Audit IA a Moret-Loing-et-Orvanne : diagnostic adapte aux acteurs tourisme patrimonial, artisans d'art, commercants de proximite et agriculteurs du sud Seine-et-Marne. ROI chiffre, Audit Flash 490 euros HT.",
+      fr: "Audit IA a Moret-Loing-et-Orvanne : diagnostic adapte aux acteurs tourisme patrimonial, artisans d'art, commercants de proximite et agriculteurs du sud Seine-et-Marne. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Moret-Loing-et-Orvanne : diagnostic adapte aux acteurs tourisme patrimonial, artisans d'art, commercants de proximite et agriculteurs du sud Seine-et-Marne. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Moret-Loing-et-Orvanne : formats adaptes aux structures touristiques, ateliers artisanat, commerces de bourg et exploitations agricoles. Equipes autonomes apres intervention.",
@@ -57,7 +57,7 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Moret-Loing-et-Orvanne ?",
-      a: "L'Audit Flash demarre a 490 euros HT pour 4 heures. Pour les TPE et PME de Moret-Loing-et-Orvanne, nous proposons des audits approfondis adaptes aux enjeux tourisme, artisanat ou commerce.",
+      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Moret-Loing-et-Orvanne, nous proposons des audits approfondis adaptes aux enjeux tourisme, artisanat ou commerce.",
     },
     {
       q: "Accompagnez-vous les artisans d'art et commercants de proximite ?",
@@ -65,7 +65,7 @@ export const MORET_LOING_ET_ORVANNE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA a Moret-Loing-et-Orvanne ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres, a partir de 990 euros HT. Sessions dans votre atelier, commerce, structure touristique ou en visio.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres, a partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, commerce, structure touristique ou en visio.",
     },
   ],
 };

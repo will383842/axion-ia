@@ -10,9 +10,9 @@ export const LILLEBONNE_COPY: VilleCopy = {
     "Lillebonne (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 8 540 habitants. Ville historique dotee d'un theatre romain remarquable, elle concentre des TPE de services, des PME commerciales, des artisans, des professions liberales et des acteurs du tourisme patrimonial. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "patrimoine, commerce & vallee Commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit Flash a partir de 490 EUR HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lillebonne (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Lillebonne est situee dans la vallee du Commerce, entre Rouen et Le Havre. Cite gallo-romaine (theatre antique classe), c'est un pole commercial et de services pour la vallee : commerces, professions liberales, TPE de services, artisanat, tourisme patrimonial. Proximite Port-Jerome-sur-Seine (industrie).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LILLEBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Lillebonne : diagnostic adapte aux TPE de services, PME commerciales et acteurs du tourisme patrimonial de la vallee du Commerce. ROI chiffre, audit Flash 490 EUR HT.",
-      en: "Audit IA a Lillebonne : diagnostic adapte aux TPE de services, PME commerciales et acteurs du tourisme patrimonial de la vallee du Commerce. ROI chiffre, audit Flash 490 EUR HT.",
+      fr: "Audit IA a Lillebonne : diagnostic adapte aux TPE de services, PME commerciales et acteurs du tourisme patrimonial de la vallee du Commerce. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA a Lillebonne : diagnostic adapte aux TPE de services, PME commerciales et acteurs du tourisme patrimonial de la vallee du Commerce. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Lillebonne : formations adaptees aux commercants, professions liberales, acteurs du tourisme et artisans de la vallee du Commerce. Equipes autonomes.",
@@ -53,11 +53,11 @@ export const LILLEBONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Lillebonne ?",
-      a: "Pour les commercants de Lillebonne, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee, analyse ventes. Audit Flash 490 EUR HT.",
+      a: "Pour les commercants de Lillebonne, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee, analyse ventes. Audit Flash {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Lillebonne ?",
-      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme a Lillebonne ?",

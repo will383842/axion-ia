@@ -30,8 +30,8 @@ export const LEZOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lezoux : formats adaptés aux ateliers céramique, exploitations agricoles, commerces ou structures touristiques patrimoine. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const LEZOUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ruraux de Lezoux ?",
-      a: "Pour les TPE artisans et commerçants ruraux à Lezoux, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité en ligne.",
+      a: "Pour les TPE artisans et commerçants ruraux à Lezoux, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité en ligne.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

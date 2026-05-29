@@ -30,8 +30,8 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longué-Jumelles : formations pour équipes agricoles, agroalimentaires et commerciales. Ateliers pratiques adaptés au contexte Baugeois.",
@@ -53,11 +53,11 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Longué-Jumelles  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Longué-Jumelles démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit Flash IA à Longué-Jumelles démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les champignonnistes troglodytiques ?",
-      a: "Oui, nous accompagnons les champignonnistes à Longué-Jumelles : IA pour gestion hygrométrie et température caves, traçabilité production, automatisation commandes, prédiction rendements. Audit Flash 490 € HT adapté.",
+      a: "Oui, nous accompagnons les champignonnistes à Longué-Jumelles : IA pour gestion hygrométrie et température caves, traçabilité production, automatisation commandes, prédiction rendements. Audit Flash {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels secteurs ciblez-vous à Longué-Jumelles ?",

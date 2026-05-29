@@ -10,9 +10,9 @@ export const SANNOIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Sannois, commune du Val-d'Oise située à 15 km au nord-ouest de Paris. Avec près de 27 000 habitants sur 4,78 km² et une densité supérieure à 5 600 hab/km², la ville s'inscrit dans l'agglomération Val Parisis et bénéficie des autoroutes A15 et A115 et de la ligne J.",
   directAnswerFr:
-    "À Sannois, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à 590 € HT avec un code custom et un retour sur investissement mesurable.",
+    "À Sannois, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à {{price:intervention-4h|flat}} avec un code custom et un retour sur investissement mesurable.",
   directAnswerEn:
-    "À Sannois, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à 590 € HT avec un code custom et un retour sur investissement mesurable.",
+    "À Sannois, Axion-IA aide les TPE, PME et ETI à intégrer l'IA dans leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. La population active locale (13 458 personnes en âge de travailler) est majoritairement composée de professions intermédiaires, employés et cadres, terrain idéal pour automatiser saisies, devis et reportings. Nos services démarrent à {{price:intervention-4h|flat}} avec un code custom et un retour sur investissement mesurable.",
   seoHook: "tertiaire Val Parisis & services aux entreprises",
   ecosystemFr:
     "Sannois forme un grand centre urbain du Val-d'Oise intégré à l'aire d'attraction de Paris et à l'agglomération Val Parisis. La commune accueille un tissu dense de commerces, services et professions tertiaires, avec un revenu médian (24 250 € en 2022) supérieur à la moyenne départementale, signe d'un environnement favorable aux TPE et PME.",
@@ -55,7 +55,7 @@ export const SANNOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs des services d'Axion-IA à Sannois ?",
-      a: "Audit Flash à partir de 590 € HT, Intervention Essentielle dès 590 € HT et sessions un-à-un dirigeants à partir de 990 € HT. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Audit Flash à partir de {{price:intervention-4h|flat}}, Intervention Essentielle dès {{price:intervention-4h|flat}} et sessions un-à-un dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines de Sannois ?",
@@ -71,7 +71,7 @@ export const SANNOIS_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA propose-t-elle des formations IA à Sannois ?",
-      a: "Oui, des sessions un-à-un pour dirigeants de TPE et PME de Sannois, à partir de 990 € HT, pour comprendre et intégrer concrètement les bénéfices de l'IA.",
+      a: "Oui, des sessions un-à-un pour dirigeants de TPE et PME de Sannois, à partir de {{price:intervention-dirigeants|flat}}, pour comprendre et intégrer concrètement les bénéfices de l'IA.",
     },
   ],
 };

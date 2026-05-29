@@ -30,8 +30,8 @@ export const LA_GORGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Gorgue : formats adaptés aux entrepôts logistique, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LA_GORGUE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Gorgue  ?",
-      a: "L'audit Flash IA à La Gorgue démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit Flash IA à La Gorgue démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants gorgueois ?",

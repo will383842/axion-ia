@@ -30,8 +30,8 @@ export const TRELAZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit Flash 490 € HT, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trélazé : formations pratiques pour équipes TPE/PME, ateliers métier commerce, artisanat ou services. Vos collaborateurs repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const TRELAZE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Trélazé  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Trélazé démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit Flash IA à Trélazé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les commerces de proximité trélazéens ?",

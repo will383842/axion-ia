@@ -11,9 +11,9 @@ export const AUXERRE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Auxerre, préfecture de l'Yonne (35 097 habitants), dans l'adoption d'outils d'intelligence artificielle développés sur mesure. Principal bassin d'emploi du département, la ville concentre commerces, administrations, viticulture (proximité du vignoble de Chablis) et tourisme patrimonial autour de la cathédrale Saint-Étienne et de l'abbaye Saint-Germain. Notre cabinet code des solutions IA sur mesure, sans no-code, pour les dirigeants auxerrois cherchant à automatiser leurs processus métiers.",
   directAnswerFr:
-    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès 490 € HT.",
+    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès 490 € HT.",
+    "Axion-IA se déplace à Auxerre (Yonne, Bourgogne-Franche-Comté) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Située à 1h35 de Paris-Bercy en train et à 1h55 de Dijon, Auxerre est le principal bassin d'emploi du département, avec des activités tournées vers le commerce, l'administration publique, la viticulture (Chablis), le tourisme et l'industrie alimentaire. Nous proposons audits, interventions sur site, implémentations et accompagnements 1-to-1, avec tarifs publics affichés dès {{price:audit-flash|flat}}.",
   seoHook: "commerce, viticulture & administration publique",
   ecosystemFr:
     "Auxerre est le principal bassin d'emploi de l'Yonne, structuré autour de la préfecture, du commerce de détail, du tourisme patrimonial et de la viticulture (Chablisien à proximité). Desservie par la gare d'Auxerre-Saint-Gervais (ligne Paris-Bercy/Dijon) et par l'autoroute A6 (sorties 19 et 20), la ville bénéficie de l'aéroport régional d'Auxerre-Branches. Le centre historique attire les visiteurs autour de la cathédrale Saint-Étienne, de l'abbaye Saint-Germain et de la tour de l'Horloge.",
@@ -33,26 +33,26 @@ export const AUXERRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès 490 € HT (Audit Flash 4 h).",
-      en: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès 490 € HT (Audit Flash 4 h).",
+      fr: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit Flash 4 h).",
+      en: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit Flash 4 h).",
     },
     interventions: {
-      fr: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Intervention Essentielle dès 590 € HT.",
-      en: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Auxerre dans le commerce, le tourisme ou l'industrie alimentaire — code custom intégré à vos outils existants, dès 990 € HT.",
-      en: "Implémentation IA à Auxerre dans le commerce, le tourisme ou l'industrie alimentaire — code custom intégré à vos outils existants, dès 990 € HT.",
+      fr: "Implémentation IA à Auxerre dans le commerce, le tourisme ou l'industrie alimentaire — code custom intégré à vos outils existants, dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Auxerre dans le commerce, le tourisme ou l'industrie alimentaire — code custom intégré à vos outils existants, dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès 990 € HT.",
-      en: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès 990 € HT.",
+      fr: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Auxerre pour dirigeants de TPE et PME — stratégie IA personnalisée selon votre secteur (commerce, viticulture, administration), dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA à Auxerre ?",
-      a: "Les audits IA à Auxerre démarrent à 490 € HT pour un Audit Flash de 4 heures sur site, puis 990 € HT pour un Audit Approfondi. Tarifs publics affichés, sans devis caché.",
+      a: "Les audits IA à Auxerre démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures sur site, puis 990 € HT pour un Audit Approfondi. Tarifs publics affichés, sans devis caché.",
     },
     {
       q: "William se déplace-t-il à Auxerre depuis Paris ?",

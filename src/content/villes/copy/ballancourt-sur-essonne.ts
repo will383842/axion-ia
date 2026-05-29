@@ -30,8 +30,8 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit Flash dès 490 € HT.",
-      en: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit Flash dès 490 € HT.",
+      fr: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ballancourt-sur-Essonne : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, exploitation agricole. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ballancourt  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Mennecy et La Ferté-Alais ?",

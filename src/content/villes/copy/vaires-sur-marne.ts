@@ -30,8 +30,8 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaires-sur-Marne : formats adaptés au centre sportif, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Vaires-sur-Marne ?",
-      a: "L'Audit Flash IA à Vaires-sur-Marne démarre à 490 € HT. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit Flash IA à Vaires-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les acteurs sport-loisirs de la base nautique ?",

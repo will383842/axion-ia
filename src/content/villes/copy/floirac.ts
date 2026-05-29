@@ -30,8 +30,8 @@ export const FLOIRAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Floirac : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Floirac : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Floirac : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Floirac : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Floirac : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const FLOIRAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Floirac  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP à Floirac ?",

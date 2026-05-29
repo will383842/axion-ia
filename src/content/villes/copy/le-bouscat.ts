@@ -10,9 +10,9 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Bouscat (25 081 habitants, Gironde), commune de Bordeaux Métropole située à 5 km au nord-ouest de Bordeaux. Le tissu économique local mêle commerces de détail, services, professions libérales et petites unités de production. Nous intervenons sur site pour automatiser devis, relances, comptabilité fournisseurs et reporting avec du code IA sur mesure, sans solution no-code générique.",
   directAnswerFr:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à 590 € HT pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   directAnswerEn:
-    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à 590 € HT pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
+    "Au Bouscat, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. William se déplace directement dans la commune, accessible via la gare du Bouscat-Sainte-Germaine, plusieurs lignes du réseau TBM et le tramway de Bordeaux Métropole. Notre offre démarre à {{price:intervention-4h|flat}} pour une Intervention Essentielle, calibrée pour les structures de 1 à 50 salariés. Pas de no-code : du code propriétaire conforme RGPD, intégré à vos outils existants.",
   seoHook: "commerce détail & services aux entreprises",
   ecosystemFr:
     "Le Bouscat est limitrophe de Bordeaux, Bruges et Eysines, et membre de Bordeaux Métropole. Avec 4 750 habitants/km², la commune concentre commerces de proximité, professions libérales (santé, droit, expertise comptable), services aux entreprises et quelques unités artisanales. L'Hippodrome du Bouscat, le stade Sainte-Germaine et le Castel d'Andorte rythment la vie locale. L'accès rapide à la rocade bordelaise (sortie 7) connecte les entreprises locales à l'ensemble du bassin métropolitain.",
@@ -31,26 +31,26 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit Flash dès 490 € HT (4 h).",
-      en: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit Flash dès 490 € HT (4 h).",
+      fr: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
-      fr: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Intervention Essentielle dès 590 € HT.",
-      en: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Intervention Essentielle dès 590 € HT.",
+      fr: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      en: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA sur mesure au Bouscat — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier). Pas de no-code, pas de dépendance fournisseur tiers. Dès 990 € HT.",
-      en: "Implémentation de solutions IA sur mesure au Bouscat — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier). Pas de no-code, pas de dépendance fournisseur tiers. Dès 990 € HT.",
+      fr: "Implémentation de solutions IA sur mesure au Bouscat — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
+      en: "Implémentation de solutions IA sur mesure au Bouscat — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès 990 € HT.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès 990 € HT.",
+      fr: "Accompagnement un-à-un des dirigeants de TPE et PME au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de TPE et PME au Bouscat — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention au Bouscat ?",
-      a: "Nos tarifs publics commencent à 490 € HT pour un Audit Flash (4 h sur site), 590 € HT pour une Intervention Essentielle et 990 € HT pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit Flash (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
     },
     {
       q: "William se déplace-t-il vraiment au Bouscat ?",

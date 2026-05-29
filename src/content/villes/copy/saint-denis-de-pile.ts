@@ -30,8 +30,8 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Denis-de-Pile : ateliers adaptés aux chais, ateliers BTP et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Denis-de-Pile  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux vignerons et TPE artisans du Libournais.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et TPE artisans du Libournais.",
     },
     {
       q: "Accompagnez-vous les vignerons du Libournais ?",
@@ -61,7 +61,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning.",
+      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning.",
     },
     {
       q: "Comment se déroule une mission à Saint-Denis-de-Pile ?",

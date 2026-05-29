@@ -30,8 +30,8 @@ export const FENOUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit Flash 490 € HT.",
-      en: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit Flash 490 € HT.",
+      fr: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fenouillet : formats adaptés au commerce, à l'artisan, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const FENOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fenouillet  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME commerciales, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Fenouillet ?",

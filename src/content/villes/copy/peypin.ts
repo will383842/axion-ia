@@ -32,8 +32,8 @@ export const PEYPIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Peypin : diagnostic adapté aux artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons et sous-traitants industriels de la vallée de l'Huveaune. Audit Flash 490 € HT, ROI mesuré sur les premiers chantiers (devis, planning, suivi matériel).",
-      en: "Audit IA à Peypin : diagnostic adapté aux artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons et sous-traitants industriels de la vallée de l'Huveaune. Audit Flash 490 € HT, ROI mesuré sur les premiers chantiers (devis, planning, suivi matériel).",
+      fr: "Audit IA à Peypin : diagnostic adapté aux artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons et sous-traitants industriels de la vallée de l'Huveaune. Audit Flash {{price:audit-flash|flat}}, ROI mesuré sur les premiers chantiers (devis, planning, suivi matériel).",
+      en: "Audit IA à Peypin : diagnostic adapté aux artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons et sous-traitants industriels de la vallée de l'Huveaune. Audit Flash {{price:audit-flash|flat}}, ROI mesuré sur les premiers chantiers (devis, planning, suivi matériel).",
     },
     interventions: {
       fr: "Interventions IA sur site à Peypin : ateliers terrain pour équipes BTP, formation chefs de chantier sur outils IA chiffrage, accompagnement bureaux d'études énergétique. Sessions possibles à Aubagne ou La Bouilladisse pour mutualiser plusieurs artisans du bassin ouvrier.",

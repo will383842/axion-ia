@@ -30,8 +30,8 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Florent-sur-Cher : formats adaptés aux industriels, artisans, commerçants, exploitants agricoles. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans locaux ?",
-      a: "Pour les TPE artisans à Saint-Florent-sur-Cher : audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks, facturation.",
+      a: "Pour les TPE artisans à Saint-Florent-sur-Cher : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks, facturation.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles ?",

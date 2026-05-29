@@ -30,8 +30,8 @@ export const LE_THOR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit Flash à 490 € HT, retour sur investissement chiffré.",
-      en: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      fr: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Thor : ateliers pour équipes TPE/PME agricoles, transformateurs, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const LE_THOR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Thor ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, maraîchers, PME agroalimentaires et commerces thorois. Tarifs publics, sans engagement.",
+      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, maraîchers, PME agroalimentaires et commerces thorois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les producteurs de raisin de table et maraîchers ?",

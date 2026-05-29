@@ -30,8 +30,8 @@ export const MORDELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mordelles : diagnostic adapté aux TPE/PME, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
-      en: "Audit IA à Mordelles : diagnostic adapté aux TPE/PME, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit Flash 490 € HT, démarrage sous 5 jours.",
+      fr: "Audit IA à Mordelles : diagnostic adapté aux TPE/PME, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      en: "Audit IA à Mordelles : diagnostic adapté aux TPE/PME, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mordelles : formations adaptées aux équipes TPE/PME, artisans et commerçants locaux. Vos collaborateurs repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -53,11 +53,11 @@ export const MORDELLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mordelles  ?",
-      a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME, artisans et professions libérales mordelaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME, artisans et professions libérales mordelaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de Mordelles ?",
-      a: "Pour les artisans et commerçants mordelais, nous proposons : Audit Flash 490 € HT, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks, fidélisation client et présence en ligne augmentée.",
+      a: "Pour les artisans et commerçants mordelais, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks, fidélisation client et présence en ligne augmentée.",
     },
     {
       q: "Accompagnez-vous les professions libérales (santé, juridique) de Mordelles ?",

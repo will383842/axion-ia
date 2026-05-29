@@ -30,8 +30,8 @@ export const GERZAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
-      en: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      fr: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gerzat : formats adaptés entrepôt, usine, chantier, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const GERZAT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

@@ -30,8 +30,8 @@ export const MAZAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit Flash 490 € HT.",
-      en: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit Flash 490 € HT.",
+      fr: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mazan : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, hébergements touristiques et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Ventoux ?",
-      a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B et oenotourisme, fiches Google Business.",
+      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B et oenotourisme, fiches Google Business.",
     },
     {
       q: "Accompagnez-vous les hébergements touristiques et oenotouristiques de Mazan ?",
@@ -61,7 +61,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mazan  ?",
-      a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Mazan ?",

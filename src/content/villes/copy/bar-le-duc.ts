@@ -30,8 +30,8 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
-      en: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
+      fr: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bar-le-Duc : formats adaptés à l'atelier artisanal, au commerce, à l'hôtel-restaurant ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bar-le-Duc  ?",
-      a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bar-le-Duc et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bar-le-Duc et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
     },
     {
       q: "Accompagnez-vous les artisans agroalimentaires de Bar-le-Duc ?",
@@ -65,7 +65,7 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA à Bar-le-Duc ?",
-      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bar-le-Duc, à partir de 990 € HT. Sessions dans votre atelier, commerce ou en visio. Approche terrain adaptée au tissu économique meusien.",
+      a: "Oui, coaching 1-to-1 pour dirigeants et cadres à Bar-le-Duc, à partir de {{price:intervention-dirigeants|flat}}. Sessions dans votre atelier, commerce ou en visio. Approche terrain adaptée au tissu économique meusien.",
     },
   ],
 };
