@@ -244,9 +244,10 @@ jobs:
           echo "backup_pass=$(openssl rand -base64 48 | tr -d '\n')" >> "$GITHUB_OUTPUT"
           echo "redis_pass=$(openssl rand -hex 24)" >> "$GITHUB_OUTPUT"
           # Secrets factices éphémères pour la validation Zod prod (src/env.ts).
-          # IP_HASH_SALT min 16 → hex 24 (48). PII_ENCRYPTION_KEY min 32 → base64 48.
+          # IP_HASH_SALT min 32 → hex 24 = 48 chars ✓.
+          # PII_ENCRYPTION_KEY regex /^[0-9a-fA-F]{64}$/ → hex 32 = 64 chars EXACT.
           echo "ip_hash_salt=$(openssl rand -hex 24)" >> "$GITHUB_OUTPUT"
-          echo "pii_key=$(openssl rand -base64 48 | tr -d '\n')" >> "$GITHUB_OUTPUT"
+          echo "pii_key=$(openssl rand -hex 32)" >> "$GITHUB_OUTPUT"
 
       - name: Start ephemeral Redis on host network
         run: |
@@ -282,8 +283,9 @@ jobs:
           # Zod (src/env.ts prodRequired) tourne réellement au boot. C'est l'intérêt
           # du smoke test : détecter toute régression « env requis manquant ».
           # Les 8 secrets sont des FACTICES éphémères (jamais les vrais — fuite CI).
-          # Contraintes respectées : AUTH_SECRET≥32, ADMIN_URL_PREFIX≥8,
-          # BACKUP≥16, IP_HASH_SALT≥16, PII≥32, STRIPE_* non-vides.
+          # Contraintes Zod réelles (src/env.ts) : AUTH_SECRET≥32, ADMIN_URL_PREFIX≥16,
+          # BACKUP≥32, IP_HASH_SALT≥32, PII = 64 hex exact, STRIPE_SECRET sk_test_*,
+          # STRIPE_PUBLISHABLE pk_test_*, STRIPE_WEBHOOK whsec_* (≥20).
           # DATABASE_URL=stub.invalid (proxy Prisma court-circuit) + BULLMQ_DISABLED
           # (pas de worker au boot) ; healthz est DB/Redis-free.
           docker run -d --name axion-ia-smoke --network host \
