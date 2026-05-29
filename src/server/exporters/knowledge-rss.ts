@@ -42,13 +42,21 @@ export async function listPublicEntriesForFeed(
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
     return [];
   }
+  const now = new Date();
   try {
     const entries = await prisma.knowledgeEntry.findMany({
       where: {
         ...(type ? { type } : {}),
         audience: "public",
+        // P0 audit KB 2026-05-29 — anti-fuite : confidentialité publique +
+        // pas de futur-daté + embargo respecté (alignement public-fetch.ts).
+        confidentiality: "public",
         status: { in: ["published", "deprecated"] },
         deletedAt: null,
+        AND: [
+          { OR: [{ publishedAt: null }, { publishedAt: { lte: now } }] },
+          { OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }] },
+        ],
       },
       include: { translations: { where: { locale } } },
       orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],

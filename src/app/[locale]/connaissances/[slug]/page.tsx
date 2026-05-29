@@ -23,6 +23,7 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { buildProductMetadata } from "@/lib/seo";
 import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
+import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 
@@ -116,8 +117,9 @@ export default async function ConnaissanceDetail({ params }: Props) {
             ) : null}
             <div
               className="prose prose-axionia mt-10 max-w-none"
-              // par le pipeline éditorial (Tiptap rendered + DOMPurify). Source : KB-3 alts validation.
-              dangerouslySetInnerHTML={{ __html: entry.body }}
+              // P0 audit KB 2026-05-29 : sanitize SSR anti-XSS (whitelist Tiptap).
+              // Le commentaire d'origine promettait DOMPurify mais aucun sanitize n'était appliqué.
+              dangerouslySetInnerHTML={{ __html: sanitizeTiptapHtml(entry.body) }}
             />
             <AiContentDisclaimer locale="fr" className="mt-10" />
           </article>

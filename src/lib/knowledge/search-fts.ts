@@ -106,6 +106,9 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       AND ke.deleted_at IS NULL
       AND ke.status IN ('published', 'deprecated')
       AND ke.audience = ANY($4::"KbAudience"[])
+      AND ke.confidentiality = 'public'
+      AND (ke.published_at IS NULL OR ke.published_at <= NOW())
+      AND (ke.embargo_until IS NULL OR ke.embargo_until <= NOW())
       ${typesArr.length > 0 ? `AND ke.type = ANY($5::"KbType"[])` : ""}
       ${
         sectorTagSlugsArr.length > 0
@@ -140,6 +143,9 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       AND ke.deleted_at IS NULL
       AND ke.status IN ('published', 'deprecated')
       AND ke.audience = ANY($4::"KbAudience"[])
+      AND ke.confidentiality = 'public'
+      AND (ke.published_at IS NULL OR ke.published_at <= NOW())
+      AND (ke.embargo_until IS NULL OR ke.embargo_until <= NOW())
       ${typesArr.length > 0 ? `AND ke.type = ANY($5::"KbType"[])` : ""}
       ${
         sectorTagSlugsArr.length > 0
