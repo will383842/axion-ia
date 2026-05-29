@@ -25,7 +25,11 @@
     "coachingOneToOne": "Coaching 1 to 1",
     "companyAudit": "AI audit",
     "implementationShort": "Bespoke integration",
-    "sitesWebSaas": "Web sites & SaaS Native AI"
+    "sitesWebSaas": "Web sites & SaaS Native AI",
+    "auditShort": "Audits",
+    "formations": "Trainings",
+    "oneToOne": "1-to-1 coaching",
+    "platform": "Web platform & SaaS"
   },
   "cta": {
     "bookIntervention": "Book a session",
