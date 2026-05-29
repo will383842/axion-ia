@@ -37,8 +37,8 @@ export const GAGNY_COPY: VilleCopy = {
       en: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Intervention Essentielle dès {{price:intervention-4h|flat}}, avec déplacement William depuis Paris.",
-      en: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Intervention Essentielle dès {{price:intervention-4h|flat}}, avec déplacement William depuis Paris.",
+      fr: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement William depuis Paris.",
+      en: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement William depuis Paris.",
     },
     implementation: {
       fr: "Implémentation IA à Gagny pour TPE/PME du commerce ou du BTP — code custom intégré à vos outils (CRM, ERP, devis), dès {{price:impl-poc|entry}}.",

@@ -13,9 +13,9 @@ export const EYSINES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Eysines (24 825 habitants, Gironde) dans l'adoption concrète de l'IA. Surnommée historiquement « le potager de Bordeaux » et toujours marquée par le maraîchage (pomme de terre, citrouille, une vingtaine d'exploitations), la commune combine aujourd'hui agriculture spécialisée, commerces, artisanat et services à 8 km au nord-ouest de Bordeaux. Nous intervenons sur site, en code custom, pour automatiser devis, suivi commandes, planification et reporting. L'approche couvre aussi les ETI implantées dans Bordeaux Métropole.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Intervention Essentielle dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Intervention Essentielle dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Eysines (Gironde, Bordeaux Métropole) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (suivi récoltes maraîchères, devis artisans, planning équipes terrain) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "maraîchage & artisanat de proximité",
   ecosystemFr:
     "Eysines s'étend sur 12,01 km² au sein de Bordeaux Métropole et conserve une identité agricole forte : héritage maraîcher dit « potager de Bordeaux », avec environ vingt exploitations encore actives en pomme de terre et citrouille. Le tissu économique mêle commerces de proximité, construction, artisanat et services tertiaires. Le Domaine du Pinsan (50 hectares) accueille équipements sportifs et culturels intercommunaux, structurant la vie économique locale.",
@@ -39,8 +39,8 @@ export const EYSINES_COPY: VilleCopy = {
       en: "Audit Flash 4 h à Eysines dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté maraîchage, artisanat ou commerce, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervention Essentielle dès {{price:intervention-4h|flat}} à Eysines pour automatiser devis, suivi clients et planning équipes — code custom, pas de no-code.",
-      en: "Intervention Essentielle dès {{price:intervention-4h|flat}} à Eysines pour automatiser devis, suivi clients et planning équipes — code custom, pas de no-code.",
+      fr: "Formation 4 h dès {{price:intervention-4h|flat}} à Eysines pour automatiser devis, suivi clients et planning équipes — code custom, pas de no-code.",
+      en: "Formation 4 h dès {{price:intervention-4h|flat}} à Eysines pour automatiser devis, suivi clients et planning équipes — code custom, pas de no-code.",
     },
     implementation: {
       fr: "Implémentation IA sur site à Eysines à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
@@ -54,7 +54,7 @@ export const EYSINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Eysines ?",
-      a: "À Eysines, l'Audit Flash 4 h démarre à {{price:audit-flash|flat}} et l'Intervention Essentielle à {{price:intervention-4h|flat}}. Les implémentations et sessions 1-to-1 commencent à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et sans engagement.",
+      a: "À Eysines, l'Audit Flash 4 h démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Les implémentations et sessions 1-to-1 commencent à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et sans engagement.",
     },
     {
       q: "Sous quel délai Axion-IA intervient à Eysines ?",

@@ -35,8 +35,8 @@ export const PIGNAN_COPY: VilleCopy = {
       en: "Audit IA à Pignan : diagnostic 4h pour TPE commerçants, PME viticoles AOC, artisans BTP et professions libérales de l'ouest Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, plan d'action priorisé.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Intervention Essentielle {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Intervention Essentielle {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Formation 4 h {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Pignan : ateliers adaptés domaine viticole AOC, atelier artisan BTP, commerce de proximité ou cabinet libéral. Vos équipes repartent autonomes. Formation 4 h {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Pignan : automatisation gestion parcelles vignoble AOC, devis artisans BTP, chatbot client commerce, classification documents professions libérales. Code Python/TypeScript sur mesure dès {{price:impl-poc|entry}}.",
@@ -58,7 +58,7 @@ export const PIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP à Pignan ?",
-      a: "Pour les artisans BTP (13,7 % des établissements pignanais) : Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Cas typiques : devis automatisés, classification photos chantier, planification interventions, agents IA réponse client.",
+      a: "Pour les artisans BTP (13,7 % des établissements pignanais) : Audit Flash {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Cas typiques : devis automatisés, classification photos chantier, planification interventions, agents IA réponse client.",
     },
     {
       q: "Accompagnez-vous les commerces de proximité ?",
@@ -66,7 +66,7 @@ export const PIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée et les délais à Pignan ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. William se déplace à Pignan sous 5 jours ouvrés depuis Montpellier (15 min). Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. William se déplace à Pignan sous 5 jours ouvrés depuis Montpellier (15 min). Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Pignan ?",

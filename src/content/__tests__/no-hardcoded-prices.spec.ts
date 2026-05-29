@@ -46,6 +46,14 @@ interface SurfaceRoot {
   recursive: boolean;
   /** Prédicat de sélection d'un fichier (chemin absolu). */
   match: (absPath: string) => boolean;
+  /**
+   * Si `true`, n'enforce QUE le format prix FR (« 490 € »/« 490 EUR »/« 490 euros »,
+   * nombre AVANT la devise) et ignore le format EN (« €490 », devise avant). Utilisé
+   * pour la prose villes : la copy FR est tokenisée et enforce, mais les champs
+   * long-form `services.*.en` (EN, locale 301→FR, « ne pas investir sur l'EN »)
+   * gardent des « €990 excl. VAT » qu'on isole volontairement.
+   */
+  frOnly?: boolean;
 }
 
 const ENABLED_ROOTS: ReadonlyArray<SurfaceRoot> = [
@@ -72,17 +80,21 @@ const ENABLED_ROOTS: ReadonlyArray<SurfaceRoot> = [
       !p.endsWith(".spec.ts") &&
       !p.endsWith(".spec.tsx"),
   },
-  // ── DÉFÉRÉ : prose villes `content/villes/copy/**` ──────────────────────────
-  // La PROSE FR est tokenisée en Phase 2 (codemod tokenize-ville-prices →
-  // ~8 700 tokens). Mais la surface n'est PAS activée ici car il reste, sur les
-  // ~12 villes pilotes, des PRIX EN dans les champs long-form `services.*.en`
-  // (« from €990 excl. VAT »). Les tokeniser les rendrait en FR dans un champ EN
-  // (« 990 € HT excl. VAT », cassé) et la règle Will est de NE JAMAIS investir
-  // sur l'EN (locale 301→FR). Restent aussi des € FR légitimes non-Axion (revenu
-  // médian INSEE, prix immobilier) qui demanderaient des marqueurs price-exempt.
-  // → Activer cette surface quand l'EN sera retiré OU que le résolveur gérera la
-  //   locale par champ. La régression FR est couverte par le codemod (idempotent)
-  //   + le générateur villes qui émet désormais des tokens (Phase 2.3).
+  {
+    // Prose villes — FR tokenisée en Phase 2 (codemod). `frOnly` : on enforce le
+    // FR (tokenisé) et on isole l'EN mort des villes pilotes (« €990 excl. VAT »
+    // dans `services.*.en`). L'index `_auto-generated-index.ts` ne fait
+    // qu'importer (zéro € literal).
+    dir: path.join(SRC, "content", "villes", "copy"),
+    recursive: true,
+    frOnly: true,
+    match: (p) =>
+      p.endsWith(".ts") &&
+      !p.endsWith(".test.ts") &&
+      !p.endsWith(".spec.ts") &&
+      !p.endsWith("_auto-generated-index.ts") &&
+      !p.endsWith(`${path.sep}types.ts`),
+  },
 ];
 
 // Routes prix explicites (hors page.tsx).
@@ -105,6 +117,13 @@ const EXEMPT_FILES: ReadonlySet<string> = new Set([
   "content/regions.ts", // PIB régionaux (« €838 B GDP ») — données économiques
   // Matrice build-vs-buy : colonnes SaaS marché / dev custom marché, pas Axion.
   "components/services/implementation/ImplementationComparisonMatrix.tsx",
+  // 5 villes dont le SEUL € est une donnée INSEE (revenu médian / immobilier) en
+  // prose écosystème — pas un tarif Axion. Leurs prix Axion sont tokenisés.
+  "content/villes/copy/la-celle-saint-cloud.ts", // revenu médian 29 510 €
+  "content/villes/copy/maisons-laffitte.ts", // valeur foncière 48 001 €
+  "content/villes/copy/montigny-les-cormeilles.ts", // revenu médian 21 970 €
+  "content/villes/copy/saint-michel-sur-orge.ts", // revenu médian 34 972 €
+  "content/villes/copy/sannois.ts", // revenu médian 24 250 €
 ]);
 
 // ── Détection des montants € en dur ─────────────────────────────────────────
@@ -113,8 +132,9 @@ const EXEMPT_FILES: ReadonlySet<string> = new Set([
 const EURO_AFTER = /\d[\d.,\s]*(?:€|k€|M€|EUR\b|euros?\b)/i;
 const EURO_BEFORE = /(?:€|k€|M€)\s*\d/i;
 
-function lineHasEuroLiteral(line: string): boolean {
-  return EURO_AFTER.test(line) || EURO_BEFORE.test(line);
+function lineHasEuroLiteral(line: string, frOnly = false): boolean {
+  // frOnly : seulement le format FR (nombre AVANT devise) ; ignore « €990 » (EN).
+  return frOnly ? EURO_AFTER.test(line) : EURO_AFTER.test(line) || EURO_BEFORE.test(line);
 }
 
 /**
@@ -165,16 +185,18 @@ interface Violation {
 }
 
 function scanForHardcodedPrices(): Violation[] {
-  const files = new Set<string>();
+  const files = new Map<string, boolean>(); // chemin absolu → frOnly
   for (const root of ENABLED_ROOTS) {
-    for (const f of walk(root.dir, root.recursive, root.match)) files.add(f);
+    for (const f of walk(root.dir, root.recursive, root.match)) {
+      files.set(f, files.get(f) || root.frOnly === true);
+    }
   }
   for (const f of EXTRA_FILES) {
-    if (existsSync(f)) files.add(f);
+    if (existsSync(f)) files.set(f, files.get(f) ?? false);
   }
 
   const violations: Violation[] = [];
-  for (const abs of files) {
+  for (const [abs, frOnly] of files) {
     const rel = relFromSrc(abs);
     if (EXEMPT_FILES.has(rel)) continue;
     const content = readFileSync(abs, "utf8");
@@ -192,7 +214,7 @@ function scanForHardcodedPrices(): Violation[] {
         return; // le reste de la ligne est du commentaire
       }
       if (lineIsComment(line)) return;
-      if (!lineHasEuroLiteral(line)) return;
+      if (!lineHasEuroLiteral(line, frOnly)) return;
       if (lineIsAllowed(line)) return;
       violations.push({ file: rel, line: i + 1, text: line.trim() });
     });

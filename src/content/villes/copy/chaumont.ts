@@ -38,8 +38,8 @@ export const CHAUMONT_COPY: VilleCopy = {
       en: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Intervention sur site à Chaumont — William se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Chaumont — William se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Chaumont — William se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Chaumont — William se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA pour TPE/PME de Chaumont : agents en code custom (Python, Node) intégrés à vos outils existants (Sage, EBP, Pennylane, Notion, Google Workspace). Forfait d'implémentation dès {{price:impl-poc|entry}}.",

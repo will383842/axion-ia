@@ -53,7 +53,7 @@ export const AUCH_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission à Auch ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Intervention Essentielle à partir de {{price:intervention-4h|flat}}, session 1-to-1 dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, sans devis opaque.",
+      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}, session 1-to-1 dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, sans devis opaque.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Auch ?",

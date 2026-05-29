@@ -36,8 +36,8 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
       en: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Castelnau-le-Lez : intégration sur-mesure dans vos outils existants (sans no-code), pour TPE et PME du commerce, des services ou de la santé — dès {{price:impl-poc|entry}}.",

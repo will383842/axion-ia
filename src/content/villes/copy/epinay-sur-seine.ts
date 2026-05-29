@@ -36,8 +36,8 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Épinay-sur-Seine : code custom Python/TypeScript pour PME locales, intégration outils métier BTP, automatisation back-office. Pas de no-code, code source livré.",
@@ -55,7 +55,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention à Épinay-sur-Seine ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Intervention Essentielle à partir de {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
+      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Épinay-sur-Seine ?",

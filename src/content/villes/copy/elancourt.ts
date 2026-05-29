@@ -37,8 +37,8 @@ export const ELANCOURT_COPY: VilleCopy = {
       en: "Réaliser un audit IA à Élancourt — particulièrement pertinent pour les sous-traitants défense du quartier de la Clef de Saint-Pierre — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Élancourt pour automatiser les flux administratifs des PME industrielles et fournisseurs Thales — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervenir à Élancourt pour automatiser les flux administratifs des PME industrielles et fournisseurs Thales — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervenir à Élancourt pour automatiser les flux administratifs des PME industrielles et fournisseurs Thales — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Élancourt pour automatiser les flux administratifs des PME industrielles et fournisseurs Thales — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémenter des solutions IA en code source à Élancourt — intégration ERP/MES pour la fabrication électronique et l'aérospatial — dès {{price:impl-poc|entry}}.",

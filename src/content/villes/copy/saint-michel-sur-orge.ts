@@ -37,8 +37,8 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
       en: "Réaliser un audit IA à Saint-Michel-sur-Orge — adapté aux TPE/PME des services, commerces et BTP — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Saint-Michel-sur-Orge pour automatiser devis, plannings chantiers, tournées et relances — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémenter des solutions IA en code source à Saint-Michel-sur-Orge — intégration aux outils existants (compta, CRM, ERP BTP) — dès {{price:impl-poc|entry}}.",

@@ -50,7 +50,7 @@ export const SEVRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Sèvres ?",
-      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, l'Intervention Essentielle à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne.",
+      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Sèvres ?",

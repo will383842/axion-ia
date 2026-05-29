@@ -37,8 +37,8 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
       en: "Audit IA à Mont-de-Marsan pour TPE et PME locales — cartographie des automatisations possibles dans le commerce, l'agroalimentaire ou la filière bois, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Mont-de-Marsan pour automatiser tâches administratives, devis, planning et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Mont-de-Marsan pour TPE/PME de l'agroalimentaire, du commerce ou des services — code custom intégré à vos systèmes, dès {{price:impl-poc|entry}}.",

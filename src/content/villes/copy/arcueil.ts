@@ -61,7 +61,7 @@ export const ARCUEIL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Arcueil ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et l'Intervention Essentielle à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
     },
     {
       q: "Intervenez-vous aussi à Cachan, Gentilly ou Montrouge ?",

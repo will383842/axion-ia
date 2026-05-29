@@ -36,8 +36,8 @@ export const LANESTER_COPY: VilleCopy = {
       en: "Audit IA à Lanester : diagnostic 4h pour TPE et PME locales — commerces Kerpont, sous-traitants Naval Group, artisans Lann-Gazec, restaurateurs. ROI chiffré. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Intervention Essentielle {{price:intervention-4h|flat}}.",
-      en: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Intervention Essentielle {{price:intervention-4h|flat}}.",
+      fr: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Formation 4 h {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site à Lanester (zones Kerpont-Kerrous, Kerpont-Manebos, Lann-Gazec, centre) : automatisation devis BTP, gestion documentaire sous-traitance navale, chatbot commerce, planning artisans. Formation 4 h {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Lanester : intégration ERP/CRM, automatisation flux qualité sous-traitance navale, classification documents fournisseurs, agents IA support multilingue (commerce portuaire). Code sur mesure dès {{price:impl-poc|entry}}.",
@@ -55,7 +55,7 @@ export const LANESTER_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention IA à Lanester ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4h). Intervention Essentielle {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}} selon périmètre. Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4h). Formation 4 h {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}} selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour démarrer une mission à Lanester ?",

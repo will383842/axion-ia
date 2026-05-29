@@ -35,8 +35,8 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
       en: "Audit IA sur site au Bouscat pour TPE/PME du commerce, santé ou services — cartographie des processus automatisables (prise de RDV, devis, relances, facturation) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
-      fr: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention ciblée au Bouscat (accès tramway TBM et gare Sainte-Germaine) pour automatiser un workflow critique : devis, relances clients, extraction de pièces comptables. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA sur mesure au Bouscat — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",

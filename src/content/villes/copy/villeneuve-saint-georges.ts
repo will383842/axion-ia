@@ -36,8 +36,8 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
       en: "Audit IA à Villeneuve-Saint-Georges pour TPE et PME : identifier les automatisations utiles dans le transport, la logistique, le commerce ou le bâtiment — Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Villeneuve-Saint-Georges : automatisation devis, factures, planning, suivi flotte ou stocks — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Villeneuve-Saint-Georges : automatisation devis, factures, planning, suivi flotte ou stocks — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Villeneuve-Saint-Georges : automatisation devis, factures, planning, suivi flotte ou stocks — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Villeneuve-Saint-Georges : automatisation devis, factures, planning, suivi flotte ou stocks — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Villeneuve-Saint-Georges : code custom intégré à vos outils existants (sans no-code), pour TPE et PME du transport, de la logistique ou du commerce — dès {{price:impl-poc|entry}}.",
@@ -51,7 +51,7 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Villeneuve-Saint-Georges ?",
-      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Intervention Essentielle dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France, sans surcoût caché de déplacement.",
+      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France, sans surcoût caché de déplacement.",
     },
     {
       q: "Quels délais pour une intervention à Villeneuve-Saint-Georges ?",

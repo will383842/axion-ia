@@ -36,8 +36,8 @@ export const VINCENNES_COPY: VilleCopy = {
       en: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Intervention Essentielle {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Formation 4 h {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Formation 4 h {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Vincennes : intégration CRM/agenda professions libérales, classification documents juridiques/médicaux, agents IA support client commerce et restauration. Code sur mesure dès {{price:impl-poc|entry}}.",
@@ -55,7 +55,7 @@ export const VINCENNES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention IA à Vincennes ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4h). Intervention Essentielle {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4h). Formation 4 h {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Vincennes ?",

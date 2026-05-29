@@ -35,8 +35,8 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
       en: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
-      fr: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA sur mesure à Roissy-en-Brie — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier BTP ou transport). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",

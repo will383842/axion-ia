@@ -71,7 +71,7 @@ export const DENAIN_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une ETI pour travailler avec Axion-IA à Denain ?",
-      a: "Non : notre cœur de cible est la TPE et la PME denaisienne de moins de 50 salariés. Nous accompagnons aussi quelques ETI, mais les tarifs publics 490-990 € HT sont calibrés pour les artisans, commerçants et PME industrielles locales.",
+      a: "Non : notre cœur de cible est la TPE et la PME denaisienne de moins de 50 salariés. Nous accompagnons aussi quelques ETI, mais les tarifs publics {{price:audit-flash|num}}-{{price:intervention-dirigeants|flat}} sont calibrés pour les artisans, commerçants et PME industrielles locales.",
     },
   ],
 };

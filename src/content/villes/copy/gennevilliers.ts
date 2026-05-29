@@ -50,7 +50,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Gennevilliers ?",
-      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, l'Intervention Essentielle à {{price:intervention-4h|flat}} et l'implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publics consultables sur notre site.",
+      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'implémentation codée sur mesure à {{price:impl-poc|entry}}. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gennevilliers ?",

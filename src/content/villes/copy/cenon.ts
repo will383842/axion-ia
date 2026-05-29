@@ -35,8 +35,8 @@ export const CENON_COPY: VilleCopy = {
       en: "Audit IA à Cenon : diagnostic 360° des processus métiers TPE/PME rive droite (devis, factures, relances, fiches produits, planning). Audit Flash dès {{price:audit-flash|flat}}, livrable opérationnel sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention IA sur site à Cenon : automatisation administrative, relances clients, génération de devis, traitement documents pour TPE commerce, artisans BTP et services. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Cenon : agents conversationnels B2B, classification documents, automatisation workflow restaurateurs, commerces et services tertiaires de Bordeaux Métropole rive droite. Tarif dès {{price:impl-poc|entry}}.",
@@ -54,7 +54,7 @@ export const CENON_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Cenon ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}}, Intervention Essentielle dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique disponible sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique disponible sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Cenon ?",

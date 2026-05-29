@@ -71,7 +71,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une ETI pour travailler avec Axion-IA à Saint-Herblain ?",
-      a: "Non : notre cœur de cible est la TPE et la PME herblinoise de moins de 50 salariés. Quelques ETI nous sollicitent en complément, mais les tarifs publics 490-990 € HT sont conçus pour les artisans, commerçants et PME locales.",
+      a: "Non : notre cœur de cible est la TPE et la PME herblinoise de moins de 50 salariés. Quelques ETI nous sollicitent en complément, mais les tarifs publics {{price:audit-flash|num}}-{{price:intervention-dirigeants|flat}} sont conçus pour les artisans, commerçants et PME locales.",
     },
   ],
 };

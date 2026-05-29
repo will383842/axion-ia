@@ -37,8 +37,8 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
       en: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémenter des solutions IA en code source à Maisons-Laffitte — CRM agences immobilières, gestion des pensions équestres, sites web augmentés — dès {{price:impl-poc|entry}}.",

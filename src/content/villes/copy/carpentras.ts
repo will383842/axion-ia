@@ -8,7 +8,7 @@ const PITCH_FR =
   "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. William se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. William se déplace depuis le réseau Avignon-TGV (30 km, 38 min de train) pour cadrer le besoin sur place, livrer du code custom Python ou TypeScript, et former l'équipe. Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, accompagnement 1-à-1 {{price:intervention-dirigeants|flat}} — tarifs publics, pas de licence cachée.";
+  "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. William se déplace depuis le réseau Avignon-TGV (30 km, 38 min de train) pour cadrer le besoin sur place, livrer du code custom Python ou TypeScript, et former l'équipe. Audit Flash {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, accompagnement 1-à-1 {{price:intervention-dirigeants|flat}} — tarifs publics, pas de licence cachée.";
 
 const ECOSYSTEM_FR =
   "Carpentras est la 4e commune du Vaucluse avec 31 619 habitants (Insee 2023, +11,69 % depuis 2017). Le tissu économique repose sur la viticulture (22,8 % de la surface communale en vignes AOC Ventoux et Côtes-du-Rhône-Villages), l'agroalimentaire (berlingot de Carpentras, truffe noire du Vaucluse, marché aux truffes hivernal), le commerce indépendant (marché hebdomadaire du vendredi matin, environ 350 forains) et les services aux entreprises. La sous-préfecture concentre administrations, professions libérales et un hôpital de bassin.";
@@ -54,7 +54,7 @@ const VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels tarifs Axion-IA pratique-t-il à Carpentras ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site), Intervention Essentielle {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente : vous êtes propriétaire du code livré.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente : vous êtes propriétaire du code livré.",
     },
     {
       q: "William se déplace-t-il vraiment à Carpentras ?",

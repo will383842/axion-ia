@@ -37,8 +37,8 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
       en: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès {{price:impl-poc|entry}}.",

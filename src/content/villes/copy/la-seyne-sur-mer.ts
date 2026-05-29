@@ -38,8 +38,8 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
       en: "Audit IA à La Seyne-sur-Mer — diagnostic des goulots opérationnels chez les TPE/PME du tourisme, de la restauration, du nautisme et des PME industrielles autour de CNIM. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours.",
     },
     interventions: {
-      fr: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à La Seyne-sur-Mer — William se déplace pour cadrer et déployer un agent IA opérationnel (réservations, planning équipes, OCR factures fournisseurs, reporting saisonnier). Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA pour TPE/PME seynoises : agents en code custom francophone (Python, Node) intégrés à vos outils existants (Lightspeed, Pennylane, Sage, Google Workspace). Forfait dès {{price:impl-poc|entry}}.",
@@ -53,7 +53,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à La Seyne-sur-Mer ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à La Seyne-sur-Mer, livré sous 5 jours ouvrés. Intervention Essentielle dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
+      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à La Seyne-sur-Mer, livré sous 5 jours ouvrés. Formation 4 h dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
       q: "William se déplace-t-il à La Seyne-sur-Mer depuis Paris ?",

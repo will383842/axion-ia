@@ -35,8 +35,8 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
       en: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
-      fr: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA sur mesure à Choisy-le-Roi — code propriétaire intégré à vos outils existants (ERP, CRM, comptabilité). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",

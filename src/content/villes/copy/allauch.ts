@@ -37,8 +37,8 @@ export const ALLAUCH_COPY: VilleCopy = {
       en: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit Flash dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémenter des solutions IA en code source à Allauch, adaptées aux PME pharma (Laphal, IPP Pharma) ou aux producteurs locaux — à partir de {{price:impl-poc|entry}}.",

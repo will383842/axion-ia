@@ -8,7 +8,7 @@ const PITCH_FR =
   "Axion-IA accompagne les TPE et PME de Villenave-d'Ornon, commune de 42 545 habitants au sud de Bordeaux Métropole, sur la rive gauche de la Garonne. William se déplace sur site auprès des artisans, commerçants, viticulteurs et entreprises de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Villenave-d'Ornon pour les TPE et PME girondines : viticulteurs des Graves et Pessac-Léognan, artisans BTP et sous-traitants de Bordeaux Métropole, commerçants de la zone d'activités (9,8 % du territoire communal), professions libérales et acteurs de la filière vigne-vin gravitant autour de l'ISVV. William se déplace via la gare TGV Bordeaux-Saint-Jean (8 km, tram C direct) pour cadrer le besoin sur place, livrer du code custom et former l'équipe. Audit Flash {{price:audit-flash|flat}}, Intervention Essentielle {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
+  "Axion-IA intervient à Villenave-d'Ornon pour les TPE et PME girondines : viticulteurs des Graves et Pessac-Léognan, artisans BTP et sous-traitants de Bordeaux Métropole, commerçants de la zone d'activités (9,8 % du territoire communal), professions libérales et acteurs de la filière vigne-vin gravitant autour de l'ISVV. William se déplace via la gare TGV Bordeaux-Saint-Jean (8 km, tram C direct) pour cadrer le besoin sur place, livrer du code custom et former l'équipe. Audit Flash {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
 
 const ECOSYSTEM_FR =
   "Villenave-d'Ornon est la 6e commune de Gironde avec 42 545 habitants (Insee 2023), intégrée à Bordeaux Métropole. Le tissu économique combine une importante zone d'activités industrielle et commerciale (9,8 % du territoire), la filière vigne-vin avec l'Institut des Sciences de la Vigne et du Vin (ISVV) sur le site d'Inrae-Bordeaux, l'Hôpital militaire Robert-Picqué, un lycée agricole et un commerce de proximité dynamique. Les viticulteurs des AOC Graves et Pessac-Léognan constituent un bassin de clientèle local spécifique.";
@@ -54,7 +54,7 @@ const VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels tarifs Axion-IA pratique-t-il à Villenave-d'Ornon ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site), Intervention Essentielle {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
+      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics consultables, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
     },
     {
       q: "William se déplace-t-il vraiment à Villenave-d'Ornon ?",

@@ -36,8 +36,8 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Ivry-sur-Seine pour TPE et PME : identifier les automatisations utiles dans vos process commerce, services ou production — Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Ivry-sur-Seine pour les TPE et PME : devis, facturation, e-mails, reporting, suivi client — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Ivry-sur-Seine : intégration code custom dans vos outils, sans no-code, pour TPE et PME du tertiaire ou de l'artisanat — dès {{price:impl-poc|entry}}.",
@@ -51,7 +51,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Ivry-sur-Seine ?",
-      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Intervention Essentielle dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Mêmes tarifs partout en France, sans surcoût de déplacement caché.",
+      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou 1-to-1 dès {{price:intervention-dirigeants|flat}}. Mêmes tarifs partout en France, sans surcoût de déplacement caché.",
     },
     {
       q: "Quels délais pour une intervention à Ivry-sur-Seine ?",

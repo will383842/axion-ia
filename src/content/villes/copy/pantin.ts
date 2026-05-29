@@ -36,8 +36,8 @@ export const PANTIN_COPY: VilleCopy = {
       en: "Audit IA à Pantin pour TPE et PME : cartographier vos process commerce, services ou ateliers et identifier les automatisations à fort ROI — Audit Flash 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
-      en: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Intervention Essentielle dès {{price:intervention-4h|flat}}.",
+      fr: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
+      en: "Intervention sur site à Pantin pour TPE et PME : automatisation devis, factures, e-mails, suivi commandes ateliers — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA à Pantin : code custom intégré à vos outils existants (sans no-code), adapté aux TPE-PME du canal de l'Ourcq — dès {{price:impl-poc|entry}}.",
@@ -51,7 +51,7 @@ export const PANTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Pantin ?",
-      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Intervention Essentielle dès {{price:intervention-4h|flat}}, implémentation ou accompagnement 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France, sans frais de déplacement caché.",
+      a: "Tarifs publics : Audit Flash 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation ou accompagnement 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille identique partout en France, sans frais de déplacement caché.",
     },
     {
       q: "Quels délais pour une intervention à Pantin ?",

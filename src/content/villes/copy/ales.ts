@@ -61,7 +61,7 @@ export const ALES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'une intervention IA à Alès ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et l'Intervention Essentielle à {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et sans devis opaque ; chaque chantier d'implémentation est ensuite chiffré selon le ROI.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et sans devis opaque ; chaque chantier d'implémentation est ensuite chiffré selon le ROI.",
     },
     {
       q: "Intervenez-vous dans les Cévennes autour d'Alès ?",

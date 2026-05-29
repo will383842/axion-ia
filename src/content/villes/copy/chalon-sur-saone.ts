@@ -36,8 +36,8 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
       en: "Audit IA à Chalon-sur-Saône : diagnostic 4h pour TPE et PME de la sous-traitance mécanique, du commerce, de l'artisanat et des services. ROI chiffré, plan d'action priorisé. Audit Flash {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions sur site à Chalon-sur-Saône (Zone Nord, Zone Sud, centre) : automatisation devis, gestion qualité atelier, traitement documents fournisseurs, agents IA support client. Intervention Essentielle {{price:intervention-4h|flat}}.",
-      en: "Interventions sur site à Chalon-sur-Saône (Zone Nord, Zone Sud, centre) : automatisation devis, gestion qualité atelier, traitement documents fournisseurs, agents IA support client. Intervention Essentielle {{price:intervention-4h|flat}}.",
+      fr: "Interventions sur site à Chalon-sur-Saône (Zone Nord, Zone Sud, centre) : automatisation devis, gestion qualité atelier, traitement documents fournisseurs, agents IA support client. Formation 4 h {{price:intervention-4h|flat}}.",
+      en: "Interventions sur site à Chalon-sur-Saône (Zone Nord, Zone Sud, centre) : automatisation devis, gestion qualité atelier, traitement documents fournisseurs, agents IA support client. Formation 4 h {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation IA chalonnaise : intégration sur mesure aux ERP industriels, automatisation flux logistiques Saône/A6, classification documents conformité, code Python/TypeScript livré. Dès {{price:impl-poc|entry}}.",

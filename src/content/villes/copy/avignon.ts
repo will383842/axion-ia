@@ -61,7 +61,7 @@ export const AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Avignon ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et l'Intervention Essentielle à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
+      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
       q: "Accompagnez-vous l'agroalimentaire provençal d'Agroparc ?",

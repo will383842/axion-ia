@@ -55,7 +55,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs Axion-IA à Saint-Ouen-sur-Seine ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Intervention Essentielle à partir de {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
+      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Saint-Ouen ?",

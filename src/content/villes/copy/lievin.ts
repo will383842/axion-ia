@@ -71,7 +71,7 @@ export const LIEVIN_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une ETI pour solliciter Axion-IA à Liévin ?",
-      a: "Non : notre cible prioritaire est la TPE et la PME liévinoise de moins de 50 salariés. Les ETI nous sollicitent ponctuellement, mais les tarifs 490-990 € HT sont calibrés pour artisans, commerçants et PME locales.",
+      a: "Non : notre cible prioritaire est la TPE et la PME liévinoise de moins de 50 salariés. Les ETI nous sollicitent ponctuellement, mais les tarifs {{price:audit-flash|num}}-{{price:intervention-dirigeants|flat}} sont calibrés pour artisans, commerçants et PME locales.",
     },
   ],
 };
