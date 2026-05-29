@@ -14,8 +14,12 @@
 import { prisma } from "@/lib/prisma";
 import { isKbBackendUnifiedFor, type KbBackendTarget } from "./feature-flag";
 import { ALL_GLOSSARY_TERMS_EXTENDED } from "@/content/glossary-extension";
-import { serviceTagSlug, type ServiceSlug } from "@/content/knowledge/services";
-import { buildKbPublicUrl } from "@/content/knowledge/routes";
+import {
+  serviceTagSlug,
+  SERVICE_TAG_PREFIX,
+  isServiceSlug,
+  type ServiceSlug,
+} from "@/content/knowledge/services";
 import type { KbType, Locale } from "../../../prisma/generated/client";
 
 /**
@@ -590,7 +594,11 @@ export async function listEntriesByService(
           slug: t.slug,
           title: t.title,
           excerpt: t.excerpt,
-          href: buildKbPublicUrl(row.type, locale, t.slug),
+          // Lien universel vers la page détail KB : `/connaissances/[slug]` sert
+          // TOUTE entrée publique par slug FR (sans filtre de type), contrairement
+          // à buildKbPublicUrl qui mappe industry_use_case → /ressources/<type>/…
+          // (route inexistante → 404). Les faits services sont industry_use_case.
+          href: `/connaissances/${t.slug}`,
           publishedAt: row.publishedAt,
         };
       })
@@ -598,6 +606,52 @@ export async function listEntriesByService(
   } catch {
     // Table absente bootstrap / DB down → bloc masqué (fail-soft).
     return [];
+  }
+}
+
+/**
+ * Retourne le service (`ServiceSlug`) rattaché à une entrée KB publiée via son
+ * slug de traduction FR, ou `null`. Lit le tag `service:*` posé en Vague A.
+ *
+ * Triple filtre public strict (l'entrée doit être réellement publique). Si
+ * plusieurs services taggés (rare, multi-verticale), retourne le premier.
+ * Fail-soft `null` (build stub / DB down) → l'appelant n'affiche pas de bloc.
+ */
+export async function getServiceForEntrySlug(slugFr: string): Promise<ServiceSlug | null> {
+  const now = new Date();
+  try {
+    const translation = await prisma.knowledgeTranslation.findFirst({
+      where: {
+        locale: "fr",
+        slug: slugFr,
+        entry: {
+          status: "published",
+          audience: "public",
+          confidentiality: "public",
+          deletedAt: null,
+          publishedAt: { lte: now },
+          OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }],
+        },
+      },
+      select: {
+        entry: {
+          select: {
+            tags: {
+              where: { tag: { slug: { startsWith: SERVICE_TAG_PREFIX } } },
+              select: { tag: { select: { slug: true } } },
+            },
+          },
+        },
+      },
+    });
+    if (!translation) return null;
+    for (const t of translation.entry.tags) {
+      const candidate = t.tag.slug.slice(SERVICE_TAG_PREFIX.length);
+      if (isServiceSlug(candidate)) return candidate;
+    }
+    return null;
+  } catch {
+    return null;
   }
 }
 
