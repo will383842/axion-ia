@@ -102,7 +102,7 @@ INTERDICTIONS STRICTES (cause de rejet auto si violé) :
 - NDA, contact@axion-ia.com, durée d'audit fixe en jours
 - Clients NOMMÉS fictifs (LVMH, BNP, etc.)
 - Adresse postale précise à ${safeVille}
-- Bénéfices inventés sans base factuelle ("ROI 300%", "économise 1M€")
+- Bénéfices inventés sans base factuelle ("ROI 300%", "économise 1 million")
 - Noms propres d'entreprises fictives (ex: "TechCorp Lyon", "DataStart Bordeaux")
 
 OBLIGATIONS :

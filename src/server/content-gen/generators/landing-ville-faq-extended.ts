@@ -127,7 +127,7 @@ Réponses directes, citables par les LLMs et featured snippets Google. 1-2 phras
 ${FAQ_TYPES.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 
 ## Contraintes par réponse
-- Prix : citer des fourchettes réalistes (ex : "À partir de 290 € HT pour une TPE, jusqu'à 1 290 € HT pour une ETI") — JAMAIS "contactez-nous"
+- Prix : utiliser EXCLUSIVEMENT les tokens {{price:<tierId>}} (résolus depuis la grille SSOT au rendu) — ex : {{price:audit-flash|flat}}, {{price:audit-cible|range}}, {{price:intervention-4h|flat}}, {{price:intervention-dirigeants|flat}}, {{price:impl-poc|entry}}. JAMAIS de montant en chiffres ni « € », JAMAIS "contactez-nous"
 - Délai : "délai adapté à votre périmètre" ou "selon la taille de l'entreprise" — JAMAIS de chiffre fixe en jours
 - Remote/présentiel : Axion-IA se déplace à ${safeVille} ET propose également les sessions en visio
 - Lieu RDV : préciser que l'intervention se fait dans les locaux du client à ${safeVille} ou en région ${safeRegion}

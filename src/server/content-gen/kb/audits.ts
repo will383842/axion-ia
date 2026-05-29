@@ -289,7 +289,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-030",
-    text: "Le non-respect de l'AI Act expose à des amendes pouvant atteindre 35 M€ ou 7 % du CA mondial pour les pratiques interdites, et 15 M€ ou 3 % du CA pour les violations des obligations applicables aux systèmes à haut risque.",
+    text: "Le non-respect de l'AI Act expose à des amendes pouvant atteindre 35 M€ ou 7 % du CA mondial pour les pratiques interdites, et 15 M€ ou 3 % du CA pour les violations des obligations applicables aux systèmes à haut risque." /* price-exempt: stat marché tierce */,
     source: "EUR-Lex — Règlement UE 2024/1689 art. 99",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
     verifiedAt: "2026-05-22",
@@ -382,7 +382,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-040",
-    text: "Selon IDC (Worldwide AI Spending Guide 2024), le marché français de l'IA atteindra 12,4 Md€ en 2027 — soit une croissance annuelle moyenne de +29 % sur 2024-2027, justifiant les audits de pertinence des investissements.",
+    text: "Selon IDC (Worldwide AI Spending Guide 2024), le marché français de l'IA atteindra 12,4 Md€ en 2027 — soit une croissance annuelle moyenne de +29 % sur 2024-2027, justifiant les audits de pertinence des investissements." /* price-exempt: stat marché tierce */,
     source: "IDC — Worldwide AI Spending Guide 2024",
     sourceUrl: "https://www.idc.com/getdoc.jsp?containerId=IDC_P33198",
     verifiedAt: "2026-05-22",
@@ -512,7 +512,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-054",
-    text: "Le tarif d'un audit IA Axion-IA standard PME (3 cas d'usage, 5 jours) démarre à 8 000 € HT, et un audit ETI (8 cas d'usage, 10 jours) à 18 000 € HT — éligibles aux dispositifs France Num et Bpifrance Diag IA.",
+    text: "Le tarif d'un audit IA Axion-IA standard PME (3 cas d'usage, 5 jours) démarre à {{price:audit-strategique-pme|range}}, et un audit ETI (8 cas d'usage, 10 jours) à {{price:audit-strategique-eti|from}} — éligibles aux dispositifs France Num et Bpifrance Diag IA.",
     source: "Axion-IA — Grille tarifaire audit 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
@@ -521,7 +521,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-055",
-    text: "Le programme Diag IA de Bpifrance finance jusqu'à 80 % du coût d'un audit IA pour les PME (plafond 16 000 € HT) — démarche à initier avant signature du devis, validation Bpifrance sous 4-6 semaines.",
+    text: "Le programme Diag IA de Bpifrance finance jusqu'à 80 % du coût d'un audit IA pour les PME (plafond 16 000 € HT) — démarche à initier avant signature du devis, validation Bpifrance sous 4-6 semaines." /* price-exempt: stat marché tierce */,
     source: "Bpifrance — Diagnostic IA",
     sourceUrl: "https://www.bpifrance.fr",
     verifiedAt: "2026-05-22",

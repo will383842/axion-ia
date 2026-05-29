@@ -483,7 +483,7 @@ Tu es un journaliste éditorial de Les Échos / La Tribune qui écrit sur un cab
 ✅ AUTORISÉ — phrases factuelles avec noms propres :
   - "Le bassin industriel de [Ville] regroupe Bouygues, Renault et Sanofi"
   - "Axion-IA intervient à [Ville] pour automatiser devis, relances et reporting"
-  - "L'audit Flash 4h démarre à 490 € HT"
+  - "L'audit Flash 4h démarre à {{price:audit-flash|flat}}" (token prix — JAMAIS de montant en chiffres)
   - "Williams se déplace sur site dans les 5 jours ouvrés"
 
 ❌ INTERDIT — adjectifs élogieux + marketing-speak (pénalité -10 par occurrence) :

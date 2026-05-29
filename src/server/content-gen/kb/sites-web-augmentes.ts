@@ -148,7 +148,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-015",
-    text: "Le coût moyen d'un chatbot IA sur site web en France se situe entre 3 000 € et 25 000 € selon la complexité (base de connaissance, intégrations CRM, langues), avec un abonnement mensuel de 200 à 800 € pour l'API LLM sous-jacente (DGE, Étude coûts IA PME 2025).",
+    text: "Le coût moyen d'un chatbot IA sur site web en France se situe entre 3 000 € et 25 000 € selon la complexité (base de connaissance, intégrations CRM, langues), avec un abonnement mensuel de 200 à 800 € pour l'API LLM sous-jacente (DGE, Étude coûts IA PME 2025)." /* price-exempt: coût marché DGE, pas un tarif Axion */,
     source: "DGE — Étude coûts IA PME 2025",
     sourceUrl: "https://www.entreprises.gouv.fr",
     verifiedAt: "2026-05-01",

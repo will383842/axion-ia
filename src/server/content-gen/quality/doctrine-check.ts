@@ -11,6 +11,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { findNonSsotPrices } from "./price-gate";
 
 export interface DoctrineCheckResult {
   readonly passed: boolean;
@@ -211,6 +212,18 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
     if (phrase.severity === "block") blocking.push(violation);
     else if (phrase.severity === "warn") warnings.push(violation);
     else infos.push(violation);
+  }
+
+  // 3bis. Price-gate SSOT — bloque tout montant € absent de pricing.ts (les
+  // tokens {{price:…}} n'ont pas de « € » littéral → jamais flaggés). Force le
+  // contenu généré à n'utiliser que des tarifs SSOT ou des tokens.
+  for (const pv of findNonSsotPrices(text)) {
+    blocking.push({
+      pattern: `prix-non-SSOT:${pv.amount}`,
+      severity: "block",
+      reason: `Montant « ${pv.amount} » absent de pricing.ts (SSOT). Utiliser un token {{price:<tierId>}} ou un tarif de la grille.`,
+      occurrences: 1,
+    });
   }
 
   // 4. Ratio AxionIA-centric

@@ -28,7 +28,8 @@ const MAX_SENTENCE_CHARS = 280;
 const MAX_CLAIMS_PER_ARTICLE = 30;
 
 const PATTERN_PERCENT = /\b\d{1,3}(?:[,.]\d{1,2})?\s*%/g;
-const PATTERN_AMOUNT_EUR =
+// Exporté pour réutilisation par le price-gate SSOT (quality/price-gate.ts).
+export const PATTERN_AMOUNT_EUR =
   /\b\d{1,3}(?:[\s.,]\d{3})*(?:[,.]\d+)?\s*(?:€|EUR|euros?|\$|USD|dollars?|k€|M€|k\$|M\$)/gi;
 const PATTERN_RATIO = /\b\d+(?:\s+\p{L}+){0,4}\s+(?:sur|out\s+of|of)\s+\d+\b/giu;
 const PATTERN_ATTRIBUTION = /\bselon\s+[A-ZÉÈÀÔÎ][^.,;]{2,40}/gi;

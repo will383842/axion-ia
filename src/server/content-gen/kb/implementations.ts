@@ -83,7 +83,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Tarifs ────────────────────────────────────────────────────────────────
   {
     id: "impl-008",
-    text: "Chatbot RAG basique Axion-IA (jusqu'à 1 000 documents, 1 canal, 2 intégrations) : 8 000 à 15 000 € HT en développement + 500 à 1 200 € HT/mois en maintenance et infra.",
+    text: "Chatbot RAG basique Axion-IA (jusqu'à 1 000 documents, 1 canal, 2 intégrations) — développement + maintenance/infra sur devis selon le périmètre.",
     source: "Axion-IA — Grille tarifaire implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -92,7 +92,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-009",
-    text: "Automatisation de workflow IA Axion-IA : 3 000 à 8 000 € HT selon le nombre d'étapes et d'intégrations — gains opérationnels mesurables dès la mise en production (généralement sous 4 à 8 semaines), ROI complet sous quelques mois. Notre approche par défaut est le code custom (Node.js, Python, infrastructures cloud-native) pour la souveraineté des données et zéro lock-in éditeur. Plateformes no-code (Make, Zapier, n8n) disponibles uniquement sur demande client explicite.",
+    text: "Automatisation de workflow IA Axion-IA — sur devis selon le périmètre, selon le nombre d'étapes et d'intégrations — gains opérationnels mesurables dès la mise en production (généralement sous 4 à 8 semaines), ROI complet sous quelques mois. Notre approche par défaut est le code custom (Node.js, Python, infrastructures cloud-native) pour la souveraineté des données et zéro lock-in éditeur. Plateformes no-code (Make, Zapier, n8n) disponibles uniquement sur demande client explicite.",
     source: "Axion-IA — Grille tarifaire implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -101,7 +101,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-010",
-    text: "Projet d'implémentation IA complexe Axion-IA (système multi-agents, intégration ERP, tableau de bord IA) : 25 000 à 80 000 € HT selon périmètre — avec garantie de résultats définie contractuellement.",
+    text: "Projet d'implémentation IA complexe Axion-IA (système multi-agents, intégration ERP, tableau de bord IA) — sur devis selon le périmètre — avec objectifs de résultat définis contractuellement.",
     source: "Axion-IA — Grille tarifaire implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -402,7 +402,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Budget projets IA PME ──────────────────────────────────────────────────
   {
     id: "impl-042",
-    text: "Le budget moyen investi dans un premier projet IA par une PME française (10 à 249 salariés) se situe entre 15 000 € et 80 000 € en 2024 — avec une médiane à 35 000 € couvrant le développement, l'intégration et la formation initiale.",
+    text: "Le budget moyen investi dans un premier projet IA par une PME française (10 à 249 salariés) se situe entre 15 000 € et 80 000 € en 2024 — avec une médiane à 35 000 € couvrant le développement, l'intégration et la formation initiale." /* price-exempt: stat marché tierce */,
     source: "BPI France — Observatoire financement IA PME 2024",
     sourceUrl: "https://www.bpifrance.fr",
     verifiedAt: "2026-05-22",
@@ -411,7 +411,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-043",
-    text: "BPI France finance jusqu'à 50 % des projets d'implémentation IA pour les PME éligibles via le dispositif « Prêt Transformation Numérique » (PTN) — montant maximum de 100 000 € pour les projets IA à fort impact opérationnel.",
+    text: "BPI France finance jusqu'à 50 % des projets d'implémentation IA pour les PME éligibles via le dispositif « Prêt Transformation Numérique » (PTN) — montant maximum de 100 000 € pour les projets IA à fort impact opérationnel." /* price-exempt: stat marché tierce */,
     source: "BPI France — Dispositif Prêt Transformation Numérique 2025",
     sourceUrl: "https://www.bpifrance.fr",
     verifiedAt: "2026-05-22",
@@ -468,7 +468,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-049",
-    text: "Le marché des services d'implémentation IA en France atteindra 3,8 milliards d'euros en 2025 selon IDC France — avec une forte croissance des petits cabinets spécialisés IA (+47 % de CA) face à la croissance plus modeste des grands intégrateurs (+18 %).",
+    text: "Le marché des services d'implémentation IA en France atteindra 3,8 milliards d'euros en 2025 selon IDC France — avec une forte croissance des petits cabinets spécialisés IA (+47 % de CA) face à la croissance plus modeste des grands intégrateurs (+18 %)." /* price-exempt: stat marché tierce */,
     source: "IDC France — Marché services IA France 2025",
     sourceUrl: "https://www.idc.com",
     verifiedAt: "2026-05-22",
@@ -572,7 +572,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Témoignages et études de cas ──────────────────────────────────────────
   {
     id: "impl-060",
-    text: "Un client Axion-IA dans le secteur immobilier (80 agents, Lyon) a automatisé la rédaction de ses annonces et comptes rendus de visite via LLM — économisant 120h de travail rédactionnel par mois pour un investissement total de 12 000 € HT.",
+    text: "Un client Axion-IA dans le secteur immobilier (80 agents, Lyon) a automatisé la rédaction de ses annonces et comptes rendus de visite via LLM — économisant 120h de travail rédactionnel par mois pour un investissement total de 12 000 € HT." /* price-exempt: investissement d'un cas client réel, pas un tarif Axion */,
     source: "Axion-IA — Étude de cas implémentation immobilier 2025",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-22",
@@ -697,7 +697,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Accessibilité financière ──────────────────────────────────────────────
   {
     id: "impl-073",
-    text: "Le crédit d'impôt innovation (CII) est applicable aux dépenses de développement de prototypes IA pour les PME françaises — permettant de récupérer 20 % des dépenses éligibles (jusqu'à 400 000 € de dépenses), soit un remboursement pouvant atteindre 80 000 € pour un projet IA innovant.",
+    text: "Le crédit d'impôt innovation (CII) est applicable aux dépenses de développement de prototypes IA pour les PME françaises — permettant de récupérer 20 % des dépenses éligibles (jusqu'à 400 000 € de dépenses), soit un remboursement pouvant atteindre 80 000 € pour un projet IA innovant." /* price-exempt: stat marché tierce */,
     source: "Direction Générale des Finances Publiques — Guide Crédit Impôt Innovation 2025",
     sourceUrl: "https://www.impots.gouv.fr",
     verifiedAt: "2026-05-22",
@@ -726,7 +726,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-076",
-    text: "Le programme « France 2030 » alloue 1,8 milliard d'euros aux projets d'IA industrielle et de souveraineté numérique sur 5 ans — dont une part significative destine au financement d'implémentations IA dans les PME/ETI françaises via des appels à projets sectoriels.",
+    text: "Le programme « France 2030 » alloue 1,8 milliard d'euros aux projets d'IA industrielle et de souveraineté numérique sur 5 ans — dont une part significative destine au financement d'implémentations IA dans les PME/ETI françaises via des appels à projets sectoriels." /* price-exempt: stat marché tierce */,
     source: "Gouvernement français — Plan France 2030, volet IA 2024",
     sourceUrl: "https://www.gouvernement.fr/france-2030",
     verifiedAt: "2026-05-22",

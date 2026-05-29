@@ -95,6 +95,14 @@ const ENABLED_ROOTS: ReadonlyArray<SurfaceRoot> = [
       !p.endsWith("_auto-generated-index.ts") &&
       !p.endsWith(`${path.sep}types.ts`),
   },
+  {
+    // Génération de contenu (Phase 3) — prompts, generators, KB facts, quality.
+    // Les prix Axion doivent être des tokens {{price:…}} ou des montants SSOT ;
+    // le price-gate (quality/price-gate.ts) enforce le même contrat au runtime.
+    dir: path.join(SRC, "server", "content-gen"),
+    recursive: true,
+    match: (p) => p.endsWith(".ts") && !p.endsWith(".test.ts") && !p.endsWith(".spec.ts"),
+  },
 ];
 
 // Routes prix explicites (hors page.tsx).
