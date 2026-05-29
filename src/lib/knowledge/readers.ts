@@ -636,6 +636,12 @@ export async function getServiceForEntrySlug(slugFr: string): Promise<ServiceSlu
       select: {
         entry: {
           select: {
+            // Source de vérité gouvernance (KB V4.1) : binding primaire d'abord.
+            serviceBindings: {
+              orderBy: { isPrimary: "desc" },
+              select: { serviceKind: true },
+            },
+            // Fallback : tag `service:*` (Vague A — marche sans binding peuplé).
             tags: {
               where: { tag: { slug: { startsWith: SERVICE_TAG_PREFIX } } },
               select: { tag: { select: { slug: true } } },
@@ -645,6 +651,11 @@ export async function getServiceForEntrySlug(slugFr: string): Promise<ServiceSlu
       },
     });
     if (!translation) return null;
+    // 1) Binding explicite (admin override ou seed) — prioritaire.
+    for (const b of translation.entry.serviceBindings) {
+      if (isServiceSlug(b.serviceKind)) return b.serviceKind;
+    }
+    // 2) Fallback tag dérivé.
     for (const t of translation.entry.tags) {
       const candidate = t.tag.slug.slice(SERVICE_TAG_PREFIX.length);
       if (isServiceSlug(candidate)) return candidate;

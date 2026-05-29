@@ -2164,6 +2164,7 @@ model KnowledgeEntry {
   slugHistory         KnowledgeSlugHistory[]
   annotations         KnowledgeAnnotation[]
   collectionItems     KnowledgeCollectionItem[]
+  serviceBindings     KnowledgeServiceBinding[]
 
   // KB V4 — Source tracking factory (Sprint KB-13 V4, §17.5/§17.7 prompt master).
   // Permet audit immuable + remontée à la source en cas de problème.
@@ -2294,6 +2295,53 @@ model KnowledgeTagOnEntry {
   @@id([entryId, tagId])
   @@index([tagId])
   @@map("knowledge_tags_on_entries")
+}
+
+/// KB V4.1 Service Binding — rattache une entrée KB à un service Axion-IA
+/// (offre commerciale). Additif strict (Sprint Service-Binding 2026-05-29).
+///
+/// La VISIBILITÉ (bloc « connaissances liées » + CTA + Offer JSON-LD) est déjà
+/// assurée sans cette table, via les tags `service:*` + `pricing.ts` (helpers
+/// `service-binding.ts`). Cette table apporte la couche GOUVERNANCE :
+///   - `isPrimary` : binding principal (1 service mis en avant) vs secondaires ;
+///   - `audienceTarget` : variante par cible (dirigeant / équipe / technique…) ;
+///   - override manuel admin (futur) sans toucher aux tags dérivés du seed.
+///
+/// `serviceKind` = slug canonique du service (= suffixe du tag `service:<slug>`,
+/// SSOT `src/content/knowledge/services.ts`). Stocké en VarChar (pas d'enum DB)
+/// pour rester additif et tolérer l'ajout d'un service sans migration d'enum.
+model KnowledgeServiceBinding {
+  id      String         @id @default(uuid()) @db.Uuid
+  entryId String         @map("entry_id") @db.Uuid
+  entry   KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  /// Slug du service (audit / implementation / interventions-formations /
+  /// un-a-un / sites-web-augmentes). Cf. SERVICE_SLUGS.
+  serviceKind String  @map("service_kind") @db.VarChar(60)
+  isPrimary   Boolean @default(false) @map("is_primary")
+
+  /// Variante par cible (optionnel) : dirigeant / equipe / technique / generale.
+  audienceTarget KbAudienceTarget? @map("audience_target")
+
+  /// Provenance : `seed` (dérivé verticales) ou `admin` (override manuel).
+  source String @default("seed") @db.VarChar(20)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([entryId, serviceKind])
+  @@index([serviceKind, isPrimary])
+  @@map("knowledge_service_bindings")
+}
+
+/// Cible d'audience d'un binding service (variante de discours/CTA). Optionnel.
+enum KbAudienceTarget {
+  dirigeant
+  equipe
+  technique
+  generale
+
+  @@map("kb_audience_target")
 }
 
 /// Graphe typé entry-to-entry (cycle detection en server action Sprint KB-4).

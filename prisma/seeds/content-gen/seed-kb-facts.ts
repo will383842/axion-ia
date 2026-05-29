@@ -82,11 +82,14 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
     },
   });
 
-  // KB V4.1 Service Binding — tags `service:*` dérivés de `fact.verticales`.
-  // Rend la KB requêtable par service (reader `listEntriesByService`) + alimente
-  // le bloc « connaissances liées » des pages services. Idempotent (upsert tag +
-  // upsert lien). Un fait peut appartenir à plusieurs services (multi-verticale).
-  for (const def of servicesForVerticales(fact.verticales)) {
+  // KB V4.1 Service Binding — tags `service:*` + bindings dérivés de
+  // `fact.verticales`. Rend la KB requêtable par service (reader
+  // `listEntriesByService`), alimente le bloc « connaissances liées » + le
+  // CTA/Offer. Idempotent. Un fait peut appartenir à plusieurs services
+  // (multi-verticale) ; le 1er est marqué `isPrimary`.
+  const boundServices = servicesForVerticales(fact.verticales);
+  for (let i = 0; i < boundServices.length; i++) {
+    const def = boundServices[i]!;
     const tag = await prisma.knowledgeTag.upsert({
       where: { slug: serviceTagSlug(def.slug) },
       update: { nameFr: def.tagNameFr, nameEn: def.tagNameEn },
@@ -100,6 +103,20 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       where: { entryId_tagId: { entryId: entry.id, tagId: tag.id } },
       update: {},
       create: { entryId: entry.id, tagId: tag.id },
+    });
+
+    // Binding gouvernance (override admin + variante cible futurs). `isPrimary`
+    // sur le 1er service. `update: {}` → un override admin (source:"admin") n'est
+    // pas écrasé par un re-seed.
+    await prisma.knowledgeServiceBinding.upsert({
+      where: { entryId_serviceKind: { entryId: entry.id, serviceKind: def.slug } },
+      update: {},
+      create: {
+        entryId: entry.id,
+        serviceKind: def.slug,
+        isPrimary: i === 0,
+        source: "seed",
+      },
     });
   }
 }
