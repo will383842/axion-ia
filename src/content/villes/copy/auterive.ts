@@ -57,7 +57,7 @@ export const AUTERIVE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Auterive  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME industrielles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "L'IA peut-elle aider une PME agroalimentaire à Auterive ?",

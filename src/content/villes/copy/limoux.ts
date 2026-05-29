@@ -57,7 +57,7 @@ export const LIMOUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Limoux  ?",
-      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'oenotourisme ?",

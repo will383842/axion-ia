@@ -57,7 +57,7 @@ export const LESIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lésigny  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic sur site à Lésigny. Pour les audits approfondis (Audit Stratégique), comptez entre 1 900 et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic sur site à Lésigny. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Lésigny ?",

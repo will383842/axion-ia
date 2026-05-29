@@ -57,7 +57,7 @@ export const SIGEAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sigean  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tourisme ou viticoles, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tourisme ou viticoles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Corbières autour de Sigean ?",

@@ -57,7 +57,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Onet-le-Château  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales ou tertiaires, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales ou tertiaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA sur site à Onet-le-Château ?",

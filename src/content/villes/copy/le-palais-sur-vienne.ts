@@ -57,7 +57,7 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Palais-sur-Vienne ?",
-      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME industrielles, un audit approfondi est proposé entre 1 900 et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME industrielles, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles porcelaine et luxe ?",

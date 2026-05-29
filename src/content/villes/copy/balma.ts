@@ -57,7 +57,7 @@ export const BALMA_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Balma  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tertiaires, un audit approfondi est proposé entre 1 900 et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tertiaires, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA sur site à Balma ?",

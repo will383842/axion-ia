@@ -54,7 +54,7 @@ export const HOUILLES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Houilles ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, livrable écrit). Pour une PME, l'audit approfondi se situe entre 1 900 et {{price:audit-cible-avance}}. Implémentation dès {{price:impl-poc|entry}}. Tarifs publics, pas de devis caché.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, livrable écrit). Pour une PME, l'audit approfondi se situe entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Implémentation dès {{price:impl-poc|entry}}. Tarifs publics, pas de devis caché.",
     },
     {
       q: "Quels délais pour une intervention IA à Houilles ?",

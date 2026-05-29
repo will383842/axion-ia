@@ -3,6 +3,7 @@
 // le test vérifie que chaque mode route vers le bon helper, pas une valeur figée
 // — il reste donc vert si Will change un tarif dans la SSOT.
 import { describe, it, expect, vi } from "vitest";
+import { fmtNumber } from "@/lib/intl";
 import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
@@ -74,6 +75,15 @@ describe("resolvePriceTokens — modes", () => {
     );
     expect(resolvePriceTokens("{{price:audit-cible-solo|compact}}", "fr")).toBe(
       formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true }),
+    );
+  });
+
+  it("num → nombre seul sans devise (1er membre d'un range « entre X et … »)", () => {
+    expect(resolvePriceTokens("{{price:audit-cible-solo|num}}", "fr")).toBe(
+      fmtNumber(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr"),
+    );
+    expect(resolvePriceTokens("entre {{price:audit-cible-solo|num}} et X", "fr")).not.toContain(
+      "€",
     );
   });
 

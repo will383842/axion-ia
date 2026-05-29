@@ -57,7 +57,7 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Castelnau-d'Estrétefonds  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistiques, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistiques, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider une PME logistique à Eurocentre ?",

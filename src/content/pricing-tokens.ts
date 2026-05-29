@@ -24,6 +24,7 @@
 // garde-fou CI `no-hardcoded-prices.spec.ts` détecte les tokens orphelins).
 
 import type { Locale } from "@/i18n/routing";
+import { fmtNumber } from "@/lib/intl";
 import {
   PRICING_CATEGORIES,
   UN_A_UN_TIERS,
@@ -35,8 +36,20 @@ import {
   type PricingTier,
 } from "@/content/pricing";
 
-/** Modes de rendu d'un token prix. */
-export type PriceTokenMode = "full" | "flat" | "onsite" | "range" | "from" | "entry" | "compact";
+/**
+ * Modes de rendu d'un token prix.
+ * `num` = nombre seul SANS devise (« 1 900 ») — utile pour le 1er membre d'un
+ * range écrit « entre 1 900 et … € » où le « € » est porté par le 2e membre.
+ */
+export type PriceTokenMode =
+  | "full"
+  | "flat"
+  | "onsite"
+  | "range"
+  | "from"
+  | "entry"
+  | "compact"
+  | "num";
 
 const VALID_MODES: ReadonlySet<string> = new Set<PriceTokenMode>([
   "full",
@@ -46,6 +59,7 @@ const VALID_MODES: ReadonlySet<string> = new Set<PriceTokenMode>([
   "from",
   "entry",
   "compact",
+  "num",
 ]);
 
 /**
@@ -108,6 +122,7 @@ function renderEntry(entry: RegistryEntry, mode: PriceTokenMode, locale: Locale)
     const sub = entry.subTier;
     if (mode === "from") return `${fromPrefix(locale)} ${formatAmount(sub.priceFlat, locale)}`;
     if (mode === "compact") return formatAmount(sub.priceFlat, locale, { compact: true });
+    if (mode === "num") return fmtNumber(sub.priceFlat, locale);
     return formatAmount(sub.priceFlat, locale);
   }
 
@@ -137,6 +152,11 @@ function renderEntry(entry: RegistryEntry, mode: PriceTokenMode, locale: Locale)
       const entryPrice = tierEntryPrice(tier);
       if (entryPrice == null) return onQuoteLabel(locale);
       return formatAmount(entryPrice, locale, { compact: true });
+    }
+    case "num": {
+      const entryPrice = tierEntryPrice(tier);
+      if (entryPrice == null) return onQuoteLabel(locale);
+      return fmtNumber(entryPrice, locale);
     }
     case "full":
     default:

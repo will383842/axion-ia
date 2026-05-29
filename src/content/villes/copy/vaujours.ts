@@ -57,7 +57,7 @@ export const VAUJOURS_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Vaujours ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site à Vaujours. Pour les audits approfondis (Audit Stratégique), comptez entre 1 900 et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site à Vaujours. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les professions libérales à Vaujours ?",

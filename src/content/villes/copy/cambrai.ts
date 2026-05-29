@@ -55,7 +55,7 @@ export const CAMBRAI_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Cambrai ?",
-      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou logistiques du Cambrésis, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou logistiques du Cambrésis, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Quels délais pour une intervention à Cambrai ?",

@@ -57,7 +57,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Beauzelle  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Beauzelle ?",

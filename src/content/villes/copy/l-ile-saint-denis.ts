@@ -61,7 +61,7 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à L'Île-Saint-Denis ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site. Pour les audits approfondis (Audit Stratégique), comptez entre 1 900 et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une session de 4 heures sur site. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
       q: "Comment accéder à L'Île-Saint-Denis pour une mission ?",

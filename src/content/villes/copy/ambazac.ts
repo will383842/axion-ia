@@ -57,7 +57,7 @@ export const AMBAZAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ambazac  ?",
-      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME filière bois ou granit, un audit approfondi est proposé entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, sans surprise.",
+      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME filière bois ou granit, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, sans surprise.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert ?",

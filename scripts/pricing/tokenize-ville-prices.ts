@@ -286,6 +286,26 @@ function processLine(
   return out;
 }
 
+// Nombre de TÊTE d'un range écrit « entre 1 900 et … » / « de 1 900 à … » :
+// le 2e membre porte le « € » (déjà tokenisé), mais le 1er nombre reste en dur
+// (pas de « € » juste après → raté par SINGLE_RE). Sans ça, changer le prix dans
+// pricing.ts ne mettrait PAS à jour ce 1er nombre → propagation incomplète.
+// On le tokenise en mode `num` (rend le nombre seul, sans « € », rendu identique).
+// Tourne MÊME sur les lignes déjà tokenisées (le 1er nombre y est encore en dur).
+const LEADING_RANGE_RE = new RegExp(
+  `(?<![\\d-])(${NUM})(\\s*(?:et|à|-|–|—|→)\\s*)(\\{\\{price:)`,
+  "g",
+);
+function tokenizeLeadingRangeNumber(line: string): string {
+  return line.replace(LEADING_RANGE_RE, (match, numStr: string, conn: string, tokStart: string) => {
+    const value = toInt(numStr);
+    const target = UNAMBIGUOUS_BY_VALUE.get(value); // unambiguous seulement
+    if (!target) return match; // valeur non-SSOT ou ambiguë → laisser
+    bump(`${target.id}|num`);
+    return `{{price:${target.id}|num}}${conn}${tokStart}`;
+  });
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 const files = readdirSync(COPY_DIR)
   .filter((f) => f.endsWith(".ts") && f !== "types.ts" && f !== "_auto-generated-index.ts")
@@ -305,7 +325,8 @@ for (const f of targetFiles) {
     const open = SERVICE_OPEN_RE.exec(line);
     if (open) currentService = open[1]!;
     else if (TOPLEVEL_PROSE_RE.test(line)) currentService = null;
-    const out = processLine(line, f, i + 1, currentService);
+    let out = processLine(line, f, i + 1, currentService);
+    out = tokenizeLeadingRangeNumber(out); // tourne aussi sur lignes déjà tokenisées
     if (out !== line) changed = true;
     return out;
   });

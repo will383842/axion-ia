@@ -54,7 +54,7 @@ export const CARBONNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Carbonne ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, livrable écrit, 3 cas d'usage prioritaires). Pour une PME du négoce ou de l'agroalimentaire, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Implémentation dès {{price:impl-poc|entry}}. Tarifs publics affichés.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, livrable écrit, 3 cas d'usage prioritaires). Pour une PME du négoce ou de l'agroalimentaire, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Implémentation dès {{price:impl-poc|entry}}. Tarifs publics affichés.",
     },
     {
       q: "Quels délais pour une intervention IA à Carbonne ?",

@@ -57,7 +57,7 @@ export const SAINT_GIRONS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Girons  ?",
-      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME agroalimentaire ou tourisme, un audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
+      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME agroalimentaire ou tourisme, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et thermalisme ?",

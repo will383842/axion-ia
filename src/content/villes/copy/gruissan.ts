@@ -57,7 +57,7 @@ export const GRUISSAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gruissan  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tourisme ou hébergement saisonnier, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tourisme ou hébergement saisonnier, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs de La Clape ?",

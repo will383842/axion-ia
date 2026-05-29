@@ -57,7 +57,7 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Villefranche-de-Lauragais : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou exploitations céréalières du Lauragais, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou exploitations céréalières du Lauragais, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Comment Axion-IA gère-t-il la conformité RGPD à Villefranche-de-Lauragais ?",

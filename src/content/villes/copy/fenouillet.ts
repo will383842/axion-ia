@@ -57,7 +57,7 @@ export const FENOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fenouillet  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Fenouillet ?",

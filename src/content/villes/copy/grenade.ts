@@ -57,7 +57,7 @@ export const GRENADE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Grenade  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider une PME agroalimentaire à Grenade ?",

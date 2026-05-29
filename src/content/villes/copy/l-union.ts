@@ -57,7 +57,7 @@ export const L_UNION_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à L'Union  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à L'Union ?",

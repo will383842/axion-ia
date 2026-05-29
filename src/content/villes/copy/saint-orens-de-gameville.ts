@@ -57,7 +57,7 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Orens  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une intervention IA à Saint-Orens ?",

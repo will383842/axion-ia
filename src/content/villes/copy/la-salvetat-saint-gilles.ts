@@ -57,7 +57,7 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Salvetat-Saint-Gilles  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre 1 900 et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à La Salvetat-Saint-Gilles ?",

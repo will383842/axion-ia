@@ -57,7 +57,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Affrique  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME agroalimentaires filière Roquefort, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME agroalimentaires filière Roquefort, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert Grands Causses ?",

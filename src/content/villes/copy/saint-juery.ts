@@ -53,7 +53,7 @@ export const SAINT_JUERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Saint-Juéry ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE. Pour les PME industrielles, audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité des processus de production. Tarifs publics.",
+      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE. Pour les PME industrielles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des processus de production. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle optimiser la production métallurgique ?",

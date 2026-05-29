@@ -57,7 +57,7 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Lézignan-Corbières  ?",
-      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Les zones d'activités de Lézignan bénéficient-elles de l'IA ?",
