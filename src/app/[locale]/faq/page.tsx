@@ -19,6 +19,11 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+// ISR 1h (P1 audit KB 2026-05-29) — aligné /connaissances et /ressources.
+// Évite un rendu DB synchrone à chaque requête (500 si DB down) et repeuple
+// la page sous 1h après deploy (build SSG = stub.invalid → vide au build).
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};

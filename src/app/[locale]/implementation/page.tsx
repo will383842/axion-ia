@@ -57,6 +57,7 @@ import { ImplementationScenariosBySize } from "@/components/services/implementat
 import { ImplementationProcessSteps } from "@/components/services/implementation/ImplementationProcessSteps";
 import { ImplementationFaq } from "@/components/services/implementation/ImplementationFaq";
 import { ImplementationCtaBlock } from "@/components/services/implementation/ImplementationCtaBlock";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 
 export const revalidate = 3600;
 
@@ -285,6 +286,9 @@ export default async function ImplementationListing({ params }: Props) {
           />
         </Container>
       </Section>
+
+      {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
+      <RelatedKnowledge service="implementation" />
 
       <ImplementationCtaBlock isFr={isFr} />
 

@@ -18,6 +18,7 @@ import { KB_UN_A_UN } from "../../../src/server/content-gen/kb/un-a-un";
 import { KB_IMPLEMENTATIONS } from "../../../src/server/content-gen/kb/implementations";
 import { KB_SITES_WEB_AUGMENTES } from "../../../src/server/content-gen/kb/sites-web-augmentes";
 import type { KbFact } from "../../../src/server/content-gen/kb/audits";
+import { servicesForVerticales, serviceTagSlug } from "../../../src/content/knowledge/services";
 
 /** Tous les facts sectoriels à seeder. Idempotent : upsert sur slug unique. */
 const ALL_KB_FACTS: readonly KbFact[] = [
@@ -80,6 +81,44 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       wordCount: bodyText.split(/\s+/).length,
     },
   });
+
+  // KB V4.1 Service Binding — tags `service:*` + bindings dérivés de
+  // `fact.verticales`. Rend la KB requêtable par service (reader
+  // `listEntriesByService`), alimente le bloc « connaissances liées » + le
+  // CTA/Offer. Idempotent. Un fait peut appartenir à plusieurs services
+  // (multi-verticale) ; le 1er est marqué `isPrimary`.
+  const boundServices = servicesForVerticales(fact.verticales);
+  for (let i = 0; i < boundServices.length; i++) {
+    const def = boundServices[i]!;
+    const tag = await prisma.knowledgeTag.upsert({
+      where: { slug: serviceTagSlug(def.slug) },
+      update: { nameFr: def.tagNameFr, nameEn: def.tagNameEn },
+      create: {
+        slug: serviceTagSlug(def.slug),
+        nameFr: def.tagNameFr,
+        nameEn: def.tagNameEn,
+      },
+    });
+    await prisma.knowledgeTagOnEntry.upsert({
+      where: { entryId_tagId: { entryId: entry.id, tagId: tag.id } },
+      update: {},
+      create: { entryId: entry.id, tagId: tag.id },
+    });
+
+    // Binding gouvernance (override admin + variante cible futurs). `isPrimary`
+    // sur le 1er service. `update: {}` → un override admin (source:"admin") n'est
+    // pas écrasé par un re-seed.
+    await prisma.knowledgeServiceBinding.upsert({
+      where: { entryId_serviceKind: { entryId: entry.id, serviceKind: def.slug } },
+      update: {},
+      create: {
+        entryId: entry.id,
+        serviceKind: def.slug,
+        isPrimary: i === 0,
+        source: "seed",
+      },
+    });
+  }
 }
 
 export async function seedKbFacts(prisma: PrismaClient): Promise<number> {

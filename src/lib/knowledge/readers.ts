@@ -14,7 +14,13 @@
 import { prisma } from "@/lib/prisma";
 import { isKbBackendUnifiedFor, type KbBackendTarget } from "./feature-flag";
 import { ALL_GLOSSARY_TERMS_EXTENDED } from "@/content/glossary-extension";
-import type { Locale } from "../../../prisma/generated/client";
+import {
+  serviceTagSlug,
+  SERVICE_TAG_PREFIX,
+  isServiceSlug,
+  type ServiceSlug,
+} from "@/content/knowledge/services";
+import type { KbType, Locale } from "../../../prisma/generated/client";
 
 /**
  * Façade uniforme pour le rendu public.
@@ -518,6 +524,146 @@ export async function findHelpArticleBySlug(
     publishedAt: translation.entry.publishedAt,
     updatedAt: translation.updatedAt,
   };
+}
+
+// ============================================================
+// SERVICE BINDING (KB V4.1) — connaissances liées à un service
+// ============================================================
+
+/** Carte publique minimale d'une entrée KB liée à un service. */
+export interface ServiceKnowledgeCard {
+  readonly entryId: string;
+  readonly type: KbType;
+  readonly slug: string;
+  readonly title: string;
+  readonly excerpt: string | null;
+  readonly href: string | null;
+  readonly publishedAt: Date | null;
+}
+
+/**
+ * Liste les entrées KB publiées rattachées à un service (tag `service:<slug>`).
+ *
+ * Triple filtre public strict (status+audience+confidentiality+deletedAt+
+ * publishedAt<=now+embargo) — aligné sur `public-fetch.ts`. Aucune fuite
+ * draft/team/internal/futur/embargo possible.
+ *
+ * Build-time : si DATABASE_URL = stub `stub.invalid`, le Proxy Prisma renvoie
+ * `[]` → le bloc « connaissances liées » est masqué, repeuplé par l'ISR de la
+ * page service sous son `revalidate`.
+ */
+export async function listEntriesByService(
+  serviceSlug: ServiceSlug,
+  opts?: { readonly locale?: Locale; readonly limit?: number; readonly types?: readonly KbType[] },
+): Promise<readonly ServiceKnowledgeCard[]> {
+  const locale: Locale = opts?.locale ?? "fr";
+  const limit = opts?.limit ?? 6;
+  const now = new Date();
+  try {
+    const rows = await prisma.knowledgeEntry.findMany({
+      where: {
+        status: "published",
+        audience: "public",
+        confidentiality: "public",
+        deletedAt: null,
+        publishedAt: { lte: now },
+        OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }],
+        tags: { some: { tag: { slug: serviceTagSlug(serviceSlug) } } },
+        ...(opts?.types && opts.types.length > 0 ? { type: { in: [...opts.types] } } : {}),
+      },
+      orderBy: [{ pinned: "desc" }, { featured: "desc" }, { publishedAt: "desc" }],
+      take: limit,
+      select: {
+        id: true,
+        type: true,
+        publishedAt: true,
+        translations: {
+          where: { locale },
+          select: { slug: true, title: true, excerpt: true },
+          take: 1,
+        },
+      },
+    });
+    return rows
+      .map((row): ServiceKnowledgeCard | null => {
+        const t = row.translations[0];
+        if (!t || !t.slug) return null;
+        return {
+          entryId: row.id,
+          type: row.type,
+          slug: t.slug,
+          title: t.title,
+          excerpt: t.excerpt,
+          // Lien universel vers la page détail KB : `/connaissances/[slug]` sert
+          // TOUTE entrée publique par slug FR (sans filtre de type), contrairement
+          // à buildKbPublicUrl qui mappe industry_use_case → /ressources/<type>/…
+          // (route inexistante → 404). Les faits services sont industry_use_case.
+          href: `/connaissances/${t.slug}`,
+          publishedAt: row.publishedAt,
+        };
+      })
+      .filter((c): c is ServiceKnowledgeCard => c !== null);
+  } catch {
+    // Table absente bootstrap / DB down → bloc masqué (fail-soft).
+    return [];
+  }
+}
+
+/**
+ * Retourne le service (`ServiceSlug`) rattaché à une entrée KB publiée via son
+ * slug de traduction FR, ou `null`. Lit le tag `service:*` posé en Vague A.
+ *
+ * Triple filtre public strict (l'entrée doit être réellement publique). Si
+ * plusieurs services taggés (rare, multi-verticale), retourne le premier.
+ * Fail-soft `null` (build stub / DB down) → l'appelant n'affiche pas de bloc.
+ */
+export async function getServiceForEntrySlug(slugFr: string): Promise<ServiceSlug | null> {
+  const now = new Date();
+  try {
+    const translation = await prisma.knowledgeTranslation.findFirst({
+      where: {
+        locale: "fr",
+        slug: slugFr,
+        entry: {
+          status: "published",
+          audience: "public",
+          confidentiality: "public",
+          deletedAt: null,
+          publishedAt: { lte: now },
+          OR: [{ embargoUntil: null }, { embargoUntil: { lte: now } }],
+        },
+      },
+      select: {
+        entry: {
+          select: {
+            // Source de vérité gouvernance (KB V4.1) : binding primaire d'abord.
+            serviceBindings: {
+              orderBy: { isPrimary: "desc" },
+              select: { serviceKind: true },
+            },
+            // Fallback : tag `service:*` (Vague A — marche sans binding peuplé).
+            tags: {
+              where: { tag: { slug: { startsWith: SERVICE_TAG_PREFIX } } },
+              select: { tag: { select: { slug: true } } },
+            },
+          },
+        },
+      },
+    });
+    if (!translation) return null;
+    // 1) Binding explicite (admin override ou seed) — prioritaire.
+    for (const b of translation.entry.serviceBindings) {
+      if (isServiceSlug(b.serviceKind)) return b.serviceKind;
+    }
+    // 2) Fallback tag dérivé.
+    for (const t of translation.entry.tags) {
+      const candidate = t.tag.slug.slice(SERVICE_TAG_PREFIX.length);
+      if (isServiceSlug(candidate)) return candidate;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 // ============================================================

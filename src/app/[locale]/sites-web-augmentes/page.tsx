@@ -28,6 +28,7 @@ import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMet
 import { SitesWebFaq } from "@/components/services/sites-web/SitesWebFaq";
 import { SitesWebCtaBlock } from "@/components/services/sites-web/SitesWebCtaBlock";
 import { MAINTENANCE_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import {
   buildProductMetadata,
@@ -228,6 +229,10 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       />
 
       <LocalGeoFaqSection isFr={isFr} service="codage-developpement" tone="paper" />
+
+      {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide). Tag
+          service:sites-web-augmentes (≠ slug géo codage-developpement ci-dessus). */}
+      <RelatedKnowledge service="sites-web-augmentes" />
 
       <SitesWebCtaBlock isFr={isFr} />
 

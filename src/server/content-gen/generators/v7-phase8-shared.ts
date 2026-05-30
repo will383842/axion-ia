@@ -98,11 +98,19 @@ export async function runV7Phase8Pipeline(
     : "";
 
   // 1. KB retrieve top 8 chunks (audit 2026-05-24 — Phase 8 v7 maintenant RAG-enabled)
+  // P0-6 audit KB 2026-05-29 — bride anti-collapse : on ne grounde QUE sur du
+  // savoir curé (méthodo/doctrine/cas concrets + les 340 faits services seedés
+  // en `industry_use_case`), JAMAIS sur le contenu auto-généré long-tail des 12
+  // générateurs Phase-8 eux-mêmes (sinon boucle auto-alimentée → collapse à
+  // grande échelle). Set identique à ville-hub-copy (seul generator déjà bridé).
   const kbChunks = await kbRetrieve({
     query: `${safeKeyword} ${config.contentTypeSlug} ${safeVilleSlug}`,
     locale: "fr",
     k: 8,
-    filters: { audiences: ["public"] },
+    filters: {
+      audiences: ["public"],
+      types: ["methodology", "doctrine", "case_study", "industry_use_case"],
+    },
     mode: "hybrid",
   });
   const kbContext = kbChunks.map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`).join("\n\n");

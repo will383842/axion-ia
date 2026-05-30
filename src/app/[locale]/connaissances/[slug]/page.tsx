@@ -23,6 +23,8 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { buildProductMetadata } from "@/lib/seo";
 import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
+import { getServiceForEntrySlug } from "@/lib/knowledge/readers";
+import { ServiceOfferBlock } from "@/components/services/ServiceOfferBlock";
 import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
@@ -69,6 +71,9 @@ export default async function ConnaissanceDetail({ params }: Props) {
 
   const entry = await fetchPublicKbBySlug(slug);
   if (!entry) notFound();
+
+  // KB V4.1 Service Binding — service rattaché (tag service:*) → CTA + Offer.
+  const service = await getServiceForEntrySlug(slug);
 
   const publishedStr = formatDate(entry.publishedAt);
   const updatedStr = formatDate(entry.updatedAt);
@@ -143,6 +148,10 @@ export default async function ConnaissanceDetail({ params }: Props) {
         tone="sand"
         emitJsonLd
       />
+
+      {/* KB V4.1 Service Binding — CTA contextuel + Offer JSON-LD (masqué si
+          l'entrée n'est rattachée à aucun service via tag service:*). */}
+      {service ? <ServiceOfferBlock service={service} /> : null}
 
       <CtaBlock
         title="Vous voulez en discuter"

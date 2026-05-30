@@ -19,6 +19,7 @@
 import { PrismaClient } from "./generated/client";
 import { hashPassword } from "../src/lib/auth-password";
 import { seedAuthorProfile } from "./seeds/content-gen/author-profile";
+import { seedKbFacts } from "./seeds/content-gen/seed-kb-facts";
 
 const prisma = new PrismaClient();
 
@@ -1026,6 +1027,12 @@ async function main() {
   // Audit AEO/GEO 2026-05-15 §3.4 P0-3.
   const manon = await seedAuthorProfile(prisma);
   console.log(`✓ AuthorProfile seeded (slug=${manon.slug}, aiGenerated=${manon.aiGenerated})`);
+  // P0-4 audit KB 2026-05-29 — câblage du seed des 340 faits RAG des 5 services
+  // (audit/implementation/interventions-formations/sites-web/un-à-un). Sans cet
+  // appel, les faits sont absents en prod → générateurs non ancrés + binding
+  // service vide. Idempotent (upsert par slug). Retourne le nb de faits seedés.
+  const kbFactsCount = await seedKbFacts(prisma);
+  console.log(`✓ KB facts seeded (${kbFactsCount} faits services).`);
   console.log("✓ Seed complete.");
 }
 

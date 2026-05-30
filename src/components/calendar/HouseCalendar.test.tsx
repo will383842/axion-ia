@@ -47,23 +47,34 @@ describe("<HouseCalendar>", () => {
   });
 
   it("invokes onConfirm with the picked slot once date + time are selected", () => {
-    const onConfirm = vi.fn();
-    const slot = buildSlot(2, "09:00", "available");
-    render(<HouseCalendar slots={[slot]} labels={FR_LABELS} onConfirm={onConfirm} />);
+    // Freeze the clock to a mid-month date so the test slot (today + 2 days)
+    // always lands in the month the calendar renders by default. Without this,
+    // the run flakes on the 30th/31st: today + 2 crosses into next month, whose
+    // day buttons aren't in the initial view → getByLabelText finds nothing.
+    // Only Date is faked, to avoid interfering with React Testing Library timers.
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-01-15T12:00:00Z"));
+    try {
+      const onConfirm = vi.fn();
+      const slot = buildSlot(2, "09:00", "available");
+      render(<HouseCalendar slots={[slot]} labels={FR_LABELS} onConfirm={onConfirm} />);
 
-    // Pick the date — its accessible label embeds the available status keyword.
-    const dayBtn = screen.getByLabelText(new RegExp(`· ${FR_LABELS.available}`));
-    fireEvent.click(dayBtn);
+      // Pick the date — its accessible label embeds the available status keyword.
+      const dayBtn = screen.getByLabelText(new RegExp(`· ${FR_LABELS.available}`));
+      fireEvent.click(dayBtn);
 
-    // Pick the time slot.
-    const timeBtn = screen.getByRole("button", { name: "09:00" });
-    fireEvent.click(timeBtn);
+      // Pick the time slot.
+      const timeBtn = screen.getByRole("button", { name: "09:00" });
+      fireEvent.click(timeBtn);
 
-    // Confirm.
-    const confirmBtn = screen.getByRole("button", { name: new RegExp(FR_LABELS.confirm) });
-    fireEvent.click(confirmBtn);
+      // Confirm.
+      const confirmBtn = screen.getByRole("button", { name: new RegExp(FR_LABELS.confirm) });
+      fireEvent.click(confirmBtn);
 
-    expect(onConfirm).toHaveBeenCalledOnce();
-    expect(onConfirm.mock.calls[0]?.[0]).toMatchObject({ time: "09:00", status: "available" });
+      expect(onConfirm).toHaveBeenCalledOnce();
+      expect(onConfirm.mock.calls[0]?.[0]).toMatchObject({ time: "09:00", status: "available" });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
