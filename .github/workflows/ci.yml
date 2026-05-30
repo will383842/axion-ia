@@ -196,15 +196,24 @@ jobs:
         continue-on-error: true
       - name: Bundle delta vs main (reporting)
         uses: andresz1/size-limit-action@v1
+        # Cap dur : cette action rebuild `main` pour calculer le delta — sur les
+        # ~17,9k pages SSG elle peut hang ~50 min et, MALGRE continue-on-error,
+        # un hang epuise le timeout du job (Gate B tue en « cancelled », run
+        # 26674394530 le 2026-05-30, Lighthouse jamais lance). Le cap fait
+        # echouer le step vite -> continue-on-error joue -> Lighthouse (strict)
+        # tourne. (Fix 2026-05-30.)
+        timeout-minutes: 6
         continue-on-error: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           skip_step: install
       - name: Playwright suite (continue-on-error tant que P1-2 bugs UI non fixés)
         run: pnpm test:e2e --project=chromium
+        timeout-minutes: 15
         continue-on-error: true
       - name: Lighthouse CI
         run: pnpm lhci:autorun
+        timeout-minutes: 20
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v7
