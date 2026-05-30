@@ -12,7 +12,12 @@
  * Réutilise `PATTERN_AMOUNT_EUR` (fact-check/claims-extractor) et l'allowlist
  * dérivée de `pricing.ts`. Branché dans `quality/doctrine-check.ts::checkDoctrine`.
  */
-import { PRICING_CATEGORIES, UN_A_UN_TIERS, type PricingTier } from "@/content/pricing";
+import {
+  PRICING_CATEGORIES,
+  UN_A_UN_TIERS,
+  UN_A_UN_RECURRING_TIER,
+  type PricingTier,
+} from "@/content/pricing";
 import { PATTERN_AMOUNT_EUR } from "../fact-check/claims-extractor";
 
 /**
@@ -25,6 +30,7 @@ const SSOT_AMOUNTS: ReadonlySet<number> = (() => {
   const groups: ReadonlyArray<ReadonlyArray<PricingTier>> = [
     ...Object.values(PRICING_CATEGORIES),
     UN_A_UN_TIERS,
+    [UN_A_UN_RECURRING_TIER],
   ];
   for (const group of groups) {
     for (const tier of group) {

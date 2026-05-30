@@ -502,6 +502,31 @@ if (!INTERVENTION_DIRIGEANTS_TIER) {
 
 export const UN_A_UN_TIERS: ReadonlyArray<PricingTier> = [INTERVENTION_DIRIGEANTS_TIER];
 
+/**
+ * Coaching 1-to-1 récurrent (contrat 6/12/24 mois) — Refonte un-a-un 2026-05-30
+ * (Will). Palier d'abonnement coaching individuel régulier, distinct de la
+ * journée one-shot (`intervention-dirigeants` / `intervention-membre-equipe`).
+ * Exposé séparément (pas dans PRICING_CATEGORIES) car c'est une formule
+ * d'accompagnement continu, consommée uniquement par la page `/un-a-un`.
+ */
+export const UN_A_UN_RECURRING_TIER: PricingTier = {
+  id: "un-a-un-recurrent",
+  labelFr: "Coaching régulier 1-to-1",
+  labelEn: "Recurring 1-to-1 coaching",
+  priceFlat: 790,
+  recurrenceFr: "/session",
+  recurrenceEn: "/session",
+  durationFr: "1 session/mois ou /2 mois · contrat 6, 12 ou 24 mois",
+  durationEn: "1 session/month or /2 months · 6, 12 or 24-month contract",
+  groupSizeFr: "1 personne (1-to-1)",
+  groupSizeEn: "1 person (1-on-1)",
+  descriptionFr:
+    "Stratégie d'évolution IA de bout en bout : sessions régulières et outils personnels pour votre activité, pour faire sauter les tâches répétitives et alléger la charge mentale.",
+  descriptionEn:
+    "End-to-end AI evolution strategy: regular sessions and personal tools for your activity, to eliminate repetitive tasks and lighten mental load.",
+  audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
+};
+
 // ============================================================================
 // IMPLÉMENTATION IA — paliers
 // ============================================================================

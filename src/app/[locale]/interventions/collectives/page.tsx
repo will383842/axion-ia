@@ -988,9 +988,9 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                   labelEn: "metropolitan + French-speaking abroad (1 week min.)",
                 },
                 {
-                  number: isFr ? "3-5 / pers." : "3-5 / person",
-                  labelFr: "automatisations maîtrisées par formation",
-                  labelEn: "automations mastered per training",
+                  number: isFr ? "Dès le 1ᵉʳ jour" : "From day 1",
+                  labelFr: "des automatisations concrètes, applicables tout de suite",
+                  labelEn: "concrete automations, usable right away",
                 },
                 {
                   number: isFr ? "12h/sem" : "12h/week",
