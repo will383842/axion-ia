@@ -13,7 +13,6 @@ import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import type { VilleContext } from "@/components/services/types";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface AuditFaqItem {
   readonly id: string;
@@ -32,82 +31,84 @@ export interface AuditFaqProps {
   readonly villeSpecificFaqs?: ReadonlyArray<{ q: string; a: string }>;
 }
 
-function buildFrFaqs(onsitePrice: string): ReadonlyArray<AuditFaqItem> {
+function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
   return [
     {
       id: "duree-reservation",
-      question: "Combien de temps prend la réservation ?",
-      answer: `L'audit Flash terrain (${onsitePrice}) se réserve directement sur le calendrier en 2 minutes. Pour Flash distance et les niveaux Ciblé / Stratégique, vous recevez un devis personnalisé sous 48 h ouvrées avec un créneau d'appel de cadrage proposé.`,
+      question: "Comment ça démarre ?",
+      answer:
+        "Un appel de cadrage en 2 minutes. Pour l'Audit Flash, on planifie la journée ; pour un audit complet, vous recevez un devis sous 48 h ouvrées.",
     },
     {
       id: "remote-onsite",
-      question: "À distance ou sur site, quelle différence ?",
+      question: "À distance ou sur site ?",
       answer:
-        "À distance : visio sécurisée + entretiens + analyse des données partagées. Plus rapide à organiser, tarif réduit. Sur site : observation directe, immersion équipe, ateliers métier physiques. Recommandé dès le niveau Ciblé pour les ateliers métier.",
+        "À distance : visio sécurisée, entretiens, analyse de données. Sur site : observation directe et ateliers métier. Au choix selon votre besoin.",
     },
     {
       id: "data",
-      question: "Quelles données dois-je vous fournir ?",
+      question: "Quelles données dois-je fournir ?",
       answer:
-        "Aucune donnée sensible n'est exfiltrée hors UE. Tous les entretiens et analyses se font sur place ou en visio sécurisée. Pour calibrer le devis : taille de l'équipe, secteur, outils en place, périmètre cible. Aucun accès production demandé avant signature.",
+        "Aucune donnée sensible n'est exfiltrée hors UE. Pour le devis : taille, secteur, outils, périmètre. Aucun accès production avant signature.",
     },
     {
       id: "after",
       question: "Que se passe-t-il après l'audit ?",
       answer:
-        "Vous repartez avec un plan d'action chiffré et structuré par phases d'échéancier. Le rapport est calibré sur votre taille et la profondeur du déploiement — de 30 pages pour un audit ciblé à plusieurs centaines pour un déploiement complet ETI ou grand groupe. Vous êtes ensuite totalement libres : déployer les recommandations à votre rythme avec vos équipes, n'activer que les chantiers prioritaires, ou confier l'exécution à Axion-IA (module Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en œuvre — sans frais additionnels si elle tient en 60 minutes.",
+        "Vous repartez avec un plan d'action chiffré, priorisé par phases. Vous déployez à votre rythme — avec vos équipes ou avec nous (module Implémentation). Un suivi peut être programmé après livraison.",
     },
     {
       id: "eu-jurisdiction",
       question: "Axion-IA peut-elle facturer en France ?",
       answer:
-        "Oui. Axion-IA est une société européenne dûment enregistrée, opérant en libre prestation de services dans toute l'UE (incluant France). Facturation HT, paiement par virement SEPA ou carte. Données hébergées exclusivement en UE (Hetzner Frankfurt). Conformité RGPD complète.",
+        "Oui. Société européenne en libre prestation dans toute l'UE (France incluse). Facturation HT, données hébergées en UE, conformité RGPD.",
     },
     {
       id: "starting-point",
       question: "Et si je ne sais pas par où commencer ?",
       answer:
-        "Notre rapport est volontairement priorisé : le quick-win #1 doit être lançable dans la semaine qui suit la restitution. Si vous hésitez, nous proposons un appel de clarification gratuit dans les 30 jours suivant la livraison — où l'on prend le temps de tout cadrer à la perfection. Et le module Implémentation peut prendre le relais sans transition.",
+        "Le rapport est priorisé : le quick-win nº 1 est lançable dès la semaine suivante. Et le module Implémentation peut prendre le relais.",
     },
   ];
 }
 
-function buildEnFaqs(onsitePrice: string): ReadonlyArray<AuditFaqItem> {
+function buildEnFaqs(): ReadonlyArray<AuditFaqItem> {
   return [
     {
       id: "duree-reservation",
-      question: "How long does booking take?",
-      answer: `The on-site Flash audit (${onsitePrice}) is booked directly on the calendar in 2 minutes. For remote Flash and Targeted / Strategic levels, you receive a personalised quote within 48 business hours with a proposed framing call slot.`,
+      question: "How does it start?",
+      answer:
+        "A 2-minute scoping call. For the Flash audit we plan the day; for a complete audit you receive a quote within 48 business hours.",
     },
     {
       id: "remote-onsite",
-      question: "Remote or on site — what's the difference?",
+      question: "Remote or on site?",
       answer:
-        "Remote: secure video + interviews + analysis of shared data. Faster to organise, reduced fee. On site: direct observation, team immersion, physical business workshops. Recommended from Targeted level for business workshops.",
+        "Remote: secure video, interviews, data analysis. On site: direct observation and business workshops. Your choice, based on your need.",
     },
     {
       id: "data",
       question: "What data do I need to provide?",
       answer:
-        "No sensitive data is exfiltrated outside the EU. All interviews and analysis happen on-site or in secure video conferencing. To calibrate the quote: team size, sector, tools in place, target scope. No production access requested before signing.",
+        "No sensitive data is exfiltrated outside the EU. For the quote: size, sector, tools, scope. No production access before signing.",
     },
     {
       id: "after",
       question: "What happens after the audit?",
       answer:
-        "You leave with a costed action plan structured by phase timelines. The report is calibrated to your size and deployment depth — from 30 pages for a targeted audit to several hundred for a full mid-cap or large-enterprise deployment. You're then fully free: roll out the recommendations at your pace with your teams, activate only the priority workstreams, or hand execution to Axion-IA (Implementation module). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
+        "You leave with a costed action plan, prioritised by phase. You deploy at your pace — with your teams or with us (Implementation module). A follow-up can be scheduled after delivery.",
     },
     {
       id: "eu-jurisdiction",
       question: "Can Axion-IA invoice in France?",
       answer:
-        "Yes. Axion-IA is a duly registered European company, operating under EU free-services-provision (including France). Excl. VAT invoicing, SEPA transfer or card payment. Data hosted exclusively in the EU (Hetzner Frankfurt). Full GDPR compliance.",
+        "Yes. A registered European company under EU free-services-provision (France included). Excl. VAT invoicing, EU-hosted data, full GDPR compliance.",
     },
     {
       id: "starting-point",
       question: "What if I don't know where to start?",
       answer:
-        "Our report is deliberately prioritised: quick-win #1 must be launchable within a week of the debrief. If you hesitate, we offer a free 30-minute clarification call within the 30 days following delivery. And the Implementation module can take over without transition.",
+        "The report is prioritised: quick-win #1 is launchable the very next week. And the Implementation module can take over.",
     },
   ];
 }
@@ -125,10 +126,7 @@ function slugifyId(input: string, fallbackIndex: number): string {
 }
 
 export function AuditFaq({ isFr, villeContext, villeSpecificFaqs }: AuditFaqProps): ReactNode {
-  const loc: "fr" | "en" = isFr ? "fr" : "en";
-  const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
-  const onsitePrice = formatAmount(flashTier.priceFlatOnsite ?? 890, loc, { compact: true });
-  const baseItems = isFr ? buildFrFaqs(onsitePrice) : buildEnFaqs(onsitePrice);
+  const baseItems = isFr ? buildFrFaqs() : buildEnFaqs();
 
   const extraItems: ReadonlyArray<AuditFaqItem> = villeSpecificFaqs
     ? villeSpecificFaqs.slice(0, 3).map((entry, idx) => ({

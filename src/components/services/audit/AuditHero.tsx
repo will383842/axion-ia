@@ -9,12 +9,11 @@
  */
 
 import type { ReactNode } from "react";
-import { Calendar, Mail } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import type { VilleContext } from "@/components/services/types";
 
 export interface AuditHeroProps {
@@ -23,47 +22,30 @@ export interface AuditHeroProps {
 }
 
 export function AuditHero({ isFr, villeContext }: AuditHeroProps): ReactNode {
-  const loc: "fr" | "en" = isFr ? "fr" : "en";
-  const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
-  const strategicEtiTier = getTierById(AUDIT_TIERS, "audit-strategique-eti");
-  const onsitePrice = formatAmount(flashTier.priceFlatOnsite ?? 890, loc, { compact: true });
-  const remotePrice = formatAmount(flashTier.priceFlat ?? 490, loc, { compact: true });
-  const strategicMinPrice = formatAmount(strategicEtiTier.priceMin ?? 12000, loc, {
-    compact: true,
-  });
-
   // H1 ville-aware vs canonique.
   const title = villeContext
     ? isFr
       ? `Audit IA à ${villeContext.name}`
       : `AI Audit in ${villeContext.name}`
     : isFr
-      ? "Audit IA pour PME & ETI"
-      : "AI Audit for SMEs & mid-caps";
+      ? "Audit IA"
+      : "AI Audit";
 
   const titleEm = villeContext
     ? isFr
       ? `& région ${villeContext.region}`
       : `& ${villeContext.region} region`
     : isFr
-      ? `dès ${remotePrice}`
-      : `from ${remotePrice}`;
+      ? "en entreprise"
+      : "for your company";
 
   const description = villeContext
     ? isFr
-      ? `4 niveaux d'audit IA pour les entreprises de ${villeContext.name} et sa région — du diagnostic Flash ${remotePrice} (à distance) ou ${onsitePrice} (terrain) à l'audit Stratégique ETI ${strategicMinPrice}+. Couverture TPE, PME, ETI et grandes entreprises.`
-      : `4 AI audit levels for ${villeContext.name}-area companies — from ${remotePrice} Flash diagnosis (remote) or ${onsitePrice} (on site) to ${strategicMinPrice}+ Strategic mid-cap audit. Small business, SME, mid-cap and enterprise coverage.`
+      ? `Le diagnostic qui fait passer votre entreprise à l'IA, à ${villeContext.name} et sa région. On cartographie votre activité de fond en comble, on repère partout où l'IA peut vous faire gagner du temps et de l'argent — et vous repartez avec un plan d'action chiffré et priorisé. Des premières automatisations rentables dès les premières semaines.`
+      : `The diagnosis that moves your ${villeContext.name}-area company to AI. We map your whole activity, spot everywhere AI can save you time and money — and you leave with a costed, prioritised action plan. First profitable automations within the first weeks.`
     : isFr
-      ? `4 niveaux d'audit IA pour entreprise — du diagnostic Flash ${remotePrice} à l'audit Stratégique ETI ${strategicMinPrice}+. Choisissez l'angle qui vous parle : la taille de votre entreprise OU votre situation.`
-      : `4 AI audit levels for companies — from ${remotePrice} Flash diagnosis to ${strategicMinPrice}+ Strategic mid-cap audit. Choose the angle that speaks to you: your company size OR your situation.`;
-
-  const flashCtaLabel = villeContext
-    ? isFr
-      ? `Flash terrain à ${villeContext.name} · ${onsitePrice}`
-      : `On-site Flash in ${villeContext.name} · ${onsitePrice}`
-    : isFr
-      ? `Réserver un Flash terrain · ${onsitePrice}`
-      : `Book on-site Flash · ${onsitePrice}`;
+      ? `Le diagnostic qui fait passer votre entreprise à l'IA : on repère où elle vous fait gagner du temps et de l'argent. Vous repartez avec un plan d'action chiffré — et des gains dès les premières semaines.`
+      : `The diagnosis that moves your company to AI: we spot where it saves you time and money. You leave with a costed action plan — and gains within the first weeks.`;
 
   // Speakable AEO 2026 — ciblage h1 + premier paragraphe du hero.
   // Émis en standalone WebPageElement pour Google Assistant / Alexa / ChatGPT voice.
@@ -82,19 +64,26 @@ export function AuditHero({ isFr, villeContext }: AuditHeroProps): ReactNode {
         titleEm={titleEm}
         description={description}
         ctas={
+          // Règle CTA brief §1 : Primary « Réserver un appel » (/appel) +
+          // Secondary « Nous écrire » (/contact). Aligné formations / 1-to-1.
           <>
             <Cta
-              href="/reserver?intervention=audit-flash-onsite"
+              href="/appel"
               size="lg"
-              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
-              track="audit-hero-flash"
+              className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+              track="audit-hero-book-call"
             >
-              <Calendar aria-hidden="true" className="h-4 w-4" />
-              {flashCtaLabel}
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
-            <Cta href="/audit/demande" variant="outline" size="lg" track="audit-hero-cadrage">
-              <Mail aria-hidden="true" className="h-4 w-4" />
-              {isFr ? "Demander un cadrage" : "Request framing"}
+            <Cta
+              href="/contact"
+              variant="outline"
+              size="lg"
+              className="bg-paper text-terracotta hover:bg-paper border-terracotta-deep shadow-subtle border-2"
+              track="audit-hero-contact"
+            >
+              {isFr ? "Nous écrire" : "Email us"}
             </Cta>
           </>
         }

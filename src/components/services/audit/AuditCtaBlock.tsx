@@ -1,17 +1,16 @@
 /**
- * AuditCtaBlock — CTA final « Réservez votre Flash terrain » (Server Component).
+ * AuditCtaBlock — CTA final bifurqué (Server Component).
  *
- * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis `src/app/[locale]/audit/page.tsx`
- * (l.541-562). Bloc CTA mocha-rich pleine largeur. Quand `villeContext` est
- * fourni, le titre devient « Flash terrain dans {ville} » et le prix reste
- * dynamique (issu de `AUDIT_TIERS`).
+ * Brief Audit 2026 §11 (Will) — CTA final : « Réserver un appel » (/appel) +
+ * « Nous écrire » (/contact), avec le pont explicite audit → implémentation
+ * (l'audit est la porte d'entrée, on peut ensuite déployer) + réassurance
+ * « sans engagement ». Bloc CtaBlock tone dark pleine largeur.
  */
 
 import type { ReactNode } from "react";
-import { Calendar } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import type { VilleContext } from "@/components/services/types";
 
 export interface AuditCtaBlockProps {
@@ -20,27 +19,25 @@ export interface AuditCtaBlockProps {
 }
 
 export function AuditCtaBlock({ isFr, villeContext }: AuditCtaBlockProps): ReactNode {
-  const loc: "fr" | "en" = isFr ? "fr" : "en";
-  const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
-  const onsitePrice = formatAmount(flashTier.priceFlatOnsite ?? 890, loc, { compact: true });
-
   const title = villeContext
     ? isFr
-      ? `Réservez votre Flash terrain à ${villeContext.name}`
-      : `Book your on-site Flash in ${villeContext.name}`
+      ? "Prêt à passer votre entreprise à l'IA"
+      : "Ready to move your company to AI"
     : isFr
-      ? "Réservez votre Flash terrain"
-      : "Book your on-site Flash";
+      ? "Prêt à passer votre entreprise"
+      : "Ready to move your company";
 
-  const titleEm = isFr ? `à ${onsitePrice}` : `at ${onsitePrice}`;
-
-  const description = villeContext
+  const titleEm = villeContext
     ? isFr
-      ? `1 journée complète dans vos locaux à ${villeContext.name}, démos live, plan d'action sous 48 h. Réservation directe sur le calendrier. Sans engagement avant signature.`
-      : `Full day on your premises in ${villeContext.name}, live demos, action plan within 48 h. Direct booking on the calendar. No commitment before signing.`
+      ? `à ${villeContext.name} ?`
+      : `in ${villeContext.name}?`
     : isFr
-      ? "1 journée complète dans vos locaux, démos live, plan d'action sous 48 h. Réservation directe sur le calendrier maison. Sans engagement avant signature."
-      : "Full day on your premises, live demos, action plan within 48 h. Direct booking on our calendar. No commitment before signing.";
+      ? "à l'IA ?"
+      : "to AI?";
+
+  const description = isFr
+    ? "L'audit est la porte d'entrée. On réserve un appel, on cadre votre besoin — sans engagement. Et si vous décidez ensuite de déployer, on s'en charge de bout en bout."
+    : "The audit is the entry door. We book a call and scope your need — no commitment. And if you then decide to deploy, we handle it end to end.";
 
   return (
     <CtaBlock
@@ -49,17 +46,28 @@ export function AuditCtaBlock({ isFr, villeContext }: AuditCtaBlockProps): React
       titleEm={titleEm}
       description={description}
       cta={
-        <Cta
-          href="/reserver?intervention=audit-flash-onsite"
-          size="lg"
-          className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
-          track={
-            villeContext ? `audit-cta-flash-ville-${villeContext.villeSlug}` : "audit-cta-flash"
-          }
-        >
-          <Calendar aria-hidden="true" className="h-4 w-4" />
-          {isFr ? "Réserver sur le calendrier" : "Book on the calendar"}
-        </Cta>
+        <>
+          <Cta
+            href="/appel"
+            size="lg"
+            className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+            track={
+              villeContext ? `audit-cta-call-ville-${villeContext.villeSlug}` : "audit-cta-call"
+            }
+          >
+            {isFr ? "Réserver un appel" : "Book a call"}
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Cta>
+          <Cta
+            href="/contact"
+            variant="outline"
+            size="lg"
+            className="bg-paper text-terracotta hover:bg-paper border-terracotta-deep shadow-subtle border-2"
+            track="audit-cta-contact"
+          >
+            {isFr ? "Nous écrire" : "Email us"}
+          </Cta>
+        </>
       }
       tone="dark"
     />

@@ -24,20 +24,20 @@ export function AuditMaturityLevels({ isFr, villeContext }: AuditMaturityLevelsP
         {
           level: "Niveau 1",
           title: "Aucun usage IA en place",
-          body: "Le diagnostic Flash identifie 3 à 5 endroits où l'IA peut s'insérer immédiatement, sans bouleverser votre quotidien. Vous gardez la main.",
-          recommendation: "Flash · Ciblé",
+          body: "On repère 3 à 5 usages IA à activer tout de suite, sans tout bouleverser.",
+          recommendation: "Audit Flash",
         },
         {
           level: "Niveau 2",
           title: "Premiers usages IA déjà testés",
-          body: "L'audit Ciblé sur un département structure ce qui marche, élimine ce qui n'en vaut pas la peine, et chiffre la suite avec un plan 6-12 mois.",
-          recommendation: "Ciblé · Stratégique PME",
+          body: "On structure ce qui marche, on élimine le reste, et on chiffre la suite.",
+          recommendation: "Flash ou Audit complet",
         },
         {
           level: "Niveau 3",
-          title: "Usages IA matures, recherche d'optimisation",
-          body: "L'audit Stratégique pose un benchmark concurrentiel et identifie les leviers de scalabilité multi-sites encore inexploités.",
-          recommendation: "Stratégique PME · ETI",
+          title: "Usages IA matures, à optimiser",
+          body: "Benchmark concurrentiel et leviers de scalabilité multi-sites inexploités.",
+          recommendation: "Audit complet",
         },
       ]
     : [
@@ -66,8 +66,8 @@ export function AuditMaturityLevels({ isFr, villeContext }: AuditMaturityLevelsP
       ? `Aucune entreprise n'est trop petite ni trop grande, aucun secteur n'est trop spécifique — y compris pour les structures basées à ${villeContext.name}. Vous repartez avec une roadmap claire, chiffrée — peu importe d'où vous partez.`
       : `No company is too small or too large, no sector is too niche — including for ${villeContext.name}-based structures. You leave with a clear, costed roadmap — whatever your starting point.`
     : isFr
-      ? "Aucune entreprise n'est trop petite ni trop grande, aucun secteur n'est trop spécifique. Vous repartez avec une roadmap claire, chiffrée — peu importe d'où vous partez."
-      : "No company is too small or too large, no sector is too niche. You leave with a clear, costed roadmap — whatever your starting point.";
+      ? "Aucune entreprise trop petite ou trop grande, aucun secteur trop spécifique. Une roadmap claire, peu importe d'où vous partez."
+      : "No company too small or too large, no sector too niche. A clear roadmap, whatever your starting point.";
 
   return (
     <Section

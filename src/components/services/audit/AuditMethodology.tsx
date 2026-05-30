@@ -30,29 +30,29 @@ export function AuditMethodology({ isFr }: AuditMethodologyProps): ReactNode {
               id: "step-1-cadrage",
               title: isFr ? "Cadrage 30 min" : "30-min scoping",
               description: isFr
-                ? "Appel découverte gratuit. On définit le périmètre (toute l'entreprise ou un service), la taille du diagnostic et la date d'intervention."
-                : "Free discovery call. We define the scope (entire company or one department), diagnostic size, and intervention date.",
+                ? "Appel découverte gratuit. On cadre le périmètre et la date."
+                : "Free discovery call. We scope the perimeter and date.",
             },
             {
               id: "step-2-investigation",
-              title: isFr ? "Investigation terrain" : "Field investigation",
+              title: isFr ? "Investigation" : "Investigation",
               description: isFr
-                ? "1 à 5 jours sur site selon le niveau (Flash, Ciblé, Stratégique). Entretiens collaborateurs, observation des processus réels, analyse des outils existants."
-                : "1 to 5 days on-site depending on level (Flash, Targeted, Strategic). Employee interviews, observation of real processes, analysis of existing tools.",
+                ? "Entretiens, observation des process réels, analyse de vos outils. Sur site ou à distance selon l'ampleur."
+                : "Interviews, real-process observation, analysis of your tools. On site or remote.",
             },
             {
               id: "step-3-restitution",
               title: isFr ? "Restitution chiffrée" : "Costed delivery",
               description: isFr
-                ? "Livrable PDF priorisé sous 48 h à 5 jours : chaque opportunité IA chiffrée individuellement (coût mise en place vs gain annuel attendu sur 12 mois)."
-                : "Prioritised PDF delivery within 48 h to 5 days: each AI opportunity costed individually (deployment cost vs expected 12-month annual gain).",
+                ? "Un livrable priorisé : chaque opportunité chiffrée, coût vs gain attendu."
+                : "A prioritised report: each opportunity costed, cost vs expected gain.",
             },
             {
               id: "step-4-action",
               title: isFr ? "Plan d'action" : "Action plan",
               description: isFr
-                ? "Roadmap séquencée des quick-wins (≤ 30 j) aux chantiers structurels (3-12 mois). Vous décidez si vous implémentez en interne, avec nous, ou pas du tout."
-                : "Sequenced roadmap from quick-wins (≤ 30 days) to structural projects (3-12 months). You decide whether you implement in-house, with us, or not at all.",
+                ? "Roadmap des quick-wins (≤ 30 j) aux chantiers de fond. Vous implémentez seul, avec nous, ou pas."
+                : "Roadmap from quick-wins (≤ 30 days) to deeper projects. You implement alone, with us, or not.",
             },
           ]}
         />

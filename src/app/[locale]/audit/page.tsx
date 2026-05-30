@@ -4,31 +4,27 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { AuditHubToggle } from "@/components/sections/AuditHubToggle";
 import {
-  TrustBadges,
   WhyAxionIA,
-  SocialProof,
   SignatureCard,
   BeyondAuditBlock,
 } from "@/components/sections/AuditConversionBlocks";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
-import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { AuditHero } from "@/components/services/audit/AuditHero";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
-import { AuditTierGrid } from "@/components/services/audit/AuditTierGrid";
+import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards";
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
 import { AuditMaturityLevels } from "@/components/services/audit/AuditMaturityLevels";
-import { AuditCrossModules } from "@/components/services/audit/AuditCrossModules";
+import { AuditCapabilitiesMap } from "@/components/services/audit/AuditCapabilitiesMap";
+import { AuditWhyNow } from "@/components/services/audit/AuditWhyNow";
+import { AuditDeliverable } from "@/components/services/audit/AuditDeliverable";
 import { AuditMethodology } from "@/components/services/audit/AuditMethodology";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
-import { AUDIT_TIERS, formatAmount, formatAmountRange, getTierById } from "@/content/pricing";
-import { AUDIT_BY_SIZE, AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
+import { AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -39,16 +35,11 @@ import {
 } from "@/lib/seo";
 
 // ============================================================================
-// Sprint A · Phase 3 Refactor-1 (Will 2026-05-25) — page hub /audit reconstruite
-// en assemblage des composants Phase 2 sous `src/components/services/audit/`.
-// La logique métier (textes, JSON-LD locaux, CTAs) vit désormais dans les
-// composants ; cette page ne fait que de l'orchestration + Service/ItemList
-// JSON-LD globaux + Breadcrumbs + StickyMobileCta + sections wrappers SSOT
-// existantes (AuditHubToggle, TrustBadges, WhyAxionIA, SignatureCard,
-// SocialProof, BeyondAuditBlock, LocalCoverageSection, LocalGeoFaqSection).
-//
-// Sprint 14.10.8 (Will 2026-05-12) — refonte hub /audit en 2 axes toggle.
-// Pattern miroir de /interventions.
+// Hub /audit — refonte 2026-05-31 (Will), best practices 2026 alignées sur
+// /interventions/collectives et /un-a-un : hero value-first (sans prix), 2
+// cartes formats (Flash priced / Audit complet sur devis), bande « pourquoi
+// maintenant », sections allégées et dé-verbosées. CTAs partout : Réserver un
+// appel / Nous écrire. JSON-LD Service/ItemList/HowTo/Image conservés.
 // ============================================================================
 
 export const revalidate = 3600;
@@ -57,26 +48,14 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-const TIGHT_X = "lg:px-6 xl:px-10";
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
-  const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
-  const cibleTier = getTierById(AUDIT_TIERS, "audit-cible");
-  const pmeTier = getTierById(AUDIT_TIERS, "audit-strategique-pme");
-  const etiTier = getTierById(AUDIT_TIERS, "audit-strategique-eti");
-  const flash = formatAmount(flashTier.priceFlat!, loc, { compact: true });
-  const cibleRange = formatAmountRange(cibleTier.priceMin!, cibleTier.priceMax!, loc, {
-    compact: true,
-  });
-  const pmeRange = formatAmountRange(pmeTier.priceMin!, pmeTier.priceMax!, loc, { compact: true });
-  const etiFrom = formatAmount(etiTier.priceMin!, loc, { compact: true });
   const titleStr =
     loc === "fr"
-      ? `Audit IA PME & ETI · 4 niveaux · Flash dès ${flash} · Axion-IA`
-      : `AI audit for SMEs & mid-caps · 4 levels · from ${flash} · Axion-IA`;
+      ? "Audit IA en entreprise · cartographie & plan d'action chiffré · Axion-IA"
+      : "Enterprise AI audit · mapping & costed action plan · Axion-IA";
   return {
     ...buildProductMetadata({
       locale,
@@ -84,8 +63,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: titleStr,
       description:
         loc === "fr"
-          ? `4 niveaux d'audit IA : Flash ${flash}, Audit ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI à partir de ${etiFrom}. Choisissez selon votre taille ou votre situation.`
-          : `4-level AI audit: Flash ${flash}, Targeted ${cibleRange}, Strategic SMB ${pmeRange}, Strategic mid-cap from ${etiFrom}. Choose by size or by situation.`,
+          ? "Le diagnostic qui fait passer votre entreprise à l'IA : on cartographie partout où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé. Audit Flash 1 journée pour TPE et petites PME ; sur devis pour PME, ETI et grande entreprise."
+          : "The diagnosis that moves your company to AI: we map everywhere AI saves you time and money, and you leave with a costed, prioritised action plan. 1-day Flash audit for small businesses and small SMEs; on quote for SME, mid-cap and large enterprise.",
     }),
     title: { absolute: titleStr },
   };
@@ -200,66 +179,36 @@ export default async function AuditHub({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2 colonnes — Phase 2 SSOT (Sprint A) */}
+      {/* 1. HERO value-first — sans prix (best practice 2026) */}
       <AuditHero isFr={isFr} />
 
-      {/* Trust pills sous le hero — Phase 2 SSOT */}
+      {/* 2. Barre de réassurance sous le hero (confidentialité/NDA, RGPD, sans engagement) */}
       <AuditTrustPills isFr={isFr} />
 
-      {/* HUB TOGGLE — 2 axes Par taille / Par situation (wrapper existant) */}
-      <Section
-        eyebrow={isFr ? "2 portes d'entrée" : "2 entry doors"}
-        title={isFr ? "Comment voulez-vous" : "How do you want"}
-        titleEm={isFr ? "choisir ?" : "to choose?"}
-        contentClassName={TIGHT_X}
-      >
-        <AuditHubToggle
-          locale={loc}
-          labels={{
-            bySizeTab: isFr ? "Par taille d'entreprise" : "By company size",
-            bySituationTab: isFr ? "Par situation" : "By situation",
-            bySizeDescription: isFr
-              ? `${AUDIT_BY_SIZE.length} segments selon votre effectif INSEE : TPE, PME, ETI, grande entreprise. Chaque segment pointe vers le niveau d'audit le mieux calibré.`
-              : `${AUDIT_BY_SIZE.length} segments by your INSEE headcount: small business, SME, mid-cap, enterprise. Each segment points to the best-calibrated audit level.`,
-            bySituationDescription: isFr
-              ? "4 angles d'entrée selon votre contexte business : urgence, premier audit, approfondissement, gouvernance multi-BU."
-              : "4 entry angles by business context: urgent, first audit, deepening, multi-BU governance.",
-            learnMore: isFr ? "Voir le format" : "See format",
-          }}
-        />
-      </Section>
+      {/* 3. TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
+          Le prospect s'y reconnaît en 5 s ; l'audit détermine ce qui s'applique à lui. */}
+      <AuditCapabilitiesMap isFr={isFr} />
 
-      {/* GRILLE 4 TIERS SSOT — Phase 2 (remplace l'ancien rendu inline) */}
-      <AuditTierGrid isFr={isFr} />
+      {/* 4. POURQUOI MAINTENANT — bande compacte urgence + quick wins (brief §10) */}
+      <AuditWhyNow isFr={isFr} />
 
-      {/* TRUST BADGES — Sprint conversion 14.7+ (wrapper existant) */}
-      <TrustBadges isFr={isFr} />
+      {/* 5. LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis), style 1-to-1 */}
+      <AuditFormatsCards isFr={isFr} />
 
-      {/* POURQUOI AXIONIA — différenciants vs concurrence */}
-      <WhyAxionIA isFr={isFr} />
-
-      {/* SIGNATURE FONDATEUR — légitimité humaine */}
-      <SignatureCard isFr={isFr} />
-
-      {/* PREUVE SOCIALE — métriques + secteurs + témoignages */}
-      <SocialProof isFr={isFr} />
-
-      {/* FAQ — Phase 2 SSOT (remplace AuditFaqSection legacy) */}
-      <AuditFaq isFr={isFr} />
-
-      {/* MATURITÉ IA — 3 cartes anti-fear (Phase 2 SSOT) */}
+      {/* 5. QUEL NIVEAU POUR VOUS — qualificateur maturité IA (anti-fear) */}
       <AuditMaturityLevels isFr={isFr} />
 
-      {/* AU-DELÀ DE L'AUDIT — upsell module Implémentation */}
-      <BeyondAuditBlock isFr={isFr} />
-
-      {/* CROSS-MODULES Former / Implémenter — Phase 2 SSOT */}
-      <AuditCrossModules isFr={isFr} />
-
-      {/* MÉTHODOLOGIE 4 étapes — Phase 2 SSOT */}
+      {/* 6. COMMENT ÇA MARCHE — méthodologie */}
       <AuditMethodology isFr={isFr} />
 
-      {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
+      {/* 7. LE LIVRABLE — rapport + cartographie + roadmap 1→24 mois + chiffrage (brief §8) */}
+      <AuditDeliverable isFr={isFr} />
+
+      {/* 8. POURQUOI AXION-IA + signature fondateur (légitimité humaine) */}
+      <WhyAxionIA isFr={isFr} />
+      <SignatureCard isFr={isFr} />
+
+      {/* 9. COUVERTURE NATIONALE (pSEO villes/régions) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="L'audit IA"
@@ -268,24 +217,23 @@ export default async function AuditHub({ params }: Props) {
         tone="paper"
       />
 
-      {/* FAQ GÉOLOCALISÉE (pSEO villes/régions) */}
-      <LocalGeoFaqSection isFr={isFr} service="audit" tone="sand" />
+      {/* 10. FAQ (unique) */}
+      <AuditFaq isFr={isFr} />
+
+      {/* 11. PONT AUDIT → IMPLÉMENTATION (upsell, sans engagement) */}
+      <BeyondAuditBlock isFr={isFr} />
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="audit" />
 
-      {/* CTA FINAL Flash terrain — Phase 2 SSOT */}
+      {/* 12. CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
       <AuditCtaBlock isFr={isFr} />
 
       {/* STICKY CTA MOBILE */}
       <StickyMobileCta
-        href="/reserver?intervention=audit-flash-onsite"
-        label={
-          isFr
-            ? `Flash terrain · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "fr", { compact: true })}`
-            : `On-site Flash · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "en", { compact: true })}`
-        }
-        track="audit-flash-onsite-sticky"
+        href="/appel"
+        label={isFr ? "Réserver un appel" : "Book a call"}
+        track="audit-sticky-call"
         threshold={500}
       />
 

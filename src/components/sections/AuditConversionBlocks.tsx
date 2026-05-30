@@ -114,27 +114,27 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: Cpu,
           title: "Cabinet IA pure-play",
-          body: "On ne fait QUE de l'audit et de l'implémentation IA. Pas de généralistes qui font de tout, pas de juniors recyclés sur un sujet qu'ils découvrent.",
+          body: "On ne fait QUE de l'IA. Pas de généralistes, pas de juniors qui découvrent le sujet.",
         },
         {
           icon: Wallet,
-          title: "Tarifs publics, pas de black box",
-          body: "Notre pyramide est affichée. Pas de devis opaque qui revient à 30 k€ après 3 réunions de cadrage. Vous savez où vous allez avant de signer." /* price-exempt: devis opaque concurrent (repoussoir), pas un tarif Axion-IA */,
+          title: "Pas de black box",
+          body: "Prix d'entrée affiché, devis clair pour le reste. Pas de 30 k€ qui tombent après 3 réunions." /* price-exempt: devis opaque concurrent (repoussoir), pas un tarif Axion-IA */,
         },
         {
           icon: Layers,
           title: "Du diagnostic à l'implémentation",
-          body: "On ne livre pas un PDF qui finit dans un tiroir : on peut exécuter le plan derrière (Module 3 Implémentation) avec la même équipe.",
+          body: "On ne livre pas un PDF qui dort dans un tiroir : on exécute le plan, même équipe.",
         },
         {
           icon: ScrollText,
           title: "Méthode lisible, pas de jargon",
-          body: "On observe, on cartographie, on priorise, on remet le plan. 4 étapes claires que votre CODIR comprend en 5 minutes.",
+          body: "On observe, on cartographie, on priorise. 4 étapes claires en 5 minutes.",
         },
         {
           icon: Award,
           title: "Spécialisé AI Act 2026",
-          body: "Notre méthodo intègre les exigences AI Act dès le diagnostic — gouvernance, traçabilité, classification des usages. Anticipez plutôt que subir.",
+          body: "L'AI Act intégré dès le diagnostic : gouvernance, traçabilité. Anticipez.",
         },
       ]
     : [
@@ -173,8 +173,8 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
       titleEm={isFr ? "de nous choisir" : "to choose us"}
       description={
         isFr
-          ? "Vous avez le choix entre un Big 4 (cher, lent), un freelance (incertain), une agence digitale (généraliste). Voici pourquoi Axion-IA est différent."
-          : "You can pick a Big 4 (expensive, slow), a freelance (uncertain), a digital agency (generalist). Here's why Axion-IA is different."
+          ? "Big 4 (cher, lent), freelance (incertain), agence (généraliste) — ou nous. Voici la différence."
+          : "Big 4 (expensive, slow), freelance (uncertain), agency (generalist) — or us. Here's the difference."
       }
       contentClassName="lg:px-6 xl:px-10"
     >
@@ -503,8 +503,8 @@ export function BeyondAuditBlock({ isFr }: { isFr: boolean }): ReactNode {
             </h2>
             <p className="text-fg-soft mt-5 max-w-2xl text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Un rapport ne vaut rien s'il finit dans un tiroir. Notre Module 3 prend le relais : chatbots, automatisations, agents IA, intégrations CRM/ERP, structuration documentaire — la même équipe livre ce qu'elle a audité."
-                : "A report is worth nothing if it stays in a drawer. Our Module 3 takes over: chatbots, automations, AI agents, CRM/ERP integrations, document structuring — the same team delivers what it audited."}
+                ? "Un rapport ne vaut rien dans un tiroir. La même équipe exécute : chatbots, automatisations, agents IA, intégrations CRM/ERP."
+                : "A report is worth nothing in a drawer. The same team executes: chatbots, automations, AI agents, CRM/ERP integrations."}
             </p>
           </div>
           <div className="flex flex-col gap-3 lg:items-end">
