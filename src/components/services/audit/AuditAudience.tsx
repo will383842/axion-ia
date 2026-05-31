@@ -1,218 +1,223 @@
 /**
- * AuditAudience — « À qui s'adressent nos audits ? » : 3 cards par taille
- * d'entreprise, différenciées par durée + ampleur + prix (Server Component).
+ * AuditAudience — « À qui s'adressent nos audits IA ? » : 3 cartes par taille
+ * d'entreprise (TPE/artisans, PME, ETI/grandes). Server Component.
  *
- * Refonte 2026-05-31 (Will) — chaque segment doit se reconnaître immédiatement,
- * sans redondance entre TPE / PME / ETI-grandes :
- *   - TPE/artisans/commerçants : 1 journée sur place (prix fixe) ; plusieurs
- *     jours possibles selon l'activité → sur devis.
- *   - PME : de 2 jours à plusieurs semaines, à partir d'un prix d'entrée ;
- *     d'une tâche précise à une stratégie globale.
- *   - ETI & grandes entreprises : de 2 jours à plusieurs mois + accompagnement
- *     dans la durée ; du chantier ciblé à la stratégie IA du groupe (sur devis).
+ * Refonte 2026-05-31 (Will) — 3 cartes (TPE / PME / ETI & grandes) avec, pour
+ * chacune : un visuel, le profil, ce que l'IA change, et des CTAs d'action.
  *
- * Prix dérivés de la SSOT pricing.ts (price-gate OK). Zéro JS. FR canonique —
+ * CTAs (Will 2026-05-31) :
+ *   - TPE : « Pré-réserver l'audit (1 jour) » (→ /audit/flash) en action
+ *     principale + « Réserver un appel » (/appel) et « Nous écrire » (/contact)
+ *     pour ceux qui préfèrent des renseignements complémentaires. Prix dérivé
+ *     SSOT pricing.ts (audit-flash 1190 €).
+ *   - PME & ETI/grandes : pas de « devis » — on invite à entrer en contact
+ *     (« Réserver un appel » + « Nous écrire »).
+ *   - Les 3 : « Plus d'infos sur le déroulement » → page détail du tier
+ *     (/audit/flash, /audit/strategique-pme, /audit/strategique-eti).
+ *
+ * Server Component pur, zéro JS. Prix via SSOT (jamais en dur). FR canonique —
  * EN = miroir (locale 301→FR, règle Will 2026-05-16).
  */
 
 import type { ReactNode } from "react";
-import { Store, Building, Building2, Clock, ArrowRight, type LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, CalendarCheck, Phone, Mail } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
-import { ZoomableImage } from "@/components/marketing/ZoomableImage";
-import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
+import { Link } from "@/i18n/navigation";
+import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface AudienceCard {
-  readonly icon: LucideIcon;
-  readonly labelFr: string;
-  readonly labelEn: string;
-  readonly descFr: string;
-  readonly descEn: string;
-  readonly durationFr: string;
-  readonly durationEn: string;
-  readonly priceFr: string;
-  readonly priceEn: string;
-  readonly scopeFr: string;
-  readonly scopeEn: string;
-  readonly ctaHref: string;
-  readonly ctaFr: string;
-  readonly ctaEn: string;
-  readonly track: string;
+  readonly segment: string;
+  readonly sizeFr: string;
+  readonly sizeEn: string;
+  readonly titleFr: string;
+  readonly titleEn: string;
+  readonly bodyFr: string;
+  readonly bodyEn: string;
+  readonly image: string;
+  readonly imageAltFr: string;
+  readonly imageAltEn: string;
+  /** Métadonnée prix/format affichée au-dessus des CTAs. */
+  readonly metaFr: string;
+  readonly metaEn: string;
+  /** Page détail du tier — « plus d'infos sur le déroulement ». */
+  readonly detailHref: string;
+  /** TPE uniquement : action de pré-réservation directe. */
+  readonly preReserveFr?: string;
+  readonly preReserveEn?: string;
+  readonly preReserveHref?: string;
 }
 
-export interface AuditAudienceProps {
-  readonly isFr: boolean;
-}
+// Prix d'entrée audit sur place (TPE) — SSOT pricing.ts (audit-flash).
+const FLASH_PRICE = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", {
+  compact: true,
+});
 
-export function AuditAudience({ isFr }: AuditAudienceProps): ReactNode {
-  // Ancres prix dérivées du SSOT (TPE = prix fixe présentiel ; PME/ETI = prix
-  // d'entrée Ciblé). Compact, sans « HT » (ajouté dans le libellé).
-  const loc = isFr ? "fr" : "en";
-  const tpePrice = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, {
-    compact: true,
-  });
-  const entryFrom = formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, loc, {
-    compact: true,
-  });
+// Prix d'entrée audit (PME/ETI) — SSOT pricing.ts (audit-cible priceMin).
+const ENTRY_PRICE = formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", {
+  compact: true,
+});
 
-  const cards: ReadonlyArray<AudienceCard> = [
-    {
-      icon: Store,
-      labelFr: "TPE, artisans & commerçants",
-      labelEn: "Small businesses, artisans & retailers",
-      descFr:
-        "Indépendant ou petite équipe ? On audite toute votre activité sur place et on repère, concret, tout ce que l'IA peut vous faire gagner.",
-      descEn:
-        "Independent or small team? We audit your whole activity on site and pinpoint, concretely, everything AI can save you.",
-      durationFr: "Généralement 1 journée, sur place",
-      durationEn: "Usually 1 day, on site",
-      priceFr: `${tpePrice}`,
-      priceEn: `${tpePrice}`,
-      scopeFr: "Plusieurs jours selon votre activité : sur devis.",
-      scopeEn: "Several days depending on your activity: on quote.",
-      ctaHref: "/appel",
-      ctaFr: "Réserver l'audit IA",
-      ctaEn: "Book the AI audit",
-      track: "audit_audience_tpe",
-    },
-    {
-      icon: Building,
-      labelFr: "PME",
-      labelEn: "SME",
-      descFr:
-        "Vous grandissez, plusieurs services sont concernés ? On cible une fonction précise ou on cartographie toute l'organisation, selon votre ambition.",
-      descEn:
-        "Growing, several departments involved? We focus on one function or map the whole organisation, depending on your ambition.",
-      durationFr: "De 2 jours à plusieurs semaines",
-      durationEn: "From 2 days to several weeks",
-      priceFr: `À partir de ${entryFrom}`,
-      priceEn: `From ${entryFrom}`,
-      scopeFr: "Une tâche précise, un service entier ou une stratégie IA globale.",
-      scopeEn: "A precise task, a whole department or a global AI strategy.",
-      ctaHref: "/contact",
-      ctaFr: "Demander un devis",
-      ctaEn: "Request a quote",
-      track: "audit_audience_pme",
-    },
-    {
-      icon: Building2,
-      labelFr: "ETI & grandes entreprises",
-      labelEn: "Mid-caps & large enterprises",
-      descFr:
-        "Multi-sites, multi-métiers, enjeux de gouvernance et de conformité ? Audit transverse et stratégie IA à l'échelle du groupe, sur le long terme.",
-      descEn:
-        "Multi-site, multi-business, governance and compliance stakes? A transverse audit and group-wide AI strategy, for the long run.",
-      durationFr: "De 2 jours à plusieurs mois · accompagnement dans la durée",
-      durationEn: "From 2 days to several months · long-term support",
-      priceFr: `À partir de ${entryFrom} · sur devis`,
-      priceEn: `From ${entryFrom} · on quote`,
-      scopeFr: "Du chantier ciblé à la stratégie IA de tout le groupe.",
-      scopeEn: "From a focused workstream to the whole group's AI strategy.",
-      ctaHref: "/contact",
-      ctaFr: "Demander un devis",
-      ctaEn: "Request a quote",
-      track: "audit_audience_eti",
-    },
-  ];
+const CARDS: ReadonlyArray<AudienceCard> = [
+  {
+    segment: "TPE",
+    sizeFr: "TPE, artisans & commerçants",
+    sizeEn: "Small businesses, artisans & retailers",
+    titleFr: "L'IA accessible, tout de suite",
+    titleEn: "AI made accessible, right now",
+    bodyFr:
+      "Vous portez l'entreprise au quotidien. On identifie 3 à 5 automatisations qui vous libèrent du temps dès la première semaine — devis, relances, administratif.",
+    bodyEn:
+      "You carry the business day to day. We pinpoint 3 to 5 automations that free up your time from week one — quotes, follow-ups, admin.",
+    image: "/images/axion-ia-audit-ia-solutions-artisans-commercants-tpe-pme-eti-banniere.webp",
+    imageAltFr: "Audit IA pour TPE, artisans et commerçants",
+    imageAltEn: "AI audit for small businesses, artisans and retailers",
+    metaFr: `1 journée sur place · ${FLASH_PRICE}`,
+    metaEn: `1 full day on site · ${FLASH_PRICE}`,
+    detailHref: "/audit/flash",
+    preReserveFr: "Pré-réserver l'audit (1 jour)",
+    preReserveEn: "Pre-book the audit (1 day)",
+    preReserveHref: "/audit/flash",
+  },
+  {
+    segment: "PME",
+    sizeFr: "PME",
+    sizeEn: "SMEs",
+    titleFr: "Structurer et passer à l'échelle",
+    titleEn: "Structure and scale up",
+    bodyFr:
+      "Vous avez déjà testé quelques outils IA. On structure ce qui marche, on élimine le superflu, et on chiffre les prochains chantiers prioritaires.",
+    bodyEn:
+      "You've already tried a few AI tools. We structure what works, cut the fluff, and cost the next priority projects.",
+    image:
+      "/images/axion-ia-automatisation-ia-benefices-concrets-mesurables-durables-banniere.webp",
+    imageAltFr: "Audit IA pour PME",
+    imageAltEn: "AI audit for SMEs",
+    metaFr: `À partir de ${ENTRY_PRICE} · sur devis`,
+    metaEn: `From ${ENTRY_PRICE} · on quote`,
+    detailHref: "/audit/strategique-pme",
+  },
+  {
+    segment: "ETI",
+    sizeFr: "ETI & grandes entreprises",
+    sizeEn: "Mid-caps & large enterprises",
+    titleFr: "Gouvernance et impact à grande échelle",
+    titleEn: "Governance and impact at scale",
+    bodyFr:
+      "Vous pilotez des enjeux multi-sites. On cartographie l'ensemble, on priorise par ROI, et on cadre la gouvernance IA (AI Act, RGPD, conduite du changement).",
+    bodyEn:
+      "You steer multi-site challenges. We map everything, prioritise by ROI, and frame AI governance (AI Act, GDPR, change management).",
+    image:
+      "/images/axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere.webp",
+    imageAltFr: "Audit IA pour ETI et grandes entreprises",
+    imageAltEn: "AI audit for mid-caps and large enterprises",
+    metaFr: `À partir de ${ENTRY_PRICE} · sur devis`,
+    metaEn: `From ${ENTRY_PRICE} · on quote`,
+    detailHref: "/audit/strategique-eti",
+  },
+];
 
+function CardCtas({ card, isFr }: { card: AudienceCard; isFr: boolean }): ReactNode {
   return (
-    <Section tone="canvas" className="py-16 sm:py-20 lg:py-24">
-      {/* Header 2 colonnes — H2 grande taille à gauche, image des profils d'audit
-          IA par taille à droite (Will 2026-05-31). */}
-      <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-        <div>
-          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span
-              aria-hidden="true"
-              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-            />
-            {isFr ? "Par taille d'entreprise" : "By company size"}
-          </p>
-          <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-            {isFr ? "À qui s'adressent" : "Who are"}
-            <span
-              className="text-terracotta mx-2 italic"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {isFr ? "nos audits IA" : "our AI audits for"}
-            </span>
-            {isFr ? " ?" : "?"}
-          </h2>
-          <p className="text-fg-soft mt-6 max-w-xl text-lg leading-relaxed">
-            {isFr
-              ? "Quelle que soit votre taille, on audite votre entreprise en détail, avec rigueur et minutie — tout en présentiel. La durée et le périmètre de l'audit IA s'adaptent : d'une journée pour une TPE à plusieurs mois pour un groupe."
-              : "Whatever your size, we audit your company in detail, rigorously and meticulously — fully on site. The AI audit's duration and scope adapt: from one day for a micro-business to several months for a group."}
-          </p>
-        </div>
+    <div className="mt-6 flex flex-col gap-2.5">
+      {/* TPE : action principale de pré-réservation */}
+      {card.preReserveHref ? (
+        <Cta
+          href={card.preReserveHref}
+          variant="secondary"
+          size="md"
+          className="w-full"
+          track={`audit-audience-prebook-${card.segment.toLowerCase()}`}
+        >
+          <CalendarCheck aria-hidden="true" className="h-4 w-4" />
+          {isFr ? card.preReserveFr : card.preReserveEn}
+        </Cta>
+      ) : null}
 
-        <ZoomableImage
-          src="/illustrations/audit-segments-entreprise-v2.webp"
-          alt={
-            isFr
-              ? "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil."
-              : "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile."
-          }
-          width={1536}
-          height={1024}
-          sizes="(max-width: 1024px) 92vw, 720px"
-          unoptimized
-          zoomLabel={isFr ? "Agrandir" : "Enlarge"}
-          figureClassName="border-border shadow-card overflow-hidden rounded-2xl border"
-        />
+      {/* Contact — réserver un appel / nous écrire (les 3 cartes) */}
+      <div className="grid grid-cols-2 gap-2.5">
+        <Cta
+          href="/appel"
+          variant="outline"
+          size="sm"
+          className="border-terracotta/40 text-terracotta-deep w-full"
+          track={`audit-audience-call-${card.segment.toLowerCase()}`}
+        >
+          <Phone aria-hidden="true" className="h-3.5 w-3.5" />
+          {isFr ? "Réserver un appel" : "Book a call"}
+        </Cta>
+        <Cta
+          href="/contact"
+          variant="outline"
+          size="sm"
+          className="border-terracotta/40 text-terracotta-deep w-full"
+          track={`audit-audience-contact-${card.segment.toLowerCase()}`}
+        >
+          <Mail aria-hidden="true" className="h-3.5 w-3.5" />
+          {isFr ? "Nous écrire" : "Email us"}
+        </Cta>
       </div>
 
-      <ul className="mt-14 grid list-none gap-6 p-0 md:grid-cols-3">
-        {cards.map((c) => {
-          const Icon = c.icon;
-          return (
-            <li key={c.track} className="h-full">
-              <article className="group border-border bg-paper shadow-subtle hover:border-terracotta/50 hover:shadow-card flex h-full flex-col overflow-hidden rounded-3xl border transition">
-                <span aria-hidden="true" className="bg-terracotta block h-1.5 w-full" />
-                <div className="flex flex-1 flex-col p-7">
-                  <span className="bg-terracotta-soft text-terracotta-deep mb-5 flex h-14 w-14 items-center justify-center rounded-2xl">
-                    <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.75} />
-                  </span>
-                  <h3 className="text-fg text-xl leading-snug font-semibold tracking-tight">
-                    {isFr ? c.labelFr : c.labelEn}
-                  </h3>
-                  <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
-                    {isFr ? c.descFr : c.descEn}
-                  </p>
+      {/* Plus d'infos sur le déroulement → page détail du tier (les 3 cartes) */}
+      <Link
+        href={card.detailHref as never}
+        className="text-fg-muted hover:text-terracotta-deep mt-1 inline-flex items-center gap-1.5 text-[13px] font-medium underline-offset-2 hover:underline"
+      >
+        {isFr ? "Plus d'infos sur le déroulement" : "More on how it works"}
+        <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+      </Link>
+    </div>
+  );
+}
 
-                  {/* Durée + prix + ampleur — différenciation par segment */}
-                  <div className="border-border mt-5 flex flex-col gap-2 border-t pt-5">
-                    <p className="text-fg flex items-start gap-2 text-[13.5px] leading-snug font-medium">
-                      <Clock
-                        aria-hidden="true"
-                        className="text-terracotta-deep mt-0.5 h-4 w-4 shrink-0"
-                        strokeWidth={2}
-                      />
-                      {isFr ? c.durationFr : c.durationEn}
-                    </p>
-                    <p className="text-terracotta-deep bg-terracotta-soft/40 border-terracotta/30 inline-flex w-fit items-center rounded-full border px-3 py-1 text-[12.5px] font-bold">
-                      {isFr ? c.priceFr : c.priceEn}
-                    </p>
-                    <p className="text-fg-muted text-[12.5px] leading-snug">
-                      {isFr ? c.scopeFr : c.scopeEn}
-                    </p>
-                  </div>
-
-                  <Cta
-                    href={c.ctaHref}
-                    variant="terracotta"
-                    shape="pill"
-                    className="mt-6 w-fit"
-                    track={c.track}
-                  >
-                    {isFr ? c.ctaFr : c.ctaEn}
-                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                  </Cta>
-                </div>
-              </article>
-            </li>
-          );
-        })}
-      </ul>
+export function AuditAudience({ isFr }: { isFr: boolean }): ReactNode {
+  return (
+    <Section
+      tone="paper"
+      eyebrow={isFr ? "À qui s'adressent nos audits IA ?" : "Who are our AI audits for?"}
+      title={isFr ? "Un audit adapté à" : "An audit tailored to"}
+      titleEm={isFr ? "chaque profil" : "every profile"}
+      description={
+        isFr
+          ? "De l'artisan à l'ETI, on calibre la profondeur de l'audit à votre taille et vos enjeux."
+          : "From sole trader to mid-cap, we calibrate the audit depth to your size and challenges."
+      }
+    >
+      <div className="grid gap-6 md:grid-cols-3">
+        {CARDS.map((card) => (
+          <article
+            key={card.segment}
+            className="border-border bg-paper shadow-subtle flex flex-col overflow-hidden rounded-2xl border"
+          >
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <Image
+                src={card.image}
+                alt={isFr ? card.imageAltFr : card.imageAltEn}
+                fill
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="flex flex-1 flex-col p-6">
+              <span className="text-terracotta-deep text-[12px] font-bold tracking-wide uppercase">
+                {isFr ? card.sizeFr : card.sizeEn}
+              </span>
+              <h3 className="text-fg mt-2 text-lg leading-snug font-semibold tracking-tight">
+                {isFr ? card.titleFr : card.titleEn}
+              </h3>
+              <p className="text-fg-soft mt-2 flex-1 text-[14px] leading-relaxed">
+                {isFr ? card.bodyFr : card.bodyEn}
+              </p>
+              <p className="text-fg-muted mt-4 text-[13px] font-semibold tabular-nums">
+                {isFr ? card.metaFr : card.metaEn}
+              </p>
+              <CardCtas card={card} isFr={isFr} />
+            </div>
+          </article>
+        ))}
+      </div>
     </Section>
   );
 }
