@@ -15,6 +15,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { AuditHero } from "@/components/services/audit/AuditHero";
 import { AuditValueProp } from "@/components/services/audit/AuditValueProp";
+import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
 import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards";
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
@@ -193,34 +194,38 @@ export default async function AuditHub({ params }: Props) {
           réellement vous apporter. » */}
       <AuditValueProp isFr={isFr} />
 
-      {/* 3. Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
+      {/* 3. PAR OÙ COMMENCER — blocs visuels : risques de se lancer sans audit
+          vs les 4 questions que l'audit tranche (Will 2026-05-31, non verbeux). */}
+      <AuditWhyAudit isFr={isFr} />
+
+      {/* 4. Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />
 
-      {/* 4. POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
+      {/* 5. POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
       <AuditWhyNow isFr={isFr} />
 
-      {/* 5. COMMENT ÇA MARCHE — « Notre démarche en 4 étapes » */}
+      {/* 6. COMMENT ÇA MARCHE — « Notre démarche en 4 étapes » */}
       <AuditMethodology isFr={isFr} />
 
-      {/* 6. LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
+      {/* 7. LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
       <AuditDeliverable isFr={isFr} />
 
-      {/* 7. TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
+      {/* 8. TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
           Le prospect s'y reconnaît en 5 s ; l'audit détermine ce qui s'applique à lui. */}
       <AuditCapabilitiesMap isFr={isFr} />
 
-      {/* 8. QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
+      {/* 9. QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
       <AuditMaturityLevels isFr={isFr} />
 
-      {/* 9. POURQUOI AXION-IA — « 5 raisons concrètes de nous choisir » */}
+      {/* 10. POURQUOI AXION-IA — « 5 raisons concrètes de nous choisir » */}
       <WhyAxionIA isFr={isFr} />
 
-      {/* 10. LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis).
+      {/* 11. LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis).
           Remonté ici (Will 2026-05-31) : l'offre apparaît dès que le prospect
           est convaincu, juste après les raisons de choisir Axion-IA. */}
       <AuditFormatsCards isFr={isFr} />
 
-      {/* 11. COUVERTURE NATIONALE — « L'audit IA disponible partout en France » (pSEO) */}
+      {/* 12. COUVERTURE NATIONALE — « L'audit IA disponible partout en France » (pSEO) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="L'audit IA"
@@ -229,19 +234,19 @@ export default async function AuditHub({ params }: Props) {
         tone="sand"
       />
 
-      {/* 12. SIGNATURE FONDATEUR (légitimité humaine) */}
+      {/* 13. SIGNATURE FONDATEUR (légitimité humaine) */}
       <SignatureCard isFr={isFr} />
 
-      {/* 13. FAQ (unique) */}
+      {/* 14. FAQ (unique) */}
       <AuditFaq isFr={isFr} />
 
-      {/* 14. PONT AUDIT → IMPLÉMENTATION (upsell, sans engagement) */}
+      {/* 15. PONT AUDIT → IMPLÉMENTATION (upsell, sans engagement) */}
       <BeyondAuditBlock isFr={isFr} />
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="audit" />
 
-      {/* 15. CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
+      {/* 16. CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
       <AuditCtaBlock isFr={isFr} />
 
       {/* STICKY CTA MOBILE */}
