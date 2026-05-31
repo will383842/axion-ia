@@ -12,7 +12,8 @@
 //   - ctaType="quote"    → /audit/demande?objet=<subTierId> (sur devis)
 
 import type { ReactNode } from "react";
-import { ArrowRight, Calendar, FileText, Mail } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Calendar, FileText, Mail, Check, Clock, Package } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
@@ -80,64 +81,118 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO */}
+      {/* HERO — 2 colonnes (texte + visuel) quand une image est fournie, sinon
+          colonne unique. Refonte 2026-05-31 (Will) : ratio texte/image soigné. */}
       <section className="bg-halo-warm relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <Container className={cn("relative", TIGHT_X)}>
-          <div className="max-w-3xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr ? "Audit IA" : "AI audit"}
-            </p>
+          <div
+            className={cn(
+              config.heroImage
+                ? "grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14"
+                : "max-w-3xl",
+            )}
+          >
+            <div className={config.heroImage ? "max-w-2xl" : "max-w-3xl"}>
+              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr ? "Audit IA" : "AI audit"}
+              </p>
 
-            <h1 className="display-editorial text-fg mt-5">
-              {isFr ? config.titleFr : config.titleEn}{" "}
-              <span
-                className="text-terracotta-deep mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr ? config.titleEmFr : config.titleEmEn}
-              </span>
-            </h1>
-
-            <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
-              {isFr ? config.promiseFr : config.promiseEn}
-            </p>
-
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {(isFr ? config.chipsFr : config.chipsEn).map((chip) => (
-                <li
-                  key={chip}
-                  className="bg-terracotta-soft text-terracotta-deep border-terracotta/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
+              <h1 className="display-editorial text-fg mt-5">
+                {isFr ? config.titleFr : config.titleEn}{" "}
+                <span
+                  className="text-terracotta-deep mx-2 italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
-                  {chip}
-                </li>
-              ))}
-            </ul>
+                  {isFr ? config.titleEmFr : config.titleEmEn}
+                </span>
+              </h1>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Cta
-                href={heroCtaHref}
-                size="lg"
-                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
-              >
-                {featuredSubTier.ctaType === "calendar" ? (
-                  <Calendar aria-hidden="true" className="h-4 w-4" />
-                ) : (
-                  <Mail aria-hidden="true" className="h-4 w-4" />
-                )}
-                {isFr ? config.ctaPrimaryLabelFr : config.ctaPrimaryLabelEn}
-              </Cta>
-              <Cta href="/audit" variant="outline" size="lg">
-                {isFr ? "← Voir les 4 niveaux d'audit" : "← See the 4 audit levels"}
-              </Cta>
+              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+                {isFr ? config.promiseFr : config.promiseEn}
+              </p>
+
+              {(isFr ? config.heroMetaFr : config.heroMetaEn) ? (
+                <p className="text-terracotta-deep mt-5 flex items-center gap-2 text-[14px] font-semibold">
+                  <Clock aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2.25} />
+                  {isFr ? config.heroMetaFr : config.heroMetaEn}
+                </p>
+              ) : null}
+
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {(isFr ? config.chipsFr : config.chipsEn).map((chip) => (
+                  <li
+                    key={chip}
+                    className="bg-terracotta-soft text-terracotta-deep border-terracotta/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
+                  >
+                    <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
+                    {chip}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Cta
+                  href={heroCtaHref}
+                  size="lg"
+                  className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+                >
+                  {featuredSubTier.ctaType === "calendar" ? (
+                    <Calendar aria-hidden="true" className="h-4 w-4" />
+                  ) : (
+                    <Mail aria-hidden="true" className="h-4 w-4" />
+                  )}
+                  {isFr ? config.ctaPrimaryLabelFr : config.ctaPrimaryLabelEn}
+                </Cta>
+                <Cta href="/audit" variant="outline" size="lg">
+                  {isFr ? "← Voir les 4 niveaux d'audit" : "← See the 4 audit levels"}
+                </Cta>
+              </div>
             </div>
+
+            {config.heroImage ? (
+              <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border lg:aspect-[5/4]">
+                <Image
+                  src={config.heroImage.src}
+                  alt={isFr ? config.heroImage.altFr : config.heroImage.altEn}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 92vw, 520px"
+                  className="object-cover"
+                />
+              </div>
+            ) : null}
           </div>
         </Container>
       </section>
+
+      {/* POUR QUI — 3 profils servis (optionnel). */}
+      {(isFr ? config.forWhomFr : config.forWhomEn) ? (
+        <section className="bg-paper border-border border-b py-8">
+          <Container className={TIGHT_X}>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+              <p className="text-fg-muted shrink-0 text-[12px] font-bold tracking-[0.16em] uppercase">
+                {isFr ? "Pour qui ?" : "Who for?"}
+              </p>
+              <ul className="flex flex-wrap gap-x-6 gap-y-2">
+                {(isFr ? config.forWhomFr! : config.forWhomEn!).map((who) => (
+                  <li key={who} className="text-fg flex items-center gap-2 text-[14px] font-medium">
+                    <Check
+                      aria-hidden="true"
+                      className="text-terracotta-deep h-4 w-4 shrink-0"
+                      strokeWidth={2.5}
+                    />
+                    {who}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Container>
+        </section>
+      ) : null}
 
       {/* SOUS-TIERS — Choisissez votre format (cartes cliquables).
           tone sand pour casser avec hero halo-warm sans dupliquer le paper
@@ -222,17 +277,52 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         </div>
       </Section>
 
-      {/* PROGRAMME / DÉROULÉ — tone paper (aligné sur InterventionDetailPage). */}
-      <Section
-        tone="paper"
-        eyebrow={isFr ? config.scheduleEyebrowFr : config.scheduleEyebrowEn}
-        title={isFr ? "Comment" : "How"}
-        titleEm={isFr ? "ça se passe" : "it works"}
-        description={isFr ? config.scheduleDescriptionFr : config.scheduleDescriptionEn}
-        contentClassName={TIGHT_X}
-      >
-        <InterventionSchedule items={config.schedule} isFr={isFr} hideTravelNote />
-      </Section>
+      {/* DÉROULÉ HORAIRE DÉTAILLÉ (TPE = la journée) — rendu en 2 colonnes
+          (timeline à gauche, visuel sticky à droite) quand `dayTimeline` est
+          fourni. Sinon, on retombe sur le programme synthétique historique. */}
+      {config.dayTimeline ? (
+        <Section
+          tone="paper"
+          eyebrow={(isFr ? config.dayTimelineEyebrowFr : config.dayTimelineEyebrowEn) ?? ""}
+          title={(isFr ? config.dayTimelineTitleFr : config.dayTimelineTitleEn) ?? ""}
+          titleEm={(isFr ? config.dayTimelineTitleEmFr : config.dayTimelineTitleEmEn) ?? ""}
+          description={(isFr ? config.dayTimelineDescFr : config.dayTimelineDescEn) ?? ""}
+          contentClassName={TIGHT_X}
+        >
+          <ol className="border-border relative space-y-0 border-l-2 pl-0">
+            {config.dayTimeline.map((step, idx) => (
+              <li key={idx} className="relative pb-9 pl-8 last:pb-0">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta text-mocha-fg border-paper absolute top-0 -left-[15px] flex h-7 w-7 items-center justify-center rounded-full border-2 text-[10px] font-bold tabular-nums"
+                >
+                  {idx + 1}
+                </span>
+                <span className="text-terracotta-deep text-[12.5px] font-bold tracking-wide uppercase">
+                  {step.time}
+                </span>
+                <h3 className="text-fg mt-1 text-lg leading-snug font-semibold">
+                  {isFr ? step.titleFr : step.titleEn}
+                </h3>
+                <p className="text-fg-soft mt-1.5 max-w-2xl text-[14.5px] leading-relaxed">
+                  {isFr ? step.descFr : step.descEn}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </Section>
+      ) : (
+        <Section
+          tone="paper"
+          eyebrow={isFr ? config.scheduleEyebrowFr : config.scheduleEyebrowEn}
+          title={isFr ? "Comment" : "How"}
+          titleEm={isFr ? "ça se passe" : "it works"}
+          description={isFr ? config.scheduleDescriptionFr : config.scheduleDescriptionEn}
+          contentClassName={TIGHT_X}
+        >
+          <InterventionSchedule items={config.schedule} isFr={isFr} hideTravelNote />
+        </Section>
+      )}
 
       {/* 4 BÉNÉFICES */}
       <Section
@@ -248,6 +338,41 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
       >
         <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
+
+      {/* LIVRABLES — ce que le client repart avec (optionnel). tone sand. */}
+      {config.deliverables ? (
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Ce que vous repartez avec" : "What you walk away with"}
+          title={isFr ? "Vos" : "Your"}
+          titleEm={isFr ? "livrables concrets" : "concrete deliverables"}
+          description={
+            isFr
+              ? "Pas de promesses en l'air : des documents et des outils directement actionnables, livrés à l'issue de l'audit."
+              : "No empty promises: documents and tools you can act on immediately, delivered at the end of the audit."
+          }
+          contentClassName={TIGHT_X}
+        >
+          <ul className="grid list-none gap-6 p-0 md:grid-cols-3">
+            {config.deliverables.map((d) => (
+              <li
+                key={d.titleFr}
+                className="border-border bg-paper shadow-subtle flex flex-col rounded-2xl border p-6"
+              >
+                <span className="bg-terracotta-soft text-terracotta-deep mb-5 flex h-12 w-12 items-center justify-center rounded-2xl">
+                  <Package aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
+                </span>
+                <h3 className="text-fg text-[16px] leading-snug font-bold tracking-tight">
+                  {isFr ? d.titleFr : d.titleEn}
+                </h3>
+                <p className="text-fg-soft mt-2.5 text-[14px] leading-relaxed">
+                  {isFr ? d.descFr : d.descEn}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
 
       {/* FAQ — tone sand (aligné sur InterventionDetailPage). */}
       <Section

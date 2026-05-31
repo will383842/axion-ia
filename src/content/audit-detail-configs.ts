@@ -127,6 +127,44 @@ export interface AuditDetailConfig {
   /** Texte du CTA hero principal. */
   ctaPrimaryLabelFr: string;
   ctaPrimaryLabelEn: string;
+
+  // ── Refonte 2026-05-31 (Will) — champs optionnels additifs pour la page
+  //    détail « à la perfection » (hero visuel, déroulé heure par heure,
+  //    livrables, à qui ça s'adresse). Si absents, le template retombe sur le
+  //    rendu historique (zéro casse sur les tiers non encore enrichis).
+
+  /** Image hero (bannière paysage de la banque public/images ou /illustrations). */
+  heroImage?: { src: string; altFr: string; altEn: string };
+  /** Phrase de réassurance sous le hero (durée · lieu · livrable). */
+  heroMetaFr?: string;
+  heroMetaEn?: string;
+  /** Déroulé heure par heure (TPE = la journée). Rendu en timeline détaillée. */
+  dayTimeline?: ReadonlyArray<{
+    time: string;
+    titleFr: string;
+    titleEn: string;
+    descFr: string;
+    descEn: string;
+  }>;
+  /** Eyebrow + titre de la section déroulé horaire. */
+  dayTimelineEyebrowFr?: string;
+  dayTimelineEyebrowEn?: string;
+  dayTimelineTitleFr?: string;
+  dayTimelineTitleEn?: string;
+  dayTimelineTitleEmFr?: string;
+  dayTimelineTitleEmEn?: string;
+  dayTimelineDescFr?: string;
+  dayTimelineDescEn?: string;
+  /** Livrables concrets repartis à l'issue de l'audit. */
+  deliverables?: ReadonlyArray<{
+    titleFr: string;
+    titleEn: string;
+    descFr: string;
+    descEn: string;
+  }>;
+  /** « Pour qui » — 3 profils que ce tier sert le mieux. */
+  forWhomFr?: ReadonlyArray<string>;
+  forWhomEn?: ReadonlyArray<string>;
 }
 
 // ============================================================================
@@ -648,6 +686,135 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     faq: FLASH_FAQ,
     ctaPrimaryLabelFr: "Réserver l'audit sur place",
     ctaPrimaryLabelEn: "Book the on-site audit",
+    heroImage: {
+      src: "/images/axion-ia-audit-ia-entreprise-prete-intelligence-artificielle-banniere.webp",
+      altFr:
+        "Audit IA sur place pour TPE — une journée complète dans vos locaux pour rendre votre entreprise prête à l'IA, avec cartographie des usages et plan d'action chiffré.",
+      altEn:
+        "On-site AI audit for small businesses — one full day on your premises to make your company AI-ready, with use-case mapping and a costed action plan.",
+    },
+    heroMetaFr: "1 journée sur site · 9 h-17 h · plan d'action chiffré sous 48 h",
+    heroMetaEn: "1 day on site · 9 a.m.-5 p.m. · costed action plan within 48 h",
+    forWhomFr: [
+      "TPE de 1 à 19 salariés",
+      "Artisans, commerçants, professions libérales",
+      "Indépendant·e·s & freelances qui veulent un cap clair",
+    ],
+    forWhomEn: [
+      "Small businesses of 1 to 19 staff",
+      "Artisans, retailers, liberal professions",
+      "Freelancers who want a clear direction",
+    ],
+    dayTimelineEyebrowFr: "Votre journée, heure par heure",
+    dayTimelineEyebrowEn: "Your day, hour by hour",
+    dayTimelineTitleFr: "Comment se déroule",
+    dayTimelineTitleEn: "How your",
+    dayTimelineTitleEmFr: "votre journée d'audit",
+    dayTimelineTitleEmEn: "audit day unfolds",
+    dayTimelineDescFr:
+      "Une journée complète sur site, structurée pour repartir le soir avec une vision claire — et le plan chiffré sous 48 h. Voici exactement ce qui se passe, de votre arrivée au café du matin jusqu'à la restitution.",
+    dayTimelineDescEn:
+      "A full day on site, structured so you leave in the evening with a clear vision — and the costed plan within 48 h. Here is exactly what happens, from the morning coffee to the read-out.",
+    dayTimeline: [
+      {
+        time: "9 h 00",
+        titleFr: "Café & cadrage",
+        titleEn: "Coffee & framing",
+        descFr:
+          "On démarre ensemble autour d'un café : vos objectifs, vos irritants du quotidien, ce qui vous fait perdre du temps. On aligne les priorités de la journée en 30 minutes.",
+        descEn:
+          "We start together over a coffee: your goals, your daily pain points, what wastes your time. We align the day's priorities in 30 minutes.",
+      },
+      {
+        time: "9 h 30",
+        titleFr: "Immersion terrain",
+        titleEn: "Field immersion",
+        descFr:
+          "On vous observe travailler, vous et votre équipe. On note les tâches répétitives, les ressaisies, les allers-retours par mail — tout ce qui peut être automatisé ou augmenté par l'IA.",
+        descEn:
+          "We watch you and your team work. We note repetitive tasks, re-keying, email back-and-forth — everything AI can automate or augment.",
+      },
+      {
+        time: "11 h 00",
+        titleFr: "Cartographie des usages",
+        titleEn: "Use-case mapping",
+        descFr:
+          "On cartographie l'ensemble de votre activité fonction par fonction (devis, relances, compta, support, marketing…) et on repère où l'IA crée le plus de valeur chez vous.",
+        descEn:
+          "We map your whole activity function by function (quotes, follow-ups, accounting, support, marketing…) and pinpoint where AI creates the most value for you.",
+      },
+      {
+        time: "12 h 30",
+        titleFr: "Déjeuner (on continue d'échanger)",
+        titleEn: "Lunch (we keep talking)",
+        descFr:
+          "Pause déjeuner conviviale — souvent le moment où les vraies questions sortent. On répond à tout, sans jargon.",
+        descEn:
+          "A friendly lunch break — often when the real questions come out. We answer everything, no jargon.",
+      },
+      {
+        time: "14 h 00",
+        titleFr: "Démos live sur vos vrais cas",
+        titleEn: "Live demos on your real cases",
+        descFr:
+          "Le cœur de la journée : on teste l'IA en direct sur 2 à 3 cas réels de votre quotidien. Vous voyez le résultat de vos yeux, vous repartez avec des prompts testés et prêts à réutiliser.",
+        descEn:
+          "The heart of the day: we test AI live on 2-3 real cases from your daily work. You see the result with your own eyes and leave with tested, ready-to-reuse prompts.",
+      },
+      {
+        time: "16 h 00",
+        titleFr: "Priorisation & quick-wins",
+        titleEn: "Prioritisation & quick-wins",
+        descFr:
+          "On classe les opportunités par impact et facilité. On identifie ensemble 3 à 5 quick-wins activables tout de suite, sans tout bouleverser.",
+        descEn:
+          "We rank opportunities by impact and ease. Together we identify 3 to 5 quick-wins you can activate right away, without disruption.",
+      },
+      {
+        time: "16 h 45",
+        titleFr: "Restitution à chaud",
+        titleEn: "Hot read-out",
+        descFr:
+          "On vous résume ce qu'on a vu, ce qu'on recommande, et les prochaines étapes. Vous finissez la journée avec une vision claire — pas un rapport théorique.",
+        descEn:
+          "We sum up what we saw, what we recommend, and the next steps. You end the day with a clear vision — not a theoretical report.",
+      },
+      {
+        time: "Sous 48 h",
+        titleFr: "Votre plan d'action chiffré",
+        titleEn: "Your costed action plan",
+        descFr:
+          "On vous envoie le livrable : rapport de 8 à 15 pages avec outils recommandés, prompts testés, quick-wins priorisés et estimation du gain horaire mensuel. Directement actionnable.",
+        descEn:
+          "We send you the deliverable: an 8-15 page report with recommended tools, tested prompts, prioritised quick-wins and a monthly hourly-gain estimate. Directly actionable.",
+      },
+    ],
+    deliverables: [
+      {
+        titleFr: "Rapport d'audit 8-15 pages",
+        titleEn: "8-15 page audit report",
+        descFr:
+          "Cartographie de votre activité, opportunités IA priorisées, estimation du gain de temps et d'argent. Le document de référence pour décider sereinement.",
+        descEn:
+          "A map of your activity, prioritised AI opportunities, time and money gain estimate. The reference document to decide with confidence.",
+      },
+      {
+        titleFr: "Bibliothèque de prompts testés",
+        titleEn: "Library of tested prompts",
+        descFr:
+          "Les prompts essayés en direct pendant la journée, prêts à copier-coller dans vos outils. Vous gagnez du temps dès le lendemain.",
+        descEn:
+          "The prompts tried live during the day, ready to copy-paste into your tools. You save time from the very next day.",
+      },
+      {
+        titleFr: "3 à 5 quick-wins priorisés",
+        titleEn: "3 to 5 prioritised quick-wins",
+        descFr:
+          "Des actions concrètes activables immédiatement, classées par impact et facilité de mise en œuvre. De quoi démarrer sans attendre.",
+        descEn:
+          "Concrete actions you can activate immediately, ranked by impact and ease of implementation. Enough to start right away.",
+      },
+    ],
   },
   "audit-cible": {
     tier: "audit-cible",
@@ -694,6 +861,51 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     faq: PME_FAQ,
     ctaPrimaryLabelFr: "Choisir un format Stratégique PME",
     ctaPrimaryLabelEn: "Choose a Strategic SME format",
+    heroImage: {
+      src: "/images/axion-ia-audit-ia-levier-croissance-mesurable-cartographie-roi-banniere.webp",
+      altFr:
+        "Audit IA stratégique pour PME — cartographie multi-départements, ROI chiffré et roadmap 12-24 mois pour faire de l'IA un levier de croissance mesurable.",
+      altEn:
+        "Strategic AI audit for SMEs — multi-department mapping, quantified ROI and a 12-24 month roadmap to turn AI into a measurable growth lever.",
+    },
+    heroMetaFr: "5-6 semaines · 2-4 services · restitution COMEX",
+    heroMetaEn: "5-6 weeks · 2-4 departments · EXCOM read-out",
+    forWhomFr: [
+      "PME de 20 à 250 salariés",
+      "Plusieurs services concernés par l'IA",
+      "Dirigeant·e·s qui veulent une roadmap board-ready",
+    ],
+    forWhomEn: [
+      "SMEs of 20 to 250 staff",
+      "Several departments impacted by AI",
+      "Leaders who want a board-ready roadmap",
+    ],
+    deliverables: [
+      {
+        titleFr: "Cartographie multi-départements",
+        titleEn: "Multi-department mapping",
+        descFr:
+          "2 à 4 services majeurs cartographiés, avec les opportunités IA priorisées par ROI et complexité. Une vue d'ensemble cohérente de toute l'entreprise.",
+        descEn:
+          "2 to 4 major services mapped, with AI opportunities prioritised by ROI and complexity. A coherent company-wide overview.",
+      },
+      {
+        titleFr: "Roadmap stratégique 12-24 mois",
+        titleEn: "12-24 month strategic roadmap",
+        descFr:
+          "Plan d'exécution chiffré par phases, charges, décisions de gating et KPI cibles. Directement utilisable en COMEX / CODIR.",
+        descEn:
+          "Costed execution plan by phases, workload, gating decisions and target KPIs. Directly usable in EXCOM / board.",
+      },
+      {
+        titleFr: "Quick-wins sous 30 jours",
+        titleEn: "Quick-wins within 30 days",
+        descFr:
+          "3 à 5 quick-wins activables immédiatement pendant que la stratégie long terme se met en place. Premier ROI mesurable dès le 2ᵉ mois.",
+        descEn:
+          "3 to 5 quick-wins activable immediately while the long-term strategy ramps up. First measurable ROI from month 2.",
+      },
+    ],
   },
   "audit-strategique-eti": {
     tier: "audit-strategique-eti",
@@ -717,5 +929,50 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     faq: ETI_FAQ,
     ctaPrimaryLabelFr: "Demander un cadrage ETI",
     ctaPrimaryLabelEn: "Request a mid-cap framing",
+    heroImage: {
+      src: "/images/axion-ia-audit-ia-avantage-competitif-decisions-resultats-banniere.webp",
+      altFr:
+        "Audit IA transverse pour ETI et grandes entreprises — gouvernance IA, cartographie multi-BU et livrables board-ready pour transformer l'IA en avantage compétitif durable.",
+      altEn:
+        "Transverse AI audit for mid-caps and large enterprises — AI governance, multi-BU mapping and board-ready deliverables to turn AI into a lasting competitive advantage.",
+    },
+    heroMetaFr: "9 semaines · multi-BU · gouvernance + comité de pilotage",
+    heroMetaEn: "9 weeks · multi-BU · governance + steering committee",
+    forWhomFr: [
+      "ETI de 250 à 5000 salariés & grandes entreprises",
+      "Organisations multi-sites, multi-BU",
+      "Comités exécutifs avec enjeux de gouvernance & conformité",
+    ],
+    forWhomEn: [
+      "Mid-caps of 250 to 5000 staff & large enterprises",
+      "Multi-site, multi-BU organisations",
+      "Executive committees with governance & compliance stakes",
+    ],
+    deliverables: [
+      {
+        titleFr: "Cartographie multi-BU",
+        titleEn: "Multi-BU mapping",
+        descFr:
+          "Vue transverse de toutes vos business units : opportunités IA, dépendances, priorités d'arbitrage. Le socle de votre stratégie IA groupe.",
+        descEn:
+          "A transverse view of all your business units: AI opportunities, dependencies, arbitration priorities. The foundation of your group AI strategy.",
+      },
+      {
+        titleFr: "Gouvernance IA + comité de pilotage",
+        titleEn: "AI governance + steering committee",
+        descFr:
+          "Cadre de gouvernance, comité IA, processus de décision. Conformité AI Act 2026 + RGPD + sectoriel intégrée dès le diagnostic.",
+        descEn:
+          "Governance framework, AI committee, decision process. 2026 AI Act + GDPR + sector compliance built in from the diagnosis.",
+      },
+      {
+        titleFr: "Livrables board-ready + 30 j d'accompagnement",
+        titleEn: "Board-ready deliverables + 30-day support",
+        descFr:
+          "Restitution COMEX et board, documents prêts à présenter, et 30 jours d'accompagnement post-audit pour lancer l'exécution.",
+        descEn:
+          "EXCOM and board read-out, ready-to-present documents, and 30 days of post-audit support to kick off execution.",
+      },
+    ],
   },
 };
