@@ -17,6 +17,7 @@ import { AuditHero } from "@/components/services/audit/AuditHero";
 import { AuditValueProp } from "@/components/services/audit/AuditValueProp";
 import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
+import { AuditProcessFlow } from "@/components/services/audit/AuditProcessFlow";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
 import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards";
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
@@ -182,56 +183,57 @@ export default async function AuditHub({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* Ordre des sections refondu 2026-05-31 (Will) — narration value-first :
-          hero → promesse → pourquoi maintenant → démarche → livrable → champ
-          des possibles → maturité → pourquoi nous → couverture, puis offre +
-          réassurance + FAQ + CTA. */}
+      {/* Ordre des sections (Will 2026-05-31) — narration value-first. Sans
+          numéros : l'ordre est porté par la séquence JSX (réordonnable sans
+          renumérotation). */}
 
-      {/* 1. HERO value-first — sans prix (best practice 2026) */}
+      {/* HERO value-first — sans prix (best practice 2026) */}
       <AuditHero isFr={isFr} />
 
-      {/* 2. POURQUOI UN AUDIT — « L'IA, tout le monde en parle. Nous, on la rend
+      {/* POURQUOI UN AUDIT — « L'IA, tout le monde en parle. Nous, on la rend
           rentable. » Contraste visuel (foncer ❌ vs méthode Axion-IA ✅) +
-          posture spécialiste de toute la chaîne IA. Remonté juste sous le hero
-          (Will 2026-05-31). */}
+          posture spécialiste de toute la chaîne IA. */}
       <AuditWhyAudit isFr={isFr} />
 
-      {/* 3. BANDEAU TERRACOTTA CONTACT — orientation vers le bon niveau d'audit
-          (adapté du bandeau /un-a-un, Will 2026-05-31). */}
+      {/* DÉROULÉ DE L'AUDIT — flow 01→04 sur une ligne (cadrage → entretiens →
+          analyse → filtrage). Concis et visuel. Avant le bandeau contact. */}
+      <AuditProcessFlow isFr={isFr} />
+
+      {/* BANDEAU TERRACOTTA CONTACT — orientation vers le bon niveau d'audit
+          (adapté du bandeau /un-a-un). */}
       <AuditContactBand isFr={isFr} />
 
-      {/* 4. PROMESSE — bloc value-prop « Faites auditer votre entreprise et
-          révélez tout ce que l'IA peut réellement vous apporter. » */}
+      {/* PROMESSE — bloc value-prop « Faites auditer votre entreprise et révélez
+          tout ce que l'IA peut réellement vous apporter. » */}
       <AuditValueProp isFr={isFr} />
 
-      {/* 5. Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
+      {/* Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />
 
-      {/* 6. POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
+      {/* POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
       <AuditWhyNow isFr={isFr} />
 
-      {/* 7. COMMENT ÇA MARCHE — « Notre démarche en 4 étapes » */}
+      {/* COMMENT ÇA MARCHE — « Notre démarche en 4 étapes » */}
       <AuditMethodology isFr={isFr} />
 
-      {/* 8. LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
+      {/* LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
       <AuditDeliverable isFr={isFr} />
 
-      {/* 9. TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
+      {/* TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
           Le prospect s'y reconnaît en 5 s ; l'audit détermine ce qui s'applique à lui. */}
       <AuditCapabilitiesMap isFr={isFr} />
 
-      {/* 10. QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
+      {/* QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
       <AuditMaturityLevels isFr={isFr} />
 
-      {/* 11. POURQUOI AXION-IA — « 5 raisons concrètes de nous choisir » */}
+      {/* POURQUOI AXION-IA — « 5 raisons concrètes de nous choisir » */}
       <WhyAxionIA isFr={isFr} />
 
-      {/* 12. LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis).
-          Remonté ici (Will 2026-05-31) : l'offre apparaît dès que le prospect
-          est convaincu, juste après les raisons de choisir Axion-IA. */}
+      {/* LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis). L'offre
+          apparaît dès que le prospect est convaincu, après les raisons. */}
       <AuditFormatsCards isFr={isFr} />
 
-      {/* 13. COUVERTURE NATIONALE — « L'audit IA disponible partout en France » (pSEO) */}
+      {/* COUVERTURE NATIONALE — « L'audit IA disponible partout en France » (pSEO) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="L'audit IA"
@@ -240,19 +242,19 @@ export default async function AuditHub({ params }: Props) {
         tone="sand"
       />
 
-      {/* 14. SIGNATURE FONDATEUR (légitimité humaine) */}
+      {/* SIGNATURE FONDATEUR (légitimité humaine) */}
       <SignatureCard isFr={isFr} />
 
-      {/* 15. FAQ (unique) */}
+      {/* FAQ (unique) */}
       <AuditFaq isFr={isFr} />
 
-      {/* 16. PONT AUDIT → IMPLÉMENTATION (upsell, sans engagement) */}
+      {/* PONT AUDIT → IMPLÉMENTATION (upsell, sans engagement) */}
       <BeyondAuditBlock isFr={isFr} />
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="audit" />
 
-      {/* 17. CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
+      {/* CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
       <AuditCtaBlock isFr={isFr} />
 
       {/* STICKY CTA MOBILE */}
