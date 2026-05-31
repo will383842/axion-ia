@@ -30,8 +30,8 @@ export const SAINT_XANDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Xandre : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Xandre : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Xandre : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Xandre : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Xandre : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const SAINT_XANDRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Xandre ?",
-      a: "L'audit Flash IA à Saint-Xandre démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à Saint-Xandre démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Xandre ?",

@@ -9,9 +9,9 @@ export const ROGNAC_COPY: VilleCopy = {
   pitchEn:
     "Rognac (13), commune dynamique au nord de l'étang de Berre dans les Bouches-du-Rhône, dispose de zones d'activités attractives entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans, PME logistique et services, commerces de bourg. Axion-IA y intervient pour tous types d'activités du nord de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
   seoHook: "logistique, zones d'activités & étang de Berre",
   ecosystemFr:
     "Rognac est une commune au nord de l'étang de Berre, dotée de zones d'activités dynamiques entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans du bâtiment, PME logistique et transport, commerces de bourg et prestataires de services. Connexion rapide A7/A55.",
@@ -30,8 +30,8 @@ export const ROGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rognac : formats adaptés à l'entrepôt logistique, l'atelier artisan et le bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const ROGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Rognac ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME logistique et services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME logistique et services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de Rognac ?",
@@ -61,7 +61,7 @@ export const ROGNAC_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux artisans de Rognac ?",
-      a: "Absolument. L'Audit Flash à {{price:audit-flash|flat}} est conçu pour les TPE artisans. Cas IA pratiques : automatisation devis, gestion planning, facturation, suivi chantiers, relances clients.",
+      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les TPE artisans. Cas IA pratiques : automatisation devis, gestion planning, facturation, suivi chantiers, relances clients.",
     },
     {
       q: "Comment se déroule une mission IA à Rognac ?",

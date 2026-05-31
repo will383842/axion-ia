@@ -9,9 +9,9 @@ export const PELISSANNE_COPY: VilleCopy = {
   pitchEn:
     "Pélissanne (13), commune résidentielle de l'agglomération de Salon-de-Provence dans les Bouches-du-Rhône, allie qualité de vie provençale et dynamisme économique local. TPE artisans, PME services, commerces de centre-bourg et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin salonais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit sur place sur mesure, sans engagement.",
   seoHook: "résidentiel & services agglo Salon",
   ecosystemFr:
     "Pélissanne est une commune résidentielle de l'agglomération de Salon-de-Provence, entre Aix et Arles. Économie locale de proximité tournée vers les services, l'artisanat et le commerce. TPE artisans du bâtiment, commerçants, professions libérales, PME services et prestataires locaux.",
@@ -30,8 +30,8 @@ export const PELISSANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pélissanne : formats adaptés à l'atelier artisan, au cabinet et au commerce de bourg. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const PELISSANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Pélissanne ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans de Pélissanne ?",
@@ -61,7 +61,7 @@ export const PELISSANNE_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux commerçants de Pélissanne ?",
-      a: "Absolument. Cas IA pour commerçants : gestion stocks intelligente, agents IA prise de commande, fidélisation client automatisée, comptabilité simplifiée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Absolument. Cas IA pour commerçants : gestion stocks intelligente, agents IA prise de commande, fidélisation client automatisée, comptabilité simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Pélissanne ?",

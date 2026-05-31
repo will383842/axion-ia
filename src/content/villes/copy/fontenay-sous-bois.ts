@@ -9,9 +9,9 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Fontenay-sous-Bois (94), en lisière du bois de Vincennes. Ville résidentielle et tertiaire de l'est parisien, elle accueille des sièges et un dense réseau de petites structures de services, de conseil et de commerce. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces entreprises val-de-marnaises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   seoHook: "tertiaire & services",
   ecosystemFr:
     "Fontenay-sous-Bois, à l'est de Paris et en lisière du bois de Vincennes, conjugue cadre résidentiel et économie tertiaire. La commune accueille des sièges et plateaux de bureaux le long du RER A, autour desquels gravite un tissu dense de TPE et PME : prestataires de services, sociétés informatiques, professions libérales et commerces de proximité. Cette proximité immédiate de Paris en fait un terrain favorable à des automatisations IA exigeantes et conformes.",
@@ -57,7 +57,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Fontenay-sous-Bois ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME fontenaysiennes, sans devis opaque ni engagement caché.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME fontenaysiennes, sans devis opaque ni engagement caché.",
     },
     {
       q: "Accompagnez-vous les prestataires de services et sociétés informatiques ?",

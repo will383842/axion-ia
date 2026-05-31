@@ -9,9 +9,9 @@ export const GUINGAMP_COPY: VilleCopy = {
   pitchEn:
     "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & artisanat",
   ecosystemFr:
     "Guingamp est la sous-préfecture des Côtes-d'Armor, au carrefour du Trégor et du Goëlo. Pôle agroalimentaire (viande, lait, légumes) structurant pour le bassin d'emploi, complété par un tissu TPE artisans, commerces de centre-ville, professions libérales et services. Noeud ferroviaire TGV Paris-Brest.",
@@ -30,8 +30,8 @@ export const GUINGAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guingamp : formats adaptés site agroalimentaire, commerce, cabinet, atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const GUINGAMP_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents IA prise de rendez-vous pour artisans et commerçants de centre-ville.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents IA prise de rendez-vous pour artisans et commerçants de centre-ville.",
     },
     {
       q: "Quels services pour les professions libérales et PME de services ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, implémentation outils IA métier, coaching 1-to-1, CRM augmenté, automatisation tâches administratives, prise de rendez-vous et secrétariat IA, reporting intelligent.",
+      a: "Audit sur place {{price:audit-flash|flat}}, implémentation outils IA métier, coaching 1-to-1, CRM augmenté, automatisation tâches administratives, prise de rendez-vous et secrétariat IA, reporting intelligent.",
     },
     {
       q: "Comment se déroule une mission à Guingamp ?",

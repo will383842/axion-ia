@@ -30,8 +30,8 @@ export const ESTAIRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Estaires : formats adaptés à l'usine agroalimentaire, l'atelier textile, l'exploitation agricole, le commerce. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const ESTAIRES_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Estaires ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaire et textile d'Estaires ?",

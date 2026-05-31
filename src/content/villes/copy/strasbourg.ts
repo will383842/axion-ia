@@ -126,7 +126,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises et petites structures strasbourgeoises jusqu'à une dizaine de collaborateurs — cabinets, agences, startups deeptech en amorçage.",
           },
@@ -166,7 +166,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Strasbourg ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme lors du brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme lors du brief de cadrage initial.",
           },
           {
             q: "Pouvez-vous auditer une organisation soumise au droit européen ou à des données réglementées ?",
@@ -947,7 +947,7 @@ export const STRASBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Strasbourg ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande organisation) et votre périmètre. Aucun supplément géographique : le tarif est identique à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande organisation) et votre périmètre. Aucun supplément géographique : le tarif est identique à Paris.",
     },
     {
       q: "Intervenez-vous pour les institutions européennes à Strasbourg ?",

@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Boiseau : formats adaptés au bureau, au cabinet, au commerce ou en visio. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
-      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Jean-de-Boiseau  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud-ouest nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud-ouest nantais.",
     },
     {
       q: "Comment se déroule une intervention sur site ?",

@@ -30,8 +30,8 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-le-Comte : diagnostic adapté aux TPE artisans, PME commerciales et industrielles sud-Vendée, professions libérales et acteurs tourisme marais poitevin. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontenay-le-Comte : diagnostic adapté aux TPE artisans, PME commerciales et industrielles sud-Vendée, professions libérales et acteurs tourisme marais poitevin. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontenay-le-Comte : diagnostic adapté aux TPE artisans, PME commerciales et industrielles sud-Vendée, professions libérales et acteurs tourisme marais poitevin. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontenay-le-Comte : diagnostic adapté aux TPE artisans, PME commerciales et industrielles sud-Vendée, professions libérales et acteurs tourisme marais poitevin. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontenay-le-Comte : formats adaptés aux commerces, professions libérales, PME industrielles et acteurs tourisme. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerces de Fontenay-le-Comte ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas commerces : automatisation relation client, gestion stocks prédictive, marketing digital, agents conversationnels.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas commerces : automatisation relation client, gestion stocks prédictive, marketing digital, agents conversationnels.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme du marais poitevin ?",
@@ -61,7 +61,7 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Fontenay-le-Comte  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Fontenay-le-Comte ?",

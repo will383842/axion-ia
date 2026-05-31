@@ -51,7 +51,7 @@ export const NANTERRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA pour une PME basée à Nanterre ?",
-      a: "L'Audit Flash (4h) démarre à {{price:audit-flash|flat}} — il couvre la cartographie de vos processus et l'identification des chantiers IA prioritaires. Pour une PME du 92 avec plusieurs services à analyser, des formules étendues existent. Tarifs publics complets consultables sur axion-ia.fr/audits.",
+      a: "L'Audit sur place (4h) démarre à {{price:audit-flash|flat}} — il couvre la cartographie de vos processus et l'identification des chantiers IA prioritaires. Pour une PME du 92 avec plusieurs services à analyser, des formules étendues existent. Tarifs publics complets consultables sur axion-ia.fr/audits.",
     },
     {
       q: "William se déplace-t-il physiquement à Nanterre ou l'intervention est-elle à distance ?",
@@ -63,7 +63,7 @@ export const NANTERRE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai entre la prise de contact et le premier audit à Nanterre ?",
-      a: "L'Audit Flash (4h) se planifie généralement sous deux semaines après confirmation. Le calendrier dépend des disponibilités mutuelles, pas d'une file d'attente géographique — Nanterre est accessible depuis Paris en moins de 20 minutes via le RER A ou le métro.",
+      a: "L'Audit sur place (4h) se planifie généralement sous deux semaines après confirmation. Le calendrier dépend des disponibilités mutuelles, pas d'une file d'attente géographique — Nanterre est accessible depuis Paris en moins de 20 minutes via le RER A ou le métro.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD lors d'une implémentation à Nanterre ?",

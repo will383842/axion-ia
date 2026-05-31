@@ -30,8 +30,8 @@ export const FILLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fillière : diagnostic adapté aux exploitants agricoles plateau des Bornes, artisans BTP, commerçants, PME tertiaires nord Annecy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Fillière : diagnostic adapté aux exploitants agricoles plateau des Bornes, artisans BTP, commerçants, PME tertiaires nord Annecy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Fillière : diagnostic adapté aux exploitants agricoles plateau des Bornes, artisans BTP, commerçants, PME tertiaires nord Annecy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fillière : diagnostic adapté aux exploitants agricoles plateau des Bornes, artisans BTP, commerçants, PME tertiaires nord Annecy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fillière : formats adaptés exploitations agricoles, ateliers artisans, commerces ruraux, bureaux PME. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const FILLIERE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Fillière  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du plateau des Bornes.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du plateau des Bornes.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du plateau des Bornes ?",
@@ -61,7 +61,7 @@ export const FILLIERE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans et commerces ruraux ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants TPE ruraux.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants TPE ruraux.",
     },
     {
       q: "Proposez-vous des formations IA individuelles à Fillière ?",

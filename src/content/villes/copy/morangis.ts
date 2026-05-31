@@ -9,9 +9,9 @@ export const MORANGIS_COPY: VilleCopy = {
   pitchEn:
     "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   seoHook: "logistique transport & industrielles",
   ecosystemFr:
     "Morangis est une commune de l'Essonne proche d'Orly, avec des zones d'activités orientées logistique, transport et industrie. Tissu logistique aéroportuaire, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
@@ -30,8 +30,8 @@ export const MORANGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Morangis : formats adaptés entrepôt logistique, usine, chantier, bureau PME, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const MORANGIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",

@@ -9,9 +9,9 @@ export const FLERS_COPY: VilleCopy = {
   pitchEn:
     "Flers (61), sous-préfecture de l'Orne en Normandie, est une ville industrielle historiquement liée au textile (drap, toile), aujourd'hui reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles reconverties, commerces centre-ville. Axion-IA opère pour toutes les structures économiques de la commune du bocage ornais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit sur place sur mesure.",
   seoHook: "industrie reconvertie & bocage normand",
   ecosystemFr:
     "Flers est la sous-préfecture ouest de l'Orne, au coeur du bocage normand. Ancienne capitale textile reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles, commerces de centre-ville et professions libérales.",
@@ -30,8 +30,8 @@ export const FLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Flers : formats adaptés à l'atelier mécanique, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const FLERS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans flériens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Flers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Flers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission IA à Flers depuis Paris ?",
@@ -65,7 +65,7 @@ export const FLERS_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Flers ?",
-      a: "L'audit Flash est tarifé selon vos enjeux pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place est tarifé selon vos enjeux pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

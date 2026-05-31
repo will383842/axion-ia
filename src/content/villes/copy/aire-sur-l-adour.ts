@@ -30,8 +30,8 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aire-sur-l'Adour : formations adaptées aux ateliers agroalimentaires, exploitations agricoles, commerces et services publics. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans airois ?",
-      a: "Pour les TPE commerçants et artisans à Aire-sur-l'Adour, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks, agents IA communication clients, facturation.",
+      a: "Pour les TPE commerçants et artisans à Aire-sur-l'Adour, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks, agents IA communication clients, facturation.",
     },
     {
       q: "Comment se déroule une mission à Aire-sur-l'Adour ?",

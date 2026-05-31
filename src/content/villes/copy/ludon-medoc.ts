@@ -30,8 +30,8 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ludon-Médoc : diagnostic des tâches automatisables pour vignerons, châteaux, artisans BTP et commerces de l'entrée du Médoc. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
-      en: "Audit IA à Ludon-Médoc : diagnostic des tâches automatisables pour vignerons, châteaux, artisans BTP et commerces de l'entrée du Médoc. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      fr: "Audit IA à Ludon-Médoc : diagnostic des tâches automatisables pour vignerons, châteaux, artisans BTP et commerces de l'entrée du Médoc. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Ludon-Médoc : diagnostic des tâches automatisables pour vignerons, châteaux, artisans BTP et commerces de l'entrée du Médoc. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ludon-Médoc : ateliers pratiques en chai, atelier BTP ou commerce, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ludon-Médoc ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerces et professions libérales.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerces et professions libérales.",
     },
     {
       q: "Accompagnez-vous les vignerons et châteaux du Haut-Médoc ?",
@@ -65,7 +65,7 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP de l'entrée du Médoc ?",
-      a: "Pour les TPE artisans BTP : audit Flash dès {{price:audit-flash|flat}}, intervention sur site, coaching un-à-un, automatisation des devis et gestion de planning, calibrés selon votre taille et votre budget.",
+      a: "Pour les TPE artisans BTP : audit sur place dès {{price:audit-flash|flat}}, intervention sur site, coaching un-à-un, automatisation des devis et gestion de planning, calibrés selon votre taille et votre budget.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",

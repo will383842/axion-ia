@@ -30,8 +30,8 @@ export const MONDEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mondeville : formats adaptés à l'usine, atelier BTP, bureau tertiaire ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const MONDEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants mondevillais ?",
-      a: "Pour les TPE artisans BTP et commerçants à Mondeville, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Mondeville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mondeville  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Êtes-vous accessibles en transport depuis Mondeville ?",

@@ -9,9 +9,9 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
   pitchEn:
     "Ville-d'Avray (92), commune résidentielle nichée entre les forêts de Fausses-Reposes et de Meudon, est célèbre pour ses étangs immortalisés par Corot et sa proximité immédiate avec Versailles et le plateau de Vélizy. Tissu de TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit sur place sur mesure.",
   seoHook: "professions libérales & services tertiaires",
   ecosystemFr:
     "Ville-d'Avray est une commune résidentielle prisée des Hauts-de-Seine, entre forêt de Fausses-Reposes et étangs de Corot, à 12 km de Paris et 3 km de Versailles. Tissu économique dominé par les professions libérales, TPE de conseil, cabinets d'architectes et PME tertiaires. Proximité immédiate du pôle d'activités Vélizy-Villacoublay et du campus technologique de Saclay.",
@@ -30,8 +30,8 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Ville-d'Avray : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ville-d'Avray : formations pratiques dans votre cabinet, bureau ou local commercial. Équipes repartent autonomes sur outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ville-d'Avray  ?",
-      a: "L'Audit Flash IA à Ville-d'Avray débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
+      a: "L'Audit sur place IA à Ville-d'Avray débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
     },
     {
       q: "Travaillez-vous avec les professions libérales à Ville-d'Avray ?",

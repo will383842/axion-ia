@@ -9,9 +9,9 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Épinay-sur-Orge (91), commune résidentielle de l'Essonne dans la vallée de l'Orge, est desservie par le RER C (gare d'Épinay-sur-Orge). Proximité Massy, Longjumeau, Sainte-Geneviève-des-Bois. Tissu TPE services, professions libérales, PME conseil, commerces de proximité, artisans. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Épinay-sur-Orge est une commune résidentielle de la vallée de l'Orge, desservie par le RER C. Située entre Massy (TGV) et Longjumeau, elle bénéficie du bassin d'emploi sud-francilien. Tissu TPE services, professions libérales, commerces de proximité, artisans BTP, santé.",
@@ -30,8 +30,8 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épinay-sur-Orge : formats adaptés cabinet, bureau, commerce ou domicile professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants spinoliens ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, réseaux sociaux assistés.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, réseaux sociaux assistés.",
     },
     {
       q: "Accompagnez-vous les PME du bassin Massy-Longjumeau ?",

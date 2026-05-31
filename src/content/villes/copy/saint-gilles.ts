@@ -9,9 +9,9 @@ export const SAINT_GILLES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit sur place sur mesure.",
   seoHook: "agriculture camargue & viticulture costières",
   ecosystemFr:
     "Saint-Gilles (~14 700 hab) est la porte de la Petite Camargue gardoise, à 20 min de Nîmes. Agriculture camarguaise (riziculture, élevage taureau/cheval), viticulture Costières de Nîmes, tourisme patrimonial (abbatiale UNESCO), commerces et artisanat. Économie agri-touristique structurante.",
@@ -30,8 +30,8 @@ export const SAINT_GILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Gilles : diagnostic adapté aux TPE/PME agricoles Camargue, viticulteurs Costières, commerçants et acteurs touristiques. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gilles : formats adaptés aux exploitations agricoles, caves viticoles, commerces et structures touristiques Petite Camargue.",
@@ -57,7 +57,7 @@ export const SAINT_GILLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Gilles  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les acteurs touristiques de Saint-Gilles ?",

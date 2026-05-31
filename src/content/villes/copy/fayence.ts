@@ -9,9 +9,9 @@ export const FAYENCE_COPY: VilleCopy = {
   pitchEn:
     "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
   seoHook: "tourisme rural & centre vol",
   ecosystemFr:
     "Fayence est le chef-lieu du Pays de Fayence (9 communes), village perché provençal entre Var et Alpes-Maritimes. Centre de vol à voile mondialement reconnu, tourisme rural, oléiculture, viticulture, artisanat d'art. Tissu de TPE artisans, gîtes ruraux, restaurateurs et PME tourisme et services de l'arrière-pays.",
@@ -30,8 +30,8 @@ export const FAYENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fayence : ateliers pour hôteliers, gîtes ruraux, artisans d'art, oléiculteurs et commerçants. Outils IA configurés métier réel rural et touristique.",
@@ -53,7 +53,7 @@ export const FAYENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un gîte ou un hôtel à Fayence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux gîtes ruraux, chambres d'hôtes et petits hôtels fayençois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux gîtes ruraux, chambres d'hôtes et petits hôtels fayençois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les oléiculteurs et viticulteurs du Pays de Fayence ?",

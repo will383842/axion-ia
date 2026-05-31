@@ -9,9 +9,9 @@ export const VAUVERT_COPY: VilleCopy = {
   pitchEn:
     "Vauvert (30), commune de la Petite Camargue gardoise aux portes des Costières de Nîmes. Tissu TPE/PME viticulture Costières, agriculture Camargue, commerces, artisanat BTP et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin de la Vaunage sud et Petite Camargue.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit sur place sur mesure.",
   seoHook: "viticulture costières & agriculture camargue",
   ecosystemFr:
     "Vauvert (~11 700 hab) est une commune de la Petite Camargue gardoise, entre Nîmes et Aigues-Mortes. Viticulture Costières de Nîmes (AOP), agriculture camarguaise (riz, élevage), commerces centre-ville, artisanat BTP et services aux entreprises. Économie agri-viticole dominante.",
@@ -30,8 +30,8 @@ export const VAUVERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vauvert : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Vauvert : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Vauvert : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vauvert : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles Camargue, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vauvert : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans Petite Camargue.",
@@ -57,7 +57,7 @@ export const VAUVERT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vauvert  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles de Camargue ?",

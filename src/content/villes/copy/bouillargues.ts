@@ -9,9 +9,9 @@ export const BOUILLARGUES_COPY: VilleCopy = {
   pitchEn:
     "Bouillargues (30), commune résidentielle de l'agglomération nîmoise sud, proche de l'aéroport Nîmes-Garons. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et viticulture Costières. Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
   seoHook: "artisanat & viticulture costières",
   ecosystemFr:
     "Bouillargues (~6 100 hab) est une commune résidentielle de l'agglo nîmoise sud, à proximité de l'aéroport Nîmes-Garons. Services aux entreprises, commerces, artisanat BTP, professions libérales, viticulture Costières de Nîmes. Croissance démographique soutenue, accès A9.",
@@ -30,8 +30,8 @@ export const BOUILLARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouillargues : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bouillargues : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bouillargues : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bouillargues : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes sud. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouillargues : formats adaptés aux entreprises de services, commerces, cabinets et artisans de l'agglo nîmoise sud.",
@@ -53,7 +53,7 @@ export const BOUILLARGUES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bouillargues  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Costières ?",

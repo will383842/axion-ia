@@ -30,8 +30,8 @@ export const MARSILLARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, TPE commerçants, artisans et acteurs du tourisme camarguais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, TPE commerçants, artisans et acteurs du tourisme camarguais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, TPE commerçants, artisans et acteurs du tourisme camarguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, TPE commerçants, artisans et acteurs du tourisme camarguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marsillargues : ateliers adaptés exploitation viticole/agricole, manade, commerce ou artisan. Équipes autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const MARSILLARGUES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les exploitations viticoles et agricoles ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux exploitations viticoles et agricoles : optimisation gestion parcelles, traçabilité, automatisation vente directe, prédiction récoltes. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés aux exploitations viticoles et agricoles : optimisation gestion parcelles, traçabilité, automatisation vente directe, prédiction récoltes. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE et commerces ?",
-      a: "Pour les TPE et commerces à Marsillargues, audit Flash {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      a: "Pour les TPE et commerces à Marsillargues, audit sur place {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme camarguais ?",
@@ -65,7 +65,7 @@ export const MARSILLARGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Marsillargues ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

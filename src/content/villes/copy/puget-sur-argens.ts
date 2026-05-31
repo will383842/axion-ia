@@ -9,9 +9,9 @@ export const PUGET_SUR_ARGENS_COPY: VilleCopy = {
   pitchEn:
     "Puget-sur-Argens (83), porte de l'Estérel et de l'agglomération de Fréjus-Saint-Raphaël, est un pôle logistique et résidentiel desservi par l'A8 sortie 37. Tissu de TPE artisans, PME logistique, commerce et services, ainsi que tourisme balnéaire de proximité. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Puget-sur-Argens est un pôle économique mixte de l'agglomération Var-Estérel. Position stratégique sortie A8 favorisant la logistique, le commerce et les services. Tissu de TPE artisanat, PME logistique et BTP, commerces de proximité et zones d'activités (Bouverie, Pierres Vieilles). Tourisme tiré par la proximité de Fréjus et de l'Estérel.",
@@ -30,8 +30,8 @@ export const PUGET_SUR_ARGENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Puget-sur-Argens : diagnostic adapté aux PME logistique, BTP, TPE artisans et professionnels du tourisme. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Puget-sur-Argens : ateliers pour artisans BTP, PME logistique, commerçants et hôteliers de plein air. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const PUGET_SUR_ARGENS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique à Puget-sur-Argens ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME logistique, TPE BTP et commerçants pugétois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME logistique, TPE BTP et commerçants pugétois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistique sortie A8 ?",

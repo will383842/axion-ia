@@ -52,7 +52,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Schiltigheim ?",
-      a: "Nos interventions IA à Schiltigheim démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, après un Audit Flash à {{price:audit-flash|flat}}. Tarifs publics affichés.",
+      a: "Nos interventions IA à Schiltigheim démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
       q: "William se déplace-t-il à Schiltigheim depuis Paris ?",

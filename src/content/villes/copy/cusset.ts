@@ -30,8 +30,8 @@ export const CUSSET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cusset : diagnostic adapté aux PME tertiaires/industrielles agglomération Vichy, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Cusset : diagnostic adapté aux PME tertiaires/industrielles agglomération Vichy, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Cusset : diagnostic adapté aux PME tertiaires/industrielles agglomération Vichy, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Cusset : diagnostic adapté aux PME tertiaires/industrielles agglomération Vichy, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cusset : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CUSSET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont ou Lyon ?",

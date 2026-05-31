@@ -30,8 +30,8 @@ export const LES_ANDELYS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Andelys : formats adaptés au site touristique, à l'exploitation agricole, au cabinet, au commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LES_ANDELYS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants andélysiens ?",
-      a: "Pour les TPE artisans et commerçants aux Andelys, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
+      a: "Pour les TPE artisans et commerçants aux Andelys, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

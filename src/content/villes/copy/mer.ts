@@ -9,9 +9,9 @@ export const MER_COPY: VilleCopy = {
   pitchEn:
     "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, TPE artisans, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord blésois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit sur place sur mesure, démarrage sous 10 jours.",
   seoHook: "logistique transport & agroalimentaire beauce",
   ecosystemFr:
     "Mer est situé entre Beauce et Val de Loire, le long de l'axe A10/RN152. Zones d'activités logistique et industrielles, PME agroalimentaire, entreprises de transport, TPE artisanat BTP et commerces de centre-bourg.",
@@ -30,8 +30,8 @@ export const MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Mer : diagnostic adapté aux PME logistique, agroalimentaire, TPE artisans et commerces du nord blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mer : formations en entrepôt, atelier de production, bureau ou commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mer  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {
       q: "Quels services IA pour la logistique à Mer ?",

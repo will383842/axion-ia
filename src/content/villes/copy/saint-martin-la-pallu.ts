@@ -30,8 +30,8 @@ export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-la-Pallu : diagnostic adapté aux TPE artisans BTP, PME négoce, exploitants agricoles et commerçants du nord Poitou. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Saint-Martin-la-Pallu : diagnostic adapté aux TPE artisans BTP, PME négoce, exploitants agricoles et commerçants du nord Poitou. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Saint-Martin-la-Pallu : diagnostic adapté aux TPE artisans BTP, PME négoce, exploitants agricoles et commerçants du nord Poitou. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Saint-Martin-la-Pallu : diagnostic adapté aux TPE artisans BTP, PME négoce, exploitants agricoles et commerçants du nord Poitou. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-la-Pallu : formats adaptés à l'exploitation agricole, atelier artisan, négoce ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Saint-Martin-la-Pallu ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Saint-Martin-la-Pallu. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Saint-Martin-la-Pallu. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du nord Vienne ?",
@@ -61,7 +61,7 @@ export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants de la commune nouvelle ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Martin-la-Pallu, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Martin-la-Pallu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning.",
     },
     {
       q: "Axion-IA travaille-t-il avec les entreprises du Futuroscope ?",

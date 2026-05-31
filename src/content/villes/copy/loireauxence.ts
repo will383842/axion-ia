@@ -9,9 +9,9 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
   pitchEn:
     "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA collabore avec toutes les structures locales du bassin nantais est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture élevage",
   ecosystemFr:
     "Loireauxence est une commune nouvelle (fusion 2016 de Varades, Belligné, La Chapelle-Saint-Sauveur, La Rouxière) en bords de Loire entre Nantes et Ancenis. Tissu TPE artisans, commerces de centre-bourg, PME tertiaires, professions libérales et exploitations agricoles.",
@@ -30,8 +30,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loireauxence : formats courts adaptés atelier, exploitation, bureau ou commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et exploitants agricoles ?",
-      a: "Oui, nous accompagnons les TPE artisanales et exploitants agricoles de Loireauxence sur des cas IA concrets : automatisation devis/factures, gestion parcellaire, traçabilité, agents IA relation client. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisanales et exploitants agricoles de Loireauxence sur des cas IA concrets : automatisation devis/factures, gestion parcellaire, traçabilité, agents IA relation client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du bassin Ancenis-Nantes ?",
@@ -64,8 +64,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
       a: "Nos consultants se déplacent sur site à Loireauxence (40 min depuis Nantes, gare Ancenis TER à 10 min). Hébergement local pour missions multi-jours. Frais de déplacement facturés à part, tarifs transparents.",
     },
     {
-      q: "L'audit Flash {{price:audit-flash|flat}} convient-il aux petites structures ?",
-      a: "Oui, l'audit Flash {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, diagnostic de 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
+      q: "L'audit sur place {{price:audit-flash|flat}} convient-il aux petites structures ?",
+      a: "Oui, l'audit sur place {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, diagnostic de 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
     },
   ],
 };

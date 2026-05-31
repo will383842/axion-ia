@@ -120,7 +120,7 @@ export const METZ_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "AdaptÃ© aux indÃ©pendants et cabinets messins jusqu'Ã  une dizaine de collaborateurs â€” centre-ville, ÃŽle du Saulcy, Pontiffroy.",
           },
@@ -160,7 +160,7 @@ export const METZ_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA Ã  Metz ?",
-            a: "La durÃ©e varie selon le niveau retenu : un Audit Flash se dÃ©roule sur une journÃ©e, un Audit StratÃ©gique ETI s'Ã©tale sur plusieurs semaines. Nous calons le rythme dÃ¨s le brief de cadrage initial.",
+            a: "La durÃ©e varie selon le niveau retenu : un Audit sur place se dÃ©roule sur une journÃ©e, un Audit StratÃ©gique ETI s'Ã©tale sur plusieurs semaines. Nous calons le rythme dÃ¨s le brief de cadrage initial.",
           },
           {
             q: "Quel ROI puis-je attendre pour une ETI industrielle de l'EuromÃ©tropole ?",
@@ -940,7 +940,7 @@ export const METZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coÃ»te un audit IA opÃ©rationnel Ã  Metz ?",
-      a: "Le tarif dÃ©pend du niveau retenu â€” Audit Flash, CiblÃ©, StratÃ©gique PME ou StratÃ©gique ETI. Tarifs publics affichÃ©s sur la page Audit, choix calibrÃ© selon votre taille (TPE, PME, ETI, grande entreprise) et votre pÃ©rimÃ¨tre. Aucun supplÃ©ment gÃ©ographique : le tarif est identique Ã  Metz et partout en France.",
+      a: "Le tarif dÃ©pend du niveau retenu â€” Audit sur place, CiblÃ©, StratÃ©gique PME ou StratÃ©gique ETI. Tarifs publics affichÃ©s sur la page Audit, choix calibrÃ© selon votre taille (TPE, PME, ETI, grande entreprise) et votre pÃ©rimÃ¨tre. Aucun supplÃ©ment gÃ©ographique : le tarif est identique Ã  Metz et partout en France.",
     },
     {
       q: "Avez-vous des cas clients dans l'EuromÃ©tropole de Metz ?",

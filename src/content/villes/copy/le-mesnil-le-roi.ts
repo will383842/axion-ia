@@ -9,9 +9,9 @@ export const LE_MESNIL_LE_ROI_COPY: VilleCopy = {
   pitchEn:
     "Le Mesnil-le-Roi (78), commune résidentielle de prestige en bord de Seine, face à Maisons-Laffitte, dans le nord-est des Yvelines. Tissu de TPE et PME de conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services haut de gamme. Axion-IA y intervient pour tous types d'activités de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-le-Roi (78). Nous accompagnons TPE et PME : cabinets conseil, professions libérales, commerces de village, prestataires immobiliers et entreprises de services de cette commune résidentielle de prestige en bord de Seine. Audit sur place sur mesure.",
   seoHook: "conseil coaching & professions libérales",
   ecosystemFr:
     "Le Mesnil-le-Roi est une commune résidentielle de prestige en bord de Seine, face à Maisons-Laffitte, dans le nord-est des Yvelines. Village au cadre verdoyant et à l'habitat pavillonnaire recherché. Tissu économique : professions libérales, TPE conseil et coaching, commerces de village, prestataires immobiliers et services haut de gamme. Communes voisines : Maisons-Laffitte, Sartrouville, Le Pecq, Saint-Germain-en-Laye, Carrières-sur-Seine.",
@@ -30,8 +30,8 @@ export const LE_MESNIL_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Mesnil-le-Roi : diagnostic adapté aux TPE conseil, professions libérales, PME de services et prestataires immobiliers de la boucle de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mesnil-le-Roi : formats adaptés au cabinet, au bureau ou en visio. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LE_MESNIL_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Mesnil-le-Roi ?",
-      a: "L'Audit Flash IA au Mesnil-le-Roi démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA au Mesnil-le-Roi démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales au Mesnil-le-Roi ?",

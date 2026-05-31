@@ -30,8 +30,8 @@ export const GAILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gaillon : formats adaptés à l'usine, l'entrepôt logistique, l'exploitation agricole, le commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const GAILLON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants gaillonnais ?",
-      a: "Pour les TPE artisans et commerçants à Gaillon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
+      a: "Pour les TPE artisans et commerçants à Gaillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",

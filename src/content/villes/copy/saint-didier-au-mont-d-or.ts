@@ -30,8 +30,8 @@ export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Didier-au-Mont-d'Or : formats adaptés au cabinet, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Didier-au-Mont-d'Or, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Didier-au-Mont-d'Or, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

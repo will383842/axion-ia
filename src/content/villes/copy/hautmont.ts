@@ -30,8 +30,8 @@ export const HAUTMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hautmont : formats adaptés à la PME métallurgie, au sous-traitant automobile, à l'artisan ou au commerçant. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const HAUTMONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Hautmont  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hautmont et de l'agglomération maubeugeoise, il identifie les cas d'usage IA à fort ROI pour votre activité (métallurgie, sous-traitance auto, mécanique, commerce). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hautmont et de l'agglomération maubeugeoise, il identifie les cas d'usage IA à fort ROI pour votre activité (métallurgie, sous-traitance auto, mécanique, commerce). Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME de la métallurgie et sous-traitance automobile ?",

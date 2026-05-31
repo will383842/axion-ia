@@ -9,9 +9,9 @@ export const COUBRON_COPY: VilleCopy = {
   pitchEn:
     "Coubron (93), commune résidentielle de l'est de la Seine-Saint-Denis, bordée par la forêt de Bondy et à la lisière du Val-de-Marne. Tissu TPE artisans du bâtiment, PME de services, commerçants de proximité, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du nord-est francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Coubron est une commune résidentielle verdoyante de l'est de la Seine-Saint-Denis, bordée par la forêt régionale de Bondy. Son tissu économique est composé de TPE artisans du bâtiment, PME de services aux entreprises, commerces de proximité et professions libérales. Proximité directe avec Livry-Gargan, Montfermeil et Vaujours.",
@@ -30,8 +30,8 @@ export const COUBRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coubron : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est du 93. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Coubron : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est du 93. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Coubron : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est du 93. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Coubron : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est du 93. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coubron : formats adaptés au cabinet, commerce ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const COUBRON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Coubron ?",
-      a: "L'Audit Flash IA à Coubron démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Coubron démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Coubron ?",

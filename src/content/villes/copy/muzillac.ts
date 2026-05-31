@@ -9,9 +9,9 @@ export const MUZILLAC_COPY: VilleCopy = {
   pitchEn:
     "Muzillac (56), commune du littoral morbihannais entre Vannes et La Roche-Bernard, est un carrefour entre marais d'Arzal, estuaire de la Vilaine et océan. TPE artisans, PME tertiaires, commerces de proximité, ostréiculture, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit sur place sur mesure.",
   seoHook: "tourisme littoral & ostréiculture pêche",
   ecosystemFr:
     "Muzillac est une commune littorale du Morbihan, à la jonction entre marais d'Arzal et estuaire de la Vilaine. Tissu de TPE artisans (BTP, métiers de bouche), PME tertiaires, ostréiculture, tourisme balnéaire et nautique, commerces de proximité. Bassin d'emploi entre Vannes (25 min) et La Roche-Bernard.",
@@ -30,8 +30,8 @@ export const MUZILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Muzillac : formats adaptés aux professionnels du tourisme, ostréiculteurs, commerçants, artisans. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const MUZILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans à Muzillac ?",
-      a: "Pour les TPE artisans (BTP, métiers de bouche) à Muzillac : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
+      a: "Pour les TPE artisans (BTP, métiers de bouche) à Muzillac : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
     },
     {
       q: "Accompagnez-vous le secteur tourisme littoral ?",

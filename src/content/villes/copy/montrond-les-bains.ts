@@ -30,8 +30,8 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montrond-les-Bains : formats adaptés à l'établissement thermal, hôtel de cure, casino, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Montrond-les-Bains, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Montrond-les-Bains, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

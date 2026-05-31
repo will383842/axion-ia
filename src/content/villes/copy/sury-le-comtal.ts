@@ -30,8 +30,8 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sury-le-Comtal : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans suryssois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Sury-le-Comtal, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Sury-le-Comtal, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

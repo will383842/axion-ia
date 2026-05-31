@@ -30,8 +30,8 @@ export const QUESTEMBERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Questembert : formats adaptés aux TPE/PME du pays vannetais, artisans BTP, cabinets libéraux, commerces et entreprises agroalimentaires. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const QUESTEMBERT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Questembert  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays vannetais, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, agriculture, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays vannetais, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, agriculture, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Questembert ?",

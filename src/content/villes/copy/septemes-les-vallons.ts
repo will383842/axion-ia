@@ -9,9 +9,9 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   pitchEn:
     "Septèmes-les-Vallons (13), commune résidentielle au nord de Marseille dans les Bouches-du-Rhône, bénéficie de la proximité de la métropole et des zones d'activités de Plan de Campagne et des Pennes-Mirabeau. TPE artisans, PME services, commerces de quartier et professions libérales. Axion-IA y intervient pour tous types d'activités du nord marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Septèmes-les-Vallons (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord de Marseille, professions libérales et entreprises des zones d'activités proches. Audit sur place sur mesure, sans engagement.",
   seoHook: "résidentiel & services nord Marseille",
   ecosystemFr:
     "Septèmes-les-Vallons est une commune résidentielle du nord de Marseille, proche des zones commerciales de Plan de Campagne et des zones d'activités des Pennes-Mirabeau. TPE artisans, commerçants, PME services et professions libérales. Accès rapide A7 et L2 nord vers le centre de Marseille.",
@@ -30,8 +30,8 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Septèmes-les-Vallons : diagnostic adapté aux TPE artisans, PME de services du nord de Marseille et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Septèmes-les-Vallons : formats adaptés au bureau, commerce et atelier. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Septèmes-les-Vallons ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans de Septèmes-les-Vallons ?",
@@ -61,7 +61,7 @@ export const SEPTEMES_LES_VALLONS_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux professions libérales ?",
-      a: "Absolument. Nous accompagnons les professions libérales de Septèmes-les-Vallons : automatisation gestion cabinet, rédaction assistée, classification documents, planning intelligent. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Absolument. Nous accompagnons les professions libérales de Septèmes-les-Vallons : automatisation gestion cabinet, rédaction assistée, classification documents, planning intelligent. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Septèmes-les-Vallons ?",

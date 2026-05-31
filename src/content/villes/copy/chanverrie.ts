@@ -30,8 +30,8 @@ export const CHANVERRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chanverrie : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chanverrie : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chanverrie : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chanverrie : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chanverrie : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const CHANVERRIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Chanverrie ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les industries mécaniques vendéennes ?",

@@ -30,8 +30,8 @@ export const ISSOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Issoire : formats adaptés à l'atelier aéronautique, administration, site roman, exploitation, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const ISSOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",

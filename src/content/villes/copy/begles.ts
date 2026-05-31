@@ -9,9 +9,9 @@ export const BEGLES_COPY: VilleCopy = {
   pitchEn:
     "Bègles (33, Gironde), 31 831 habitants, commune de Bordeaux Métropole en limite sud de Bordeaux rive gauche de la Garonne. Tissu TPE/PME mixte : économie créative et numérique (parc des Terres Neuves), artisans BTP, commerces de proximité, restauration et héritage aéronautique. Axion-IA accompagne les structures économiques béglaises et de l'agglo bordelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit Flash {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit Flash {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bègles (33). Nous accompagnons en priorité les TPE, puis les PME et ETI de l'agglomération bordelaise : artisans BTP, studios créatifs et numériques du parc des Terres Neuves, commerces de proximité, restauration et acteurs de l'économie environnementale. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   seoHook: "économie créative & artisanat Bordeaux Métropole",
   ecosystemFr:
     "Bègles est une commune dense de Bordeaux Métropole (3 196 hab/km²), située en limite sud de Bordeaux rive gauche, à la confluence du projet d'aménagement Euratlantique. Économie locale tournée vers le numérique et la création (parc d'activités des Terres Neuves), l'artisanat BTP, le commerce de proximité, la restauration et la rénovation urbaine. Héritage industriel (ancienne raffinerie, sécherie de morue) reconverti en quartiers mixtes le long de la Garonne.",
@@ -30,8 +30,8 @@ export const BEGLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bègles : diagnostic pour TPE artisans BTP, studios créatifs des Terres Neuves, commerçants et restaurateurs de l'agglo bordelaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bègles : ateliers et déploiement outils IA dans vos locaux du parc Terres Neuves, sur chantiers BTP ou en boutique. Code custom, pas no-code.",
@@ -53,7 +53,7 @@ export const BEGLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bègles ?",
-      a: "L'Audit Flash IA à Bègles démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus, identification cas d'usage IA prioritaires et plan d'action ROI chiffré. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place IA à Bègles démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus, identification cas d'usage IA prioritaires et plan d'action ROI chiffré. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Bègles ?",

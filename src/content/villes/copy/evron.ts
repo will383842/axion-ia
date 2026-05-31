@@ -30,8 +30,8 @@ export const EVRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Évron : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Évron : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Évron : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Évron : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Évron : formations adaptées aux PME laitières, industriels, artisans, éleveurs et commerçants du bassin d'Évron. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const EVRON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Évron ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du centre-Mayenne. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du centre-Mayenne. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour l'industrie du conditionnement ?",

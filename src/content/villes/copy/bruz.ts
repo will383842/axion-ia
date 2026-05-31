@@ -10,9 +10,9 @@ export const BRUZ_COPY: VilleCopy = {
     "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA collabore avec toutes les structures locales du sud rennais.",
   seoHook: "tech, deeptech & campus ENS-Supélec",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Bruz est la quatrième ville de Rennes Métropole, positionnée au sud de Rennes sur l'axe Nantes. Elle héberge le campus de Ker Lann (ÉNS Rennes, CentraleSupélec, ESIR, IGN-ENSG) et plusieurs zones d'activités (Cicé-Blossac, ZA des Gressinières). L'économie locale mêle PME tech et deeptech, services numériques, sous-traitance industrielle, artisanat, commerce résidentiel et professions libérales.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BRUZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruz : diagnostic adapté aux TPE/PME tech du campus Ker Lann, start-up deeptech, artisans et commerçants du sud rennais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bruz : diagnostic adapté aux TPE/PME tech du campus Ker Lann, start-up deeptech, artisans et commerçants du sud rennais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bruz : diagnostic adapté aux TPE/PME tech du campus Ker Lann, start-up deeptech, artisans et commerçants du sud rennais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bruz : diagnostic adapté aux TPE/PME tech du campus Ker Lann, start-up deeptech, artisans et commerçants du sud rennais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruz : formations adaptées aux équipes tech, chercheurs, ingénieurs deeptech et TPE locales. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const BRUZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bruz  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME et start-up bruzéennes, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME et start-up bruzéennes, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de Bruz ?",
-      a: "Pour les artisans et commerçants bruzéens, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks et fidélisation client augmentée.",
+      a: "Pour les artisans et commerçants bruzéens, nous proposons : Audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA prise de rendez-vous, automatisation devis, gestion stocks et fidélisation client augmentée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Bruz ?",

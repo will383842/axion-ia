@@ -9,9 +9,9 @@ export const CHATELLERAULT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Châtellerault (86). Héritière de la Manufacture d'armes (MAC), la ville vit aujourd'hui de l'équipement automobile, de la fonderie et de la sous-traitance aéronautique. Nous outillons ateliers, bureaux d'études et commerces du bassin de la Vienne avec une IA concrète et mesurée.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit Flash sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit Flash sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
   seoHook: "automobile & fonderie",
   ecosystemFr:
     "Châtellerault, deuxième ville de la Vienne, conserve un fort ADN industriel hérité de la Manufacture d'armes. La zone industrielle Nord concentre fonderies, équipementiers automobile et sous-traitants aéronautique, autour d'un tissu dense de TPE artisanales, de bureaux d'études et de commerces. Le site de l'ancienne MAC et la reconversion tertiaire ouvrent un terrain idéal pour des automatisations IA pragmatiques au service des petites structures locales.",
@@ -57,7 +57,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Châtellerault ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. Il s'agit d'un diagnostic court adapté aux TPE et PME de la zone industrielle Nord, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. Il s'agit d'un diagnostic court adapté aux TPE et PME de la zone industrielle Nord, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous les équipementiers automobile et la fonderie ?",
@@ -65,7 +65,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans de Châtellerault ?",
-      a: "Les TPE artisans et commerçants bénéficient de l'Audit Flash, d'interventions d'une journée et du coaching 1-to-1 : automatisation des devis, relances clients et gestion du planning.",
+      a: "Les TPE artisans et commerçants bénéficient de l'Audit sur place, d'interventions d'une journée et du coaching 1-to-1 : automatisation des devis, relances clients et gestion du planning.",
     },
     {
       q: "Comment se déroule une mission à Châtellerault ?",

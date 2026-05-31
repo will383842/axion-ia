@@ -30,8 +30,8 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ville-la-Grand : diagnostic adapté aux PME transfrontalières Grand Genève, tertiaires, commerçants, artisans BTP. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Ville-la-Grand : diagnostic adapté aux PME transfrontalières Grand Genève, tertiaires, commerçants, artisans BTP. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Ville-la-Grand : diagnostic adapté aux PME transfrontalières Grand Genève, tertiaires, commerçants, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Ville-la-Grand : diagnostic adapté aux PME transfrontalières Grand Genève, tertiaires, commerçants, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ville-la-Grand : formats adaptés bureaux PME, zones d'activités, commerces, ateliers artisans. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Ville-la-Grand  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du Grand Genève.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du Grand Genève.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières FR/CH ?",
@@ -61,7 +61,7 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans et commerces de l'agglomération Annemasse ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants TPE de l'agglomération.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1 pour artisans BTP, commerçants et gérants TPE de l'agglomération.",
     },
     {
       q: "Proposez-vous des formations IA individuelles à Ville-la-Grand ?",

@@ -9,9 +9,9 @@ export const SAINT_CHERON_COPY: VilleCopy = {
   pitchEn:
     "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Saint-Chéron est une commune résidentielle de la vallée de l'Orge supérieure, desservie par le RER C. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
@@ -30,8 +30,8 @@ export const SAINT_CHERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Chéron : formats adaptés boutique, cabinet, restaurant, atelier BTP, bureau PME. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Dourdan ou Paris ?",

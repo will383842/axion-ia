@@ -30,8 +30,8 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux TPE artisans et commerçants, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux TPE artisans et commerçants, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux TPE artisans et commerçants, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux TPE artisans et commerçants, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Saint-Martin : formats adaptés au bureau, au cabinet, au commerce ou en visio. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales de Pont-Saint-Martin ?",
-      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME tertiaires du sud nantais ?",
@@ -61,7 +61,7 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Pont-Saint-Martin  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
     },
     {
       q: "Comment se passe une intervention depuis Nantes ?",

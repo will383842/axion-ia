@@ -9,9 +9,9 @@ export const LAVELANET_COPY: VilleCopy = {
   pitchEn:
     "Lavelanet (09), commune du Pays d'Olmes en Ariège, est un bourg industriel historiquement lié au textile (laine cardée, draperie) en reconversion économique. Tissu TPE artisans, PME textile reconverties, commerces, agriculture piémont, tourisme Montségur. Axion-IA répond aux besoins de toutes les entreprises du Pays d'Olmes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavelanet (09), Pays d'Olmes en Ariège. Nous accompagnons TPE artisans, PME textile reconverties et nouvelles industries, commerçants, agriculteurs et acteurs du tourisme Montségur. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavelanet (09), Pays d'Olmes en Ariège. Nous accompagnons TPE artisans, PME textile reconverties et nouvelles industries, commerçants, agriculteurs et acteurs du tourisme Montségur. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavelanet (09), Pays d'Olmes en Ariège. Nous accompagnons TPE artisans, PME textile reconverties et nouvelles industries, commerçants, agriculteurs et acteurs du tourisme Montségur. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavelanet (09), Pays d'Olmes en Ariège. Nous accompagnons TPE artisans, PME textile reconverties et nouvelles industries, commerçants, agriculteurs et acteurs du tourisme Montségur. Audit sur place sur mesure.",
   seoHook: "textile reconverti & tourisme patrimonial",
   ecosystemFr:
     "Lavelanet est le bourg-centre du Pays d'Olmes, territoire industriel historiquement spécialisé dans le textile (laine cardée, draperie, confection). Le tissu économique se reconvertit progressivement vers de nouvelles industries (composites, plasturgie), l'artisanat BTP, le commerce et le tourisme patrimonial (château de Montségur, haut lieu cathare). Agriculture piémont (élevage, cultures).",
@@ -30,8 +30,8 @@ export const LAVELANET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lavelanet : diagnostic adapté aux TPE artisans, PME textile reconverties, nouvelles industries, commerçants et acteurs tourisme Montségur du Pays d'Olmes. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lavelanet : diagnostic adapté aux TPE artisans, PME textile reconverties, nouvelles industries, commerçants et acteurs tourisme Montségur du Pays d'Olmes. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lavelanet : diagnostic adapté aux TPE artisans, PME textile reconverties, nouvelles industries, commerçants et acteurs tourisme Montségur du Pays d'Olmes. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lavelanet : diagnostic adapté aux TPE artisans, PME textile reconverties, nouvelles industries, commerçants et acteurs tourisme Montségur du Pays d'Olmes. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lavelanet : formats adaptés à l'atelier industriel, l'exploitation agricole, le commerce, le site touristique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LAVELANET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lavelanet  ?",
-      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME industrielles, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, transparents.",
+      a: "L'audit sur place propose un tarif d'entrée accessible pour une TPE. Pour les PME industrielles, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme Montségur ?",

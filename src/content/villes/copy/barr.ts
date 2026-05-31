@@ -30,8 +30,8 @@ export const BARR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Barr : formats adaptés au domaine viticole, à l'hôtel-restaurant, au gîte, au commerce, à l'atelier d'artisan. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const BARR_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Barr ?",
-      a: "Oui, commerçants, artisans et restaurateurs barrois : gestion stocks, prise de réservations, relation client, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, commerçants, artisans et restaurateurs barrois : gestion stocks, prise de réservations, relation client, automatisation comptabilité, présence en ligne. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Barr ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Barr ?",

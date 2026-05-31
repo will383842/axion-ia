@@ -124,7 +124,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux sous-traitants TPE, cabinets libéraux, artisans et indépendants du bassin clermontois jusqu'à une dizaine de collaborateurs.",
           },
@@ -164,7 +164,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Clermont-Ferrand ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs journées ou semaines. Nous calons avec vous le rythme dès le brief de cadrage.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs journées ou semaines. Nous calons avec vous le rythme dès le brief de cadrage.",
           },
           {
             q: "Mes données industrielles restent-elles confidentielles ?",
@@ -947,7 +947,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Clermont-Ferrand ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Clermont-Ferrand qu'à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Clermont-Ferrand qu'à Paris.",
     },
     {
       q: "Axion-IA intervient-il sur les sites industriels du bassin clermontois ?",

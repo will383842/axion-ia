@@ -30,8 +30,8 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Audun-le-Tiche : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Audun-le-Tiche : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Audun-le-Tiche : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Audun-le-Tiche : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et agences immobilières du Pays-Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Audun-le-Tiche : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou agence immobilière. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const AUDUN_LE_TICHE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Audun-le-Tiche ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les agences immobilières et la gestion locative ?",

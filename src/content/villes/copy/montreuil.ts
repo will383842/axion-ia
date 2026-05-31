@@ -77,7 +77,7 @@ export const MONTREUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Montreuil ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Montreuil et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Montreuil et partout en France.",
     },
     {
       q: "Avez-vous des références dans le secteur numérique ou jeu vidéo à Montreuil ?",
@@ -97,7 +97,7 @@ export const MONTREUIL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec des structures de l'ESS ou des incubateurs à Montreuil ?",
-      a: "Oui. Les structures de l'économie sociale et solidaire (ESS) et les porteurs de projets incubés à La Pousse peuvent bénéficier d'un Audit Flash ou d'une intervention Essentielle calibrée pour les petites structures. Nous adaptons la profondeur et le format à votre réalité opérationnelle.",
+      a: "Oui. Les structures de l'économie sociale et solidaire (ESS) et les porteurs de projets incubés à La Pousse peuvent bénéficier d'un Audit sur place ou d'une intervention Essentielle calibrée pour les petites structures. Nous adaptons la profondeur et le format à votre réalité opérationnelle.",
     },
   ],
 
@@ -146,7 +146,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, studios créatifs, agences et petites structures du Bas-Montreuil jusqu'à une dizaine de collaborateurs.",
           },
@@ -186,7 +186,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Montreuil ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
           },
           {
             q: "Quel ROI puis-je attendre pour une grande direction IT ou financière à Montreuil ?",

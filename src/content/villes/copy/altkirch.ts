@@ -9,9 +9,9 @@ export const ALTKIRCH_COPY: VilleCopy = {
   pitchEn:
     "Altkirch (68), sous-préfecture du Sundgau dans le Haut-Rhin, 5 687 habitants, est un bourg historique alsacien marqué par son centre médiéval, son patrimoine religieux et sa fonction administrative pour le sud du département. Tissu de TPE/PME industrie, artisanat, commerce, agriculture sundgauvienne et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Altkirch (68). Nous accompagnons TPE et PME : industriels, artisans, commerçants du centre médiéval, exploitations agricoles du Sundgau, professions de services et administrations sous-préfectorales. Audit sur place sur mesure.",
   ecosystemFr:
     "Altkirch est la capitale historique du Sundgau, région rurale du sud Alsace entre Mulhouse et la frontière suisse. Bourg de sous-préfecture, son économie repose sur les TPE/PME industrielles, l'artisanat, le commerce de centre-bourg, l'agriculture sundgauvienne (élevage, céréales, carpes frites), les services administratifs et un tourisme patrimonial (centre médiéval, musée sundgauvien).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const ALTKIRCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Altkirch : formats adaptés à l'atelier industriel, à l'exploitation agricole, au commerce ou au bureau administratif. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const ALTKIRCH_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Altkirch  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Sundgau, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, exploitation agricole, commerce ou cabinet de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Sundgau, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, exploitation agricole, commerce ou cabinet de services.",
     },
     {
       q: "Accompagnez-vous les industriels et artisans du Sundgau ?",

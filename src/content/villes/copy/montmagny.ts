@@ -9,9 +9,9 @@ export const MONTMAGNY_COPY: VilleCopy = {
   pitchEn:
     "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du sud Val-d'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
     "Montmagny est une commune résidentielle du sud du Val-d'Oise, bien connectée à Paris par le Transilien H (20 min Gare du Nord). Son tissu économique comprend TPE artisans BTP, commerces de proximité, PME de services, professions libérales et indépendants. Proximité directe avec Deuil-la-Barre, Groslay et Enghien-les-Bains.",
@@ -30,8 +30,8 @@ export const MONTMAGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montmagny : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montmagny : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montmagny : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montmagny : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du sud Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montmagny : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const MONTMAGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Montmagny ?",
-      a: "L'Audit Flash IA à Montmagny démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Montmagny démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Montmagny ?",

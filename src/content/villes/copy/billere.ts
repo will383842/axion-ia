@@ -9,9 +9,9 @@ export const BILLERE_COPY: VilleCopy = {
   pitchEn:
     "Billère (64), commune résidentielle de l'agglomération de Pau en Béarn, 14 384 habitants. Tissu de TPE artisans, PME de services, commerces de proximité et professions libérales adossé au bassin d'emploi palois. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération Pau Béarn Pyrénées.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit Flash sur mesure, déplacement sur site inclus dans l'agglo Pau.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit Flash sur mesure, déplacement sur site inclus dans l'agglo Pau.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit sur place sur mesure, déplacement sur site inclus dans l'agglo Pau.",
   seoHook: "services aux & commerces proximité",
   ecosystemFr:
     "Billère est une commune résidentielle de 14 384 habitants directement limitrophe ouest de Pau. Tissu économique de proximité : TPE artisans BTP, commerces de quartier, professions libérales (santé, juridique), PME de services tertiaires. Bassin d'emploi commun avec Pau, accès direct à la zone Hélioparc (technopole).",
@@ -30,8 +30,8 @@ export const BILLERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes. Déplacement inclus dans l'agglo Pau.",
@@ -57,7 +57,7 @@ export const BILLERE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Billère ?",
-      a: "L'audit Flash IA à Billère démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus métier, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre activité dans l'agglo paloise.",
+      a: "L'audit sur place IA à Billère démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus métier, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre activité dans l'agglo paloise.",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Billère ?",

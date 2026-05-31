@@ -32,8 +32,8 @@ export const MURET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Muret (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
-      en: "Audit Flash IA à Muret (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
+      fr: "Audit sur place IA à Muret (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
+      en: "Audit sur place IA à Muret (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour sous-traitants aéronautiques, PME pharma et commerces du Muretain.",
     },
     interventions: {
       fr: "Interventions à Muret dès {{price:intervention-4h|flat}} pour automatiser devis, relances, reporting qualité et gestion documentaire des TPE et PME locales — code custom Python/Node.js.",
@@ -51,7 +51,7 @@ export const MURET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Muret ?",
-      a: "Les interventions Axion-IA à Muret démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
+      a: "Les interventions Axion-IA à Muret démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit sur place 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Muret ?",

@@ -55,7 +55,7 @@ export const ROUBAIX_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA d'une PME roubaisienne ?",
-      a: "L'Audit Flash (4h) démarre à {{price:audit-flash|flat}} — il couvre l'analyse de vos processus clés et la restitution de 3 chantiers prioritaires chiffrés. Pour une PME avec plusieurs services à cartographier, un audit étendu est disponible. Tarifs publics consultables sur le site axion-ia.fr.",
+      a: "L'Audit sur place (4h) démarre à {{price:audit-flash|flat}} — il couvre l'analyse de vos processus clés et la restitution de 3 chantiers prioritaires chiffrés. Pour une PME avec plusieurs services à cartographier, un audit étendu est disponible. Tarifs publics consultables sur le site axion-ia.fr.",
     },
     {
       q: "Nos équipes travaillent en logistique et textile — vos interventions sont-elles adaptées à ces secteurs ?",
@@ -63,7 +63,7 @@ export const ROUBAIX_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour une première implémentation IA dans une TPE roubaisienne ?",
-      a: "Une implémentation démarre à {{price:impl-poc|entry}} — cela couvre le développement d'un outil ciblé (agent de relance, générateur de devis, assistant FAQ interne) et son intégration à vos outils existants. Pour une TPE, nous recommandons de commencer par un Audit Flash à {{price:audit-flash|flat}} pour valider le chantier avant d'engager le budget d'implémentation.",
+      a: "Une implémentation démarre à {{price:impl-poc|entry}} — cela couvre le développement d'un outil ciblé (agent de relance, générateur de devis, assistant FAQ interne) et son intégration à vos outils existants. Pour une TPE, nous recommandons de commencer par un Audit sur place à {{price:audit-flash|flat}} pour valider le chantier avant d'engager le budget d'implémentation.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD lors des interventions à Roubaix ?",
@@ -71,7 +71,7 @@ export const ROUBAIX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formats courts pour les dirigeants de TPE qui manquent de temps ?",
-      a: "Oui. L'Audit Flash (4h sur site) est conçu pour les dirigeants sans disponibilité étendue — restitution le jour même, plan d'action immédiatement actionnable. Le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}} en format modulaire. Aucun engagement multi-mois requis pour démarrer.",
+      a: "Oui. L'Audit sur place (4h sur site) est conçu pour les dirigeants sans disponibilité étendue — restitution le jour même, plan d'action immédiatement actionnable. Le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}} en format modulaire. Aucun engagement multi-mois requis pour démarrer.",
     },
   ],
 };

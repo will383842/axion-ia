@@ -30,8 +30,8 @@ export const SAINT_REMY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Rémy : formats adaptés au bureau, cabinet libéral, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const SAINT_REMY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE/PME tertiaires du Grand Chalon ?",
-      a: "Oui, agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Saint-Rémy ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Saint-Rémy ?",

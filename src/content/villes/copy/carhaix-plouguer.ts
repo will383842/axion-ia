@@ -9,9 +9,9 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   pitchEn:
     "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu TPE artisans, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit Flash à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit sur place à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit Flash à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit sur place à",
   seoHook: "agroalimentaire & événementiel tourisme",
   ecosystemFr:
     "Carhaix-Plouguer est la sous-préfecture du centre Finistère et le bourg-centre du Poher. La ville est mondialement connue pour le festival des Vieilles Charrues, plus grand festival de musique de France (280 000 festivaliers). Tissu économique: PME agroalimentaires (laiteries, filière porcine), TPE artisans BTP, commerces, services publics, professions libérales et tourisme événementiel.",
@@ -30,8 +30,8 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carhaix-Plouguer : formats adaptés à la laiterie, l'atelier artisan, le commerce ou l'organisation événementielle. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants carhaisiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Carhaix-Plouguer, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Carhaix-Plouguer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Carhaix-Plouguer ?",

@@ -9,9 +9,9 @@ export const COURBEVOIE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Courbevoie (92), au cœur du quartier d'affaires de La Défense. Au pied des tours qui abritent de grands sièges, un dense réseau de petites structures tertiaires — conseil, finance, services aux entreprises — fait vivre la ville. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces TPE et PME franciliennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   seoHook: "tertiaire & La Défense",
   ecosystemFr:
     "Courbevoie, dans les Hauts-de-Seine, accueille une large part du quartier d'affaires de La Défense et ses tours abritant de grands sièges sociaux. Autour de cette concentration tertiaire premium — finance, conseil, juridique, informatique — gravite un écosystème dense de TPE et PME : cabinets indépendants, agences, éditeurs de logiciels et prestataires de services aux entreprises. Très bien connectée, la ville offre un terrain idéal pour des automatisations IA exigeantes et conformes.",
@@ -57,7 +57,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Courbevoie ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME tertiaires de Courbevoie, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME tertiaires de Courbevoie, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous les cabinets de conseil et de droit ?",

@@ -30,8 +30,8 @@ export const LANGRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langres : formats adaptés à l'atelier coutelier, exploitation agroalimentaire, office de tourisme, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LANGRES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces centre fortifié ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {
       q: "Comment se passe une mission à Langres depuis Dijon ou Paris ?",

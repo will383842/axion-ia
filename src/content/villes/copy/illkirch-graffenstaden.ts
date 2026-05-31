@@ -8,7 +8,7 @@ const PITCH_FR =
   "Axion-IA accompagne les TPE et PME d'Illkirch-Graffenstaden, troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants. William se déplace sur site auprès des entreprises du Parc d'Innovation, des artisans du sud strasbourgeois et des PME bas-rhinoises pour livrer du code custom — Python ou TypeScript — propriétaire, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Illkirch-Graffenstaden pour les TPE et PME bas-rhinoises : entreprises biotech et logicielles du Parc d'Innovation, artisans et commerçants du centre, sous-traitants industriels gravitant autour de Flender-Graffenstaden et du tissu mécanique alsacien, professions libérales et cabinets de la Krimmeri à Graffenstaden. William se déplace via la gare TGV de Strasbourg (10 km, tram A direct) pour cadrer les besoins, livrer du code custom et former l'équipe. Audit Flash {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
+  "Axion-IA intervient à Illkirch-Graffenstaden pour les TPE et PME bas-rhinoises : entreprises biotech et logicielles du Parc d'Innovation, artisans et commerçants du centre, sous-traitants industriels gravitant autour de Flender-Graffenstaden et du tissu mécanique alsacien, professions libérales et cabinets de la Krimmeri à Graffenstaden. William se déplace via la gare TGV de Strasbourg (10 km, tram A direct) pour cadrer les besoins, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
 
 const ECOSYSTEM_FR =
   "Illkirch-Graffenstaden est la troisième commune de l'Eurométropole de Strasbourg avec 27 872 habitants (Insee 2023, densité 1 255 hab/km²). L'économie locale repose sur le Parc d'Innovation d'Illkirch (biotech, IT, cluster Alsace BioValley), des employeurs industriels historiques comme Flender-Graffenstaden (mécanique) et un tissu de TPE-PME en R&D, ingénierie et services. La proximité de l'Université de Strasbourg, de l'École nationale supérieure de physique et de l'IUT Robert-Schuman alimente le bassin de talents.";
@@ -35,8 +35,8 @@ const VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
-      en: "Audit Flash à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Illkirch-Graffenstaden pour TPE et PME du Parc d'Innovation ou du tissu industriel : 4 heures sur site, cartographie des processus chronophages (reporting R&D, suivi sous-traitance, devis), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention Essentielle à Illkirch-Graffenstaden pour PME alsaciennes : automatisation devis-relances, OCR factures multilingues FR-DE, suivi qualité production. Code custom livré, pas de SaaS verrouillant. Dès {{price:intervention-4h|flat}}.",
@@ -54,7 +54,7 @@ const VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels tarifs Axion-IA pratique-t-il à Illkirch-Graffenstaden ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
+      a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site), Formation 4 h {{price:intervention-4h|flat}} (cadrage + livraison d'un automatisme), accompagnement 1-à-1 {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de licence SaaS récurrente — vous êtes propriétaire du code livré.",
     },
     {
       q: "William se déplace-t-il vraiment à Illkirch-Graffenstaden ?",
@@ -66,7 +66,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Illkirch-Graffenstaden ?",
-      a: "Audit Flash bookable sous 5 à 10 jours ouvrés. Intervention Essentielle livrée en 2 à 4 semaines selon complexité. Axion-IA peut intervenir dès la semaine suivante pour cadrer un besoin urgent (panne de process, automatisation à fenêtre courte).",
+      a: "Audit sur place bookable sous 5 à 10 jours ouvrés. Intervention Essentielle livrée en 2 à 4 semaines selon complexité. Axion-IA peut intervenir dès la semaine suivante pour cadrer un besoin urgent (panne de process, automatisation à fenêtre courte).",
     },
     {
       q: "Quelles communes proches couvrez-vous depuis Illkirch-Graffenstaden ?",

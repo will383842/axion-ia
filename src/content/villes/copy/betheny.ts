@@ -10,9 +10,9 @@ export const BETHENY_COPY: VilleCopy = {
     "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   seoHook: "Champagne, vignoble & services nord Reims",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Bétheny est une commune résidentielle au nord de Reims dans la Marne, site de l'ancien aérodrome historique (meetings aériens pionniers de l'aviation début XXe). Proche du vignoble champenois (Montagne de Reims), l'économie locale intègre le négoce et la viticulture Champagne, les TPE artisanales, les commerces de proximité, les services aux entreprises et les professions libérales. Zones d'activités en développement.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BETHENY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bétheny : diagnostic adapté aux viticulteurs et maisons de Champagne, TPE artisanales, PME de services, commerçants et professions libérales du nord rémois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bétheny : formats adaptés à l'exploitation viticole, au négoce Champagne, à la TPE artisanale ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BETHENY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bétheny  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bétheny et du nord rémois, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bétheny et du nord rémois, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les viticulteurs et maisons de Champagne ?",

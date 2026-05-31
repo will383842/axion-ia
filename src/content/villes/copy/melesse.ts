@@ -9,9 +9,9 @@ export const MELESSE_COPY: VilleCopy = {
   pitchEn:
     "Melesse (35), commune résidentielle au nord de Rennes en Ille-et-Vilaine, bénéficie de la dynamique de Rennes Métropole. Tissu TPE artisans, PME services, commerces de proximité, professions libérales et entreprises tertiaires. Axion-IA y travaille avec les organisations du territoire du nord rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Melesse est intégrée à Rennes Métropole (~460 000 hab) et profite de la dynamique économique rennaise (numérique, cybersécurité, agroalimentaire). Commune résidentielle attractive avec tissu TPE artisans, PME de services aux entreprises, commerces de proximité et professions libérales. Proximité immédiate de la zone nord de Rennes (La Chapelle-des-Fougeretz, Pacé, Betton).",
@@ -30,8 +30,8 @@ export const MELESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Melesse : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Melesse : formations adaptées TPE/PME, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const MELESSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Melesse  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME du nord rennais souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME du nord rennais souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Melesse ?",
@@ -61,7 +61,7 @@ export const MELESSE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les PME à Melesse ?",
-      a: "Nous proposons audit Flash 4h, interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME de services du nord rennais.",
+      a: "Nous proposons audit sur place 4h, interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME de services du nord rennais.",
     },
     {
       q: "Comment se passe une mission Axion-IA depuis Rennes ?",

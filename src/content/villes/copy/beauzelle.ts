@@ -9,9 +9,9 @@ export const BEAUZELLE_COPY: VilleCopy = {
   pitchEn:
     "Beauzelle (31), commune résidentielle du nord-ouest de Toulouse avec plus de 8 700 habitants. Tissu TPE de services, PME tertiaires, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Beauzelle est une commune résidentielle du nord-ouest de Toulouse, entre Blagnac et Aussonne. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Proximité de l'aéroport et du pôle aéronautique.",
@@ -30,8 +30,8 @@ export const BEAUZELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beauzelle : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Beauzelle  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Beauzelle ?",

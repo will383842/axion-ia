@@ -30,8 +30,8 @@ export const SALEILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saleilles : formats adaptés au bureau, cabinet, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SALEILLES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Saleilles, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Saleilles, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Saleilles ?",

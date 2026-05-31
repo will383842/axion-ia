@@ -51,7 +51,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Vitry-sur-Seine ?",
-      a: "Les tarifs Axion-IA sont publics : Audit Flash (4h) à partir de {{price:audit-flash|flat}}, intervention collective à partir de {{price:intervention-4h|flat}}, implémentation à partir de {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Aucun surcoût lié au déplacement à Vitry-sur-Seine n'est appliqué — consultez la grille complète sur le site.",
+      a: "Les tarifs Axion-IA sont publics : Audit sur place (4h) à partir de {{price:audit-flash|flat}}, intervention collective à partir de {{price:intervention-4h|flat}}, implémentation à partir de {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Aucun surcoût lié au déplacement à Vitry-sur-Seine n'est appliqué — consultez la grille complète sur le site.",
     },
     {
       q: "Axion-IA se déplace-t-il réellement sur site à Vitry-sur-Seine ?",
@@ -71,7 +71,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel format d'intervention est adapté à un artisan ou une TPE de Vitry-sur-Seine ?",
-      a: "Pour une TPE ou un artisan, l'Audit Flash (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. L'intervention Essentielle (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
+      a: "Pour une TPE ou un artisan, l'Audit sur place (4h, à partir de {{price:audit-flash|flat}}) permet d'identifier rapidement un premier outil IA rentable — relance client, devis automatisé, gestion administrative. L'intervention Essentielle (à partir de {{price:intervention-4h|flat}}) assure ensuite la prise en main opérationnelle sur site à Vitry-sur-Seine.",
     },
   ],
 };

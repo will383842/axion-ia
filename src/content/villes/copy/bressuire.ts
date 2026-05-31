@@ -9,9 +9,9 @@ export const BRESSUIRE_COPY: VilleCopy = {
   pitchEn:
     "Bressuire (79), sous-préfecture des Deux-Sèvres, 19 970 habitants. Capitale du bocage bressuirais, pôle agroalimentaire majeur (viande bovine, volaille, lait), tissu de TPE artisans, PME industrielles et commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bocage deux-sévrien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & élevage agriculture",
   ecosystemFr:
     "Bressuire est sous-préfecture des Deux-Sèvres, 19 970 habitants, capitale du bocage bressuirais. Pôle agroalimentaire majeur (abattoirs, transformation viande bovine/volaille, laiteries coopératives), PME industrielles (métallurgie, plasturgie), TPE artisans, commerces de centre-ville et services de santé.",
@@ -30,8 +30,8 @@ export const BRESSUIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bressuire : diagnostic adapté aux PME agroalimentaires (abattoirs, laiteries), industriels, TPE artisans et commerçants du bocage bressuirais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bressuire : déploiement outils IA dans vos usines agroalimentaires, ateliers ou commerces. Traçabilité viande, optimisation production et gestion qualité.",
@@ -57,7 +57,7 @@ export const BRESSUIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Bressuire ?",
-      a: "L'audit Flash IA à Bressuire démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agroalimentaires, industriels ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Bressuire démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agroalimentaires, industriels ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les éleveurs du bocage bressuirais ?",

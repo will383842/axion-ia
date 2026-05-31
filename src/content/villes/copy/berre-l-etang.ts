@@ -9,9 +9,9 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
   pitchEn:
     "Berre-l'Étang (13), commune industrielle sur les rives de l'étang de Berre dans les Bouches-du-Rhône, s'inscrit dans le bassin pétrochimique et logistique de l'ouest marseillais. TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg. Axion-IA y travaille avec les organisations du territoire du pourtour de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berre-l'Étang (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et chimie du bassin de l'étang de Berre, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   seoHook: "pétrochimie, industrie & étang de Berre",
   ecosystemFr:
     "Berre-l'Étang est une commune industrielle sur le pourtour de l'étang de Berre, dans le bassin pétrochimique ouest-marseillais. Tissu TPE sous-traitants industriels, PME maintenance et chimie, commerces de bourg et services aux entreprises. Proximité directe de la raffinerie et des zones logistiques.",
@@ -30,8 +30,8 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Berre-l'Étang : diagnostic adapté aux TPE sous-traitants, PME chimie et maintenance industrielle du pourtour de l'étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Berre-l'Étang : formats adaptés au site industriel, à l'atelier maintenance et au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BERRE_L_ETANG_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Berre-l'Étang ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME chimie et maintenance, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME chimie et maintenance, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Berre-l'Étang ?",

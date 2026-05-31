@@ -30,8 +30,8 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marly-le-Roi : formats adaptés au cabinet libéral, commerce, agence immobilière ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales marlychoises ?",
-      a: "Oui, nous accompagnons les professions libérales à Marly-le-Roi (médecins, avocats, experts-comptables, consultants) sur leurs cas IA : automatisation prise de RDV, transcription consultations, classification dossiers, agents conversationnels patients/clients. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les professions libérales à Marly-le-Roi (médecins, avocats, experts-comptables, consultants) sur leurs cas IA : automatisation prise de RDV, transcription consultations, classification dossiers, agents conversationnels patients/clients. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les commerces et agences immobilières locales ?",
@@ -61,7 +61,7 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Marly-le-Roi ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Marly-le-Roi. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Marly-le-Roi. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone ouest parisien.",
     },
     {
       q: "Intervenez-vous aussi à Saint-Germain-en-Laye et Versailles ?",

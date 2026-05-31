@@ -65,7 +65,7 @@ export const LAGNIEU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces de Lagnieu ?",
-      a: "Audit Flash, intervention d'une journée pour former vos équipes, automatisation des devis BTP et coaching 1-to-1 du dirigeant. Formats courts et concrets, adaptés aux petites structures.",
+      a: "Audit sur place, intervention d'une journée pour former vos équipes, automatisation des devis BTP et coaching 1-to-1 du dirigeant. Formats courts et concrets, adaptés aux petites structures.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

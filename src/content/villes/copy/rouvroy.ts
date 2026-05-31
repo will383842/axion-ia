@@ -9,9 +9,9 @@ export const ROUVROY_COPY: VilleCopy = {
   pitchEn:
     "Rouvroy (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Drocourt, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouvroy (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier héninois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouvroy (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier héninois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouvroy (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier héninois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouvroy (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier héninois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Rouvroy est une commune résidentielle du bassin minier entre Hénin-Beaumont et Drocourt. Économie reconvertie vers le commerce de proximité, l'artisanat BTP, les services aux particuliers et les professions libérales. Tissu de TPE et micro-entreprises du bassin minier en transformation.",
@@ -30,8 +30,8 @@ export const ROUVROY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rouvroy : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier héninois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Rouvroy : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier héninois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Rouvroy : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier héninois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Rouvroy : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier héninois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rouvroy : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const ROUVROY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rouvroy  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Rouvroy ?",

@@ -9,9 +9,9 @@ export const VINEUIL_COPY: VilleCopy = {
   pitchEn:
     "Vineuil (41), commune résidentielle de l'agglomération de Blois en Loir-et-Cher, accueille un tissu de TPE et PME diversifié entre services aux entreprises, artisanat BTP, commerces de proximité et activités tertiaires. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglo blésoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vineuil (41), dans l'agglomération de Blois. Nous accompagnons TPE artisans, PME tertiaires et de services, commerces, professions libérales. Audit Flash sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vineuil (41), dans l'agglomération de Blois. Nous accompagnons TPE artisans, PME tertiaires et de services, commerces, professions libérales. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vineuil (41), dans l'agglomération de Blois. Nous accompagnons TPE artisans, PME tertiaires et de services, commerces, professions libérales. Audit Flash sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vineuil (41), dans l'agglomération de Blois. Nous accompagnons TPE artisans, PME tertiaires et de services, commerces, professions libérales. Audit sur place sur mesure, démarrage sous 10 jours.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Vineuil bénéficie de la proximité immédiate de Blois et de la zone économique sud de l'agglomération. Tissu résidentiel dense avec TPE artisanat, commerces de proximité, PME tertiaires et services aux entreprises.",
@@ -30,8 +30,8 @@ export const VINEUIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vineuil : diagnostic adapté aux TPE artisans, PME tertiaires et commerces de l'agglo blésoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Vineuil : diagnostic adapté aux TPE artisans, PME tertiaires et commerces de l'agglo blésoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Vineuil : diagnostic adapté aux TPE artisans, PME tertiaires et commerces de l'agglo blésoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Vineuil : diagnostic adapté aux TPE artisans, PME tertiaires et commerces de l'agglo blésoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vineuil : formations pratiques en atelier, bureau ou commerce. Vos équipes repartent autonomes sur les outils IA adaptés à leur métier.",
@@ -53,7 +53,7 @@ export const VINEUIL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vineuil  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Vineuil ?",
@@ -65,7 +65,7 @@ export const VINEUIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un accompagnement IA pour une TPE à Vineuil ?",
-      a: "Audit Flash initial {{price:audit-flash|flat}}, puis coaching 1-to-1 ou implémentation ciblée. Approche progressive adaptée au budget TPE.",
+      a: "Audit sur place initial {{price:audit-flash|flat}}, puis coaching 1-to-1 ou implémentation ciblée. Approche progressive adaptée au budget TPE.",
     },
   ],
 };

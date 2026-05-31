@@ -30,8 +30,8 @@ export const SAUMUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux exploitations familiales.",
-      en: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux exploitations familiales.",
+      fr: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux exploitations familiales.",
+      en: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux exploitations familiales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saumur : sessions au chai, dans la cave troglodyte ou bureau. Vos équipes (vignerons, guides touristiques, restaurateurs) repartent avec outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const SAUMUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et indépendants saumurois ?",
-      a: "Pour les TPE et indépendants à Saumur (artisans, restaurateurs, professions libérales), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA pour vente directe, classification photos produits, gestion administrative.",
+      a: "Pour les TPE et indépendants à Saumur (artisans, restaurateurs, professions libérales), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA pour vente directe, classification photos produits, gestion administrative.",
     },
     {
       q: "Quels formats pour l'École nationale d'équitation ?",

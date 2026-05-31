@@ -9,9 +9,9 @@ export const MORMANT_COPY: VilleCopy = {
   pitchEn:
     "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit sur place sur mesure.",
   seoHook: "commerce bourg & agroalimentaire",
   ecosystemFr:
     "Mormant est un bourg rural de la Brie en Seine-et-Marne, carrefour entre Melun et Provins. Tissu TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles céréalières et betteravières, professions libérales.",
@@ -30,8 +30,8 @@ export const MORMANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mormant : diagnostic adapté aux TPE artisanat, commerces de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mormant : formats adaptés atelier artisan, commerce de bourg, usine agroalimentaire, exploitation agricole, cabinet libéral. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const MORMANT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mormant  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Melun et Provins ?",

@@ -30,8 +30,8 @@ export const CONTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Contes : formats adaptés à l'atelier artisan, commerce de village ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const CONTES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Contes ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Contes sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Contes sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les oléiculteurs et agriculteurs du Paillon ?",
@@ -61,7 +61,7 @@ export const CONTES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants du bourg de Contes ?",
-      a: "Pour les commerçants de Contes, nous proposons : gestion stocks prédictive, agents conversationnels client, automatisation commandes fournisseurs, CRM fidélisation, marketing digital. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
+      a: "Pour les commerçants de Contes, nous proposons : gestion stocks prédictive, agents conversationnels client, automatisation commandes fournisseurs, CRM fidélisation, marketing digital. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Comment se déroule une mission à Contes depuis Nice ?",

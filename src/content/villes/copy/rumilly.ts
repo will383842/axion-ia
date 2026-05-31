@@ -9,9 +9,9 @@ export const RUMILLY_COPY: VilleCopy = {
   pitchEn:
     "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y travaille avec les organisations du territoire de l'Albanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit sur place sur mesure.",
   seoHook: "TPE & PME Hte-Savoie",
   ecosystemFr:
     "Rumilly est la capitale économique de l'Albanais, territoire entre Annecy (20 min) et Aix-les-Bains (20 min). L'industrie agroalimentaire laitière et fromagère y est historiquement forte (coopératives, laiteries, transformation). PME industrielles diversifiées, tissu TPE artisanat et commerces de bourg, agriculture (élevage laitier, polyculture). Bassin d'emploi dynamique (~50 000 hab zone Albanais).",
@@ -30,8 +30,8 @@ export const RUMILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rumilly : formats adaptés à l'usine agroalimentaire, atelier industriel, exploitation agricole et commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const RUMILLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rumilly  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME agroalimentaires comme aux TPE artisans et commerçants de l'Albanais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME agroalimentaires comme aux TPE artisans et commerçants de l'Albanais.",
     },
     {
       q: "L'IA peut-elle aider la filière laitière et fromagère ?",

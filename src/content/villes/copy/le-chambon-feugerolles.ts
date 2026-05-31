@@ -30,8 +30,8 @@ export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Chambon-Feugerolles : formats adaptés à l'atelier industriel (mécanique de précision), commerce, bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les indépendants chambonnais ?",
-      a: "Pour les indépendants et professions libérales au Chambon-Feugerolles, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
+      a: "Pour les indépendants et professions libérales au Chambon-Feugerolles, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

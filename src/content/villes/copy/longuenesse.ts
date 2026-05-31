@@ -9,9 +9,9 @@ export const LONGUENESSE_COPY: VilleCopy = {
   pitchEn:
     "Longuenesse (62), commune de l'agglomération de Saint-Omer dans le Pas-de-Calais, accueille zones commerciales, PME de services, TPE artisanales et professions libérales du bassin audomarois. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Longuenesse est la principale extension urbaine de Saint-Omer, concentrant zones commerciales, centres de services et activités tertiaires de l'agglomération audomaroise. TPE artisanales, PME de services aux entreprises, professions libérales santé et juridiques, et commerces de proximité.",
@@ -30,8 +30,8 @@ export const LONGUENESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Longuenesse : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du bassin audomarois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longuenesse : formations pratiques adaptées au commerce, cabinet ou entreprise de services. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LONGUENESSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Longuenesse  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME audomaroises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME audomaroises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les commerces de Longuenesse ?",

@@ -30,8 +30,8 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mehun-sur-Yèvre : formats adaptés à l'atelier porcelaine, PME industrielle, commerce, bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles du Berry ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation workflow, CRM augmenté, classification documents, optimisation chaîne logistique.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation workflow, CRM augmenté, classification documents, optimisation chaîne logistique.",
     },
     {
       q: "Quels services pour les TPE et commerces de proximité ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
       q: "Comment se passe une mission depuis Bourges ?",

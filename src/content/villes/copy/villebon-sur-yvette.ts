@@ -9,9 +9,9 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
   pitchEn:
     "Villebon-sur-Yvette (91), commune de l'Essonne sur le plateau de Saclay, conjugue zone d'activités et centre commercial Villebon 2 (un des plus grands d'Île-de-France). Proximité immédiate Courtaboeuf, Orsay, Palaiseau. Tissu TPE/PME commerce, services aux entreprises, ingénierie, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit sur place sur mesure.",
   seoHook: "commerce & ingénierie services",
   ecosystemFr:
     "Villebon-sur-Yvette est positionnée sur le plateau de Saclay, à proximité de la zone d'activités de Courtaboeuf (plus grande ZA d'Île-de-France). Le centre commercial Villebon 2 est un pôle commercial majeur. Tissu PME ingénierie, services aux entreprises, commerces, professions libérales, TPE artisans.",
@@ -30,8 +30,8 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villebon-sur-Yvette : formats adaptés bureau zone Courtaboeuf, enseigne commerciale, cabinet ou siège. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans villebonnais ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {
       q: "Accompagnez-vous les PME de la zone Courtaboeuf ?",

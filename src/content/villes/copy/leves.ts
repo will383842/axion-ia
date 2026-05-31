@@ -30,8 +30,8 @@ export const LEVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lèves : formats adaptés aux PME de services, TPE artisans BTP, cabinets libéraux et commerces de l'agglomération chartraine. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LEVES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Lèves ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et professions libérales de Lèves sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et professions libérales de Lèves sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services IA pour les entreprises cosmétique et agroalimentaire du bassin chartrain ?",

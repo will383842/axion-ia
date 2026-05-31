@@ -30,8 +30,8 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grigny : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Grigny, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
+      a: "Pour les TPE artisans BTP et commerçants à Grigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

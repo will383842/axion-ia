@@ -30,8 +30,8 @@ export const ONDRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ondres : formations adaptées aux campings, hébergeurs, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const ONDRES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les hébergeurs saisonniers ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux campings et hébergeurs d'Ondres. Diagnostic chatbot réservation multilingue, gestion saisonnière, automatisation facturation, prédiction taux d'occupation, communication clients.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux campings et hébergeurs d'Ondres. Diagnostic chatbot réservation multilingue, gestion saisonnière, automatisation facturation, prédiction taux d'occupation, communication clients.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du littoral ?",
@@ -61,11 +61,11 @@ export const ONDRES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ondraises ?",
-      a: "Pour les professions libérales à Ondres, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation secrétariat, tri documents, aide rédaction, gestion agenda, facturation, communication patients/clients.",
+      a: "Pour les professions libérales à Ondres, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation secrétariat, tri documents, aide rédaction, gestion agenda, facturation, communication patients/clients.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Ondres ?",
-      a: "L'audit Flash est tarifé selon vos enjeux, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus littoral landais sud.",
+      a: "L'audit sur place est tarifé selon vos enjeux, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus littoral landais sud.",
     },
   ],
 };

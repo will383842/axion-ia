@@ -10,9 +10,9 @@ export const SEDAN_COPY: VilleCopy = {
     "Sedan (08), sous-préfecture des Ardennes en bord de Meuse, abrite le plus grand château fort d'Europe (35 000 m²) et un patrimoine industriel textile (drap de Sedan) reconverti vers la métallurgie et les services. TPE artisans, PME industrielles, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations du Sedanais.",
   seoHook: "industrie, tourisme & métallurgie ardennaise",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Sedan (environ 16 700 habitants) est la deuxième ville des Ardennes et sous-préfecture. Bordée par la Meuse, la commune est dominée par son château fort médiéval, plus vaste forteresse d'Europe. Héritière du drap de Sedan (textile prestigieux XVIIe-XXe siècle), l'économie locale s'est reconvertie vers la métallurgie, la fonderie, l'agroalimentaire et les services. Le tourisme patrimonial, le commerce de proximité et l'artisanat structurent également l'activité.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SEDAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sedan : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques et professions libérales du Sedanais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sedan : formations pratiques pour équipes industrielles, agroalimentaire, commerce et tourisme du Sedanais. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -53,15 +53,15 @@ export const SEDAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles et métallurgiques de Sedan ?",
-      a: "Oui, nous accompagnons les PME industrielles, fonderies et acteurs métallurgiques du Sedanais avec des solutions IA adaptées : maintenance prédictive, contrôle qualité visuel, optimisation des flux production. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME industrielles, fonderies et acteurs métallurgiques du Sedanais avec des solutions IA adaptées : maintenance prédictive, contrôle qualité visuel, optimisation des flux production. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Sedan  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME sedanaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME sedanaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs touristiques du château de Sedan ?",
-      a: "Pour les acteurs touristiques de Sedan (hôtels, restaurants, sites patrimoniaux, château fort), nous proposons : agents IA réservation et accueil multilingue, automatisation billetterie, chatbot visiteurs, gestion avis. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les acteurs touristiques de Sedan (hôtels, restaurants, sites patrimoniaux, château fort), nous proposons : agents IA réservation et accueil multilingue, automatisation billetterie, chatbot visiteurs, gestion avis. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Sedan ?",

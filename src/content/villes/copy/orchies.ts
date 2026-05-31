@@ -30,8 +30,8 @@ export const ORCHIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orchies : formats adaptés à l'unité de transformation chicorée, à la PME agricole, au commerce ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const ORCHIES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Orchies  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la Pévèle, il identifie les cas d'usage IA à fort ROI pour votre activité (chicorée, agricole, transformation, commerce, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la Pévèle, il identifie les cas d'usage IA à fort ROI pour votre activité (chicorée, agricole, transformation, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME agricoles et agroalimentaires de la Pévèle ?",

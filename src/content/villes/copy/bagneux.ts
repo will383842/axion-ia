@@ -9,9 +9,9 @@ export const BAGNEUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "tertiaire & BTP Grand Paris",
   ecosystemFr:
     "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de TPE et PME de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",
@@ -30,8 +30,8 @@ export const BAGNEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bagneux pour artisans BTP, services aux entreprises et commerces : nous cartographions vos process (devis, planning, support, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bagneux pour artisans BTP, services aux entreprises et commerces : nous cartographions vos process (devis, planning, support, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bagneux pour artisans BTP, services aux entreprises et commerces : nous cartographions vos process (devis, planning, support, administratif) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bagneux pour artisans BTP, services aux entreprises et commerces : nous cartographions vos process (devis, planning, support, administratif) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bagneux : formats adaptés à l'entreprise de BTP, au bureau tertiaire ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -57,11 +57,11 @@ export const BAGNEUX_COPY: VilleCopy = {
     },
     {
       q: "Quels gains IA pour un artisan BTP ou un commerce balnéolais ?",
-      a: "Chiffrage automatisé de devis, optimisation de planning de chantier, automatisation administrative et agents de support client. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
+      a: "Chiffrage automatisé de devis, optimisation de planning de chantier, automatisation administrative et agents de support client. Chaque piste est chiffrée en ROI dans l'Audit sur place avant toute implémentation.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Bagneux ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
     },
     {
       q: "Intervenez-vous aussi à Montrouge, Châtillon ou Fontenay-aux-Roses ?",

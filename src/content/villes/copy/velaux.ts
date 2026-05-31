@@ -9,9 +9,9 @@ export const VELAUX_COPY: VilleCopy = {
   pitchEn:
     "Velaux (13), commune résidentielle au nord de l'étang de Berre entre Aix-en-Provence et Marignane, accueille cadres et familles travaillant dans le bassin Aix-Marseille-Marignane. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Velaux (13). Nous accompagnons TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises du bassin de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Velaux (13). Nous accompagnons TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises du bassin de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Velaux (13). Nous accompagnons TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises du bassin de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Velaux (13). Nous accompagnons TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises du bassin de Berre. Audit sur place sur mesure.",
   seoHook: "professions libérales & artisanat services",
   ecosystemFr:
     "Velaux est une commune résidentielle dynamique au nord de l'étang de Berre, sur l'axe Aix-Marignane. Tissu dense de TPE artisans et commerces de proximité, professions libérales, PME tertiaires et résidents cadres travaillant à Aix, Marseille, Vitrolles, Marignane (aéronautique) ou sur le technopôle de l'Arbois.",
@@ -30,8 +30,8 @@ export const VELAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Velaux : ateliers pour cabinets libéraux, commerçants, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const VELAUX_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Velaux  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales, commerçants et PME velauxiennes. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales, commerçants et PME velauxiennes. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires et professions libérales de Velaux ?",

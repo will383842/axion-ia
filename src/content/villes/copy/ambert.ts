@@ -9,9 +9,9 @@ export const AMBERT_COPY: VilleCopy = {
   pitchEn:
     "Ambert (63), sous-préfecture du Puy-de-Dôme, est la capitale de la Fourme d'Ambert AOP (fromage emblématique du Livradois-Forez, mairie ronde médiévale). Tissu agroalimentaire fromager, agriculture Livradois, TPE artisanat, administration sous-préfecture, tourisme vert Livradois-Forez. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit sur place sur mesure.",
   seoHook: "TPE & PME Puy-de-Dôme",
   ecosystemFr:
     "Ambert est la sous-préfecture du Puy-de-Dôme et la capitale de la Fourme d'Ambert AOP. Tissu agroalimentaire fromager, agriculture de montagne Livradois, TPE artisanat, administration, tourisme vert Parc Livradois-Forez.",
@@ -30,8 +30,8 @@ export const AMBERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambert : formats adaptés fromagerie, exploitation agricole, commerce, bureau administratif. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const AMBERT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

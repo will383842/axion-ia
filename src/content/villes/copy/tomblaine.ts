@@ -30,8 +30,8 @@ export const TOMBLAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tomblaine : formats adaptés au bureau tertiaire, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const TOMBLAINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et professions libérales de Tomblaine ?",
-      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Tomblaine  ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Tomblaine et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Tomblaine et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Tomblaine ?",

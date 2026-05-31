@@ -9,9 +9,9 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du littoral vendéen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place sur mesure.",
   seoHook: "tourisme hôtellerie & restauration commerce",
   ecosystemFr:
     "Bretignolles-sur-Mer (5 344 hab) est une station balnéaire de la côte de Lumière, capitale vendéenne du surf. Économie centrée sur tourisme (hôtellerie, campings, locations saisonnières), nautisme, commerces, restauration, artisanat et BTP. Proximité Saint-Gilles-Croix-de-Vie (10 min), Les Sables-d'Olonne (30 min), Nantes (1h10). Forte saisonnalité estivale.",
@@ -30,8 +30,8 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bretignolles-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bretignolles-sur-Mer : formats adaptés à l'hôtel, le camping, le restaurant, l'école de surf ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bretignolles-sur-Mer  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Bretignolles-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique ou artisanale.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Bretignolles-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique ou artisanale.",
     },
     {
       q: "Accompagnez-vous les PME du tourisme et de l'hôtellerie ?",
@@ -61,7 +61,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants saisonniers de Bretignolles ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, gestion stocks intelligente, automatisation comptabilité, fidélisation client saisonnier augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, gestion stocks intelligente, automatisation comptabilité, fidélisation client saisonnier augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Bretignolles-sur-Mer ?",

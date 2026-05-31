@@ -30,8 +30,8 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tonnay-Charente : formats adaptés à l'entrepôt, à l'exploitation agricole, à l'atelier ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Tonnay-Charente ?",
-      a: "L'audit Flash IA à Tonnay-Charente démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus industriels, logistiques ou agricoles, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à Tonnay-Charente démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus industriels, logistiques ou agricoles, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Tonnay-Charente ?",

@@ -9,9 +9,9 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA répond aux besoins des activités professionnelles présentes : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Longuenée-en-Anjou est née de la fusion de 4 communes déléguées (dont La Meignanne, Le Plessis-Macé) au nord d'Angers. Territoire semi-rural attractif : agriculture (polyculture, élevage), artisanat BTP, PME tertiaires, commerces de proximité. Château du Plessis-Macé, patrimoine médiéval remarquable.",
@@ -30,8 +30,8 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Longuenée-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME tertiaires du nord angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longuenée-en-Anjou : formations pour équipes agricoles, artisanales et tertiaires. Ateliers pratiques adaptés au contexte semi-rural nord-angevin.",
@@ -53,11 +53,11 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Longuenée-en-Anjou  ?",
-      a: "L'Audit Flash IA à Longuenée-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit sur place IA à Longuenée-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les agriculteurs de Longuenée-en-Anjou ?",
-      a: "Oui, nous accompagnons les exploitants agricoles à Longuenée-en-Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les exploitants agricoles à Longuenée-en-Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels secteurs ciblez-vous à Longuenée-en-Anjou ?",

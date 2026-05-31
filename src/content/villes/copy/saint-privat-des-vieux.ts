@@ -9,9 +9,9 @@ export const SAINT_PRIVAT_DES_VIEUX_COPY: VilleCopy = {
   pitchEn:
     "Saint-Privat-des-Vieux (30), commune résidentielle de l'agglomération d'Alès aux portes des Cévennes. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et sous-traitance industrielle. Axion-IA couvre les activités professionnelles du bassin du bassin alésien.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Privat-des-Vieux (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et sous-traitants industriels du bassin alésien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Privat-des-Vieux (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et sous-traitants industriels du bassin alésien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Privat-des-Vieux (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et sous-traitants industriels du bassin alésien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Privat-des-Vieux (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et sous-traitants industriels du bassin alésien. Audit sur place sur mesure.",
   seoHook: "artisanat & sous-traitance industrielle",
   ecosystemFr:
     "Saint-Privat-des-Vieux (~5 700 hab) est une commune résidentielle d'Alès Agglomération, aux portes des Cévennes. Services aux entreprises, commerces, professions libérales, artisanat BTP et sous-traitance industrielle héritière du bassin minier reconverti. Cadre de vie entre garrigue et Cévennes.",
@@ -30,8 +30,8 @@ export const SAINT_PRIVAT_DES_VIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Privat-des-Vieux : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du bassin alésien. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Privat-des-Vieux : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du bassin alésien. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Privat-des-Vieux : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du bassin alésien. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Privat-des-Vieux : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du bassin alésien. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Privat-des-Vieux : formats adaptés aux entreprises de services, commerces, cabinets et artisans Alès Agglomération.",
@@ -53,7 +53,7 @@ export const SAINT_PRIVAT_DES_VIEUX_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Privat-des-Vieux  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bassin alésien ?",

@@ -9,9 +9,9 @@ export const CAUDRY_COPY: VilleCopy = {
   pitchEn:
     "Caudry (59), commune du Cambrésis dans le département du Nord en Hauts-de-France, mondialement connue comme capitale française de la dentelle haute couture (fournisseur des grandes maisons de luxe Dior, Chanel, Givenchy), conjugue savoir-faire textile d''excellence, industrie agroalimentaire et économie de bassin rural. Tissu de TPE/PME textile-dentelle, agroalimentaire, commerce, artisanat, services aux entreprises et industrie. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Caudry (59). Nous accompagnons TPE et PME : dentelliers et façonniers textile, industriels agroalimentaires, commerçants, artisans et prestataires de services du Cambrésis et de l''arrondissement de Cambrai. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Caudry (59). Nous accompagnons TPE et PME : dentelliers et façonniers textile, industriels agroalimentaires, commerçants, artisans et prestataires de services du Cambrésis et de l''arrondissement de Cambrai. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Caudry (59). Nous accompagnons TPE et PME : dentelliers et façonniers textile, industriels agroalimentaires, commerçants, artisans et prestataires de services du Cambrésis et de l''arrondissement de Cambrai. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Caudry (59). Nous accompagnons TPE et PME : dentelliers et façonniers textile, industriels agroalimentaires, commerçants, artisans et prestataires de services du Cambrésis et de l''arrondissement de Cambrai. Audit sur place sur mesure.",
   seoHook: "bassin rural",
   ecosystemFr:
     "Caudry est une commune du Cambrésis située à l''est du département du Nord, célèbre comme capitale française de la dentelle haute couture (label Dentelle de Caudry®, fournisseur des maisons Dior, Chanel, Givenchy, Valentino). La ville conserve une dizaine de fabricants de dentelle leaders mondiaux, héritiers du XIXe siècle. L''économie locale repose également sur l''agroalimentaire (industrie laitière, biscuiterie), le commerce de proximité, l''artisanat BTP et les services aux entreprises du bassin cambrésien.",
@@ -30,8 +30,8 @@ export const CAUDRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Caudry : diagnostic adapté aux TPE/PME du Cambrésis, dentelliers haute couture, façonniers textile, industriels agroalimentaires, commerçants et artisans du Nord. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Caudry : diagnostic adapté aux TPE/PME du Cambrésis, dentelliers haute couture, façonniers textile, industriels agroalimentaires, commerçants et artisans du Nord. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Caudry : diagnostic adapté aux TPE/PME du Cambrésis, dentelliers haute couture, façonniers textile, industriels agroalimentaires, commerçants et artisans du Nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Caudry : diagnostic adapté aux TPE/PME du Cambrésis, dentelliers haute couture, façonniers textile, industriels agroalimentaires, commerçants et artisans du Nord. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Caudry : formats adaptés à l''atelier de dentelle, à l''usine agroalimentaire, au commerce ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const CAUDRY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Caudry ?",
-      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Caudry et du Nord, il identifie les cas d''usage IA à fort ROI pour votre activité textile-dentelle, agroalimentaire, commerciale ou de services.",
+      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Caudry et du Nord, il identifie les cas d''usage IA à fort ROI pour votre activité textile-dentelle, agroalimentaire, commerciale ou de services.",
     },
     {
       q: "Accompagnez-vous les dentelliers et façonniers textile de Caudry ?",

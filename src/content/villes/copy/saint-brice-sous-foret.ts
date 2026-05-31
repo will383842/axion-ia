@@ -30,8 +30,8 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Brice-sous-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-parisien, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Brice-sous-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-parisien, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Brice-sous-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-parisien, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Brice-sous-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-parisien, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Brice-sous-Forêt : formats adaptés au bureau, cabinet, commerce ou atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants de Saint-Brice ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Saint-Brice-sous-Forêt sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Saint-Brice-sous-Forêt sur leurs cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les professions libérales saint-briçoises ?",

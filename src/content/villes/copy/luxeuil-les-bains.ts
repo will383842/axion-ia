@@ -30,8 +30,8 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux TPE/PME tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux TPE/PME tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux TPE/PME tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux TPE/PME tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luxeuil-les-Bains : formats adaptés à l'établissement thermal, hôtel, commerce, cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés tourisme / bien-être.",
@@ -57,7 +57,7 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Luxeuil-les-Bains  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}, adapté aux TPE et PME tourisme, hôtellerie et commerce. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux TPE et PME tourisme, hôtellerie et commerce. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs de Luxeuil ?",

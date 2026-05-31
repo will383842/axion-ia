@@ -30,8 +30,8 @@ export const WASQUEHAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wasquehal : diagnostic adapté aux commerçants, artisans et professions libérales, puis aux PME tertiaires, de distribution et d'informatique du parc de la Pilaterie. ROI quantifié, audit Flash 4h.",
-      en: "Audit IA à Wasquehal : diagnostic adapté aux commerçants, artisans et professions libérales, puis aux PME tertiaires, de distribution et d'informatique du parc de la Pilaterie. ROI quantifié, audit Flash 4h.",
+      fr: "Audit IA à Wasquehal : diagnostic adapté aux commerçants, artisans et professions libérales, puis aux PME tertiaires, de distribution et d'informatique du parc de la Pilaterie. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA à Wasquehal : diagnostic adapté aux commerçants, artisans et professions libérales, puis aux PME tertiaires, de distribution et d'informatique du parc de la Pilaterie. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wasquehal : formats adaptés au bureau de la Pilaterie, au commerce, au cabinet ou à l'entrepôt e-commerce. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -61,7 +61,7 @@ export const WASQUEHAL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE, commerçants et artisans wasquehaliens ?",
-      a: "Oui, les TPE sont notre priorité : commerçants, artisans BTP, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      a: "Oui, les TPE sont notre priorité : commerçants, artisans BTP, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et informatiques de la Pilaterie ?",

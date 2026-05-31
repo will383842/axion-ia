@@ -30,8 +30,8 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chambray-lès-Tours : diagnostic adapté aux commerces zones d'activités sud Tours, PME tertiaires, logisticiens, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chambray-lès-Tours : formats adaptés au commerce, bureau tertiaire, entrepôt logistique. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission à Chambray-lès-Tours ?",

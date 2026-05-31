@@ -30,8 +30,8 @@ export const AIZENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aizenay : formats adaptés aux artisans BTP, PME industrielles, exploitations agricoles et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const AIZENAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les artisans BTP d'Aizenay ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas artisans BTP : automatisation devis, gestion chantiers, planification équipes, facturation, relation client.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas artisans BTP : automatisation devis, gestion chantiers, planification équipes, facturation, relation client.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles autour d'Aizenay ?",
@@ -61,7 +61,7 @@ export const AIZENAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Aizenay  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Aizenay ?",

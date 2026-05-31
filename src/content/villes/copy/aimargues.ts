@@ -9,9 +9,9 @@ export const AIMARGUES_COPY: VilleCopy = {
   pitchEn:
     "Aimargues (30), commune gardoise de la Petite Camargue entre Vaunage et littoral. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses camarguaises, manade). Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue gardoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit sur place sur mesure.",
   seoHook: "viticulture & agriculture petite",
   ecosystemFr:
     "Aimargues (~5 700 hab) est un bourg de la Petite Camargue gardoise, entre Nîmes et le littoral. Viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses, manades). Gare SNCF Aimargues-Le Cailar sur la ligne Nîmes-Montpellier.",
@@ -30,8 +30,8 @@ export const AIMARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aimargues : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Petite Camargue gardoise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aimargues : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans Petite Camargue.",
@@ -57,7 +57,7 @@ export const AIMARGUES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Aimargues  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les acteurs des traditions camarguaises ?",

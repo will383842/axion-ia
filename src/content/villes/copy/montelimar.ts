@@ -9,9 +9,9 @@ export const MONTELIMAR_COPY: VilleCopy = {
   pitchEn:
     "Montélimar (26), deuxième ville de la Drôme avec 40 595 habitants, porte de la Provence et capitale historique du nougat. Tissu TPE commerce de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques sur l'axe A7, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du sud-drômois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montélimar (26). Nous accompagnons TPE commerçants et artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "agroalimentaire nougat & commerce détail",
   ecosystemFr:
     "Montélimar (40 595 hab) est la deuxième ville de la Drôme et la porte historique de la Provence. Économie structurée autour de l'agroalimentaire (filière nougat traditionnelle), du commerce de centre-ville, de la logistique sur l'axe A7, du tourisme et des services. Deux zones artisanales nord et sud développées depuis 2001. Tissu TPE commerces, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales.",
@@ -30,8 +30,8 @@ export const MONTELIMAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montélimar : diagnostic adapté aux TPE commerces de centre-ville, artisans nougatiers, PME agroalimentaires et logistiques, professions libérales montiliennes. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montélimar : formats adaptés à l'agroalimentaire, au commerce, à la logistique et aux services. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE nougatière à Montélimar ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME montiliennes. Diagnostic complet des processus, cartographie IA (production, traçabilité, commerce, logistique) et plan d'action ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME montiliennes. Diagnostic complet des processus, cartographie IA (production, traçabilité, commerce, logistique) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous la filière agroalimentaire et nougatière de Montélimar ?",

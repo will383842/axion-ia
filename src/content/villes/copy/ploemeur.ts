@@ -10,9 +10,9 @@ export const PLOEMEUR_COPY: VilleCopy = {
     "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA répond aux besoins de toutes les entreprises du pays de Lorient.",
   seoHook: "littoral, nautisme & tourisme pays de Lorient",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Ploemeur, 4e commune du Morbihan et 14e de Bretagne, fait partie de Lorient Agglomération. Son économie repose sur le tourisme balnéaire (plages du Fort-Bloqué, Kerroc'h, Lomener), le nautisme (port de Lomener, plaisance), les TPE/PME résidentielles, l'artisanat, le commerce de proximité, l'hôtellerie-restauration et les professions libérales rayonnant sur le bassin lorientais.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PLOEMEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
-      en: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      fr: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      en: "Audit IA à Ploemeur : diagnostic adapté aux TPE/PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants du pays de Lorient. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploemeur : formations adaptées aux équipes TPE/PME, hôteliers, restaurateurs, professionnels nautiques et artisans locaux. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PLOEMEUR_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ploemeur  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants ploemeurois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants ploemeurois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les professionnels du nautisme et de la plaisance à Ploemeur ?",
@@ -61,7 +61,7 @@ export const PLOEMEUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hôteliers et restaurateurs de Ploemeur ?",
-      a: "Pour les hôteliers et restaurateurs ploemeurois, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA réservation, yield management saisonnier, fidélisation, traduction multilingue, automatisation menus et avis clients.",
+      a: "Pour les hôteliers et restaurateurs ploemeurois, nous proposons : Audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA réservation, yield management saisonnier, fidélisation, traduction multilingue, automatisation menus et avis clients.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Ploemeur ?",

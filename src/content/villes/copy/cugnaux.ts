@@ -57,7 +57,7 @@ export const CUGNAUX_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Cugnaux ?",
-      a: "Oui, les TPE et artisans sont notre priorité : automatisation des devis, relances clients, planning de chantier et SAV. Audit Flash dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      a: "Oui, les TPE et artisans sont notre priorité : automatisation des devis, relances clients, planning de chantier et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Travaillez-vous avec la sous-traitance aéronautique ?",

@@ -34,8 +34,8 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
-      en: "Audit Flash 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      fr: "Audit sur place 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      en: "Audit sur place 4h à Romans-sur-Isère pour cadrer un cas d'usage IA dans la chaussure, l'agroalimentaire ou la métallurgie — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
     },
     interventions: {
       fr: "Intervention sur site à Romans-sur-Isère pour automatiser un goulot précis : ordonnancement atelier, contrôle qualité, traçabilité cuir, reporting commercial — dès {{price:intervention-4h|flat}}.",
@@ -53,11 +53,11 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Romans-sur-Isère ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
     },
     {
       q: "Quels délais pour une intervention IA à Romans-sur-Isère après prise de contact ?",
-      a: "L'Audit Flash est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est cadrée sous 2 à 3 semaines. Les implémentations plus lourdes (intégration ERP chaussure, traçabilité cuir) s'étalent sur 4 à 8 semaines.",
+      a: "L'Audit sur place est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est cadrée sous 2 à 3 semaines. Les implémentations plus lourdes (intégration ERP chaussure, traçabilité cuir) s'étalent sur 4 à 8 semaines.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Romans-sur-Isère ?",

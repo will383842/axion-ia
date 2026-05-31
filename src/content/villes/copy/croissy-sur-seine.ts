@@ -9,9 +9,9 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Croissy-sur-Seine (78), commune résidentielle de prestige en bord de Seine à proximité immédiate du Vésinet et de Chatou, compte plus de 10 500 habitants. PME conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerces de centre-ville, restauration. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Croissy-sur-Seine (78). Nous accompagnons TPE et PME : cabinets conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerçants de centre-ville, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Croissy-sur-Seine (78). Nous accompagnons TPE et PME : cabinets conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerçants de centre-ville, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Croissy-sur-Seine (78). Nous accompagnons TPE et PME : cabinets conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerçants de centre-ville, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Croissy-sur-Seine (78). Nous accompagnons TPE et PME : cabinets conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerçants de centre-ville, restaurateurs. Audit sur place sur mesure.",
   seoHook: "conseil gestion & services haut",
   ecosystemFr:
     "Croissy-sur-Seine est une commune résidentielle prisée des bords de Seine, entre Le Vésinet et Chatou, à 15 km à l'ouest de Paris. Tissu PME conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerces de centre-ville.",
@@ -30,8 +30,8 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Croissy-sur-Seine : formats adaptés cabinet, bureau, commerce, restaurant. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces de centre-ville ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

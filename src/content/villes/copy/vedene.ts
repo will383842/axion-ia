@@ -9,9 +9,9 @@ export const VEDENE_COPY: VilleCopy = {
   pitchEn:
     "Vedène (84), commune périurbaine de l'est avignonnais, conjugue zones d'activités économiques (Cristole, Le Plan), tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans BTP et services, PME logistiques et négoces, commerces de proximité et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit sur place sur mesure.",
   seoHook: "artisanat & logistique négoce",
   ecosystemFr:
     "Vedène est positionnée à l'est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités (Cristole, Le Plan) accueillant PME logistiques, négoces et industries, les TPE artisans (BTP, services), les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV et au sillon rhodanien.",
@@ -30,8 +30,8 @@ export const VEDENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vedène : ateliers pour équipes TPE/PME logistique, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const VEDENE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vedène  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques, négoces et commerces vedénais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques, négoces et commerces vedénais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistiques et de négoce des zones d'activités ?",

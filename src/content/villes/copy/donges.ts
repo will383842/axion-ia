@@ -9,9 +9,9 @@ export const DONGES_COPY: VilleCopy = {
   pitchEn:
     "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de TPE artisans, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y mène ses missions auprès des organisations locales du bassin estuarien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "bassin estuarien",
   ecosystemFr:
     "Donges est une commune de l'estuaire de la Loire, marquée par la présence de la raffinerie TotalEnergies (un des principaux sites pétrochimiques français). Tissu TPE artisans, PME sous-traitantes industrielles, commerces de proximité et services. Bassin d'emploi Saint-Nazaire/Montoir.",
@@ -30,8 +30,8 @@ export const DONGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Donges : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitantes de l'estuaire de la Loire. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Donges : formats adaptés atelier, site industriel, bureau ou commerce. Vos équipes repartent autonomes sur outils IA métier.",

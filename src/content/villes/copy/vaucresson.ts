@@ -9,9 +9,9 @@ export const VAUCRESSON_COPY: VilleCopy = {
   pitchEn:
     "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Vaucresson est une commune résidentielle de standing des Hauts-de-Seine, adossée à la forêt de Fausses-Reposes, à 15 km de Paris et 5 km de Versailles. Tissu économique de professions libérales, TPE de conseil, cabinets d'expertise et PME tertiaires. Proximité directe de La Défense (10 min), Rueil-Malmaison et du pôle technologique de Saclay.",
@@ -30,8 +30,8 @@ export const VAUCRESSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Vaucresson : diagnostic adapté aux TPE indépendantes, professions libérales, cabinets d'expertise et PME tertiaires ouest-parisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaucresson : formations pratiques dans votre cabinet, bureau ou local professionnel. Équipes formées sur outils IA configurés métier, autonomes dès la fin de journée.",
@@ -53,7 +53,7 @@ export const VAUCRESSON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vaucresson  ?",
-      a: "L'Audit Flash IA à Vaucresson débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
+      a: "L'Audit sur place IA à Vaucresson débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les professions libérales vaucressonnaises ?",

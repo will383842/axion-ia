@@ -9,9 +9,9 @@ export const ARCACHON_COPY: VilleCopy = {
   pitchEn:
     "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y travaille avec les organisations du territoire : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit sur place sur mesure.",
   seoHook: "hôtellerie tourisme & ostréiculture produits",
   ecosystemFr:
     "Arcachon est la station balnéaire emblématique de la Gironde. Tourisme prestige (Ville d'Hiver classée, dune du Pilat, plages), ostréiculture (huîtres du Bassin, ports ostréicoles), hôtellerie-restauration haut de gamme, commerces de centre-ville et économie résidentielle toute l'année.",
@@ -30,8 +30,8 @@ export const ARCACHON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arcachon : diagnostic pour hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales de la station balnéaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arcachon : ateliers adaptés aux hôtels, restaurants, ports ostréicoles et commerces. Équipes autonomes sur outils IA configurés tourisme.",
@@ -53,7 +53,7 @@ export const ARCACHON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arcachon  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles d'Arcachon.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les hôteliers d'Arcachon ?",

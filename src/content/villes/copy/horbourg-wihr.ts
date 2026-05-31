@@ -9,9 +9,9 @@ export const HORBOURG_WIHR_COPY: VilleCopy = {
   pitchEn:
     "Horbourg-Wihr (68), commune située à l'est de Colmar dans le vignoble alsacien et la Collectivité européenne d'Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Horbourg-Wihr (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Horbourg-Wihr (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Horbourg-Wihr (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Horbourg-Wihr (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Audit sur place sur mesure.",
   seoHook: "viticulture caves & tourisme restauration",
   ecosystemFr:
     "Horbourg-Wihr est une commune située à l'est de Colmar, dans le vignoble alsacien et l'agglomération colmarienne. Son tissu économique mêle TPE viticulture et caves indépendantes, PME services et industrie légère, artisans, commerces de proximité, restaurateurs et professions libérales. Proximité directe avec Colmar, Andolsheim, Bischwihr et la route des vins d'Alsace.",
@@ -30,8 +30,8 @@ export const HORBOURG_WIHR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Horbourg-Wihr : diagnostic adapté aux TPE viticulture, PME services et industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Horbourg-Wihr : formats adaptés à la cave, le restaurant ou l'atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const HORBOURG_WIHR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Horbourg-Wihr ?",
-      a: "L'Audit Flash IA à Horbourg-Wihr démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Horbourg-Wihr démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs à Horbourg-Wihr ?",

@@ -9,9 +9,9 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
   pitchEn:
     "Sucé-sur-Erdre (44), commune résidentielle en bords d'Erdre au nord de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin nantais nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Sucé-sur-Erdre est une commune résidentielle prisée en bords d'Erdre, au nord de Nantes Métropole. Cadre fluvial attractif pour les professions libérales, TPE artisanales, PME tertiaires et commerces de proximité. Proximité La Chapelle-sur-Erdre (5 min) et Nantes centre (20 min).",
@@ -30,8 +30,8 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sucé-sur-Erdre : diagnostic adapté aux TPE, professions libérales et PME tertiaires du nord nantais en bords d'Erdre. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sucé-sur-Erdre : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes repartent avec outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et professions libérales ?",
-      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sucé-sur-Erdre sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning, classification dossiers. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sucé-sur-Erdre sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning, classification dossiers. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du nord nantais ?",
@@ -64,8 +64,8 @@ export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
       a: "Nos consultants se déplacent sur site à Sucé-sur-Erdre (20 min depuis Nantes centre). Pour les missions multi-jours, hébergement local en bords d'Erdre. Frais de déplacement à part, tarifs transparents.",
     },
     {
-      q: "L'audit Flash est-il adapté aux petites structures ?",
-      a: "Oui, l'audit Flash {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
+      q: "L'audit sur place est-il adapté aux petites structures ?",
+      a: "Oui, l'audit sur place {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
     },
   ],
 };

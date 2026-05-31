@@ -9,9 +9,9 @@ export const BEAUGENCY_COPY: VilleCopy = {
   pitchEn:
     "Beaugency (45), cité médiévale en bords de Loire (pont roman classé, donjon du XIe siècle, abbatiale Notre-Dame), est un pôle touristique et patrimonial du Val de Loire entre Orléans et Blois. Tissu TPE commerçantes, artisans du bâtiment, PME viticoles et agro-alimentaires, professions libérales, hébergeurs tourisme. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaugency (45). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME viticoles et agro-alimentaires du Val de Loire, professions libérales, hébergeurs et restaurateurs touristiques, associations patrimoniales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaugency (45). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME viticoles et agro-alimentaires du Val de Loire, professions libérales, hébergeurs et restaurateurs touristiques, associations patrimoniales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaugency (45). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME viticoles et agro-alimentaires du Val de Loire, professions libérales, hébergeurs et restaurateurs touristiques, associations patrimoniales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaugency (45). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME viticoles et agro-alimentaires du Val de Loire, professions libérales, hébergeurs et restaurateurs touristiques, associations patrimoniales. Audit sur place sur mesure.",
   seoHook: "patrimoine, tourisme & viticulture",
   ecosystemFr:
     "Beaugency est une cité historique en bords de Loire (8 024 hab.), entre Orléans (25 km) et Blois (35 km), au cœur du Val de Loire classé UNESCO. Tissu TPE commerçants du centre médiéval, artisans bâtiment restauration patrimoine, PME viticoles (AOC Orléans-Cléry), agro-alimentaires, hébergeurs et restaurateurs touristiques. La ville attire un tourisme patrimonial fort (pont médiéval, donjon, abbatiale).",
@@ -30,8 +30,8 @@ export const BEAUGENCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaugency : formats adaptés au commerce de centre-ville, domaine viticole ou PME agro-alimentaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BEAUGENCY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE commerçants et artisans de Beaugency ?",
-      a: "Oui, nous accompagnons les TPE commerçants du centre historique et artisans de Beaugency sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, classification commandes, gestion planning chantier. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE commerçants du centre historique et artisans de Beaugency sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, classification commandes, gestion planning chantier. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les PME viticoles du Val de Loire ?",
@@ -61,11 +61,11 @@ export const BEAUGENCY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hébergeurs et restaurateurs touristiques ?",
-      a: "Pour les hébergeurs et restaurateurs de Beaugency (tourisme patrimonial Val de Loire UNESCO), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification avis clients, tarification dynamique.",
+      a: "Pour les hébergeurs et restaurateurs de Beaugency (tourisme patrimonial Val de Loire UNESCO), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification avis clients, tarification dynamique.",
     },
     {
       q: "Comment se déroule une mission sur site à Beaugency ?",
-      a: "Nos consultants se déplacent à Beaugency depuis Orléans (25 min A10) ou Paris (1h30 TGV+TER). Audit Flash : 4h sur site. Interventions : 1 à 5 jours selon le besoin. Frais de déplacement facturés en sus du forfait, tarifs publics transparents.",
+      a: "Nos consultants se déplacent à Beaugency depuis Orléans (25 min A10) ou Paris (1h30 TGV+TER). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin. Frais de déplacement facturés en sus du forfait, tarifs publics transparents.",
     },
   ],
 };

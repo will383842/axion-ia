@@ -69,7 +69,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Carquefou ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME du parc de la Fleuriaye et du nord nantais. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les TPE et PME du parc de la Fleuriaye et du nord nantais. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Carquefou ?",

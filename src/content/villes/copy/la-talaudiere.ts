@@ -30,8 +30,8 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Talaudière : diagnostic adapté aux PME tertiaires/industrielles zones d'activités Saint-Étienne Métropole, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Talaudière : formats adaptés au bureau tertiaire, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const LA_TALAUDIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales à La Talaudière, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA RDV, classification dossiers, CRM augmentés.",
+      a: "Pour les professions libérales à La Talaudière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA RDV, classification dossiers, CRM augmentés.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

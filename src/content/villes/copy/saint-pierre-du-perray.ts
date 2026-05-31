@@ -9,9 +9,9 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pierre-du-Perray (91), commune résidentielle de l'Essonne à 30 km au sud-est de Paris dans l'arrondissement d'Évry, allie cadre pavillonnaire et proximité du pôle économique Évry-Sénart. Tissu TPE artisanat BTP, PME services, commerces de proximité, professions libérales, activités péri-urbaines. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Saint-Pierre-du-Perray est une commune résidentielle de l'Essonne, rattachée à la communauté d'agglomération Grand Paris Sud Seine-Essonne-Sénart. Proximité immédiate Évry-Courcouronnes et ville nouvelle de Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, restauration et services à la personne.",
@@ -30,8 +30,8 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-du-Perray : formats adaptés atelier BTP, boutique, cabinet, bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Saint-Pierre-du-Perray ?",
-      a: "Oui, nous accompagnons les artisans BTP (plombiers, électriciens, maçons, menuisiers) sur des cas IA concrets : automatisation devis chantier, planning intelligent, gestion photos chantier, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP (plombiers, électriciens, maçons, menuisiers) sur des cas IA concrets : automatisation devis chantier, planning intelligent, gestion photos chantier, facturation automatisée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les professions libérales et commerçants ?",

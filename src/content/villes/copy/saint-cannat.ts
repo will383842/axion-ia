@@ -9,9 +9,9 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cannat (13), commune résidentielle de la plaine d'Aix entre Aix-en-Provence et Salon-de-Provence, accueille cadres et familles du bassin aixois. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et viticulteurs. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit sur place sur mesure.",
   seoHook: "viticulture coteaux & professions libérales",
   ecosystemFr:
     "Saint-Cannat est une commune résidentielle de la plaine d'Aix, sur l'axe Aix-Salon via la D7n. Vignobles AOC Coteaux d'Aix-en-Provence, agriculture (oliviers, amandiers), artisanat et commerces de proximité. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois.",
@@ -30,8 +30,8 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Cannat : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de la plaine d'Aix. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Cannat : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de la plaine d'Aix. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Cannat : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de la plaine d'Aix. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Cannat : diagnostic adapté aux viticulteurs, professions libérales, TPE artisans et PME tertiaires de la plaine d'Aix. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Cannat : ateliers pour domaines viticoles, cabinets libéraux et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Cannat  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs et PME saint-cannadiennes. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs et PME saint-cannadiennes. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Coteaux d'Aix ?",

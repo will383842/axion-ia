@@ -30,8 +30,8 @@ export const SAINT_JEAN_BONNEFONDS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-Bonnefonds : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Jean-Bonnefonds : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Jean-Bonnefonds : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Jean-Bonnefonds : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-Bonnefonds : formats adaptés au bureau, cabinet, atelier industriel, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_BONNEFONDS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Jean-Bonnefonds, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Jean-Bonnefonds, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

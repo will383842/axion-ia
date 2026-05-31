@@ -9,9 +9,9 @@ export const VENTABREN_COPY: VilleCopy = {
   pitchEn:
     "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre les activités professionnelles du bassin du bassin aixois ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit sur place sur mesure, sans engagement.",
   seoHook: "TPE, PME & libéraux ouest aixois",
   ecosystemFr:
     "Ventabren est une commune résidentielle perchée à l'ouest d'Aix-en-Provence, célèbre pour son aqueduc de Roquefavour et son cadre provençal préservé. Économie locale de TPE artisans, PME tertiaires, professions libérales, commerces, viticulture AOC Coteaux d'Aix et oléiculture. Proximité immédiate gare TGV Aix et technopôle de l'Arbois (cleantech, environnement).",
@@ -30,8 +30,8 @@ export const VENTABREN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ventabren : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs de l'ouest aixois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ventabren : ateliers pour cabinets libéraux, TPE artisans et équipes PME tertiaires. Proximité immédiate gare TGV et technopôle Arbois. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const VENTABREN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ventabren  ?",
-      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs ventabrennois. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs ventabrennois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Ventabren ?",
@@ -61,7 +61,7 @@ export const VENTABREN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les domaines viticoles AOC de Ventabren ?",
-      a: "Oui, nous accompagnons les domaines viticoles AOC Coteaux d'Aix sur des cas IA : gestion parcellaire, traçabilité vendanges, agents IA caveau et œnotourisme, marketing vente directe. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les domaines viticoles AOC Coteaux d'Aix sur des cas IA : gestion parcellaire, traçabilité vendanges, agents IA caveau et œnotourisme, marketing vente directe. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Ventabren ?",

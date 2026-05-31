@@ -9,9 +9,9 @@ export const ACHICOURT_COPY: VilleCopy = {
   pitchEn:
     "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'Arrageois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Achicourt est une commune résidentielle et commerciale de l'agglomération d'Arras, préfecture du Pas-de-Calais. Zones commerciales péri-urbaines, TPE artisanales, PME de services, professions libérales et activités tertiaires. Bénéficie du dynamisme administratif et universitaire d'Arras.",
@@ -30,8 +30,8 @@ export const ACHICOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Achicourt : diagnostic adapté aux TPE artisanales, PME de services et professions libérales de l'agglomération arrageoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Achicourt : formations pratiques adaptées au commerce, bureau ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const ACHICOURT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Achicourt  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME arrageoises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME arrageoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les PME de services à Achicourt ?",

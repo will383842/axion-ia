@@ -9,9 +9,9 @@ export const COMMERCY_COPY: VilleCopy = {
   pitchEn:
     "Commercy (55), ville des bords de Meuse mondialement connue pour ses madeleines et son château Stanislas, conjugue patrimoine ducal, savoir-faire pâtissier et tissu industriel local. Tissu de TPE/PME agroalimentaire, commerce, artisanat, tourisme patrimonial et services. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commercy (55). Nous accompagnons TPE et PME : pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commercy (55). Nous accompagnons TPE et PME : pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commercy (55). Nous accompagnons TPE et PME : pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commercy (55). Nous accompagnons TPE et PME : pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   seoHook: "vallée meuse",
   ecosystemFr:
     "Commercy est située sur les bords de la Meuse, au cœur du sud meusien. La ville est mondialement connue pour ses madeleines (savoir-faire artisanal protégé) et son château Stanislas, ancienne résidence du duc de Lorraine. L'économie locale repose sur l'agroalimentaire artisanal (pâtisserie), le commerce de proximité, l'artisanat BTP, le tourisme patrimonial et les services. Proximité de Toul (40 min) et Nancy (50 min).",
@@ -30,8 +30,8 @@ export const COMMERCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Commercy : formats adaptés à la pâtisserie artisanale, au commerce, au restaurant ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const COMMERCY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Commercy  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Commercy et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Commercy et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
     },
     {
       q: "Accompagnez-vous les pâtissiers et artisans agroalimentaires de Commercy ?",

@@ -30,8 +30,8 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Douvres-la-Délivrande : formats adaptés au site touristique, bureau tertiaire, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants douvresains ?",
-      a: "Pour les TPE artisans BTP et commerçants à Douvres-la-Délivrande, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Douvres-la-Délivrande, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Douvres-la-Délivrande  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Douvres-la-Délivrande ?",

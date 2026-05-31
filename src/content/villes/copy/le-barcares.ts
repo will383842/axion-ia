@@ -30,8 +30,8 @@ export const LE_BARCARES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site au Barcarès : formats adaptés au camping, hôtel, restaurant, école nautique, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const LE_BARCARES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces saisonniers ?",
-      a: "Pour les TPE et commerces saisonniers au Barcarès, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks, agents IA multilingues.",
+      a: "Pour les TPE et commerces saisonniers au Barcarès, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks, agents IA multilingues.",
     },
     {
       q: "Comment se déroule une mission au Barcarès ?",

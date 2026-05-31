@@ -32,8 +32,8 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash au Perreux-sur-Marne pour commerçants, cabinets et professions libérales : cartographie des tâches répétitives (devis, RDV, relances), opportunités IA priorisées à 30/60/90 jours.",
-      en: "Audit Flash au Perreux-sur-Marne pour commerçants, cabinets et professions libérales : cartographie des tâches répétitives (devis, RDV, relances), opportunités IA priorisées à 30/60/90 jours.",
+      fr: "Audit sur place au Perreux-sur-Marne pour commerçants, cabinets et professions libérales : cartographie des tâches répétitives (devis, RDV, relances), opportunités IA priorisées à 30/60/90 jours.",
+      en: "Audit sur place au Perreux-sur-Marne pour commerçants, cabinets et professions libérales : cartographie des tâches répétitives (devis, RDV, relances), opportunités IA priorisées à 30/60/90 jours.",
     },
     interventions: {
       fr: "Interventions ciblées au Perreux-sur-Marne pour les TPE des quatre zones commerciales : assistant de prise de RDV, génération automatisée de devis, suivi client multicanal.",
@@ -51,7 +51,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA au Perreux-sur-Marne ?",
-      a: "L'Audit Flash au Perreux-sur-Marne démarre à {{price:intervention-4h|flat}} pour 4 heures sur site, livrable PDF inclus. Les interventions ciblées et accompagnements 1-à-1 démarrent également à {{price:intervention-4h|flat}}. Tarifs publics, sans devis caché.",
+      a: "L'Audit sur place au Perreux-sur-Marne démarre à {{price:intervention-4h|flat}} pour 4 heures sur site, livrable PDF inclus. Les interventions ciblées et accompagnements 1-à-1 démarrent également à {{price:intervention-4h|flat}}. Tarifs publics, sans devis caché.",
     },
     {
       q: "Quels délais pour une intervention Axion-IA au Perreux-sur-Marne ?",

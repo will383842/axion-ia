@@ -9,9 +9,9 @@ export const NOYON_COPY: VilleCopy = {
   pitchEn:
     "Noyon (60), cité historique de l'Oise où fut couronné Charlemagne et naquit Calvin, dotée d'une cathédrale gothique majeure. Tissu TPE/PME commerce, artisanat, BTP, agroalimentaire, logistique et services sur l'axe Compiègne–Saint-Quentin. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit sur place sur mesure.",
   ecosystemFr:
     "Noyon est une cité historique de l'Oise, connue pour sa cathédrale gothique (XIIe siècle), le couronnement de Charlemagne et la naissance de Jean Calvin. Économie diversifiée : commerce, artisanat, agroalimentaire (plaine céréalière picarde), BTP, logistique sur l'axe RN32 Compiègne–Saint-Quentin, tourisme patrimonial et services.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NOYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noyon : formats adaptés au commerce, à l'agroalimentaire, au BTP et aux services. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const NOYON_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Noyon ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les entreprises agroalimentaires du Noyonnais ?",

@@ -9,9 +9,9 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit sur place sur mesure.",
   seoHook: "commerce proximité & industrielles services",
   ecosystemFr:
     "Bonnières-sur-Seine est une commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Gare Transilien J directe vers Paris. Tissu économique : TPE artisans bâtiment, commerces de proximité, PME industrielles et de services, professions libérales, agriculture, logistique. Communes voisines : Freneuse, Rosny-sur-Seine, Mantes-la-Jolie, Limay, Bennecourt.",
@@ -30,8 +30,8 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bonnières-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et de services, professions libérales et exploitants agricoles du Mantois ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bonnières-sur-Seine : formats adaptés atelier, entrepôt, bureau ou exploitation. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bonnières-sur-Seine  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Bonnières-sur-Seine démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Bonnières-sur-Seine démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME industrielles à Bonnières-sur-Seine ?",

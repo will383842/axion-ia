@@ -30,8 +30,8 @@ export const SAINT_ANDRE_DE_SANGONIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de la vallée de l'Hérault. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de la vallée de l'Hérault. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-André-de-Sangonis : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-de-Sangonis : ateliers adaptés domaine viticole, atelier artisan, commerce ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -53,19 +53,19 @@ export const SAINT_ANDRE_DE_SANGONIS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client, classification avis, prédiction vendanges. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client, classification avis, prédiction vendanges. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les artisans BTP, audit Flash {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : automatisation devis et facturation, classification photos chantier, planification interventions.",
+      a: "Pour les artisans BTP, audit sur place {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : automatisation devis et facturation, classification photos chantier, planification interventions.",
     },
     {
       q: "Accompagnez-vous les commerces de proximité ?",
-      a: "Oui, pour les commerces, audit Flash {{price:audit-flash|flat}}, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      a: "Oui, pour les commerces, audit sur place {{price:audit-flash|flat}}, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

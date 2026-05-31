@@ -30,8 +30,8 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Roquette-sur-Siagne : formats adaptés à l'atelier artisan, PME zone artisanale ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de la commune ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de La Roquette-sur-Siagne sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de La Roquette-sur-Siagne sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les PME de la zone artisanale ?",
@@ -61,7 +61,7 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et commerces ?",
-      a: "Pour les professions libérales et commerces de La Roquette-sur-Siagne, nous proposons : automatisation secrétariat, agents IA client, gestion stocks, CRM augmenté, classification documents. Audit Flash {{price:audit-flash|flat}} ou coaching 1-to-1.",
+      a: "Pour les professions libérales et commerces de La Roquette-sur-Siagne, nous proposons : automatisation secrétariat, agents IA client, gestion stocks, CRM augmenté, classification documents. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
       q: "Comment se déroule une mission depuis Cannes ?",

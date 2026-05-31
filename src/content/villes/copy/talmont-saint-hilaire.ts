@@ -30,8 +30,8 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Talmont-Saint-Hilaire : formats adaptés aux ostréiculteurs, campings, hôtels-restaurants et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les acteurs du tourisme à Talmont ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas tourisme : agents réservation multilingues, pricing dynamique camping, prédiction affluence, marketing patrimoine.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas tourisme : agents réservation multilingues, pricing dynamique camping, prédiction affluence, marketing patrimoine.",
     },
     {
       q: "Tarifs audit IA à Talmont-Saint-Hilaire  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Talmont-Saint-Hilaire ?",

@@ -9,9 +9,9 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
   pitchEn:
     "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit sur place sur mesure.",
   seoHook: "vallée moselle",
   ecosystemFr:
     "Neuves-Maisons est située dans la vallée de la Moselle, à 15 km au sud de Nancy. Ancienne ville sidérurgique, elle a reconverti son tissu vers la métallurgie spécialisée (aciérie électrique encore active), la mécanique, l'artisanat et les services. L'économie locale repose sur l'industrie métallurgique, l'artisanat BTP, le commerce de proximité et les services aux entreprises. Intégration à la Communauté de communes Moselle et Madon.",
@@ -30,8 +30,8 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Neuves-Maisons  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Neuves-Maisons et de la vallée de la Moselle, il identifie les cas d'usage IA à fort ROI pour votre aciérie, atelier ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Neuves-Maisons et de la vallée de la Moselle, il identifie les cas d'usage IA à fort ROI pour votre aciérie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels métallurgistes de Neuves-Maisons ?",

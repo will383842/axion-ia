@@ -30,8 +30,8 @@ export const MABLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mably : formats adaptés au bureau tertiaire, cabinet professionnel, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const MABLY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Mably, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Mably, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

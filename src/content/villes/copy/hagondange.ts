@@ -30,8 +30,8 @@ export const HAGONDANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hagondange : formats adaptés au bureau, entrepôt logistique, atelier BTP, commerce ou cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const HAGONDANGE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Hagondange ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les commerces et la logistique locale ?",

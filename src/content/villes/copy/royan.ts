@@ -30,8 +30,8 @@ export const ROYAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et TPE/PME de la Côte de Beauté. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et TPE/PME de la Côte de Beauté. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et TPE/PME de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et TPE/PME de la Côte de Beauté. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Royan : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier, au parc ostréicole ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const ROYAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Royan ?",
-      a: "L'audit Flash IA à Royan démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus touristiques, hôteliers ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à la saisonnalité.",
+      a: "L'audit sur place IA à Royan démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus touristiques, hôteliers ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à la saisonnalité.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Royan ?",

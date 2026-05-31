@@ -9,9 +9,9 @@ export const MITRY_MORY_COPY: VilleCopy = {
   pitchEn:
     "Mitry-Mory (77), commune de Seine-et-Marne (~20 456 hab.) à 25 km au nord-est de Paris, intégrée à la communauté d'agglomération Roissy Pays de France. Zone industrielle Mitry-Compans (logistique, chimie, imprimerie), zone Villette-aux-Aulnes, proximité immédiate de l'aéroport Paris-Charles-de-Gaulle. Tissu TPE, PME logistiques, industriels.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit Flash {{price:audit-flash|flat}}, déplacement Paris/Roissy, code custom, conformité RGPD et AI Act.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit sur place {{price:audit-flash|flat}}, déplacement Paris/Roissy, code custom, conformité RGPD et AI Act.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit Flash {{price:audit-flash|flat}}, déplacement Paris/Roissy, code custom, conformité RGPD et AI Act.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mitry-Mory (77) pour les TPE, PME et ETI de Seine-et-Marne. Nous accompagnons en priorité les TPE artisanales et commerçantes, les PME logistiques et industrielles de la zone Mitry-Compans, et les ETI implantées sur l'axe Roissy Pays de France. Audit sur place {{price:audit-flash|flat}}, déplacement Paris/Roissy, code custom, conformité RGPD et AI Act.",
   seoHook: "logistique, industrie & axe Roissy CDG",
   ecosystemFr:
     "Mitry-Mory héberge deux zones d'activités majeures. La zone Mitry-Compans regroupe des entreprises de logistique, de chimie et de l'imprimerie (notamment Air Liquide et Darty). La zone Villette-aux-Aulnes accueille des unités d'impression de grande presse. La commune appartient à la communauté d'agglomération Roissy Pays de France, sur l'axe stratégique de l'aéroport CDG.",
@@ -30,8 +30,8 @@ export const MITRY_MORY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mitry-Mory : diagnostic pour TPE artisanales, PME logistiques et industrielles de la zone Mitry-Compans et de l'axe Roissy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
-      en: "Audit IA à Mitry-Mory : diagnostic pour TPE artisanales, PME logistiques et industrielles de la zone Mitry-Compans et de l'axe Roissy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
+      fr: "Audit IA à Mitry-Mory : diagnostic pour TPE artisanales, PME logistiques et industrielles de la zone Mitry-Compans et de l'axe Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
+      en: "Audit IA à Mitry-Mory : diagnostic pour TPE artisanales, PME logistiques et industrielles de la zone Mitry-Compans et de l'axe Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mitry-Mory : ateliers adaptés à la logistique, l'entreposage, l'imprimerie et l'industrie chimique. Équipes autonomes sur outils IA métier, déplacement Paris/Roissy.",
@@ -53,7 +53,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs à Mitry-Mory ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}, session 1-to-1 dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}, session 1-to-1 dirigeants à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Mitry-Mory ?",
@@ -69,7 +69,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME logistiques de Mitry-Compans ?",
-      a: "Oui, cas typiques : OCR bons de livraison, optimisation tournées, classification documents douane, prédiction maintenance, qualification leads B2B. Audit Flash à {{price:audit-flash|flat}}, ROI chiffré.",
+      a: "Oui, cas typiques : OCR bons de livraison, optimisation tournées, classification documents douane, prédiction maintenance, qualification leads B2B. Audit sur place à {{price:audit-flash|flat}}, ROI chiffré.",
     },
   ],
 };

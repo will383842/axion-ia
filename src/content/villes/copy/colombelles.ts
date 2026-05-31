@@ -30,8 +30,8 @@ export const COLOMBELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Colombelles : formats adaptés au bureau tertiaire, atelier industriel, espace créatif ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const COLOMBELLES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants colombellois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Colombelles, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Colombelles, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Colombelles  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Colombelles ?",

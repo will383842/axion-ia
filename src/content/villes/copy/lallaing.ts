@@ -9,9 +9,9 @@ export const LALLAING_COPY: VilleCopy = {
   pitchEn:
     "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
     "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Proximité immédiate de Douai et accès rapide vers Lille via A21. Reconversion économique active du bassin minier avec dynamique d'innovation.",
@@ -30,8 +30,8 @@ export const LALLAING_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lallaing : diagnostic adapté aux TPE artisans BTP, PME logistique et sous-traitance industrielle de l'agglomération de Douai. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Lallaing : diagnostic adapté aux TPE artisans BTP, PME logistique et sous-traitance industrielle de l'agglomération de Douai. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Lallaing : diagnostic adapté aux TPE artisans BTP, PME logistique et sous-traitance industrielle de l'agglomération de Douai. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Lallaing : diagnostic adapté aux TPE artisans BTP, PME logistique et sous-traitance industrielle de l'agglomération de Douai. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lallaing : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée.",
@@ -53,7 +53,7 @@ export const LALLAING_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Lallaing  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Lallaing souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Lallaing souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du bassin minier de Douai ?",
@@ -61,7 +61,7 @@ export const LALLAING_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les PME logistique à Lallaing ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Optimisation tournées, prédiction demande, gestion flotte et traçabilité.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Optimisation tournées, prédiction demande, gestion flotte et traçabilité.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Lallaing ?",

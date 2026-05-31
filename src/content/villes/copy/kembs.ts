@@ -9,9 +9,9 @@ export const KEMBS_COPY: VilleCopy = {
   pitchEn:
     "Kembs (68), commune située sur les bords du Rhin avec ses écluses historiques, en zone frontalière France-Allemagne-Suisse au sud du Haut-Rhin. Tissu TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers, restaurateurs et indépendants du Sud-Alsace. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat commerce",
   ecosystemFr:
     "Kembs est une commune située sur les bords du Rhin, marquée par ses écluses historiques et sa position frontalière entre la France, l'Allemagne et la Suisse. Son tissu économique mêle TPE artisanat et commerce, PME logistique et services frontaliers, commerces de proximité, restaurateurs et professions libérales. Proximité directe avec Mulhouse, Bâle (Suisse) et l'Allemagne.",
@@ -30,8 +30,8 @@ export const KEMBS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Kembs : diagnostic adapté aux TPE artisanat, PME logistique et services frontaliers, commerces et professions libérales du Sud-Alsace tri-frontalier. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Kembs : diagnostic adapté aux TPE artisanat, PME logistique et services frontaliers, commerces et professions libérales du Sud-Alsace tri-frontalier. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Kembs : diagnostic adapté aux TPE artisanat, PME logistique et services frontaliers, commerces et professions libérales du Sud-Alsace tri-frontalier. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Kembs : diagnostic adapté aux TPE artisanat, PME logistique et services frontaliers, commerces et professions libérales du Sud-Alsace tri-frontalier. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Kembs : formats adaptés à l'entreprise logistique, l'atelier ou le commerce frontalier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const KEMBS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Kembs ?",
-      a: "L'Audit Flash IA à Kembs démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Kembs démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les PME logistique à Kembs ?",

@@ -112,7 +112,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, négoces, agences ou cabinets marseillais jusqu'à une dizaine de collaborateurs.",
           },
@@ -152,7 +152,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Marseille ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons ensemble le rythme dès le brief de cadrage, en tenant compte de vos contraintes opérationnelles portuaires ou logistiques.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons ensemble le rythme dès le brief de cadrage, en tenant compte de vos contraintes opérationnelles portuaires ou logistiques.",
           },
           {
             q: "Quel ROI puis-je attendre pour une PME marseillaise du transport ?",

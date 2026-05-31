@@ -30,8 +30,8 @@ export const RONCHIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ronchin : formats adaptés à la PME logistique, au commerce de proximité, à l'artisan ou au professionnel libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const RONCHIN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Ronchin  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Ronchin et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Ronchin et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Ronchin ?",

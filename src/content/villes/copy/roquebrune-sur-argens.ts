@@ -30,8 +30,8 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux TPE hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux TPE hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux TPE hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux TPE hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquebrune-sur-Argens : formats adaptés aux hôtels, campings, restaurants, domaines viticoles et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les campings et hôtels de Roquebrune-sur-Argens ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas hôtellerie-camping : gestion réservations, optimisation yield saisonnier, fidélisation, marketing local, automatisation devis groupes.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas hôtellerie-camping : gestion réservations, optimisation yield saisonnier, fidélisation, marketing local, automatisation devis groupes.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la vallée de l'Argens ?",
@@ -61,7 +61,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Roquebrune-sur-Argens  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Roquebrune-sur-Argens ?",

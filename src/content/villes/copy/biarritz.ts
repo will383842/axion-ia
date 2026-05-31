@@ -69,7 +69,7 @@ export const BIARRITZ_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande structure pour travailler avec Axion-IA à Biarritz ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME du tourisme local. Un Audit Flash à tarif public permet de démarrer petit, avec un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les TPE et PME du tourisme local. Un Audit sur place à tarif public permet de démarrer petit, avec un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Biarritz ?",

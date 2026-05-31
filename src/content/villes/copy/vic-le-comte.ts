@@ -9,9 +9,9 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
   pitchEn:
     "Vic-le-Comte (63), bourg du sud clermontois dans la vallée de l'Allier (Sainte-Chapelle classée monument historique). Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit sur place sur mesure.",
   seoHook: "agriculture vallée & commerce rural",
   ecosystemFr:
     "Vic-le-Comte est un bourg du sud Clermont dans la vallée de l'Allier, connu pour sa Sainte-Chapelle classée. Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services aux entreprises.",
@@ -30,8 +30,8 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vic-le-Comte : formats adaptés exploitation agricole, atelier artisan, commerce, site patrimonial. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

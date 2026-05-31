@@ -9,9 +9,9 @@ export const VERDUN_COPY: VilleCopy = {
   pitchEn:
     "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit sur place sur mesure.",
   seoHook: "vallée meuse",
   ecosystemFr:
     "Verdun est sous-préfecture de la Meuse, située sur les bords de la Meuse. La ville est un pôle mondial du tourisme de mémoire (champ de bataille, Mémorial de Verdun, Ossuaire de Douaumont, Citadelle souterraine). L'économie locale repose sur le tourisme mémoriel, l'hôtellerie-restauration, le commerce de centre-ville, l'artisanat BTP et les services aux entreprises et particuliers.",
@@ -30,8 +30,8 @@ export const VERDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Verdun : diagnostic adapté aux acteurs du tourisme mémoriel, hôteliers, restaurateurs, commerçants et prestataires de services de la Meuse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verdun : formats adaptés à l'hôtel, au restaurant, au site mémoriel ou à la TPE commerciale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const VERDUN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Verdun  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Verdun et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre activité touristique, hôtelière ou commerciale.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Verdun et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre activité touristique, hôtelière ou commerciale.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme de mémoire à Verdun ?",

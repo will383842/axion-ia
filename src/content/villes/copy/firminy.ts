@@ -30,8 +30,8 @@ export const FIRMINY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Firminy : formats adaptés à l'atelier industriel, site touristique architectural, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const FIRMINY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Firminy, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
+      a: "Pour les TPE artisans BTP et commerçants à Firminy, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

@@ -10,9 +10,9 @@ export const MONTAUBAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Montauban, préfecture du Tarn-et-Garonne en Occitanie, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. La ville compte 62 945 habitants (2023) et se situe à 55 km de Toulouse, sur l'axe A20. Centre administratif, commercial et logistique du département, elle accueille la gare de Montauban-Ville-Bourbon (TGV, Intercités, TER) et le 17e Régiment du Génie parachutiste. Nous intervenons sur site pour auditer et déployer des solutions IA adaptées aux dirigeants locaux.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Montauban (Tarn-et-Garonne, Occitanie) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu local : commerce de détail (zone Albasud), construction, transports terrestres et logistique (axe A20 Paris-Toulouse), restauration. Préfecture de 62 945 habitants à 55 km de Toulouse, Montauban bénéficie d'un bassin d'emploi diversifié. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}, déplacement sous 5 jours.",
   seoHook: "commerce détail & logistique A20",
   ecosystemFr:
     "Montauban structure son économie autour de la zone commerciale Albasud (sud de la ville), du commerce de centre-ville, de la construction et des transports terrestres. La position sur l'A20 (axe Paris-Toulouse-Espagne) en fait un nœud logistique. La gare de Montauban-Ville-Bourbon génère environ 6 millions d'euros de recettes annuelles. La ville accueille également le 17e Régiment du Génie parachutiste. Communes limitrophes : Albias, Bressols, Saint-Nauphary, Lamothe-Capdeville, Villemade, parmi 14 au total. Bassin d'environ 62 945 habitants intra-muros.",
@@ -32,8 +32,8 @@ export const MONTAUBAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
-      en: "Audit Flash 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      fr: "Audit sur place 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      en: "Audit sur place 4h à Montauban pour TPE et PME tarn-et-garonnaises — diagnostic des processus (gestion commerciale, planification transport, suivi chantier). À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Intervention Essentielle sur site à Montauban pour automatiser un goulot précis (saisie devis BTP, gestion tournées transport, relances clients commerce). Tarif public {{price:intervention-4h|flat}}, déplacement William sous 5 jours.",
@@ -51,7 +51,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Montauban ?",
-      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Montauban (Tarn-et-Garonne, 55 km de Toulouse) inclus dans le devis.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Montauban (Tarn-et-Garonne, 55 km de Toulouse) inclus dans le devis.",
     },
     {
       q: "Quels délais pour une intervention sur site à Montauban ?",

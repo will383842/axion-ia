@@ -30,8 +30,8 @@ export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gilles-Croix-de-Vie : formats adaptés aux professionnels de la pêche, hôtels-restaurants, commerces et artisans nautiques. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les restaurants de Saint-Gilles-Croix-de-Vie ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas restauration : gestion réservations IA, prédiction affluence, classification avis, automatisation commandes fournisseurs.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas restauration : gestion réservations IA, prédiction affluence, classification avis, automatisation commandes fournisseurs.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Gilles-Croix-de-Vie  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Gilles-Croix-de-Vie ?",

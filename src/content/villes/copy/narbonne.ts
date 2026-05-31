@@ -30,8 +30,8 @@ export const NARBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Narbonne : diagnostic adapté aux domaines viticoles, négociants en vins, prestataires logistiques A9, hôteliers-restaurateurs du centre antique et du littoral, artisans BTP et commerces. ROI chiffré, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Narbonne : formats adaptés au domaine viticole, à la cave coopérative, à l'entrepôt logistique, à l'hôtel-restaurant patrimoine ou littoral, à l'artisan BTP. Vos équipes repartent autonomes.",
@@ -65,7 +65,7 @@ export const NARBONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP rénovation patrimoine et littoral ?",
-      a: "Audit Flash, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : automatisation devis chantiers rénovation patrimoine (centre antique) et résidentiel littoral, OCR factures fournisseurs, suivi planning équipes, génération comptes-rendus de chantier, photos avant/après IA.",
+      a: "Audit sur place, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : automatisation devis chantiers rénovation patrimoine (centre antique) et résidentiel littoral, OCR factures fournisseurs, suivi planning équipes, génération comptes-rendus de chantier, photos avant/après IA.",
     },
     {
       q: "Comment se déroule une mission depuis Montpellier, Toulouse ou Perpignan ?",

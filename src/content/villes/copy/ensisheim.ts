@@ -9,9 +9,9 @@ export const ENSISHEIM_COPY: VilleCopy = {
   pitchEn:
     "Ensisheim (68), commune du centre du Haut-Rhin en Alsace, marquée par le palais de la Régence et l'ancien bassin potassique. Tissu TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du Sud-Alsace. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit sur place sur mesure.",
   seoHook: "industrie légère & artisanat commerce",
   ecosystemFr:
     "Ensisheim est une commune historique du centre du Haut-Rhin, ancrée dans l'ancien bassin potassique alsacien et marquée par son palais de la Régence et la célèbre météorite de 1492. Son tissu économique mêle TPE artisanat, PME industrie légère, commerces de proximité et exploitations agricoles. Proximité directe avec Mulhouse, Colmar et Guebwiller.",
@@ -30,8 +30,8 @@ export const ENSISHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ensisheim : diagnostic adapté aux TPE artisanat, PME industrie légère, commerces et exploitations agricoles du centre Haut-Rhin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ensisheim : diagnostic adapté aux TPE artisanat, PME industrie légère, commerces et exploitations agricoles du centre Haut-Rhin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ensisheim : diagnostic adapté aux TPE artisanat, PME industrie légère, commerces et exploitations agricoles du centre Haut-Rhin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ensisheim : diagnostic adapté aux TPE artisanat, PME industrie légère, commerces et exploitations agricoles du centre Haut-Rhin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ensisheim : formats adaptés à l'atelier, l'exploitation agricole ou le commerce. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const ENSISHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Ensisheim ?",
-      a: "L'Audit Flash IA à Ensisheim démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Ensisheim démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles à Ensisheim ?",

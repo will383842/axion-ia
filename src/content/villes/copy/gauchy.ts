@@ -30,8 +30,8 @@ export const GAUCHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gauchy : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, boutique ou bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const GAUCHY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les services aux entreprises et BTP ?",
-      a: "Oui, services aux entreprises et artisans BTP gauchois : automatisation devis et facturation, gestion clientèle B2B, suivi chantiers, conformité administrative, agents conversationnels. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, services aux entreprises et artisans BTP gauchois : automatisation devis et facturation, gestion clientèle B2B, suivi chantiers, conformité administrative, agents conversationnels. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Gauchy ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Gauchy ?",

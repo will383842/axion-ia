@@ -30,8 +30,8 @@ export const VENDENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vendenheim : formats adaptés à l'entrepôt logistique, au commerce de gros, à l'atelier industriel, au bureau de services. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const VENDENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et industriels de Vendenheim ?",
-      a: "Oui, artisans, industriels légers et services aux entreprises vendenheimois : automatisation production, gestion commerciale, relation client, ERP. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, artisans, industriels légers et services aux entreprises vendenheimois : automatisation production, gestion commerciale, relation client, ERP. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Vendenheim ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Vendenheim ?",

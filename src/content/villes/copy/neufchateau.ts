@@ -9,9 +9,9 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
   pitchEn:
     "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Neufchâteau est la sous-préfecture de l'ouest vosgien, au carrefour des axes Nancy-Dijon et Épinal-Chaumont. La ville est un pôle reconnu de l'industrie du mobilier et de l'ameublement vosgien (meubles, agencement, menuiserie). L'économie repose également sur l'agroalimentaire, l'artisanat, le commerce de proximité, les services publics et les professions libérales. Le tissu économique local est essentiellement composé de TPE/PME ancrées dans la tradition manufacturière vosgienne.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neufchâteau : formats adaptés à l'usine de mobilier, la menuiserie, l'atelier artisanal, le commerce ou le bureau. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Neufchâteau  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME néocastriennes : fabricants de mobilier, menuisiers, agroalimentaire, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME néocastriennes : fabricants de mobilier, menuisiers, agroalimentaire, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les fabricants de mobilier et d'ameublement ?",

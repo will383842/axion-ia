@@ -30,8 +30,8 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douchy-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Douchy-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Douchy-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Douchy-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du Valenciennois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Douchy-les-Mines : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP douchynois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Douchy-les-Mines sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Douchy-les-Mines sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du bassin minier reconverti ?",
@@ -61,7 +61,7 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Douchy-les-Mines, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
+      a: "Pour les commerçants et professions libérales à Douchy-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

@@ -51,7 +51,7 @@ export const REZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Rezé ?",
-      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille publique disponible sur notre page Pricing, sans frais cachés ni abonnement imposé.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille publique disponible sur notre page Pricing, sans frais cachés ni abonnement imposé.",
     },
     {
       q: "Vos consultants se déplacent-ils sur Atout-Sud, le MIN et les communes voisines ?",
@@ -59,7 +59,7 @@ export const REZE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer un projet IA à Rezé ?",
-      a: "Audit Flash réalisable sous 5 jours ouvrés. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon le périmètre cadré lors de l'audit initial.",
+      a: "Audit sur place réalisable sous 5 jours ouvrés. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon le périmètre cadré lors de l'audit initial.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Rezé ?",

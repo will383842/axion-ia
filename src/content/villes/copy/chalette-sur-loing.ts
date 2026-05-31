@@ -9,9 +9,9 @@ export const CHALETTE_SUR_LOING_COPY: VilleCopy = {
   pitchEn:
     "Chalette-sur-Loing (45), commune industrielle de l'agglomeration montargoise dans le Loiret, bordee par le Loing et le canal de Briare. Tissu de TPE et PME de l'industrie, de la logistique, du commerce, des services aux entreprises et de l'artisanat. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chalette-sur-Loing (45). Nous accompagnons TPE et PME : industriels, logisticiens, commercants, artisans et prestataires de services de l'agglomeration montargoise. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chalette-sur-Loing (45). Nous accompagnons TPE et PME : industriels, logisticiens, commercants, artisans et prestataires de services de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chalette-sur-Loing (45). Nous accompagnons TPE et PME : industriels, logisticiens, commercants, artisans et prestataires de services de l'agglomeration montargoise. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chalette-sur-Loing (45). Nous accompagnons TPE et PME : industriels, logisticiens, commercants, artisans et prestataires de services de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Chalette-sur-Loing est une commune a vocation industrielle de l'agglomeration montargoise, situee au confluent du Loing et du canal de Briare. Son heritage industriel (anciens sites manufacturiers) cohabite avec des zones d'activites modernes. L'economie locale repose sur l'industrie, la logistique, le commerce, les services aux entreprises et l'artisanat du batiment. Communes voisines : Montargis, Amilly, Villemandeur, Cepoy, Conflans-sur-Loing.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CHALETTE_SUR_LOING_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Chalette-sur-Loing : diagnostic adapte aux PME industrielles, logisticiens, commercants et artisans de l'agglomeration montargoise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Chalette-sur-Loing : diagnostic adapte aux PME industrielles, logisticiens, commercants et artisans de l'agglomeration montargoise. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Chalette-sur-Loing : diagnostic adapte aux PME industrielles, logisticiens, commercants et artisans de l'agglomeration montargoise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Chalette-sur-Loing : diagnostic adapte aux PME industrielles, logisticiens, commercants et artisans de l'agglomeration montargoise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Chalette-sur-Loing : formats adaptes aux sites industriels, entrepots logistiques, commerces et PME de services du bassin montargois.",
@@ -53,7 +53,7 @@ export const CHALETTE_SUR_LOING_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Chalette-sur-Loing ?",
-      a: "L'Audit Flash IA a Chalette-sur-Loing demarre a {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus metier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffre avec ROI estime.",
+      a: "L'Audit sur place IA a Chalette-sur-Loing demarre a {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus metier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffre avec ROI estime.",
     },
     {
       q: "Accompagnez-vous les entreprises industrielles a Chalette-sur-Loing ?",

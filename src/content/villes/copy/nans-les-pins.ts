@@ -9,9 +9,9 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
   pitchEn:
     "Nans-les-Pins (83), commune au pied du massif de la Sainte-Baume, conjugue cadre forestier exceptionnel, golf 18 trous et tissu économique tourné vers le tourisme et l'artisanat. TPE artisans, PME tourisme et hôtellerie de plein air, exploitations forestières, professions libérales et commerces de proximité dans un bassin entre Provence verte et bassin aubagnais. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nans-les-Pins (83). Nous accompagnons TPE artisans, PME tourisme, hôtellerie, professions libérales et commerces du massif de la Sainte-Baume. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nans-les-Pins (83). Nous accompagnons TPE artisans, PME tourisme, hôtellerie, professions libérales et commerces du massif de la Sainte-Baume. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nans-les-Pins (83). Nous accompagnons TPE artisans, PME tourisme, hôtellerie, professions libérales et commerces du massif de la Sainte-Baume. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nans-les-Pins (83). Nous accompagnons TPE artisans, PME tourisme, hôtellerie, professions libérales et commerces du massif de la Sainte-Baume. Audit sur place sur mesure.",
   seoHook: "tourisme nature, & artisanat",
   ecosystemFr:
     "Nans-les-Pins est positionnée au pied nord-ouest du massif de la Sainte-Baume, en bordure de la forêt domaniale, à mi-chemin entre Saint-Maximin et Aubagne. Commune dont l'activité économique repose sur le tourisme nature et golf (Domaine de Châteauneuf), les TPE artisans (BTP, services), PME hôtellerie de plein air et restauration, exploitations forestières, professions libérales et commerces de proximité.",
@@ -30,8 +30,8 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nans-les-Pins : ateliers pour équipes TPE/PME, hôteliers, restaurateurs, gestionnaires de golf et artisans. Outils IA configurés métier réel, dans vos locaux.",
@@ -53,7 +53,7 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Nans-les-Pins  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME tourisme, hôtellerie, restauration et commerces nansais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME tourisme, hôtellerie, restauration et commerces nansais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les hôtels, golfs et restaurants ?",

@@ -9,9 +9,9 @@ export const MERY_SUR_OISE_COPY: VilleCopy = {
   pitchEn:
     "Méry-sur-Oise (95), commune résidentielle des bords de l'Oise dans le Val-d'Oise, bénéficie de la proximité de Pontoise et de l'agglomération de Cergy-Pontoise. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méry-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et prestataires de l'axe Pontoise-Auvers-sur-Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méry-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et prestataires de l'axe Pontoise-Auvers-sur-Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méry-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et prestataires de l'axe Pontoise-Auvers-sur-Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méry-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et prestataires de l'axe Pontoise-Auvers-sur-Oise. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Méry-sur-Oise est une commune résidentielle des bords de l'Oise, à proximité immédiate de Pontoise et de l'agglomération Cergy-Pontoise. Économie de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Usine d'eau potable Veolia (traitement membranaire). Cadre de vie prisé entre Oise et forêt de Montmorency.",
@@ -30,8 +30,8 @@ export const MERY_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Méry-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'axe Pontoise-Auvers. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Méry-sur-Oise : formats adaptés au chantier artisan, au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,7 +57,7 @@ export const MERY_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Méry-sur-Oise ?",
-      a: "L'Audit Flash IA à Méry-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Méry-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les commerces et PME proches de Cergy-Pontoise ?",

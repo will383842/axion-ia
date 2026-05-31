@@ -7,9 +7,9 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
   pitchEn:
     "Le Beausset (83, Var), commune de l'arrière-pays varois au cœur du vignoble AOC Bandol, accueille TPE viticoles, PME artisanales, commerces de proximité, professions libérales, hôtellerie rurale et œnotourisme. Axion-IA y travaille avec les organisations du territoire de l'arrière-pays bandolais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Beausset (83). Nous accompagnons TPE viticoles AOC Bandol, PME artisanales, commerces et professions libérales de l'arrière-pays varois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Beausset (83). Nous accompagnons TPE viticoles AOC Bandol, PME artisanales, commerces et professions libérales de l'arrière-pays varois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Beausset (83). Nous accompagnons TPE viticoles AOC Bandol, PME artisanales, commerces et professions libérales de l'arrière-pays varois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Beausset (83). Nous accompagnons TPE viticoles AOC Bandol, PME artisanales, commerces et professions libérales de l'arrière-pays varois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "viticulture bandol & hôtellerie rurale",
   ecosystemFr:
     "Le Beausset est une commune de l'arrière-pays varois au cœur du vignoble AOC Bandol, entre Toulon et Marseille. Tissu de TPE viticoles, PME artisanales, commerces de proximité, professions libérales, hôtellerie rurale et œnotourisme. Proximité circuit Paul Ricard (Le Castellet) et terroir provençal.",
@@ -28,8 +28,8 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Beausset : diagnostic adapté aux TPE viticoles AOC Bandol, PME artisanales et commerces de l'arrière-pays varois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Beausset : formations pratiques adaptées viticulture, œnotourisme, artisanat, commerces et professions libérales. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Beausset ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME varoises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les domaines AOC Bandol et l'œnotourisme au Beausset ?",

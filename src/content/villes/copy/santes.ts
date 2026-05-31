@@ -30,8 +30,8 @@ export const SANTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Santes : formats adaptés à la PME de services, au cabinet libéral, à l'artisan ou au commerce de proximité. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const SANTES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Santes  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (services, professions libérales, artisanat, commerce, logistique). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (services, professions libérales, artisanat, commerce, logistique). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les PME logistiques du canal de la Deûle ?",

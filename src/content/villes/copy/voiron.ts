@@ -10,9 +10,9 @@ export const VOIRON_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA se déplace à Voiron, sous-préfecture de l'Isère de 21 847 habitants et ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Située à 29 km au nord-ouest de Grenoble en bordure du parc naturel régional de Chartreuse, Voiron accueille la production des liqueurs de Chartreuse, la chocolaterie Bonnat, les tissages Denantes et un centre hospitalier de référence. Nous y accompagnons les TPE et PME locales en code custom pour automatiser leurs processus métier.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA qui intervient à Voiron (Isère, 21 847 habitants, unité urbaine de 64 814 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Ville-centre de la Communauté d'agglomération du Pays Voironnais (34 communes), Voiron concentre des acteurs comme la chocolaterie Bonnat, les tissages Denantes, la production des liqueurs de Chartreuse, le tourisme lié au massif de Chartreuse et son centre hospitalier. L'audit Flash démarre à {{price:audit-flash|flat}} et les interventions à {{price:intervention-4h|flat}}.",
+    "Axion-IA est un cabinet IA qui intervient à Voiron (Isère, 21 847 habitants, unité urbaine de 64 814 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Ville-centre de la Communauté d'agglomération du Pays Voironnais (34 communes), Voiron concentre des acteurs comme la chocolaterie Bonnat, les tissages Denantes, la production des liqueurs de Chartreuse, le tourisme lié au massif de Chartreuse et son centre hospitalier. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions à {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA qui intervient à Voiron (Isère, 21 847 habitants, unité urbaine de 64 814 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Ville-centre de la Communauté d'agglomération du Pays Voironnais (34 communes), Voiron concentre des acteurs comme la chocolaterie Bonnat, les tissages Denantes, la production des liqueurs de Chartreuse, le tourisme lié au massif de Chartreuse et son centre hospitalier. L'audit Flash démarre à {{price:audit-flash|flat}} et les interventions à {{price:intervention-4h|flat}}.",
+    "Axion-IA est un cabinet IA qui intervient à Voiron (Isère, 21 847 habitants, unité urbaine de 64 814 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Ville-centre de la Communauté d'agglomération du Pays Voironnais (34 communes), Voiron concentre des acteurs comme la chocolaterie Bonnat, les tissages Denantes, la production des liqueurs de Chartreuse, le tourisme lié au massif de Chartreuse et son centre hospitalier. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions à {{price:intervention-4h|flat}}.",
   seoHook: "TPE & PME · agroalimentaire, textile, tourisme, santé",
   ecosystemFr:
     "Voiron est la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Le tissu local mêle l'industrie agroalimentaire (chocolaterie Bonnat, production des liqueurs de Chartreuse), le textile historique (tissages Denantes), l'artisanat de petite et moyenne manufacture, le centre hospitalier et un secteur touristique porté par la proximité immédiate du parc naturel régional de Chartreuse et du monastère de la Grande Chartreuse.",
@@ -32,8 +32,8 @@ export const VOIRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash chez les TPE et PME du Pays Voironnais dès {{price:audit-flash|flat}} : diagnostic des process agroalimentaires, textiles, touristiques et de santé, avec plan d'automatisation priorisé.",
-      en: "Audit Flash chez les TPE et PME du Pays Voironnais dès {{price:audit-flash|flat}} : diagnostic des process agroalimentaires, textiles, touristiques et de santé, avec plan d'automatisation priorisé.",
+      fr: "Audit sur place chez les TPE et PME du Pays Voironnais dès {{price:audit-flash|flat}} : diagnostic des process agroalimentaires, textiles, touristiques et de santé, avec plan d'automatisation priorisé.",
+      en: "Audit sur place chez les TPE et PME du Pays Voironnais dès {{price:audit-flash|flat}} : diagnostic des process agroalimentaires, textiles, touristiques et de santé, avec plan d'automatisation priorisé.",
     },
     interventions: {
       fr: "Intervention sur site à Voiron dès {{price:intervention-4h|flat}} : développement code custom pour automatiser devis, plannings, suivis de production et reportings des TPE/PME locales.",
@@ -51,7 +51,7 @@ export const VOIRON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA à Voiron ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h sur site). Les interventions de développement code custom démarrent à {{price:intervention-4h|flat}}. Les sessions un-à-un dirigeants débutent à {{price:intervention-dirigeants|flat}}. Grille publiée sur axion-ia.com.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h sur site). Les interventions de développement code custom démarrent à {{price:intervention-4h|flat}}. Les sessions un-à-un dirigeants débutent à {{price:intervention-dirigeants|flat}}. Grille publiée sur axion-ia.com.",
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à Voiron ?",

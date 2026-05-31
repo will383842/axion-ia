@@ -9,9 +9,9 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
   pitchEn:
     "Oloron-Sainte-Marie (64), sous-préfecture des Pyrénées-Atlantiques au confluent des gaves d'Aspe et d'Ossau, 10 684 habitants. Capitale du béret, tissu de TPE artisans, PME textile/agroalimentaire, tourisme pyrénéen et commerces. Axion-IA couvre les activités professionnelles du bassin du Haut-Béarn.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oloron-Sainte-Marie (64). Nous accompagnons TPE, PME et artisans du Haut-Béarn : textile (bérets), agroalimentaire, tourisme pyrénéen, commerces. Audit sur place sur mesure.",
   seoHook: "textile béret & agroalimentaire",
   ecosystemFr:
     "Oloron-Sainte-Marie est sous-préfecture du Haut-Béarn au confluent des gaves d'Aspe et d'Ossau, 10 684 habitants. Capitale historique du béret basque, filière textile artisanale, PME agroalimentaires (fromages, charcuterie), tourisme pyrénéen (vallées d'Aspe et d'Ossau, chemin de Saint-Jacques), commerces de centre-ville et artisanat d'art.",
@@ -30,8 +30,8 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Oloron-Sainte-Marie : diagnostic adapté aux TPE artisans textile (béretiers), PME agroalimentaires (fromages Ossau, charcuteries), professionnels du tourisme pyrénéen et commerçants du Haut-Béarn. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oloron-Sainte-Marie : formation et déploiement outils IA dans vos ateliers textile, fromageries, commerces ou hébergements touristiques pyrénéens.",
@@ -57,7 +57,7 @@ export const OLORON_SAINTE_MARIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Oloron-Sainte-Marie ?",
-      a: "L'audit Flash IA à Oloron-Sainte-Marie démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus artisanaux, agroalimentaires ou touristiques, identification cas d'usage IA et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Oloron-Sainte-Marie démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus artisanaux, agroalimentaires ou touristiques, identification cas d'usage IA et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme pyrénéen à Oloron ?",

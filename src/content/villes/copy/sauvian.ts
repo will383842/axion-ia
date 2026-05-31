@@ -9,9 +9,9 @@ export const SAUVIAN_COPY: VilleCopy = {
   pitchEn:
     "Sauvian (34), commune résidentielle de l'agglomération de Béziers, entre vignoble et littoral. Forte croissance démographique, proximité Sérignan et Valras-Plage. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit Flash dès {{price:audit-flash|flat}}, code source souverain.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit Flash dès {{price:audit-flash|flat}}, code source souverain.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sauvian (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'agglomération biterroise. Audit sur place dès {{price:audit-flash|flat}}, code source souverain.",
   ecosystemFr:
     "Sauvian est une commune résidentielle en forte croissance de l'agglomération de Béziers, entre vignoble et littoral (Sérignan-Plage et Valras-Plage à 10 min). Vignoble AOC Languedoc, tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAUVIAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sauvian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Sauvian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Sauvian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sauvian : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales de l'agglomération biterroise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sauvian : ateliers adaptés domaine viticole, atelier artisan, commerce ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -53,19 +53,19 @@ export const SAUVIAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs ?",
-      a: "Oui, audits IA adaptés aux domaines viticoles : gestion parcelles, relation client, classification avis, prédiction vendanges. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, audits IA adaptés aux domaines viticoles : gestion parcelles, relation client, classification avis, prédiction vendanges. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, formation et coaching. Cas typiques : automatisation devis, classification photos chantier, planification interventions.",
+      a: "Audit sur place {{price:audit-flash|flat}}, formation et coaching. Cas typiques : automatisation devis, classification photos chantier, planification interventions.",
     },
     {
       q: "Accompagnez-vous les commerces ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Sauvian ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Interventions et coaching sur devis. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Interventions et coaching sur devis. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

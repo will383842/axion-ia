@@ -9,9 +9,9 @@ export const VAUX_LE_PENIL_COPY: VilleCopy = {
   pitchEn:
     "Vaux-le-Pénil, commune résidentielle de Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants de l'agglomération melunaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-le-Pénil (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-le-Pénil (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-le-Pénil (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-le-Pénil (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit sur place sur mesure.",
   seoHook: "commerce proximité & artisanat rénovation",
   ecosystemFr:
     "Vaux-le-Pénil est une commune résidentielle du sud de la Seine-et-Marne, rattachée à la communauté d'agglomération Melun Val de Seine. Son tissu économique repose sur les commerces de proximité, TPE artisanales, PME de services, cabinets de professions libérales et activités logistiques liées à l'axe Seine. Proximité directe avec Melun, Dammarie-les-Lys et Le Mée-sur-Seine.",
@@ -30,8 +30,8 @@ export const VAUX_LE_PENIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaux-le-Pénil : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de l'agglomération melunaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vaux-le-Pénil : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de l'agglomération melunaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vaux-le-Pénil : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de l'agglomération melunaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vaux-le-Pénil : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de l'agglomération melunaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaux-le-Pénil : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VAUX_LE_PENIL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Vaux-le-Pénil ?",
-      a: "L'Audit Flash IA à Vaux-le-Pénil démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Vaux-le-Pénil démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de Vaux-le-Pénil ?",

@@ -30,8 +30,8 @@ export const REDON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
-      en: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
+      fr: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
+      en: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Redon : formats adaptés à l'atelier agroalimentaire, TPE artisan, commerce de centre-ville ou exploitation agricole. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const REDON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Redon ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Redon sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Redon sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME du Pays de Redon ?",
-      a: "L'audit Flash s'adapte à votre périmètre, accessible aux TPE. Pour les PME industrielles et agroalimentaires, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit sur place s'adapte à votre périmètre, accessible aux TPE. Pour les PME industrielles et agroalimentaires, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Redon ?",

@@ -30,8 +30,8 @@ export const CLAIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Claix : formats adaptés au cabinet professionnel, commerce, atelier artisan haut de gamme ou bureau PME. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const CLAIX_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP haut de gamme ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Claix (BTP haut de gamme, second œuvre, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Claix (BTP haut de gamme, second œuvre, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les acteurs du tourisme Vercors ?",
-      a: "Pour les acteurs du tourisme et loisirs montagne Vercors (stations Lans-en-Vercors, Villard-de-Lans à proximité de Claix), nous proposons audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback.",
+      a: "Pour les acteurs du tourisme et loisirs montagne Vercors (stations Lans-en-Vercors, Villard-de-Lans à proximité de Claix), nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",

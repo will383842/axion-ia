@@ -9,9 +9,9 @@ export const LA_GORGUE_COPY: VilleCopy = {
   pitchEn:
     "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "La Gorgue est une commune flamande des bords de la Lys entre Estaires et Merville. Héritière du textile industriel (lin, toile), elle s'est diversifiée vers la logistique, l'agroalimentaire et les services. Tissu dense de TPE artisans BTP, PME logistique, commerces de proximité et professions libérales desservant le bassin Lys-Flandre.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LA_GORGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Gorgue : formats adaptés aux entrepôts logistique, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LA_GORGUE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Gorgue  ?",
-      a: "L'audit Flash IA à La Gorgue démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit sur place IA à La Gorgue démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants gorgueois ?",

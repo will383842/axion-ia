@@ -30,8 +30,8 @@ export const LE_RHEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Rheu : diagnostic adapté aux PME tertiaires ouest rennais, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Rheu : diagnostic adapté aux PME tertiaires ouest rennais, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Rheu : diagnostic adapté aux PME tertiaires ouest rennais, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Rheu : diagnostic adapté aux PME tertiaires ouest rennais, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Rheu : formats adaptés au bureau PME, atelier artisan BTP, commerce ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,15 +53,15 @@ export const LE_RHEU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires du Rheu ?",
-      a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises de l'ouest rennais sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
+      a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises de l'ouest rennais sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Rheu ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP du Rheu ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP du Rheu et communes voisines sur leurs cas IA : automatisation devis, agents IA prise de RDV, classification photos chantier, suivi planning. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP du Rheu et communes voisines sur leurs cas IA : automatisation devis, agents IA prise de RDV, classification photos chantier, suivi planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission au Rheu ?",

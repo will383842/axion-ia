@@ -10,9 +10,9 @@ export const LESTREM_COPY: VilleCopy = {
     "Lestrem (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit environ 5 010 habitants. Situee entre Bethune et Armentieres dans la plaine de la Lys, son economie associe TPE artisanales, PME industrielles (agroalimentaire, chimie), agriculture et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agroalimentaire, chimie & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Lestrem est situee dans la plaine de la Lys, entre Bethune (15 km) et Armentieres (20 km). Tissu economique mixte : PME agroalimentaires (Roquette Freres historiquement implantee), chimie fine, TPE artisanat BTP, exploitations agricoles (grandes cultures, betteraves), commerces de bourg et services.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LESTREM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Lestrem : diagnostic adapte aux PME agroalimentaires, industriels chimie, exploitants agricoles et artisans de la plaine de la Lys. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Lestrem : diagnostic adapte aux PME agroalimentaires, industriels chimie, exploitants agricoles et artisans de la plaine de la Lys. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Lestrem : diagnostic adapte aux PME agroalimentaires, industriels chimie, exploitants agricoles et artisans de la plaine de la Lys. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Lestrem : diagnostic adapte aux PME agroalimentaires, industriels chimie, exploitants agricoles et artisans de la plaine de la Lys. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Lestrem : formations adaptees a l'usine, a l'exploitation agricole, a l'atelier ou au bureau. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const LESTREM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Lestrem ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Quels services IA pour les PME agroalimentaires du Pas-de-Calais ?",
-      a: "Pour les PME agroalimentaires, nous proposons : automatisation lignes de production, IA predictive qualite, traitement documentaire reglementaire, agents conversationnels B2B. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les PME agroalimentaires, nous proposons : automatisation lignes de production, IA predictive qualite, traitement documentaire reglementaire, agents conversationnels B2B. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles de la plaine de la Lys ?",

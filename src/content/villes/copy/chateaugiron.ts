@@ -30,8 +30,8 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaugiron : formats adaptés au bureau PME, atelier artisan, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,15 +53,15 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires du bassin rennais est ?",
-      a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises du secteur sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
+      a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises du secteur sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Châteaugiron  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin rennais est, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin rennais est, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Châteaugiron ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Châteaugiron et communes voisines sur leurs cas IA : automatisation devis, agents IA prise de RDV, classification photos chantier, suivi planning. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Châteaugiron et communes voisines sur leurs cas IA : automatisation devis, agents IA prise de RDV, classification photos chantier, suivi planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Châteaugiron ?",

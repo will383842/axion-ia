@@ -9,9 +9,9 @@ export const LAON_COPY: VilleCopy = {
   pitchEn:
     "Laon (02), 24 220 habitants, préfecture de l'Aisne (Hauts-de-France). Cité médiévale perchée sur une butte-témoin à 183 m, célèbre pour sa cathédrale Notre-Dame et ses remparts du XIVe siècle. Plus grand secteur sauvegardé de France (370 ha). Économie tournée vers l'administration préfectorale, le commerce de centre-ville, l'agriculture (57,7 % du territoire) et le tourisme patrimonial. Axion-IA accompagne TPE, PME et artisans laonnois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit Flash {{price:audit-flash|flat}}, tarifs publics, code custom.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit Flash {{price:audit-flash|flat}}, tarifs publics, code custom.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laon (02). Nous accompagnons TPE, PME, artisans, commerces de centre-ville et exploitations agricoles du pays de Laon avec audits IA, interventions sur site et coaching 1-to-1. Déplacement depuis Paris via A26 ou TER Gare de Laon. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom.",
   seoHook: "TPE/PME laonnoises & artisanat patrimoine",
   ecosystemFr:
     "Tissu économique de Laon structuré autour de la préfecture de l'Aisne et de la Communauté d'agglomération du Pays de Laon. Forte présence de l'administration publique, du commerce de centre-ville (ville haute médiévale), de l'artisanat (bâtiment, restauration de patrimoine), du tourisme culturel (cathédrale, remparts) et de l'agriculture céréalière (49,7 % de terres arables). Tissu de TPE professions libérales et services.",
@@ -30,8 +30,8 @@ export const LAON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laon : diagnostic pour TPE, PME, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
-      en: "Audit IA à Laon : diagnostic pour TPE, PME, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      fr: "Audit IA à Laon : diagnostic pour TPE, PME, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Laon : diagnostic pour TPE, PME, commerces du centre médiéval, artisans patrimoine et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laon : ateliers adaptés commerce, artisan, professionnel du tourisme ou exploitant agricole. Équipes formées et autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const LAON_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Laon ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans du centre médiéval ?",
-      a: "Oui, pour les commerces de la ville haute et artisans patrimoine : automatisation devis, agents IA prise de RDV, gestion stocks, chatbot client. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, pour les commerces de la ville haute et artisans patrimoine : automatisation devis, agents IA prise de RDV, gestion stocks, chatbot client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD à Laon ?",
@@ -65,7 +65,7 @@ export const LAON_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Laon ?",
-      a: "Audit Flash livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 à 3 semaines (déplacement depuis Paris). Implémentations 4 à 8 semaines selon périmètre.",
+      a: "Audit sur place livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 à 3 semaines (déplacement depuis Paris). Implémentations 4 à 8 semaines selon périmètre.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Laon ?",

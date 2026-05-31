@@ -11,9 +11,9 @@ export const LENS_COPY: VilleCopy = {
   pitchEn:
     "Lens (32 920 habitants, 62300), sous-préfecture du Pas-de-Calais en région Hauts-de-France, cœur de la Communauté d'agglomération de Lens-Liévin (36 communes, 242 591 habitants), forme avec Douai la 10e agglomération française. Axion-IA, cabinet IA pour TPE et PME francophones, se déplace sur place pour accompagner les artisans, commerçants et PME issues du bassin minier reconverti : santé, logistique, services tertiaires, commerce de détail, métallurgie et industrie agroalimentaire. Notre code est custom (pas de no-code) : automatisation de devis, relances clients, comptes-rendus de chantier, suivi opérationnel. Tarifs publics dès {{price:audit-flash|flat}}.",
   directAnswerFr:
-    "À Lens (62300, Pas-de-Calais, Hauts-de-France), Axion-IA accompagne les TPE et PME du bassin minier reconverti : commerces de centre-ville, artisans BTP, PME logistiques, professionnels de santé, restaurateurs et industries agroalimentaires. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code) pour libérer du temps sur les tâches administratives répétitives. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}. Déplacement depuis Lille (27 km) ou Paris (180 km) sous 5 jours ouvrés.",
+    "À Lens (62300, Pas-de-Calais, Hauts-de-France), Axion-IA accompagne les TPE et PME du bassin minier reconverti : commerces de centre-ville, artisans BTP, PME logistiques, professionnels de santé, restaurateurs et industries agroalimentaires. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code) pour libérer du temps sur les tâches administratives répétitives. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}. Déplacement depuis Lille (27 km) ou Paris (180 km) sous 5 jours ouvrés.",
   directAnswerEn:
-    "À Lens (62300, Pas-de-Calais, Hauts-de-France), Axion-IA accompagne les TPE et PME du bassin minier reconverti : commerces de centre-ville, artisans BTP, PME logistiques, professionnels de santé, restaurateurs et industries agroalimentaires. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code) pour libérer du temps sur les tâches administratives répétitives. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}. Déplacement depuis Lille (27 km) ou Paris (180 km) sous 5 jours ouvrés.",
+    "À Lens (62300, Pas-de-Calais, Hauts-de-France), Axion-IA accompagne les TPE et PME du bassin minier reconverti : commerces de centre-ville, artisans BTP, PME logistiques, professionnels de santé, restaurateurs et industries agroalimentaires. Nous déployons des automatisations sur mesure (code custom Node/Python/Postgres, pas de no-code) pour libérer du temps sur les tâches administratives répétitives. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}. Déplacement depuis Lille (27 km) ou Paris (180 km) sous 5 jours ouvrés.",
   seoHook: "TPE/PME bassin minier Lens-Liévin",
   ecosystemFr:
     "Lens forme avec Liévin, Avion, Sallaumines, Loos-en-Gohelle, Loison-sous-Lens, Éleu-dit-Leauwette et Vendin-le-Vieil le cœur de la Communauté d'agglomération Lens-Liévin. L'écosystème économique, longtemps dominé par l'extraction houillère, s'est reconverti vers la santé, le tertiaire, la logistique, la métallurgie et l'agroalimentaire. L'ouverture du musée Louvre-Lens en décembre 2012 a accéléré la dynamique touristique et culturelle locale. Le tissu local est dominé par les TPE et PME, avec quelques ETI industrielles.",
@@ -33,8 +33,8 @@ export const LENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash sur site à Lens pour cartographier les automatisations prioritaires d'une TPE ou PME du bassin minier — dès {{price:audit-flash|flat}}.",
-      en: "Audit Flash sur site à Lens pour cartographier les automatisations prioritaires d'une TPE ou PME du bassin minier — dès {{price:audit-flash|flat}}.",
+      fr: "Audit sur place sur site à Lens pour cartographier les automatisations prioritaires d'une TPE ou PME du bassin minier — dès {{price:audit-flash|flat}}.",
+      en: "Audit sur place sur site à Lens pour cartographier les automatisations prioritaires d'une TPE ou PME du bassin minier — dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Lens pour automatiser devis, relances et comptes-rendus dans les commerces, BTP et logistique — dès {{price:intervention-4h|flat}}.",
@@ -52,7 +52,7 @@ export const LENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Lens ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}} (4 heures sur site), intervention dès {{price:intervention-4h|flat}}, implémentation IA dès {{price:impl-poc|entry}}. Tarifs publics consultables sur axion-ia.com/tarifs, sans coût d'abonnement caché.",
+      a: "Audit sur place dès {{price:audit-flash|flat}} (4 heures sur site), intervention dès {{price:intervention-4h|flat}}, implémentation IA dès {{price:impl-poc|entry}}. Tarifs publics consultables sur axion-ia.com/tarifs, sans coût d'abonnement caché.",
     },
     {
       q: "Quels délais pour une intervention à Lens ?",

@@ -10,9 +10,9 @@ export const AUDRUICQ_COPY: VilleCopy = {
     "Audruicq (62), commune du Pas-de-Calais aux portes du marais audomarois, reunit pres de 5 310 habitants. Situee entre Calais et Saint-Omer, son economie associe TPE de services, agriculture, commerces, artisanat BTP et petites entreprises logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "marais audomarois, agriculture & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Audruicq (62). Nous accompagnons les TPE, PME et ETI du marais audomarois : agriculteurs, commercants, artisans, prestataires de services et entreprises logistiques. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Audruicq est situee entre Calais (20 km) et Saint-Omer (20 km), aux portes du marais audomarois. Tissu economique mixte : agriculture (maraichage, polyculture), TPE de services, commerces de centre-bourg, artisanat BTP et petites entreprises de transport.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const AUDRUICQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, TPE de services, commercants et artisans du marais audomarois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, TPE de services, commercants et artisans du marais audomarois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, TPE de services, commercants et artisans du marais audomarois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Audruicq : diagnostic adapte aux agriculteurs, TPE de services, commercants et artisans du marais audomarois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Audruicq : formations adaptees aux exploitations agricoles, commerces, ateliers artisanaux et bureaux TPE. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const AUDRUICQ_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les agriculteurs d'Audruicq ?",
-      a: "Pour les agriculteurs de l'Audomarois, nous proposons : IA predictive rendements, gestion parcellaire automatisee, optimisation irrigation, agents conversationnels cooperatives. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les agriculteurs de l'Audomarois, nous proposons : IA predictive rendements, gestion parcellaire automatisee, optimisation irrigation, agents conversationnels cooperatives. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Audruicq ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les commercants d'Audruicq ?",
-      a: "Oui, nous accompagnons les commercants de l'Audomarois : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les commercants de l'Audomarois : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Audruicq ?",

@@ -9,9 +9,9 @@ export const JUVIGNAC_COPY: VilleCopy = {
   pitchEn:
     "Juvignac (34), commune de 14 055 habitants dans l'agglomération de Montpellier ouest. Son économie repose sur un tissu de TPE et PME du commerce (zone Ode à la Mer), des services aux entreprises, de la restauration, de la santé, du sport et de l'immobilier résidentiel en forte croissance. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit sur place sur mesure.",
   ecosystemFr:
     "Juvignac est une commune en forte croissance de la première couronne ouest de Montpellier. Son économie s'appuie sur la zone commerciale Ode à la Mer (grande distribution, enseignes nationales), les services aux entreprises, la restauration, les professions libérales (santé, conseil), l'immobilier et le secteur sportif (golf). Tramway T3 vers Montpellier centre.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const JUVIGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Juvignac : diagnostic adapté aux TPE/PME commerciales, de services, professions libérales et restaurateurs de l'agglo Montpellier ouest. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Juvignac : formats adaptés à l'enseigne commerciale, au cabinet, au restaurant ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const JUVIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Juvignac  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Juvignac : enseignes commerciales, prestataires de services, professions libérales et restaurateurs. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Juvignac : enseignes commerciales, prestataires de services, professions libérales et restaurateurs. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les commerces de Juvignac ?",

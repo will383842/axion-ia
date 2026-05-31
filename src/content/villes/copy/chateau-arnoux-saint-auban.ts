@@ -30,8 +30,8 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Château-Arnoux-Saint-Auban : formats adaptés aux ateliers chimie/plasturgie, entreprises maintenance, commerces ou exploitations agricoles. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Château-Arnoux ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Château-Arnoux-Saint-Auban : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : automatisation devis, agents RDV, gestion stocks.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Château-Arnoux-Saint-Auban : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : automatisation devis, agents RDV, gestion stocks.",
     },
     {
       q: "Combien coûte un audit IA à Château-Arnoux-Saint-Auban  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE, PME industrielles et commerçants de la Moyenne Durance. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE, PME industrielles et commerçants de la Moyenne Durance. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Château-Arnoux-Saint-Auban ?",

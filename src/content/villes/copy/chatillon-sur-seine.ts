@@ -9,9 +9,9 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Châtillon-sur-Seine (21), capitale historique du Châtillonnais à l'extrême nord de la Côte-d'Or aux sources de la Seine et célèbre pour le Vase de Vix, dispose d'un tissu rural diversifié. TPE artisanat et services, commerces de centre-bourg, PME agroalimentaires et viticoles (Crémant), professions libérales, hôtellerie-restauration et tourisme patrimonial. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Seine (21). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, professions libérales, hôteliers-restaurateurs et acteurs du tourisme patrimonial. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Seine (21). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, professions libérales, hôteliers-restaurateurs et acteurs du tourisme patrimonial. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Seine (21). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, professions libérales, hôteliers-restaurateurs et acteurs du tourisme patrimonial. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Seine (21). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, professions libérales, hôteliers-restaurateurs et acteurs du tourisme patrimonial. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "Châtillon-sur-Seine est la principale ville du Châtillonnais, à l'extrême nord de la Côte-d'Or, traversée par la Seine naissante. Tissu TPE artisanat et services, commerce de centre-bourg, PME agroalimentaires et viticoles (Crémant de Bourgogne), professions libérales, hôtellerie-restauration tournée vers le tourisme patrimonial (Musée du Châtillonnais et Vase de Vix).",
@@ -30,8 +30,8 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtillon-sur-Seine : formats adaptés artisan, commerce, exploitation viticole, hôtel, restaurant, cabinet. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs et PME agroalimentaires du Châtillonnais ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture et Crémant de Bourgogne, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture et Crémant de Bourgogne, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de centre-bourg ?",
@@ -61,7 +61,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour l'hôtellerie-restauration et le tourisme patrimonial ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Musée du Châtillonnais et du Vase de Vix.",
+      a: "Audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Musée du Châtillonnais et du Vase de Vix.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Dijon ?",

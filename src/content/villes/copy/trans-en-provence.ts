@@ -9,9 +9,9 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
   pitchEn:
     "Trans-en-Provence (83), commune du centre-Var dans la vallée de la Nartuby aux portes de Draguignan, est connue pour ses cascades et son patrimoine provençal. Tissu de TPE artisans, commerçants, restaurateurs et PME résidentielles, BTP et services autour de l'agglomération dracénoise. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit sur place sur mesure.",
   seoHook: "artisanat résidentiel & commerce proximité",
   ecosystemFr:
     "Trans-en-Provence est une commune résidentielle et économique du centre-Var, intégrée à l'agglomération dracénoise (Communauté d'agglo Dracénoise). Économie tirée par les TPE artisanat, le BTP, le commerce de proximité, les services aux entreprises, la restauration et un tourisme patrimonial (cascades, vieux village). Tissu de TPE/PME local.",
@@ -30,8 +30,8 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trans-en-Provence : ateliers pour artisans, BTP, restaurateurs, commerçants et PME services. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE artisanale à Trans-en-Provence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, BTP, commerçants et restaurateurs transians. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, BTP, commerçants et restaurateurs transians. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les TPE BTP de l'agglomération dracénoise ?",

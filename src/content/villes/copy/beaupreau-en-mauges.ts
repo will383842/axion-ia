@@ -30,8 +30,8 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaupréau-en-Mauges : diagnostic des tâches automatisables pour ateliers textile, agroalimentaire, industrie et commerce des Mauges. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
-      en: "Audit IA à Beaupréau-en-Mauges : diagnostic des tâches automatisables pour ateliers textile, agroalimentaire, industrie et commerce des Mauges. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      fr: "Audit IA à Beaupréau-en-Mauges : diagnostic des tâches automatisables pour ateliers textile, agroalimentaire, industrie et commerce des Mauges. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Beaupréau-en-Mauges : diagnostic des tâches automatisables pour ateliers textile, agroalimentaire, industrie et commerce des Mauges. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaupréau-en-Mauges : ateliers pratiques pour lignes de production, qualité et administration, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Beaupréau-en-Mauges ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME des Mauges : industrie, agroalimentaire, artisanat et commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME des Mauges : industrie, agroalimentaire, artisanat et commerce.",
     },
     {
       q: "Accompagnez-vous l'agroalimentaire des Mauges ?",

@@ -9,9 +9,9 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
   pitchEn:
     "Lançon-Provence (13), commune provençale aux portes de la Crau et de l'étang de Berre, accueille zones logistiques stratégiques sur l'axe A7-A8. Tissu de TPE artisans, PME logistique et transport, commerçants, professions libérales, entrepôts et exploitations agricoles. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit sur place sur mesure.",
   seoHook: "logistique transport & entrepôts supply",
   ecosystemFr:
     "Lançon-Provence est positionnée sur l'axe A7-A8 entre Salon-de-Provence et Marseille, avec zones d'activités logistiques et entrepôts (Clésud à proximité). Vignobles AOC Coteaux d'Aix, oliveraies, élevage en Crau et agriculture céréalière. Tissu PME tertiaires et services aux entreprises de l'aire Aix-Marseille-Salon.",
@@ -30,8 +30,8 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lançon-Provence : ateliers pour PME logistique, entrepôts, transporteurs, domaines viticoles et équipes tertiaires. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lançon-Provence  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistique, viticulteurs et professions libérales lançonnaises. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistique, viticulteurs et professions libérales lançonnaises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistique et entrepôts de la zone A7 ?",

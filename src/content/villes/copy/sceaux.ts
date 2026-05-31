@@ -10,9 +10,9 @@ export const SCEAUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Sceaux, commune des Hauts-de-Seine en Île-de-France, dans l'automatisation de leurs processus métier grâce à du code IA sur mesure. Située à 9,8 km au sud-ouest de Notre-Dame de Paris, Sceaux compte 20 884 habitants (2023, +7,96 % depuis 2017). La ville accueille la Faculté Jean-Monnet (droit, économie, gestion) de l'Université Paris-Saclay et l'IUT de Sceaux, dans un environnement de services, commerces de proximité et activités juridiques. Nous intervenons sur site rapidement via le RER B.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sceaux (Hauts-de-Seine, Île-de-France) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté aux activités scéennes : services juridiques et comptables, commerces de proximité, professions libérales, enseignement supérieur (Faculté Jean-Monnet Paris-Saclay, IUT, lycées Lakanal, Marie-Curie, Florian). Desserte RER B (gares Sceaux et Robinson terminus) facilitant nos interventions sous 5 jours. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sceaux (Hauts-de-Seine, Île-de-France) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté aux activités scéennes : services juridiques et comptables, commerces de proximité, professions libérales, enseignement supérieur (Faculté Jean-Monnet Paris-Saclay, IUT, lycées Lakanal, Marie-Curie, Florian). Desserte RER B (gares Sceaux et Robinson terminus) facilitant nos interventions sous 5 jours. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sceaux (Hauts-de-Seine, Île-de-France) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté aux activités scéennes : services juridiques et comptables, commerces de proximité, professions libérales, enseignement supérieur (Faculté Jean-Monnet Paris-Saclay, IUT, lycées Lakanal, Marie-Curie, Florian). Desserte RER B (gares Sceaux et Robinson terminus) facilitant nos interventions sous 5 jours. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sceaux (Hauts-de-Seine, Île-de-France) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté aux activités scéennes : services juridiques et comptables, commerces de proximité, professions libérales, enseignement supérieur (Faculté Jean-Monnet Paris-Saclay, IUT, lycées Lakanal, Marie-Curie, Florian). Desserte RER B (gares Sceaux et Robinson terminus) facilitant nos interventions sous 5 jours. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
   seoHook: "services juridiques & enseignement",
   ecosystemFr:
     "Sceaux concentre des activités de services (juridiques, comptables, conseil), un commerce de proximité dense et un pôle d'enseignement supérieur structurant : Faculté Jean-Monnet de l'Université Paris-Saclay (droit, économie, gestion), IUT de Sceaux, lycées Lakanal, Marie-Curie et Florian. Le Parc de Sceaux (181 hectares, dessiné par André Le Nôtre) constitue un repère identitaire local. La commune est entourée de Fontenay-aux-Roses, Bagneux, Bourg-la-Reine, Le Plessis-Robinson, Châtenay-Malabry et Antony — un sud-Hauts-de-Seine au tissu PME et libéral dense.",
@@ -32,8 +32,8 @@ export const SCEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Sceaux pour TPE et PME des Hauts-de-Seine — diagnostic des processus de cabinet (juridique, comptable, conseil), facturation, gestion clients et CRM. À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
-      en: "Audit Flash 4h à Sceaux pour TPE et PME des Hauts-de-Seine — diagnostic des processus de cabinet (juridique, comptable, conseil), facturation, gestion clients et CRM. À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      fr: "Audit sur place 4h à Sceaux pour TPE et PME des Hauts-de-Seine — diagnostic des processus de cabinet (juridique, comptable, conseil), facturation, gestion clients et CRM. À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      en: "Audit sur place 4h à Sceaux pour TPE et PME des Hauts-de-Seine — diagnostic des processus de cabinet (juridique, comptable, conseil), facturation, gestion clients et CRM. À partir de {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Intervention Essentielle sur site à Sceaux pour automatiser un goulot précis (relecture documents juridiques, génération de devis cabinet, suivi mandats). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours via RER B.",
@@ -51,7 +51,7 @@ export const SCEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Sceaux ?",
-      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Sceaux (RER B, 9,8 km de Paris) inclus dans le devis.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Sceaux (RER B, 9,8 km de Paris) inclus dans le devis.",
     },
     {
       q: "Quels délais pour une intervention sur site à Sceaux ?",

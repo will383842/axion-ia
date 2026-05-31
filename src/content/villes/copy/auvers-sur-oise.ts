@@ -9,9 +9,9 @@ export const AUVERS_SUR_OISE_COPY: VilleCopy = {
   pitchEn:
     "Auvers-sur-Oise (95), village emblématique des impressionnistes immortalisé par Van Gogh, pôle de tourisme culturel du Val-d'Oise. Tissu TPE artisans et commerces, PME hôtellerie-restauration, galeries, professions libérales et structures culturelles. Axion-IA y mène ses missions auprès des organisations locales de la vallée de l'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit sur place sur mesure.",
   seoHook: "tourisme culturel & hôtellerie-restauration",
   ecosystemFr:
     "Auvers-sur-Oise attire chaque année des milliers de visiteurs sur les traces de Van Gogh, Cézanne et Daubigny. Son tissu économique mêle tourisme culturel, hôtellerie-restauration, artisanat d'art, commerces de proximité et professions libérales. Communes voisines : Pontoise, Méry-sur-Oise, Butry-sur-Oise, Valmondois, Nesles-la-Vallée.",
@@ -30,8 +30,8 @@ export const AUVERS_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auvers-sur-Oise : diagnostic adapté aux TPE artisans, PME hôtellerie-restauration, galeries, professions libérales et acteurs du tourisme culturel de la vallée de l'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auvers-sur-Oise : formats adaptés au restaurant, à la galerie ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const AUVERS_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Auvers-sur-Oise ?",
-      a: "L'Audit Flash IA à Auvers-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Auvers-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme culturel à Auvers-sur-Oise ?",

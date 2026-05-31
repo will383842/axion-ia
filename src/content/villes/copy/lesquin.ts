@@ -30,8 +30,8 @@ export const LESQUIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lesquin : formats adaptés au logisticien, au transporteur, au prestataire aéroportuaire ou à l'hôtelier-restaurateur. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const LESQUIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lesquin  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pôle aéroportuaire et logistique lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, transport, fret, hôtellerie, services). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pôle aéroportuaire et logistique lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, transport, fret, hôtellerie, services). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les prestataires de la zone aéroportuaire ?",

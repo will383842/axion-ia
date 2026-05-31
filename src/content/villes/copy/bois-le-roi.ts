@@ -30,8 +30,8 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bois-le-Roi : diagnostic adapté aux TPE artisans, commerces, professions libérales et hébergeurs touristiques entre Seine et forêt de Fontainebleau. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bois-le-Roi : diagnostic adapté aux TPE artisans, commerces, professions libérales et hébergeurs touristiques entre Seine et forêt de Fontainebleau. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bois-le-Roi : diagnostic adapté aux TPE artisans, commerces, professions libérales et hébergeurs touristiques entre Seine et forêt de Fontainebleau. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bois-le-Roi : diagnostic adapté aux TPE artisans, commerces, professions libérales et hébergeurs touristiques entre Seine et forêt de Fontainebleau. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bois-le-Roi : formats adaptés au commerce de village, cabinet libéral, TPE artisan ou hébergement touristique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bois-le-Roi  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bois-le-Roi et du sud Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bois-le-Roi et du sud Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les hébergeurs touristiques à Bois-le-Roi ?",

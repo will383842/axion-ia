@@ -9,9 +9,9 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
   pitchEn:
     "Montpon-Ménestérol (24), bourg de la Double en Dordogne au confluent de l'Isle et de la Crempse, entre Périgueux et Libourne. Tissu TPE/PME commerce, artisanat, agroalimentaire, BTP et services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Montpon-Ménestérol est un bourg-centre de la Double périgourdine, au confluent de l'Isle et de la Crempse. Pôle commercial pour le secteur ouest de la Dordogne, entre Périgueux et Libourne. Économie : commerce, artisanat BTP, agroalimentaire (viticulture, élevage, cultures), petite industrie et services de proximité.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montpon-Ménestérol : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et de l'agroalimentaire de l'ouest périgourdin. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montpon-Ménestérol : formations pratiques pour commerçants, artisans BTP et exploitants agroalimentaires de la Double.",
@@ -53,7 +53,7 @@ export const MONTPON_MENESTEROL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Montpon-Ménestérol  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'ouest Dordogne. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'ouest Dordogne. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les artisans BTP à Montpon-Ménestérol ?",

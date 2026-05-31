@@ -30,8 +30,8 @@ export const FALAISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Falaise : formats adaptés à l'usine, atelier industriel, commerce, site touristique ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const FALAISE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants falaisiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Falaise, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Falaise, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Combien coûte un audit IA à Falaise  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Falaise ?",

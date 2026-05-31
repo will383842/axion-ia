@@ -9,9 +9,9 @@ export const MONTAUROUX_COPY: VilleCopy = {
   pitchEn:
     "Montauroux (83), commune de l'arrière-pays varois dans le Pays de Fayence, est connue pour son village perché, son golf et son tourisme nature en lisière de l'Estérel et du lac de Saint-Cassien. Tissu de TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauroux (83). Nous accompagnons TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel du Pays de Fayence et de l'arrière-pays varois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauroux (83). Nous accompagnons TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauroux (83). Nous accompagnons TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel du Pays de Fayence et de l'arrière-pays varois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauroux (83). Nous accompagnons TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
   seoHook: "tourisme rural & golf loisirs",
   ecosystemFr:
     "Montauroux est un village perché du Pays de Fayence, à mi-chemin entre la Côte d'Azur et les gorges du Verdon. Économie tirée par le tourisme rural (lac de Saint-Cassien, golf, randonnée), l'artisanat, la restauration provençale, le BTP résidentiel et le commerce de proximité. Tissu de TPE/PME tourisme et artisanat.",
@@ -30,8 +30,8 @@ export const MONTAUROUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montauroux : diagnostic adapté aux TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montauroux : ateliers pour artisans, restaurateurs, professionnels du golf et hôteliers ruraux. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const MONTAUROUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE artisanale à Montauroux ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, restaurateurs et professionnels du tourisme montaurousien. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, restaurateurs et professionnels du tourisme montaurousien. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professionnels du golf et des loisirs ?",

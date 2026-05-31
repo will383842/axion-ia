@@ -9,9 +9,9 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
   pitchEn:
     "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Villers-Saint-Paul est un pôle d'activités de l'agglomération creilloise, en bordure de l'Oise. La commune accueille plusieurs zones d'activités économiques (ZAE des Marais, ZA du Moulin) qui concentrent logistique, industrie manufacturière, commerce de gros et services aux entreprises. Le bassin d'emploi s'articule avec Creil, Nogent-sur-Oise, Montataire et Senlis, et bénéficie de la desserte ferroviaire Paris-Nord.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Villers-Saint-Paul : diagnostic adapté aux TPE/PME logistique, industrie, commerce de gros, artisanat BTP et services de l'agglomération creilloise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-Saint-Paul : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Villers-Saint-Paul  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités villeroises : logisticiens, industriels, grossistes, artisans BTP. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités villeroises : logisticiens, industriels, grossistes, artisans BTP. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique et industrie ?",

@@ -30,8 +30,8 @@ export const CERNAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cernay : formats adaptés à l'atelier industriel, au domaine viticole, à l'hébergement touristique, au commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const CERNAY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous le tourisme et les commerces de Cernay ?",
-      a: "Oui, hébergeurs, restaurateurs et commerçants cernéens : réservations multilingues, relation client, gestion stocks, présence en ligne, agents conversationnels (route des Vins). Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, hébergeurs, restaurateurs et commerçants cernéens : réservations multilingues, relation client, gestion stocks, présence en ligne, agents conversationnels (route des Vins). Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Cernay ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Cernay ?",

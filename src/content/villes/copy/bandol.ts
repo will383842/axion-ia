@@ -9,9 +9,9 @@ export const BANDOL_COPY: VilleCopy = {
   pitchEn:
     "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de TPE viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bandol (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bandol (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bandol (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bandol (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit sur place sur mesure.",
   seoHook: "viticulture bandol & tourisme haut",
   ecosystemFr:
     "Bandol est une station balnéaire historique et un terroir viticole majeur. Économie tirée par l'AOC Bandol (mourvèdre, vins de garde reconnus à l'export), le tourisme haut de gamme, la restauration gastronomique, le nautisme (port plaisance), le casino et le commerce de proximité. Tissu de TPE/PME viticulture-tourisme.",
@@ -30,8 +30,8 @@ export const BANDOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bandol : ateliers pour vignerons AOC, restaurateurs gastronomiques, hôteliers et professionnels du nautisme. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const BANDOL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine AOC Bandol ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC Bandol, restaurateurs et hôteliers bandolais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC Bandol, restaurateurs et hôteliers bandolais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons de l'AOC Bandol à l'export ?",

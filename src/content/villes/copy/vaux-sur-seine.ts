@@ -9,9 +9,9 @@ export const VAUX_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Vaux-sur-Seine (78), commune résidentielle des Yvelines en bord de Seine, entre Meulan et Triel-sur-Seine. Cadre verdoyant prisé, tissu de TPE artisans et commerçants, PME de services, professions libérales, immobilier et activités liées au fleuve. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit sur place sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Vaux-sur-Seine est une commune résidentielle des Yvelines en bord de Seine, entre Meulan-en-Yvelines et Triel-sur-Seine. Cadre verdoyant et calme prisé des familles. Tissu économique : TPE artisans bâtiment, commerces de proximité, PME de services, professions libérales, immobilier. Communes voisines : Meulan-en-Yvelines, Évecquemont, Triel-sur-Seine, Hardricourt.",
@@ -30,8 +30,8 @@ export const VAUX_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaux-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, professions libérales et agences immobilières des bords de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vaux-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, professions libérales et agences immobilières des bords de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vaux-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, professions libérales et agences immobilières des bords de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vaux-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, professions libérales et agences immobilières des bords de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaux-sur-Seine : formats adaptés au commerce, à l'atelier ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VAUX_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Vaux-sur-Seine  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Vaux-sur-Seine démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Vaux-sur-Seine démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants à Vaux-sur-Seine ?",

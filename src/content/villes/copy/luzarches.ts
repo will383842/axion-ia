@@ -9,9 +9,9 @@ export const LUZARCHES_COPY: VilleCopy = {
   pitchEn:
     "Luzarches (95), bourg historique du Pays de France au nord du Val-d'Oise, conjugue patrimoine médiéval et tissu économique local dynamique. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Luzarches est un bourg historique du Pays de France, au nord du Val-d'Oise, réputé pour son patrimoine médiéval et son marché. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture.",
@@ -30,8 +30,8 @@ export const LUZARCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luzarches : formats adaptés boutique, cabinet, restaurant, bureau PME, entreprise BTP. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const LUZARCHES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et prestataires BTP ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {
       q: "Comment se passe une mission depuis Chantilly ou Paris ?",

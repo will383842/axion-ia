@@ -30,8 +30,8 @@ export const LINSELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Linselles : formats adaptés à la PME textile, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const LINSELLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Linselles  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord de l'agglo lilloise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, B2B transfrontalier, commerce, artisanat, agriculture). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord de l'agglo lilloise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, B2B transfrontalier, commerce, artisanat, agriculture). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME B2B transfrontalières franco-belges ?",

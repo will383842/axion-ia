@@ -30,8 +30,8 @@ export const JONAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jonage : formats adaptés au bureau, atelier, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const JONAGE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, pour les TPE artisans BTP et commerçants à Jonage, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Oui, pour les TPE artisans BTP et commerçants à Jonage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

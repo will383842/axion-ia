@@ -9,9 +9,9 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
   pitchEn:
     "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, TPE artisans, PME services, commerçants et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit sur place sur mesure.",
   seoHook: "tourisme patrimoine & hôtellerie restauration",
   ecosystemFr:
     "Fontainebleau est une ville à rayonnement international grâce à son château classé au patrimoine mondial UNESCO et sa forêt domaniale de 25 000 hectares. L'INSEAD, l'une des premières business schools mondiales, et le campus Mines ParisTech y attirent cadres et entrepreneurs internationaux. Tissu TPE artisans, PME hôtellerie-restauration haut de gamme, tourisme, commerces centre-ville, professions libérales. Communes voisines : Avon, Samois-sur-Seine, Thomery, Bourron-Marlotte.",
@@ -30,8 +30,8 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, TPE artisans, PME services et professions libérales bellifontaines. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, TPE artisans, PME services et professions libérales bellifontaines. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, TPE artisans, PME services et professions libérales bellifontaines. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontainebleau : diagnostic adapté aux acteurs du tourisme international (château UNESCO), hôtellerie haut de gamme, TPE artisans, PME services et professions libérales bellifontaines. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontainebleau : formats adaptés à l'hôtel, au restaurant, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Fontainebleau ?",
-      a: "L'Audit Flash IA à Fontainebleau démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Fontainebleau démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme à Fontainebleau ?",

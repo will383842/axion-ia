@@ -9,9 +9,9 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
   pitchEn:
     "Oberhausbergen (67), commune de l''Eurométropole de Strasbourg en Alsace située à l''ouest de l''agglomération, conjugue activités économiques structurées (zones d''activités, sous-traitance industrielle, services aux entreprises), tissu commercial dynamique et cadre résidentiel périurbain. Tissu de TPE/PME services aux entreprises, sous-traitance industrielle, BTP, commerce, restauration et logistique. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Oberhausbergen (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires de services aux entreprises, artisans BTP, commerçants, restaurateurs et logisticiens de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Oberhausbergen (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires de services aux entreprises, artisans BTP, commerçants, restaurateurs et logisticiens de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Oberhausbergen (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires de services aux entreprises, artisans BTP, commerçants, restaurateurs et logisticiens de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Oberhausbergen (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires de services aux entreprises, artisans BTP, commerçants, restaurateurs et logisticiens de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
   seoHook: "services aux & artisanat second",
   ecosystemFr:
     "Oberhausbergen est une commune de l''Eurométropole de Strasbourg, située à l''ouest de l''agglomération sur les hauteurs de Hausbergen. La commune accueille plusieurs zones d''activités économiques (artisanat, sous-traitance industrielle, services), des commerces et restaurants, ainsi qu''un tissu résidentiel périurbain dense. L''économie locale repose sur les services aux entreprises strasbourgeoises, la sous-traitance industrielle, l''artisanat BTP, le commerce de proximité, la restauration et la logistique de proximité.",
@@ -30,8 +30,8 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oberhausbergen : formats adaptés à l''atelier industriel, au prestataire de services, au commerce ou à la TPE BTP. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Oberhausbergen ?",
-      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d''Oberhausbergen et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, BTP, commerciale ou de services.",
+      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d''Oberhausbergen et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité industrielle, BTP, commerciale ou de services.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels d''Oberhausbergen ?",

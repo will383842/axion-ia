@@ -30,8 +30,8 @@ export const PONTARLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pontarlier : ateliers dans vos locaux usine, atelier bois, commerce ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention agroalimentaire, artisanat et services transfrontaliers.",
@@ -61,7 +61,7 @@ export const PONTARLIER_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE artisans bois et commerces de Pontarlier ?",
-      a: "Pour les TPE artisans bois du Jura et commerces de Pontarlier, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : optimisation découpe, gestion stocks, automatisation devis.",
+      a: "Pour les TPE artisans bois du Jura et commerces de Pontarlier, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : optimisation découpe, gestion stocks, automatisation devis.",
     },
     {
       q: "Comment se déroule une mission à Pontarlier ?",

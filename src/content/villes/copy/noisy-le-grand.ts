@@ -30,8 +30,8 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noisy-le-Grand : diagnostic adapté aux indépendants, professions libérales et commerçants, puis aux PME tertiaires et agences informatiques du Mont d'Est. ROI quantifié, audit Flash 4h.",
-      en: "Audit IA à Noisy-le-Grand : diagnostic adapté aux indépendants, professions libérales et commerçants, puis aux PME tertiaires et agences informatiques du Mont d'Est. ROI quantifié, audit Flash 4h.",
+      fr: "Audit IA à Noisy-le-Grand : diagnostic adapté aux indépendants, professions libérales et commerçants, puis aux PME tertiaires et agences informatiques du Mont d'Est. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA à Noisy-le-Grand : diagnostic adapté aux indépendants, professions libérales et commerçants, puis aux PME tertiaires et agences informatiques du Mont d'Est. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noisy-le-Grand : formats adaptés au bureau du Mont d'Est, au cabinet ou au commerce. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -65,7 +65,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE, indépendants et professions libérales ?",
-      a: "Oui, les TPE sont notre priorité : indépendants, professions libérales, commerçants. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation administrative et relation client.",
+      a: "Oui, les TPE sont notre priorité : indépendants, professions libérales, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation administrative et relation client.",
     },
     {
       q: "Comment se déroule une mission à Noisy-le-Grand ?",

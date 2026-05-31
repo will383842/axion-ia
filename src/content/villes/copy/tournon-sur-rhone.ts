@@ -30,8 +30,8 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tournon-sur-Rhône : formats adaptés au domaine viticole, site oenotouristique, administration, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

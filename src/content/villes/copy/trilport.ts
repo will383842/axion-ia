@@ -30,8 +30,8 @@ export const TRILPORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trilport : diagnostic adapté aux TPE artisans, commerçants de proximité, professions libérales et PME du bassin de Meaux. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
-      en: "Audit IA à Trilport : diagnostic adapté aux TPE artisans, commerçants de proximité, professions libérales et PME du bassin de Meaux. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      fr: "Audit IA à Trilport : diagnostic adapté aux TPE artisans, commerçants de proximité, professions libérales et PME du bassin de Meaux. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      en: "Audit IA à Trilport : diagnostic adapté aux TPE artisans, commerçants de proximité, professions libérales et PME du bassin de Meaux. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trilport : formats adaptés aux commerces, ateliers artisans, cabinets et PME tertiaires. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -53,7 +53,7 @@ export const TRILPORT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Trilport ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux TPE artisans, commerçants et professions libérales de Trilport. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux TPE artisans, commerçants et professions libérales de Trilport. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Trilport ?",
@@ -65,7 +65,7 @@ export const TRILPORT_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerces et professions libérales à Trilport ?",
-      a: "Pour les commerces et professions libérales de Trilport, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation gestion RDV, transcription consultations, CRM augmentés.",
+      a: "Pour les commerces et professions libérales de Trilport, nous proposons Audit sur place {{price:audit-flash|flat}}, intervention formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation gestion RDV, transcription consultations, CRM augmentés.",
     },
   ],
 };

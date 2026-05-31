@@ -30,8 +30,8 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Behren-lès-Forbach : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
@@ -53,11 +53,11 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières vers la Sarre ?",
-      a: "Oui, nombreux entrepreneurs et salariés frontaliers à Behren-lès-Forbach travaillant avec la Sarre : automatisation administrative transfrontalière, gestion bilingue FR/DE, conformité, outils collaboratifs. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nombreux entrepreneurs et salariés frontaliers à Behren-lès-Forbach travaillant avec la Sarre : automatisation administrative transfrontalière, gestion bilingue FR/DE, conformité, outils collaboratifs. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Behren-lès-Forbach ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans ?",

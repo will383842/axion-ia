@@ -9,9 +9,9 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
   pitchEn:
     "Saint-Florent-sur-Cher (18), commune de la vallée du Cher au sud de Bourges, possède un tissu industriel historique et tertiaire. TPE artisans, PME industrielles, commerces, agriculture céréalière, services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Florent-sur-Cher (18). Nous accompagnons TPE artisans, PME industrielles, commerçants, exploitants agricoles et toutes les activités de la vallée du Cher au sud de Bourges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Florent-sur-Cher (18). Nous accompagnons TPE artisans, PME industrielles, commerçants, exploitants agricoles et toutes les activités de la vallée du Cher au sud de Bourges. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Florent-sur-Cher (18). Nous accompagnons TPE artisans, PME industrielles, commerçants, exploitants agricoles et toutes les activités de la vallée du Cher au sud de Bourges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Florent-sur-Cher (18). Nous accompagnons TPE artisans, PME industrielles, commerçants, exploitants agricoles et toutes les activités de la vallée du Cher au sud de Bourges. Audit sur place sur mesure.",
   seoHook: "industrie métallurgie & tertiaires services",
   ecosystemFr:
     "Saint-Florent-sur-Cher est une commune industrielle et résidentielle de la vallée du Cher, au sud de Bourges. Tissu de TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, agriculture céréalière, services aux entreprises. Intégrée à Bourges Plus.",
@@ -30,8 +30,8 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Florent-sur-Cher : formats adaptés aux industriels, artisans, commerçants, exploitants agricoles. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans locaux ?",
-      a: "Pour les TPE artisans à Saint-Florent-sur-Cher : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks, facturation.",
+      a: "Pour les TPE artisans à Saint-Florent-sur-Cher : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks, facturation.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles ?",

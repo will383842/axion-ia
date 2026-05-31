@@ -9,9 +9,9 @@ export const MAGNANVILLE_COPY: VilleCopy = {
   pitchEn:
     "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit sur place sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Magnanville est une commune résidentielle intégrée à l'agglomération de Mantes-la-Jolie, dans le nord-ouest des Yvelines. Cadre pavillonnaire avec commerces de proximité et services de voisinage. Tissu économique : TPE artisans bâtiment, commerces de quartier, PME tertiaires, professions libérales et services à la personne. Communes voisines : Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Rosny-sur-Seine.",
@@ -30,8 +30,8 @@ export const MAGNANVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magnanville : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Magnanville : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Magnanville : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Magnanville : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magnanville : formats adaptés au commerce, à l'atelier ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const MAGNANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Magnanville  ?",
-      a: "L'Audit Flash IA à Magnanville démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Magnanville démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces à Magnanville ?",

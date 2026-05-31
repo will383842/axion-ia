@@ -10,9 +10,9 @@ export const DOURGES_COPY: VilleCopy = {
     "Dourges (62), commune du Pas-de-Calais, reunit pres de 6 140 habitants. Connue pour sa plateforme multimodale Delta 3 (route-rail-voie d'eau), son economie associe PME logistiques, TPE de services, artisanat et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "plateforme Delta 3, logistique & multimodal",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dourges (62). Nous accompagnons les TPE, PME et ETI de cette commune logistique : operateurs Delta 3, transporteurs, artisans, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Dourges est connue pour Delta 3, plus grande plateforme trimodale du nord de la France (route, rail, voie d'eau). Tissu economique oriente logistique et transport : PME de fret, entreposage, distribution. Egalement TPE de services, artisanat et commerces de proximite.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DOURGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Dourges : diagnostic adapte aux PME logistiques Delta 3, transporteurs, TPE de services et artisans du bassin Henin-Lens. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Dourges : diagnostic adapte aux PME logistiques Delta 3, transporteurs, TPE de services et artisans du bassin Henin-Lens. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Dourges : diagnostic adapte aux PME logistiques Delta 3, transporteurs, TPE de services et artisans du bassin Henin-Lens. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Dourges : diagnostic adapte aux PME logistiques Delta 3, transporteurs, TPE de services et artisans du bassin Henin-Lens. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Dourges : formations adaptees aux entrepots Delta 3, bureaux logistiques, ateliers artisanaux et commerces. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const DOURGES_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME logistiques de Dourges ?",
-      a: "Pour les PME logistiques de Delta 3, nous proposons : optimisation flux trimodaux, IA predictive stocks, automatisation documents transport, agents conversationnels fret. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les PME logistiques de Delta 3, nous proposons : optimisation flux trimodaux, IA predictive stocks, automatisation documents transport, agents conversationnels fret. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Dourges ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle optimiser la logistique multimodale a Dourges ?",

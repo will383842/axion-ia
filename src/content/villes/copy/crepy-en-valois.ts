@@ -9,9 +9,9 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
   pitchEn:
     "Crépy-en-Valois (60), sous-préfecture de l'Oise au cœur du Valois, territoire de patrimoine médiéval et de dynamisme économique entre Senlis et Villers-Cotterêts. Tissu TPE/PME artisanat, commerce de proximité, BTP, logistique, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit sur place sur mesure.",
   ecosystemFr:
     "Crépy-en-Valois est une sous-préfecture de l'Oise nichée dans le Valois historique, entre Senlis et Villers-Cotterêts. Tissu économique diversifié : artisanat, commerces de centre-ville, BTP, logistique liée à l'axe A1, professions libérales et services. Patrimoine médiéval (musée de l'Archerie, donjon) et tourisme vert soutiennent l'activité locale.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crépy-en-Valois : formats adaptés au commerce, à l'artisanat, au BTP et aux services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Crépy-en-Valois ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants du Valois ?",

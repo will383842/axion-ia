@@ -30,8 +30,8 @@ export const SERIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sérignan : diagnostic pour TPE commerçants, PME viticoles, acteurs tourisme littoral et hôtellerie-restauration du bassin biterrois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Sérignan : diagnostic pour TPE commerçants, PME viticoles, acteurs tourisme littoral et hôtellerie-restauration du bassin biterrois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Sérignan : diagnostic pour TPE commerçants, PME viticoles, acteurs tourisme littoral et hôtellerie-restauration du bassin biterrois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sérignan : diagnostic pour TPE commerçants, PME viticoles, acteurs tourisme littoral et hôtellerie-restauration du bassin biterrois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sérignan : ateliers adaptés domaine viticole, camping, restaurant ou commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SERIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les domaines viticoles ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client, classification avis, prédiction vendanges. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client, classification avis, prédiction vendanges. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services IA pour les campings et l'hôtellerie littoral ?",
@@ -61,11 +61,11 @@ export const SERIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerces saisonniers ?",
-      a: "Oui, pour les TPE et commerces saisonniers à Sérignan, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, agents IA prise de RDV, gestion stocks saisonniers.",
+      a: "Oui, pour les TPE et commerces saisonniers à Sérignan, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, agents IA prise de RDV, gestion stocks saisonniers.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Sérignan ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

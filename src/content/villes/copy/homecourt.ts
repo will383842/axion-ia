@@ -9,9 +9,9 @@ export const HOMECOURT_COPY: VilleCopy = {
   pitchEn:
     "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit sur place sur mesure.",
   seoHook: "industrie métallurgie & artisanat second",
   ecosystemFr:
     "Homécourt est située dans la vallée de l'Orne, au cœur du Pays Haut lorrain, ancien bassin sidérurgique reconverti. Située à 25 km de la frontière luxembourgeoise, la ville bénéficie de l'attractivité transfrontalière (travailleurs frontaliers, sous-traitance industrielle). L'économie locale repose sur l'industrie reconvertie, l'artisanat BTP, le commerce de proximité, les services et l'activité frontalière. Intégration à la Communauté de communes Orne Lorraine Confluences.",
@@ -30,8 +30,8 @@ export const HOMECOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Homécourt : diagnostic adapté aux industriels reconvertis, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Homécourt : diagnostic adapté aux industriels reconvertis, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Homécourt : diagnostic adapté aux industriels reconvertis, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Homécourt : diagnostic adapté aux industriels reconvertis, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Homécourt : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const HOMECOURT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Homécourt  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Homécourt et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Homécourt et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants du Pays Haut ?",

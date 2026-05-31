@@ -30,8 +30,8 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aulnoye-Aymeries : diagnostic adapté aux TPE et PME de l'industrie métallurgique sambrienne, artisans, commerçants, logisticiens ferroviaires et prestataires de services de l'Avesnois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aulnoye-Aymeries : diagnostic adapté aux TPE et PME de l'industrie métallurgique sambrienne, artisans, commerçants, logisticiens ferroviaires et prestataires de services de l'Avesnois. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aulnoye-Aymeries : diagnostic adapté aux TPE et PME de l'industrie métallurgique sambrienne, artisans, commerçants, logisticiens ferroviaires et prestataires de services de l'Avesnois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aulnoye-Aymeries : diagnostic adapté aux TPE et PME de l'industrie métallurgique sambrienne, artisans, commerçants, logisticiens ferroviaires et prestataires de services de l'Avesnois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aulnoye-Aymeries : formats adaptés à l'industriel métallurgique, à l'artisan, au commerçant ou au logisticien ferroviaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Aulnoye-Aymeries  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de la Sambre et de l'Avesnois, il identifie les cas d'usage IA à fort ROI pour votre activité (métallurgie, mécanique, artisanat, commerce, logistique). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de la Sambre et de l'Avesnois, il identifie les cas d'usage IA à fort ROI pour votre activité (métallurgie, mécanique, artisanat, commerce, logistique). Tarifs publics, sans engagement.",
     },
     {
       q: "L'IA est-elle adaptée aux PME en reconversion industrielle ?",

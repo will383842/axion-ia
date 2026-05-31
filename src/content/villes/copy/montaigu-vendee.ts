@@ -11,9 +11,9 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Montaigu-Vendée (85600, Vendée, 21 134 habitants en 2023), commune nouvelle créée le 1er janvier 2019 par la fusion de Boufféré, La Guyonnière, Montaigu, Saint-Georges-de-Montaigu et Saint-Hilaire-de-Loulay. Pôle agroalimentaire et industriel majeur de Vendée, le territoire concentre des entreprises emblématiques : Sodebo (plus de 2 000 salariés), Haworth France (mobilier de bureau), Microcar (véhicules électriques à Boufféré), la Laiterie de Montaigu et le siège transport national DB Schenker.",
   directAnswerFr:
-    "Axion-IA se déplace à Montaigu-Vendée pour accompagner les TPE, PME et plus ponctuellement ETI agroalimentaires, industrielles et tertiaires. Nos consultants arrivent par la gare de Montaigu (ligne Nantes-Bordeaux) ou par l'A83 (sortie 4 à Boufféré). Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous priorisons les sous-traitants et fournisseurs des grands employeurs locaux : Sodebo, Haworth France, Microcar, Laiterie de Montaigu, DB Schenker. Tous nos livrables sont en code custom, conformes RGPD et documentés pour l'audit CNIL.",
+    "Axion-IA se déplace à Montaigu-Vendée pour accompagner les TPE, PME et plus ponctuellement ETI agroalimentaires, industrielles et tertiaires. Nos consultants arrivent par la gare de Montaigu (ligne Nantes-Bordeaux) ou par l'A83 (sortie 4 à Boufféré). Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous priorisons les sous-traitants et fournisseurs des grands employeurs locaux : Sodebo, Haworth France, Microcar, Laiterie de Montaigu, DB Schenker. Tous nos livrables sont en code custom, conformes RGPD et documentés pour l'audit CNIL.",
   directAnswerEn:
-    "Axion-IA se déplace à Montaigu-Vendée pour accompagner les TPE, PME et plus ponctuellement ETI agroalimentaires, industrielles et tertiaires. Nos consultants arrivent par la gare de Montaigu (ligne Nantes-Bordeaux) ou par l'A83 (sortie 4 à Boufféré). Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous priorisons les sous-traitants et fournisseurs des grands employeurs locaux : Sodebo, Haworth France, Microcar, Laiterie de Montaigu, DB Schenker. Tous nos livrables sont en code custom, conformes RGPD et documentés pour l'audit CNIL.",
+    "Axion-IA se déplace à Montaigu-Vendée pour accompagner les TPE, PME et plus ponctuellement ETI agroalimentaires, industrielles et tertiaires. Nos consultants arrivent par la gare de Montaigu (ligne Nantes-Bordeaux) ou par l'A83 (sortie 4 à Boufféré). Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous priorisons les sous-traitants et fournisseurs des grands employeurs locaux : Sodebo, Haworth France, Microcar, Laiterie de Montaigu, DB Schenker. Tous nos livrables sont en code custom, conformes RGPD et documentés pour l'audit CNIL.",
   seoHook: "agroalimentaire & industrie Vendée",
   ecosystemFr:
     "Montaigu-Vendée est un pôle économique majeur du nord Vendée, structuré autour de l'agroalimentaire (Sodebo, Laiterie de Montaigu), du mobilier (Haworth France), de la mobilité électrique (Microcar à Boufféré) et du transport-logistique (siège national DB Schenker). La commune nouvelle bénéficie de sa position sur l'A83 (sortie 4 Boufféré) reliant Nantes à Bordeaux, et d'une gare TGV Paris-Montparnasse en environ 2h30. Le tissu local est dominé par les TPE et PME sous-traitantes des grands donneurs d'ordres agroalimentaires et industriels, ainsi que par les commerces de détail et les services aux entreprises.",
@@ -32,8 +32,8 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Montaigu-Vendée pour les TPE/PME agroalimentaires sous-traitantes de Sodebo, Laiterie de Montaigu ou Haworth, dès {{price:audit-flash|flat}}.",
-      en: "Audit Flash à Montaigu-Vendée pour les TPE/PME agroalimentaires sous-traitantes de Sodebo, Laiterie de Montaigu ou Haworth, dès {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Montaigu-Vendée pour les TPE/PME agroalimentaires sous-traitantes de Sodebo, Laiterie de Montaigu ou Haworth, dès {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Montaigu-Vendée pour les TPE/PME agroalimentaires sous-traitantes de Sodebo, Laiterie de Montaigu ou Haworth, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention Essentielle à Montaigu-Vendée pour automatiser bons de livraison, traçabilité et facturation des PME industrielles, dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Montaigu-Vendée (85600) ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Tarifs publics fixes, sans engagement.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Tarifs publics fixes, sans engagement.",
     },
     {
       q: "Quels délais pour une intervention à Montaigu-Vendée ?",

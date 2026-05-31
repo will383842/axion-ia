@@ -30,8 +30,8 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loriol-sur-Drôme : formats adaptés à l'entrepôt, atelier industriel, exploitation arboricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans loriolaises ?",
-      a: "Pour les TPE artisans BTP et commerçants à Loriol-sur-Drôme, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Loriol-sur-Drôme, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

@@ -117,7 +117,7 @@ export const REIMS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, artisans, viticulteurs, petits négoces ou prestataires de services du Grand Reims jusqu'à une dizaine de collaborateurs.",
           },
@@ -157,7 +157,7 @@ export const REIMS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Reims ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est calé lors du brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est calé lors du brief de cadrage initial.",
           },
           {
             q: "Quels secteurs rémois sont prioritaires pour un audit IA ?",
@@ -938,7 +938,7 @@ export const REIMS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Reims ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Reims qu'à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Reims qu'à Paris.",
     },
     {
       q: "Axion-IA intervient-il auprès des maisons de Champagne ?",

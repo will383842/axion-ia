@@ -9,9 +9,9 @@ export const VILLENEUVE_LES_AVIGNON_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-lès-Avignon (30), cité résidentielle face à Avignon sur la rive droite du Rhône, dotée d'un patrimoine remarquable (chartreuse, fort Saint-André). Tissu TPE/PME services aux entreprises, professions libérales, commerces, artisanat et tourisme culturel. Axion-IA y intervient pour tous types d'activités du Grand Avignon gardois.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit sur place sur mesure.",
   seoHook: "professions libérales & tourisme culturel",
   ecosystemFr:
     "Villeneuve-lès-Avignon (~13 100 hab) est une commune résidentielle premium face au palais des Papes d'Avignon. Services aux entreprises, professions libérales (santé, droit, conseil), commerces, artisanat, tourisme culturel (chartreuse, fort Saint-André, festival d'Avignon). Proximité immédiate du bassin d'emploi Grand Avignon.",
@@ -30,8 +30,8 @@ export const VILLENEUVE_LES_AVIGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-lès-Avignon : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et acteurs touristiques du Grand Avignon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villeneuve-lès-Avignon : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et acteurs touristiques du Grand Avignon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villeneuve-lès-Avignon : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et acteurs touristiques du Grand Avignon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-lès-Avignon : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et acteurs touristiques du Grand Avignon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-lès-Avignon : formats adaptés aux cabinets, entreprises de services, commerces et structures touristiques Grand Avignon.",
@@ -53,7 +53,7 @@ export const VILLENEUVE_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villeneuve-lès-Avignon  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

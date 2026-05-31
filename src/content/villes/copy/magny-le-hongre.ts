@@ -9,9 +9,9 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
   pitchEn:
     "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Magny-le-Hongre est une commune du Val d'Europe en Seine-et-Marne, à proximité immédiate de Disneyland Paris. Son tissu économique est porté par le tourisme, l'hôtellerie, la restauration, le commerce et les prestataires événementiels. Proximité avec Serris, Chessy, Bailly-Romainvilliers et Bussy-Saint-Georges.",
@@ -30,8 +30,8 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Magny-le-Hongre : diagnostic adapté aux TPE et PME hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magny-le-Hongre : formats adaptés hôtel, restaurant, commerce ou bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier tourisme et services.",
@@ -53,7 +53,7 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Magny-le-Hongre ?",
-      a: "L'Audit Flash IA à Magny-le-Hongre démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Magny-le-Hongre démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants du Val d'Europe ?",

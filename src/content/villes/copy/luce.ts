@@ -30,8 +30,8 @@ export const LUCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lucé : formats adaptés au bureau tertiaire, enseigne commerciale, entrepôt logistique. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const LUCE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et PME logistique ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Optimisation tournées, classification colis, prévision demande.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Optimisation tournées, classification colis, prévision demande.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

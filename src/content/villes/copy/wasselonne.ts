@@ -9,9 +9,9 @@ export const WASSELONNE_COPY: VilleCopy = {
   pitchEn:
     "Wasselonne (67), commune du piémont des Vosges en Alsace à l''ouest de Strasbourg, célèbre pour ses marchés hebdomadaires et sa foire-kermesse traditionnelle, conjugue patrimoine alsacien (château, vieille ville), économie de marché rural et tissu artisanal et commercial dynamique. Tissu de TPE/PME commerce de proximité, artisanat, agriculture, viticulture, hôtellerie-restauration, services aux entreprises et industrie locale. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Wasselonne (67). Nous accompagnons TPE et PME : commerçants de marchés, artisans, viticulteurs, exploitants agricoles, restaurateurs et prestataires de services du piémont des Vosges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Wasselonne (67). Nous accompagnons TPE et PME : commerçants de marchés, artisans, viticulteurs, exploitants agricoles, restaurateurs et prestataires de services du piémont des Vosges. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Wasselonne (67). Nous accompagnons TPE et PME : commerçants de marchés, artisans, viticulteurs, exploitants agricoles, restaurateurs et prestataires de services du piémont des Vosges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Wasselonne (67). Nous accompagnons TPE et PME : commerçants de marchés, artisans, viticulteurs, exploitants agricoles, restaurateurs et prestataires de services du piémont des Vosges. Audit sur place sur mesure.",
   seoHook: "commerce marchés & artisanat alsacien",
   ecosystemFr:
     "Wasselonne est un chef-lieu de canton du Bas-Rhin, située dans le piémont des Vosges entre Strasbourg et Saverne. La ville est réputée pour ses marchés hebdomadaires (lundi), sa foire-kermesse annuelle d''août et son patrimoine alsacien (vestiges du château, vieille ville, église). L''économie locale repose sur le commerce de marché et de proximité, l''artisanat alsacien, la viticulture (porte de la route des vins), l''agriculture, l''hôtellerie-restauration, les services aux entreprises et l''industrie locale (mobilier, textile).",
@@ -30,8 +30,8 @@ export const WASSELONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wasselonne : diagnostic adapté aux commerçants de marchés, artisans alsaciens, viticulteurs, exploitants agricoles, restaurateurs et TPE/PME du piémont des Vosges et du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Wasselonne : diagnostic adapté aux commerçants de marchés, artisans alsaciens, viticulteurs, exploitants agricoles, restaurateurs et TPE/PME du piémont des Vosges et du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Wasselonne : diagnostic adapté aux commerçants de marchés, artisans alsaciens, viticulteurs, exploitants agricoles, restaurateurs et TPE/PME du piémont des Vosges et du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Wasselonne : diagnostic adapté aux commerçants de marchés, artisans alsaciens, viticulteurs, exploitants agricoles, restaurateurs et TPE/PME du piémont des Vosges et du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wasselonne : formats adaptés au commerce de marché, à l''atelier artisanal, au domaine viticole, à l''exploitation agricole ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const WASSELONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Wasselonne ?",
-      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wasselonne et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité commerciale, artisanale, viticole, agricole ou de services.",
+      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wasselonne et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité commerciale, artisanale, viticole, agricole ou de services.",
     },
     {
       q: "Accompagnez-vous les commerçants de marchés et artisans de Wasselonne ?",

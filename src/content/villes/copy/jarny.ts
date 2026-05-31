@@ -30,8 +30,8 @@ export const JARNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jarny : formats adaptés à l'atelier industriel, à l'entrepôt logistique, au chantier BTP ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const JARNY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerçants de Jarny ?",
-      a: "Oui, nous accompagnons les artisans BTP et commerçants sur des cas IA pratiques : automatisation devis, gestion planning chantier, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP et commerçants sur des cas IA pratiques : automatisation devis, gestion planning chantier, agents IA prise de RDV, gestion stocks, facturation automatique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Jarny  ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Jarny et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Jarny et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Jarny ?",

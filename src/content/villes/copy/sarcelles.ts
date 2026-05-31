@@ -13,9 +13,9 @@ export const SARCELLES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Sarcelles (59 173 habitants, Val-d'Oise) dans l'adoption concrète de l'IA. Chef-lieu d'arrondissement à 15 km au nord de Paris, la commune combine commerces de proximité, services aux entreprises, santé, action sociale et enseignement, avec une densité élevée de 7 003 hab/km². Nous intervenons sur site, en code custom, pour automatiser devis, relances, gestion administrative et reporting. Notre approche s'adapte aussi aux ETI du nord francilien.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit Flash 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Sarcelles (chef-lieu d'arrondissement du Val-d'Oise) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi dossiers patients, gestion planning enseignement, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "commerce détail & services à la population",
   ecosystemFr:
     "Chef-lieu d'arrondissement du Val-d'Oise depuis 2000, Sarcelles dispose d'un tissu économique dense lié à sa population : commerces de proximité, restauration, santé humaine, action sociale, enseignement et services administratifs. L'urbanisation autour du grand ensemble construit entre 1955 et 1970 structure encore l'organisation économique de la commune. Deux gares (Sarcelles-Saint-Brice et Garges-Sarcelles) et le tramway T5 depuis 2013 ouvrent le bassin d'emploi vers Paris et Roissy.",
@@ -35,8 +35,8 @@ export const SARCELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4 h à Sarcelles dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté commerce, santé, enseignement ou services, livré sous 5 jours ouvrés.",
-      en: "Audit Flash 4 h à Sarcelles dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté commerce, santé, enseignement ou services, livré sous 5 jours ouvrés.",
+      fr: "Audit sur place 4 h à Sarcelles dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté commerce, santé, enseignement ou services, livré sous 5 jours ouvrés.",
+      en: "Audit sur place 4 h à Sarcelles dès {{price:audit-flash|flat}} : cartographie des processus automatisables côté commerce, santé, enseignement ou services, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Formation 4 h dès {{price:intervention-4h|flat}} à Sarcelles pour automatiser devis, relances clients et suivi administratif — code custom, pas de no-code.",
@@ -54,11 +54,11 @@ export const SARCELLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Sarcelles ?",
-      a: "À Sarcelles, l'Audit Flash 4 h démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Les implémentations et sessions 1-to-1 commencent à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et sans engagement.",
+      a: "À Sarcelles, l'Audit sur place 4 h démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Les implémentations et sessions 1-to-1 commencent à {{price:intervention-dirigeants|flat}}. Tous nos tarifs sont publics et sans engagement.",
     },
     {
       q: "Sous quel délai Axion-IA intervient à Sarcelles ?",
-      a: "Pour les TPE et PME de Sarcelles, l'Audit Flash est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les TPE et PME de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Les Interventions Essentielles sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt depuis Sarcelles ?",

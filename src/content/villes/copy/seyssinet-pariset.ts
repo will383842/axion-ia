@@ -30,8 +30,8 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux indépendants.",
-      en: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux indépendants.",
+      fr: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux indépendants.",
+      en: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux indépendants.",
     },
     interventions: {
       fr: "Interventions IA sur site à Seyssinet-Pariset : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans seyssinardes ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Seyssinet-Pariset (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Seyssinet-Pariset (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerces et tourisme Vercors ?",
-      a: "Pour les commerces de proximité et acteurs du tourisme Vercors à Seyssinet-Pariset, nous proposons audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation réservations, classification photos produits, gestion saisonnalité.",
+      a: "Pour les commerces de proximité et acteurs du tourisme Vercors à Seyssinet-Pariset, nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation réservations, classification photos produits, gestion saisonnalité.",
     },
     {
       q: "Comment se déroule une mission depuis Grenoble ou Lyon ?",

@@ -9,9 +9,9 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
   pitchEn:
     "Caumont-sur-Durance (84), commune des bords de Durance au sud d'Avignon, compte près de 5 667 habitants. Agglomération du Grand Avignon, agriculture maraîchère et fruitière, tissu de TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchage & artisanat",
   ecosystemFr:
     "Caumont-sur-Durance est positionnée sur les bords de Durance au sud d'Avignon, dans l'agglomération du Grand Avignon. Agriculture maraîchère et fruitière de la plaine, zones d'activités tournées vers Avignon. Tissu de TPE artisans, PME services, commerces, professions libérales. Avignon centre à 15 min, Cavaillon à 15 min.",
@@ -30,8 +30,8 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Caumont-sur-Durance : formats adaptés aux exploitations agricoles, PME services, artisans, professions libérales et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les exploitations agricoles autour de la Durance ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture plaine de la Durance : traçabilité parcellaire, gestion récoltes, optimisation circuits courts, fiches Google Business et commercialisation B2B.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture plaine de la Durance : traçabilité parcellaire, gestion récoltes, optimisation circuits courts, fiches Google Business et commercialisation B2B.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et professions libérales de Caumont ?",
@@ -61,7 +61,7 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Caumont-sur-Durance  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Caumont-sur-Durance ?",

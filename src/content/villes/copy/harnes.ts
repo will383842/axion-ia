@@ -30,8 +30,8 @@ export const HARNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Harnes : formats adaptés à l'atelier BTP, à l'entrepôt logistique, au commerce, au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const HARNES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Harnes sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Harnes sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les PME logistique et industrie reconvertie ?",
@@ -61,7 +61,7 @@ export const HARNES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et prestataires tertiaires ?",
-      a: "Pour les commerçants et prestataires tertiaires à Harnes, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation marketing local, CRM augmenté.",
+      a: "Pour les commerçants et prestataires tertiaires à Harnes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation marketing local, CRM augmenté.",
     },
     {
       q: "Comment se passe une mission à Harnes depuis Lille ?",

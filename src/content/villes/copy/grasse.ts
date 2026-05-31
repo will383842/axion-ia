@@ -10,9 +10,9 @@ export const GRASSE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Grasse, sous-préfecture des Alpes-Maritimes de 50 970 habitants. Notre cabinet conçoit du code IA sur mesure pour les artisans parfumeurs, les maisons indépendantes de la filière fragrance, les commerces du centre historique et les acteurs touristiques de la ville d'Art et d'Histoire. En complément, nos interventions couvrent les ETI locales du commerce de gros et de l'industrie chimique.",
   directAnswerFr:
-    "Axion-IA se déplace à Grasse, capitale mondiale du parfum depuis le XVIIe siècle, pour automatiser les processus métier des TPE et PME locales : gestion des stocks de matières premières, suivi commercial, facturation, reporting réglementaire. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux artisans parfumeurs, aux hôtels-restaurants du centre et aux PME de la filière chimique-arômes. Audit Flash 4h à {{price:intervention-4h|flat}}. Les ETI sont également couvertes.",
+    "Axion-IA se déplace à Grasse, capitale mondiale du parfum depuis le XVIIe siècle, pour automatiser les processus métier des TPE et PME locales : gestion des stocks de matières premières, suivi commercial, facturation, reporting réglementaire. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux artisans parfumeurs, aux hôtels-restaurants du centre et aux PME de la filière chimique-arômes. Audit sur place 4h à {{price:intervention-4h|flat}}. Les ETI sont également couvertes.",
   directAnswerEn:
-    "Axion-IA se déplace à Grasse, capitale mondiale du parfum depuis le XVIIe siècle, pour automatiser les processus métier des TPE et PME locales : gestion des stocks de matières premières, suivi commercial, facturation, reporting réglementaire. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux artisans parfumeurs, aux hôtels-restaurants du centre et aux PME de la filière chimique-arômes. Audit Flash 4h à {{price:intervention-4h|flat}}. Les ETI sont également couvertes.",
+    "Axion-IA se déplace à Grasse, capitale mondiale du parfum depuis le XVIIe siècle, pour automatiser les processus métier des TPE et PME locales : gestion des stocks de matières premières, suivi commercial, facturation, reporting réglementaire. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées aux artisans parfumeurs, aux hôtels-restaurants du centre et aux PME de la filière chimique-arômes. Audit sur place 4h à {{price:intervention-4h|flat}}. Les ETI sont également couvertes.",
   seoHook: "parfumerie, chimie fine & tourisme",
   ecosystemFr:
     "Grasse s'organise autour de la filière parfum (maisons indépendantes comme Molinard ou Charabot), du tourisme patrimonial (label Ville d'Art et d'Histoire, trois fleurs au concours des villes fleuries) et du commerce de proximité. La ville est classée pôle urbain intermédiaire par l'INSEE (2025) et s'intègre à l'aire métropolitaine Cannes-Antibes, ce qui ouvre des débouchés B2B aux PME locales.",
@@ -31,8 +31,8 @@ export const GRASSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Grasse pour les TPE/PME parfumerie, hôtellerie ou commerces du centre — {{price:intervention-4h|flat}}.",
-      en: "Audit Flash 4h sur site à Grasse pour les TPE/PME parfumerie, hôtellerie ou commerces du centre — {{price:intervention-4h|flat}}.",
+      fr: "Audit sur place 4h sur site à Grasse pour les TPE/PME parfumerie, hôtellerie ou commerces du centre — {{price:intervention-4h|flat}}.",
+      en: "Audit sur place 4h sur site à Grasse pour les TPE/PME parfumerie, hôtellerie ou commerces du centre — {{price:intervention-4h|flat}}.",
     },
     interventions: {
       fr: "Interventions Axion-IA à Grasse pour automatiser le suivi commercial, la facturation et le reporting des PME de la filière fragrance.",
@@ -50,7 +50,7 @@ export const GRASSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Grasse ?",
-      a: "L'Audit Flash 4h à Grasse démarre à {{price:intervention-4h|flat}}. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
+      a: "L'Audit sur place 4h à Grasse démarre à {{price:intervention-4h|flat}}. Les interventions et implémentations sont ensuite chiffrées sur devis, selon le périmètre validé après l'audit. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Grasse ?",

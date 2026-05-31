@@ -9,9 +9,9 @@ export const MALLEMORT_COPY: VilleCopy = {
   pitchEn:
     "Mallemort (13), commune de la vallée de la Durance au nord des Alpilles, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE artisans, exploitants agricoles (vergers, maraîchage Durance), commerçants et PME services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchage & arboriculture",
   ecosystemFr:
     "Mallemort est une commune durancienne entre Salon-de-Provence et Cavaillon, au nord du massif des Alpilles. Agriculture irriguée (vergers pommes/poires, maraîchage, cultures sous serres), canal EDF de la Durance. Artisanat BTP, commerces de proximité et résidentiel en croissance (navetteurs Salon/Aix).",
@@ -30,8 +30,8 @@ export const MALLEMORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mallemort : ateliers pratiques pour exploitants agricoles, artisans et commerçants. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const MALLEMORT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un exploitant agricole ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE agricoles, artisans et commerçants mallemortais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE agricoles, artisans et commerçants mallemortais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les arboriculteurs de la Durance ?",

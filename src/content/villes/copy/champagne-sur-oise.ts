@@ -9,9 +9,9 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   pitchEn:
     "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Champagne-sur-Oise est une commune résidentielle du nord du Val-d'Oise, en bord d'Oise à proximité immédiate de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
@@ -30,8 +30,8 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champagne-sur-Oise : formats adaptés boutique, cabinet, restaurant, bureau PME, chantier BTP. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et prestataires BTP ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {
       q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",

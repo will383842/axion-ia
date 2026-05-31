@@ -9,9 +9,9 @@ export const CHATEAUNEUF_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Chateauneuf-sur-Loire (45), commune historique en bords de Loire a l'est d'Orleans, est reputee pour son chateau, son parc aux rhododendrons et son patrimoine ligérien. Tissu TPE/PME tourisme, commerce, artisanat, services, agriculture. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Chateauneuf-sur-Loire est une commune ligerienne historique a l'est d'Orleans, inscrite dans le Val de Loire UNESCO. L'economie locale s'appuie sur le tourisme patrimonial (chateau, parc aux rhododendrons, musee de la Marine de Loire), le commerce, l'artisanat, les services et l'agriculture en plaine de Beauce et Val de Loire.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CHATEAUNEUF_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Chateauneuf-sur-Loire : diagnostic adapte aux acteurs du tourisme patrimonial, commercants, artisans et exploitants agricoles du Val de Loire. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Chateauneuf-sur-Loire : diagnostic adapte aux acteurs du tourisme patrimonial, commercants, artisans et exploitants agricoles du Val de Loire. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Chateauneuf-sur-Loire : diagnostic adapte aux acteurs du tourisme patrimonial, commercants, artisans et exploitants agricoles du Val de Loire. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Chateauneuf-sur-Loire : diagnostic adapte aux acteurs du tourisme patrimonial, commercants, artisans et exploitants agricoles du Val de Loire. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Chateauneuf-sur-Loire : formats adaptes aux structures touristiques, commerces, ateliers artisanaux et exploitations agricoles du Val de Loire orleanais.",
@@ -53,7 +53,7 @@ export const CHATEAUNEUF_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Chateauneuf-sur-Loire ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Chateauneuf-sur-Loire, nous proposons des audits approfondis adaptes aux enjeux tourisme, commerce ou agriculture.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Chateauneuf-sur-Loire, nous proposons des audits approfondis adaptes aux enjeux tourisme, commerce ou agriculture.",
     },
     {
       q: "L'IA peut-elle aider les acteurs du tourisme a Chateauneuf-sur-Loire ?",

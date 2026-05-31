@@ -30,8 +30,8 @@ export const GUILERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
-      en: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
+      fr: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
+      en: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guilers : formats adaptés au cabinet libéral, au commerce de proximité ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -57,11 +57,11 @@ export const GUILERS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants guilériens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP (maçons, plombiers, électriciens) et commerçants de Guilers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP (maçons, plombiers, électriciens) et commerçants de Guilers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guilers  ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Guilers et de Brest Métropole. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Guilers et de Brest Métropole. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Guilers ?",

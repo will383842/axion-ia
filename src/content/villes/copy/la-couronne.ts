@@ -30,8 +30,8 @@ export const LA_COURONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, TPE artisans, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, TPE artisans, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, TPE artisans, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, TPE artisans, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Couronne : formats adaptés à l'atelier industriel, à l'imprimerie, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const LA_COURONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à La Couronne ?",
-      a: "L'audit Flash IA à La Couronne démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus industriels, artisanaux ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à La Couronne démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus industriels, artisanaux ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à La Couronne ?",

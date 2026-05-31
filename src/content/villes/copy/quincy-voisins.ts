@@ -9,9 +9,9 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
   pitchEn:
     "Quincy-Voisins (77), commune résidentielle au nord de Meaux en Seine-et-Marne, entre plaines céréalières et bassin d'emploi meldois. TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit sur place sur mesure.",
   seoHook: "services & agriculture céréalière",
   ecosystemFr:
     "Quincy-Voisins est une commune résidentielle du nord de Meaux en Seine-et-Marne, adossée aux plaines céréalières de la Brie. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitations agricoles.",
@@ -30,8 +30,8 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quincy-Voisins : formats adaptés chantier BTP, commerce, cabinet libéral, siège PME, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Quincy-Voisins  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Meaux et alentours ?",

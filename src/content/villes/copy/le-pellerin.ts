@@ -9,9 +9,9 @@ export const LE_PELLERIN_COPY: VilleCopy = {
   pitchEn:
     "Le Pellerin (44), commune de l'estuaire de la Loire au sud-ouest de Nantes, fait partie de Nantes Métropole. Tissu de TPE artisanales, commerces de proximité, PME logistiques portuaires, exploitations agricoles maraîchères et viticoles. Axion-IA y intervient pour tous types d'activités de l'estuaire nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pellerin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques de l'estuaire, exploitations maraîchères et viticoles, professions libérales, services aux entreprises de Nantes Métropole sud-Loire. Audit sur place accessible.",
   seoHook: "proche nantes",
   ecosystemFr:
     "Le Pellerin est une commune de plus de 5 300 habitants sur la rive sud de l'estuaire de la Loire, membre de Nantes Métropole. L'économie locale mêle agriculture (maraîchage, viticulture muscadet), activités portuaires et logistiques liées à l'estuaire, artisanat BTP et commerces de proximité. Le bac de Loire relie la commune à Couëron et au nord de l'agglomération.",
@@ -30,8 +30,8 @@ export const LE_PELLERIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Pellerin : diagnostic adapté aux exploitations viticoles, TPE artisans, PME logistiques de l'estuaire et commerçants de Nantes Métropole sud-Loire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pellerin : formations pratiques pour exploitants viticoles, artisans, commerçants et opérateurs logistiques de l'estuaire. Autonomie IA de vos équipes.",
@@ -53,7 +53,7 @@ export const LE_PELLERIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation viticole au Pellerin ?",
-      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux exploitations viticoles muscadet et maraîchères. Il identifie les opportunités IA : traçabilité parcellaire, prédiction rendements, gestion commerciale et automatisation administrative.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux exploitations viticoles muscadet et maraîchères. Il identifie les opportunités IA : traçabilité parcellaire, prédiction rendements, gestion commerciale et automatisation administrative.",
     },
     {
       q: "L'IA est-elle utile pour la logistique portuaire de l'estuaire ?",

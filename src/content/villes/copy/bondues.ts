@@ -30,8 +30,8 @@ export const BONDUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bondues : formats adaptés au siège social, cabinet libéral, commerce, atelier artisan. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -61,7 +61,7 @@ export const BONDUES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants et artisans bondusois ?",
-      a: "Pour les TPE commerçants haut de gamme et artisans BTP à Bondues, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, marketing local, gestion fidélité.",
+      a: "Pour les TPE commerçants haut de gamme et artisans BTP à Bondues, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, marketing local, gestion fidélité.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Bruxelles ?",

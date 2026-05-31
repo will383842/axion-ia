@@ -30,8 +30,8 @@ export const BALARUC_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, TPE commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, TPE commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, TPE commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Balaruc-les-Bains : diagnostic pour PME thermalisme et santé, hôtellerie-restauration curistes, TPE commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Balaruc-les-Bains : ateliers adaptés établissement thermal, hôtel curistes, cabinet santé ou commerce. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BALARUC_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour le thermalisme ?",
-      a: "Oui, nous réalisons des audits IA adaptés au thermalisme : automatisation plannings cures, chatbot curistes, gestion dossiers patients, prédiction fréquentation, optimisation parcours soins. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés au thermalisme : automatisation plannings cures, chatbot curistes, gestion dossiers patients, prédiction fréquentation, optimisation parcours soins. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour l'hôtellerie-restauration de curistes ?",
@@ -65,7 +65,7 @@ export const BALARUC_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Balaruc-les-Bains ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

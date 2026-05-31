@@ -9,9 +9,9 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   pitchEn:
     "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
   seoHook: "logistique aéroportuaire & fret handling",
   ecosystemFr:
     "Paray-Vieille-Poste est une commune de l'Essonne située aux portes de l'aéroport Paris-Orly, au cœur d'une zone d'activités aéroportuaire majeure. Tissu TPE/PME logistique, fret, hôtellerie, services aux entreprises, commerce de proximité.",
@@ -30,8 +30,8 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paray-Vieille-Poste : formats adaptés entrepôt logistique, siège PME fret, hôtel aéroportuaire, commerce, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hôtels près d'Orly ?",
-      a: "Audit IA du parcours client, CRM augmenté réservations, chatbot multilingue, automatisation facturation et revenue management. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Audit IA du parcours client, CRM augmenté réservations, chatbot multilingue, automatisation facturation et revenue management. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Paray-Vieille-Poste  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Orly et Thiais ?",

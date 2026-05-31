@@ -30,8 +30,8 @@ export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bréal-sous-Montfort : diagnostic adapté aux TPE artisans BTP, commerçants de proximité, PME de services ouest Rennes et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Bréal-sous-Montfort : diagnostic adapté aux TPE artisans BTP, commerçants de proximité, PME de services ouest Rennes et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Bréal-sous-Montfort : diagnostic adapté aux TPE artisans BTP, commerçants de proximité, PME de services ouest Rennes et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Bréal-sous-Montfort : diagnostic adapté aux TPE artisans BTP, commerçants de proximité, PME de services ouest Rennes et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bréal-sous-Montfort : formats adaptés aux ateliers artisans BTP, commerces, bureaux PME ou cabinets libéraux. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,11 +53,11 @@ export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP de Bréal-sous-Montfort ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Bréal-sous-Montfort et communes voisines sur leurs cas IA : automatisation devis, agents IA prise de rendez-vous, classification photos chantier, suivi planning, facturation. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Bréal-sous-Montfort et communes voisines sur leurs cas IA : automatisation devis, agents IA prise de rendez-vous, classification photos chantier, suivi planning, facturation. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Bréal-sous-Montfort  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du secteur Montfort-Bréal, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du secteur Montfort-Bréal, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les PME de services de l'ouest Rennes ?",

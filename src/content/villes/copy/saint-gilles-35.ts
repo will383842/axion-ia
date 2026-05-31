@@ -9,9 +9,9 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
   pitchEn:
     "Saint-Gilles (35), commune résidentielle de l'ouest rennais en Ille-et-Vilaine, accueille un tissu économique de proximité : TPE artisanales, PME de services, commerces locaux, professions libérales et prestataires du bassin rennais. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Gilles est une commune résidentielle de l'ouest de Rennes Métropole (Ille-et-Vilaine), prisée des familles et cadres du bassin rennais. L'économie locale repose sur les TPE artisanales, les commerces de proximité, les professions libérales et les PME de services adossées à la dynamique de la métropole rennaise.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Gilles (35) : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du bassin ouest-rennais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gilles : formats adaptés cabinet libéral, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Gilles (35)  ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Saint-Gilles et du bassin ouest-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Saint-Gilles et du bassin ouest-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants ?",

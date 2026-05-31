@@ -9,9 +9,9 @@ export const HENDAYE_COPY: VilleCopy = {
   pitchEn:
     "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit sur place sur mesure.",
   ecosystemFr:
     "Hendaye est la dernière ville française avant l'Espagne (Irun, Fontarrabie), située à l'embouchure de la Bidassoa sur la Côte Basque. Station balnéaire réputée (plage des Deux Jumeaux, domaine d'Abbadia), son économie s'appuie sur le tourisme, l'hôtellerie-restauration, le commerce transfrontalier (ventas, flux Espagne), le transport et la logistique (gare internationale), l'artisanat et les services. Le bassin d'emploi s'étend à Saint-Jean-de-Luz et au BAB (Bayonne-Anglet-Biarritz).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HENDAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Hendaye : diagnostic adapté aux TPE/PME tourisme balnéaire, hôtellerie-restauration, commerce transfrontalier, transport et artisanat de la Côte Basque sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hendaye : formats adaptés à l'hôtel, au restaurant, au commerce, à l'entrepôt ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const HENDAYE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Hendaye  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME hendayaises : hôteliers-restaurateurs, commerçants transfrontaliers, transporteurs, artisans et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME hendayaises : hôteliers-restaurateurs, commerçants transfrontaliers, transporteurs, artisans et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières à Hendaye ?",

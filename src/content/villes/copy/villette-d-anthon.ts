@@ -30,8 +30,8 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villette-d'Anthon : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, agriculteurs et TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villette-d'Anthon : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, agriculteurs et TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villette-d'Anthon : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, agriculteurs et TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villette-d'Anthon : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, agriculteurs et TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villette-d'Anthon : formats adaptés à l'entrepôt logistique, atelier industriel, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Villette-d'Anthon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Villette-d'Anthon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

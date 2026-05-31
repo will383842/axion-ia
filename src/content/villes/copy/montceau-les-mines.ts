@@ -30,8 +30,8 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montceau-les-Mines : diagnostic adapté aux TPE/PME industrielles du bassin montcellien, artisans, commerçants et professions de santé. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
-      en: "Audit IA à Montceau-les-Mines : diagnostic adapté aux TPE/PME industrielles du bassin montcellien, artisans, commerçants et professions de santé. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
+      fr: "Audit IA à Montceau-les-Mines : diagnostic adapté aux TPE/PME industrielles du bassin montcellien, artisans, commerçants et professions de santé. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
+      en: "Audit IA à Montceau-les-Mines : diagnostic adapté aux TPE/PME industrielles du bassin montcellien, artisans, commerçants et professions de santé. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montceau-les-Mines : formats adaptés à l'atelier industriel, commerce, organisme de formation, bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Montceau-les-Mines  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}, adapté aux TPE et PME industrielles du bassin montcellien. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux TPE et PME industrielles du bassin montcellien. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {
       q: "Quels services IA pour les industries de Montceau-les-Mines ?",
@@ -61,7 +61,7 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Montceau ?",
-      a: "Oui, pour les TPE artisans BTP et commerçants de Montceau-les-Mines : audit Flash {{price:audit-flash|flat}}, interventions formation, coaching 1-to-1. Automatisation devis, agents IA, gestion stocks, marketing local.",
+      a: "Oui, pour les TPE artisans BTP et commerçants de Montceau-les-Mines : audit sur place {{price:audit-flash|flat}}, interventions formation, coaching 1-to-1. Automatisation devis, agents IA, gestion stocks, marketing local.",
     },
     {
       q: "Comment se déroule une mission IA à Montceau-les-Mines ?",

@@ -9,9 +9,9 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
   pitchEn:
     "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit sur place sur mesure.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Onet-le-Château est la première commune périurbaine de Rodez et l'un des pôles commerciaux majeurs de l'Aveyron. Zones d'activités tertiaires et commerciales (Cap de Crès, Bel-Air), PME services aux entreprises, TPE artisans BTP, professions libérales (santé, juridique), grande distribution. Bassin d'emploi dynamique en complément de Rodez centre.",
@@ -30,8 +30,8 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Onet-le-Château : formats adaptés à la PME tertiaire, au commerce, au cabinet libéral ou à l'atelier artisan. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Onet-le-Château  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales ou tertiaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales ou tertiaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA sur site à Onet-le-Château ?",

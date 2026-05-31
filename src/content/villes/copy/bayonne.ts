@@ -69,7 +69,7 @@ export const BAYONNE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Bayonne ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME bayonnaises. Un Audit Flash permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME bayonnaises. Un Audit sur place permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Bayonne ?",

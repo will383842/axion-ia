@@ -30,8 +30,8 @@ export const CLISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clisson : diagnostic adapté aux TPE viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Clisson : diagnostic adapté aux TPE viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Clisson : diagnostic adapté aux TPE viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Clisson : diagnostic adapté aux TPE viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clisson : formations adaptées au domaine viticole, au commerce, à la restauration ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const CLISSON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les viticulteurs et domaines du Muscadet ?",
-      a: "Oui, nous accompagnons les TPE viticulteurs du Muscadet sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks et commandes, agents IA relation client export, optimisation logistique vendanges. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE viticulteurs du Muscadet sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks et commandes, agents IA relation client export, optimisation logistique vendanges. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME tourisme et événementiel à Clisson ?",
@@ -61,7 +61,7 @@ export const CLISSON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Clisson  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du vignoble nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du vignoble nantais.",
     },
     {
       q: "Intervenez-vous sur site dans les domaines viticoles ?",

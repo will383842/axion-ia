@@ -30,8 +30,8 @@ export const HOUPLINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Houplines : formats adaptés à la PME textile-industrie, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const HOUPLINES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Houplines  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin armentiérois et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile-industrie, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin armentiérois et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile-industrie, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les prestataires B2B transfrontaliers de la Lys ?",

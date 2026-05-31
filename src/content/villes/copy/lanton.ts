@@ -9,9 +9,9 @@ export const LANTON_COPY: VilleCopy = {
   pitchEn:
     "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y travaille avec les organisations du territoire du nord du Bassin d'Arcachon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit sur place sur mesure.",
   seoHook: "ostréiculture & artisanat",
   ecosystemFr:
     "Lanton est une commune résidentielle du nord du Bassin d'Arcachon. Économie mixte : ostréiculture, artisanat BTP (construction neuve), commerces de proximité et professions libérales. Plages et ports ostréicoles (Taussat, Cassy). Accès D3 vers Bordeaux et Bassin.",
@@ -30,8 +30,8 @@ export const LANTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lanton : diagnostic pour ostréiculteurs, TPE artisans BTP, commerçants et professions libérales du nord Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lanton : diagnostic pour ostréiculteurs, TPE artisans BTP, commerçants et professions libérales du nord Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lanton : diagnostic pour ostréiculteurs, TPE artisans BTP, commerçants et professions libérales du nord Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lanton : diagnostic pour ostréiculteurs, TPE artisans BTP, commerçants et professions libérales du nord Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lanton : ateliers adaptés aux ostréiculteurs, artisans et commerces du Bassin. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LANTON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lanton  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE ostréicoles et artisans du Bassin d'Arcachon.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE ostréicoles et artisans du Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs à Lanton ?",
@@ -61,7 +61,7 @@ export const LANTON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Lanton ?",

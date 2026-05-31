@@ -65,11 +65,11 @@ export const CARCASSONNE_COPY: VilleCopy = {
     },
     {
       q: "Aidez-vous l'hôtellerie-restauration et les commerces carcassonnais ?",
-      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe, agents de réservation et automatisation de la relation client et des avis.",
+      a: "Oui. Audit sur place à tarif public, intervention d'une journée pour outiller l'équipe, agents de réservation et automatisation de la relation client et des avis.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Carcassonne ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME locales et les domaines familiaux. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME locales et les domaines familiaux. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Carcassonne ?",

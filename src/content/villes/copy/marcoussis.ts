@@ -9,9 +9,9 @@ export const MARCOUSSIS_COPY: VilleCopy = {
   pitchEn:
     "Marcoussis (91), commune du Hurepoix en Essonne connue pour le centre national du rugby (FFR), accueille un tissu de TPE artisans, commerces, professions libérales, PME de services et activités liées au sport. Axion-IA y intervient pour tous types d'activités du Hurepoix essonnien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit sur place sur mesure.",
   seoHook: "professions libérales & services bureaux",
   ecosystemFr:
     "Marcoussis est une commune du Hurepoix en Essonne, mondialement connue pour le centre national du rugby (FFR). Tissu économique diversifié : TPE artisans BTP, commerces de centre-bourg, professions libérales, PME tertiaires et bureaux d'études, activités sportives et de loisirs. Proximité du plateau de Courtabœuf (Les Ulis) et de la zone Paris-Saclay.",
@@ -30,8 +30,8 @@ export const MARCOUSSIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marcoussis : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,15 +53,15 @@ export const MARCOUSSIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Marcoussis ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Marcoussis sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Marcoussis sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales de Marcoussis ?",
-      a: "Pour les professions libérales à Marcoussis, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
+      a: "Pour les professions libérales à Marcoussis, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
       q: "Travaillez-vous avec les PME du plateau de Courtabœuf ?",
-      a: "Oui, nous accompagnons les PME et bureaux d'études du plateau de Courtabœuf (Les Ulis) à 10 min de Marcoussis : automatisation documentaire, agents conversationnels internes, veille sectorielle augmentée, CRM IA. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME et bureaux d'études du plateau de Courtabœuf (Les Ulis) à 10 min de Marcoussis : automatisation documentaire, agents conversationnels internes, veille sectorielle augmentée, CRM IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission à Marcoussis depuis Paris ?",

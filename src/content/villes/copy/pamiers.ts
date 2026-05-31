@@ -9,9 +9,9 @@ export const PAMIERS_COPY: VilleCopy = {
   pitchEn:
     "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pamiséen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit sur place sur mesure.",
   seoHook: "bassin pamiséen",
   ecosystemFr:
     "Pamiers est la plus grande ville et la sous-préfecture de l'Ariège, en plaine au bord de la rivière Ariège. Pôle économique départemental avec métallurgie (fonderie, acier spéciaux historiques), agroalimentaire, agriculture plaine (grandes cultures, élevage), commerce centre-ville dynamique, services aux entreprises. Zone industrielle et artisanale active.",
@@ -30,8 +30,8 @@ export const PAMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pamiers : diagnostic adapté aux TPE artisans, PME métallurgie et agroalimentaire, commerçants et professions libérales du bassin pamiséen. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pamiers : formats adaptés à l'usine métallurgique, l'exploitation agricole, le commerce, le cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const PAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pamiers  ?",
-      a: "L'audit Flash débute selon la taille de votre activité pour une TPE. Pour les PME industrielles (métallurgie, agroalimentaire), un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
+      a: "L'audit sur place débute selon la taille de votre activité pour une TPE. Pour les PME industrielles (métallurgie, agroalimentaire), un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les PME métallurgie et fonderie de Pamiers ?",

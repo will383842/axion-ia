@@ -30,8 +30,8 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Argelès-sur-Mer : formats adaptés au camping, hôtel, restaurant, cave viticole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces saisonniers ?",
-      a: "Pour les TPE et commerces saisonniers à Argelès-sur-Mer, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks saisonniers, agents IA multilingues.",
+      a: "Pour les TPE et commerces saisonniers à Argelès-sur-Mer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks saisonniers, agents IA multilingues.",
     },
     {
       q: "Comment se déroule une mission à Argelès-sur-Mer ?",

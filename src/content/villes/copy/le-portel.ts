@@ -9,9 +9,9 @@ export const LE_PORTEL_COPY: VilleCopy = {
   pitchEn:
     "Le Portel (62), station balnéaire de la Côte d'Opale dans le Pas-de-Calais, associe tourisme côtier, pêche artisanale, TPE commerciales et services de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du littoral boulonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Portel (62). Nous accompagnons TPE du tourisme côtier, commerçants, artisans, PME de services et professions libérales du littoral boulonnais. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Portel (62). Nous accompagnons TPE du tourisme côtier, commerçants, artisans, PME de services et professions libérales du littoral boulonnais. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Portel (62). Nous accompagnons TPE du tourisme côtier, commerçants, artisans, PME de services et professions libérales du littoral boulonnais. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Portel (62). Nous accompagnons TPE du tourisme côtier, commerçants, artisans, PME de services et professions libérales du littoral boulonnais. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "côte d'opale",
   ecosystemFr:
     "Le Portel est une station balnéaire populaire de la Côte d'Opale, limitrophe de Boulogne-sur-Mer. Économie tournée vers le tourisme saisonnier, la pêche artisanale, les commerces de bord de mer, l'hôtellerie-restauration et les services aux résidents. Plage de sable et tradition maritime.",
@@ -30,8 +30,8 @@ export const LE_PORTEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Portel : diagnostic adapté aux TPE du tourisme, commerçants et professions libérales du littoral boulonnais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Portel : formations pratiques adaptées au tourisme, commerce balnéaire ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LE_PORTEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Portel ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du littoral boulonnais. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du littoral boulonnais. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les entreprises touristiques du Portel ?",

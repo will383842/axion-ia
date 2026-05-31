@@ -9,9 +9,9 @@ export const LUCCIANA_COPY: VilleCopy = {
   pitchEn:
     "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit sur place sur mesure.",
   seoHook: "agriculture plaine & commerces services",
   ecosystemFr:
     "Lucciana est une commune de la plaine orientale et de l'agglomération bastiaise, accueillant l'aéroport Bastia-Poretta et le site archéologique de Mariana. Tissu agricole (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire Costa Serena.",
@@ -30,8 +30,8 @@ export const LUCCIANA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lucciana : formats adaptés exploitation viticole/agrumes, commerce agglo Bastia, plateforme aéroportuaire, atelier artisan, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const LUCCIANA_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et acteurs aéroportuaires ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis le continent ?",

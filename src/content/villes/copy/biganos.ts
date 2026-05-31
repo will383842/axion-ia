@@ -9,9 +9,9 @@ export const BIGANOS_COPY: VilleCopy = {
   pitchEn:
     "Biganos (33), commune du Bassin d'Arcachon au delta de la Leyre, allie activités ostréicoles, industrie papetière historique, artisanat BTP et tissu résidentiel en croissance. Axion-IA opère pour entreprises et indépendants du secteur du bassin sud-arcachonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "bassin sud-arcachonnais",
   ecosystemFr:
     "Biganos occupe une position stratégique au sud du Bassin d'Arcachon. Industrie papetière historique (Smurfit Kappa), port ostréicole du delta de la Leyre, gare TER Facture-Biganos (noeud ferroviaire), tissu TPE artisanat et commerces en croissance résidentielle.",
@@ -30,8 +30,8 @@ export const BIGANOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Biganos : diagnostic pour PME industrielles (papeterie), ostréiculteurs, TPE artisans et commerces du Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biganos : ateliers adaptés aux process industriels, ostréiculture, artisanat et commerce. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BIGANOS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Biganos  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du Bassin d'Arcachon.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs à Biganos ?",

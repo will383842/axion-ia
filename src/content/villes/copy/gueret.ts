@@ -9,9 +9,9 @@ export const GUERET_COPY: VilleCopy = {
   pitchEn:
     "Guéret (23), préfecture de la Creuse, ville administrative et commerciale entre Limoges et Montluçon. Tissu TPE/PME commerce, services publics, artisanat, agriculture et tourisme vert. Proximité tapisseries d'Aubusson (UNESCO). Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guéret (23). Nous accompagnons TPE/PME du commerce, des services publics, de l'artisanat, de l'agriculture creusoise et du tourisme vert. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Guéret, préfecture de la Creuse, est le centre administratif et commercial du département. Économie structurée autour des services publics (préfecture, hôpital, tribunal), du commerce de proximité, de l'artisanat, de l'agriculture (élevage bovin limousin, ovins) et du tourisme vert. Rayonnement culturel avec la Cité internationale de la tapisserie d'Aubusson (UNESCO) à 40 km.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GUERET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Guéret : diagnostic adapté aux TPE/PME du commerce, des services publics, de l'agriculture et de l'artisanat creusois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guéret : formations pratiques pour commerçants, agents de services publics, artisans et exploitants agricoles creusois.",
@@ -53,7 +53,7 @@ export const GUERET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Guéret  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME creusoises. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME creusoises. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les exploitations agricoles en Creuse ?",

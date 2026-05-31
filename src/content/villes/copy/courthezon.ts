@@ -9,9 +9,9 @@ export const COURTHEZON_COPY: VilleCopy = {
   pitchEn:
     "Courthézon (84), commune viticole du Vaucluse rhodanien aux portes de Châteauneuf-du-Pape, conjugue viticulture prestigieuse AOC Châteauneuf-du-Pape et Côtes du Rhône, tissu artisanal rural et fonction périurbaine d'Orange. TPE artisans, vignerons AOC, PME tourisme oenologique, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit sur place sur mesure.",
   seoHook: "aoc châteauneuf-du-",
   ecosystemFr:
     "Courthézon est positionnée dans le Vaucluse rhodanien, aux portes de Châteauneuf-du-Pape, entre Orange et Avignon. Son économie repose principalement sur la viticulture prestigieuse (AOC Châteauneuf-du-Pape, Côtes du Rhône, Côtes du Rhône Villages), les TPE artisans (BTP, métiers d'art viticole), les PME oenotouristiques et hôtellerie-restauration, les commerces de centre-bourg et professions libérales.",
@@ -30,8 +30,8 @@ export const COURTHEZON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courthézon : ateliers pour équipes TPE/PME viticoles, oenotouristiques, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
@@ -53,7 +53,7 @@ export const COURTHEZON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Courthézon  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, vignerons AOC, PME oenotouristiques et commerces courthézonais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, vignerons AOC, PME oenotouristiques et commerces courthézonais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons AOC Châteauneuf-du-Pape ?",

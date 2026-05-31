@@ -9,9 +9,9 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit sur place sur mesure.",
   seoHook: "agriculture oliveraies & pêche artisanale",
   ecosystemFr:
     "Saint-Chamas s'étend sur les rives nord-est de l'étang de Berre, dominée par le pont Flavien (arc romain Ier siècle av. J.-C.). Économie locale portée par l'agriculture (oliveraies AOC, maraîchage), la pêche artisanale en étang, le tourisme patrimonial et un tissu de TPE artisans BTP et commerces de proximité.",
@@ -30,8 +30,8 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Chamas : ateliers pratiques pour artisans, commerçants et exploitants agricoles. Vos équipes repartent avec des outils IA configurés pour votre métier réel.",
@@ -53,7 +53,7 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Chamas  ?",
-      a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et exploitants agricoles saint-chamasséens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic complet + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et exploitants agricoles saint-chamasséens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles autour de Saint-Chamas ?",

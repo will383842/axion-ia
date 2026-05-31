@@ -9,9 +9,9 @@ export const LILLERS_COPY: VilleCopy = {
   pitchEn:
     "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y mène ses missions auprès des organisations locales du bassin artésien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "agriculture agroalimentaire & commerce détail",
   ecosystemFr:
     "Lillers est un bourg de l'Artois entre Béthune et Saint-Pol-sur-Ternoise. Économie agricole (grandes cultures, maraîchage), TPE artisanales BTP, commerces de centre-bourg, professions libérales et PME agroalimentaires. Centre hospitalier local structurant pour l'emploi.",
@@ -30,8 +30,8 @@ export const LILLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lillers : diagnostic adapté aux TPE artisanales, exploitations agricoles, PME agroalimentaires et professions libérales de l'Artois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lillers : diagnostic adapté aux TPE artisanales, exploitations agricoles, PME agroalimentaires et professions libérales de l'Artois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lillers : diagnostic adapté aux TPE artisanales, exploitations agricoles, PME agroalimentaires et professions libérales de l'Artois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lillers : diagnostic adapté aux TPE artisanales, exploitations agricoles, PME agroalimentaires et professions libérales de l'Artois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lillers : formations pratiques adaptées à l'exploitation agricole, au commerce ou au cabinet. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LILLERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lillers  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'Artois. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'Artois. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les exploitations agricoles à Lillers ?",

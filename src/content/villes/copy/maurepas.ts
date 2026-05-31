@@ -65,7 +65,7 @@ export const MAUREPAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de la ZA Pariwest ?",
-      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et fournisseurs.",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et fournisseurs.",
     },
     {
       q: "Comment se passe une mission depuis Versailles ou Paris ?",

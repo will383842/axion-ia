@@ -31,8 +31,8 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
-      en: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
+      fr: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
       fr: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -50,7 +50,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Choisy-le-Roi ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit Flash (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé envoyé sous 48 h.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé envoyé sous 48 h.",
     },
     {
       q: "William se déplace-t-il vraiment à Choisy-le-Roi ?",

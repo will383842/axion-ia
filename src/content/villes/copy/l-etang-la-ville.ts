@@ -9,9 +9,9 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
   pitchEn:
     "L'Étang-la-Ville (78), commune résidentielle verdoyante des Yvelines en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Versailles. Tissu de TPE artisans et commerçants, PME de services et conseil, professions libérales, immobilier et activités de bien-être. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit sur place sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "L'Étang-la-Ville est une commune résidentielle verdoyante des Yvelines en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Versailles. Cadre naturel prisé, habitat pavillonnaire. Tissu économique : TPE artisans, commerces de proximité, PME de services et conseil, professions libérales, immobilier, bien-être. Communes voisines : Mareil-Marly, Saint-Germain-en-Laye, Noisy-le-Roi, Bailly.",
@@ -30,8 +30,8 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à L'Étang-la-Ville : diagnostic adapté aux TPE artisans, PME de services et conseil, professions libérales et agences immobilières de la forêt de Marly. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Étang-la-Ville : formats adaptés commerce, bureau conseil, cabinet ou espace bien-être. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à L'Étang-la-Ville  ?",
-      a: "L'Audit Flash IA à L'Étang-la-Ville démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à L'Étang-la-Ville démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et commerçants à L'Étang-la-Ville ?",

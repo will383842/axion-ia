@@ -30,8 +30,8 @@ export const COUTANCES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coutances : formats adaptés à la laiterie, au commerce, au cabinet, à l'organisation culturelle. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,11 +53,11 @@ export const COUTANCES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du bocage ?",
-      a: "Oui, nous accompagnons les PME agroalimentaires du bocage coutançais : automatisation traçabilité produits laitiers et viande, prédiction rendements, contrôle qualité cidre AOP, optimisation logistique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME agroalimentaires du bocage coutançais : automatisation traçabilité produits laitiers et viande, prédiction rendements, contrôle qualité cidre AOP, optimisation logistique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerçants et artisans de Coutances ?",
-      a: "Pour les TPE commerçants et artisans à Coutances, audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de RDV, fidélisation client, automatisation comptabilité.",
+      a: "Pour les TPE commerçants et artisans à Coutances, audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de RDV, fidélisation client, automatisation comptabilité.",
     },
     {
       q: "Travaillez-vous avec les acteurs culturels et touristiques ?",

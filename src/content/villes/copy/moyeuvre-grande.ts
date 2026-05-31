@@ -30,8 +30,8 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Moyeuvre-Grande : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services de la Vallée de l'Orne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moyeuvre-Grande : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,7 +57,7 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Moyeuvre-Grande ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants ?",

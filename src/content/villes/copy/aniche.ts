@@ -30,8 +30,8 @@ export const ANICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aniche : formats adaptés à l'atelier artisan, l'usine, le commerce. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -61,7 +61,7 @@ export const ANICHE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants anichois ?",
-      a: "Pour les TPE commerçants à Aniche, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
+      a: "Pour les TPE commerçants à Aniche, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",

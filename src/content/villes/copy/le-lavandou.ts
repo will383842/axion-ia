@@ -9,9 +9,9 @@ export const LE_LAVANDOU_COPY: VilleCopy = {
   pitchEn:
     "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit sur place sur mesure.",
   seoHook: "hôtellerie résidences & restauration plages",
   ecosystemFr:
     "Le Lavandou est une station balnéaire prestigieuse de la Côte des Maures, face aux îles d'Hyères (Port-Cros, Le Levant). 12 plages, port de plaisance, tourisme haut de gamme et nautisme. Économie saisonnière dominée par l'hôtellerie-restauration, les loisirs nautiques et les commerces de tourisme. Tissu dense de TPE/PME.",
@@ -30,8 +30,8 @@ export const LE_LAVANDOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Lavandou : ateliers pour hôteliers, restaurateurs, loueurs de bateaux et commerces. Outils IA configurés métier réel saison estivale.",
@@ -53,7 +53,7 @@ export const LE_LAVANDOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel du Lavandou ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux hôtels, restaurants et résidences de tourisme lavandourains. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux hôtels, restaurants et résidences de tourisme lavandourains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie haut de gamme du Lavandou ?",

@@ -9,9 +9,9 @@ export const PLESSE_COPY: VilleCopy = {
   pitchEn:
     "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   seoHook: "agriculture élevage & artisanat filière",
   ecosystemFr:
     "Plessé est une commune rurale de plus de 5 300 habitants au nord de la Loire-Atlantique, dans le pays de Redon. L'économie repose sur l'agriculture (élevage laitier, polyculture), les TPE artisanales BTP et bois, le commerce de bourg et les services de proximité. La forêt domaniale du Gâvre toute proche alimente une filière bois active.",
@@ -30,8 +30,8 @@ export const PLESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} accessible aux petites structures rurales.",
-      en: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} accessible aux petites structures rurales.",
+      fr: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} accessible aux petites structures rurales.",
+      en: "Audit IA à Plessé : diagnostic adapté aux exploitations agricoles, TPE artisans, commerçants et PME agroalimentaires du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} accessible aux petites structures rurales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plessé : formations et ateliers pratiques adaptés aux exploitants agricoles, artisans BTP et commerçants. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const PLESSE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation agricole à Plessé ?",
-      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et TPE rurales. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, automatisation administrative, prédiction rendements.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et TPE rurales. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, automatisation administrative, prédiction rendements.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Plessé ?",

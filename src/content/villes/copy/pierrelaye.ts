@@ -9,9 +9,9 @@ export const PIERRELAYE_COPY: VilleCopy = {
   pitchEn:
     "Pierrelaye (95), commune de l'agglomération Val Parisis dans le Val-d'Oise, est caractérisée par sa plaine maraîchère historique et son tissu résidentiel. TPE artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Pierrelaye fait partie de l'agglomération Val Parisis et conserve une plaine maraîchère historique en cours de reconversion. Tissu économique de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Proximité Cergy-Pontoise, Franconville et axes A15/A115 vers Paris et la Défense.",
@@ -30,8 +30,8 @@ export const PIERRELAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pierrelaye : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'agglomération Val Parisis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Pierrelaye : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'agglomération Val Parisis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Pierrelaye : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'agglomération Val Parisis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pierrelaye : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales de l'agglomération Val Parisis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pierrelaye : formats adaptés au chantier artisan, au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,7 +57,7 @@ export const PIERRELAYE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Pierrelaye ?",
-      a: "L'Audit Flash IA à Pierrelaye démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Pierrelaye démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les commerces et PME de Val Parisis ?",

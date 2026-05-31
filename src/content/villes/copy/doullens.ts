@@ -30,8 +30,8 @@ export const DOULLENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, TPE artisans BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, TPE artisans BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, TPE artisans BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, TPE artisans BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Doullens : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce ou le cabinet de santé. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const DOULLENS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans BTP à Doullens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP du Doullennais : automatisation devis et facturation, agents IA prise de rendez-vous clients, classification photos chantier, optimisation planning équipes et gestion stocks matériaux. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP du Doullennais : automatisation devis et facturation, agents IA prise de rendez-vous clients, classification photos chantier, optimisation planning équipes et gestion stocks matériaux. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Doullens ?",
-      a: "L'audit Flash IA à Doullens démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre secteur du Doullennais.",
+      a: "L'audit sur place IA à Doullens démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret adapté à votre secteur du Doullennais.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Doullens ?",

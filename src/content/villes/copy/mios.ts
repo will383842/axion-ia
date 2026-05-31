@@ -9,9 +9,9 @@ export const MIOS_COPY: VilleCopy = {
   pitchEn:
     "Mios (33), commune du sud du Bassin d'Arcachon en pleine forêt landaise, connaît un essor démographique et économique avec un tissu de TPE/PME artisanales, commerces de proximité et services aux habitants. Axion-IA collabore avec toutes les structures locales du bassin sud-arcachonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Mios est une commune en forte croissance au sud du Bassin d'Arcachon. Économie résidentielle dynamique, tissu TPE artisanat BTP dense (construction neuve), commerces de proximité, services à la personne et exploitation forestière (pin maritime).",
@@ -30,8 +30,8 @@ export const MIOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mios : diagnostic pour TPE artisans BTP, commerçants, PME de services et professions libérales du sud Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mios : ateliers adaptés aux artisans BTP, commerces et services du bassin sud. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MIOS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Mios  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et commerçants du sud Bassin d'Arcachon.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et commerçants du sud Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Mios ?",

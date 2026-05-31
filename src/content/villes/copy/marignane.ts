@@ -65,7 +65,7 @@ export const MARIGNANE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et transitaires de la ZAC des Florides ?",
-      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels et classification documentaire pour la logistique.",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels et classification documentaire pour la logistique.",
     },
     {
       q: "Comment se passe une mission depuis Marseille ou Aix-en-Provence ?",

@@ -65,7 +65,7 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Savigny-sur-Orge ?",
-      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique durable.",
+      a: "Nous démarrons par un Audit sur place, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique durable.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Savigny-sur-Orge ?",

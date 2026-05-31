@@ -9,9 +9,9 @@ export const LIANCOURT_COPY: VilleCopy = {
   pitchEn:
     "Liancourt (60), commune de 6 785 habitants dans l'Oise, est un bourg historique lié à la famille de La Rochefoucauld, situé entre Clermont et Creil. Tissu économique de TPE/PME : industrie mécanique et plasturgie, agroalimentaire, artisanat BTP, commerces de proximité et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Liancourt est un bourg industriel et commerçant du sud de l'Oise, entre Clermont-de-l'Oise et Creil. Historiquement lié à la famille de La Rochefoucauld (château, fondation sociale), la commune conserve un tissu économique diversifié : mécanique de précision, plasturgie, agroalimentaire, artisanat BTP, commerce de proximité et services. Le bassin d'emploi s'articule avec Clermont, Creil et Pont-Sainte-Maxence.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LIANCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Liancourt : diagnostic adapté aux TPE/PME mécanique, plasturgie, agroalimentaire, artisanat BTP et commerce du sud de l'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Liancourt : formats adaptés à l'atelier mécanique, à l'usine plasturgie, au commerce ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const LIANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Liancourt  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME liancouroises : industriels mécanique/plasturgie, agroalimentaire, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME liancouroises : industriels mécanique/plasturgie, agroalimentaire, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises de mécanique et plasturgie ?",

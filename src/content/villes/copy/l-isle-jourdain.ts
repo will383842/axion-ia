@@ -9,9 +9,9 @@ export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
   pitchEn:
     "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit sur place sur mesure.",
   ecosystemFr:
     "L'Isle-Jourdain est un bourg dynamique du Gers nord, carrefour entre Toulouse (45 min) et Auch (30 min), traversé par la Save. Son économie s'appuie sur l'agroalimentaire, les coopératives agricoles (céréales, élevage), le commerce de proximité, l'artisanat BTP, les professions libérales et les services aux entreprises. Zone d'activité Pont de Lannelongue.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Isle-Jourdain : diagnostic adapté aux TPE/PME du bourg gersois, coopératives agricoles, commerces et professions libérales entre Toulouse et Auch. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à L'Isle-Jourdain : diagnostic adapté aux TPE/PME du bourg gersois, coopératives agricoles, commerces et professions libérales entre Toulouse et Auch. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à L'Isle-Jourdain : diagnostic adapté aux TPE/PME du bourg gersois, coopératives agricoles, commerces et professions libérales entre Toulouse et Auch. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à L'Isle-Jourdain : diagnostic adapté aux TPE/PME du bourg gersois, coopératives agricoles, commerces et professions libérales entre Toulouse et Auch. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Isle-Jourdain : formats adaptés à la coopérative, au commerce, au cabinet ou à l'atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à L'Isle-Jourdain  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de L'Isle-Jourdain : coopératives agricoles, commerçants, artisans et professions libérales du bassin gersois. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de L'Isle-Jourdain : coopératives agricoles, commerçants, artisans et professions libérales du bassin gersois. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les coopératives agricoles de L'Isle-Jourdain ?",

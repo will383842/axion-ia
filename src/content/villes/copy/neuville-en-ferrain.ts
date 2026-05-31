@@ -30,8 +30,8 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neuville-en-Ferrain : formats adaptés au grossiste, au logisticien transfrontalier, au sous-traitant textile ou au prestataire B2B. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Neuville-en-Ferrain  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo tourquennoise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce de gros, logistique, textile, services B2B). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo tourquennoise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce de gros, logistique, textile, services B2B). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les sous-traitants textile à Neuville-en-Ferrain ?",

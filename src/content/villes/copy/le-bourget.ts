@@ -9,9 +9,9 @@ export const LE_BOURGET_COPY: VilleCopy = {
   pitchEn:
     "Le Bourget (93), ville emblématique de l'aéronautique française avec son musée de l'Air et de l'Espace et l'aéroport d'affaires du Bourget (salon international de l'aéronautique), abrite un tissu de TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques et commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget (93). Nous accompagnons tous types d'activités : TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques, commerçants, artisans et professions libérales de cette ville historique de l'aviation. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget (93). Nous accompagnons tous types d'activités : TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques, commerçants, artisans et professions libérales de cette ville historique de l'aviation. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget (93). Nous accompagnons tous types d'activités : TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques, commerçants, artisans et professions libérales de cette ville historique de l'aviation. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget (93). Nous accompagnons tous types d'activités : TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques, commerçants, artisans et professions libérales de cette ville historique de l'aviation. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-Saint-Denis",
   ecosystemFr:
     "Le Bourget est indissociable de l'aéronautique : l'aéroport d'affaires Paris-Le Bourget (1er d'Europe), le musée de l'Air et de l'Espace et le salon international du Bourget (biennal) structurent l'économie locale. Tissu PME sous-traitants aéronautiques, TPE prestataires événementiels et logistiques, commerces de proximité. Proximité de la Plaine Saint-Denis, du Stade de France et de l'axe RER B vers Paris.",
@@ -30,8 +30,8 @@ export const LE_BOURGET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA au Bourget : diagnostic adapté aux TPE prestataires, PME industrielles, sous-traitants aéronautiques et commerçants du bassin Le Bourget-Drancy-Dugny. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site au Bourget : formations pratiques dans votre atelier, bureau ou local commercial. Équipes terrain et back-office repartent autonomes sur outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LE_BOURGET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Bourget ?",
-      a: "L'Audit Flash IA au Bourget débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il identifie les processus automatisables dans votre activité, chiffre le ROI attendu et produit un plan d'action priorisé.",
+      a: "L'Audit sur place IA au Bourget débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il identifie les processus automatisables dans votre activité, chiffre le ROI attendu et produit un plan d'action priorisé.",
     },
     {
       q: "Accompagnez-vous les sous-traitants aéronautiques du Bourget ?",

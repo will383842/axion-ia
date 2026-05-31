@@ -30,8 +30,8 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quesnoy-sur-Deûle : formats adaptés au bureau, commerce, entrepôt logistique. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Quesnoy-sur-Deûle ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Quesnoy-sur-Deûle ?",

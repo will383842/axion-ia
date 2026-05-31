@@ -30,8 +30,8 @@ export const ALLONNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Allonnes : diagnostic adapté aux TPE artisans, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Allonnes : diagnostic adapté aux TPE artisans, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Allonnes : diagnostic adapté aux TPE artisans, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Allonnes : diagnostic adapté aux TPE artisans, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Allonnes : formations adaptées aux PME industrielles automobile, assurance, artisans BTP et commerces du bassin manceau sud. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const ALLONNES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Allonnes ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du bassin manceau sud. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du bassin manceau sud. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour le secteur assurance ?",

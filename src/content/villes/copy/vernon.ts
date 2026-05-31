@@ -9,9 +9,9 @@ export const VERNON_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Vernon (27), dans l'Eure. Ville du site ArianeGroup, où sont conçus les moteurs des fusées Ariane, Vernon mêle high-tech spatial, industrie, commerce et un tourisme tiré par Giverny et les jardins de Monet. Nous y déployons une IA concrète au service des petites structures de la vallée de la Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernon (27), dans l'Eure. Nous accompagnons en priorité les TPE puis les PME : sous-traitants industriels et techniques de l'écosystème ArianeGroup, commerces, structures touristiques de Giverny, artisans et professions libérales. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   seoHook: "spatial & tourisme Giverny",
   ecosystemFr:
     "Vernon, dans l'Eure, abrite le site historique d'ArianeGroup où sont développés et testés les moteurs des lanceurs Ariane, ancrant un écosystème industriel et technique de haut niveau. Autour de ce pôle gravitent des sous-traitants, des bureaux d'études et un tissu dense de TPE artisanales. Sur les rives de la Seine, le tourisme lié à Giverny et aux jardins de Monet nourrit hôtellerie et commerces, terrain idéal pour des automatisations IA pragmatiques.",
@@ -57,7 +57,7 @@ export const VERNON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Vernon ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME vernonnaises, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME vernonnaises, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous les sous-traitants de l'écosystème ArianeGroup ?",

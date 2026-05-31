@@ -30,8 +30,8 @@ export const SORBIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sorbiers : formats adaptés au cabinet professionnel, commerce, atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SORBIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME tertiaires et commerces ?",
-      a: "Pour les PME tertiaires et commerces à Sorbiers, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation workflow, classification documents.",
+      a: "Pour les PME tertiaires et commerces à Sorbiers, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation workflow, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

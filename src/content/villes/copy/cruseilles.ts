@@ -30,8 +30,8 @@ export const CRUSEILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cruseilles : formats adaptés au commerce, cabinet, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,11 +53,11 @@ export const CRUSEILLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Cruseilles ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Cruseilles sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, gestion stocks, CRM augmenté client. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Cruseilles sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, gestion stocks, CRM augmenté client. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Combien coûte un audit IA à Cruseilles  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Genevois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, commerce, professions libérales, services transfrontaliers). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Genevois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, commerce, professions libérales, services transfrontaliers). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les professions libérales du secteur ?",

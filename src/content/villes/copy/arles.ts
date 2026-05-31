@@ -9,9 +9,9 @@ export const ARLES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Arles, cité romaine classée UNESCO, capitale de la photographie et porte de la Camargue. Tourisme culturel, hôtellerie, événementiel photo, riziculture et agriculture camarguaise, commerce et artisanat : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "patrimoine romain & photographie",
   ecosystemFr:
     "Arles, plus vaste commune de France métropolitaine, conjugue un patrimoine romain classé UNESCO (arènes, théâtre antique), un rayonnement culturel mondial via les Rencontres de la photographie et la fondation LUMA, et une économie agricole camarguaise (riziculture, élevage taurin, sel). Le tissu de TPE et PME couvre le tourisme, l'hôtellerie, l'artisanat d'art, l'agroalimentaire et le commerce.",
@@ -30,8 +30,8 @@ export const ARLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arles pour hôtels, acteurs culturels et exploitations camarguaises : nous identifions les leviers (réservations, billetterie, e-réputation, traçabilité agricole, administratif) et chiffrons le ROI. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arles : formats adaptés à l'hôtel, à la structure culturelle, à l'exploitation agricole ou au commerce. Vos collaborateurs gèrent ensuite les outils en autonomie.",
@@ -57,11 +57,11 @@ export const ARLES_COPY: VilleCopy = {
     },
     {
       q: "Quels gains IA pour un hôtel ou un acteur culturel arlésien ?",
-      a: "Optimisation des réservations et de la billetterie, agents conversationnels multilingues pour la clientèle internationale, classification d'images pour l'événementiel photo et automatisation administrative. Chaque piste est chiffrée en ROI dans l'Audit Flash.",
+      a: "Optimisation des réservations et de la billetterie, agents conversationnels multilingues pour la clientèle internationale, classification d'images pour l'événementiel photo et automatisation administrative. Chaque piste est chiffrée en ROI dans l'Audit sur place.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Arles ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles camarguaises ?",

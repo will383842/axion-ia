@@ -10,9 +10,9 @@ export const OCTEVILLE_SUR_MER_COPY: VilleCopy = {
     "Octeville-sur-Mer (76), commune littorale de l'agglomeration havraise en Seine-Maritime, reunit pres de 6 170 habitants. Ville residentielle en bord de falaises, elle accueille des professions liberales, des TPE de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "littoral, professions liberales & residentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Octeville-sur-Mer est une commune residentielle littorale a l'ouest du Havre, sur les falaises de la cote d'Albatre. Partie de la communaute urbaine Le Havre Seine Metropole, son tissu economique comprend des professions liberales, TPE de services, commerces et artisanat.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const OCTEVILLE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, TPE de services et commercants du littoral havrais. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, TPE de services et commercants du littoral havrais. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, TPE de services et commercants du littoral havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, TPE de services et commercants du littoral havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Octeville-sur-Mer : formations adaptees aux cabinets liberaux, commerces et TPE de services de l'agglomeration havraise. Equipes autonomes.",
@@ -53,11 +53,11 @@ export const OCTEVILLE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les professions liberales d'Octeville-sur-Mer ?",
-      a: "Pour les professions liberales, nous proposons : automatisation documents, IA redaction, gestion agenda intelligente, accueil patients/clients IA. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les professions liberales, nous proposons : automatisation documents, IA redaction, gestion agenda intelligente, accueil patients/clients IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Octeville-sur-Mer ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les commercants d'Octeville-sur-Mer ?",

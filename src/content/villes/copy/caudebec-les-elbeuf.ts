@@ -10,9 +10,9 @@ export const CAUDEBEC_LES_ELBEUF_COPY: VilleCopy = {
     "Caudebec-les-Elbeuf (76), commune de l'agglomeration d'Elbeuf en Seine-Maritime, reunit pres de 10 480 habitants. Ville residentielle et commercante en bord de Seine, elle accueille des TPE de services, des PME commerciales, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Elbeuf",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Caudebec-les-Elbeuf (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo d'Elbeuf : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Caudebec-les-Elbeuf fait partie de la Metropole Rouen Normandie, dans le secteur d'Elbeuf en bord de Seine. Tissu economique de proximite : commerces, TPE de services, artisanat BTP, professions liberales et PME de l'agglo elbeuvienne. Proximite A13 et acces rapide Rouen.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CAUDEBEC_LES_ELBEUF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Caudebec-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Caudebec-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Caudebec-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Caudebec-les-Elbeuf : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo d'Elbeuf. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Caudebec-les-Elbeuf : formations adaptees aux commerces, cabinets, ateliers et PME tertiaires de l'agglo elbeuvienne. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const CAUDEBEC_LES_ELBEUF_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Caudebec-les-Elbeuf ?",
-      a: "Pour les commercants de Caudebec-les-Elbeuf, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les commercants de Caudebec-les-Elbeuf, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Caudebec-les-Elbeuf ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de l'agglo d'Elbeuf ?",

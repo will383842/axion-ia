@@ -9,9 +9,9 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Triel-sur-Seine (78), commune résidentielle des bords de Seine à 35 km au nord-ouest de Paris, compte plus de 12 400 habitants. TPE artisanat et services, PME conseil et ingénierie, commerces de centre-ville, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Triel-sur-Seine (78). Nous accompagnons TPE et PME : artisans et services de proximité, PME conseil et ingénierie, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Triel-sur-Seine (78). Nous accompagnons TPE et PME : artisans et services de proximité, PME conseil et ingénierie, commerçants de centre-ville, professions libérales, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Triel-sur-Seine (78). Nous accompagnons TPE et PME : artisans et services de proximité, PME conseil et ingénierie, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Triel-sur-Seine (78). Nous accompagnons TPE et PME : artisans et services de proximité, PME conseil et ingénierie, commerçants de centre-ville, professions libérales, restaurateurs. Audit sur place sur mesure.",
   seoHook: "artisanat & conseil ingénierie",
   ecosystemFr:
     "Triel-sur-Seine est une commune résidentielle des bords de Seine, entre Poissy et Meulan, à 35 km au nord-ouest de Paris. Tissu TPE artisanat et services, PME conseil et ingénierie, commerces de centre-ville, professions libérales, restauration.",
@@ -30,8 +30,8 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Triel-sur-Seine : formats adaptés bureau, commerce, cabinet, restaurant. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et professions libérales ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

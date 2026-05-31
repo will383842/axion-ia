@@ -30,8 +30,8 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Maurice-l'Exil : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Maurice-l'Exil, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Maurice-l'Exil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

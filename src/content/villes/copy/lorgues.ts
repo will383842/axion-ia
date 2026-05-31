@@ -9,9 +9,9 @@ export const LORGUES_COPY: VilleCopy = {
   pitchEn:
     "Lorgues (83), bourg du centre-Var réputé pour son marché provençal du mardi et son vignoble Côtes de Provence, structure un tissu de TPE viticulteurs, restaurateurs, artisans et PME du tourisme rural. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & marché provençal",
   ecosystemFr:
     "Lorgues est un bourg agricole et touristique du centre-Var, ancré dans la viticulture Côtes de Provence (domaines AOC, vente directe). Marché provençal du mardi parmi les plus réputés du département. Économie tirée par les TPE viticoles, l'artisanat, la restauration gastronomique et le tourisme rural haut de gamme.",
@@ -30,8 +30,8 @@ export const LORGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lorgues : ateliers pour vignerons, restaurateurs, commerçants du marché et artisans. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LORGUES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole Côtes de Provence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, restaurateurs et artisans lorguais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, restaurateurs et artisans lorguais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Côtes de Provence ?",

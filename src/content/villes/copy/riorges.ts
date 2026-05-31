@@ -30,8 +30,8 @@ export const RIORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Riorges : formats adaptés à l'atelier industriel (filière textile), bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const RIORGES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Riorges, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Riorges, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

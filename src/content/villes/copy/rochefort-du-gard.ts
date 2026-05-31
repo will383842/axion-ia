@@ -9,9 +9,9 @@ export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
   pitchEn:
     "Rochefort-du-Gard (30), commune résidentielle entre Nîmes et Avignon, adossée à la garrigue. Tissu TPE/PME services aux entreprises, professions libérales, commerces, artisanat BTP et viticulture. Axion-IA y travaille avec les organisations du territoire entre Nîmes et Avignon.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Rochefort-du-Gard (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans BTP et viticulteurs entre Nîmes et Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Rochefort-du-Gard (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans BTP et viticulteurs entre Nîmes et Avignon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Rochefort-du-Gard (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans BTP et viticulteurs entre Nîmes et Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Rochefort-du-Gard (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans BTP et viticulteurs entre Nîmes et Avignon. Audit sur place sur mesure.",
   seoHook: "artisanat & viticulture",
   ecosystemFr:
     "Rochefort-du-Gard (~8 100 hab) est une commune résidentielle entre Nîmes (20 min) et Avignon (15 min). Services aux entreprises, professions libérales, artisanat BTP, commerces, viticulture et agriculture de garrigue. Cadre de vie attractif, accès N100 et proximité Grand Avignon.",
@@ -30,8 +30,8 @@ export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rochefort-du-Gard : diagnostic adapté aux TPE/PME de services, professions libérales, artisans BTP et commerçants entre Nîmes et Avignon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rochefort-du-Gard : formats adaptés aux cabinets, entreprises de services, commerces et artisans entre Nîmes et Avignon.",
@@ -53,7 +53,7 @@ export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Rochefort-du-Gard  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

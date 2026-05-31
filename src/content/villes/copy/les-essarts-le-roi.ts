@@ -30,8 +30,8 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Essarts-le-Roi : formats adaptés au bureau PME, à l'atelier artisan, au commerce ou au cabinet de santé. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Essarts-le-Roi ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, commerce, santé). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, commerce, santé). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans du bâtiment des Yvelines ?",

@@ -31,8 +31,8 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Pavillons-sous-Bois : ateliers adaptés au commerce de proximité, à l'artisan du BTP, au cabinet libéral ou à la PME de zone d'activité. Équipes formées et autonomes sur leurs outils IA métier (ChatGPT, Claude, agents internes).",
@@ -54,11 +54,11 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission IA aux Pavillons-sous-Bois ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque, pas de frais cachés.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque, pas de frais cachés.",
     },
     {
       q: "Quels délais pour une implémentation IA aux Pavillons-sous-Bois ?",
-      a: "Audit Flash : 2 jours ouvrés. Intervention sur site : sous 2 semaines. Implémentation custom (chatbot, automatisation devis, agents IA) : 4 à 8 semaines selon le périmètre, avec livraison incrémentale validée par le client.",
+      a: "Audit sur place : 2 jours ouvrés. Intervention sur site : sous 2 semaines. Implémentation custom (chatbot, automatisation devis, agents IA) : 4 à 8 semaines selon le périmètre, avec livraison incrémentale validée par le client.",
     },
     {
       q: "Vos solutions IA sont-elles conformes RGPD pour les TPE/PME des Pavillons-sous-Bois ?",

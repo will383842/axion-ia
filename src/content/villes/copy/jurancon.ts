@@ -9,9 +9,9 @@ export const JURANCON_COPY: VilleCopy = {
   pitchEn:
     "Jurançon (64), commune de l'agglomération de Pau, 7 040 habitants. Capitale du vin blanc AOC Jurançon, tissu de TPE viticoles, artisans, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération paloise et du vignoble jurançonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jurançon (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants de l'agglomération paloise et du vignoble jurançonnais. Audit sur place sur mesure.",
   seoHook: "viticulture jurançon & agroalimentaire caves",
   ecosystemFr:
     "Jurançon est la commune éponyme de l'AOC Jurançon (vin blanc sec et moelleux), 7 040 habitants, directement limitrophe sud de Pau. Tissu de TPE viticoles (domaines, caves coopératives), PME agroalimentaires, artisans, commerces de proximité et professions libérales. Bassin d'emploi commun avec Pau.",
@@ -30,8 +30,8 @@ export const JURANCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Jurançon : diagnostic adapté aux domaines viticoles AOC, caves coopératives, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jurançon : déploiement outils IA dans vos domaines viticoles, caves, commerces ou bureaux. Gestion parcellaire, vinification, e-commerce vin et relation client.",
@@ -57,7 +57,7 @@ export const JURANCON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Jurançon ?",
-      a: "L'audit Flash IA à Jurançon démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus viticoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Jurançon démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus viticoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les caves coopératives du Jurançonnais ?",

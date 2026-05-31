@@ -9,9 +9,9 @@ export const ROCBARON_COPY: VilleCopy = {
   pitchEn:
     "Rocbaron (83), commune du Centre-Var ancrée dans le terroir viticole des Côtes de Provence, conjugue tradition agricole et essor résidentiel dans la plaine du Caramy. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité au cœur d'un bassin de vie tourné vers Brignoles. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit sur place sur mesure.",
   seoHook: "viticulture domaines & artisanat",
   ecosystemFr:
     "Rocbaron est positionnée dans le Centre-Var, au cœur de la plaine du Caramy, à proximité de Brignoles, La Roquebrussanne et Forcalqueiret. Commune dont l'activité économique repose sur la viticulture (AOP Côtes de Provence), les TPE artisans (BTP, services), PME tertiaires, exploitations agricoles, professions libérales et commerces de proximité. Bassin d'emploi tourné vers Brignoles et Toulon.",
@@ -30,8 +30,8 @@ export const ROCBARON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rocbaron : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces du Centre-Var. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rocbaron : ateliers pour équipes TPE/PME, viticulteurs, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Brignoles.",
@@ -53,7 +53,7 @@ export const ROCBARON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Rocbaron  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces rocbaronnais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces rocbaronnais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et exploitations agricoles ?",

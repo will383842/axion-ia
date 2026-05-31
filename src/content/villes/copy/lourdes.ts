@@ -30,8 +30,8 @@ export const LOURDES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lourdes : formats adaptés à l'hôtellerie de pèlerinage, commerce, restauration ou structure d'accueil. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const LOURDES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerces et restaurants lourdais ?",
-      a: "Pour les TPE commerces et restaurants à Lourdes, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation caisse/stocks, agents IA multilingues clients, marketing IA ciblé saisons pèlerinage.",
+      a: "Pour les TPE commerces et restaurants à Lourdes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation caisse/stocks, agents IA multilingues clients, marketing IA ciblé saisons pèlerinage.",
     },
     {
       q: "Accompagnez-vous le tourisme montagne pyrénéen ?",

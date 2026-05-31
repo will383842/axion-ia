@@ -30,8 +30,8 @@ export const MOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Molsheim : diagnostic adapté aux TPE/PME industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Molsheim : diagnostic adapté aux TPE/PME industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Molsheim : diagnostic adapté aux TPE/PME industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Molsheim : diagnostic adapté aux TPE/PME industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Molsheim : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const MOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles de précision ?",
-      a: "Oui, le tissu PME industriel haut de gamme de Molsheim bénéficie de notre expertise : contrôle qualité, traçabilité production, automatisation devis et workflow, conformité ISO. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, le tissu PME industriel haut de gamme de Molsheim bénéficie de notre expertise : contrôle qualité, traçabilité production, automatisation devis et workflow, conformité ISO. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Molsheim ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Molsheim ?",

@@ -9,9 +9,9 @@ export const LIEUSAINT_COPY: VilleCopy = {
   pitchEn:
     "Lieusaint (77), commune de Seine-et-Marne au coeur de la ville nouvelle de Sénart, accueille le Carré Sénart, l'un des plus grands centres commerciaux d'Île-de-France. Zones d'activités commerciales et logistiques, TPE artisans et prestataires, PME distribution et services, commerçants et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lieusaint (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME distribution et logistique du pôle Carré Sénart, commerçants, professions libérales et entreprises de services du sud Seine-et-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lieusaint (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME distribution et logistique du pôle Carré Sénart, commerçants, professions libérales et entreprises de services du sud Seine-et-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lieusaint (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME distribution et logistique du pôle Carré Sénart, commerçants, professions libérales et entreprises de services du sud Seine-et-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lieusaint (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME distribution et logistique du pôle Carré Sénart, commerçants, professions libérales et entreprises de services du sud Seine-et-Marne. Audit sur place sur mesure.",
   seoHook: "commerce grande & logistique transport",
   ecosystemFr:
     "Lieusaint est le coeur économique de la ville nouvelle de Sénart avec le Carré Sénart, l'un des plus grands centres commerciaux d'Île-de-France (plus de 200 enseignes). Le pôle d'activités concentre distribution, logistique et services. Tissu TPE artisans, PME commerciales, prestataires et professions libérales. Communes voisines : Savigny-le-Temple, Moissy-Cramayel, Nandy, Réau.",
@@ -30,8 +30,8 @@ export const LIEUSAINT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lieusaint : diagnostic adapté aux TPE artisans, PME distribution et logistique du pôle Carré Sénart, commerçants et professions libérales du sud Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lieusaint : formats adaptés au commerce, à l'entrepôt logistique ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LIEUSAINT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Lieusaint ?",
-      a: "L'Audit Flash IA à Lieusaint démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Lieusaint démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces et PME du Carré Sénart ?",

@@ -9,9 +9,9 @@ export const CLAYE_SOUILLY_COPY: VilleCopy = {
   pitchEn:
     "Claye-Souilly (77), commune du nord-est de la Seine-et-Marne, est un pole commercial et logistique majeur aux portes de Roissy-CDG. Tissu TPE/PME commerce, logistique, BTP, services aux entreprises, restauration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Claye-Souilly (77). Nous accompagnons TPE et PME : enseignes commerciales, operateurs logistique et transport, artisans BTP, prestataires de services aux entreprises et restaurateurs de la zone nord-est Seine-et-Marne. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "commerce detail & logistique transport",
   ecosystemFr:
     "Claye-Souilly est un pole commercial majeur du nord-est de la Seine-et-Marne, a proximite de l'aeroport Roissy-CDG et des axes A104/A3. Les zones commerciales (Centre commercial Claye-Souilly) et les plateformes logistiques structurent l'economie locale, completees par un tissu de TPE BTP, services et restauration.",
@@ -30,8 +30,8 @@ export const CLAYE_SOUILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Claye-Souilly : diagnostic adapte aux enseignes commerciales, operateurs logistique, artisans BTP et prestataires de services du nord-est 77. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Claye-Souilly : diagnostic adapte aux enseignes commerciales, operateurs logistique, artisans BTP et prestataires de services du nord-est 77. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Claye-Souilly : diagnostic adapte aux enseignes commerciales, operateurs logistique, artisans BTP et prestataires de services du nord-est 77. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Claye-Souilly : diagnostic adapte aux enseignes commerciales, operateurs logistique, artisans BTP et prestataires de services du nord-est 77. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Claye-Souilly : formats adaptes aux entrepots logistique, points de vente commerciaux, chantiers BTP et bureaux services. Equipes autonomes apres intervention.",
@@ -57,7 +57,7 @@ export const CLAYE_SOUILLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Claye-Souilly ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Claye-Souilly, nous proposons des audits approfondis adaptes aux enjeux commerce, logistique ou BTP.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Claye-Souilly, nous proposons des audits approfondis adaptes aux enjeux commerce, logistique ou BTP.",
     },
     {
       q: "Accompagnez-vous les operateurs logistique du secteur ?",

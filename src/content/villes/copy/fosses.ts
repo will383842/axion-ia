@@ -9,9 +9,9 @@ export const FOSSES_COPY: VilleCopy = {
   pitchEn:
     "Fosses (95), commune résidentielle du nord du Val-d'Oise, fait partie de la communauté d'agglomération Roissy Pays de France. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires liés au bassin d'emploi Roissy. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Fosses est une commune résidentielle du nord Val-d'Oise intégrée à la communauté d'agglomération Roissy Pays de France. Économie locale de TPE artisanales BTP, commerces de proximité, PME tertiaires et professions libérales. Bassin d'emploi lié à la plateforme aéroportuaire Roissy-CDG et aux zones d'activités du nord francilien.",
@@ -30,8 +30,8 @@ export const FOSSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Fosses : diagnostic adapté aux TPE artisanales, commerces de proximité, PME de services et professions libérales du nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fosses : formats adaptés au chantier artisan, au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,7 +57,7 @@ export const FOSSES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Fosses ?",
-      a: "L'Audit Flash IA à Fosses démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Fosses démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les entreprises liées au bassin Roissy ?",

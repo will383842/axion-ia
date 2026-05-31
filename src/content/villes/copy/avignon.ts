@@ -9,9 +9,9 @@ export const AVIGNON_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Avignon, cité des Papes et capitale mondiale du théâtre avec son Festival et le Off. Tourisme culturel, hôtellerie, spectacle vivant, agroalimentaire provençal et commerce : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avignon auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel (Palais des Papes, Festival d'Avignon et le Off), l'hôtellerie, le spectacle vivant, l'agroalimentaire provençal et le commerce. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "festival & agro provençal",
   ecosystemFr:
     "Avignon, cité des Papes classée UNESCO, vit au rythme du tourisme patrimonial autour du Palais des Papes et du Pont d'Avignon, et de son Festival mondialement connu doublé du Off, qui font exploser l'activité chaque été. Le tissu de TPE et PME couvre l'hôtellerie, la restauration, le spectacle vivant, l'agroalimentaire provençal (technopole Agroparc) et le commerce.",
@@ -30,8 +30,8 @@ export const AVIGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avignon pour hôtels, compagnies du Festival, acteurs agroalimentaires et commerces : nous identifions les leviers (réservations, billetterie, pics du Off, traçabilité, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Avignon pour hôtels, compagnies du Festival, acteurs agroalimentaires et commerces : nous identifions les leviers (réservations, billetterie, pics du Off, traçabilité, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Avignon pour hôtels, compagnies du Festival, acteurs agroalimentaires et commerces : nous identifions les leviers (réservations, billetterie, pics du Off, traçabilité, administratif) et chiffrons le ROI. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Avignon pour hôtels, compagnies du Festival, acteurs agroalimentaires et commerces : nous identifions les leviers (réservations, billetterie, pics du Off, traçabilité, administratif) et chiffrons le ROI. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avignon : formats adaptés à l'hôtel, à la compagnie de spectacle, à l'agroalimentaire ou au commerce. Vos collaborateurs gèrent ensuite les outils en autonomie.",
@@ -57,11 +57,11 @@ export const AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Comment l'IA aide pendant le Festival d'Avignon et le Off ?",
-      a: "Gestion des pics de réservation, agents conversationnels multilingues, billetterie automatisée et yield hôtelier pendant l'été. Chaque piste est chiffrée en ROI dans l'Audit Flash pour absorber l'afflux du Festival.",
+      a: "Gestion des pics de réservation, agents conversationnels multilingues, billetterie automatisée et yield hôtelier pendant l'été. Chaque piste est chiffrée en ROI dans l'Audit sur place pour absorber l'afflux du Festival.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Avignon ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
       q: "Accompagnez-vous l'agroalimentaire provençal d'Agroparc ?",

@@ -9,9 +9,9 @@ export const LES_ARCS_COPY: VilleCopy = {
   pitchEn:
     "Les Arcs (83), commune du centre-Var dotée de la gare TGV Les Arcs-Draguignan (porte du Var), est ancrée dans le vignoble Côtes de Provence et la Maison des Vins. Tissu de TPE viticulteurs, artisans, restaurateurs et PME logistique, tourisme et services autour du hub TGV. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & hub tgv",
   ecosystemFr:
     "Les Arcs est un nœud TGV stratégique du Var (gare Les Arcs-Draguignan, porte d'entrée vers la côte). Économie tirée par la viticulture Côtes de Provence (Maison des Vins du Var), l'artisanat, le commerce, les services logistiques liés au hub TGV et le tourisme rural. Tissu de TPE/PME centre-Var.",
@@ -30,8 +30,8 @@ export const LES_ARCS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Arcs : ateliers pour vignerons Côtes de Provence, artisans, restaurateurs et PME services. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LES_ARCS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole aux Arcs ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles Côtes de Provence, artisans et restaurateurs arcois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles Côtes de Provence, artisans et restaurateurs arcois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la Maison des Vins du Var ?",

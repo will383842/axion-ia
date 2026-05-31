@@ -9,9 +9,9 @@ export const BEZANNES_COPY: VilleCopy = {
   pitchEn:
     "Bezannes (51), commune dynamique aux portes de Reims, accueille la gare TGV Champagne-Ardenne et un pôle tertiaire en pleine expansion. TPE et PME tertiaires, startups et ESN, cabinets conseil, entreprises logistique, commerces et services de la zone Farman. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bezannes (51). Nous accompagnons TPE et PME : sociétés tertiaires du pôle gare TGV, startups et ESN, cabinets conseil, PME logistique, commerces de la zone Farman. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bezannes (51). Nous accompagnons TPE et PME : sociétés tertiaires du pôle gare TGV, startups et ESN, cabinets conseil, PME logistique, commerces de la zone Farman. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bezannes (51). Nous accompagnons TPE et PME : sociétés tertiaires du pôle gare TGV, startups et ESN, cabinets conseil, PME logistique, commerces de la zone Farman. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bezannes (51). Nous accompagnons TPE et PME : sociétés tertiaires du pôle gare TGV, startups et ESN, cabinets conseil, PME logistique, commerces de la zone Farman. Audit sur place sur mesure.",
   seoHook: "services tertiaires & startups esn",
   ecosystemFr:
     "Bezannes est une commune aux portes sud de Reims, connue pour sa gare TGV Champagne-Ardenne et son pôle tertiaire en plein développement (zone Farman). Tissu TPE/PME : tertiaire, startups, ESN, conseil, logistique, commerces et services.",
@@ -30,8 +30,8 @@ export const BEZANNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bezannes : diagnostic adapté aux TPE startups, PME tertiaires du pôle gare TGV, ESN, cabinets conseil, entreprises logistique. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bezannes : formats adaptés bureau tertiaire, espace coworking, salle de formation. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const BEZANNES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bezannes  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE startups et PME tertiaires du pôle Bezannes.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE startups et PME tertiaires du pôle Bezannes.",
     },
     {
       q: "Travaillez-vous avec les startups et ESN de Bezannes ?",

@@ -9,9 +9,9 @@ export const THORIGNY_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Thorigny-sur-Marne, commune résidentielle des bords de Marne en Seine-et-Marne (77), 30 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA répond aux besoins des activités professionnelles présentes du secteur Marne-la-Vallée ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigny-sur-Marne (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants des bords de Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigny-sur-Marne (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants des bords de Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigny-sur-Marne (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants des bords de Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigny-sur-Marne (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants des bords de Marne. Audit sur place sur mesure.",
   seoHook: "commerce centre-ville & artisanat rénovation",
   ecosystemFr:
     "Thorigny-sur-Marne est une commune résidentielle des bords de Marne, rattachée à la communauté d'agglomération de Marne-et-Gondoire. Son tissu économique repose sur les commerces de centre-ville, TPE artisanales, PME de services et professions libérales. Proximité directe avec Lagny-sur-Marne, Pomponne et Bussy-Saint-Georges.",
@@ -30,8 +30,8 @@ export const THORIGNY_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thorigny-sur-Marne : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales des bords de Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thorigny-sur-Marne : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const THORIGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Thorigny-sur-Marne ?",
-      a: "L'Audit Flash IA à Thorigny-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Thorigny-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de Thorigny-sur-Marne ?",

@@ -10,9 +10,9 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
   pitchEn:
     "Aubervilliers (93), 88 365 habitants en 2023, commune dense de Seine-Saint-Denis limitrophe de Paris 18e et 19e, La Courneuve, Pantin et Saint-Denis. Traversée par le canal Saint-Denis, partie de la Plaine Saint-Denis. Tissu mêlant TPE commerçants et grossistes, PME logistique et BTP, professions libérales, services aux entreprises sur le Parc du Millénaire et la ZAC Canal Porte d'Aubervilliers. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit Flash dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubervilliers (93). Nous accompagnons en priorité les TPE commerçants, grossistes et artisans, puis les PME logistique, BTP, services et tertiaire installées sur le Parc du Millénaire, la ZAC Canal Porte d'Aubervilliers, le Campus Condorcet ou les EMGP. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   seoHook: "commerce de gros, logistique & tertiaire Plaine Saint-Denis",
   ecosystemFr:
     "Aubervilliers s'appuie sur des zones d'activités structurantes : le Parc du Millénaire (bureaux), la ZAC Canal Porte d'Aubervilliers (commerces et bureaux), les EMGP (studios télévision et industries créatives) et le Campus Condorcet (enseignement supérieur et recherche). Héritière d'une longue histoire industrielle (verrerie Saint-Gobain dès 1866, manufacture d'allumettes, parfumerie L.T. Piver, aéroplanes Henry Potez), la ville concentre aujourd'hui commerce de gros, logistique, BTP et services tertiaires.",
@@ -31,8 +31,8 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Aubervilliers : diagnostic pour TPE commerçants et grossistes, PME logistique, BTP et tertiaire de la Plaine Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubervilliers : ateliers adaptés au commerce de gros, à la logistique canal Saint-Denis, aux artisans BTP et aux services tertiaires. Vos équipes repartent autonomes sur outils IA métier.",
@@ -54,11 +54,11 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Aubervilliers ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. L'Intervention Essentielle débute à {{price:intervention-4h|flat}}. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. L'Intervention Essentielle débute à {{price:intervention-4h|flat}}. Les implémentations code custom et le coaching 1-to-1 sont sur devis selon périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour un audit IA à Aubervilliers ?",
-      a: "L'Audit Flash est livré sous 5 jours ouvrés après validation de la demande. Les interventions sur site sont planifiables sous 2 à 3 semaines selon nos disponibilités.",
+      a: "L'Audit sur place est livré sous 5 jours ouvrés après validation de la demande. Les interventions sur site sont planifiables sous 2 à 3 semaines selon nos disponibilités.",
     },
     {
       q: "Accompagnez-vous les commerçants et grossistes d'Aubervilliers ?",

@@ -30,8 +30,8 @@ export const PEGOMAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pégomas : formats adaptés à la pépinière, atelier artisan, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,15 +53,15 @@ export const PEGOMAS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les horticulteurs et pépiniéristes ?",
-      a: "Oui, nous accompagnons les horticulteurs et pépiniéristes de Pégomas sur leurs cas IA : gestion cultures prédictive (mimosa, plantes à parfum), automatisation commandes, traçabilité production, agents IA vente en ligne. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les horticulteurs et pépiniéristes de Pégomas sur leurs cas IA : gestion cultures prédictive (mimosa, plantes à parfum), automatisation commandes, traçabilité production, agents IA vente en ligne. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Pégomas ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Pégomas sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks matériaux. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Pégomas sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks matériaux. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerces et professions libérales de Pégomas, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Audit Flash {{price:audit-flash|flat}} ou coaching 1-to-1.",
+      a: "Pour les commerces et professions libérales de Pégomas, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
       q: "Comment se déroule une mission à Pégomas ?",

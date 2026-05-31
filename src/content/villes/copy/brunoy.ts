@@ -32,8 +32,8 @@ export const BRUNOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
-      en: "Audit Flash IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
+      fr: "Audit sur place IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
+      en: "Audit sur place IA à Brunoy (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour TPE et PME du Val d'Yerres — commerces, professions libérales, artisans.",
     },
     interventions: {
       fr: "Interventions à Brunoy dès {{price:intervention-4h|flat}} pour automatiser devis, relances, prise de rendez-vous et qualification leads des TPE locales — code custom, pas de no-code.",
@@ -51,7 +51,7 @@ export const BRUNOY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Brunoy ?",
-      a: "Les interventions Axion-IA à Brunoy démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
+      a: "Les interventions Axion-IA à Brunoy démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit sur place 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Brunoy ?",

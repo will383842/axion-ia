@@ -9,9 +9,9 @@ export const BLOTZHEIM_COPY: VilleCopy = {
   pitchEn:
     "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit sur place sur mesure.",
   ecosystemFr:
     "Blotzheim est une commune frontalière de Saint-Louis Agglomération à la jonction des trois frontières (France, Suisse, Allemagne). Son économie est portée par la zone d'activité de l'EuroAirport (maintenance aéronautique, fret, logistique), la sous-traitance pour les groupes pharmaceutiques et chimiques bâlois, les services aux travailleurs frontaliers, l'artisanat et un commerce de proximité dynamisé par la clientèle suisse.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BLOTZHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blotzheim : formats adaptés au hangar aéroportuaire, à l'entrepôt fret, à l'atelier sous-traitant ou au bureau frontalier. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const BLOTZHEIM_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Blotzheim  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone EuroAirport et du tissu frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité aéronautique, logistique ou sous-traitance.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone EuroAirport et du tissu frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité aéronautique, logistique ou sous-traitance.",
     },
     {
       q: "Accompagnez-vous les acteurs de l'EuroAirport et de l'aéronautique ?",

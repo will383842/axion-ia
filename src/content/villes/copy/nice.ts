@@ -117,7 +117,7 @@ export const NICE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises et cabinets niçois jusqu'à une dizaine de collaborateurs.",
           },
@@ -157,7 +157,7 @@ export const NICE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Nice ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs journées réparties sur quelques semaines. Nous calons le rythme avec vous dès le brief de cadrage.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs journées réparties sur quelques semaines. Nous calons le rythme avec vous dès le brief de cadrage.",
           },
           {
             q: "Quel ROI puis-je attendre pour une PME niçoise ?",

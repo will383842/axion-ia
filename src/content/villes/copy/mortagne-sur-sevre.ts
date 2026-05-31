@@ -30,8 +30,8 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mortagne-sur-Sèvre : formats adaptés aux PME industrielles, ateliers agroalimentaires, artisans et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles de Mortagne-sur-Sèvre ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, optimisation production, automatisation logistique.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, optimisation production, automatisation logistique.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du bocage ?",
@@ -61,7 +61,7 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mortagne-sur-Sèvre  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Mortagne-sur-Sèvre ?",

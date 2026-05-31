@@ -9,9 +9,9 @@ export const BLANZY_COPY: VilleCopy = {
   pitchEn:
     "Blanzy (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire, conjugue héritage industriel minier et reconversion économique. Tissu de TPE artisanales, PME industrielles, commerces de proximité et services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit sur place sur mesure.",
   seoHook: "bassin minier le",
   ecosystemFr:
     "Blanzy fait partie du bassin minier Le Creusot-Montceau, berceau industriel de la Saône-et-Loire. Le musée de la mine témoigne de l'héritage houiller. L'économie locale repose aujourd'hui sur la sous-traitance industrielle, les TPE artisanales BTP, les commerces de centre-bourg, les services à la personne et les professions de santé. Proximité du Creusot (5 min) et de Montceau-les-Mines.",
@@ -30,8 +30,8 @@ export const BLANZY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Blanzy : diagnostic adapté aux PME industrielles, sous-traitants mécaniques, TPE artisanales BTP, commerçants et prestataires de services du bassin Le Creusot-Montceau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blanzy : formats adaptés à l'atelier industriel, à la TPE artisanale, au commerce de proximité ou à la structure de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BLANZY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Blanzy  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier Le Creusot-Montceau, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier Le Creusot-Montceau, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de Blanzy ?",

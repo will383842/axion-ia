@@ -30,8 +30,8 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Georges-d'Orques : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Georges-d'Orques : ateliers adaptés au commerce de proximité, à l'artisan BTP, au cabinet libéral, au domaine viticole ou au caveau de dégustation. Équipes formées et autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Saint-Georges-d'Orques ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
       q: "Quels délais pour une implémentation IA à Saint-Georges-d'Orques ?",
-      a: "Audit Flash : 2 jours ouvrés. Intervention sur site : sous 2 semaines. Implémentation custom (chatbot œnotouristique, automatisation devis BTP, agents IA) : 4 à 8 semaines selon le périmètre, avec livraison incrémentale validée.",
+      a: "Audit sur place : 2 jours ouvrés. Intervention sur site : sous 2 semaines. Implémentation custom (chatbot œnotouristique, automatisation devis BTP, agents IA) : 4 à 8 semaines selon le périmètre, avec livraison incrémentale validée.",
     },
     {
       q: "Vos solutions IA sont-elles conformes RGPD pour les TPE/PME de Saint-Georges-d'Orques ?",
@@ -65,7 +65,7 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les domaines viticoles AOC et l'œnotourisme ?",
-      a: "Oui. Cas d'usage IA viticoles et œnotouristiques : chatbot multilingue visiteurs, automatisation réservations dégustations, gestion d'avis, optimisation parcelles, marketing digital domaine. Format Audit Flash {{price:audit-flash|flat}} ou intervention sur mesure.",
+      a: "Oui. Cas d'usage IA viticoles et œnotouristiques : chatbot multilingue visiteurs, automatisation réservations dégustations, gestion d'avis, optimisation parcelles, marketing digital domaine. Format Audit sur place {{price:audit-flash|flat}} ou intervention sur mesure.",
     },
   ],
 };

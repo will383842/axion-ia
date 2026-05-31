@@ -30,8 +30,8 @@ export const LISSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lisses : formats adaptés à l'entrepôt logistique, l'atelier industriel ou le bureau PME. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const LISSES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lisses  ?",
-      a: "L'audit Flash IA à Lisses débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME des zones d'activités. ROI chiffré et plan d'action livré sous 48h.",
+      a: "L'audit sur place IA à Lisses débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME des zones d'activités. ROI chiffré et plan d'action livré sous 48h.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques des ZAE de Lisses ?",
@@ -61,7 +61,7 @@ export const LISSES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Lisses ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Lisses. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Lisses. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",

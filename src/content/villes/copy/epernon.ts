@@ -30,8 +30,8 @@ export const EPERNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épernon : formats adaptés au cabinet libéral, commerce, atelier artisan ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const EPERNON_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Épernon ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et professions libérales. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et professions libérales. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants d'Épernon ?",

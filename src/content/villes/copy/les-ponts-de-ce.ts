@@ -9,9 +9,9 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
   pitchEn:
     "Les Ponts-de-Cé (49), cité historique au confluent de la Loire et de la Maine au sud d'Angers, compte plus de 13 000 habitants. Axion-IA opère pour toutes les structures économiques de la commune : commerces, artisanat, PME industrielles, services et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "commerce détail & artisanat second",
   ecosystemFr:
     "Les Ponts-de-Cé bénéficient de leur position stratégique au confluent Loire-Maine, porte sud d'Angers. Zone commerciale Atoll à proximité, tissu de PME et TPE diversifié, artisanat, commerces de centre-bourg historique et activités liées au fleuve. Horticulture et pépinières angevines.",
@@ -30,8 +30,8 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA aux Ponts-de-Cé : diagnostic adapté aux commerçants, TPE artisans et PME du confluent sud-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Ponts-de-Cé : formations pour équipes commerce, artisanat et PME services. Ateliers pratiques adaptés au tissu économique sud-angevin.",
@@ -53,7 +53,7 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Ponts-de-Cé ?",
-      a: "L'Audit Flash IA aux Ponts-de-Cé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA aux Ponts-de-Cé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone Atoll ?",

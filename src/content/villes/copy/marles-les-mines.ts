@@ -10,9 +10,9 @@ export const MARLES_LES_MINES_COPY: VilleCopy = {
     "Marles-les-Mines (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 410 habitants. Situee entre Bethune et Bruay-la-Buissiere, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les activites liees a la reconversion miniere. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, reconversion & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marles-les-Mines (62). Nous accompagnons les TPE, PME et ETI du bassin minier bethunois : artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Marles-les-Mines est situee dans le bassin minier entre Calonne-Ricouart (3 km) et Auchel (2 km). Tissu economique en reconversion : TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et petite industrie. Heritage minier reconverti progressivement.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MARLES_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Marles-les-Mines : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Marles-les-Mines : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Marles-les-Mines : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Marles-les-Mines : diagnostic adapte aux TPE artisanales, PME de services et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Marles-les-Mines : formations adaptees aux ateliers artisanaux, commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const MARLES_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE de Marles-les-Mines ?",
-      a: "Pour les TPE du bassin minier, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les TPE du bassin minier, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Marles-les-Mines ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les commercants de Marles-les-Mines ?",
-      a: "Oui, nous accompagnons les commercants du bassin minier : gestion stocks IA, agents conversationnels, fidelisation client, automatisation comptabilite. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les commercants du bassin minier : gestion stocks IA, agents conversationnels, fidelisation client, automatisation comptabilite. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Marles-les-Mines ?",

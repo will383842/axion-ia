@@ -9,9 +9,9 @@ export const OSNY_COPY: VilleCopy = {
   pitchEn:
     "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services conseil",
   ecosystemFr:
     "Osny est une commune de l'agglomération Cergy-Pontoise, traversée par la Viosne, associant patrimoine rural et activités tertiaires. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation.",
@@ -30,8 +30,8 @@ export const OSNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Osny : formats adaptés boutique, bureau conseil, cabinet, restaurant, centre de formation. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const OSNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",

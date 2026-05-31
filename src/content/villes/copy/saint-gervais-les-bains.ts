@@ -30,8 +30,8 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gervais-les-Bains : formats adaptés à l'hôtel, restaurant, commerce saisonnier ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et montagne.",
@@ -53,7 +53,7 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Gervais-les-Bains ?",
-      a: "L'audit Flash IA à Saint-Gervais-les-Bains démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier tourisme ou commerce, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Saint-Gervais-les-Bains démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier tourisme ou commerce, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "L'IA peut-elle aider les hôtels et restaurants de Saint-Gervais ?",

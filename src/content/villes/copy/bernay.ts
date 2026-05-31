@@ -30,8 +30,8 @@ export const BERNAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bernay : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire bocage normand, commerces et antiquaires, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bernay : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire bocage normand, commerces et antiquaires, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bernay : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire bocage normand, commerces et antiquaires, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bernay : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire bocage normand, commerces et antiquaires, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bernay : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, la boutique, le cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const BERNAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants bernaïens ?",
-      a: "Pour les TPE artisans et commerçants à Bernay, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos produits.",
+      a: "Pour les TPE artisans et commerçants à Bernay, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos produits.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

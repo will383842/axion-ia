@@ -9,9 +9,9 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Mauges-sur-Loire (49), commune nouvelle de plus de 18 600 habitants dans les Mauges en Maine-et-Loire, borde la Loire face à Ancenis. Regroupe Saint-Florent-le-Vieil, Le Marillais, La Pommeraye, Montjean-sur-Loire et autres. Tissu PME industrielles, TPE artisanales, exploitations agricoles et viticoles, commerces. Axion-IA y intervient pour tous types d'activités des Mauges.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauges-sur-Loire (49). Nous accompagnons tous types d'activités : PME industrielles et manufacturières des Mauges, TPE artisans BTP, exploitations agricoles et viticoles (coteaux-d'ancenis), commerçants, professionnels de santé et services aux entreprises du val de Loire angevin. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauges-sur-Loire (49). Nous accompagnons tous types d'activités : PME industrielles et manufacturières des Mauges, TPE artisans BTP, exploitations agricoles et viticoles (coteaux-d'ancenis), commerçants, professionnels de santé et services aux entreprises du val de Loire angevin. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauges-sur-Loire (49). Nous accompagnons tous types d'activités : PME industrielles et manufacturières des Mauges, TPE artisans BTP, exploitations agricoles et viticoles (coteaux-d'ancenis), commerçants, professionnels de santé et services aux entreprises du val de Loire angevin. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauges-sur-Loire (49). Nous accompagnons tous types d'activités : PME industrielles et manufacturières des Mauges, TPE artisans BTP, exploitations agricoles et viticoles (coteaux-d'ancenis), commerçants, professionnels de santé et services aux entreprises du val de Loire angevin. Audit sur place accessible.",
   seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Mauges-sur-Loire est la commune nouvelle la plus peuplée des Mauges, née de la fusion de 8 communes dont Saint-Florent-le-Vieil et Montjean-sur-Loire. L'économie repose sur un tissu industriel dense (héritage manufacturier des Mauges : textile, métallurgie, agroalimentaire), les exploitations agricoles et viticoles (coteaux-d'ancenis), l'artisanat BTP et les commerces de bourg. Pôle touristique Loire avec l'abbaye de Saint-Florent-le-Vieil.",
@@ -30,8 +30,8 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mauges-sur-Loire : diagnostic adapté aux PME industrielles des Mauges, TPE artisans, exploitants viticoles et commerçants du val de Loire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mauges-sur-Loire : ateliers PME industrielles, formations artisans BTP, sessions viticulteurs et commerçants. Autonomie IA de vos équipes terrain et back-office.",
@@ -53,7 +53,7 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle des Mauges ?",
-      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE. Pour les PME industrielles, l'Audit Stratégique complet offre un diagnostic plus poussé avec ROI chiffré sur les processus de production, qualité et supply chain.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE. Pour les PME industrielles, l'Audit Stratégique complet offre un diagnostic plus poussé avec ROI chiffré sur les processus de production, qualité et supply chain.",
     },
     {
       q: "L'IA peut-elle aider les viticulteurs des coteaux-d'ancenis ?",

@@ -65,7 +65,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerces de Berjallie ?",
-      a: "Audit Flash, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
+      a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

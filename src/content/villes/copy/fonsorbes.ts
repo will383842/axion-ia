@@ -9,9 +9,9 @@ export const FONSORBES_COPY: VilleCopy = {
   pitchEn:
     "Fonsorbes (31), commune dynamique de l'ouest toulousain avec près de 13 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Fonsorbes est une commune résidentielle en croissance de l'ouest de Toulouse. Tissu TPE artisans BTP et second œuvre, PME de services, commerces de centre-bourg, professions libérales. Proximité des zones d'emploi de Plaisance-du-Touch et Tournefeuille.",
@@ -30,8 +30,8 @@ export const FONSORBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fonsorbes : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales de l'ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fonsorbes : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales de l'ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fonsorbes : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fonsorbes : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fonsorbes : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const FONSORBES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fonsorbes  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Fonsorbes ?",

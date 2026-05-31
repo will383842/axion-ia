@@ -31,8 +31,8 @@ export const PERONNAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Péronnas : diagnostic processus métiers TPE artisans BTP, commerces, exploitations agricoles et PME bressoises. Audit Flash dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
-      en: "Audit IA à Péronnas : diagnostic processus métiers TPE artisans BTP, commerces, exploitations agricoles et PME bressoises. Audit Flash dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      fr: "Audit IA à Péronnas : diagnostic processus métiers TPE artisans BTP, commerces, exploitations agricoles et PME bressoises. Audit sur place dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      en: "Audit IA à Péronnas : diagnostic processus métiers TPE artisans BTP, commerces, exploitations agricoles et PME bressoises. Audit sur place dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Intervention IA sur site à Péronnas : automatisation devis, relances, classification photos élevage/cultures, traçabilité et workflows pour TPE/PME du bassin de Bourg-en-Bresse. Dès {{price:intervention-4h|flat}}.",
@@ -54,7 +54,7 @@ export const PERONNAS_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Péronnas ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Lyon ou Paris.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Lyon ou Paris.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles bressois ?",

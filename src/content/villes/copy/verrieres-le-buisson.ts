@@ -9,9 +9,9 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   pitchEn:
     "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit sur place sur mesure.",
   seoHook: "TPE & PME Essonne",
   ecosystemFr:
     "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",
@@ -30,8 +30,8 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verrières-le-Buisson : formats adaptés cabinet, bureau PME, boutique, atelier artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants et artisans ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Antony ou Paris ?",

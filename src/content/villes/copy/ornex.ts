@@ -65,7 +65,7 @@ export const ORNEX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces d'Ornex ?",
-      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Les TPE puis les PME sont prioritaires ; les ETI restent marginales pour nous.",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Les TPE puis les PME sont prioritaires ; les ETI restent marginales pour nous.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",

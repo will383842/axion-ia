@@ -9,9 +9,9 @@ export const SALLES_COPY: VilleCopy = {
   pitchEn:
     "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA accompagne tout le tissu professionnel local du sud Bordeaux et de la vallée de la Leyre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit sur place sur mesure.",
   seoHook: "exploitation forestière & commerce bourg",
   ecosystemFr:
     "Salles est une commune étendue de la forêt landaise, traversée par la Leyre. Exploitation forestière (pin maritime, sylviculture), artisanat BTP, commerces de bourg, services à la personne et tourisme nature (canoë, randonnée). Accès A63 vers Bordeaux et Bayonne.",
@@ -30,8 +30,8 @@ export const SALLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Salles : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et professions libérales de la vallée de la Leyre. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Salles : ateliers adaptés aux entreprises forestières, artisans et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SALLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Salles  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE forestières et artisans de la vallée de la Leyre.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE forestières et artisans de la vallée de la Leyre.",
     },
     {
       q: "Accompagnez-vous les entreprises forestières ?",
@@ -61,7 +61,7 @@ export const SALLES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP à Salles ?",
-      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Salles ?",

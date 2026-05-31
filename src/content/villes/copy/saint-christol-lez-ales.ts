@@ -9,9 +9,9 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Christol-lez-Alès (30), commune de l'agglomération d'Alès en Cévennes gardoises. Tissu TPE/PME services aux entreprises, commerces zone commerciale, artisanat BTP, professions libérales et sous-traitance industrielle Alès Agglomération. Axion-IA y intervient pour tous types d'activités du bassin alésien.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit sur place sur mesure.",
   seoHook: "commerce zone & artisanat",
   ecosystemFr:
     "Saint-Christol-lez-Alès (~7 300 hab) fait partie d'Alès Agglomération, aux portes des Cévennes. Zone commerciale dynamique, services aux entreprises, sous-traitance industrielle (héritage minier reconverti), artisanat BTP, professions libérales et commerces de proximité.",
@@ -30,8 +30,8 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Christol-lez-Alès : diagnostic adapté aux TPE/PME industrielles, commerçants, artisans BTP et services du bassin alésien. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Christol-lez-Alès : formats adaptés aux entreprises industrielles, commerces, cabinets et artisans Alès Agglomération.",
@@ -53,7 +53,7 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Christol-lez-Alès  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bassin alésien ?",

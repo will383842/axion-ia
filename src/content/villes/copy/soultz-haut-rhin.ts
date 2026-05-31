@@ -9,9 +9,9 @@ export const SOULTZ_HAUT_RHIN_COPY: VilleCopy = {
   pitchEn:
     "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit sur place sur mesure.",
   seoHook: "viticulture caves & artisanat commerce",
   ecosystemFr:
     "Soultz-Haut-Rhin est un bourg historique du vignoble alsacien situé à 19 km au nord-ouest de Mulhouse, en Sud-Alsace. Son tissu économique mêle TPE viticulture et caves indépendantes, PME services et industrie légère, artisans, commerces de proximité, restaurateurs et professions libérales. Proximité directe avec Guebwiller, Mulhouse et Cernay.",
@@ -30,8 +30,8 @@ export const SOULTZ_HAUT_RHIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soultz-Haut-Rhin : diagnostic adapté aux TPE viticulture, PME industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Soultz-Haut-Rhin : diagnostic adapté aux TPE viticulture, PME industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Soultz-Haut-Rhin : diagnostic adapté aux TPE viticulture, PME industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Soultz-Haut-Rhin : diagnostic adapté aux TPE viticulture, PME industrie légère, restaurateurs et commerces du vignoble alsacien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soultz-Haut-Rhin : formats adaptés à la cave, l'atelier ou le restaurant. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const SOULTZ_HAUT_RHIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Soultz-Haut-Rhin ?",
-      a: "L'Audit Flash IA à Soultz-Haut-Rhin démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Soultz-Haut-Rhin démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs à Soultz-Haut-Rhin ?",

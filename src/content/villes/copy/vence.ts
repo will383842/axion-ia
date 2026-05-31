@@ -30,8 +30,8 @@ export const VENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vence : formats adaptés aux galeries d'art, hébergements, cabinets ou commerces de charme. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const VENCE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Vence  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans d'art, galeries et PME vençoises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans d'art, galeries et PME vençoises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Vence ?",

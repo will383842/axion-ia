@@ -9,9 +9,9 @@ export const POURRIERES_COPY: VilleCopy = {
   pitchEn:
     "Pourrières (83), commune viticole au pied de la montagne Sainte-Victoire, conjugue patrimoine provençal et vignoble AOP Côtes de Provence dans la vallée de l'Arc. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin à cheval entre Var et bassin aixois. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pourrières (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var et de la vallée de l'Arc. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pourrières (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var et de la vallée de l'Arc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pourrières (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var et de la vallée de l'Arc. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pourrières (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var et de la vallée de l'Arc. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & artisanat",
   ecosystemFr:
     "Pourrières est positionnée au pied sud-est de la montagne Sainte-Victoire, dans la haute vallée de l'Arc, à la limite du Var et des Bouches-du-Rhône. Commune dont l'activité économique repose sur la viticulture (AOP Côtes de Provence Sainte-Victoire), les TPE artisans (BTP, services), PME tertiaires, exploitations agricoles, professions libérales et commerces de proximité. Bassin d'emploi double : Aix-en-Provence et Saint-Maximin.",
@@ -30,8 +30,8 @@ export const POURRIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pourrières : ateliers pour équipes TPE/PME, vignerons Sainte-Victoire, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
@@ -53,7 +53,7 @@ export const POURRIERES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Pourrières  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces pourriérois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces pourriérois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOP Sainte-Victoire ?",

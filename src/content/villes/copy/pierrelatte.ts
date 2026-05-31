@@ -30,8 +30,8 @@ export const PIERRELATTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pierrelatte : formats adaptés aux sous-traitants techniques (avec exigences sécurité Tricastin), exploitation agricole, atelier artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const PIERRELATTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Pierrelatte, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Pierrelatte, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

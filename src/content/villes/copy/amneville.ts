@@ -30,8 +30,8 @@ export const AMNEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Amnéville : diagnostic adapté aux TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Amnéville : diagnostic adapté aux TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Amnéville : diagnostic adapté aux TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Amnéville : diagnostic adapté aux TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Amnéville : formats adaptés à l'hôtel, restaurant, parc de loisirs, commerce. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -61,7 +61,7 @@ export const AMNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans amnévillois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Amnéville, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Amnéville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Metz ou Luxembourg ?",

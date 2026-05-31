@@ -11,9 +11,9 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Neuilly-Plaisance, commune résidentielle de 21 941 habitants en Seine-Saint-Denis (4e revenu net par foyer du département). Notre cabinet conçoit du code IA sur mesure pour les artisans, commerces de proximité, professions libérales et PME de services implantés autour de la gare RER A. En complément, nos interventions couvrent les ETI locales.",
   directAnswerFr:
-    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit Flash 4h à {{price:intervention-4h|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit sur place 4h à {{price:intervention-4h|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
   directAnswerEn:
-    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit Flash 4h à {{price:intervention-4h|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
+    "Axion-IA intervient à Neuilly-Plaisance pour automatiser les processus métier des TPE et PME locales : facturation, relances, prise de rendez-vous, reporting. Notre cabinet code des solutions IA sur mesure (pas de no-code) adaptées au tissu résidentiel et de services de la commune (revenu fiscal médian 25 910 €/an en 2019). Audit sur place 4h à {{price:intervention-4h|flat}}, avec déplacement sur site sous 5 jours ouvrés. Les ETI sont également couvertes.",
   seoHook: "commerces de proximité & professions libérales",
   ecosystemFr:
     "Neuilly-Plaisance est une commune à dominante résidentielle, 4e du département de la Seine-Saint-Denis par revenu net moyen par foyer (derrière Gournay-sur-Marne, Le Raincy et Coubron). Son tissu économique repose sur les commerces de proximité, l'artisanat, les professions libérales (santé, droit, conseil) et les PME de services. Le parc urbain de 31,4 hectares (1999), aménagé sur d'anciennes carrières de gypse du plateau d'Avron, structure le cadre de vie.",
@@ -32,8 +32,8 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — {{price:intervention-4h|flat}}.",
-      en: "Audit Flash 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — {{price:intervention-4h|flat}}.",
+      fr: "Audit sur place 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — {{price:intervention-4h|flat}}.",
+      en: "Audit sur place 4h sur site à Neuilly-Plaisance pour les TPE de commerce de proximité ou les professions libérales — {{price:intervention-4h|flat}}.",
     },
     interventions: {
       fr: "Interventions Axion-IA à Neuilly-Plaisance pour automatiser facturation, relances, prise de rendez-vous et reporting des TPE/PME locales.",
@@ -51,7 +51,7 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit à Neuilly-Plaisance ?",
-      a: "Nos audits à Neuilly-Plaisance commencent à {{price:intervention-4h|flat}} pour un Audit Flash de 4 heures. Les interventions et implémentations qui suivent sont chiffrées sur devis, selon le périmètre validé après l'audit.",
+      a: "Nos audits à Neuilly-Plaisance commencent à {{price:intervention-4h|flat}} pour un Audit sur place de 4 heures. Les interventions et implémentations qui suivent sont chiffrées sur devis, selon le périmètre validé après l'audit.",
     },
     {
       q: "Axion-IA se déplace-t-il à Neuilly-Plaisance pour les interventions ?",

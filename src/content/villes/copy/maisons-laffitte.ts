@@ -33,8 +33,8 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit IA à Maisons-Laffitte — utile pour les écuries de pur-sang, agences immobilières et commerces de proximité — Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Maisons-Laffitte pour automatiser devis, mandats immobiliers, plannings d'écurie et relances clients — Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -52,7 +52,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Maisons-Laffitte ?",
-      a: "Nos prestations à Maisons-Laffitte débutent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics sur axion-ia.com.",
+      a: "Nos prestations à Maisons-Laffitte débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:impl-poc|entry}} pour une implémentation IA complète. Tarifs publics sur axion-ia.com.",
     },
     {
       q: "Comment se déroule une intervention IA à Maisons-Laffitte ?",

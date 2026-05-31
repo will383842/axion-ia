@@ -9,9 +9,9 @@ export const AVRILLE_COPY: VilleCopy = {
   pitchEn:
     "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre les activités professionnelles du bassin : services, conseil, santé, commerce et artisanat.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "services aux & professions santé",
   ecosystemFr:
     "Avrillé bénéficie de sa proximité avec Angers tout en conservant un cadre résidentiel attractif. Zones d'activités tertiaires, pôle santé, commerces de centre-ville et grandes enseignes. PME conseil, professions libérales et services à la personne constituent l'ossature économique.",
@@ -30,8 +30,8 @@ export const AVRILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Avrillé : diagnostic adapté aux PME tertiaires, professions libérales et commerces du nord angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avrillé : formations pratiques pour cabinets, commerces et PME services. Ateliers adaptés aux équipes tertiaires du bassin nord-angevin.",
@@ -53,7 +53,7 @@ export const AVRILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Avrillé  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Avrillé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA à Avrillé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les professions de santé avrillaises ?",

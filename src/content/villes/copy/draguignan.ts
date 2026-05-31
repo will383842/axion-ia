@@ -10,9 +10,9 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Draguignan, sous-préfecture du Var (40 826 habitants en 2023) et deuxième ville administrative du département après Toulon. Cabinet IA francophone basé en France, nous intervenons sur site auprès des artisans du BTP, commerçants du centre-ville dracénois, professionnels de santé libéraux et acteurs touristiques de la Dracénie. Notre approche développe du code custom — pas de no-code générique — adapté aux contraintes des structures locales situées entre Lorgues, Flayosc et Trans-en-Provence.",
   directAnswerFr:
-    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit Flash à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
+    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit sur place à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
   directAnswerEn:
-    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit Flash à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
+    "Axion-IA se déplace à Draguignan pour accompagner les TPE et PME de la Dracénie dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — artisans du BTP, commerces de détail du centre dracénois, cabinets de santé libéraux, hôtels et restaurants — avant les rares ETI du territoire. Nos prestations incluent un Audit sur place à partir de {{price:audit-flash|flat}}, des interventions sur site à partir de {{price:intervention-4h|flat}} et des sessions un-à-un dirigeant. Tarifs publics consultables.",
   seoHook: "TPE PME Dracénie : BTP, commerce, santé, tourisme",
   ecosystemFr:
     "Draguignan, chef-lieu d'arrondissement du Var, structure un bassin économique autour de l'administration sous-préfectorale, du commerce de proximité, du BTP, de la santé libérale et du tourisme de la Dracénie. La ville accueille aussi l'École de l'infanterie et l'École de l'artillerie de l'armée de terre — héritage qui lui vaut le surnom de capitale de l'Artillerie — avec le camp militaire de Canjuers à proximité. Les TPE et PME locales évoluent dans un tissu où dominent les très petites structures de moins de 10 salariés.",
@@ -31,8 +31,8 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
-      en: "Audit Flash sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
+      fr: "Audit sur place sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
+      en: "Audit sur place sur site à Draguignan pour cartographier les tâches automatisables des TPE et PME dracénoises : devis BTP, prise de RDV cabinets santé, gestion réservations hôtelières en Dracénie.",
     },
     interventions: {
       fr: "Intervention ponctuelle à Draguignan pour déployer un outil IA ciblé chez un artisan du BTP, un commerçant de la rue Cisson ou un professionnel de santé libéral du centre dracénois.",
@@ -50,7 +50,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Draguignan ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour Draguignan.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés sur le site, sans surcoût géographique pour Draguignan.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Draguignan ?",

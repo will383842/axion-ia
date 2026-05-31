@@ -10,9 +10,9 @@ export const YVETOT_COPY: VilleCopy = {
     "Yvetot (76), chef-lieu du pays de Caux en Seine-Maritime, reunit pres de 11 440 habitants. Ville de services et de commerce, dotee de son eglise moderne aux vitraux remarquables, elle concentre TPE de services, PME commerciales, professions liberales et activites agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & pays de Caux",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Yvetot (76). Nous accompagnons les TPE, PME et professions liberales du pays de Caux : commercants, artisans, prestataires de services, acteurs agricoles et agroalimentaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Yvetot est le chef-lieu commercial du pays de Caux, entre Rouen et Le Havre. Centre de services pour un bassin rural dense : commerces, professions liberales, PME agroalimentaires, TPE de services et artisanat. Marche hebdomadaire important. Acces A29 et D6015.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const YVETOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Yvetot : diagnostic adapte aux TPE de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Yvetot : diagnostic adapte aux TPE de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Yvetot : diagnostic adapte aux TPE de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Yvetot : diagnostic adapte aux TPE de services, PME commerciales et professionnels de sante du pays de Caux. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Yvetot : formations adaptees aux commerces, cabinets, exploitations agricoles et PME agroalimentaires du pays de Caux. Equipes autonomes.",
@@ -53,11 +53,11 @@ export const YVETOT_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants d'Yvetot ?",
-      a: "Pour les commercants d'Yvetot, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee, analyse ventes predictive. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les commercants d'Yvetot, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee, analyse ventes predictive. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Yvetot ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du pays de Caux ?",

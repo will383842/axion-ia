@@ -9,9 +9,9 @@ export const LAILLE_COPY: VilleCopy = {
   pitchEn:
     "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit sur place sur mesure.",
   ecosystemFr:
     "Laillé est une commune résidentielle et rurale du sud de Rennes Métropole (Ille-et-Vilaine), attractive pour les familles avec un cadre de vie verdoyant. L'économie locale associe TPE artisanales, exploitations agricoles (maraîchage, élevage), commerces de proximité et PME de services tirant parti de la proximité rennaise.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LAILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laillé : formats adaptés exploitation agricole, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LAILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Laillé  ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Laillé et du bassin sud-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Laillé et du bassin sud-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et maraîchères ?",
@@ -61,7 +61,7 @@ export const LAILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants de Laillé ?",
-      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté, fidélisation clients automatisée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté, fidélisation clients automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Laillé ?",

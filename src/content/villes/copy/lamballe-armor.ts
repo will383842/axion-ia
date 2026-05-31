@@ -9,9 +9,9 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   pitchEn:
     "Lamballe-Armor (22), commune nouvelle créée en 2019 regroupant Lamballe, Meslin, Morieux et Planguenoual, est un pôle agroalimentaire et patrimonial des Côtes-d'Armor abritant le Haras national. TPE artisanat et services, PME agroalimentaires (filière porcine, volaille, transformation), commerces de centre-bourg, professions libérales, hôtellerie-restauration et tourisme littoral. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamballe-Armor (22). Nous accompagnons TPE et PME : artisans et prestataires de services, PME agroalimentaires (filière porcine, volaille, transformation), commerçants de centre-bourg, professions libérales, hôteliers-restaurateurs et acteurs du tourisme littoral. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamballe-Armor (22). Nous accompagnons TPE et PME : artisans et prestataires de services, PME agroalimentaires (filière porcine, volaille, transformation), commerçants de centre-bourg, professions libérales, hôteliers-restaurateurs et acteurs du tourisme littoral. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamballe-Armor (22). Nous accompagnons TPE et PME : artisans et prestataires de services, PME agroalimentaires (filière porcine, volaille, transformation), commerçants de centre-bourg, professions libérales, hôteliers-restaurateurs et acteurs du tourisme littoral. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamballe-Armor (22). Nous accompagnons TPE et PME : artisans et prestataires de services, PME agroalimentaires (filière porcine, volaille, transformation), commerçants de centre-bourg, professions libérales, hôteliers-restaurateurs et acteurs du tourisme littoral. Audit sur place sur mesure.",
   seoHook: "agroalimentaires & artisanat",
   ecosystemFr:
     "Lamballe-Armor est une commune nouvelle des Côtes-d'Armor créée le 1er janvier 2019 (fusion Lamballe, Meslin, Morieux, Planguenoual), entre Saint-Brieuc et Dinan, avec une façade littorale baie de Saint-Brieuc. Tissu TPE artisanat et services, PME agroalimentaires (filière porcine, volaille, transformation), commerce de centre-bourg, professions libérales, hôtellerie-restauration et tourisme littoral, patrimoine équestre Haras national.",
@@ -30,8 +30,8 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lamballe-Armor : formats adaptés site agroalimentaire, exploitation, commerce, hôtel, restaurant, cabinet. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Lamballe-Armor ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation traçabilité et qualité, maintenance prédictive lignes transformation, gestion stocks et logistique, reporting commercial, optimisation cycles production pour filière porcine, volaille et transformation.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation traçabilité et qualité, maintenance prédictive lignes transformation, gestion stocks et logistique, reporting commercial, optimisation cycles production pour filière porcine, volaille et transformation.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de centre-bourg ?",
@@ -61,7 +61,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour l'hôtellerie-restauration et le tourisme littoral ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Haras national et de la baie de Saint-Brieuc.",
+      a: "Audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Haras national et de la baie de Saint-Brieuc.",
     },
     {
       q: "Comment se déroule une mission depuis Rennes ou Paris ?",

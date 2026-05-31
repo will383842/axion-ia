@@ -9,9 +9,9 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   pitchEn:
     "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre les activités professionnelles du bassin du sud toulousain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit sur place sur mesure.",
   seoHook: "proche toulouse",
   ecosystemFr:
     "Ramonville-Saint-Agne bénéficie de la proximité du campus Rangueil (Université Toulouse III), du CNES et du pôle spatial. TPE innovantes, PME tech, startups deeptech, professions libérales, commerces de proximité. Desserte métro ligne B (Ramonville).",
@@ -30,8 +30,8 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ramonville-Saint-Agne : diagnostic adapté aux TPE innovantes, PME tech, startups et professions libérales du pôle Rangueil/CNES. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ramonville : formats adaptés à la startup tech, au cabinet libéral, à la PME spatial. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ramonville-Saint-Agne  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tech, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tech, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention sur site à Ramonville ?",

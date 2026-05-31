@@ -30,8 +30,8 @@ export const EPONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épône : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce ou le cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const EPONE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Épône  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de Seine, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, artisanat, commerce). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de Seine, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, artisanat, commerce). Tarifs publics.",
     },
     {
       q: "Intervenez-vous auprès des artisans et commerçants d'Épône ?",

@@ -30,8 +30,8 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Ã  Saint-Pierre-des-Corps : diagnostic adaptÃ© aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
-      en: "Audit IA Ã  Saint-Pierre-des-Corps : diagnostic adaptÃ© aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
+      fr: "Audit IA Ã  Saint-Pierre-des-Corps : diagnostic adaptÃ© aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
+      en: "Audit IA Ã  Saint-Pierre-des-Corps : diagnostic adaptÃ© aux PME logistique/transport, sous-traitants ferroviaire SNCF, TPE artisans, industries. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
     },
     interventions: {
       fr: "Interventions IA sur site Ã  Saint-Pierre-des-Corps : formats adaptÃ©s Ã  la logistique, maintenance ferroviaire, industrie, commerce. Vos Ã©quipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash 490 â‚¬ HT, intervention 1 journÃ©e formation, coaching 1-to-1. Automatisation devis, gestion clients, facturation.",
+      a: "Audit sur place 1 190 â‚¬ HT, intervention 1 journÃ©e formation, coaching 1-to-1. Automatisation devis, gestion clients, facturation.",
     },
     {
       q: "Comment se rendre Ã  Saint-Pierre-des-Corps ?",

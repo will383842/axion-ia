@@ -30,8 +30,8 @@ export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-des-Eaux : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs et hébergeurs du bassin Brière-La Baule. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-André-des-Eaux : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs et hébergeurs du bassin Brière-La Baule. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-André-des-Eaux : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs et hébergeurs du bassin Brière-La Baule. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-André-des-Eaux : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs et hébergeurs du bassin Brière-La Baule. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-des-Eaux : formats adaptés à l'hôtel, au restaurant, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants ?",
-      a: "Oui, nous accompagnons les hébergeurs et restaurateurs sur des cas IA pratiques : chatbot réservation multilingue, automatisation planning et stocks, agents IA avis clients, optimisation revenue management. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les hébergeurs et restaurateurs sur des cas IA pratiques : chatbot réservation multilingue, automatisation planning et stocks, agents IA avis clients, optimisation revenue management. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME tourisme balnéaire ?",
@@ -61,7 +61,7 @@ export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-André-des-Eaux  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du bassin La Baule.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du bassin La Baule.",
     },
     {
       q: "Intervenez-vous en haute saison touristique ?",

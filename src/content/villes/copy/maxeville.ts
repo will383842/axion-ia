@@ -30,8 +30,8 @@ export const MAXEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maxéville : diagnostic adapté aux TPE/PME zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Maxéville : diagnostic adapté aux TPE/PME zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Maxéville : diagnostic adapté aux TPE/PME zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Maxéville : diagnostic adapté aux TPE/PME zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maxéville : formats adaptés au bureau, commerce, restaurant ou atelier. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const MAXEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les restaurants et services ?",
-      a: "Oui, restaurateurs et prestataires de services maxévillois : automatisation réservation, gestion stocks cuisine, relation client, comptabilité. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, restaurateurs et prestataires de services maxévillois : automatisation réservation, gestion stocks cuisine, relation client, comptabilité. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Maxéville ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Maxéville ?",

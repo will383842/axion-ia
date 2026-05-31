@@ -57,7 +57,7 @@ export const REYRIEUX_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces de Reyrieux ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit Flash dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs de la Dombes ?",

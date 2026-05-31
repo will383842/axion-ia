@@ -30,8 +30,8 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtillon-sur-Chalaronne : formats adaptés au site patrimonial, exploitation piscicole/agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

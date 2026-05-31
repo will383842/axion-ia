@@ -30,8 +30,8 @@ export const GUER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
-      en: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
+      fr: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
+      en: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guer : formats adaptés au prestataire de services, au commerce de bourg ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -57,11 +57,11 @@ export const GUER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerces de Guer ?",
-      a: "Oui, nous accompagnons TPE artisanales et commerces de Guer sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons TPE artisanales et commerces de Guer sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Combien coûte un audit IA à Guer  ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Guer et du Morbihan intérieur. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Guer et du Morbihan intérieur. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Guer ?",

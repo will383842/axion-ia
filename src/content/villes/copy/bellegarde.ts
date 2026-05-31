@@ -9,9 +9,9 @@ export const BELLEGARDE_COPY: VilleCopy = {
   pitchEn:
     "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu TPE/PME viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA opère sur l'ensemble des activités professionnelles locales des Costières.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit sur place sur mesure.",
   seoHook: "viticulture costières & agriculture",
   ecosystemFr:
     "Bellegarde (~8 000 hab) est une commune des Costières entre Nîmes (20 min) et Arles (25 min). Viticulture Costières de Nîmes AOP, agriculture (arboriculture, maraîchage), logistique axe Nîmes-Arles, commerces, artisanat BTP et services aux entreprises. Carrefour agricole gardois.",
@@ -30,8 +30,8 @@ export const BELLEGARDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellegarde : formats adaptés aux caves viticoles, exploitations agricoles, entreprises logistique et commerces des Costières.",
@@ -57,7 +57,7 @@ export const BELLEGARDE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Bellegarde  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles ?",

@@ -30,8 +30,8 @@ export const ROMBAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rombas : formats adaptés à l'atelier industriel, entrepôt logistique, chantier BTP, commerce. Vos équipes repartent autonomes sur outils IA usage quotidien.",
@@ -61,7 +61,7 @@ export const ROMBAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans rombasiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Rombas, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Rombas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Metz ou Luxembourg ?",

@@ -30,8 +30,8 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nort-sur-Erdre : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou base nautique Erdre. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et agriculteurs ?",
-      a: "Pour les TPE artisans BTP et agriculteurs à Nort-sur-Erdre, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion planning et stocks.",
+      a: "Pour les TPE artisans BTP et agriculteurs à Nort-sur-Erdre, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion planning et stocks.",
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",

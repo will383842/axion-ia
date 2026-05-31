@@ -9,9 +9,9 @@ export const MONTESSON_COPY: VilleCopy = {
   pitchEn:
     "Montesson (78), commune résidentielle des Yvelines sur la plaine de Montesson, héritière d'une longue tradition maraîchère, allie cadre verdoyant et proximité parisienne. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Montesson est une commune résidentielle des Yvelines, sur la plaine maraîchère historique de Montesson, entre Le Vésinet et Sartrouville. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles.",
@@ -30,8 +30,8 @@ export const MONTESSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Montesson : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montesson : formats adaptés boutique, bureau PME, cabinet, restaurant, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const MONTESSON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",

@@ -30,8 +30,8 @@ export const ISSOUDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Issoudun : formats adaptés aux ateliers industriels, PME agroalimentaires, TPE artisans BTP et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const ISSOUDUN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants issoldunois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Issoudun sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Issoudun sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour l'agroalimentaire et le négoce agricole du Berry ?",

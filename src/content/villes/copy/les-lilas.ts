@@ -59,7 +59,7 @@ export const LES_LILAS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA aux Lilas ?",
-      a: "William se déplace aux Lilas dans les 5 jours ouvrés après signature du devis. L'Audit Flash débouche sur un rendu écrit sous 7 jours ouvrés.",
+      a: "William se déplace aux Lilas dans les 5 jours ouvrés après signature du devis. L'Audit sur place débouche sur un rendu écrit sous 7 jours ouvrés.",
     },
     {
       q: "Comment Axion-IA gère-t-elle le RGPD et l'AI Act aux Lilas ?",

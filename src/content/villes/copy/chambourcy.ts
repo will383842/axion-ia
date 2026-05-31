@@ -9,9 +9,9 @@ export const CHAMBOURCY_COPY: VilleCopy = {
   pitchEn:
     "Chambourcy (78), commune résidentielle en lisière de la forêt de Marly, à l'ouest de Paris dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité de Saint-Germain-en-Laye et Poissy. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit sur place sur mesure.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Chambourcy est une commune résidentielle prisée en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Cadre verdoyant attractif pour les professions libérales et indépendants. Tissu économique : TPE artisans, commerces de village, PME de services, conseil, immobilier haut de gamme. Communes voisines : Saint-Germain-en-Laye, Poissy, Aigremont, Fourqueux, L'Étang-la-Ville.",
@@ -30,8 +30,8 @@ export const CHAMBOURCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chambourcy : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'ouest parisien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chambourcy : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'ouest parisien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chambourcy : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chambourcy : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chambourcy : formats adaptés au cabinet, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const CHAMBOURCY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Chambourcy  ?",
-      a: "L'Audit Flash IA à Chambourcy démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Chambourcy démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Chambourcy ?",

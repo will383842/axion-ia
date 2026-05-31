@@ -30,8 +30,8 @@ export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux TPE du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux TPE du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux TPE du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux TPE du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Vincent-de-Tyrosse : formations adaptées aux commerces, artisans, exploitations agricoles et cabinets du Pays tyrossais. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les commerçants tyrossais ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux commerces de Saint-Vincent-de-Tyrosse. Diagnostic automatisation gestion stocks, facturation, chatbot service client, analyse ventes, optimisation horaires et personnel.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux commerces de Saint-Vincent-de-Tyrosse. Diagnostic automatisation gestion stocks, facturation, chatbot service client, analyse ventes, optimisation horaires et personnel.",
     },
     {
       q: "Accompagnez-vous les agriculteurs du Pays tyrossais ?",
@@ -61,7 +61,7 @@ export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP et professions libérales ?",
-      a: "Pour les artisans BTP et professions libérales à Saint-Vincent-de-Tyrosse, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation devis/factures, agents IA prise de RDV, classification documents, gestion planning.",
+      a: "Pour les artisans BTP et professions libérales à Saint-Vincent-de-Tyrosse, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation devis/factures, agents IA prise de RDV, classification documents, gestion planning.",
     },
     {
       q: "Comment se passe une mission à Saint-Vincent-de-Tyrosse ?",

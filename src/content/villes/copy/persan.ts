@@ -30,8 +30,8 @@ export const PERSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Persan : formats adaptés à l'atelier industriel, bureau, cabinet ou commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const PERSAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Persan sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Persan sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les professions libérales à Persan ?",

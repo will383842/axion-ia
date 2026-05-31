@@ -30,8 +30,8 @@ export const LA_FLECHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Flèche : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs du tourisme de la vallée du Loir sarthoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Flèche : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs du tourisme de la vallée du Loir sarthoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Flèche : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs du tourisme de la vallée du Loir sarthoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Flèche : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs du tourisme de la vallée du Loir sarthoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Flèche : formations adaptées aux PME de services, commerces, acteurs touristiques, artisans et professions libérales de la vallée du Loir. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const LA_FLECHE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à La Flèche ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME de services et commerçants de La Flèche et la vallée du Loir. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME de services et commerçants de La Flèche et la vallée du Loir. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les professions libérales ?",

@@ -9,9 +9,9 @@ export const RUNGIS_COPY: VilleCopy = {
   pitchEn:
     "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit sur place sur mesure.",
   seoHook: "grossistes négoce & logistique frigorifique",
   ecosystemFr:
     "Rungis est le siège du Marché international de Rungis (MIN), premier marché de produits frais au monde. Tissu grossistes alimentaires, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle.",
@@ -30,8 +30,8 @@ export const RUNGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rungis : formats adaptés pavillon MIN, entrepôt frigorifique, atelier, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const RUNGIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans alimentaires et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

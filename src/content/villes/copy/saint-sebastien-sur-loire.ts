@@ -30,8 +30,8 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Sébastien : diagnostic adapté aux TPE artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures et indépendants.",
-      en: "Audit IA à Saint-Sébastien : diagnostic adapté aux TPE artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures et indépendants.",
+      fr: "Audit IA à Saint-Sébastien : diagnostic adapté aux TPE artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures et indépendants.",
+      en: "Audit IA à Saint-Sébastien : diagnostic adapté aux TPE artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures et indépendants.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Sébastien : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans sébastiennaises ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Saint-Sébastien sur des cas IA accessibles : automatisation devis/factures, agents IA pour relation client, planification interventions. Audit Flash {{price:audit-flash|flat}} adapté aux artisans et petits commerces.",
+      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Saint-Sébastien sur des cas IA accessibles : automatisation devis/factures, agents IA pour relation client, planification interventions. Audit sur place {{price:audit-flash|flat}} adapté aux artisans et petits commerces.",
     },
     {
       q: "Quels services pour les PME nantaises ?",

@@ -9,9 +9,9 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
   pitchEn:
     "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit sur place sur mesure.",
   seoHook: "tourisme hôtellerie & restauration oursinades",
   ecosystemFr:
     "Carry-le-Rouet est la station balnéaire phare de la Côte Bleue, entre Marseille et Martigues, célèbre pour son port de plaisance, ses plages familiales et ses oursinades hivernales. Tissu économique de TPE tourisme (locations saisonnières, hôtellerie indépendante, restauration de bord de mer), plaisance et clubs nautiques, commerces de proximité, PME services tertiaires et professions libérales. Saisonnalité marquée mais activité tourisme étalée.",
@@ -30,8 +30,8 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carry-le-Rouet : ateliers pour équipes tourisme, restauration, plaisance et commerces. Outils IA configurés métier réel, dans vos locaux face au port.",
@@ -53,7 +53,7 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Carry-le-Rouet  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, hôteliers, restaurateurs et commerces carryens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, hôteliers, restaurateurs et commerces carryens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie indépendante et les locations saisonnières ?",

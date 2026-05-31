@@ -9,9 +9,9 @@ export const PAIMPOL_COPY: VilleCopy = {
   pitchEn:
     "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit sur place sur mesure.",
   seoHook: "tourisme maritime & conchyliculture pêche",
   ecosystemFr:
     "Paimpol est un port de pêche et de plaisance historique sur la Côte du Goëlo (Côtes-d'Armor). Économie tournée vers le tourisme maritime (île de Bréhat), la conchyliculture (huîtres de Paimpol), la pêche artisanale, les commerces du port, l'artisanat et la restauration/hôtellerie saisonnière.",
@@ -30,8 +30,8 @@ export const PAIMPOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paimpol : formats adaptés exploitation conchylicole, commerce de port, hôtel, restaurant, atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PAIMPOL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, CRM augmenté, gestion commandes et réservations IA, fidélisation clients, optimisation stocks saisonniers, agents IA prise de commande pour restaurateurs.",
+      a: "Audit sur place {{price:audit-flash|flat}}, CRM augmenté, gestion commandes et réservations IA, fidélisation clients, optimisation stocks saisonniers, agents IA prise de commande pour restaurateurs.",
     },
     {
       q: "Comment se déroule une mission à Paimpol ?",

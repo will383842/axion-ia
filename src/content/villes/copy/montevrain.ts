@@ -9,9 +9,9 @@ export const MONTEVRAIN_COPY: VilleCopy = {
   pitchEn:
     "Montévrain (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, bénéficie de la dynamique économique liée à la proximité de Disneyland Paris et du pôle Val d'Europe. Tissu de TPE/PME hôtellerie-restauration, commerce, services aux entreprises, tourisme et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit sur place sur mesure.",
   seoHook: "hôtellerie restauration & commerce détail",
   ecosystemFr:
     "Montévrain est intégrée au pôle Val d'Europe dans Marne-la-Vallée, à proximité immédiate de Disneyland Paris. Tissu économique porté par l'hôtellerie-restauration, le commerce, les services tourisme, les prestataires BtoB et les professions libérales. Zone d'activités en développement, attractivité renforcée par le parc et le centre commercial Val d'Europe.",
@@ -30,8 +30,8 @@ export const MONTEVRAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montévrain : diagnostic adapté aux TPE/PME hôtellerie-restauration, commerçants, prestataires tourisme et professions libérales du pôle Val d'Europe. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Montévrain : diagnostic adapté aux TPE/PME hôtellerie-restauration, commerçants, prestataires tourisme et professions libérales du pôle Val d'Europe. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Montévrain : diagnostic adapté aux TPE/PME hôtellerie-restauration, commerçants, prestataires tourisme et professions libérales du pôle Val d'Europe. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Montévrain : diagnostic adapté aux TPE/PME hôtellerie-restauration, commerçants, prestataires tourisme et professions libérales du pôle Val d'Europe. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montévrain : formats adaptés hôtel, restaurant, commerce ou bureau PME. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const MONTEVRAIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Montévrain ?",
-      a: "L'audit Flash IA à Montévrain démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Montévrain démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs de Montévrain ?",
@@ -61,7 +61,7 @@ export const MONTEVRAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et PME de Montévrain ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, CRM intelligent, gestion stocks, facturation assistée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, CRM intelligent, gestion stocks, facturation assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Montévrain ?",

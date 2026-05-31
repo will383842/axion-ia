@@ -9,9 +9,9 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
   pitchEn:
     "Lézignan-Corbières (11), commune au coeur des Corbières dans l'Aude, est un pôle viticole et commercial majeur du département. Tissu TPE artisans, PME viticoles et caves coopératives, commerces et zones d'activités, agriculture (vigne, olivier), logistique. Axion-IA opère pour toutes les structures économiques de la commune du bassin lézignanais et des Corbières.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit sur place sur mesure.",
   seoHook: "viticulture caves & commerce zones",
   ecosystemFr:
     "Lézignan-Corbières est un pôle viticole et commercial au coeur des Corbières audoises. L'économie est dominée par la viticulture (AOC Corbières, plus grande appellation du Languedoc), les caves coopératives, le négoce vin. Zones d'activités commerciales et artisanales dynamiques, agriculture diversifiée (vigne, olivier, miel), logistique (carrefour routier A61/D6113). Tourisme viticole croissant.",
@@ -30,8 +30,8 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lézignan-Corbières : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique des Corbières. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lézignan-Corbières : formats adaptés à la cave viticole, le commerce, l'exploitation agricole, l'entrepôt logistique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Lézignan-Corbières  ?",
-      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place s'adapte à votre périmètre pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Les zones d'activités de Lézignan bénéficient-elles de l'IA ?",

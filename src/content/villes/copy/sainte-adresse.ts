@@ -10,9 +10,9 @@ export const SAINTE_ADRESSE_COPY: VilleCopy = {
     "Sainte-Adresse (76), commune residentielle de prestige de l'agglomeration havraise en Seine-Maritime, reunit pres de 7 000 habitants. Surnommee le Nice havrais pour ses vues sur mer, elle accueille des professions liberales, des TPE de services, des commerces et des acteurs du tourisme. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "prestige littoral, professions liberales & tourisme",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Sainte-Adresse (76). Nous accompagnons les TPE, PME et professions liberales du Nice havrais : medecins, avocats, commercants, acteurs du tourisme et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Sainte-Adresse est la commune residentielle de prestige du Havre, surnommee le Nice havrais pour son front de mer et ses villas. Tissu economique domine par les professions liberales, TPE de services, commerces de proximite, hebergements touristiques et artisanat. Acces direct Le Havre centre.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINTE_ADRESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Sainte-Adresse : diagnostic adapte aux professions liberales, TPE de services et acteurs du tourisme du Nice havrais. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Sainte-Adresse : diagnostic adapte aux professions liberales, TPE de services et acteurs du tourisme du Nice havrais. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Sainte-Adresse : diagnostic adapte aux professions liberales, TPE de services et acteurs du tourisme du Nice havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Sainte-Adresse : diagnostic adapte aux professions liberales, TPE de services et acteurs du tourisme du Nice havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Sainte-Adresse : formations adaptees aux cabinets liberaux, hebergeurs touristiques, commerces et TPE de services. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const SAINTE_ADRESSE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les professions liberales de Sainte-Adresse ?",
-      a: "Pour les professions liberales, nous proposons : automatisation documents, IA redaction, gestion agenda intelligente, accueil patients/clients IA. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les professions liberales, nous proposons : automatisation documents, IA redaction, gestion agenda intelligente, accueil patients/clients IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Sainte-Adresse ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les hebergeurs touristiques de Sainte-Adresse ?",

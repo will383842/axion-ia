@@ -30,8 +30,8 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, TPE artisans patrimoine et commerces du bassin angérien. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, TPE artisans patrimoine et commerces du bassin angérien. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, TPE artisans patrimoine et commerces du bassin angérien. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, TPE artisans patrimoine et commerces du bassin angérien. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-d'Angély : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Jean-d'Angély ?",
-      a: "L'audit Flash IA à Saint-Jean-d'Angély démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, agricoles ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à Saint-Jean-d'Angély démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, agricoles ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Jean-d'Angély ?",

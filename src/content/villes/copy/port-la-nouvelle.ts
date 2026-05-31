@@ -9,9 +9,9 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
   pitchEn:
     "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit sur place sur mesure.",
   seoHook: "logistique transport & pêche ostréiculture",
   ecosystemFr:
     "Port-la-Nouvelle est un port de commerce méditerranéen majeur de l'Aude, en pleine modernisation (extension portuaire, éolien offshore). Tissu économique tourné vers la logistique maritime, le transport de marchandises, la pêche et l'ostréiculture (étang de Bages-Sigean). Tourisme balnéaire saisonnier (plages, campings, résidences). TPE artisans, commerces de proximité, hôtellerie-restauration.",
@@ -30,8 +30,8 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Port-la-Nouvelle : diagnostic adapté aux TPE maritimes, PME logistique portuaire, commerces saisonniers et hôteliers du littoral audois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Port-la-Nouvelle : formats adaptés à l'activité portuaire, au commerce saisonnier, à l'hôtellerie balnéaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Port-la-Nouvelle  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistique portuaire, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistique portuaire, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme balnéaire ?",

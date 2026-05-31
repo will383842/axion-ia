@@ -30,8 +30,8 @@ export const VALSERHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valserhône : formats adaptés à l'atelier industriel, bureau frontalier, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const VALSERHONE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Quels services pour les PME industrielles ?",

@@ -9,9 +9,9 @@ export const AUSSILLON_COPY: VilleCopy = {
   pitchEn:
     "Aussillon (81), commune de l'agglomération Castres-Mazamet au pied de la Montagne Noire, plus de 5 500 habitants. Tissu TPE artisans, PME industrie et services, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin mazamétain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit sur place sur mesure.",
   seoHook: "industrie textile & artisanat",
   ecosystemFr:
     "Aussillon (5 527 hab) est une commune de l'agglomération Castres-Mazamet, au pied de la Montagne Noire. Économie liée au bassin mazamétain : PME textile-industrie en reconversion, artisanat, commerces de proximité, services. Proximité immédiate Mazamet (5 min) et Castres (15 min). Cadre naturel Montagne Noire attractif pour le tourisme vert.",
@@ -30,8 +30,8 @@ export const AUSSILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aussillon : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et professions libérales de l'agglo Castres-Mazamet. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aussillon : formats adaptés à l'atelier artisan, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const AUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Aussillon ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE d'Aussillon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE d'Aussillon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "L'IA est-elle adaptée aux petites communes ?",

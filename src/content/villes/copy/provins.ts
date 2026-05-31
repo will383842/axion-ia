@@ -9,9 +9,9 @@ export const PROVINS_COPY: VilleCopy = {
   pitchEn:
     "Provins (77), cite medievale inscrite au patrimoine mondial UNESCO et sous-prefecture de Seine-et-Marne, est celebre pour ses foires de Champagne et son patrimoine exceptionnel (remparts, tour Cesar, souterrains). Tissu TPE/PME tourisme patrimonial, hotellerie-restauration, commerce, artisanat, administration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Provins est une cite medievale inscrite au patrimoine mondial UNESCO depuis 2001, sous-prefecture de Seine-et-Marne. Les foires de Champagne, les spectacles medievaux (vol de l'aigle, chevalerie) et le patrimoine exceptionnel (remparts, tour Cesar, souterrains) generent un tourisme culturel majeur. Hotellerie-restauration, commerce, artisanat et administration completent le tissu economique.",
@@ -30,8 +30,8 @@ export const PROVINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Provins : diagnostic adapte aux acteurs tourisme UNESCO, hoteliers-restaurateurs, commercants ville haute et basse, artisans et administration sous-prefectorale. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Provins : diagnostic adapte aux acteurs tourisme UNESCO, hoteliers-restaurateurs, commercants ville haute et basse, artisans et administration sous-prefectorale. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Provins : diagnostic adapte aux acteurs tourisme UNESCO, hoteliers-restaurateurs, commercants ville haute et basse, artisans et administration sous-prefectorale. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Provins : diagnostic adapte aux acteurs tourisme UNESCO, hoteliers-restaurateurs, commercants ville haute et basse, artisans et administration sous-prefectorale. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Provins : formats adaptes aux sites touristiques, hotels-restaurants, commerces medievaux, ateliers artisans et bureaux administratifs. Equipes autonomes apres intervention.",
@@ -57,7 +57,7 @@ export const PROVINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Provins ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Provins, nous proposons des audits approfondis adaptes aux enjeux tourisme, hotellerie-restauration ou commerce.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Provins, nous proposons des audits approfondis adaptes aux enjeux tourisme, hotellerie-restauration ou commerce.",
     },
     {
       q: "Accompagnez-vous les hoteliers et restaurateurs de Provins ?",

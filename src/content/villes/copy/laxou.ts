@@ -9,9 +9,9 @@ export const LAXOU_COPY: VilleCopy = {
   pitchEn:
     "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
   seoHook: "tertiaires & esn services",
   ecosystemFr:
     "Laxou est une commune résidentielle et tertiaire de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu TPE/PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales adossés au bassin économique nancéien.",
@@ -30,8 +30,8 @@ export const LAXOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laxou : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, ESN, cabinets conseil, commerçants de zone, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laxou : formats adaptés au bureau tertiaire, parc d'activités, commerce de zone, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const LAXOU_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Laxou  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, ESN, cabinets conseil et commerces de la Métropole nancéienne.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, ESN, cabinets conseil et commerces de la Métropole nancéienne.",
     },
     {
       q: "Accompagnez-vous les ESN et cabinets conseil de Laxou ?",

@@ -30,8 +30,8 @@ export const AUBY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auby : formats adaptés à l'atelier artisan, l'usine métallurgique, le commerce. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -61,7 +61,7 @@ export const AUBY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants aubygeois ?",
-      a: "Pour les TPE commerçants à Auby, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
+      a: "Pour les TPE commerçants à Auby, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels FAQ, automatisation marketing local, classification photos produits, gestion fidélité client.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",

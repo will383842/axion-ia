@@ -30,8 +30,8 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtenoy-le-Royal : formats adaptés au point de vente, entrepôt, bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME de services et logistique ?",
-      a: "Oui, agents conversationnels B2B, automatisation workflow, optimisation logistique, classification documents. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, agents conversationnels B2B, automatisation workflow, optimisation logistique, classification documents. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Châtenoy-le-Royal ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Châtenoy-le-Royal ?",

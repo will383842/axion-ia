@@ -30,8 +30,8 @@ export const AIFFRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aiffres : formats adaptés au bureau, commerce, cabinet ou atelier. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const AIFFRES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants d'Aiffres ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants d'Aiffres sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants d'Aiffres sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les professions libérales ?",

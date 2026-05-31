@@ -9,9 +9,9 @@ export const FROUARD_COPY: VilleCopy = {
   pitchEn:
     "Frouard (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle logistique majeur de Lorraine grâce à son port fluvial sur la Moselle et ses zones d'activités. Tissu de TPE/PME logistique, transport, industrie, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit sur place sur mesure.",
   seoHook: "agglomération nancy",
   ecosystemFr:
     "Frouard est situé en première couronne nord de Nancy, au confluent de la Moselle et de la Meurthe. La ville accueille le port fluvial de Nancy-Frouard, l'un des premiers ports intérieurs de France, et de vastes zones logistiques (Plate-forme Nancy-Frouard, Saint-Jacques). L'économie locale repose sur la logistique multimodale (fluvial-rail-route), le transport, l'industrie, l'artisanat BTP et les services. Intégration à la Métropole du Grand Nancy.",
@@ -30,8 +30,8 @@ export const FROUARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Frouard : formats adaptés à la plate-forme logistique, à la PME transport, à l'industrie ou à la TPE artisanale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const FROUARD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Frouard  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Frouard et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre plate-forme logistique, entreprise de transport ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Frouard et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre plate-forme logistique, entreprise de transport ou commerce.",
     },
     {
       q: "Accompagnez-vous les logisticiens et transporteurs de Frouard ?",

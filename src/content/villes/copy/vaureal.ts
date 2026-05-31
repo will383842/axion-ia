@@ -9,9 +9,9 @@ export const VAUREAL_COPY: VilleCopy = {
   pitchEn:
     "Vauréal, commune résidentielle du Val-d'Oise (95) au cœur de la ville nouvelle de Cergy-Pontoise. Tissu TPE artisans, commerçants de quartier, PME de services, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune du bassin Cergy-Pontoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce quartier",
   ecosystemFr:
     "Vauréal est une commune résidentielle de la ville nouvelle de Cergy-Pontoise (200 000 hab), entre Jouy-le-Moutier et Cergy. Son tissu économique s'appuie sur les commerces de quartier, TPE artisanales, PME de services aux entreprises, professions libérales et indépendants. Accès direct RER A branche Cergy.",
@@ -30,8 +30,8 @@ export const VAUREAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vauréal : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de Cergy-Pontoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vauréal : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de Cergy-Pontoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vauréal : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vauréal : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vauréal : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VAUREAL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Vauréal ?",
-      a: "L'Audit Flash IA à Vauréal démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Vauréal démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Vauréal ?",

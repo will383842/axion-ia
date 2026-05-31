@@ -10,9 +10,9 @@ export const PERIGUEUX_COPY: VilleCopy = {
   pitchEn:
     "Périgueux, 29 055 habitants (2023), préfecture de la Dordogne en Nouvelle-Aquitaine, est la ville la plus peuplée du Périgord et siège de la communauté d'agglomération Le Grand Périgueux. Sa cathédrale Saint-Front est classée au patrimoine mondial de l'UNESCO (chemins de Saint-Jacques). Le Technicentre SNCF du Toulon (~600 salariés) ancre le pôle ferroviaire. Axion-IA, cabinet IA en code custom, accompagne ici les TPE et PME du tourisme patrimonial, du commerce de détail, de la santé et de la construction avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   directAnswerFr:
-    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit Flash 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
+    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
   directAnswerEn:
-    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit Flash 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
+    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
   seoHook: "tourisme UNESCO & filière ferroviaire Périgord",
   ecosystemFr:
     "Périgueux concentre l'emploi du Périgord central : Technicentre SNCF du Toulon (~600 salariés), administration préfectorale, hôpital, tribunal, université. Le tourisme patrimonial (cathédrale Saint-Front UNESCO, secteur sauvegardé médiéval et Renaissance) génère un tissu dense de TPE — hôtels, restaurants, commerces d'artisanat, guides. Le Grand Périgueux fédère 43 communes. L'agglomération compte également des artisans BTP, professions médicales et services administratifs typiques d'un chef-lieu départemental.",
@@ -32,8 +32,8 @@ export const PERIGUEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
-      en: "Audit Flash IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
+      fr: "Audit sur place IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
+      en: "Audit sur place IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
     },
     interventions: {
       fr: "Intervention sur site à Périgueux dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation réservations hôtelières, suivi patients, devis BTP, relances administratives.",
@@ -51,7 +51,7 @@ export const PERIGUEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Périgueux ?",
-      a: "Audit Flash 4 h à {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, implémentation et coaching un-à-un dès {{price:intervention-dirigeants|flat}}. Tarifs publics complets sur axion-ia.com.",
+      a: "Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, implémentation et coaching un-à-un dès {{price:intervention-dirigeants|flat}}. Tarifs publics complets sur axion-ia.com.",
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à Périgueux ?",

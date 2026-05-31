@@ -30,8 +30,8 @@ export const HERICOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Héricourt : diagnostic adapté aux TPE/PME industrielles aire urbaine Montbéliard, sous-traitants automobile, ateliers mécanique, artisans et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Héricourt : diagnostic adapté aux TPE/PME industrielles aire urbaine Montbéliard, sous-traitants automobile, ateliers mécanique, artisans et commerçants. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Héricourt : diagnostic adapté aux TPE/PME industrielles aire urbaine Montbéliard, sous-traitants automobile, ateliers mécanique, artisans et commerçants. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Héricourt : diagnostic adapté aux TPE/PME industrielles aire urbaine Montbéliard, sous-traitants automobile, ateliers mécanique, artisans et commerçants. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Héricourt : formations adaptées à l'atelier industriel, bureau d'études, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const HERICOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Héricourt  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}, adapté aux TPE et PME industrielles. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics consultables sur notre site.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux TPE et PME industrielles. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans et commerçants d'Héricourt ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants d'Héricourt : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée, marketing local. Audit Flash {{price:audit-flash|flat}} accessible à toutes tailles.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants d'Héricourt : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée, marketing local. Audit sur place {{price:audit-flash|flat}} accessible à toutes tailles.",
     },
     {
       q: "Comment se déroule une intervention IA à Héricourt ?",

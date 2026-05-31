@@ -31,8 +31,8 @@ export const SERVIAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
-      en: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      fr: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      en: "Audit IA à Servian : diagnostic priorisé TPE (commerces, artisans BTP, professions libérales) puis PME (viticulteurs AOC Languedoc, cave coopérative « Les Vignerons de l'Occitane », entreprises ZAC La Baume). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
     },
     interventions: {
       fr: "Interventions IA sur site à Servian : ateliers adaptés au format de votre TPE/PME — domaine viticole, cave coopérative « Les Vignerons de l'Occitane », entreprise ZAC La Baume, commerce, atelier artisan. Équipes formées et autonomes après une journée.",
@@ -54,11 +54,11 @@ export const SERVIAN_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une mission IA à Servian ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics affichés.",
+      a: "Audit sur place {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics affichés.",
     },
     {
       q: "Quels délais d'intervention sur Servian ?",
-      a: "Audit Flash : créneau sous 5 à 10 jours ouvrés. Interventions terrain : planification à 2-3 semaines. Implémentation code custom : démarrage sous 3-4 semaines selon périmètre.",
+      a: "Audit sur place : créneau sous 5 à 10 jours ouvrés. Interventions terrain : planification à 2-3 semaines. Implémentation code custom : démarrage sous 3-4 semaines selon périmètre.",
     },
     {
       q: "Travaillez-vous avec la cave coopérative « Les Vignerons de l'Occitane » ou les 126 exploitations AOC Languedoc ?",
@@ -66,7 +66,7 @@ export const SERVIAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises de la ZAC La Baume (TMF Transports, Ame'ric, Savim) ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} puis implémentation : optimisation logistique, classification documents, automatisation devis, planification interventions. Cible PME industrielles et tertiaires.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} puis implémentation : optimisation logistique, classification documents, automatisation devis, planification interventions. Cible PME industrielles et tertiaires.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Servian ?",

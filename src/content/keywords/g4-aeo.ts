@@ -68,7 +68,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       metaDescription:
         "Un audit IA Flash prend 1 jour (490 €), un audit Ciblé 5 à 10 jours, un audit Stratégique PME 3 à 6 semaines. Choisissez selon votre urgence et votre taille.",
       h2Variants: [
-        "Durée de l'audit Flash (1 jour)",
+        "Durée de l'audit sur place (1 jour)",
         "Durée de l'audit Stratégique PME",
         "Quel audit choisir selon mon calendrier ?",
       ],
@@ -142,11 +142,11 @@ export const KW_AEO_G4: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Audit IA Flash vs Stratégique : comment choisir en 2026 ?",
-      metaTitle: "Audit Flash vs Stratégique : choisir | Axion-IA",
+      metaTitle: "Audit sur place vs Stratégique : choisir | Axion-IA",
       metaDescription:
-        "L'audit Flash (490 €, 1 jour) convient aux TPE/PME pressées. L'audit Stratégique (4 900-12 000 €, 3-6 semaines) s'impose dès 20 salariés ou un enjeu de transformation globale.",
+        "L'audit sur place (490 €, 1 jour) convient aux TPE/PME pressées. L'audit Stratégique (4 900-12 000 €, 3-6 semaines) s'impose dès 20 salariés ou un enjeu de transformation globale.",
       h2Variants: [
-        "L'audit Flash : pour qui et pour quoi ?",
+        "L'audit sur place : pour qui et pour quoi ?",
         "L'audit Stratégique PME : critères de choix",
         "Tableau comparatif : Flash, Ciblé, Stratégique",
       ],
@@ -1283,7 +1283,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Choisir un prestataire IA en France : 7 critères en 2026",
       metaTitle: "Choisir prestataire IA France 2026 | Axion-IA",
       metaDescription:
-        "7 critères : indépendance des outils, références vérifiables, méthode documentée, transparence tarifaire, accompagnement post-déploiement, conformité RGPD/AI Act, et disponibilité de l'interlocuteur. Demandez un audit Flash avant tout engagement long.",
+        "7 critères : indépendance des outils, références vérifiables, méthode documentée, transparence tarifaire, accompagnement post-déploiement, conformité RGPD/AI Act, et disponibilité de l'interlocuteur. Demandez un audit sur place avant tout engagement long.",
       h2Variants: [
         "Les 7 questions à poser avant de signer",
         "Red flags d'un mauvais prestataire IA",

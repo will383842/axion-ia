@@ -9,9 +9,9 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
   pitchEn:
     "Le Grau-du-Roi (30), station balnéaire du Gard entre Camargue et Méditerranée, port de pêche actif et plage de l'Espiguette. Tissu TPE/PME tourisme balnéaire, hôtellerie-restauration, pêche, commerces saisonniers et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du littoral gardois.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & hôtellerie-restauration",
   ecosystemFr:
     "Le Grau-du-Roi (~8 600 hab) est une station balnéaire du littoral gardois avec Port-Camargue (plus grand port de plaisance d'Europe). Tourisme balnéaire, hôtellerie-restauration saisonnière, pêche professionnelle, commerces, nautisme et activités liées à la Camargue maritime.",
@@ -30,8 +30,8 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Grau-du-Roi : diagnostic adapté aux TPE/PME tourisme balnéaire, hôteliers-restaurateurs, pêcheurs et commerçants saisonniers littoral gardois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Grau-du-Roi : formats adaptés aux hôtels, restaurants, entreprises nautiques, criée et commerces littoral gardois.",
@@ -57,7 +57,7 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Grau-du-Roi ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les professionnels de la pêche ?",

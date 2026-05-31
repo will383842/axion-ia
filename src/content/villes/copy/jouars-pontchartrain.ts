@@ -9,9 +9,9 @@ export const JOUARS_PONTCHARTRAIN_COPY: VilleCopy = {
   pitchEn:
     "Jouars-Pontchartrain (78), commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de bourg, professions libérales et entreprises du tertiaire liées au bassin de Plaisir-Trappes. Axion-IA répond aux besoins de toutes les entreprises de l'ouest Yvelines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit sur place sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Jouars-Pontchartrain est une commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline. Site archéologique gallo-romain (Diodurum) et patrimoine rural préservé. Tissu économique : TPE artisans, commerces de bourg, PME tertiaires, professions libérales, services à la personne et entreprises liées au bassin Plaisir-Trappes. Communes voisines : Neauphle-le-Château, Plaisir, Élancourt, Villepreux, Beynes.",
@@ -30,8 +30,8 @@ export const JOUARS_PONTCHARTRAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jouars-Pontchartrain : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la plaine de Versailles ouest. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Jouars-Pontchartrain : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la plaine de Versailles ouest. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Jouars-Pontchartrain : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la plaine de Versailles ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Jouars-Pontchartrain : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la plaine de Versailles ouest. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jouars-Pontchartrain : formats adaptés au commerce, à l'atelier ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const JOUARS_PONTCHARTRAIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Jouars-Pontchartrain  ?",
-      a: "L'Audit Flash IA à Jouars-Pontchartrain démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Jouars-Pontchartrain démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces à Jouars-Pontchartrain ?",

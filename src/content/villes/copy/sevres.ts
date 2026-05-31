@@ -10,9 +10,9 @@ export const SEVRES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Sèvres (22 303 habitants, Hauts-de-Seine), commune située à 12 km à l'ouest de Paris, au coeur du sud-ouest francilien. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les artisans, commerçants, professions libérales et PME tertiaires installés entre la Manufacture nationale de Sèvres, Strate École de Design et le pôle Boulogne-Billancourt – Issy-les-Moulineaux.",
   directAnswerFr:
-    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
+    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit sur place dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit Flash dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
+    "Axion-IA se déplace à Sèvres (92310) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances, suivi de projet. La commune (3,91 km²) bénéficie d'une desserte multimodale exceptionnelle (Transilien Montparnasse et Saint-Lazare, tramway T2, ligne 9 du métro à Pont de Sèvres, RD 910 et N 118) qui irrigue un tissu dense d'artisans d'art, de cabinets de design et de PME tertiaires. Audit sur place dès {{price:audit-flash|flat}}, interventions dès {{price:intervention-4h|flat}}.",
   seoHook: "artisanat d'art, design & PME tertiaires",
   ecosystemFr:
     "Sèvres est marquée par la Manufacture nationale de Sèvres (porcelaine, héritage de 1756) et le Musée national de la Céramique, qui structurent un écosystème rare d'artisans d'art, de céramistes et de métiers de patrimoine. La présence de Strate École de Design et de l'ESFF (École supérieure de fonderie et forge) attire un tissu de PME d'ingénierie et de design produit. La proximité immédiate de Boulogne-Billancourt, Issy-les-Moulineaux, Meudon, Chaville, Saint-Cloud et Ville-d'Avray ouvre l'accès à un bassin de PME tertiaires denses.",
@@ -50,7 +50,7 @@ export const SEVRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Sèvres ?",
-      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne.",
+      a: "L'Audit sur place 4 h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Sèvres ?",

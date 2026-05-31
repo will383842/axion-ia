@@ -30,8 +30,8 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Faverges-Seythenex : formats adaptés à l'atelier mécanique, l'exploitation agricole, le prestataire touristique ou le commerce de bourg. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Faverges-Seythenex  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de ce carrefour montagnard, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, tourisme, agriculture, artisanat). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de ce carrefour montagnard, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, tourisme, agriculture, artisanat). Tarifs publics.",
     },
     {
       q: "Proposez-vous des solutions IA pour l'agriculture alpine ?",

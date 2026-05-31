@@ -9,9 +9,9 @@ export const SENAS_COPY: VilleCopy = {
   pitchEn:
     "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchage & logistique transport",
   ecosystemFr:
     "Sénas est une commune de la vallée de la Durance, au carrefour de l'A7 (autoroute du Soleil) et de la RD7n. Économie mixte agriculture (vergers, maraîchage Durance), logistique et transport (nœud autoroutier), artisanat BTP et commerces de proximité. Zone d'activités en développement.",
@@ -30,8 +30,8 @@ export const SENAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sénas : ateliers pratiques pour équipes logistique, exploitants agricoles et artisans BTP. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const SENAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique à Sénas ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE/PME de transport, logistique et agriculture sénassaises. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE/PME de transport, logistique et agriculture sénassaises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles de la Durance ?",

@@ -9,9 +9,9 @@ export const MAZAN_COPY: VilleCopy = {
   pitchEn:
     "Mazan (84), commune du Comtat Venaissin au pied sud du Mont Ventoux, compte près de 6 285 habitants. Vignoble AOC Ventoux, agriculture, tourisme oenologique et patrimonial, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "viticulture ventoux & agriculture maraîchage",
   ecosystemFr:
     "Mazan est un pôle agricole et viticole du Comtat Venaissin, au pied sud du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, tourisme patrimonial et oenologique. Tissu de TPE artisans, domaines viticoles familiaux, PME agroalimentaires et hébergements. Carpentras à 10 min, Avignon à 35 min.",
@@ -30,8 +30,8 @@ export const MAZAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mazan : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, hébergements touristiques et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Ventoux ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B et oenotourisme, fiches Google Business.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B et oenotourisme, fiches Google Business.",
     },
     {
       q: "Accompagnez-vous les hébergements touristiques et oenotouristiques de Mazan ?",
@@ -61,7 +61,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mazan  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Mazan ?",

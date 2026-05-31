@@ -9,9 +9,9 @@ export const COULOMMIERS_COPY: VilleCopy = {
   pitchEn:
     "Coulommiers (77), sous-préfecture de Seine-et-Marne, est un bassin économique structurant de l'est francilien. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-ville, services aux entreprises et professions libérales. Ville connue pour le Brie de Coulommiers et son marché. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit sur place sur mesure.",
   seoHook: "agroalimentaire filière & commerce détail",
   ecosystemFr:
     "Coulommiers, sous-préfecture de Seine-et-Marne, est un pôle structurant de l'est francilien. Tissu économique diversifié : filière agroalimentaire (Brie de Coulommiers), artisanat BTP, commerces de centre-ville, services aux entreprises, professions libérales de santé. Zone d'activités des Musiciens et parc Coutevroult à proximité.",
@@ -30,8 +30,8 @@ export const COULOMMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Coulommiers : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerçants et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coulommiers : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Coulommiers ?",
-      a: "L'audit Flash IA à Coulommiers démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Coulommiers démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires de Coulommiers ?",
@@ -61,7 +61,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants de Coulommiers ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Coulommiers ?",

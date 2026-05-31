@@ -9,9 +9,9 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
   pitchEn:
     "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. TPE artisans, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-est marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit sur place sur mesure, sans engagement.",
   seoHook: "résidentiel & services nord-est Marseille",
   ecosystemFr:
     "Plan-de-Cuques est une commune résidentielle prisée au nord-est immédiat de Marseille, entre Allauch et les quartiers nord-est. Économie locale de proximité : TPE artisans du bâtiment, commerces de village, professions libérales, PME services et prestataires pour particuliers et entreprises.",
@@ -30,8 +30,8 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plan-de-Cuques : formats adaptés au cabinet, commerce de village et bureau. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Plan-de-Cuques ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les professions libérales et PME, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les professions libérales et PME, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Plan-de-Cuques ?",
@@ -61,7 +61,7 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux TPE artisans de Plan-de-Cuques ?",
-      a: "Absolument. L'Audit Flash à {{price:audit-flash|flat}} est conçu pour les TPE. Cas pratiques : automatisation devis, gestion planning, facturation, suivi chantiers et relances clients automatiques.",
+      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les TPE. Cas pratiques : automatisation devis, gestion planning, facturation, suivi chantiers et relances clients automatiques.",
     },
     {
       q: "Comment se déroule une mission IA à Plan-de-Cuques ?",

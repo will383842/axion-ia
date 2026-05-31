@@ -116,7 +116,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux spin-offs, start-ups Minalogic et indépendants du bassin grenoblois jusqu'à une dizaine de collaborateurs.",
           },
@@ -156,11 +156,11 @@ export const GRENOBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Grenoble ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash tient sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place tient sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage initial.",
           },
           {
             q: "Travaillez-vous avec les spin-offs et start-ups deeptech grenobloises ?",
-            a: "Oui. Nous accompagnons régulièrement les spin-offs issues du CEA-Leti, du CNRS et de l'UGA, les start-ups de la French Tech in the Alps et les jeunes pousses Minalogic. L'Audit Flash est calibré pour ces structures à fort potentiel.",
+            a: "Oui. Nous accompagnons régulièrement les spin-offs issues du CEA-Leti, du CNRS et de l'UGA, les start-ups de la French Tech in the Alps et les jeunes pousses Minalogic. L'Audit sur place est calibré pour ces structures à fort potentiel.",
           },
           {
             q: "Mes données techniques restent-elles confidentielles pendant l'audit ?",
@@ -937,11 +937,11 @@ export const GRENOBLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA à Grenoble avec Axion-IA ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Les tarifs sont publics et affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Grenoble et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Les tarifs sont publics et affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Grenoble et partout en France.",
     },
     {
       q: "Axion-IA travaille-t-il avec les entreprises de Minalogic et de la French Tech in the Alps ?",
-      a: "Oui. Nous accompagnons régulièrement des membres de Minalogic, des start-ups de la French Tech in the Alps (~450 membres) et des spin-offs du campus GIANT (CEA-Leti, CNRS, Inria). Notre Audit Flash et nos formats Essentielle sont calibrés pour les structures deeptech à fort potentiel.",
+      a: "Oui. Nous accompagnons régulièrement des membres de Minalogic, des start-ups de la French Tech in the Alps (~450 membres) et des spin-offs du campus GIANT (CEA-Leti, CNRS, Inria). Notre Audit sur place et nos formats Essentielle sont calibrés pour les structures deeptech à fort potentiel.",
     },
     {
       q: "Pouvez-vous intervenir dans les entreprises de la Presqu'île scientifique ou d'Inovallée ?",

@@ -50,7 +50,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA à Deuil-la-Barre ?",
-      a: "Audit Flash sur site à partir de {{price:audit-flash|flat}} (4 h), interventions dès {{price:intervention-4h|flat}}, implémentations et sessions 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur la page Tarifs.",
+      a: "Audit sur place sur site à partir de {{price:audit-flash|flat}} (4 h), interventions dès {{price:intervention-4h|flat}}, implémentations et sessions 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur la page Tarifs.",
     },
     {
       q: "Quel est le délai pour une intervention à Deuil-la-Barre ?",

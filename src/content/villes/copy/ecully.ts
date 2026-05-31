@@ -30,8 +30,8 @@ export const ECULLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Écully : formats adaptés au siège social, cabinet professionnel, école supérieure, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const ECULLY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Écully, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis haut de gamme, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Écully, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis haut de gamme, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

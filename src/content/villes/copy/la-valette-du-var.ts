@@ -51,7 +51,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à La Valette-du-Var ?",
-      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, intervention terrain dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille tarifaire publique sur notre page Pricing, sans frais cachés ni abonnement obligatoire.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, intervention terrain dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Grille tarifaire publique sur notre page Pricing, sans frais cachés ni abonnement obligatoire.",
     },
     {
       q: "Vos consultants se déplacent-ils sur la ZAC Valgora et les communes proches ?",
@@ -59,7 +59,7 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à La Valette-du-Var ?",
-      a: "Audit Flash réalisable sous 5 jours ouvrés. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon le périmètre fonctionnel défini en cadrage.",
+      a: "Audit sur place réalisable sous 5 jours ouvrés. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon le périmètre fonctionnel défini en cadrage.",
     },
     {
       q: "Proposez-vous des solutions conformes au RGPD à La Valette-du-Var ?",

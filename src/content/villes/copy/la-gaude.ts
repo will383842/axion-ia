@@ -30,8 +30,8 @@ export const LA_GAUDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Gaude : formats adaptés au cabinet libéral, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,11 +53,11 @@ export const LA_GAUDE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales de La Gaude ?",
-      a: "Oui, nous accompagnons les professions libérales de La Gaude (médecins, avocats, architectes, consultants) sur leurs cas IA : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les professions libérales de La Gaude (médecins, avocats, architectes, consultants) sur leurs cas IA : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP locaux ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de La Gaude sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de La Gaude sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les indépendants tech et R&D ?",

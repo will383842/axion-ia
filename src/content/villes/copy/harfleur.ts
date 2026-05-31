@@ -10,9 +10,9 @@ export const HARFLEUR_COPY: VilleCopy = {
     "Harfleur (76), commune historique de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 290 habitants. Ancien port medieval, la ville accueille des TPE de services, des PME commerciales, des artisans, des professions liberales et des acteurs lies au port du Havre. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "port historique, commerce & agglo Le Havre",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Harfleur (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo havraise : commercants, artisans, prestataires de services et acteurs portuaires. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Harfleur est situee a l'entree de l'agglomeration havraise, ancien port medieval devenu ville residentielle et commercante. Tissu de TPE de services, PME commerciales, artisanat, professions liberales et acteurs logistiques lies au port du Havre. Acces tramway et A29.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HARFLEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Harfleur : diagnostic adapte aux TPE de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Harfleur : diagnostic adapte aux TPE de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Harfleur : diagnostic adapte aux TPE de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Harfleur : diagnostic adapte aux TPE de services, PME commerciales et acteurs logistiques de l'agglo havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Harfleur : formations adaptees aux commerces, cabinets, PME logistiques et artisans de l'agglomeration havraise. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const HARFLEUR_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Harfleur ?",
-      a: "Pour les commercants de Harfleur, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee, analyse ventes. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les commercants de Harfleur, nous proposons : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee, analyse ventes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Harfleur ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME logistiques de Harfleur ?",

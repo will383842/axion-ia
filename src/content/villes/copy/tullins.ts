@@ -30,8 +30,8 @@ export const TULLINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tullins : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const TULLINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants tullinois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Tullins, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Tullins, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",

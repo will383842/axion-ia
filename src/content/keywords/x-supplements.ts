@@ -152,10 +152,10 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
       h1: "Audit IA Flash — diagnostic rapide et accessible pour TPE et PME",
       metaTitle: "Audit IA Flash TPE PME — diagnostic rapide | Axion-IA",
       metaDescription:
-        "L'audit Flash Axion-IA est le format d'entrée : 1 journée, identification des 3-5 process candidats à l'IA, plan de priorisation. Sans engagement sur la suite.",
+        "L'audit sur place Axion-IA est le format d'entrée : 1 journée, identification des 3-5 process candidats à l'IA, plan de priorisation. Sans engagement sur la suite.",
       h2Variants: [
         "Qu'est-ce qu'un audit IA Flash et à quoi ça sert ?",
-        "Audit Flash vs audit complet : lequel choisir pour ma TPE ?",
+        "Audit sur place vs audit complet : lequel choisir pour ma TPE ?",
         "Ce que vous avez en main après un audit IA Flash",
       ],
     },

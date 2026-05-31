@@ -9,9 +9,9 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
   pitchEn:
     "La Penne-sur-Huveaune (13), commune de la vallée de l'Huveaune à l'est de Marseille, bénéficie d'une position stratégique entre Marseille, Aubagne et le massif de Saint-Cyr. Tissu de TPE artisans, commerçants, PME tertiaires et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Penne-sur-Huveaune (13). Nous accompagnons TPE artisans, commerçants, PME tertiaires et entreprises de la vallée de l'Huveaune. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Penne-sur-Huveaune (13). Nous accompagnons TPE artisans, commerçants, PME tertiaires et entreprises de la vallée de l'Huveaune. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Penne-sur-Huveaune (13). Nous accompagnons TPE artisans, commerçants, PME tertiaires et entreprises de la vallée de l'Huveaune. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Penne-sur-Huveaune (13). Nous accompagnons TPE artisans, commerçants, PME tertiaires et entreprises de la vallée de l'Huveaune. Audit sur place sur mesure.",
   seoHook: "commerce distribution & artisanat services",
   ecosystemFr:
     "La Penne-sur-Huveaune est une petite commune de la vallée de l'Huveaune, entre les 11e-12e arrondissements de Marseille et Aubagne. Zone commerciale active (centre commercial La Valentine à proximité), TPE artisans et services, PME tertiaires et résidentiel de cadres travaillant à Marseille ou Aubagne.",
@@ -30,8 +30,8 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Penne-sur-Huveaune : ateliers pratiques pour commerçants, artisans et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à La Penne-sur-Huveaune  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME pennoises. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME pennoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone La Valentine ?",

@@ -7,9 +7,9 @@ export const COGOLIN_COPY: VilleCopy = {
   pitchEn:
     "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille TPE artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA collabore avec toutes les structures locales du Golfe de Saint-Tropez.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "hôtellerie restauration & nautisme plaisance",
   ecosystemFr:
     "Cogolin est une commune de l'aire du Golfe de Saint-Tropez, célèbre pour ses manufactures historiques de tapis et de pipes en bruyère. Tissu de TPE artisanales d'art, PME du nautisme (port des Marines de Cogolin), hôtellerie-restauration, commerces, professions libérales et viticulture (Côtes de Provence).",
@@ -28,8 +28,8 @@ export const COGOLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Cogolin : diagnostic adapté aux TPE artisanales, PME nautisme et hôtellerie-restauration du Golfe de Saint-Tropez. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cogolin : formations pratiques adaptées artisanat, nautisme, hôtellerie, restauration et commerces. Équipes autonomes sur outils IA métier.",
@@ -51,7 +51,7 @@ export const COGOLIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cogolin  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME nautisme. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME nautisme. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie et le nautisme à Cogolin ?",

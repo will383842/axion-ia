@@ -30,8 +30,8 @@ export const VIAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vias : diagnostic pour PME campings, TPE commerçants saisonniers, viticulteurs et acteurs tourisme littoral. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Vias : diagnostic pour PME campings, TPE commerçants saisonniers, viticulteurs et acteurs tourisme littoral. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Vias : diagnostic pour PME campings, TPE commerçants saisonniers, viticulteurs et acteurs tourisme littoral. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vias : diagnostic pour PME campings, TPE commerçants saisonniers, viticulteurs et acteurs tourisme littoral. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vias : ateliers adaptés camping, commerce saisonnier, domaine viticole ou exploitation agricole. Équipes autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const VIAS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les campings ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux campings : automatisation réservations, chatbot multilingue, tarification dynamique saisonnière, gestion avis en ligne. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés aux campings : automatisation réservations, chatbot multilingue, tarification dynamique saisonnière, gestion avis en ligne. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les commerces saisonniers ?",
-      a: "Pour les commerces saisonniers, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, gestion stocks saisonniers, marketing digital.",
+      a: "Pour les commerces saisonniers, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation commandes, gestion stocks saisonniers, marketing digital.",
     },
     {
       q: "Accompagnez-vous les viticulteurs ?",
@@ -65,7 +65,7 @@ export const VIAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Vias ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions et coaching sont sur devis. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions et coaching sont sur devis. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

@@ -9,9 +9,9 @@ export const GEVEZE_COPY: VilleCopy = {
   pitchEn:
     "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit sur place sur mesure.",
   ecosystemFr:
     "Gévezé est une commune résidentielle en croissance au nord-ouest de Rennes Métropole (Ille-et-Vilaine). Son économie locale combine artisanat du bâtiment, commerces de centre-bourg, services aux entreprises, professions libérales et agriculture périurbaine, dans un cadre attractif à proximité immédiate de la capitale bretonne.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GEVEZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gévezé : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const GEVEZE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Gévezé ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour les TPE gévezéennes. Il comprend un diagnostic de vos processus métier, l'identification des cas d'usage IA prioritaires et une feuille de route avec ROI estimé.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour les TPE gévezéennes. Il comprend un diagnostic de vos processus métier, l'identification des cas d'usage IA prioritaires et une feuille de route avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment ?",

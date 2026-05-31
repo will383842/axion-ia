@@ -34,8 +34,8 @@ export const QUIMPER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quimper — cartographie des processus à automatiser chez les TPE/PME du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours.",
-      en: "Audit IA à Quimper — cartographie des processus à automatiser chez les TPE/PME du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours.",
+      fr: "Audit IA à Quimper — cartographie des processus à automatiser chez les TPE/PME du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours.",
+      en: "Audit IA à Quimper — cartographie des processus à automatiser chez les TPE/PME du centre historique, des faïenceries de Locmaria, de l'agroalimentaire ou du tourisme. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours.",
     },
     interventions: {
       fr: "Intervention sur site à Quimper — William se déplace pour cadrer et déployer un agent IA opérationnel (suivi qualité agroalimentaire, OCR factures, planning saisonnier tourisme). Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -53,7 +53,7 @@ export const QUIMPER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Quimper ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à Quimper, livré sous 5 jours ouvrés. Formation 4 h dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à Quimper, livré sous 5 jours ouvrés. Formation 4 h dès {{price:intervention-4h|flat}}, implémentation complète dès {{price:impl-poc|entry}}. Tous nos tarifs sont publics et fixes.",
     },
     {
       q: "William se déplace-t-il à Quimper depuis Paris ?",
@@ -61,7 +61,7 @@ export const QUIMPER_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Quimper ?",
-      a: "Une Intervention Essentielle est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit Flash est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité fonctionnelle.",
+      a: "Une Intervention Essentielle est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit sur place est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité fonctionnelle.",
     },
     {
       q: "Quels secteurs économiques quimpérois ciblez-vous en priorité ?",

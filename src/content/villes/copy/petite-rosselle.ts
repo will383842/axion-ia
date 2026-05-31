@@ -9,9 +9,9 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
   pitchEn:
     "Petite-Rosselle (57), commune de l'agglomération de Forbach dans le Bassin houiller lorrain en Moselle, célèbre pour le parc Explor Wendel et le musée de la mine. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA accompagne tout le tissu professionnel local de la Moselle-Est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Petite-Rosselle est une commune de l'agglomération de Forbach dans le Warndt, à la frontière sarroise. Marquée par son histoire minière, elle abrite le parc Explor Wendel et le musée de la mine, témoins du patrimoine industriel. Tissu TPE artisans BTP, PME industrielles et sous-traitance, commerces de proximité, professions libérales et indépendants. Bassin de vie transfrontalier Moselle-Est / Sarre.",
@@ -30,8 +30,8 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Petite-Rosselle : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales du Bassin houiller et de l'agglomération de Forbach. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Petite-Rosselle : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales du Bassin houiller et de l'agglomération de Forbach. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Petite-Rosselle : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales du Bassin houiller et de l'agglomération de Forbach. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Petite-Rosselle : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales du Bassin houiller et de l'agglomération de Forbach. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Petite-Rosselle : formations adaptées TPE/PME industrielles et services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Petite-Rosselle  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Petite-Rosselle souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Petite-Rosselle souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME industrielles à Petite-Rosselle ?",
@@ -61,7 +61,7 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Petite-Rosselle ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants frontaliers.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants frontaliers.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Petite-Rosselle ?",

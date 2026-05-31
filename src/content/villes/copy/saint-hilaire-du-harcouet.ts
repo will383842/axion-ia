@@ -30,8 +30,8 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Hilaire-du-Harcouët : formats adaptés à l'exploitation d'élevage, la laiterie, l'atelier BTP, le commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,11 +53,11 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les éleveurs bovins du bocage manchois ?",
-      a: "Oui, nous accompagnons les TPE éleveurs bovins laitiers et allaitants du bocage : traçabilité troupeau, prédiction rendements, automatisation PAC, suivi sanitaire IA, optimisation alimentation. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE éleveurs bovins laitiers et allaitants du bocage : traçabilité troupeau, prédiction rendements, automatisation PAC, suivi sanitaire IA, optimisation alimentation. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME agroalimentaires locales ?",
-      a: "Pour les PME agroalimentaires de Saint-Hilaire (laiteries, transformation viande), audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation traçabilité, contrôle qualité, prédiction maintenance, optimisation logistique.",
+      a: "Pour les PME agroalimentaires de Saint-Hilaire (laiteries, transformation viande), audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation traçabilité, contrôle qualité, prédiction maintenance, optimisation logistique.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP du sud Manche ?",

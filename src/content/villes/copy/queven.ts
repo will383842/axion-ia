@@ -10,9 +10,9 @@ export const QUEVEN_COPY: VilleCopy = {
     "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. TPE de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération lorientaise.",
   seoHook: "technologie, services & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quéven (56). Nous accompagnons tous types d'activités : TPE de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quéven (56). Nous accompagnons tous types d'activités : TPE de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quéven (56). Nous accompagnons tous types d'activités : TPE de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quéven (56). Nous accompagnons tous types d'activités : TPE de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Quéven est une commune résidentielle dynamique de l'agglomération lorientaise, avec un tissu économique diversifié. L'économie locale bénéficie du pôle naval et défense de Lorient, des zones d'activités intercommunales, de PME technologiques et de services. L'artisanat BTP, le commerce de proximité et les professions libérales complètent le tissu entrepreneurial. La qualité de vie résidentielle attire cadres et indépendants.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const QUEVEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quéven : diagnostic adapté aux TPE de services, PME technologiques, artisans et professions libérales de l'agglomération lorientaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quéven : formations pratiques pour équipes PME technologiques, sous-traitants industriels, artisans et professionnels de santé. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const QUEVEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Quéven  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quévenoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quévenoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et professions libérales à Quéven ?",
-      a: "Pour les artisans et professions libérales, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : automatisation devis et factures, gestion planning, CRM intelligent, comptabilité augmentée et marketing local.",
+      a: "Pour les artisans et professions libérales, nous proposons : Audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : automatisation devis et factures, gestion planning, CRM intelligent, comptabilité augmentée et marketing local.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Quéven ?",

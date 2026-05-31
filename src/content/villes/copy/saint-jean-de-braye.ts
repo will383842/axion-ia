@@ -50,7 +50,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA à Saint-Jean-de-Braye ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}} (4 h sur site), interventions dès {{price:intervention-4h|flat}}, implémentations et sessions 1-to-1 dès {{price:intervention-dirigeants|flat}}. Détail complet sur la page Tarifs.",
+      a: "Audit sur place dès {{price:audit-flash|flat}} (4 h sur site), interventions dès {{price:intervention-4h|flat}}, implémentations et sessions 1-to-1 dès {{price:intervention-dirigeants|flat}}. Détail complet sur la page Tarifs.",
     },
     {
       q: "Quel est le délai pour une intervention à Saint-Jean-de-Braye ?",

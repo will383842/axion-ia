@@ -9,9 +9,9 @@ export const CESTAS_COPY: VilleCopy = {
   pitchEn:
     "Cestas (33), commune au sud-ouest de Bordeaux Métropole en lisière de la forêt des Landes, abrite le technopôle Bordeaux-Cestas (laser, photonique, numérique) et un tissu dynamique de TPE/PME. Axion-IA opère pour toutes les structures économiques de la commune : startups tech, PME industrielles, artisans, commerces et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "tech photonique & industrielles",
   ecosystemFr:
     "Cestas accueille le technopôle Bordeaux-Cestas, pôle de compétitivité laser-photonique-numérique de rang européen. En lisière de forêt des Landes, la commune allie R&D high-tech, PME industrielles et tissu TPE résidentiel. Accès rapide A63 (Bayonne) et rocade Bordeaux.",
@@ -30,8 +30,8 @@ export const CESTAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cestas : ateliers adaptés aux entreprises tech, industriels, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const CESTAS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Cestas  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux startups tech du technopôle comme aux TPE artisans de Cestas.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux startups tech du technopôle comme aux TPE artisans de Cestas.",
     },
     {
       q: "Accompagnez-vous les entreprises tech du technopôle ?",
@@ -61,7 +61,7 @@ export const CESTAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans à Cestas ?",
-      a: "Pour les TPE artisans de Cestas : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans de Cestas : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se passe une mission à Cestas ?",

@@ -123,7 +123,7 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux artisans, indépendants, TPE industrielles et commerciales du bassin annécien jusqu'à une dizaine de collaborateurs.",
           },
@@ -163,7 +163,7 @@ export const ANNECY_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Annecy ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est défini en cadrage selon votre disponibilité et votre organisation.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est défini en cadrage selon votre disponibilité et votre organisation.",
           },
           {
             q: "Quelle valeur apporte un audit pour une PME industrielle d'Annecy ?",
@@ -945,7 +945,7 @@ export const ANNECY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Annecy ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Annecy et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Annecy et partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans le bassin industriel d'Annecy et la Vallée de l'Arve ?",

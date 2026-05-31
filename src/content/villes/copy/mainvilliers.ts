@@ -30,8 +30,8 @@ export const MAINVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mainvilliers : formats adaptés à l'entrepôt logistique, commerce de zone, atelier artisan ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,11 +53,11 @@ export const MAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises des zones d'activités de Mainvilliers ?",
-      a: "Oui, nous accompagnons les TPE/PME des zones d'activités de Mainvilliers et Chartres Métropole : logistique, commerce de zone, services aux entreprises. Audit Flash {{price:audit-flash|flat}} adapté à chaque secteur.",
+      a: "Oui, nous accompagnons les TPE/PME des zones d'activités de Mainvilliers et Chartres Métropole : logistique, commerce de zone, services aux entreprises. Audit sur place {{price:audit-flash|flat}} adapté à chaque secteur.",
     },
     {
       q: "Quels tarifs pour un audit IA à Mainvilliers ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et professions libérales ?",

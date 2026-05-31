@@ -9,9 +9,9 @@ export const PFASTATT_COPY: VilleCopy = {
   pitchEn:
     "Pfastatt (68), commune de la première couronne nord de Mulhouse dans le Haut-Rhin, est marquée par son héritage textile industriel et accueille aujourd'hui un tissu diversifié de TPE/PME en industrie, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place sur mesure.",
   seoHook: "industrie sous-traitance & textile technique",
   ecosystemFr:
     "Pfastatt s'inscrit dans la première couronne nord de Mulhouse, au sein de Mulhouse Alsace Agglomération (m2A). Ancienne place forte de l'industrie textile alsacienne (DMC, ex-manufactures), la commune a diversifié son tissu vers la sous-traitance industrielle, la mécanique, l'artisanat BTP, le commerce de proximité et les services aux entreprises. Proximité immédiate des zones d'activités mulhousiennes.",
@@ -30,8 +30,8 @@ export const PFASTATT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pfastatt : diagnostic adapté aux industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pfastatt : formats adaptés à la PME industrielle, à l'atelier de sous-traitance, à l'artisan BTP ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PFASTATT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Pfastatt  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pfastatt et de l'agglomération mulhousienne, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, artisanat ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pfastatt et de l'agglomération mulhousienne, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, artisanat ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants de Pfastatt ?",

@@ -10,9 +10,9 @@ export const VENISSIEUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Vénissieux, troisième commune la plus peuplée du Rhône (65 502 habitants en 2023) après Lyon et Villeurbanne, intégrée à la Métropole de Lyon. La ville héberge des sites industriels structurants (Renault Trucks au Parilly, Bosch, anciennement Veninov) et un tissu dense de sous-traitants automobile, métallurgie, logistique et BTP. William intervient depuis Paris pour livrer du code Python/TypeScript sur mesure — pas du no-code à l'année — adapté aux contraintes industrielles 4.0 et aux donneurs d'ordre automobiles.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. William se déplace sur site dans le Rhône pour livrer trois prestations : Audit Flash 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. William se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. William se déplace sur site dans le Rhône pour livrer trois prestations : Audit Flash 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
+    "Axion-IA est un cabinet IA français qui sert les TPE et PME de Vénissieux et de la Métropole de Lyon. William se déplace sur site dans le Rhône pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables, y compris pour sous-traitants Renault Trucks ou Bosch), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : reporting MES, qualité fournisseurs, gestion d'OF) et Implémentation longue (raccordement à l'ERP/MES existant). Tous les tarifs sont publics. Contrat DPA, hébergement UE.",
   seoHook: "automobile (Renault Trucks), équipementiers et logistique",
   ecosystemFr:
     "Vénissieux a connu une industrialisation forte au XXe siècle, passant d'un village agricole et viticole à un pôle automobile majeur. Le site Renault Trucks au quartier du Parilly et la présence de Bosch ancrent une filière équipementier et métallurgie. Les zones d'activité Chêne-Velin (commerciale et industrielle) et Parilly concentrent la sous-traitance. La desserte par le métro D (terminus Gare de Vénissieux), le tramway T4 vers Lyon 8e, et le boulevard Urbain Sud relient la commune au reste de la Métropole de Lyon en moins de 25 minutes.",
@@ -31,8 +31,8 @@ export const VENISSIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "L'Audit Flash 4h à Vénissieux cartographie les processus d'un sous-traitant automobile du Parilly, d'une PME métallurgique du Chêne-Velin, ou d'un logisticien de la rocade Est, et chiffre les heures récupérables par automatisation.",
-      en: "L'Audit Flash 4h à Vénissieux cartographie les processus d'un sous-traitant automobile du Parilly, d'une PME métallurgique du Chêne-Velin, ou d'un logisticien de la rocade Est, et chiffre les heures récupérables par automatisation.",
+      fr: "L'Audit sur place 4h à Vénissieux cartographie les processus d'un sous-traitant automobile du Parilly, d'une PME métallurgique du Chêne-Velin, ou d'un logisticien de la rocade Est, et chiffre les heures récupérables par automatisation.",
+      en: "L'Audit sur place 4h à Vénissieux cartographie les processus d'un sous-traitant automobile du Parilly, d'une PME métallurgique du Chêne-Velin, ou d'un logisticien de la rocade Est, et chiffre les heures récupérables par automatisation.",
     },
     interventions: {
       fr: "Les Interventions Essentielles à Vénissieux ciblent le reporting MES, la qualité fournisseurs (PPAP/8D), la gestion d'ordres de fabrication et l'automatisation des relances clients industriels — code versionné, repris par votre IT.",
@@ -50,7 +50,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une mission Axion-IA à Vénissieux ?",
-      a: "Audit Flash 4h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, Implémentation sur devis. Tarifs publics sur axion-ia.com — pas de package opaque, pas d'abonnement caché.",
+      a: "Audit sur place 4h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, Implémentation sur devis. Tarifs publics sur axion-ia.com — pas de package opaque, pas d'abonnement caché.",
     },
     {
       q: "Quels délais d'intervention sur Vénissieux et la Métropole de Lyon ?",

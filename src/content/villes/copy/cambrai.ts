@@ -11,9 +11,9 @@ export const CAMBRAI_COPY: VilleCopy = {
   pitchEn:
     "Cambrai (59, Nord) est une sous-préfecture du Cambrésis d'environ 31 000 habitants, située au carrefour des autoroutes A2 et A26. Son tissu économique mêle agroalimentaire (sucrerie Tereos à Escaudœuvres), logistique avec la zone e-Valley en plein développement, commerce de centre-ville et BTP. Axion-IA accompagne TPE artisans, commerçants et PME industrielles ou logistiques du Cambrésis.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambrai (59) auprès des TPE et PME du Cambrésis : artisans, commerçants du centre-ville, PME agroalimentaires, acteurs de la logistique e-Valley, BTP et professions libérales. Nos consultants se déplacent depuis Lille en 50 min via A1/A2. Audit Flash {{price:intervention-4h|flat}}, code custom (pas no-code), conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambrai (59) auprès des TPE et PME du Cambrésis : artisans, commerçants du centre-ville, PME agroalimentaires, acteurs de la logistique e-Valley, BTP et professions libérales. Nos consultants se déplacent depuis Lille en 50 min via A1/A2. Audit sur place {{price:intervention-4h|flat}}, code custom (pas no-code), conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambrai (59) auprès des TPE et PME du Cambrésis : artisans, commerçants du centre-ville, PME agroalimentaires, acteurs de la logistique e-Valley, BTP et professions libérales. Nos consultants se déplacent depuis Lille en 50 min via A1/A2. Audit Flash {{price:intervention-4h|flat}}, code custom (pas no-code), conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambrai (59) auprès des TPE et PME du Cambrésis : artisans, commerçants du centre-ville, PME agroalimentaires, acteurs de la logistique e-Valley, BTP et professions libérales. Nos consultants se déplacent depuis Lille en 50 min via A1/A2. Audit sur place {{price:intervention-4h|flat}}, code custom (pas no-code), conformité RGPD intégrée.",
   seoHook: "TPE & PME Cambrésis",
   ecosystemFr:
     "Cambrai se trouve au carrefour des autoroutes A2 (Paris-Bruxelles) et A26 (Calais-Reims), à 24 km de Douai et 52 km de Lille. Le tissu local est porté par la sucrerie Tereos d'Escaudœuvres, la zone logistique e-Valley, la construction résidentielle et les commerces du centre patrimonial (cathédrale, beffroi). Le projet Canal Seine-Nord Europe renforce le pôle logistique. TPE artisanat, commerces, professions libérales et PME industrielles dominent.",
@@ -32,8 +32,8 @@ export const CAMBRAI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cambrai : diagnostic adapté aux TPE artisans, commerçants du centre patrimonial et PME agroalimentaires ou logistiques du Cambrésis. Audit Flash {{price:intervention-4h|flat}}.",
-      en: "Audit IA à Cambrai : diagnostic adapté aux TPE artisans, commerçants du centre patrimonial et PME agroalimentaires ou logistiques du Cambrésis. Audit Flash {{price:intervention-4h|flat}}.",
+      fr: "Audit IA à Cambrai : diagnostic adapté aux TPE artisans, commerçants du centre patrimonial et PME agroalimentaires ou logistiques du Cambrésis. Audit sur place {{price:intervention-4h|flat}}.",
+      en: "Audit IA à Cambrai : diagnostic adapté aux TPE artisans, commerçants du centre patrimonial et PME agroalimentaires ou logistiques du Cambrésis. Audit sur place {{price:intervention-4h|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cambrai : ateliers adaptés à la PME industrielle, au commerce ou à l'artisan. Vos équipes repartent autonomes sur des cas d'usage concrets.",
@@ -55,7 +55,7 @@ export const CAMBRAI_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Cambrai ?",
-      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou logistiques du Cambrésis, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit sur place démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou logistiques du Cambrésis, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Quels délais pour une intervention à Cambrai ?",

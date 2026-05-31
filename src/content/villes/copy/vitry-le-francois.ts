@@ -10,9 +10,9 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
     "Vitry-le-François (51), sous-préfecture de la Marne à la confluence de la Marne et du canal de la Marne au Rhin, est un carrefour logistique fluvial et routier historique. Tissu de TPE artisanales, PME logistique et transport, industrie agroalimentaire, commerces et services. Axion-IA y mène ses missions auprès des organisations locales.",
   seoHook: "logistique fluviale, agroalimentaire & sous-préfecture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit sur place sur mesure.",
   ecosystemFr:
     "Vitry-le-François est une sous-préfecture de la Marne située à la confluence de la Marne et du canal de la Marne au Rhin. Carrefour logistique fluvial et routier historique, la ville accueille des PME de transport, logistique et industrie agroalimentaire (Champagne céréalière). Tissu de TPE artisanales, commerces de centre-ville, administration et services publics. Reconstruction ville géométrique XVIIe siècle.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vitry-le-François : diagnostic adapté aux PME logistique et transport, industries agroalimentaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture marnaise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vitry-le-François : formats adaptés à la PME logistique, à l'industrie agroalimentaire, à la TPE artisanale ou à l'exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Vitry-le-François  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Vitry-le-François, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Vitry-le-François, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les PME logistique et transport de Vitry-le-François ?",

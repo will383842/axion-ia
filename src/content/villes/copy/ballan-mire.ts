@@ -30,8 +30,8 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ballan-Miré : formats adaptés au bureau tertiaire, atelier artisan, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission à Ballan-Miré ?",

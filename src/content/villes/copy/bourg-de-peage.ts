@@ -30,8 +30,8 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-de-Péage : formats adaptés à l'atelier industriel (filière cuir/chaussure), bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans péageois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Bourg-de-Péage, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
+      a: "Pour les TPE artisans BTP et commerçants à Bourg-de-Péage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",

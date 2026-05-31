@@ -30,8 +30,8 @@ export const ORVAULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orvault : sessions adaptées TPE/PME. Formats demi-journée à 2 jours, vos équipes (commerciaux, assistants, ouvriers BTP) repartent autonomes sur des outils IA.",
@@ -53,7 +53,7 @@ export const ORVAULT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans d'Orvault ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Orvault sur des cas IA pragmatiques : automatisation devis, agents IA prise de RDV, planification interventions, gestion administrative. Audit Flash à {{price:audit-flash|flat}} accessible aux artisans et petits commerces.",
+      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Orvault sur des cas IA pragmatiques : automatisation devis, agents IA prise de RDV, planification interventions, gestion administrative. Audit sur place à {{price:audit-flash|flat}} accessible aux artisans et petits commerces.",
     },
     {
       q: "Quels services pour les PME des zones d'activités Ar Mor et Atlantis ?",

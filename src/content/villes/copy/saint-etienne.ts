@@ -122,7 +122,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux artisans, micro-entreprises et petites structures stéphanoises jusqu'à une dizaine de collaborateurs.",
           },
@@ -162,7 +162,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Saint-Étienne ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est calé avec vous lors du brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est calé avec vous lors du brief de cadrage initial.",
           },
           {
             q: "Quels secteurs stéphanois sont prioritaires pour un audit IA ?",
@@ -945,7 +945,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Saint-Étienne ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Saint-Étienne qu'à Paris ou Lyon.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Saint-Étienne qu'à Paris ou Lyon.",
     },
     {
       q: "Axion-IA intervient-il dans les communes du bassin stéphanois ?",
@@ -961,7 +961,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous travailler avec des entreprises connectées à Mines Saint-Étienne ou au Labo Hubert Curien ?",
-      a: "Oui. Nos missions s'adressent aussi bien aux spin-offs et startups deep tech issues de Mines Saint-Étienne qu'aux industriels qui collaborent avec le Labo Hubert Curien (optique, vision par ordinateur, IA appliquée). Notre Audit Flash est conçu pour les structures early-stage.",
+      a: "Oui. Nos missions s'adressent aussi bien aux spin-offs et startups deep tech issues de Mines Saint-Étienne qu'aux industriels qui collaborent avec le Labo Hubert Curien (optique, vision par ordinateur, IA appliquée). Notre Audit sur place est conçu pour les structures early-stage.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Saint-Étienne ?",

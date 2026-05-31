@@ -9,9 +9,9 @@ export const CALVISSON_COPY: VilleCopy = {
   pitchEn:
     "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu TPE/PME viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la Vaunage.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
   seoHook: "viticulture & agriculture méditerranéenne",
   ecosystemFr:
     "Calvisson (~6 500 hab) est le bourg central de la Vaunage, plaine viticole entre Nîmes (20 min) et Sommières (10 min). Viticulture (caves coopératives et indépendants), agriculture méditerranéenne (oliviers), commerces de proximité, artisanat BTP et professions libérales. Marché provençal vivant.",
@@ -30,8 +30,8 @@ export const CALVISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Calvisson : diagnostic adapté aux TPE/PME viticoles, agriculteurs, commerçants et artisans de la Vaunage gardoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Calvisson : formats adaptés aux caves viticoles, exploitations agricoles, commerces et artisans de la Vaunage.",
@@ -57,7 +57,7 @@ export const CALVISSON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Calvisson  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP ?",

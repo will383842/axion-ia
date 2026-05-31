@@ -9,9 +9,9 @@ export const LIMOURS_COPY: VilleCopy = {
   pitchEn:
     "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Limours est une commune résidentielle du Hurepoix, aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Cadre forestier et vallonné, marché hebdomadaire historique. Tissu TPE artisans BTP, commerces de proximité, professions libérales, PME services, agriculture et exploitation forestière.",
@@ -30,8 +30,8 @@ export const LIMOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Limours : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const LIMOURS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et TPE du Hurepoix ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, fidélisation client, agents IA commande, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",

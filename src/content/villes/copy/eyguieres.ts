@@ -9,9 +9,9 @@ export const EYGUIERES_COPY: VilleCopy = {
   pitchEn:
     "Eyguières (13), village provençal au pied des Alpilles entre Salon-de-Provence et Cavaillon, vit de l'agriculture (oliveraies, vergers, maraîchage), de l'artisanat et du tourisme rural. Tissu de TPE agricoles, artisans, commerçants et PME services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eyguières (13). Nous accompagnons TPE agricoles, artisans, commerçants, PME de services et acteurs du tourisme rural des Alpilles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eyguières (13). Nous accompagnons TPE agricoles, artisans, commerçants, PME de services et acteurs du tourisme rural des Alpilles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eyguières (13). Nous accompagnons TPE agricoles, artisans, commerçants, PME de services et acteurs du tourisme rural des Alpilles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eyguières (13). Nous accompagnons TPE agricoles, artisans, commerçants, PME de services et acteurs du tourisme rural des Alpilles. Audit sur place sur mesure.",
   seoHook: "agriculture oliveraies & artisanat métiers",
   ecosystemFr:
     "Eyguières est un village agricole au sud des Alpilles, à mi-chemin entre Salon-de-Provence et Cavaillon. Économie portée par l'agriculture (oliveraies AOC Vallée des Baux, vergers, maraîchage bio), l'artisanat local, le tourisme rural (gîtes, randonnées Alpilles) et un tissu de TPE/PME services.",
@@ -30,8 +30,8 @@ export const EYGUIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eyguières : ateliers pratiques pour exploitants agricoles, artisans et commerçants. Outils IA configurés métier réel, de l'exploitation au point de vente.",
@@ -53,7 +53,7 @@ export const EYGUIERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un exploitant agricole ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux TPE agricoles et artisans eyguièrois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux TPE agricoles et artisans eyguièrois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les producteurs d'huile d'olive AOC des Alpilles ?",

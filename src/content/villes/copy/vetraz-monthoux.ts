@@ -9,9 +9,9 @@ export const VETRAZ_MONTHOUX_COPY: VilleCopy = {
   pitchEn:
     "Vetraz-Monthoux (74), commune residentielle de l'agglomeration d'Annemasse au coeur du Grand Geneve, beneficie de la dynamique transfrontaliere a 10 minutes de Geneve. Tissu TPE/PME de services, commerce, professions liberales et artisanat BTP. Axion-IA y intervient pour tous types d'activites de l'agglomeration annemassienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "agglomération geneve",
   ecosystemFr:
     "Vetraz-Monthoux est une commune residentielle dynamique de l'agglomeration d'Annemasse, a 10 minutes de Geneve. Integree au Grand Geneve, elle beneficie du flux economique transfrontalier : TPE/PME tertiaires, commerces, professions liberales et artisanat BTP. Proximite Annemasse et Geneve favorise les services aux entreprises et le commerce de proximite.",
@@ -30,8 +30,8 @@ export const VETRAZ_MONTHOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Vetraz-Monthoux : diagnostic adapte aux TPE/PME tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Vetraz-Monthoux : diagnostic adapte aux TPE/PME tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Vetraz-Monthoux : diagnostic adapte aux TPE/PME tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Vetraz-Monthoux : diagnostic adapte aux TPE/PME tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Vetraz-Monthoux : formats adaptes aux entreprises de services, commerces et cabinets du Grand Geneve. Equipes autonomes sur outils IA configures metier.",
@@ -57,7 +57,7 @@ export const VETRAZ_MONTHOUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Vetraz-Monthoux ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE/PME de Vetraz-Monthoux, nous proposons des audits adaptes aux enjeux transfrontaliers de l'agglomeration annemassienne.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE/PME de Vetraz-Monthoux, nous proposons des audits adaptes aux enjeux transfrontaliers de l'agglomeration annemassienne.",
     },
     {
       q: "Accompagnez-vous les artisans et commercants a Vetraz-Monthoux ?",

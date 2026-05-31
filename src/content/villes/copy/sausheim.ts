@@ -9,9 +9,9 @@ export const SAUSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Sausheim (68), commune de l'agglomération mulhousienne dans le Haut-Rhin, 5 666 habitants, est un pôle industriel majeur de l'est de Mulhouse marqué par sa vaste zone industrielle et la présence historique de constructeurs automobiles et de leurs sous-traitants. Tissu de TPE/PME industrie automobile, logistique, sous-traitance, services et commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit sur place sur mesure.",
   ecosystemFr:
     "Sausheim est intégrée à Mulhouse Alsace Agglomération et constitue l'un des principaux pôles industriels de l'est mulhousien. Son économie repose sur la grande industrie automobile et ses sous-traitants, la logistique, la mécanique de précision, les services aux entreprises et un tissu commercial de proximité. Proche du canal du Rhône au Rhin et du couloir Rhin-Rhône, la commune bénéficie d'un emplacement stratégique transfrontalier (Allemagne, Suisse).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAUSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sausheim : formats adaptés à l'atelier automobile, à la ligne de production, à l'entrepôt logistique ou au bureau d'études. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const SAUSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sausheim  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone industrielle de Sausheim, il identifie les cas d'usage IA à fort ROI pour votre ligne de production, atelier sous-traitant ou entrepôt logistique.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone industrielle de Sausheim, il identifie les cas d'usage IA à fort ROI pour votre ligne de production, atelier sous-traitant ou entrepôt logistique.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobiles de Sausheim ?",

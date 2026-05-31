@@ -33,8 +33,8 @@ export const ALLAUCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit IA à Allauch pour identifier les opportunités d'automatisation dans la zone d'activités de Fontvieille ou les commerces du centre — Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Allauch pour automatiser devis, relances et stocks des artisans agro-alimentaires et commerçants — Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -52,7 +52,7 @@ export const ALLAUCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Allauch ?",
-      a: "Les interventions IA à Allauch débutent à {{price:intervention-4h|flat}} pour une Intervention Essentielle. Un Audit Flash est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Les interventions IA à Allauch débutent à {{price:intervention-4h|flat}} pour une Intervention Essentielle. Un Audit sur place est proposé dès {{price:audit-flash|flat}} et une implémentation complète à partir de {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Allauch ?",

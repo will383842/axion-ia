@@ -30,8 +30,8 @@ export const EPAGNY_METZ_TESSY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Epagny Metz-Tessy : formats adaptés au point de vente, bureau tertiaire ou entrepôt logistique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const EPAGNY_METZ_TESSY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Epagny Metz-Tessy ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME d'Epagny Metz-Tessy. Diagnostic complet des opportunités IA dans votre activité (commerce, services, logistique), ROI chiffré et plan d'action concret sous 5 jours ouvrés.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME d'Epagny Metz-Tessy. Diagnostic complet des opportunités IA dans votre activité (commerce, services, logistique), ROI chiffré et plan d'action concret sous 5 jours ouvrés.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique à Epagny Metz-Tessy ?",

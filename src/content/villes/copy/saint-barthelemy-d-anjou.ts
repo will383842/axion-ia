@@ -9,9 +9,9 @@ export const SAINT_BARTHELEMY_D_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Saint-Barthélemy-d'Anjou (49), commune dynamique à l'est d'Angers, concentre d'importantes zones d'activités économiques et près de 10 000 habitants. Axion-IA y intervient pour tous types d'activités : PME tertiaires, logistique, commerce, artisanat et services aux entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Barthélemy-d'Anjou (49). Nous accompagnons les TPE, PME et entreprises des zones d'activités bartholoméennes dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Barthélemy-d'Anjou (49). Nous accompagnons les TPE, PME et entreprises des zones d'activités bartholoméennes dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Barthélemy-d'Anjou (49). Nous accompagnons les TPE, PME et entreprises des zones d'activités bartholoméennes dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Barthélemy-d'Anjou (49). Nous accompagnons les TPE, PME et entreprises des zones d'activités bartholoméennes dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics.",
   seoHook: "services aux & logistique transport",
   ecosystemFr:
     "Saint-Barthélemy-d'Anjou est un pôle économique majeur de l'est angevin avec ses zones d'activités (ZA de la Baumette, Parc d'activités Saint-Barthélemy). Tissu dense de PME tertiaires, logistique, commerce de gros, services aux entreprises et sièges sociaux régionaux. Proximité immédiate Angers Loire Métropole.",
@@ -30,8 +30,8 @@ export const SAINT_BARTHELEMY_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Barthélemy-d'Anjou : diagnostic adapté aux PME tertiaires, entreprises logistiques et commerces de gros des zones d'activités est-angevines. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Barthélemy-d'Anjou : formations pour équipes PME tertiaires, logistique et commerce de gros. Ateliers pratiques dans vos locaux de zone d'activités.",
@@ -53,7 +53,7 @@ export const SAINT_BARTHELEMY_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Barthélemy-d'Anjou  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Saint-Barthélemy-d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit sur place IA à Saint-Barthélemy-d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de Saint-Barthélemy ?",

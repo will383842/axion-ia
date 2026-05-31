@@ -9,9 +9,9 @@ export const CANTELEU_COPY: VilleCopy = {
   pitchEn:
     "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglo rouennaise ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
   seoHook: "agglo Rouen ouest, tertiaire & logistique",
   ecosystemFr:
     "Canteleu surplombe la Seine sur la rive gauche face à Rouen, membre de la Métropole Rouen Normandie. Tissu PME tertiaires et logistiques (bords de Seine), TPE artisans BTP, commerces de quartier et professions libérales installées.",
@@ -30,8 +30,8 @@ export const CANTELEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Canteleu : formats adaptés au bureau, entrepôt bords de Seine, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const CANTELEU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Canteleu ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Canteleu sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Canteleu sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Canteleu ?",
-      a: "L'audit Flash débute selon la taille de votre activité pour les TPE. Pour les PME tertiaires et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME tertiaires et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

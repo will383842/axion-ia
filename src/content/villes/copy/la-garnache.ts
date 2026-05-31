@@ -9,9 +9,9 @@ export const LA_GARNACHE_COPY: VilleCopy = {
   pitchEn:
     "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bocage vendéen nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit sur place sur mesure.",
   seoHook: "agriculture élevage & artisanat",
   ecosystemFr:
     "La Garnache (5 515 hab) est une commune du marais breton vendéen, ancienne seigneurie médiévale. Économie rurale diversifiée : agriculture (élevage, maraîchage), artisanat, agroalimentaire, commerces de proximité et tourisme vert. Proximité Challans (10 min), Nantes (45 min), Saint-Nazaire (50 min), côte vendéenne (20 min). Bassin de vie dynamique nord-Vendée.",
@@ -30,8 +30,8 @@ export const LA_GARNACHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Garnache : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Garnache : formats adaptés à l'exploitation agricole, l'artisan, la PME agroalimentaire ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LA_GARNACHE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Garnache  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de La Garnache. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur rural ou artisanal.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de La Garnache. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur rural ou artisanal.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",
@@ -61,7 +61,7 @@ export const LA_GARNACHE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants de La Garnache ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, fidélisation client augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à La Garnache ?",

@@ -9,9 +9,9 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
   pitchEn:
     "Saint-Saturnin-lès-Avignon (84), commune de l'agglomération du Grand Avignon en première couronne est, compte près de 5 206 habitants. Tissu résidentiel et économique mixte, zones d'activités, TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit sur place sur mesure.",
   seoHook: "artisanat & services commerce",
   ecosystemFr:
     "Saint-Saturnin-lès-Avignon est positionnée en première couronne est d'Avignon, dans l'agglomération du Grand Avignon. Zones d'activités, agriculture maraîchère et fruitière, commerces et services de proximité. Tissu de TPE artisans, PME services, professions libérales. Avignon centre à 10 min, Carpentras à 25 min.",
@@ -30,8 +30,8 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Saturnin-lès-Avignon : diagnostic adapté aux TPE artisans, PME services, professions libérales, exploitations agricoles et commerces du Grand Avignon est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Saturnin-lès-Avignon : formats adaptés aux TPE artisans, PME services, professions libérales et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE artisans et professions libérales ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas TPE/professions libérales : automatisation devis, gestion administrative, agents conversationnels prise de rendez-vous, fiches Google Business et content marketing local.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas TPE/professions libérales : automatisation devis, gestion administrative, agents conversationnels prise de rendez-vous, fiches Google Business et content marketing local.",
     },
     {
       q: "Accompagnez-vous les PME services et commerces de Saint-Saturnin ?",
@@ -61,7 +61,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Saturnin-lès-Avignon  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Saturnin-lès-Avignon ?",

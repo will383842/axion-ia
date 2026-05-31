@@ -30,8 +30,8 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Erdre-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du nord angevin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Erdre-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du nord angevin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Erdre-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du nord angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Erdre-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du nord angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Erdre-en-Anjou : formats adaptés aux exploitations agricoles, ateliers agroalimentaires, artisans et commerces ruraux entre Erdre et Segréen.",
@@ -57,7 +57,7 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Erdre-en-Anjou ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et commerçants du bassin Erdre-Segréen. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et commerçants du bassin Erdre-Segréen. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous du coaching IA individuel pour les dirigeants ?",

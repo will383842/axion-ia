@@ -10,9 +10,9 @@ export const MARQUISE_COPY: VilleCopy = {
     "Marquise (62), commune du Boulonnais dans le Pas-de-Calais, reunit pres de 5 220 habitants. Connue pour ses carrieres de marbre et sa position entre Boulogne-sur-Mer et Calais, son economie associe PME industrielles (extraction, transformation), TPE artisanales, commerces et agriculture. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "carrieres marbre, industrie & Boulonnais",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Marquise est situee dans le Boulonnais entre Boulogne-sur-Mer (15 km) et Calais (20 km). Tissu economique marque par les carrieres de marbre (extraction, transformation, granulats). Egalement TPE artisanales, commerces, agriculture et services. Proximite du tunnel sous la Manche.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MARQUISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, TPE artisanales et agriculteurs du Boulonnais. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, TPE artisanales et agriculteurs du Boulonnais. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, TPE artisanales et agriculteurs du Boulonnais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, TPE artisanales et agriculteurs du Boulonnais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Marquise : formations adaptees aux sites carriers, ateliers artisanaux, exploitations agricoles et commerces. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const MARQUISE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les carrieres de Marquise ?",
-      a: "Pour les industries extractives de Marquise, nous proposons : optimisation production IA, maintenance predictive equipements, automatisation logistique granulats, gestion qualite. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les industries extractives de Marquise, nous proposons : optimisation production IA, maintenance predictive equipements, automatisation logistique granulats, gestion qualite. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Marquise ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les agriculteurs du Boulonnais ?",
-      a: "Oui, nous accompagnons les exploitants agricoles du Boulonnais : IA predictive rendements, gestion parcellaire, optimisation elevage, agents conversationnels cooperatives. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les exploitants agricoles du Boulonnais : IA predictive rendements, gestion parcellaire, optimisation elevage, agents conversationnels cooperatives. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Marquise ?",

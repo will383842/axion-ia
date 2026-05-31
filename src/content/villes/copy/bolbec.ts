@@ -10,9 +10,9 @@ export const BOLBEC_COPY: VilleCopy = {
     "Bolbec (76), cite de la vallee du Commerce en Seine-Maritime, reunit pres de 11 600 habitants. Ancienne ville textile reconvertie, elle accueille des TPE artisanales, des PME de services et commerciales, des professions liberales et des acteurs de la sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "textile reconverti, commerce & sante",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bolbec (76). Nous accompagnons les TPE, PME et professions liberales de la vallee du Commerce : artisans, commercants, prestataires de services et acteurs de la sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Bolbec est situee dans la vallee du Commerce, entre Rouen et Le Havre. Ancienne cite textile normande, la ville dispose d'un tissu de TPE artisanales, PME de services, commerces de proximite, professions liberales et etablissements de sante. Acces A29 vers Le Havre et Amiens.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BOLBEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Bolbec : diagnostic adapte aux TPE artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Bolbec : diagnostic adapte aux TPE artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Bolbec : diagnostic adapte aux TPE artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Bolbec : diagnostic adapte aux TPE artisanales, PME commerciales et professions de sante de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Bolbec : formations adaptees aux commerces, cabinets de sante, ateliers artisanaux et PME de services. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const BOLBEC_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les professionnels de sante a Bolbec ?",
-      a: "Pour les professionnels de sante a Bolbec, nous proposons : agents IA accueil et prise de RDV, classification dossiers patients, automatisation administrative, reporting. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les professionnels de sante a Bolbec, nous proposons : agents IA accueil et prise de RDV, classification dossiers patients, automatisation administrative, reporting. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Bolbec ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les TPE artisanales de Bolbec ?",

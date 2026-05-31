@@ -30,8 +30,8 @@ export const VEAUCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Veauche : diagnostic adapté aux PME industrielles (héritage verrier), agriculteurs plaine Forez, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Veauche : formats adaptés à l'atelier industriel (filière verre), exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const VEAUCHE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans veauchoises ?",
-      a: "Pour les TPE artisans BTP et commerçants à Veauche, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Veauche, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

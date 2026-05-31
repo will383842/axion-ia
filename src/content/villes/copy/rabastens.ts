@@ -9,9 +9,9 @@ export const RABASTENS_COPY: VilleCopy = {
   pitchEn:
     "Rabastens (81), cité médiévale sur les bords du Tarn au coeur du vignoble de Gaillac, près de 6 000 habitants. Tissu TPE viticoles et artisans, PME services, commerces de bourg, professions libérales et agriculture. Axion-IA accompagne tout le tissu professionnel local du bassin rabastinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit sur place sur mesure.",
   seoHook: "viticulture gaillac & agriculture grandes",
   ecosystemFr:
     "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Proximité Toulouse (35 min A68), Albi (30 min), Gaillac (10 min). Commune résidentielle attractive entre Toulouse et Albi.",
@@ -30,8 +30,8 @@ export const RABASTENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rabastens : diagnostic adapté aux TPE vignerons, artisans, PME de services, commerçants et professions libérales du vignoble gaillacois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rabastens : formats adaptés au domaine viticole, commerce de bourg, cabinet libéral ou exploitation agricole. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const RABASTENS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un vigneron à Rabastens ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE vignerons de Rabastens. Diagnostic complet : traçabilité parcellaire, gestion cave, vente directe, administratif. Plan d'action IA avec ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE vignerons de Rabastens. Diagnostic complet : traçabilité parcellaire, gestion cave, vente directe, administratif. Plan d'action IA avec ROI chiffré.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles du Tarnais ?",
@@ -61,7 +61,7 @@ export const RABASTENS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Rabastens ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Rabastens ?",

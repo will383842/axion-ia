@@ -34,8 +34,8 @@ export const LE_CANNET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
-      en: "Audit Flash 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      fr: "Audit sur place 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      en: "Audit sur place 4h au Cannet pour cadrer un cas d'usage IA dans le commerce de proximité, l'hôtellerie, l'événementiel ou les services — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
     },
     interventions: {
       fr: "Intervention sur site au Cannet pour automatiser un goulot précis : prise de réservation, devis événementiel, relances client, reporting saisonnier — dès {{price:intervention-4h|flat}}.",
@@ -53,11 +53,11 @@ export const LE_CANNET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir au Cannet ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
     },
     {
       q: "Quels délais pour une intervention IA au Cannet après prise de contact ?",
-      a: "L'Audit Flash est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est cadrée sous 2 à 3 semaines. Les implémentations plus complexes (CRM hôtelier, back-office événementiel) s'étalent sur 4 à 8 semaines.",
+      a: "L'Audit sur place est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est cadrée sous 2 à 3 semaines. Les implémentations plus complexes (CRM hôtelier, back-office événementiel) s'étalent sur 4 à 8 semaines.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches du Cannet ?",

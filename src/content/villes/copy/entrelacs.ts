@@ -30,8 +30,8 @@ export const ENTRELACS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Entrelacs : formats adaptés aux hôtels, domaines viticoles, commerces touristiques ou ateliers artisans. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const ENTRELACS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE touristique à Entrelacs ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Entrelacs. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (20 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Entrelacs. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (20 min).",
     },
     {
       q: "Comment se déroule une mission IA à Entrelacs ?",

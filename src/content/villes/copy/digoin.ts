@@ -9,9 +9,9 @@ export const DIGOIN_COPY: VilleCopy = {
   pitchEn:
     "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit sur place sur mesure.",
   ecosystemFr:
     "Digoin est situé à la confluence de la Loire et de l'Arroux, célèbre pour son pont-canal et sa tradition céramique/faïence. Tissu TPE artisanat (céramique, faïence), PME industrielles, commerce centre-bourg, tourisme fluvial et véloroute, agriculture Charolais.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DIGOIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Digoin : formats adaptés atelier céramique, commerce centre-bourg, site touristique fluvial, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const DIGOIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants de Digoin ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation gestion stock, CRM clients.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation gestion stock, CRM clients.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",

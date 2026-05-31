@@ -65,11 +65,11 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Aidez-vous les agences numériques et les commerces de proximité ?",
-      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe et automatisation des tâches administratives et de la relation client.",
+      a: "Oui. Audit sur place à tarif public, intervention d'une journée pour outiller l'équipe et automatisation des tâches administratives et de la relation client.",
     },
     {
       q: "Faut-il être un grand siège pour travailler avec Axion-IA à Bois-Colombes ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME locales. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les TPE et PME locales. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Bois-Colombes ?",

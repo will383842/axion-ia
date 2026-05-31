@@ -9,9 +9,9 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
   pitchEn:
     "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu TPE professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA répond aux besoins de toutes les entreprises de l'axe Aix-Marseille.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouc-Bel-Air (13). Nous accompagnons TPE professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouc-Bel-Air (13). Nous accompagnons TPE professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouc-Bel-Air (13). Nous accompagnons TPE professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouc-Bel-Air (13). Nous accompagnons TPE professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit sur place sur mesure, sans engagement.",
   seoHook: "tertiaire & professions libérales",
   ecosystemFr:
     "Bouc-Bel-Air est une commune résidentielle prisée entre Aix-en-Provence et Marseille. Position stratégique sur l'A51 avec des zones d'activités tertiaires. Tissu TPE professions libérales, PME conseil et services, commerces de proximité. Cadre de vie attractif pour les entreprises du tertiaire supérieur.",
@@ -30,8 +30,8 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bouc-Bel-Air : diagnostic adapté aux professions libérales, PME tertiaires de l'axe Aix-Marseille et prestataires de services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouc-Bel-Air : formats adaptés au cabinet, bureau ou commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Bouc-Bel-Air ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME tertiaires, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME tertiaires, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Bouc-Bel-Air ?",
@@ -61,7 +61,7 @@ export const BOUC_BEL_AIR_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux PME tertiaires de l'axe Aix-Marseille ?",
-      a: "Absolument. Nous accompagnons les PME tertiaires de Bouc-Bel-Air et l'axe Aix-Marseille : automatisation processus, agents conversationnels, CRM intelligent, reporting automatisé. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Absolument. Nous accompagnons les PME tertiaires de Bouc-Bel-Air et l'axe Aix-Marseille : automatisation processus, agents conversationnels, CRM intelligent, reporting automatisé. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Bouc-Bel-Air ?",

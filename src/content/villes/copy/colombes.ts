@@ -32,8 +32,8 @@ export const COLOMBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Colombes pour TPE/PME locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
-      en: "Audit Flash à Colombes pour TPE/PME locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
+      fr: "Audit sur place à Colombes pour TPE/PME locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
+      en: "Audit sur place à Colombes pour TPE/PME locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
     },
     interventions: {
       fr: "Interventions sur site à Colombes pour automatiser des cas concrets : extraction et classement de PDF, enrichissement CRM, génération de devis depuis Excel, relances clients par email, exports comptables vers Sage ou EBP. Code Python/TypeScript versionné et documenté, livré à votre équipe.",
@@ -51,7 +51,7 @@ export const COLOMBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit ou une intervention IA à Colombes ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Colombes démarre à {{price:intervention-4h|flat}}. Les implémentations et accompagnements un-à-un sont publiés sur notre page Tarifs. Tous nos prix sont publics, sans engagement et sans abonnement caché.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Colombes démarre à {{price:intervention-4h|flat}}. Les implémentations et accompagnements un-à-un sont publiés sur notre page Tarifs. Tous nos prix sont publics, sans engagement et sans abonnement caché.",
     },
     {
       q: "Vos consultants se déplacent-ils réellement à Colombes ou tout se fait en visio ?",
@@ -71,7 +71,7 @@ export const COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Colombes ?",
-      a: "Un Audit Flash se planifie sous 5 à 10 jours ouvrés. Une intervention sur site démarre en général sous 2 à 3 semaines après validation du devis. Les implémentations plus lourdes sont jalonnées par sprints de 2 semaines avec livrable utile à chaque jalon.",
+      a: "Un Audit sur place se planifie sous 5 à 10 jours ouvrés. Une intervention sur site démarre en général sous 2 à 3 semaines après validation du devis. Les implémentations plus lourdes sont jalonnées par sprints de 2 semaines avec livrable utile à chaque jalon.",
     },
   ],
 };

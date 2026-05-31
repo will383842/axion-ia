@@ -9,9 +9,9 @@ export const DINAN_COPY: VilleCopy = {
   pitchEn:
     "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit sur place sur mesure.",
   seoHook: "tourisme, hôtellerie & artisanat d'art",
   ecosystemFr:
     "Dinan est une cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor, pôle touristique majeur de Bretagne nord. Port de plaisance, remparts classés, centre historique à colombages. Tissu économique : TPE artisans d'art, hôtellerie-restauration, commerces patrimoniaux, PME de services, professions libérales. Communes voisines : Léhon, Lanvallay, Quévert, Taden, Plouër-sur-Rance.",
@@ -30,8 +30,8 @@ export const DINAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Dinan : diagnostic adapté aux TPE artisans d'art, PME tourisme et hôtellerie, commerces du centre historique et professions libérales du pays de Dinan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dinan : formats adaptés à l'atelier, à l'hôtel, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const DINAN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Dinan  ?",
-      a: "L'Audit Flash IA à Dinan démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Dinan démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises touristiques à Dinan ?",

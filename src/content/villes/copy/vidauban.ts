@@ -30,8 +30,8 @@ export const VIDAUBAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vidauban : diagnostic adapté aux TPE artisans, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vidauban : diagnostic adapté aux TPE artisans, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vidauban : diagnostic adapté aux TPE artisans, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vidauban : diagnostic adapté aux TPE artisans, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vidauban : formats adaptés aux domaines viticoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const VIDAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles grands crus de Vidauban ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture grands crus Côtes de Provence : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export premium, œnotourisme.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture grands crus Côtes de Provence : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export premium, œnotourisme.",
     },
     {
       q: "Accompagnez-vous les caves coopératives et négociants du vignoble Vidauban ?",
@@ -61,7 +61,7 @@ export const VIDAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Vidauban  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Vidauban ?",

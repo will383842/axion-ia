@@ -30,8 +30,8 @@ export const MENDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mende : formats adaptés aux PME agroalimentaires, structures touristiques, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const MENDE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants mendois ?",
-      a: "Pour les TPE artisans et commerçants à Mende, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
+      a: "Pour les TPE artisans et commerçants à Mende, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme nature Gévaudan ?",

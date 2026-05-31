@@ -30,8 +30,8 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chazelles-sur-Lyon : formats adaptés à l'atelier chapellerie/industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chazelles-sur-Lyon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Chazelles-sur-Lyon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

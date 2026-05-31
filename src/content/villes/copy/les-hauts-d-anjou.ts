@@ -9,9 +9,9 @@ export const LES_HAUTS_D_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA répond aux besoins de toutes les entreprises : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Les Hauts-d'Anjou sont issus de la fusion de 8 communes déléguées (dont Cheffes, Champigné, Juvardeil). Territoire agricole (polyculture, élevage bovin, production végétale) avec un tissu d'artisanat BTP, de commerces de bourg et de PME agroalimentaires. Proximité vallées de la Sarthe et du Loir.",
@@ -30,8 +30,8 @@ export const LES_HAUTS_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA aux Hauts-d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME du nord angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Hauts-d'Anjou : formations pour équipes agricoles, artisanales et commerciales. Ateliers métier adaptés au contexte rural nord-angevin.",
@@ -53,11 +53,11 @@ export const LES_HAUTS_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Hauts-d'Anjou ?",
-      a: "L'Audit Flash IA aux Hauts-d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA aux Hauts-d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du nord angevin ?",
-      a: "Oui, nous accompagnons les exploitants agricoles aux Hauts-d'Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les exploitants agricoles aux Hauts-d'Anjou : IA pour gestion parcellaire, traçabilité troupeaux, optimisation assolement, maintenance prédictive matériel, gestion PAC. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels secteurs ciblez-vous aux Hauts-d'Anjou ?",

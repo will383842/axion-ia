@@ -9,9 +9,9 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
   pitchEn:
     "Cornebarrieu (31), commune à proximité immédiate de l'aéroport Toulouse-Blagnac, près de 9 000 habitants. Tissu TPE et PME aéronautiques, sous-traitants industriels, services aux entreprises, professions libérales, commerces. Axion-IA répond aux besoins de toutes les entreprises du pôle aéroportuaire toulousain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit sur place sur mesure.",
   seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Cornebarrieu est une commune stratégique du pôle aéroportuaire toulousain. PME aéronautiques et sous-traitants, TPE de services aux entreprises, zone Aéroconstellation, professions libérales, commerces. Proximité immédiate de l'aéroport Toulouse-Blagnac et de Blagnac.",
@@ -30,8 +30,8 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cornebarrieu : formats adaptés au sous-traitant aéronautique, à la PME tech, au cabinet de conseil. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cornebarrieu  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME aéronautiques, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME aéronautiques, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider un sous-traitant aéronautique à Cornebarrieu ?",

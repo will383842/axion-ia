@@ -30,8 +30,8 @@ export const COMBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Combourg : diagnostic adapté aux acteurs tourisme patrimoine Chateaubriand, TPE artisans, exploitants agricoles et commerçants du pays de Combourg. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Combourg : diagnostic adapté aux acteurs tourisme patrimoine Chateaubriand, TPE artisans, exploitants agricoles et commerçants du pays de Combourg. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Combourg : diagnostic adapté aux acteurs tourisme patrimoine Chateaubriand, TPE artisans, exploitants agricoles et commerçants du pays de Combourg. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Combourg : diagnostic adapté aux acteurs tourisme patrimoine Chateaubriand, TPE artisans, exploitants agricoles et commerçants du pays de Combourg. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Combourg : formats adaptés au site patrimonial, exploitation agricole, commerce de bourg ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const COMBOURG_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Combourg  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays de Combourg, il identifie les cas d'usage IA à fort ROI pour votre activité (tourisme, artisanat, agriculture, commerce). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays de Combourg, il identifie les cas d'usage IA à fort ROI pour votre activité (tourisme, artisanat, agriculture, commerce). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles du pays de Combourg ?",

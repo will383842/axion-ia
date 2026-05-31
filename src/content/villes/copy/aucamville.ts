@@ -9,9 +9,9 @@ export const AUCAMVILLE_COPY: VilleCopy = {
   pitchEn:
     "Aucamville (31), commune du nord de Toulouse avec plus de 9 600 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Aucamville est une commune résidentielle et commerçante du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone d'emploi nord toulousaine et de l'axe A62.",
@@ -30,8 +30,8 @@ export const AUCAMVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aucamville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aucamville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aucamville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aucamville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aucamville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const AUCAMVILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Aucamville  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Aucamville ?",

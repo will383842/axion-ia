@@ -30,8 +30,8 @@ export const MORNANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mornant : formats adaptés au domaine viticole, exploitation agricole, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const MORNANT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Mornant, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Pour les TPE artisans BTP et commerçants à Mornant, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

@@ -30,8 +30,8 @@ export const WATTIGNIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wattignies : formats adaptés à la PME de services, au commerce, à l'artisan du bâtiment ou au professionnel libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const WATTIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Wattignies  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wattignies et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (services, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wattignies et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (services, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wattignies ?",

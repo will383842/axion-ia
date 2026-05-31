@@ -30,8 +30,8 @@ export const TERVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Terville : formats adaptés au commerce, restaurant, bureau tertiaire, atelier BTP ou cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const TERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Terville ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les restaurateurs et hôteliers ?",

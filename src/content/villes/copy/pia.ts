@@ -30,8 +30,8 @@ export const PIA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pia : formats adaptés à l'atelier, exploitation maraîchère, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const PIA_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et PME de Pia ?",
-      a: "Pour les commerçants et PME à Pia, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA accueil, gestion planning, CRM augmenté, facturation automatisée.",
+      a: "Pour les commerçants et PME à Pia, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA accueil, gestion planning, CRM augmenté, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à Pia ?",

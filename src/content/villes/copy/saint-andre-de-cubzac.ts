@@ -9,9 +9,9 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
   pitchEn:
     "Saint-André-de-Cubzac (33), pôle commercial du Cubzaguais au nord de Bordeaux, combine vignoble (Côtes de Bourg, Fronsac), commerces dynamiques et tissu artisanal dense. Axion-IA y déploie son expertise pour toutes les organisations : TPE viticoles, commerçants, PME de services, artisans BTP et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture & commerce centre-bourg",
   ecosystemFr:
     "Saint-André-de-Cubzac est le pôle commercial et de services du Cubzaguais. Carrefour entre vignoble bordelais (Côtes de Bourg, Fronsac), commerce de centre-bourg dynamique et tissu artisanal. Accès A10 (Paris) et N10, noeud routier vers Libourne et Blaye.",
@@ -30,8 +30,8 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-André-de-Cubzac : diagnostic pour vignerons, commerçants, TPE artisans et PME de services du Cubzaguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-de-Cubzac : ateliers adaptés aux domaines viticoles, commerces et artisanat. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-André-de-Cubzac  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du Cubzaguais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du Cubzaguais.",
     },
     {
       q: "Accompagnez-vous les vignerons du Cubzaguais ?",

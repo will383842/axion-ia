@@ -119,7 +119,7 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, artisans, cabinets dijonnais et petites structures de la métropole jusqu'à une dizaine de collaborateurs.",
           },
@@ -145,7 +145,7 @@ export const DIJON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "L'audit Flash a été déclencheur : en une journée, nous avons identifié trois workflows automatisables dans notre gestion administrative. Le livrable était chiffré, pas théorique. On a pu prioriser sans hésiter.",
+              "L'audit sur place a été déclencheur : en une journée, nous avons identifié trois workflows automatisables dans notre gestion administrative. Le livrable était chiffré, pas théorique. On a pu prioriser sans hésiter.",
             role: "Directrice générale",
             companyProfile: "Cabinet conseil, Dijon métropole, PME",
           },
@@ -159,7 +159,7 @@ export const DIJON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Dijon ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs journées réparties selon votre organisation. Nous calons le rythme avec vous dès le brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs journées réparties selon votre organisation. Nous calons le rythme avec vous dès le brief de cadrage initial.",
           },
           {
             q: "Quels secteurs dijonnais bénéficient le plus d'un audit IA ?",
@@ -948,7 +948,7 @@ export const DIJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Dijon ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Dijon et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Dijon et partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans toute la métropole dijonnaise ?",
@@ -964,7 +964,7 @@ export const DIJON_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les startups et PME foodtech de la Cité Gastronomie ?",
-      a: "Oui. Nous accompagnons les structures accélérées par ToasterLab/Vitagora et le Village by CA Dijon sur leurs cas IA opérationnels — de l'audit Flash jusqu'à l'implémentation en production. Notre approche est calibrée pour les structures ayant un product-market fit établi qui veulent passer du POC au déploiement réel.",
+      a: "Oui. Nous accompagnons les structures accélérées par ToasterLab/Vitagora et le Village by CA Dijon sur leurs cas IA opérationnels — de l'audit sur place jusqu'à l'implémentation en production. Notre approche est calibrée pour les structures ayant un product-market fit établi qui veulent passer du POC au déploiement réel.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Dijon ?",

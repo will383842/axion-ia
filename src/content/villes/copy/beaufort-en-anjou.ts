@@ -9,9 +9,9 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Beaufort-en-Anjou (49), commune nouvelle entre Baugeois et Val d'Authion, compte près de 6 900 habitants dans un territoire agricole et commerçant. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Beaufort-en-Anjou est un bourg-centre dynamique entre Baugeois et Val d'Authion. L'économie repose sur l'agriculture (grandes cultures, horticulture, semences végétales), l'artisanat, les commerces de centre-bourg et les PME agroalimentaires. Territoire historique de la liqueur et des vergers angevins.",
@@ -30,8 +30,8 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Beaufort-en-Anjou : diagnostic adapté aux exploitants agricoles, horticulteurs et TPE/PME du Beaufortais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaufort-en-Anjou : formations pour équipes agricoles, horticoles et commerciales. Ateliers pratiques adaptés au contexte Beaufortais.",
@@ -53,7 +53,7 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Beaufort-en-Anjou  ?",
-      a: "L'Audit Flash IA à Beaufort-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit sur place IA à Beaufort-en-Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les horticulteurs du Beaufortais ?",

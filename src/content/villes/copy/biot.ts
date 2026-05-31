@@ -30,8 +30,8 @@ export const BIOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biot : formats adaptés à l'atelier verrerie, bureau startup Sophia ou galerie d'art. Vos collaborateurs maîtrisent leurs outils IA après notre intervention créatif ou tech.",
@@ -53,7 +53,7 @@ export const BIOT_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans verriers et métiers d'art ?",
-      a: "Oui, nous accompagnons les artisans verriers et métiers d'art de Biot sur leurs cas IA : e-commerce augmenté, gestion stocks et commandes, agents conversationnels multilingues (tourisme international), catalogue photo IA, CRM galeriste. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans verriers et métiers d'art de Biot sur leurs cas IA : e-commerce augmenté, gestion stocks et commandes, agents conversationnels multilingues (tourisme international), catalogue photo IA, CRM galeriste. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les startups tech de Sophia Antipolis à Biot ?",

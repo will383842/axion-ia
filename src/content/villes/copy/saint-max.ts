@@ -9,9 +9,9 @@ export const SAINT_MAX_COPY: VilleCopy = {
   pitchEn:
     "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit sur place sur mesure.",
   seoHook: "tertiaires & artisanat",
   ecosystemFr:
     "Saint-Max est une commune résidentielle de l'est de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu TPE/PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique nancéien.",
@@ -30,8 +30,8 @@ export const SAINT_MAX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Max : diagnostic adapté aux TPE/PME tertiaires Métropole Grand Nancy, commerçants de proximité, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Max : formats adaptés au bureau tertiaire, commerce de proximité, atelier BTP, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_MAX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Max  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants, artisans et professions libérales de l'est nancéien.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants, artisans et professions libérales de l'est nancéien.",
     },
     {
       q: "Accompagnez-vous les TPE/PME tertiaires et commerces de proximité ?",

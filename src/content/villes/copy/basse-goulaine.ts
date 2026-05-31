@@ -30,8 +30,8 @@ export const BASSE_GOULAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Basse-Goulaine : diagnostic adapté aux TPE tertiaires, PME conseil, viticulteurs Muscadet et professions libérales du sud-est nantais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Basse-Goulaine : diagnostic adapté aux TPE tertiaires, PME conseil, viticulteurs Muscadet et professions libérales du sud-est nantais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Basse-Goulaine : diagnostic adapté aux TPE tertiaires, PME conseil, viticulteurs Muscadet et professions libérales du sud-est nantais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Basse-Goulaine : diagnostic adapté aux TPE tertiaires, PME conseil, viticulteurs Muscadet et professions libérales du sud-est nantais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Basse-Goulaine : formats adaptés au cabinet conseil, exploitation viticole, bureau libéral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const BASSE_GOULAINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et professions libérales ?",
-      a: "Pour les TPE et professions libérales à Basse-Goulaine, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification dossiers, automatisation courrier et facturation.",
+      a: "Pour les TPE et professions libérales à Basse-Goulaine, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification dossiers, automatisation courrier et facturation.",
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",

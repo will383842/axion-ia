@@ -30,8 +30,8 @@ export const CORBAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Corbas : diagnostic adapté aux opérateurs MIN de Lyon, PME logistiques/agroalimentaires, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Corbas : diagnostic adapté aux opérateurs MIN de Lyon, PME logistiques/agroalimentaires, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Corbas : diagnostic adapté aux opérateurs MIN de Lyon, PME logistiques/agroalimentaires, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Corbas : diagnostic adapté aux opérateurs MIN de Lyon, PME logistiques/agroalimentaires, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Corbas : formats adaptés au MIN (marché de gros), entrepôt logistique, atelier agroalimentaire. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CORBAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans corbasiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Corbas, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      a: "Pour les TPE artisans BTP et commerçants à Corbas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

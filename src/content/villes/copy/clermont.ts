@@ -9,9 +9,9 @@ export const CLERMONT_COPY: VilleCopy = {
   pitchEn:
     "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit sur place sur mesure.",
   ecosystemFr:
     "Clermont est une sous-préfecture de l'Oise à mi-chemin entre Paris et Amiens, pôle administratif et commercial du Clermontois. Son économie repose sur les services publics (sous-préfecture, hôpital, tribunal), le commerce de centre-ville, l'artisanat, la santé et les services aux entreprises. Le bassin d'emploi s'articule avec Breuil-le-Sec, Agnetz et Liancourt, bénéficiant de la proximité de l'A1 et de la gare TER Clermont-de-l'Oise.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CLERMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clermont : formats adaptés au commerce, au cabinet médical, à l'atelier artisan, au bureau ou à la collectivité. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const CLERMONT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Clermont  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME clermontoises : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME clermontoises : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans de Clermont ?",

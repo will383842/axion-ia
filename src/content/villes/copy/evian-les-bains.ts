@@ -30,8 +30,8 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Évian-les-Bains : diagnostic adapté aux acteurs thermalisme, hôteliers de luxe, commerçants, organisateurs événementiel. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Évian-les-Bains : diagnostic adapté aux acteurs thermalisme, hôteliers de luxe, commerçants, organisateurs événementiel. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Évian-les-Bains : diagnostic adapté aux acteurs thermalisme, hôteliers de luxe, commerçants, organisateurs événementiel. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Évian-les-Bains : diagnostic adapté aux acteurs thermalisme, hôteliers de luxe, commerçants, organisateurs événementiel. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Évian-les-Bains : formats adaptés hôtels de luxe, thermes, salles de congrès, commerces. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Évian-les-Bains  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du tourisme et de l'hôtellerie.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du tourisme et de l'hôtellerie.",
     },
     {
       q: "Accompagnez-vous les hôteliers de luxe et acteurs thermalisme ?",

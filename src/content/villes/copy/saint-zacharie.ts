@@ -9,9 +9,9 @@ export const SAINT_ZACHARIE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Zacharie (83), commune au pied du massif de la Sainte-Baume dans la vallée de l'Huveaune, est un bassin résidentiel à l'est marseillais. Tissu de TPE artisans, BTP, commerçants, restaurateurs et PME services, agriculture et industrie de la périphérie est de Marseille. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Zacharie (83). Nous accompagnons TPE artisans, BTP, commerçants, restaurateurs et PME des services, de l'agriculture et de l'industrie de la vallée de l'Huveaune et de la périphérie est marseillaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Zacharie (83). Nous accompagnons TPE artisans, BTP, commerçants, restaurateurs et PME des services, de l'agriculture et de l'industrie de la vallée de l'Huveaune et de la périphérie est marseillaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Zacharie (83). Nous accompagnons TPE artisans, BTP, commerçants, restaurateurs et PME des services, de l'agriculture et de l'industrie de la vallée de l'Huveaune et de la périphérie est marseillaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Zacharie (83). Nous accompagnons TPE artisans, BTP, commerçants, restaurateurs et PME des services, de l'agriculture et de l'industrie de la vallée de l'Huveaune et de la périphérie est marseillaise. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce proximité",
   ecosystemFr:
     "Saint-Zacharie est ancrée dans la vallée de l'Huveaune au pied du massif classé de la Sainte-Baume, à la frontière entre Var et Bouches-du-Rhône. Bassin résidentiel de l'aire marseillaise est, économie locale tirée par l'artisanat, le BTP, le commerce de proximité, l'agriculture (oléiculture, viticulture) et les services aux habitants.",
@@ -30,8 +30,8 @@ export const SAINT_ZACHARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Zacharie : ateliers pour artisans, BTP, commerçants, restaurateurs et agriculteurs. Outils IA configurés métier réel local.",
@@ -53,7 +53,7 @@ export const SAINT_ZACHARIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE artisan ou BTP zacharien ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, BTP, commerçants et agriculteurs de Saint-Zacharie et de la vallée de l'Huveaune. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux artisans, BTP, commerçants et agriculteurs de Saint-Zacharie et de la vallée de l'Huveaune. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de la vallée de l'Huveaune ?",

@@ -9,9 +9,9 @@ export const LE_PONTET_COPY: VilleCopy = {
   pitchEn:
     "Le Pontet (84), commune limitrophe nord d'Avignon dans l'agglomération du Grand Avignon, conjugue zones commerciales majeures (Auchan Avignon-Nord, retail park), tissu logistique et fonctions résidentielles péri-urbaines. TPE artisans, PME commerce de gros et logistique, services aux entreprises, professions libérales et commerces de proximité dans un bassin de 18 000 habitants au cœur du pôle économique avignonnais. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pontet (84). Nous accompagnons TPE artisans, PME commerce de gros, logistique, services aux entreprises, professions libérales et commerces de l'agglomération d'Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pontet (84). Nous accompagnons TPE artisans, PME commerce de gros, logistique, services aux entreprises, professions libérales et commerces de l'agglomération d'Avignon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pontet (84). Nous accompagnons TPE artisans, PME commerce de gros, logistique, services aux entreprises, professions libérales et commerces de l'agglomération d'Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pontet (84). Nous accompagnons TPE artisans, PME commerce de gros, logistique, services aux entreprises, professions libérales et commerces de l'agglomération d'Avignon. Audit sur place sur mesure.",
   seoHook: "commerce détail & commerce gros",
   ecosystemFr:
     "Le Pontet est positionnée immédiatement au nord d'Avignon, à la jonction A7/N7, dans l'agglomération du Grand Avignon. Commune dont l'activité économique repose sur les zones commerciales (Auchan Avignon-Nord, retail park), la logistique et le commerce de gros, les TPE artisans (BTP, services), PME tertiaires, professions libérales et commerces de proximité. Bassin d'emploi intégré au pôle avignonnais.",
@@ -30,8 +30,8 @@ export const LE_PONTET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pontet : ateliers pour équipes TPE/PME, retail, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -53,7 +53,7 @@ export const LE_PONTET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Pontet ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME retail, commerce de gros, logistique et commerces pontétiens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME retail, commerce de gros, logistique et commerces pontétiens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les commerces, retail et entreprises logistiques ?",

@@ -9,9 +9,9 @@ export const BUC_COPY: VilleCopy = {
   pitchEn:
     "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Bièvre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit sur place sur mesure.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Buc est une commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Proximité de pôles d'innovation et de recherche. Tissu économique : TPE artisans, commerces de village, PME de services, professions libérales, conseil et ingénierie. Communes voisines : Versailles, Jouy-en-Josas, Les Loges-en-Josas, Toussus-le-Noble, Guyancourt.",
@@ -30,8 +30,8 @@ export const BUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Buc : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la vallée de la Bièvre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Buc : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la vallée de la Bièvre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Buc : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la vallée de la Bièvre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Buc : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la vallée de la Bièvre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Buc : formats adaptés au cabinet, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const BUC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Buc  ?",
-      a: "L'Audit Flash IA à Buc démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Buc démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME à Buc ?",

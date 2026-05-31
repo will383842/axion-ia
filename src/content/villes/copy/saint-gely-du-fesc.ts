@@ -30,8 +30,8 @@ export const SAINT_GELY_DU_FESC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gély-du-Fesc : diagnostic pour professions libérales, PME de services, artisans et commerces du nord Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Gély-du-Fesc : diagnostic pour professions libérales, PME de services, artisans et commerces du nord Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Gély-du-Fesc : diagnostic pour professions libérales, PME de services, artisans et commerces du nord Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Gély-du-Fesc : diagnostic pour professions libérales, PME de services, artisans et commerces du nord Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gély-du-Fesc : ateliers adaptés cabinet libéral, PME services, commerce ou artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_GELY_DU_FESC_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les professions libérales ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux cabinets de professions libérales (médecins, avocats, experts-comptables, consultants) : automatisation plannings, classification dossiers, agents IA réponse patient/client. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés aux cabinets de professions libérales (médecins, avocats, experts-comptables, consultants) : automatisation plannings, classification dossiers, agents IA réponse patient/client. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME de services à Saint-Gély-du-Fesc ?",
@@ -65,7 +65,7 @@ export const SAINT_GELY_DU_FESC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Saint-Gély-du-Fesc ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

@@ -9,9 +9,9 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
   pitchEn:
     "Castelnaudary (11), capitale du cassoulet et du Lauragais dans l'Aude, est un bourg dynamique sur le canal du Midi (UNESCO). Tissu TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerces, agriculture céréalière Lauragais, tourisme fluvial. Axion-IA y travaille avec les organisations du territoire du Lauragais audois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit sur place sur mesure.",
   seoHook: "agglomération bassin",
   ecosystemFr:
     "Castelnaudary est la capitale historique du cassoulet et du Lauragais, sur le canal du Midi (patrimoine UNESCO). L'agroalimentaire est le moteur économique (conserveries de cassoulet, salaisons, produits du terroir). Agriculture céréalière prospère (blé dur, colza, tournesol), artisanat, commerce centre-ville et tourisme fluvial (Grand Bassin, port canal du Midi). Base militaire du 4e régiment étranger.",
@@ -30,8 +30,8 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelnaudary : diagnostic adapté aux TPE artisans, PME agroalimentaire et conserverie, commerçants, agriculteurs céréaliers et acteurs tourisme canal du Midi. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castelnaudary : formats adaptés à la conserverie, l'exploitation céréalière, le commerce, le prestataire touristique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Castelnaudary  ?",
-      a: "L'audit Flash débute selon la taille de votre activité pour une TPE. Pour les PME agroalimentaire, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, transparents.",
+      a: "L'audit sur place débute selon la taille de votre activité pour une TPE. Pour les PME agroalimentaire, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme canal du Midi ?",

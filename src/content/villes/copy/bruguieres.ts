@@ -9,9 +9,9 @@ export const BRUGUIERES_COPY: VilleCopy = {
   pitchEn:
     "Bruguières (31), commune du nord de Toulouse avec plus de 6 200 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Bruguières est une commune résidentielle du nord de Toulouse, entre Saint-Jory et Castelginest. Tissu TPE artisans, PME de services, commerces de bourg, professions libérales. Proximité de l'axe A62.",
@@ -30,8 +30,8 @@ export const BRUGUIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bruguières : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruguières : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const BRUGUIERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bruguières  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Bruguières ?",

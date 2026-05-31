@@ -30,8 +30,8 @@ export const SEMEAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Séméac : formats adaptés au commerce, restaurant, entreprise de services ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const SEMEAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et restaurateurs séméacais ?",
-      a: "Pour les TPE artisans et restaurateurs à Séméac, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA réservations, visibilité web locale.",
+      a: "Pour les TPE artisans et restaurateurs à Séméac, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA réservations, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

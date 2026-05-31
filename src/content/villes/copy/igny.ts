@@ -9,9 +9,9 @@ export const IGNY_COPY: VilleCopy = {
   pitchEn:
     "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit sur place sur mesure.",
   seoHook: "conseil ingénierie & services aux",
   ecosystemFr:
     "Igny est une commune résidentielle du nord de l'Essonne, nichée dans la vallée de la Bièvre. Sa proximité avec le plateau de Saclay (Paris-Saclay, HEC, CentraleSupélec, CEA) irrigue un tissu de TPE services, professions libérales, cabinets conseil et ingénierie. Commerces de proximité, artisans BTP, services à la personne.",
@@ -30,8 +30,8 @@ export const IGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Igny : diagnostic adapté aux cabinets conseil, professions libérales, TPE services et commerces du nord-Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Igny : formats adaptés cabinet, bureau, commerce ou domicile professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const IGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces ignyaciens ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, réseaux sociaux assistés.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, réseaux sociaux assistés.",
     },
     {
       q: "Accompagnez-vous les PME ingénierie proches du plateau de Saclay ?",

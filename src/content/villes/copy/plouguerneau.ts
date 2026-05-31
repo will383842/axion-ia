@@ -30,8 +30,8 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouguerneau : formats adaptés aux hébergeurs touristiques, goémoniers, ostréiculteurs ou commerces littoraux. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Plouguerneau ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Plouguerneau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation présence en ligne saisonnière. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de Plouguerneau sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation présence en ligne saisonnière. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME du pays des Abers ?",
-      a: "L'audit Flash s'adapte à votre périmètre, accessible aux TPE. Pour les PME touristiques et exploitations marines, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit sur place s'adapte à votre périmètre, accessible aux TPE. Pour les PME touristiques et exploitations marines, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Plouguerneau ?",

@@ -10,9 +10,9 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
     "Fontaine-lès-Dijon (21), commune résidentielle prisée au nord de Dijon, lieu de naissance de Saint Bernard de Clairvaux, accueille un tissu de TPE/PME tertiaires, professions libérales et commerces de quartier. Axion-IA y intervient pour tous types d'activités du nord dijonnais.",
   seoHook: "tertiaire, professions libérales & résidentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaine-lès-Dijon (21). Nous accompagnons TPE, PME et professions libérales du nord dijonnais : cabinets conseil, santé, services B2B, commerçants de proximité. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Fontaine-lès-Dijon est une commune résidentielle aisée du nord de Dijon Métropole, connue pour être le lieu de naissance de Saint Bernard de Clairvaux. Économie locale dominée par les professions libérales (santé, conseil, juridique), les TPE tertiaires, le commerce de proximité et les services à la personne. Quartiers pavillonnaires recherchés.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontaine-lès-Dijon : diagnostic adapté aux cabinets conseil, professions de santé, TPE tertiaires et commerçants du nord dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontaine-lès-Dijon : formations pratiques pour professions libérales, consultants, commerçants et prestataires B2B. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Fontaine-lès-Dijon  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et professions libérales fontainoises, il inclut un diagnostic complet, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et professions libérales fontainoises, il inclut un diagnostic complet, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les cabinets médicaux à Fontaine-lès-Dijon ?",
@@ -61,7 +61,7 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les consultants et TPE tertiaires fontainois ?",
-      a: "Pour les consultants et TPE tertiaires de Fontaine-lès-Dijon, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : agents IA prospection, automatisation reporting, CRM augmenté, analyse documentaire IA.",
+      a: "Pour les consultants et TPE tertiaires de Fontaine-lès-Dijon, nous proposons Audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : agents IA prospection, automatisation reporting, CRM augmenté, analyse documentaire IA.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Fontaine-lès-Dijon ?",

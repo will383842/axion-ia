@@ -30,8 +30,8 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontenay : formats adaptés à votre métier réel (atelier, commerce, cabinet, laboratoire). Vos équipes repartent avec outils IA configurés pour vos tâches concrètes.",
@@ -57,11 +57,11 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP fontenaysiens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Fontenay (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Fontenay (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les professions libérales fontenaysiennes ?",
-      a: "Pour les professions libérales à Fontenay (médecins, avocats, expertise-comptable, consultants), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, transcription consultations.",
+      a: "Pour les professions libérales à Fontenay (médecins, avocats, expertise-comptable, consultants), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, transcription consultations.",
     },
     {
       q: "Quels formats pour les commerces de proximité ?",

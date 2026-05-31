@@ -9,9 +9,9 @@ export const OLLAINVILLE_COPY: VilleCopy = {
   pitchEn:
     "Ollainville (91), commune résidentielle et rurale du sud de l'Essonne, allie cadre champêtre et bassin d'activités locales. Tissu TPE artisanat et commerces de proximité, PME services, professions libérales, exploitations agricoles, prestataires BTP. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollainville (91). Nous accompagnons TPE et PME : artisans et commerçants de proximité, PME services aux entreprises, professions libérales, exploitants agricoles, prestataires BTP sud Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollainville (91). Nous accompagnons TPE et PME : artisans et commerçants de proximité, PME services aux entreprises, professions libérales, exploitants agricoles, prestataires BTP sud Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollainville (91). Nous accompagnons TPE et PME : artisans et commerçants de proximité, PME services aux entreprises, professions libérales, exploitants agricoles, prestataires BTP sud Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollainville (91). Nous accompagnons TPE et PME : artisans et commerçants de proximité, PME services aux entreprises, professions libérales, exploitants agricoles, prestataires BTP sud Essonne. Audit sur place sur mesure.",
   seoHook: "artisanat commerces & services aux",
   ecosystemFr:
     "Ollainville est une commune résidentielle et rurale du sud de l'Essonne, proche d'Arpajon et de la RN 20. Tissu TPE artisanat et commerces de proximité, PME services, professions libérales, exploitations agricoles, prestataires BTP.",
@@ -30,8 +30,8 @@ export const OLLAINVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ollainville : diagnostic adapté aux artisans, commerçants de proximité, PME services, professions libérales, exploitants agricoles sud Essonne. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ollainville : formats adaptés atelier artisan, commerce, cabinet, exploitation agricole, bureau PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et exploitants agricoles ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA de planification, suivi parcelles, gestion administrative.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA de planification, suivi parcelles, gestion administrative.",
     },
     {
       q: "Comment se passe une mission depuis Arpajon ou Évry ?",

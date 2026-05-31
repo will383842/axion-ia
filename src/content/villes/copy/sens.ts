@@ -9,9 +9,9 @@ export const SENS_COPY: VilleCopy = {
   pitchEn:
     "Sens (89), deuxième ville de l'Yonne avec 27 106 habitants, à 100 km au sud-est de Paris. Tissu TPE commerce de centre-ville, PME agroalimentaires et industrielles, artisans, logistique sur l'axe A5/A19, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune et du Sénonais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sens (89). Nous accompagnons TPE commerces et artisans, PME agroalimentaires et industrielles, logisticiens, professions libérales sénonaises. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
   seoHook: "commerce détail agroalimentaire & logistique",
   ecosystemFr:
     "Sens (27 106 hab) est la deuxième ville de l'Yonne et la porte sud de l'Île-de-France, située à 100 km de Paris. Économie structurée autour du commerce de centre-ville, de l'agroalimentaire, de l'industrie, du commerce de gros et de la logistique grâce à la proximité des autoroutes A5, A6 et A19. Tissu TPE commerces et artisans, PME agroalimentaires et industrielles, professions libérales.",
@@ -30,8 +30,8 @@ export const SENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sens : diagnostic adapté aux TPE commerces de centre-ville, PME agroalimentaires et industrielles, logisticiens et professions libérales sénonaises. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sens : formats adaptés au commerce, à l'agroalimentaire, à l'industrie et à la logistique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const SENS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Sens ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME sénonaises. Diagnostic complet des processus, cartographie IA (commerce, agroalimentaire, logistique) et plan d'action ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME sénonaises. Diagnostic complet des processus, cartographie IA (commerce, agroalimentaire, logistique) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires et industrielles du Sénonais ?",

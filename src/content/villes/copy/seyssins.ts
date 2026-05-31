@@ -30,8 +30,8 @@ export const SEYSSINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Seyssins : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin grenoblois ouest. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible aux indépendants.",
-      en: "Audit IA à Seyssins : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin grenoblois ouest. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible aux indépendants.",
+      fr: "Audit IA à Seyssins : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin grenoblois ouest. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible aux indépendants.",
+      en: "Audit IA à Seyssins : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin grenoblois ouest. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible aux indépendants.",
     },
     interventions: {
       fr: "Interventions IA sur site à Seyssins : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const SEYSSINS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP seyssinois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Seyssins (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Seyssins (plombiers, électriciens, menuisiers, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerces et PME tertiaires ?",

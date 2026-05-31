@@ -30,8 +30,8 @@ export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Inzinzac-Lochrist : formats adaptés aux PME industrielles, PME agroalimentaires, artisans BTP et cabinets de la vallée du Blavet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Inzinzac-Lochrist  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée du Blavet, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, agroalimentaire, BTP, commerce, libéral). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée du Blavet, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, agroalimentaire, BTP, commerce, libéral). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de la vallée du Blavet ?",

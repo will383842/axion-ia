@@ -9,9 +9,9 @@ export const GOLBEY_COPY: VilleCopy = {
   pitchEn:
     "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place sur mesure.",
   seoHook: "bassin industriel",
   ecosystemFr:
     "Golbey est une commune de l'agglomération d'Épinal située au nord de la préfecture, au bord de la Moselle. La papeterie (site Norske Skog, l'un des plus grands d'Europe pour le papier journal) et les zones d'activités étendues structurent le bassin industriel. L'économie locale repose sur l'industrie papier-carton, la sous-traitance industrielle, la logistique-transport, le commerce, l'artisanat BTP et les services aux entreprises.",
@@ -30,8 +30,8 @@ export const GOLBEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const GOLBEY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Golbey  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Golbey et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre usine, atelier ou activité de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Golbey et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre usine, atelier ou activité de services.",
     },
     {
       q: "Accompagnez-vous les industriels papier-carton de Golbey ?",

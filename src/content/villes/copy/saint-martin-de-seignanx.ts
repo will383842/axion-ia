@@ -30,8 +30,8 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-de-Seignanx : formations adaptées aux entreprises des zones d'activités, exploitations agricoles, commerces et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les entreprises des zones d'activités ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux TPE et PME des zones d'activités du Seignanx. Diagnostic automatisation processus, gestion commerciale, chatbot clients, optimisation stocks, analyse données ventes.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux TPE et PME des zones d'activités du Seignanx. Diagnostic automatisation processus, gestion commerciale, chatbot clients, optimisation stocks, analyse données ventes.",
     },
     {
       q: "Accompagnez-vous les agriculteurs du Seignanx ?",
@@ -61,7 +61,7 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et professions libérales ?",
-      a: "Pour les artisans BTP et professions libérales à Saint-Martin-de-Seignanx, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation devis/factures, gestion planning, agents IA prise de RDV, classification documents.",
+      a: "Pour les artisans BTP et professions libérales à Saint-Martin-de-Seignanx, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : automatisation devis/factures, gestion planning, agents IA prise de RDV, classification documents.",
     },
     {
       q: "Comment se passe une mission à Saint-Martin-de-Seignanx ?",

@@ -9,9 +9,9 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
   pitchEn:
     "La Wantzenau (67), commune du nord de l''Eurométropole de Strasbourg en Alsace, célèbre pour sa gastronomie réputée (poularde, tradition winstub étoilée) et son cadre naturel entre Ill et Rhin, conjugue patrimoine gastronomique, économie résidentielle aisée et activités périurbaines strasbourgeoises. Tissu de TPE/PME hôtellerie-restauration gastronomique, commerce de proximité, artisanat de qualité, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
   seoHook: "gastronomie restauration & hôtellerie charme",
   ecosystemFr:
     "La Wantzenau est une commune de l''Eurométropole de Strasbourg, située au nord de l''agglomération entre l''Ill et le Rhin. La ville est mondialement connue dans la sphère gastronomique pour ses restaurants étoilés et sa tradition culinaire alsacienne (poularde, foie gras, choucroute). L''économie locale repose sur la gastronomie haut de gamme, l''hôtellerie de charme, le commerce de proximité aisé, l''artisanat de qualité, les professions libérales et les services aux PME strasbourgeoises.",
@@ -30,8 +30,8 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Wantzenau : formats adaptés au restaurant gastronomique, à l''hôtel, au cabinet libéral ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à La Wantzenau ?",
-      a: "L''Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de La Wantzenau et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité gastronomique, hôtelière, libérale ou commerciale.",
+      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de La Wantzenau et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité gastronomique, hôtelière, libérale ou commerciale.",
     },
     {
       q: "Accompagnez-vous les restaurateurs gastronomiques de La Wantzenau ?",

@@ -9,9 +9,9 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
   pitchEn:
     "Lesparre-Médoc (33), sous-préfecture au coeur du Médoc viticole, est le pôle administratif et commercial de la presqu'île médocaine. Vignoble AOC Médoc, commerces de centre-ville, artisanat BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit sur place sur mesure.",
   seoHook: "viticulture médoc & commerce centre-ville",
   ecosystemFr:
     "Lesparre-Médoc est la sous-préfecture et le pôle de services du Médoc. Vignoble AOC Médoc et Haut-Médoc, commerces de centre-ville (marché, services publics), artisanat BTP, professions libérales et services de santé. Accès D1215 vers Bordeaux et Pointe du Médoc.",
@@ -30,8 +30,8 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lesparre-Médoc : diagnostic pour vignerons AOC Médoc, commerçants, professions libérales et TPE artisans de la sous-préfecture. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lesparre-Médoc : ateliers adaptés aux chais, commerces et cabinets. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lesparre-Médoc  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons AOC Médoc et commerçants de la sous-préfecture.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons AOC Médoc et commerçants de la sous-préfecture.",
     },
     {
       q: "Accompagnez-vous les vignerons du Médoc ?",

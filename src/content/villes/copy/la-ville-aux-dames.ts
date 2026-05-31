@@ -30,8 +30,8 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ville-aux-Dames : formats adaptés au bureau tertiaire, cabinet libéral, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et PME de la ZA des Granges ?",
-      a: "Pour les TPE et PME de la zone d'activités des Granges, audit Flash {{price:audit-flash|flat}}, interventions formation sur site, coaching 1-to-1, implémentation IA. Cas typiques : automatisation gestion administrative, agents IA relation client, classification documents.",
+      a: "Pour les TPE et PME de la zone d'activités des Granges, audit sur place {{price:audit-flash|flat}}, interventions formation sur site, coaching 1-to-1, implémentation IA. Cas typiques : automatisation gestion administrative, agents IA relation client, classification documents.",
     },
     {
       q: "Accompagnez-vous les professions libérales à La Ville-aux-Dames ?",
-      a: "Oui, nous accompagnons les professions libérales (cabinets médicaux, juridiques, comptables) sur leurs cas IA : automatisation prise de RDV, classification dossiers, agents conversationnels patients/clients, rédaction assistée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les professions libérales (cabinets médicaux, juridiques, comptables) sur leurs cas IA : automatisation prise de RDV, classification dossiers, agents conversationnels patients/clients, rédaction assistée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission depuis Tours ?",

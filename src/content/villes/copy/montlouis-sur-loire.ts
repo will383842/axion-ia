@@ -30,8 +30,8 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montlouis-sur-Loire : formats adaptés au domaine viticole, cave, office tourisme, bureau. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission à Montlouis-sur-Loire ?",

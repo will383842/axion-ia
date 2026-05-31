@@ -65,7 +65,7 @@ export const BELFORT_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être un grand groupe pour travailler avec Axion-IA à Belfort ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME sous-traitantes du bassin. Un Audit Flash permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les TPE et PME sous-traitantes du bassin. Un Audit sur place permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment garantissez-vous la confidentialité des plans et données techniques ?",

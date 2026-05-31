@@ -30,8 +30,8 @@ export const BAILLARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baillargues : diagnostic pour PME tertiaires, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Baillargues : diagnostic pour PME tertiaires, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Baillargues : diagnostic pour PME tertiaires, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Baillargues : diagnostic pour PME tertiaires, TPE commerçants, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baillargues : ateliers adaptés PME tertiaire, commerce, cabinet libéral ou artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,11 +61,11 @@ export const BAILLARGUES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerces ?",
-      a: "Oui, pour les artisans BTP et commerces à Baillargues, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Oui, pour les artisans BTP et commerces à Baillargues, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 rapide. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Baillargues ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

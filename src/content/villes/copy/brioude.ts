@@ -30,8 +30,8 @@ export const BRIOUDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brioude : formats adaptés au site patrimonial, exploitation agricole, administration, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const BRIOUDE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

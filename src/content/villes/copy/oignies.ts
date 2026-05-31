@@ -9,9 +9,9 @@ export const OIGNIES_COPY: VilleCopy = {
   pitchEn:
     "Oignies (62), commune du bassin minier du Pas-de-Calais inscrit UNESCO, s'est reconvertie vers le tertiaire et la logistique. TPE artisanales, PME de services, commerces et professions libérales. Axion-IA collabore avec toutes les structures locales du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oignies (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oignies (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oignies (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oignies (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Oignies fait partie du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO. Ancienne ville minière reconvertie, elle accueille la scène culturelle du 9-9bis et un tissu de TPE artisanales, PME de services, commerces et professions libérales. Proximité de la plateforme logistique Delta 3.",
@@ -30,8 +30,8 @@ export const OIGNIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oignies : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Oignies : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Oignies : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Oignies : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oignies : formations pratiques adaptées au commerce, à l'artisanat ou au cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const OIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Oignies  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les entreprises logistiques près d'Oignies ?",

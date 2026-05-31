@@ -30,8 +30,8 @@ export const LANGUIDIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Languidic : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP et cabinets du bassin lorientais. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const LANGUIDIC_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Languidic  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'arrière-pays lorientais, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, BTP, commerce, libéral). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'arrière-pays lorientais, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, BTP, commerce, libéral). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Languidic ?",

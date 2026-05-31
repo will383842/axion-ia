@@ -10,9 +10,9 @@ export const DARNETAL_COPY: VilleCopy = {
     "Darnetal (76), commune de la vallee du Robec dans l'agglomeration rouennaise, reunit pres de 9 570 habitants. Ancienne ville industrielle reconvertie, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "services, tertiaire & vallee Robec",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Darnetal (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise est : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Darnetal est situee dans la vallee du Robec, a l'est de Rouen. Ancienne cite industrielle (teinturerie, textile) reconvertie, la ville fait partie de la Metropole Rouen Normandie. Tissu de TPE de services, PME tertiaires, commerces, professions liberales et artisanat. Acces metro Rouen.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DARNETAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Darnetal : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Darnetal : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Darnetal : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Darnetal : diagnostic adapte aux TPE de services, PME tertiaires et professions liberales de l'agglo rouennaise est. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Darnetal : formations adaptees aux commerces, cabinets, bureaux tertiaires et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const DARNETAL_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME tertiaires de Darnetal ?",
-      a: "Pour les PME tertiaires de Darnetal, nous proposons : automatisation processus, agents IA, CRM augmentes, reporting intelligent, gestion documentaire IA. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les PME tertiaires de Darnetal, nous proposons : automatisation processus, agents IA, CRM augmentes, reporting intelligent, gestion documentaire IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Darnetal ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professions liberales de Darnetal ?",

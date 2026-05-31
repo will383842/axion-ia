@@ -934,7 +934,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Tarifs Axion-IA : combien coûte une intervention IA",
       metaTitle: "Tarifs Axion-IA : interventions IA | axion-ia.com",
       metaDescription:
-        "Les interventions Axion-IA démarrent à 490 € (audit Flash 1 jour) et vont jusqu'à 50 000 € pour une transformation complète. Les formations collectives sont facturées à la journée groupe. Devis sous 24h, premier échange gratuit.",
+        "Les interventions Axion-IA démarrent à 490 € (audit sur place 1 jour) et vont jusqu'à 50 000 € pour une transformation complète. Les formations collectives sont facturées à la journée groupe. Devis sous 24h, premier échange gratuit.",
       h2Variants: [
         "Tarifs par service : audit, formation, implémentation",
         "Ce qui est inclus dans chaque prestation",

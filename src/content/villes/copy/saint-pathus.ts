@@ -30,8 +30,8 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pathus : diagnostic adapté aux TPE artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Pathus : diagnostic adapté aux TPE artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Pathus : diagnostic adapté aux TPE artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Pathus : diagnostic adapté aux TPE artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pathus : formats adaptés à l'artisan, au transporteur, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés pour leur métier.",
@@ -53,11 +53,11 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Pathus ?",
-      a: "Oui, nous accompagnons les TPE artisanales BTP de Saint-Pathus (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisanales BTP de Saint-Pathus (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Pathus  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, transport, commerce, services). Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, transport, commerce, services). Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les PME de transport du bassin Roissy ?",

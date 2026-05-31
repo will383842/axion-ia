@@ -65,11 +65,11 @@ export const BEYNOST_COPY: VilleCopy = {
     },
     {
       q: "Aidez-vous les artisans et professions libérales beynostains ?",
-      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe, automatisation des RDV, devis et dossiers, dans un cadre RGPD strict.",
+      a: "Oui. Audit sur place à tarif public, intervention d'une journée pour outiller l'équipe, automatisation des RDV, devis et dossiers, dans un cadre RGPD strict.",
     },
     {
       q: "Faut-il une grande structure pour travailler avec Axion-IA à Beynost ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME de la Côtière. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME de la Côtière. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

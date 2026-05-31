@@ -9,9 +9,9 @@ export const NOUZONVILLE_COPY: VilleCopy = {
   pitchEn:
     "Nouzonville (08), commune de 5 500 habitants nichée dans la vallée de la Meuse, héritière d'une forte tradition de métallurgie et de forge ardennaise. TPE et PME industrielles, ateliers de mécanique, sous-traitants automobile, artisans, commerces de proximité et acteurs de la transition. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit sur place sur mesure.",
   seoHook: "métallurgie forge & mécanique sous-traitance",
   ecosystemFr:
     "Nouzonville est une commune ardennaise de la vallée de la Meuse, ancrée dans une longue tradition de métallurgie, forge et sous-traitance industrielle. Tissu TPE/PME : ateliers mécaniques, fonderie, sous-traitants automobile, artisans du bâtiment, commerces de proximité et services.",
@@ -30,8 +30,8 @@ export const NOUZONVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nouzonville : diagnostic adapté aux TPE artisanales, PME industrielles de métallurgie, ateliers mécaniques, sous-traitants automobile, commerces. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nouzonville : formats adaptés atelier industriel, bureau PME, salle de réunion mairie. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const NOUZONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Nouzonville  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME industrielles ardennaises.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME industrielles ardennaises.",
     },
     {
       q: "Travaillez-vous avec les ateliers métallurgie et forge ?",

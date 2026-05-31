@@ -9,9 +9,9 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
   pitchEn:
     "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   seoHook: "industrielles zones & logistique entreposage",
   ecosystemFr:
     "Fleury-Mérogis est une commune de l'Essonne dotée de zones d'activités économiques avec un tissu industriel, logistique et artisanal. PME industrielles, entreprises logistique et entreposage, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
@@ -30,8 +30,8 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fleury-Mérogis : diagnostic adapté aux PME industrielles zones d'activités, entreprises logistique, artisans BTP, commerçants, prestataires services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fleury-Mérogis : diagnostic adapté aux PME industrielles zones d'activités, entreprises logistique, artisans BTP, commerçants, prestataires services. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fleury-Mérogis : diagnostic adapté aux PME industrielles zones d'activités, entreprises logistique, artisans BTP, commerçants, prestataires services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fleury-Mérogis : diagnostic adapté aux PME industrielles zones d'activités, entreprises logistique, artisans BTP, commerçants, prestataires services. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fleury-Mérogis : formats adaptés usine, entrepôt, chantier, bureau PME, commerce. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Évry ou Paris ?",

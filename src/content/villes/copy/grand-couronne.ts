@@ -10,9 +10,9 @@ export const GRAND_COURONNE_COPY: VilleCopy = {
     "Grand-Couronne (76), commune de la boucle de Seine en Seine-Maritime, reunit pres de 9 770 habitants. Ville industrielle et portuaire, elle accueille des TPE sous-traitantes, des PME industrielles et logistiques, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie, logistique & boucle Seine",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Couronne (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrialo-portuaire : maintenance, logistique, services, artisans et commercants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Grand-Couronne est situee dans la boucle de la Seine, en rive gauche au sud de Rouen. Zone industrialo-portuaire (raffinerie, logistique, chimie) et tissu de TPE sous-traitantes, PME de maintenance, commerces et services. Partie de la Metropole Rouen Normandie. Acces A13.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GRAND_COURONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Grand-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et logistiques de la boucle de Seine. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Grand-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et logistiques de la boucle de Seine. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Grand-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et logistiques de la boucle de Seine. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Grand-Couronne : diagnostic adapte aux TPE sous-traitantes, PME industrielles et logistiques de la boucle de Seine. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Grand-Couronne : formations adaptees aux sous-traitants industriels, PME logistiques et commerces de la zone portuaire. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const GRAND_COURONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Grand-Couronne ?",
-      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports, planification interventions, gestion documentaire technique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports, planification interventions, gestion documentaire technique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Grand-Couronne ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME logistiques de Grand-Couronne ?",

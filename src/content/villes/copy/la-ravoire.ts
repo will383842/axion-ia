@@ -30,8 +30,8 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ravoire : ateliers dans vos locaux, cabinet libéral, agence ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier, formats demi-journée ou journée.",
@@ -61,7 +61,7 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à La Ravoire, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      a: "Pour les TPE artisans et commerçants à La Ravoire, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à La Ravoire ?",

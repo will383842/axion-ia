@@ -119,7 +119,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises et cabinets boulonnais jusqu'à une dizaine de collaborateurs — centre-ville, quartiers résidentiels, Pont-de-Sèvres.",
           },
@@ -159,7 +159,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Boulogne-Billancourt ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
           },
           {
             q: "Quel ROI puis-je attendre pour une ETI du Trapèze ou du Quai du Point-du-Jour ?",
@@ -939,7 +939,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Boulogne-Billancourt ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Boulogne-Billancourt et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Boulogne-Billancourt et partout en France.",
     },
     {
       q: "Avez-vous des cas clients à Boulogne-Billancourt ou dans le bassin ouest parisien ?",

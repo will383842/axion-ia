@@ -30,8 +30,8 @@ export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nuits-Saint-Georges : ateliers dans vos locaux domaine viticole, caveau, bureau négoce ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés vin et oenotourisme.",
@@ -61,7 +61,7 @@ export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE artisans et commerces de Nuits-Saint-Georges ?",
-      a: "Pour les TPE artisans (tonnellerie, embouteillage) et commerces de Nuits-Saint-Georges, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, automatisation devis, agents IA relation client.",
+      a: "Pour les TPE artisans (tonnellerie, embouteillage) et commerces de Nuits-Saint-Georges, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, automatisation devis, agents IA relation client.",
     },
     {
       q: "Comment se déroule une mission à Nuits-Saint-Georges ?",

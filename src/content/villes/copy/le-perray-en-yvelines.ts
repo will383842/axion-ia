@@ -9,9 +9,9 @@ export const LE_PERRAY_EN_YVELINES_COPY: VilleCopy = {
   pitchEn:
     "Le Perray-en-Yvelines (78), commune résidentielle rurale en lisière de la forêt de Rambouillet, dans le sud-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises liées au tourisme vert et à l'économie forestière. Axion-IA y conduit ses missions auprès des entreprises locales du pays de Rambouillet.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit sur place sur mesure.",
   seoHook: "commerce proximité & rénovation",
   ecosystemFr:
     "Le Perray-en-Yvelines est une commune résidentielle rurale en lisière de la forêt de Rambouillet, au sud-ouest des Yvelines. Cadre naturel préservé prisé des familles et navetteurs. Tissu économique : TPE artisans bâtiment, commerces de centre-bourg, PME de services, professions libérales, hébergements touristiques et exploitations forestières. Communes voisines : Rambouillet, Les Essarts-le-Roi, Auffargis, Saint-Léger-en-Yvelines.",
@@ -30,8 +30,8 @@ export const LE_PERRAY_EN_YVELINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Perray-en-Yvelines : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du pays de Rambouillet. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Perray-en-Yvelines : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du pays de Rambouillet. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Perray-en-Yvelines : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du pays de Rambouillet. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Perray-en-Yvelines : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du pays de Rambouillet. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Perray-en-Yvelines : formats adaptés au commerce, à l'atelier ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LE_PERRAY_EN_YVELINES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Perray-en-Yvelines ?",
-      a: "L'Audit Flash IA au Perray-en-Yvelines démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA au Perray-en-Yvelines démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces au Perray-en-Yvelines ?",

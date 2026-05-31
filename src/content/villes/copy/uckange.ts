@@ -9,9 +9,9 @@ export const UCKANGE_COPY: VilleCopy = {
   pitchEn:
     "Uckange (57), commune de la vallée de la Fensch dans le Pays thionvillois en Moselle, célèbre pour son haut fourneau U4 reconverti en jardin des Traces. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du nord mosellan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Uckange est une commune de la vallée de la Fensch dans le Pays thionvillois, marquée par son passé sidérurgique. Le haut fourneau U4 reconverti en jardin des Traces témoigne de cette identité industrielle. Tissu TPE artisans BTP, PME industrielles et sous-traitance, commerces de proximité, professions libérales et indépendants. Proximité immédiate du Luxembourg, axe transfrontalier.",
@@ -30,8 +30,8 @@ export const UCKANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Uckange : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de la vallée de la Fensch et du Pays thionvillois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Uckange : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de la vallée de la Fensch et du Pays thionvillois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Uckange : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de la vallée de la Fensch et du Pays thionvillois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Uckange : diagnostic adapté aux TPE artisans, PME industrielles et de services, commerçants et professions libérales de la vallée de la Fensch et du Pays thionvillois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Uckange : formations adaptées TPE/PME industrielles et services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const UCKANGE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Uckange  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME d'Uckange souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME d'Uckange souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME industrielles à Uckange ?",
@@ -61,7 +61,7 @@ export const UCKANGE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Uckange ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Uckange ?",

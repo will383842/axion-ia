@@ -30,8 +30,8 @@ export const VIROFLAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Viroflay : diagnostic adapté aux TPE tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
-      en: "Audit IA à Viroflay : diagnostic adapté aux TPE tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      fr: "Audit IA à Viroflay : diagnostic adapté aux TPE tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      en: "Audit IA à Viroflay : diagnostic adapté aux TPE tertiaires, professions libérales, cabinets de conseil et PME de services de l'axe Paris-Versailles. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Viroflay : formats adaptés aux cabinets, PME tertiaires, commerces et professions libérales. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -53,7 +53,7 @@ export const VIROFLAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un cabinet à Viroflay ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux cabinets, professions libérales et TPE tertiaires de Viroflay. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Adapté aux cabinets, professions libérales et TPE tertiaires de Viroflay. Diagnostic complet avec ROI chiffré et plan d'action priorisé, tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Viroflay ?",

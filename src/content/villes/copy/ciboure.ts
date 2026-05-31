@@ -9,9 +9,9 @@ export const CIBOURE_COPY: VilleCopy = {
   pitchEn:
     "Ciboure (64), commune de la Côte Basque face à Saint-Jean-de-Luz, 5 951 habitants. Port de pêche historique, lieu de naissance de Maurice Ravel, tourisme balnéaire, TPE artisans marins et commerces locaux. Axion-IA collabore avec toutes les structures locales de la baie de Saint-Jean-de-Luz.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ciboure (64). Nous accompagnons TPE, PME et artisans de la baie de Saint-Jean-de-Luz : pêche, tourisme, restauration, artisanat marin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ciboure (64). Nous accompagnons TPE, PME et artisans de la baie de Saint-Jean-de-Luz : pêche, tourisme, restauration, artisanat marin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ciboure (64). Nous accompagnons TPE, PME et artisans de la baie de Saint-Jean-de-Luz : pêche, tourisme, restauration, artisanat marin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ciboure (64). Nous accompagnons TPE, PME et artisans de la baie de Saint-Jean-de-Luz : pêche, tourisme, restauration, artisanat marin. Audit sur place sur mesure.",
   seoHook: "pêche mareyage & tourisme balnéaire",
   ecosystemFr:
     "Ciboure est une commune de 5 951 habitants sur la Côte Basque, face à Saint-Jean-de-Luz de l'autre côté de la baie. Port de pêche (Socoa), lieu de naissance de Ravel, tourisme balnéaire et culturel, TPE artisans marins, restauration de poissons, hébergements et commerces de bord de mer.",
@@ -30,8 +30,8 @@ export const CIBOURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ciboure : diagnostic adapté aux professionnels de la pêche, restaurateurs de poissons, hébergeurs côtiers et artisans marins de la baie de Saint-Jean-de-Luz. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ciboure : déploiement outils IA dans vos restaurants, hébergements, ateliers marins ou locaux de mareyage. Équipes formées et autonomes.",
@@ -57,7 +57,7 @@ export const CIBOURE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Ciboure ?",
-      a: "L'audit Flash IA à Ciboure démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus pêche, restauration ou touristiques, identification gains IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Ciboure démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus pêche, restauration ou touristiques, identification gains IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les restaurateurs de Ciboure ?",

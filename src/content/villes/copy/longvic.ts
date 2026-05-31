@@ -9,9 +9,9 @@ export const LONGVIC_COPY: VilleCopy = {
   pitchEn:
     "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit sur place sur mesure.",
   seoHook: "industrielles logistiques & artisanat",
   ecosystemFr:
     "Longvic est une commune de Dijon Métropole au sud immédiat de Dijon, marquée par l'ancienne base aérienne 102 et plusieurs zones d'activités industrielles et logistiques. Tissu TPE artisanat et services, PME industrielles et logistiques (sud agglomération dijonnaise), commerce de centre-bourg, professions libérales, prestataires aéronautiques et défense.",
@@ -30,8 +30,8 @@ export const LONGVIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longvic : formats adaptés atelier industriel, entrepôt logistique, commerce, cabinet, bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,7 +53,7 @@ export const LONGVIC_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques de Longvic ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation production et qualité, maintenance prédictive, optimisation flux logistiques et entrepôts, gestion stocks, reporting commercial pour les zones d'activités sud Dijon.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation production et qualité, maintenance prédictive, optimisation flux logistiques et entrepôts, gestion stocks, reporting commercial pour les zones d'activités sud Dijon.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de centre-bourg ?",
@@ -61,7 +61,7 @@ export const LONGVIC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les prestataires aéronautiques et défense ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, automatisation reporting et conformité, gestion documentaire, suivi qualité, optimisation cycles production pour la filière aéronautique et défense liée à l'ancienne base aérienne 102.",
+      a: "Audit sur place {{price:audit-flash|flat}}, automatisation reporting et conformité, gestion documentaire, suivi qualité, optimisation cycles production pour la filière aéronautique et défense liée à l'ancienne base aérienne 102.",
     },
     {
       q: "Comment se déroule une mission depuis Dijon ou Paris ?",

@@ -119,7 +119,7 @@ export const LYON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises et cabinets lyonnais jusqu'à une dizaine de collaborateurs — Presqu'île, Vieux Lyon, Caluire.",
           },
@@ -159,7 +159,7 @@ export const LYON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Lyon ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
           },
           {
             q: "Quel ROI puis-je attendre d'un audit pour une ETI industrielle lyonnaise ?",

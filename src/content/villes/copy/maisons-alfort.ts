@@ -32,8 +32,8 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
-      en: "Audit Flash 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h sur site à Maisons-Alfort pour cabinets vétérinaires, laboratoires, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Maisons-Alfort pour automatiser RDV, dossiers patients, devis, facturation et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
@@ -51,7 +51,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Maisons-Alfort ?",
-      a: "Les interventions Axion-IA à Maisons-Alfort démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Les tarifs publics complets sont disponibles sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Maisons-Alfort démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Les tarifs publics complets sont disponibles sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Maisons-Alfort ?",

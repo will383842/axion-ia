@@ -9,9 +9,9 @@ export const SAINT_AVE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Avé (56), commune résidentielle dynamique de l'agglomération de Vannes (12 470 hab), conjugue cadre de vie et tissu économique tertiaire en plein développement. TPE et PME services, santé (centre hospitalier spécialisé), commerces de proximité, artisanat, BTP, écoles, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avé (56). Nous accompagnons TPE et PME : services et tertiaire de l'agglomération de Vannes, professionnels de santé du centre hospitalier, commerces de proximité, artisans, BTP, professions libérales, écoles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avé (56). Nous accompagnons TPE et PME : services et tertiaire de l'agglomération de Vannes, professionnels de santé du centre hospitalier, commerces de proximité, artisans, BTP, professions libérales, écoles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avé (56). Nous accompagnons TPE et PME : services et tertiaire de l'agglomération de Vannes, professionnels de santé du centre hospitalier, commerces de proximité, artisans, BTP, professions libérales, écoles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avé (56). Nous accompagnons TPE et PME : services et tertiaire de l'agglomération de Vannes, professionnels de santé du centre hospitalier, commerces de proximité, artisans, BTP, professions libérales, écoles. Audit sur place sur mesure.",
   seoHook: "services tertiaires & santé secteur",
   ecosystemFr:
     "Saint-Avé est une commune morbihannaise de la première couronne de Vannes, à la croissance résidentielle soutenue. Tissu TPE/PME tertiaire diversifié : services, santé (centre hospitalier spécialisé), commerce de proximité, artisanat, BTP, professions libérales, secteur éducatif.",
@@ -30,8 +30,8 @@ export const SAINT_AVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Avé : diagnostic adapté aux TPE artisans, PME services de l'agglomération de Vannes, professionnels de santé, commerces de proximité, BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Avé : diagnostic adapté aux TPE artisans, PME services de l'agglomération de Vannes, professionnels de santé, commerces de proximité, BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Avé : diagnostic adapté aux TPE artisans, PME services de l'agglomération de Vannes, professionnels de santé, commerces de proximité, BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Avé : diagnostic adapté aux TPE artisans, PME services de l'agglomération de Vannes, professionnels de santé, commerces de proximité, BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Avé : formats adaptés cabinet libéral, structure de santé, boutique de proximité, bureau tertiaire. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_AVE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Avé  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME services de l'agglomération de Vannes.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME services de l'agglomération de Vannes.",
     },
     {
       q: "Travaillez-vous avec les professionnels de santé du centre hospitalier ?",

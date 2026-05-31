@@ -30,8 +30,8 @@ export const ANZIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Anzin : formats adaptés à l'entreprise BTP, au sous-traitant industriel, au commerce ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const ANZIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Anzin  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, sous-traitance auto, commerce, services à la personne, ESS). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, sous-traitance auto, commerce, services à la personne, ESS). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les sous-traitants automobile du Valenciennois ?",

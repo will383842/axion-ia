@@ -10,9 +10,9 @@ export const DOUARNENEZ_COPY: VilleCopy = {
     "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   seoHook: "pêche, produits de la mer & tourisme littoral",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit sur place sur mesure.",
   ecosystemFr:
     "Douarnenez est une cité portuaire emblématique du Finistère sud, berceau de l'industrie sardinière française. Le Port-Musée et la baie attirent un tourisme culturel et nautique. La filière pêche/produits de la mer (conserveries, mareyage) reste structurante, complétée par l'artisanat, le commerce de proximité et les services. Communes voisines : Poullan-sur-Mer, Kerlaz, Pouldergat, Le Juch, Quimper (25 min).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DOUARNENEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Douarnenez : diagnostic adapté aux TPE de la filière pêche, PME agroalimentaires, commerces de centre-ville et acteurs du tourisme littoral de la baie de Douarnenez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Douarnenez : formats adaptés à la conserverie, au commerce, à l'hôtel ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const DOUARNENEZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Douarnenez  ?",
-      a: "L'Audit Flash IA à Douarnenez démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Douarnenez démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous la filière pêche à Douarnenez ?",

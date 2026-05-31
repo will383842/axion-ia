@@ -9,9 +9,9 @@ export const LANGON_COPY: VilleCopy = {
   pitchEn:
     "Langon (33), sous-préfecture de la Gironde au bord de la Garonne, est le pôle économique du sud-Gironde avec un commerce de centre-ville dynamique, un vignoble prestigieux (AOC Sauternes, Graves) et un tissu de TPE/PME diversifié. Axion-IA opère pour toutes les structures économiques de la commune du sud-Gironde.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture sauternes & commerce centre-ville",
   ecosystemFr:
     "Langon est la sous-préfecture et le pôle commercial du sud-Gironde. Vignoble AOC Sauternes (vins liquoreux prestigieux) et Graves, commerce de centre-ville actif, tissu PME de services, artisanat BTP et professions libérales. Gare SNCF sur la ligne Bordeaux-Toulouse, accès A62.",
@@ -30,8 +30,8 @@ export const LANGON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Langon : diagnostic pour vignerons de Sauternes/Graves, commerçants, PME de services et TPE artisans du sud-Gironde. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langon : ateliers adaptés aux chais, commerces, cabinets et ateliers. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LANGON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Langon  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du sud-Gironde.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du sud-Gironde.",
     },
     {
       q: "Accompagnez-vous les vignerons de Sauternes ?",

@@ -9,9 +9,9 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   pitchEn:
     "Soisy-sous-Montmorency (95), commune résidentielle de la vallée de Montmorency au nord de Paris, offre un cadre verdoyant adossé à la forêt de Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires santé. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Soisy-sous-Montmorency est une commune résidentielle de la vallée de Montmorency, adossée à la forêt éponyme, à proximité d'Enghien-les-Bains et Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales de santé, restauration, prestataires bien-être.",
@@ -30,8 +30,8 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soisy-sous-Montmorency : formats adaptés boutique, cabinet médical, restaurant, bureau PME, espace bien-être. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Enghien ou Paris ?",

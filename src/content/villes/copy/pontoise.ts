@@ -53,7 +53,7 @@ export const PONTOISE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et indépendants pontoisiens ?",
-      a: "Oui, nous accompagnons les TPE pontoisiennes (artisans, commerçants, indépendants) sur des cas IA accessibles : automatisation devis/facturation, agents IA pour relation client, gestion administrative simplifiée. Audit Flash à {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE pontoisiennes (artisans, commerçants, indépendants) sur des cas IA accessibles : automatisation devis/facturation, agents IA pour relation client, gestion administrative simplifiée. Audit sur place à {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les cabinets d'expertise et professions juridiques ?",

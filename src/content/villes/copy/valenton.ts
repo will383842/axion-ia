@@ -9,9 +9,9 @@ export const VALENTON_COPY: VilleCopy = {
   pitchEn:
     "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "TPE & PME Val-de-Marne",
   ecosystemFr:
     "Valenton est une commune du sud du Val-de-Marne structurée autour de la gare de triage de Villeneuve-Saint-Georges/Valenton, la plus grande d'Île-de-France. Zones logistiques et industrielles actives, PME transport, TPE artisans BTP, commerces de proximité et services aux entreprises.",
@@ -30,8 +30,8 @@ export const VALENTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valenton : formats adaptés plateforme logistique, entrepôt, chantier BTP, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const VALENTON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Valenton ?",
-      a: "L'audit Flash IA à Valenton démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Valenton démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP de Valenton ?",

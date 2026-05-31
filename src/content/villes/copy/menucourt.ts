@@ -9,9 +9,9 @@ export const MENUCOURT_COPY: VilleCopy = {
   pitchEn:
     "Menucourt (95), commune résidentielle de l'agglomération de Cergy-Pontoise à 40 km au nord-ouest de Paris, allie cadre boisé et proximité économique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Menucourt est une commune résidentielle boisée de l'agglomération de Cergy-Pontoise, bénéficiant de la dynamique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services aux entreprises, professions libérales, restauration, services à la personne.",
@@ -30,8 +30,8 @@ export const MENUCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Menucourt : formats adaptés boutique, cabinet, restaurant, bureau PME agglo Cergy-Pontoise. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const MENUCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",

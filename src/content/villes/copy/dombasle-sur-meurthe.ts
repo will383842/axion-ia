@@ -30,8 +30,8 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dombasle-sur-Meurthe : formats adaptés à l'atelier industriel, au bureau PME ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Dombasle-sur-Meurthe ?",
-      a: "Oui, nous accompagnons les artisans BTP et commerçants de proximité sur des cas IA pratiques : automatisation devis, gestion stocks, agents IA prise de RDV, facturation automatique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP et commerçants de proximité sur des cas IA pratiques : automatisation devis, gestion stocks, agents IA prise de RDV, facturation automatique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Dombasle-sur-Meurthe  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Dombasle-sur-Meurthe et du bassin salifère. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Dombasle-sur-Meurthe et du bassin salifère. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Dombasle-sur-Meurthe ?",

@@ -9,9 +9,9 @@ export const SERRIS_COPY: VilleCopy = {
   pitchEn:
     "Serris, commune dynamique de Seine-et-Marne (77) au coeur du Val d'Europe (Marne-la-Vallée secteur IV), 30 km à l'est de Paris. Tissu TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs. Axion-IA opère pour toutes les structures économiques de la commune du pôle Val d'Europe.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit sur place sur mesure.",
   seoHook: "commerce détail & tourisme, loisirs",
   ecosystemFr:
     "Serris est le coeur du Val d'Europe, pôle commercial et tertiaire majeur de Marne-la-Vallée secteur IV. Son tissu économique repose sur le centre commercial Val d'Europe, La Vallée Village (outlets), PME tertiaires, TPE commerçants et prestataires liés au tourisme Disneyland Paris. Proximité directe avec Chessy, Montévrain et Bailly-Romainvilliers.",
@@ -30,8 +30,8 @@ export const SERRIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Serris : diagnostic adapté aux TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme du pôle Val d'Europe. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Serris : diagnostic adapté aux TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme du pôle Val d'Europe. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Serris : diagnostic adapté aux TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme du pôle Val d'Europe. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Serris : diagnostic adapté aux TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme du pôle Val d'Europe. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Serris : formats adaptés au retail, hôtellerie-restauration, cabinet ou bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const SERRIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Serris ?",
-      a: "L'Audit Flash IA à Serris démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Serris démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces et retailers du Val d'Europe ?",

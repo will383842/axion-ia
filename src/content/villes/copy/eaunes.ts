@@ -9,9 +9,9 @@ export const EAUNES_COPY: VilleCopy = {
   pitchEn:
     "Eaunes (31), commune du sud de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Eaunes est une commune résidentielle du sud de Toulouse, entre Muret et Labarthe-sur-Lèze. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Croissance démographique liée à l'attractivité du sud toulousain.",
@@ -30,8 +30,8 @@ export const EAUNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eaunes : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Eaunes : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Eaunes : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Eaunes : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eaunes : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const EAUNES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Eaunes  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Eaunes ?",

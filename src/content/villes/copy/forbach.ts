@@ -10,9 +10,9 @@ export const FORBACH_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Forbach, sous-préfecture de Moselle en Grand Est, dans l'automatisation de leurs processus grâce à du code IA sur mesure. La ville compte 20 493 habitants (2023) et concentre 818 entreprises actives — 434 commerces de détail, 269 services et 115 unités industrielles — réparties notamment sur le Carrefour de l'Europe et le Technopôle Forbach Sud. Frontalière de Sarrebruck (Allemagne), Forbach s'inscrit dans une agglomération transfrontalière d'environ 1 million d'habitants. Nous intervenons sur site pour auditer et déployer des solutions IA.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Forbach (Moselle, Grand Est) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu commercial (434 commerces de détail), industriel (115 unités, dont activité historique liée au charbon et à la sidérurgie) et tertiaire local. Le contexte transfrontalier avec Sarrebruck implique souvent des besoins multilingues FR/DE que nos solutions peuvent prendre en charge. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Forbach (Moselle, Grand Est) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu commercial (434 commerces de détail), industriel (115 unités, dont activité historique liée au charbon et à la sidérurgie) et tertiaire local. Le contexte transfrontalier avec Sarrebruck implique souvent des besoins multilingues FR/DE que nos solutions peuvent prendre en charge. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Forbach (Moselle, Grand Est) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu commercial (434 commerces de détail), industriel (115 unités, dont activité historique liée au charbon et à la sidérurgie) et tertiaire local. Le contexte transfrontalier avec Sarrebruck implique souvent des besoins multilingues FR/DE que nos solutions peuvent prendre en charge. Tarifs publics : Audit Flash {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
+    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Forbach (Moselle, Grand Est) pour réaliser audits, interventions et accompagnements sur site. Nous développons du code IA sur mesure — pas de no-code — adapté au tissu commercial (434 commerces de détail), industriel (115 unités, dont activité historique liée au charbon et à la sidérurgie) et tertiaire local. Le contexte transfrontalier avec Sarrebruck implique souvent des besoins multilingues FR/DE que nos solutions peuvent prendre en charge. Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Intervention {{price:intervention-4h|flat}}.",
   seoHook: "commerce frontalier & industrie",
   ecosystemFr:
     "Forbach concentre 818 entreprises actives : 434 commerces de détail, 269 sociétés de services et 115 unités industrielles. Les zones d'activité Carrefour de l'Europe et Technopôle Forbach Sud structurent l'offre foncière. La proximité immédiate de Sarrebruck (Allemagne) place les entreprises forbachoises dans un bassin d'environ 1 million d'habitants, avec des flux commerciaux transfrontaliers quotidiens. Les communes limitrophes incluent Behren-lès-Forbach, Petite-Rosselle, Schœneck, Spicheren, Stiring-Wendel et Etzling.",
@@ -32,8 +32,8 @@ export const FORBACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de {{price:audit-flash|flat}}.",
-      en: "Audit Flash 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h à Forbach pour TPE et PME de Moselle — diagnostic des processus (gestion commerciale, logistique transfrontalière FR/DE, suivi production industrielle). À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention Essentielle sur site à Forbach pour automatiser un goulot précis (saisie devis, traduction FR/DE devis-factures, relances clients transfrontaliers). Tarif public {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
@@ -51,7 +51,7 @@ export const FORBACH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Forbach ?",
-      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Forbach (Moselle) inclus dans le devis. Tarifs publics consultables sur axion-ia.com.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, implémentation et sessions un-à-un dès {{price:intervention-dirigeants|flat}}. Frais de déplacement à Forbach (Moselle) inclus dans le devis. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Quels délais pour une intervention sur site à Forbach ?",

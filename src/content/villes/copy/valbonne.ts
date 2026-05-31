@@ -30,8 +30,8 @@ export const VALBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valbonne : formats adaptés au bureau Sophia Antipolis, lab R&D ou espace coworking tech. Vos équipes dev et produit repartent avec intégrations IA configurées sur votre stack.",
@@ -53,7 +53,7 @@ export const VALBONNE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les startups tech de Sophia Antipolis ?",
-      a: "Oui, nous accompagnons les startups tech de Sophia Antipolis sur leurs cas IA avancés : pipelines ML production, RAG documentation, agents conversationnels, automatisation CI/CD, monitoring modèles. Audit Flash {{price:audit-flash|flat}} pour évaluer vos quick wins IA.",
+      a: "Oui, nous accompagnons les startups tech de Sophia Antipolis sur leurs cas IA avancés : pipelines ML production, RAG documentation, agents conversationnels, automatisation CI/CD, monitoring modèles. Audit sur place {{price:audit-flash|flat}} pour évaluer vos quick wins IA.",
     },
     {
       q: "Accompagnez-vous les PME R&D et biotech du technopôle ?",

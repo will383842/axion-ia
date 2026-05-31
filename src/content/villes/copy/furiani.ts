@@ -9,9 +9,9 @@ export const FURIANI_COPY: VilleCopy = {
   pitchEn:
     "Furiani (2B), commune de la banlieue sud de Bastia, accueille le stade Armand-Cesari (Sporting Club de Bastia) et bénéficie du dynamisme de l'agglomération bastiaise. Tissu commercial et services agglo Bastia, TPE artisanat, équipements sportifs et associatifs, tourisme balnéaire et résidentiel, agriculture plaine orientale. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Furiani (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, structures sportives et associatives (stade Armand-Cesari), exploitants agricoles plaine orientale, acteurs tourisme balnéaire et résidentiel. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Furiani (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, structures sportives et associatives (stade Armand-Cesari), exploitants agricoles plaine orientale, acteurs tourisme balnéaire et résidentiel. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Furiani (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, structures sportives et associatives (stade Armand-Cesari), exploitants agricoles plaine orientale, acteurs tourisme balnéaire et résidentiel. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Furiani (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, structures sportives et associatives (stade Armand-Cesari), exploitants agricoles plaine orientale, acteurs tourisme balnéaire et résidentiel. Audit sur place sur mesure.",
   seoHook: "commerces services & équipements sportifs",
   ecosystemFr:
     "Furiani est une commune de la banlieue sud de Bastia, hôte du stade Armand-Cesari. Tissu commercial et services agglo bastiaise, TPE artisanat, équipements sportifs et associatifs, tourisme balnéaire et résidentiel, agriculture plaine orientale.",
@@ -30,8 +30,8 @@ export const FURIANI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Furiani : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, structures sportives et associatives, exploitants agricoles plaine orientale, acteurs tourisme balnéaire. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Furiani : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, structures sportives et associatives, exploitants agricoles plaine orientale, acteurs tourisme balnéaire. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Furiani : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, structures sportives et associatives, exploitants agricoles plaine orientale, acteurs tourisme balnéaire. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Furiani : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, structures sportives et associatives, exploitants agricoles plaine orientale, acteurs tourisme balnéaire. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Furiani : formats adaptés commerce agglo Bastia, atelier artisan, club sportif, exploitation agricole, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const FURIANI_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et exploitants agricoles ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis le continent ?",

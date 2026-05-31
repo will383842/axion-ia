@@ -30,8 +30,8 @@ export const MERICOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Méricourt : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, professions libérales du bassin minier Lens-Liévin. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Méricourt : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, professions libérales du bassin minier Lens-Liévin. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Méricourt : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, professions libérales du bassin minier Lens-Liévin. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Méricourt : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, professions libérales du bassin minier Lens-Liévin. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Méricourt : formats adaptés à l'atelier BTP, l'usine, le commerce, le cabinet. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -53,7 +53,7 @@ export const MERICOURT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Méricourt sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Méricourt sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les PME industrie reconvertie ?",
@@ -61,7 +61,7 @@ export const MERICOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Méricourt, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation client.",
+      a: "Pour les commerçants et professions libérales à Méricourt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation client.",
     },
     {
       q: "Comment se passe une mission à Méricourt depuis Lille ?",

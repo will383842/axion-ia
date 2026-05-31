@@ -11,9 +11,9 @@ export const VINCENNES_COPY: VilleCopy = {
   pitchEn:
     "Vincennes (94), commune du Val-de-Marne en porte de Paris (48 193 habitants, 2e densité de France à 25 232 hab/km²), structurée autour du château royal et du Bois de Vincennes. Tissu très dense de TPE et PME — commerce de centre-ville, professions libérales (cadres = principale CSP), services aux entreprises, restauration. Axion-IA accompagne en priorité les TPE/PME vincennoises et de l'est parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit sur place {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit Flash {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vincennes (94) et dans l'est parisien (Saint-Mandé, Fontenay-sous-Bois, Montreuil, Paris 12e/20e). Nous accompagnons en priorité TPE commerçants de la rue de Fontenay et avenue de Paris, professions libérales (avocats, médecins, experts-comptables), PME services et restaurateurs. Audit sur place {{price:audit-flash|flat}}, code sur mesure — pas de no-code.",
   seoHook: "commerce de centre-ville, professions libérales & services",
   ecosystemFr:
     "Vincennes occupe un territoire restreint (1,91 km²) avec la 2e densité de population de France (25 232 hab/km²). La population active est dominée par les cadres (15 352 résidents en 2022). Le tissu économique est typique des communes de petite couronne très denses : commerces de proximité dynamiques (avenue de Paris, rue de Fontenay), nombreuses professions libérales et services aux particuliers, restauration, agences immobilières. Patrimoine : Château de Vincennes (ancienne résidence royale) et Bois de Vincennes. Festival America (littérature, années paires).",
@@ -32,8 +32,8 @@ export const VINCENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Vincennes : diagnostic 4h pour TPE commerçants avenue de Paris/rue de Fontenay, cabinets libéraux (avocats, médecins, experts-comptables) et PME services. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vincennes : automatisation facturation cabinets libéraux, chatbot commerce de centre-ville, gestion rendez-vous, traitement documents. Formation 4 h {{price:intervention-4h|flat}}.",
@@ -55,11 +55,11 @@ export const VINCENNES_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention IA à Vincennes ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4h). Formation 4 h {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
+      a: "Audit sur place {{price:audit-flash|flat}} (4h). Formation 4 h {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis dès {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Vincennes ?",
-      a: "William se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit Flash restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
+      a: "William se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit sur place restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Vincennes ?",

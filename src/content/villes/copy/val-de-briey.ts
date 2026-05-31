@@ -30,8 +30,8 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Val de Briey : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerçants de Val de Briey ?",
-      a: "Oui, nous accompagnons les artisans BTP et commerçants sur des cas IA pratiques : automatisation devis, gestion planning chantier, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP et commerçants sur des cas IA pratiques : automatisation devis, gestion planning chantier, agents IA prise de RDV, gestion stocks, facturation automatique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Val de Briey  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Val de Briey et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Val de Briey et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Val de Briey ?",

@@ -7,9 +7,9 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
   pitchEn:
     "La Londe-les-Maures (83, Var), station balnéaire entre Hyères et Bormes-les-Mimosas au cœur du vignoble Côtes de Provence La Londe, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA opère sur l'ensemble des activités professionnelles locales du littoral des Maures.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "viticulture côtes & hôtellerie restauration",
   ecosystemFr:
     "La Londe-les-Maures est une station balnéaire du littoral des Maures, au cœur du vignoble Côtes de Provence La Londe (28 domaines). Tissu de TPE viticoles, PME hôtellerie-restauration, commerces touristiques, professions libérales, activités nautiques (port Miramar), plages (Argentière, Tamaris) et liaisons îles d'Hyères.",
@@ -28,8 +28,8 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Londe-les-Maures : diagnostic adapté aux TPE viticoles, PME hôtellerie-restauration et commerces touristiques du littoral des Maures. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Londe-les-Maures : formations pratiques adaptées viticulture, œnotourisme, hôtellerie, restauration et nautisme. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Londe-les-Maures  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME hôtellerie varoises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME hôtellerie varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et l'œnotourisme à La Londe-les-Maures ?",

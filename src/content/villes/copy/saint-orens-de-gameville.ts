@@ -9,9 +9,9 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Orens-de-Gameville (31), commune résidentielle de l'est toulousain avec près de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune de la couronne est de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Orens-de-Gameville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'est toulousain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Orens-de-Gameville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'est toulousain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Orens-de-Gameville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'est toulousain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Orens-de-Gameville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'est toulousain. Audit sur place sur mesure.",
   seoHook: "professions libérales & artisanat",
   ecosystemFr:
     "Saint-Orens-de-Gameville est une commune résidentielle de l'est de Toulouse avec un tissu économique diversifié. TPE artisans BTP, PME de services, cabinets de professions libérales, commerces de proximité, zone d'activités En Jacca. Cadre de vie prisé entre ville et campagne.",
@@ -30,8 +30,8 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Orens-de-Gameville : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'est toulousain. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Orens : formats adaptés à l'artisan, au cabinet libéral, à la PME de services. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Orens  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une intervention IA à Saint-Orens ?",

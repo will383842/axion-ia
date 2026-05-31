@@ -9,9 +9,9 @@ export const LAMBESC_COPY: VilleCopy = {
   pitchEn:
     "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit sur place sur mesure.",
   seoHook: "massif des",
   ecosystemFr:
     "Lambesc est une commune patrimoniale du pays d'Aix sur la D7n entre Aix-en-Provence et Salon-de-Provence. Vignobles AOC Coteaux d'Aix, oliveraies, agriculture, artisanat d'art et tourisme patrimonial. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois.",
@@ -30,8 +30,8 @@ export const LAMBESC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lambesc : diagnostic adapté aux viticulteurs, oléiculteurs, professions libérales, TPE artisans et PME tertiaires du pays d'Aix. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lambesc : ateliers pour domaines viticoles, moulins à huile, cabinets libéraux et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LAMBESC_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Lambesc  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs, oléiculteurs et PME lambescaines. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs, oléiculteurs et PME lambescaines. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Coteaux d'Aix ?",

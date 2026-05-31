@@ -9,9 +9,9 @@ export const UZES_COPY: VilleCopy = {
   pitchEn:
     "Uzès (30), premier duché de France, cité patrimoniale du Gard entre garrigue et vallée du Gardon. Tissu TPE/PME tourisme culturel, artisanat d'art, commerces premium, viticulture Duché d'Uzès AOP et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'Uzège.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Uzès (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme culturel, artisans d'art, commerçants, viticulteurs Duché d'Uzès, professions libérales et services aux entreprises de l'Uzège. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Uzès (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme culturel, artisans d'art, commerçants, viticulteurs Duché d'Uzès, professions libérales et services aux entreprises de l'Uzège. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Uzès (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme culturel, artisans d'art, commerçants, viticulteurs Duché d'Uzès, professions libérales et services aux entreprises de l'Uzège. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Uzès (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme culturel, artisans d'art, commerçants, viticulteurs Duché d'Uzès, professions libérales et services aux entreprises de l'Uzège. Audit sur place sur mesure.",
   seoHook: "tourisme culturel & artisanat d'art",
   ecosystemFr:
     "Uzès (~8 500 hab) est le premier duché de France, cité patrimoniale entre Pont du Gard et garrigue gardoise. Tourisme culturel majeur (marché samedi, duché, Pont du Gard à 15 min), artisanat d'art, commerces premium, viticulture Duché d'Uzès AOP, professions libérales et résidences secondaires.",
@@ -30,8 +30,8 @@ export const UZES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Uzès : diagnostic adapté aux TPE/PME tourisme culturel, artisans d'art, commerçants premium et viticulteurs de l'Uzège. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Uzès : formats adaptés aux artisans d'art, commerces, caves viticoles et structures touristiques de l'Uzège.",
@@ -57,7 +57,7 @@ export const UZES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Uzès  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Duché d'Uzès ?",

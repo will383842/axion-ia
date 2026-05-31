@@ -30,8 +30,8 @@ export const GRAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gray : diagnostic adapté aux TPE/PME commerçants, artisans BTP, agriculteurs et professions libérales du Pays de Gray et val de Saône. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Gray : diagnostic adapté aux TPE/PME commerçants, artisans BTP, agriculteurs et professions libérales du Pays de Gray et val de Saône. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Gray : diagnostic adapté aux TPE/PME commerçants, artisans BTP, agriculteurs et professions libérales du Pays de Gray et val de Saône. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gray : diagnostic adapté aux TPE/PME commerçants, artisans BTP, agriculteurs et professions libérales du Pays de Gray et val de Saône. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gray : formats adaptés au commerce, atelier artisan, exploitation agricole, cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const GRAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gray  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}, adapté aux TPE et PME du Pays de Gray. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics consultables sur notre site.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux TPE et PME du Pays de Gray. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs du val de Saône autour de Gray ?",
@@ -61,7 +61,7 @@ export const GRAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerçants et artisans de Gray ?",
-      a: "Pour les TPE commerçants et artisans de Gray : audit Flash {{price:audit-flash|flat}}, interventions formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, marketing local.",
+      a: "Pour les TPE commerçants et artisans de Gray : audit sur place {{price:audit-flash|flat}}, interventions formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, marketing local.",
     },
     {
       q: "Comment se déroule une mission IA à Gray ?",

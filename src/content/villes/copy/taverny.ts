@@ -32,8 +32,8 @@ export const TAVERNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Taverny (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
-      en: "Audit Flash IA à Taverny (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
+      fr: "Audit sur place IA à Taverny (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
+      en: "Audit sur place IA à Taverny (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des processus automatisables pour PME industrielles de la zone des 70 hectares.",
     },
     interventions: {
       fr: "Interventions à Taverny dès {{price:intervention-4h|flat}} pour automatiser devis, relances, ordres de fabrication et reporting qualité des TPE et PME industrielles — code custom.",
@@ -51,7 +51,7 @@ export const TAVERNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Taverny ?",
-      a: "Les interventions Axion-IA à Taverny démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
+      a: "Les interventions Axion-IA à Taverny démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit sur place 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Taverny ?",

@@ -30,8 +30,8 @@ export const THUIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thuir : formats adaptés à la cave viticole, exploitation fruitière, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const THUIR_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Thuir, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Thuir, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Thuir ?",

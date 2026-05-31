@@ -65,11 +65,11 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
     },
     {
       q: "Aidez-vous les commerces et artisans caluirards ?",
-      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe et automatisation de la relation client et des tâches administratives.",
+      a: "Oui. Audit sur place à tarif public, intervention d'une journée pour outiller l'équipe et automatisation de la relation client et des tâches administratives.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Caluire-et-Cuire ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME locales. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME locales. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Caluire-et-Cuire ?",

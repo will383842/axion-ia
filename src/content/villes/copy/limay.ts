@@ -30,8 +30,8 @@ export const LIMAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Limay : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
-      en: "Audit IA à Limay : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      fr: "Audit IA à Limay : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
+      en: "Audit IA à Limay : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du Mantois, commerçants et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}} accessible à toutes les structures locales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Limay : formats adaptés aux PME industrielles, ateliers artisans, commerces et cabinets. Vos équipes repartent autonomes sur les outils IA configurés pour votre métier.",
@@ -53,7 +53,7 @@ export const LIMAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Limay ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les PME industrielles de Limay, des audits approfondis (chaîne logistique, contrôle qualité, automatisation production) sont disponibles sur devis. Tarifs publics et transparents.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les PME industrielles de Limay, des audits approfondis (chaîne logistique, contrôle qualité, automatisation production) sont disponibles sur devis. Tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les entreprises des zones d'activités de Limay ?",
@@ -65,7 +65,7 @@ export const LIMAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE artisans et commerçants de Limay ?",
-      a: "Pour les TPE artisans et commerçants de Limay, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA fidélité client, gestion RDV, CRM augmentés.",
+      a: "Pour les TPE artisans et commerçants de Limay, nous proposons Audit sur place {{price:audit-flash|flat}}, intervention formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA fidélité client, gestion RDV, CRM augmentés.",
     },
   ],
 };

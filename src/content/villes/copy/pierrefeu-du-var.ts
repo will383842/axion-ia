@@ -9,9 +9,9 @@ export const PIERREFEU_DU_VAR_COPY: VilleCopy = {
   pitchEn:
     "Pierrefeu-du-Var (83), commune du centre-Var au cœur du vignoble Côtes-de-Provence, est reconnue pour ses domaines viticoles et son patrimoine rural provençal. Tissu de TPE viticulteurs, oléiculteurs, artisans, commerçants et PME services et BTP du bassin hyérois. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit sur place sur mesure.",
   seoHook: "bassin hyérois",
   ecosystemFr:
     "Pierrefeu-du-Var est ancrée dans le centre-Var, en pleine zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel à proximité d'Hyères et du Luc, avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de l'arrière-pays varois.",
@@ -30,8 +30,8 @@ export const PIERREFEU_DU_VAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pierrefeu-du-Var : diagnostic adapté aux domaines viticoles AOC, oléiculteurs, artisans et PME services du centre-Var. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pierrefeu-du-Var : diagnostic adapté aux domaines viticoles AOC, oléiculteurs, artisans et PME services du centre-Var. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pierrefeu-du-Var : diagnostic adapté aux domaines viticoles AOC, oléiculteurs, artisans et PME services du centre-Var. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pierrefeu-du-Var : diagnostic adapté aux domaines viticoles AOC, oléiculteurs, artisans et PME services du centre-Var. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pierrefeu-du-Var : ateliers pour viticulteurs, oléiculteurs, artisans BTP et commerçants. Outils IA configurés métier réel agricole et services.",
@@ -53,7 +53,7 @@ export const PIERREFEU_DU_VAR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole Côtes-de-Provence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC, oléiculteurs et artisans pierrefeucains. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC, oléiculteurs et artisans pierrefeucains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons AOC Côtes-de-Provence ?",

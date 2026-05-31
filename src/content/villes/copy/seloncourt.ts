@@ -9,9 +9,9 @@ export const SELONCOURT_COPY: VilleCopy = {
   pitchEn:
     "Seloncourt (25), commune industrielle du Pays de Montbeliard, est historiquement liee a l'industrie automobile (Peugeot Cycles y est ne). Tissu TPE/PME sous-traitance automobile, mecanique de precision, commerce, BTP, services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Seloncourt (25). Nous accompagnons TPE et PME : sous-traitants automobile et mecaniciens de precision, fabricants de composants, commercants, artisans BTP et prestataires de services du Pays de Montbeliard. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Seloncourt (25). Nous accompagnons TPE et PME : sous-traitants automobile et mecaniciens de precision, fabricants de composants, commercants, artisans BTP et prestataires de services du Pays de Montbeliard. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Seloncourt (25). Nous accompagnons TPE et PME : sous-traitants automobile et mecaniciens de precision, fabricants de composants, commercants, artisans BTP et prestataires de services du Pays de Montbeliard. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Seloncourt (25). Nous accompagnons TPE et PME : sous-traitants automobile et mecaniciens de precision, fabricants de composants, commercants, artisans BTP et prestataires de services du Pays de Montbeliard. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "pays de montbeliard",
   ecosystemFr:
     "Seloncourt est une commune industrielle du Pays de Montbeliard, berceau historique de Peugeot Cycles (fonde en 1882). La ville est integree au bassin automobile de Sochaux-Montbeliard (Stellantis). Le tissu local repose sur la sous-traitance mecanique, la fabrication de composants et le commerce de proximite.",
@@ -30,8 +30,8 @@ export const SELONCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Seloncourt : diagnostic adapte aux sous-traitants automobile, mecaniciens de precision, fabricants de composants et commercants du Pays de Montbeliard. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Seloncourt : diagnostic adapte aux sous-traitants automobile, mecaniciens de precision, fabricants de composants et commercants du Pays de Montbeliard. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Seloncourt : diagnostic adapte aux sous-traitants automobile, mecaniciens de precision, fabricants de composants et commercants du Pays de Montbeliard. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Seloncourt : diagnostic adapte aux sous-traitants automobile, mecaniciens de precision, fabricants de composants et commercants du Pays de Montbeliard. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Seloncourt : formats adaptes aux ateliers mecanique de precision, usines sous-traitance automobile, commerces et bureaux services du bassin montbeliardais.",
@@ -57,7 +57,7 @@ export const SELONCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Seloncourt ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Seloncourt, nous proposons des audits approfondis adaptes aux enjeux automobile, mecanique ou commerce.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Seloncourt, nous proposons des audits approfondis adaptes aux enjeux automobile, mecanique ou commerce.",
     },
     {
       q: "Travaillez-vous avec les fabricants de composants mecaniques ?",

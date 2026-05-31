@@ -121,7 +121,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises et petits commerces havrais jusqu'à une dizaine de collaborateurs.",
           },
@@ -161,7 +161,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA au Havre ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage, sans imposer un planning prédéfini.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage, sans imposer un planning prédéfini.",
           },
           {
             q: "Quel ROI identifier pour une PME logistique havraise ?",
@@ -944,7 +944,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel au Havre ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre industriel. Aucun supplément géographique : le tarif est le même au Havre qu'en Île-de-France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre industriel. Aucun supplément géographique : le tarif est le même au Havre qu'en Île-de-France.",
     },
     {
       q: "Avez-vous des références clients au Havre ou en Seine Estuaire ?",

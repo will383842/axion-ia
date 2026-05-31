@@ -30,8 +30,8 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saintry-sur-Seine : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans saintryens ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion administrative simplifiée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {
       q: "Accompagnez-vous les entreprises de services à la personne ?",

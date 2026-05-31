@@ -30,8 +30,8 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Migné-Auxances : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Migné-Auxances : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Migné-Auxances : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Migné-Auxances : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Migné-Auxances : formats adaptés aux cabinets libéraux, PME tertiaires, exploitations agricoles ou commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales à Migné-Auxances ?",
-      a: "Oui, nous accompagnons les professions libérales à Migné-Auxances (médecins, avocats, experts-comptables) sur leurs cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers, dictée IA rapports. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les professions libérales à Migné-Auxances (médecins, avocats, experts-comptables) sur leurs cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers, dictée IA rapports. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles ?",
@@ -61,7 +61,7 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Migné-Auxances, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital local.",
+      a: "Pour les TPE artisans et commerçants à Migné-Auxances, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital local.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

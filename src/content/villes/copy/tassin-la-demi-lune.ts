@@ -61,11 +61,11 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les cabinets de conseil et PME de services ?",
-      a: "Pour les conseils et PME de services de l'ouest lyonnais, nous mettons en place des automatisations de devis, de reporting et de réponse client, après un Audit Flash ciblant les gains les plus rapides.",
+      a: "Pour les conseils et PME de services de l'ouest lyonnais, nous mettons en place des automatisations de devis, de reporting et de réponse client, après un Audit sur place ciblant les gains les plus rapides.",
     },
     {
       q: "Comment se déroule une mission à Tassin-la-Demi-Lune ?",
-      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique imposée.",
+      a: "Nous démarrons par un Audit sur place, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique imposée.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Tassin-la-Demi-Lune ?",

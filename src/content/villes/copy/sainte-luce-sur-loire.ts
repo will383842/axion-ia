@@ -9,9 +9,9 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Sainte-Luce-sur-Loire (44), commune résidentielle de l'agglomération nantaise est en bords de Loire, plus de 16 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité et petite industrie. Zone d'activités dynamique connectée à Nantes Métropole. Axion-IA opère pour entreprises et indépendants du secteur du bassin lucéen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Luce-sur-Loire (44), commune de Nantes Métropole est. Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales des bords de Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Luce-sur-Loire (44), commune de Nantes Métropole est. Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales des bords de Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Luce-sur-Loire (44), commune de Nantes Métropole est. Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales des bords de Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Luce-sur-Loire (44), commune de Nantes Métropole est. Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales des bords de Loire. Audit sur place sur mesure.",
   seoHook: "services aux & artisanat",
   ecosystemFr:
     "Sainte-Luce-sur-Loire (16 400 hab) est une commune résidentielle attractive de l'est nantais, en bords de Loire. Zones d'activités (ZA de la Sécherie, ZA de la Minais), services aux entreprises, artisanat, commerces de proximité et professions libérales. Accès direct Nantes centre (15 min, tram-bus), périphérique nantais. Cadre de vie prisé des familles et entrepreneurs.",
@@ -30,8 +30,8 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sainte-Luce-sur-Loire : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est nantais en bords de Loire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Luce-sur-Loire : formats adaptés aux PME de services, artisans, sociétés de conseil et cabinets libéraux de Nantes Métropole est. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sainte-Luce-sur-Loire  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Sainte-Luce-sur-Loire. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Sainte-Luce-sur-Loire. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les PME de services de l'est nantais ?",
@@ -61,7 +61,7 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Sainte-Luce ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée sur site, coaching 1-to-1. Cas typiques : automatisation devis-facturation, agents IA prise de RDV, CRM clients, gestion planning augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée sur site, coaching 1-to-1. Cas typiques : automatisation devis-facturation, agents IA prise de RDV, CRM clients, gestion planning augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Sainte-Luce-sur-Loire ?",

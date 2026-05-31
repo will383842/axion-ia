@@ -30,8 +30,8 @@ export const BAUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
-      en: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
+      fr: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
+      en: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baud : formats adaptés au commerce de proximité, à l'atelier artisanal ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -57,11 +57,11 @@ export const BAUD_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces de Baud ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerces de Baud sur des cas IA concrets : automatisation devis et facturation, agents IA prise de RDV, gestion documentaire, chatbots relation client. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans et commerces de Baud sur des cas IA concrets : automatisation devis et facturation, agents IA prise de RDV, gestion documentaire, chatbots relation client. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Tarifs audit IA à Baud  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Baud et du centre Morbihan. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Baud et du centre Morbihan. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Baud ?",

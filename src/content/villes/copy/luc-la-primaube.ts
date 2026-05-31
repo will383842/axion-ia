@@ -9,9 +9,9 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
   pitchEn:
     "Luc-la-Primaube (12), commune résidentielle au sud de l'agglomération ruthénoise avec plus de 6 000 habitants. Tissu TPE artisans BTP, PME services et négoce, commerces de proximité, professions libérales, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit sur place sur mesure.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Luc-la-Primaube est une commune résidentielle dynamique au sud de Rodez, en forte croissance démographique. Économie de proximité : TPE artisans BTP, PME de services aux entreprises, négoce matériaux, commerces de quartier, professions libérales (santé, juridique), agriculture (polyculture-élevage aveyronnais). Bassin de vie complémentaire à Rodez centre et Onet-le-Château.",
@@ -30,8 +30,8 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luc-la-Primaube : diagnostic adapté aux TPE artisans BTP, PME services, commerçants et professions libérales de l'agglo sud Rodez. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Luc-la-Primaube : diagnostic adapté aux TPE artisans BTP, PME services, commerçants et professions libérales de l'agglo sud Rodez. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Luc-la-Primaube : diagnostic adapté aux TPE artisans BTP, PME services, commerçants et professions libérales de l'agglo sud Rodez. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Luc-la-Primaube : diagnostic adapté aux TPE artisans BTP, PME services, commerçants et professions libérales de l'agglo sud Rodez. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luc-la-Primaube : formats adaptés à l'atelier artisan, au dépôt négoce, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Luc-la-Primaube  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME services ou négoce, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME services ou négoce, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Luc-la-Primaube ?",

@@ -30,8 +30,8 @@ export const IFS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ifs : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const IFS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ifois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Ifs, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Ifs, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Combien coûte un audit IA à Ifs  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Êtes-vous accessibles en transport en commun depuis Ifs ?",

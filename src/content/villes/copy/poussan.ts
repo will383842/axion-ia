@@ -30,8 +30,8 @@ export const POUSSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Poussan : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Poussan : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Poussan : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Poussan : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Poussan : ateliers adaptés domaine viticole, atelier artisan, commerce ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -53,19 +53,19 @@ export const POUSSAN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés aux domaines viticoles : optimisation gestion parcelles, automatisation relation client caveau, classification avis, prédiction vendanges. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les artisans BTP à Poussan, audit Flash {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : automatisation devis, classification photos chantier, planification interventions.",
+      a: "Pour les artisans BTP à Poussan, audit sur place {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : automatisation devis, classification photos chantier, planification interventions.",
     },
     {
       q: "Accompagnez-vous les commerces de proximité ?",
-      a: "Oui, pour les commerces de proximité, audit Flash {{price:audit-flash|flat}}, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      a: "Oui, pour les commerces de proximité, audit sur place {{price:audit-flash|flat}}, coaching rapide. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Poussan ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

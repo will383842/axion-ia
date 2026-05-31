@@ -30,8 +30,8 @@ export const VALENTIGNEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valentigney : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention automobile, mécanique de précision et métallurgie.",
@@ -61,7 +61,7 @@ export const VALENTIGNEY_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE et PME industrielles de Valentigney ?",
-      a: "Pour les TPE et PME industrielles de Valentigney, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : contrôle qualité, maintenance prédictive, automatisation traçabilité, ordonnancement production.",
+      a: "Pour les TPE et PME industrielles de Valentigney, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : contrôle qualité, maintenance prédictive, automatisation traçabilité, ordonnancement production.",
     },
     {
       q: "Comment se déroule une mission à Valentigney ?",

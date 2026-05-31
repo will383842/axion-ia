@@ -9,9 +9,9 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
   pitchEn:
     "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit sur place sur mesure.",
   seoHook: "tourisme activités & hôtellerie restauration",
   ecosystemFr:
     "Perros-Guirec est la station balnéaire phare de la Côte de Granit Rose, site naturel mondialement connu. Économie dominée par le tourisme (Sentier des Douaniers, Sept-Îles, thalasso), l'hôtellerie-restauration saisonnière, les commerces de centre-ville et du port, les professions libérales et l'artisanat local.",
@@ -30,8 +30,8 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Perros-Guirec : formats adaptés hôtel, restaurant, commerce, cabinet libéral, centre thalasso. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerçants et artisans locaux ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, CRM augmenté, gestion stocks saisonniers IA, fidélisation clients, automatisation devis artisans, agents IA prise de rendez-vous.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, CRM augmenté, gestion stocks saisonniers IA, fidélisation clients, automatisation devis artisans, agents IA prise de rendez-vous.",
     },
     {
       q: "Quels services pour le secteur tourisme et loisirs ?",

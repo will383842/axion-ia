@@ -9,9 +9,9 @@ export const HUNINGUE_COPY: VilleCopy = {
   pitchEn:
     "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Huningue occupe une position stratégique au carrefour des trois frontières, limitrophe de Bâle (Suisse) et de Weil am Rhein (Allemagne). Son économie s'appuie sur un port rhénan actif, un héritage industriel chimique et pharmaceutique (proximité pôle bâlois Novartis/Roche), un tissu TPE/PME logistique transfrontalière, des commerces de proximité et des services aux entreprises. Le bassin d'emploi trinational (Agglo Bâle ~900 000 hab.) dynamise fortement le territoire.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HUNINGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Huningue : formats adaptés au site industriel, à l'entrepôt logistique, au commerce, à l'agence ou au bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const HUNINGUE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Huningue  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Huningue : industriels chimie/pharma, logisticiens, commerçants, artisans et prestataires de services du bassin trinational. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Huningue : industriels chimie/pharma, logisticiens, commerçants, artisans et prestataires de services du bassin trinational. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les entreprises chimiques et pharmaceutiques ?",

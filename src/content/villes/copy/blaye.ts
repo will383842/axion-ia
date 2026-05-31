@@ -9,9 +9,9 @@ export const BLAYE_COPY: VilleCopy = {
   pitchEn:
     "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y mène ses missions auprès des organisations locales : TPE viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & tourisme patrimonial",
   ecosystemFr:
     "Blaye est une cité fortifiée sur l'estuaire de la Gironde. Citadelle Vauban (patrimoine mondial UNESCO), vignoble AOC Côtes de Blaye et Côtes de Bourg, tourisme patrimonial et fluvial, commerces de centre-bourg et professions libérales. Bac Blaye-Lamarque (liaison Médoc).",
@@ -30,8 +30,8 @@ export const BLAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blaye : ateliers adaptés aux chais, hébergements touristiques et commerces de bourg. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BLAYE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Blaye  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et hébergeurs touristiques du Blayais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et hébergeurs touristiques du Blayais.",
     },
     {
       q: "Accompagnez-vous les vignerons de Côtes de Blaye ?",

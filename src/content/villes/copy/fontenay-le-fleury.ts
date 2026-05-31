@@ -9,9 +9,9 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   pitchEn:
     "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit sur place sur mesure.",
   seoHook: "commerce détail & services conseil",
   ecosystemFr:
     "Fontenay-le-Fleury est une commune résidentielle des Yvelines dans la plaine de Versailles, à proximité de Vélizy-Villacoublay et du château de Versailles. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne.",
@@ -30,8 +30,8 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontenay-le-Fleury : formats adaptés boutique, bureau conseil, cabinet, restaurant, structure services à la personne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Versailles ou Paris ?",

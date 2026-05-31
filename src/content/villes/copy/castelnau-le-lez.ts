@@ -32,8 +32,8 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit Flash 4h dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit Flash 4h dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelnau-le-Lez pour TPE et PME : cartographier les tâches répétitives de votre commerce, cabinet ou agence et identifier les automatisations concrètes — Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Castelnau-le-Lez pour automatiser devis, factures, e-mails, reporting — code custom adapté aux TPE et PME locales, Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Castelnau-le-Lez ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour l'Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de la même grille tarifaire que partout en France.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour l'Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou un accompagnement 1-to-1. Les TPE et PME locales bénéficient de la même grille tarifaire que partout en France.",
     },
     {
       q: "Quels délais pour une intervention IA à Castelnau-le-Lez ?",

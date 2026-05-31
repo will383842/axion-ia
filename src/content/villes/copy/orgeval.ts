@@ -30,8 +30,8 @@ export const ORGEVAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orgeval : formats adaptés au bureau conseil, à l'atelier artisan, au commerce ou au cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const ORGEVAL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Orgeval  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la plaine de Versailles, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, artisanat, commerce, freelance). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la plaine de Versailles, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, artisanat, commerce, freelance). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les PME conseil de l'ouest francilien ?",

@@ -9,9 +9,9 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
   pitchEn:
     "Châtel-Guyon (63), station thermale du Puy-de-Dôme dans l'aire urbaine de Riom, est réputée pour son thermalisme et son offre bien-être. Tissu thermalisme/santé, hôtellerie/hébergement, professions santé, TPE commerces, tourisme thermal. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtel-Guyon (63). Nous accompagnons TPE et PME : établissements thermaux, hôtels et hébergements, professionnels de santé, commerçants et artisans, acteurs tourisme bien-être. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtel-Guyon (63). Nous accompagnons TPE et PME : établissements thermaux, hôtels et hébergements, professionnels de santé, commerçants et artisans, acteurs tourisme bien-être. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtel-Guyon (63). Nous accompagnons TPE et PME : établissements thermaux, hôtels et hébergements, professionnels de santé, commerçants et artisans, acteurs tourisme bien-être. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtel-Guyon (63). Nous accompagnons TPE et PME : établissements thermaux, hôtels et hébergements, professionnels de santé, commerçants et artisans, acteurs tourisme bien-être. Audit sur place sur mesure.",
   seoHook: "station thermale",
   ecosystemFr:
     "Châtel-Guyon est une station thermale historique du Puy-de-Dôme, à 5 min de Riom et 20 min de Clermont-Ferrand. Tissu thermalisme/bien-être, hôtellerie, professions santé, TPE commerces, tourisme thermal.",
@@ -30,8 +30,8 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Châtel-Guyon : diagnostic adapté aux établissements thermaux, hôtels, professionnels santé, TPE commerces, acteurs tourisme bien-être. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtel-Guyon : formats adaptés établissement thermal, hôtel, cabinet santé, commerce. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

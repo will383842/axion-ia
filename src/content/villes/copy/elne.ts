@@ -30,8 +30,8 @@ export const ELNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Elne : diagnostic adapté aux TPE artisans, PME agriculture et viticulture, commerçants et acteurs du tourisme patrimonial. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Elne : diagnostic adapté aux TPE artisans, PME agriculture et viticulture, commerçants et acteurs du tourisme patrimonial. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Elne : diagnostic adapté aux TPE artisans, PME agriculture et viticulture, commerçants et acteurs du tourisme patrimonial. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Elne : diagnostic adapté aux TPE artisans, PME agriculture et viticulture, commerçants et acteurs du tourisme patrimonial. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Elne : formats adaptés à l'exploitation agricole, cave viticole, commerce, site patrimonial. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const ELNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Elne, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Elne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Elne ?",

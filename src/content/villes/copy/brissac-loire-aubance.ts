@@ -9,9 +9,9 @@ export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
   pitchEn:
     "Brissac Loire Aubance (49), commune nouvelle au sud d'Angers, est réputée pour le château de Brissac et le vignoble des coteaux de l'Aubance. Plus de 10 000 habitants dans un territoire viticole et touristique. Axion-IA opère pour entreprises et indépendants du secteur : viticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Brissac Loire Aubance (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans de l'Aubance dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Brissac Loire Aubance (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans de l'Aubance dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Brissac Loire Aubance (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans de l'Aubance dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Brissac Loire Aubance (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans de l'Aubance dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "viticulture vignoble & tourisme patrimoine",
   ecosystemFr:
     "Brissac Loire Aubance est le cœur du vignoble des coteaux de l'Aubance (AOC Anjou, Coteaux de l'Aubance). Le château de Brissac, plus haut château de France, attire un tourisme patrimonial. Tissu économique : domaines viticoles, œnotourisme, artisanat, commerces de bourg et agriculture diversifiée.",
@@ -30,8 +30,8 @@ export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Brissac Loire Aubance : diagnostic adapté aux domaines viticoles, acteurs touristiques et TPE/PME de l'Aubance. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brissac Loire Aubance : formations pour équipes viticoles, touristiques et commerciales. Ateliers métier adaptés au vignoble de l'Aubance.",
@@ -53,7 +53,7 @@ export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Brissac Loire Aubance  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Brissac Loire Aubance démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit sur place IA à Brissac Loire Aubance démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de l'Aubance ?",

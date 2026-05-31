@@ -9,9 +9,9 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
   pitchEn:
     "Coulounieix-Chamiers (24), commune résidentielle et commerciale de l'agglomération de Périgueux en Dordogne. Tissu TPE/PME commerce, artisanat BTP, services, professions libérales et agroalimentaire périgourdin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit sur place sur mesure.",
   ecosystemFr:
     "Coulounieix-Chamiers est la deuxième commune de l'agglomération de Périgueux, à caractère résidentiel et commercial. Zones d'activités, commerces de proximité, artisanat BTP et second œuvre, professions libérales, services aux entreprises et secteur médico-social. Proximité immédiate de Périgueux et de l'axe A89.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Coulounieix-Chamiers : diagnostic adapté aux TPE/PME du commerce, de l'artisanat BTP et des professions libérales de l'agglo Périgueux. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coulounieix-Chamiers : formations pratiques pour commerçants, artisans BTP et professions libérales de l'agglo Périgueux.",
@@ -53,7 +53,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Coulounieix-Chamiers  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les artisans BTP de Coulounieix-Chamiers ?",

@@ -9,9 +9,9 @@ export const FRONTON_COPY: VilleCopy = {
   pitchEn:
     "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y conduit ses missions auprès des entreprises locales du Frontonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit sur place sur mesure.",
   seoHook: "viticulture fronton & agroalimentaire",
   ecosystemFr:
     "Fronton est la capitale de l'AOC Fronton, vignoble de la négrette au nord de Toulouse. TPE viticulteurs et domaines, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme œnotourisme. Marché traditionnel actif.",
@@ -30,8 +30,8 @@ export const FRONTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fronton : diagnostic adapté aux TPE viticulteurs, PME agroalimentaires, commerçants et acteurs du tourisme du Frontonnais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fronton : formats adaptés au domaine viticole, au commerce, à l'hébergement touristique. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const FRONTON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Fronton  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider un domaine viticole à Fronton ?",

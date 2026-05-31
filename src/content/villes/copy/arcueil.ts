@@ -9,9 +9,9 @@ export const ARCUEIL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Arcueil, commune tertiaire du sud parisien dans la Métropole du Grand Paris. Sièges sociaux, éditeurs logiciels, services aux entreprises, commerce et BTP : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcueil auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcueil auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcueil auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcueil auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tertiaire dense du Val-de-Marne sud : éditeurs logiciels, services aux entreprises, sièges, commerce et BTP. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "tertiaire & sièges Grand Paris",
   ecosystemFr:
     "Arcueil, aux portes sud de Paris dans le Val-de-Marne, est une commune tertiaire dense intégrée à la Métropole du Grand Paris. Quartiers d'affaires et zones d'activités (axe Laplace, La Vache Noire) accueillent sièges sociaux, éditeurs de logiciels, agences et services aux entreprises, aux côtés d'un tissu de TPE, de commerces de proximité et d'artisans du BTP très bien desservis.",
@@ -30,8 +30,8 @@ export const ARCUEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arcueil pour éditeurs logiciels, agences et services aux entreprises : nous cartographions vos process (production, support, administratif, commercial) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Arcueil pour éditeurs logiciels, agences et services aux entreprises : nous cartographions vos process (production, support, administratif, commercial) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Arcueil pour éditeurs logiciels, agences et services aux entreprises : nous cartographions vos process (production, support, administratif, commercial) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arcueil pour éditeurs logiciels, agences et services aux entreprises : nous cartographions vos process (production, support, administratif, commercial) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arcueil : formats adaptés au bureau tertiaire, à l'agence ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -57,11 +57,11 @@ export const ARCUEIL_COPY: VilleCopy = {
     },
     {
       q: "Quels gains IA pour un éditeur logiciel ou une agence arcueillaise ?",
-      a: "Copilotes métiers, automatisation du support et de l'administratif, génération de contenu et qualification commerciale. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
+      a: "Copilotes métiers, automatisation du support et de l'administratif, génération de contenu et qualification commerciale. Chaque piste est chiffrée en ROI dans l'Audit sur place avant toute implémentation.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Arcueil ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
     },
     {
       q: "Intervenez-vous aussi à Cachan, Gentilly ou Montrouge ?",

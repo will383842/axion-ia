@@ -9,9 +9,9 @@ export const INGRE_COPY: VilleCopy = {
   pitchEn:
     "Ingre (45), commune de l'agglomeration d'Orleans au nord-ouest, s'inscrit dans le paysage beauceron aux portes de la metropole ligérienne. Tissu TPE/PME services, commerce, artisanat, logistique, agriculture cerealiere. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Ingre (45). Nous accompagnons TPE et PME : prestataires de services, commercants, artisans, entreprises de logistique et exploitants agricoles de la Beauce orleanaise. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Ingre fait partie d'Orleans Metropole, en lisiere de la Beauce cerealiere. L'economie locale s'appuie sur les services aux entreprises, le commerce de proximite, l'artisanat du batiment, la logistique liee au pole routier de l'A10/A71 et l'agriculture cerealiere de la plaine beauceronne.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const INGRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Ingre : diagnostic adapte aux prestataires de services, commercants, artisans et entreprises logistiques de l'agglomeration orleanaise nord-ouest. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Ingre : formats adaptes aux TPE/PME de services, commerces, ateliers artisanaux et entrepots logistiques de la zone ouest d'Orleans Metropole.",
@@ -53,7 +53,7 @@ export const INGRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Ingre ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME d'Ingre, nous proposons des audits approfondis adaptes aux enjeux services, commerce ou logistique.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME d'Ingre, nous proposons des audits approfondis adaptes aux enjeux services, commerce ou logistique.",
     },
     {
       q: "L'IA peut-elle aider les commerces de proximite a Ingre ?",

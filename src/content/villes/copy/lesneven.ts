@@ -9,9 +9,9 @@ export const LESNEVEN_COPY: VilleCopy = {
   pitchEn:
     "Lesneven (29), bourg-centre du Pays de Léon dans le nord Finistère, est un pôle de services et de commerces pour tout le bassin lesnevien. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit Flash à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit sur place à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit Flash à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit sur place à",
   seoHook: "agroalimentaire filière & agriculture élevage",
   ecosystemFr:
     "Lesneven est le bourg-centre historique du Pays de Léon, dans le nord Finistère. La commune joue un rôle de pôle de services, de commerces et d'équipements pour les communes environnantes (Ploudaniel, Le Folgoët, Plouider). Tissu économique diversifié: TPE artisans BTP, PME agroalimentaires (filière légumière bretonne), commerces, professions libérales et agriculture.",
@@ -30,8 +30,8 @@ export const LESNEVEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lesneven : formats adaptés à l'atelier artisan, l'exploitation agricole, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const LESNEVEN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants lesneviens ?",
-      a: "Oui, pour les TPE artisans BTP et commerçants à Lesneven, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Oui, pour les TPE artisans BTP et commerçants à Lesneven, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs du nord Finistère ?",

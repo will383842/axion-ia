@@ -9,9 +9,9 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
   pitchEn:
     "Vert-Saint-Denis (77), commune résidentielle au sud de Melun en Seine-et-Marne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Vert-Saint-Denis est une commune résidentielle du sud de Melun en Seine-et-Marne. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité directe avec Melun, Le Mée-sur-Seine, Savigny-le-Temple et Cesson.",
@@ -30,8 +30,8 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vert-Saint-Denis : formats adaptés au cabinet, commerce ou atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Vert-Saint-Denis ?",
-      a: "L'Audit Flash IA à Vert-Saint-Denis démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Vert-Saint-Denis démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans à Vert-Saint-Denis ?",

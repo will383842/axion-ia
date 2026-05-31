@@ -32,8 +32,8 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
-      en: "Audit Flash au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit sur place au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
+      en: "Audit sur place au Kremlin-Bicêtre pour cabinets médicaux, professions libérales, agences et ESN : revue des tâches répétitives (prise de rendez-vous, facturation, relances, reporting) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site au Kremlin-Bicêtre pour automatiser des cas concrets : génération de devis, relances clients, extraction de documents (PDF, scans), enrichissement CRM, exports comptables. Code Python/TypeScript livré et documenté, à partir de {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA au Kremlin-Bicêtre ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à {{price:intervention-4h|flat}}. Tous nos prix sont publiés sur la page Tarifs, sans engagement ni abonnement caché.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à {{price:intervention-4h|flat}}. Tous nos prix sont publiés sur la page Tarifs, sans engagement ni abonnement caché.",
     },
     {
       q: "Vos consultants se déplacent-ils sur site au Kremlin-Bicêtre ?",
@@ -67,7 +67,7 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission au Kremlin-Bicêtre ?",
-      a: "Un Audit Flash se planifie sous 5 à 10 jours ouvrés. Une intervention sur site démarre en général sous 2 à 3 semaines après validation du devis.",
+      a: "Un Audit sur place se planifie sous 5 à 10 jours ouvrés. Une intervention sur site démarre en général sous 2 à 3 semaines après validation du devis.",
     },
     {
       q: "Comment Axion-IA gère-t-il le RGPD au Kremlin-Bicêtre ?",

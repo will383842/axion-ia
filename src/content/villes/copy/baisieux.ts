@@ -9,9 +9,9 @@ export const BAISIEUX_COPY: VilleCopy = {
   pitchEn:
     "Baisieux (59), commune résidentielle de l'agglomération lilloise est dans le Nord, est située à la frontière belge (Tournai à 20 min). Tissu TPE artisans, PME services aux entreprises, commerces, professions libérales, activités transfrontalières. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baisieux (59). Nous accompagnons TPE artisans, PME services et logistique, commerçants, indépendants, professions libérales et acteurs transfrontaliers de cette commune limitrophe de la Belgique en agglomération lilloise. Audit sur place sur mesure.",
   ecosystemFr:
     "Baisieux est une commune résidentielle de l'agglomération lilloise est, limitrophe de la Belgique (Tournai à 20 min). Position transfrontalière stratégique sur l'axe Lille-Tournai-Bruxelles. Tissu dense de TPE artisans BTP, PME services aux entreprises et logistique transfrontalière, commerces de proximité, professions libérales et indépendants.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BAISIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baisieux : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const BAISIEUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Baisieux  ?",
-      a: "L'audit Flash IA à Baisieux démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit sur place IA à Baisieux démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières à Baisieux ?",

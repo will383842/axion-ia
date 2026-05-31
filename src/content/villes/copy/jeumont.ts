@@ -30,8 +30,8 @@ export const JEUMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jeumont : formats adaptés à l'atelier industriel, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const JEUMONT_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP jeumontois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Jeumont sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Jeumont sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Jeumont, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
+      a: "Pour les commerçants et professions libérales à Jeumont, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

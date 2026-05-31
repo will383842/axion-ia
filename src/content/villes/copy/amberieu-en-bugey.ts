@@ -30,8 +30,8 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambérieu-en-Bugey : diagnostic adapté aux PME industrielles/logistiques ferroviaires, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ambérieu-en-Bugey : diagnostic adapté aux PME industrielles/logistiques ferroviaires, professions libérales, TPE artisans. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ambérieu-en-Bugey : diagnostic adapté aux PME industrielles/logistiques ferroviaires, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ambérieu-en-Bugey : diagnostic adapté aux PME industrielles/logistiques ferroviaires, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambérieu-en-Bugey : formats adaptés au site ferroviaire, atelier industriel, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
-      a: "Oui, agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

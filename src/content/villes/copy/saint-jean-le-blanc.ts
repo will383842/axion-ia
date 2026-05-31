@@ -9,9 +9,9 @@ export const SAINT_JEAN_LE_BLANC_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-le-Blanc (45), commune residentielle de l'agglomeration d'Orleans en rive sud de Loire, beneficie de la dynamique economique de la metropole orleanaise. Tissu TPE/PME services, sante, commerce, artisanat, professions liberales. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Jean-le-Blanc (45). Nous accompagnons TPE et PME : prestataires de services, professionnels de sante, commercants, artisans et professions liberales de la rive sud de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Saint-Jean-le-Blanc est une commune de la rive sud de Loire au sein d'Orleans Metropole. L'economie locale repose sur les services aux particuliers et entreprises, les cabinets medicaux et paramedicaux, le commerce de proximite, l'artisanat et les professions liberales installees en peripherie sud d'Orleans.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_JEAN_LE_BLANC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Saint-Jean-le-Blanc : diagnostic adapte aux prestataires de services, professionnels de sante, commercants et professions liberales de la rive sud de Loire. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Saint-Jean-le-Blanc : diagnostic adapte aux prestataires de services, professionnels de sante, commercants et professions liberales de la rive sud de Loire. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Saint-Jean-le-Blanc : diagnostic adapte aux prestataires de services, professionnels de sante, commercants et professions liberales de la rive sud de Loire. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Saint-Jean-le-Blanc : diagnostic adapte aux prestataires de services, professionnels de sante, commercants et professions liberales de la rive sud de Loire. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Saint-Jean-le-Blanc : formats adaptes aux cabinets medicaux, TPE de services, commerces et artisans de la rive sud d'Orleans Metropole.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_LE_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Saint-Jean-le-Blanc ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Saint-Jean-le-Blanc, nous proposons des audits approfondis adaptes aux enjeux sante, services ou commerce.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Saint-Jean-le-Blanc, nous proposons des audits approfondis adaptes aux enjeux sante, services ou commerce.",
     },
     {
       q: "L'IA peut-elle aider les professionnels de sante a Saint-Jean-le-Blanc ?",

@@ -9,9 +9,9 @@ export const LE_RAINCY_COPY: VilleCopy = {
   pitchEn:
     "Le Raincy (93), sous-préfecture de Seine-Saint-Denis, est une commune résidentielle atypique du département avec son allée de tilleuls, son église Notre-Dame (béton armé des frères Perret) et son tissu de professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-Saint-Denis",
   ecosystemFr:
     "Le Raincy est la sous-préfecture de Seine-Saint-Denis, commune résidentielle atypique du département avec un cadre verdoyant et une forte proportion de professions libérales. L'église Notre-Dame du Raincy (1923, frères Perret) est classée monument historique. Tissu TPE commerces, professions libérales, cabinets juridiques et médicaux, PME tertiaires. Proximité de Villemomble, Gagny et du pôle commercial de Rosny-sous-Bois.",
@@ -30,8 +30,8 @@ export const LE_RAINCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA au Raincy : diagnostic adapté aux professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires de la sous-préfecture. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site au Raincy : formations pratiques dans votre cabinet, commerce ou bureau. Équipes formées sur outils IA configurés métier, autonomes dès la fin de journée.",
@@ -53,7 +53,7 @@ export const LE_RAINCY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Raincy ?",
-      a: "L'Audit Flash IA au Raincy débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
+      a: "L'Audit sur place IA au Raincy débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
     },
     {
       q: "Accompagnez-vous les professions libérales au Raincy ?",
@@ -61,7 +61,7 @@ export const LE_RAINCY_COPY: VilleCopy = {
     },
     {
       q: "Quels cas d'usage IA pour les commerçants et artisans du Raincy ?",
-      a: "Pour les commerçants et artisans du Raincy : agents conversationnels vitrine en ligne, automatisation gestion stocks et commandes fournisseurs, outils planning et réservation, classification comptable automatisée. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Pour les commerçants et artisans du Raincy : agents conversationnels vitrine en ligne, automatisation gestion stocks et commandes fournisseurs, outils planning et réservation, classification comptable automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Comment se passe le déplacement pour une mission au Raincy ?",

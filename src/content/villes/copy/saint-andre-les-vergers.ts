@@ -9,9 +9,9 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
   pitchEn:
     "Saint-André-les-Vergers (10), commune de 13 000 habitants intégrée à l'agglomération de Troyes, célèbre pour ses zones commerciales et magasins d'usine attirant une clientèle régionale. TPE et PME commerce et retail, restauration, services, artisans, sous-traitants industriels et acteurs du tertiaire. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   seoHook: "commerce détail & restauration hôtellerie",
   ecosystemFr:
     "Saint-André-les-Vergers est une commune dynamique de l'agglo Troyes, spécialisée dans les zones commerciales et magasins d'usine textile. Tissu TPE/PME diversifié : commerce et retail, restauration, services, artisanat, sous-traitance industrielle et activités tertiaires.",
@@ -30,8 +30,8 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-André-les-Vergers : diagnostic adapté aux TPE commerce, PME retail et magasins d'usine, restauration, services, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-les-Vergers : formats adaptés boutique, restaurant, bureau PME, atelier sous-traitant. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-André-les-Vergers  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE commerce et PME retail de l'agglo Troyes.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE commerce et PME retail de l'agglo Troyes.",
     },
     {
       q: "Travaillez-vous avec les magasins d'usine et commerces de zone ?",

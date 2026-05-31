@@ -9,9 +9,9 @@ export const LONS_COPY: VilleCopy = {
   pitchEn:
     "Lons (64), commune de l'agglomération de Pau nord, 13 606 habitants. Pôle commercial majeur du Béarn (zones d'activités, grandes surfaces, retail), TPE artisans, PME logistique et services. Axion-IA y déploie son expertise pour toutes les organisations du nord de l'agglomération paloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit sur place sur mesure.",
   seoHook: "commerce grande & logistique transport",
   ecosystemFr:
     "Lons est un pôle commercial majeur au nord de Pau, 13 606 habitants. Zones d'activités commerciales (grandes surfaces, retail, enseignes nationales), PME logistique et transport, TPE artisans, services aux entreprises. Proximité immédiate de l'aéroport Pau-Pyrénées et de la technopole Hélioparc.",
@@ -30,8 +30,8 @@ export const LONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lons : diagnostic adapté aux commerces, enseignes retail, PME logistique et TPE artisans de la zone nord Pau. Optimisation stock, flux clients, chaîne d'approvisionnement. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lons : diagnostic adapté aux commerces, enseignes retail, PME logistique et TPE artisans de la zone nord Pau. Optimisation stock, flux clients, chaîne d'approvisionnement. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lons : diagnostic adapté aux commerces, enseignes retail, PME logistique et TPE artisans de la zone nord Pau. Optimisation stock, flux clients, chaîne d'approvisionnement. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lons : diagnostic adapté aux commerces, enseignes retail, PME logistique et TPE artisans de la zone nord Pau. Optimisation stock, flux clients, chaîne d'approvisionnement. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lons : déploiement outils IA dans vos surfaces commerciales, entrepôts ou bureaux. Automatisation inventaires, prévisions de ventes, gestion planning équipes.",
@@ -57,7 +57,7 @@ export const LONS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Lons ?",
-      a: "L'audit Flash IA à Lons démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus commerciaux ou logistiques, identification des gains IA prioritaires, ROI chiffré et plan d'action adapté à votre zone d'activité.",
+      a: "L'audit sur place IA à Lons démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus commerciaux ou logistiques, identification des gains IA prioritaires, ROI chiffré et plan d'action adapté à votre zone d'activité.",
     },
     {
       q: "Accompagnez-vous les PME logistique de Lons ?",

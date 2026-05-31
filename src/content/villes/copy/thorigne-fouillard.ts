@@ -30,8 +30,8 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
-      en: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible à toute structure.",
+      fr: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
+      en: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thorigné-Fouillard : formats adaptés aux TPE artisans BTP, commerces, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Thorigné-Fouillard ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Thorigné-Fouillard sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Thorigné-Fouillard sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME à Thorigné-Fouillard ?",
-      a: "L'audit Flash s'adapte à votre périmètre, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit sur place s'adapte à votre périmètre, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Thorigné-Fouillard ?",

@@ -9,9 +9,9 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
   pitchEn:
     "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit sur place sur mesure.",
   seoHook: "arboriculture figue & maraîchage agriculture",
   ecosystemFr:
     "Solliès-Toucas est ancrée dans la vallée du Gapeau, capitale française de la figue (AOP Figue de Solliès). Économie agricole forte : arboriculture, maraîchage, viticulture. Bassin résidentiel de l'aire toulonnaise avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de la périphérie nord de Toulon.",
@@ -30,8 +30,8 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Solliès-Toucas : ateliers pour arboriculteurs, maraîchers, artisans BTP et commerçants. Outils IA configurés métier réel agricole et services.",
@@ -53,7 +53,7 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation arboricole AOP ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux exploitations AOP Figue de Solliès, maraîchers et artisans toucadens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux exploitations AOP Figue de Solliès, maraîchers et artisans toucadens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les producteurs de figues AOP Solliès ?",

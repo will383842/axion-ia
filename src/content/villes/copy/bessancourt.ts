@@ -30,8 +30,8 @@ export const BESSANCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bessancourt : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Bessancourt : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Bessancourt : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Bessancourt : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bessancourt : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,11 +53,11 @@ export const BESSANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Bessancourt ?",
-      a: "L'audit Flash IA à Bessancourt démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Bessancourt démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans à Bessancourt ?",
-      a: "Oui, nous accompagnons les TPE artisanales et commerçantes de Bessancourt sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning, comptabilité assistée. Audit Flash {{price:audit-flash|flat}} accessible.",
+      a: "Oui, nous accompagnons les TPE artisanales et commerçantes de Bessancourt sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion planning, comptabilité assistée. Audit sur place {{price:audit-flash|flat}} accessible.",
     },
     {
       q: "Quels formats de formation IA proposez-vous à Bessancourt ?",

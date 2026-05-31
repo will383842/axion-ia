@@ -9,9 +9,9 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   pitchEn:
     "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit sur place sur mesure.",
   seoHook: "services, professions libérales & horticulture",
   ecosystemFr:
     "Saint-Denis-en-Val est une commune résidentielle de l'agglo Orléans Métropole (7 766 hab.), en rive sud de Loire à 8 km du centre d'Orléans. Tissu TPE professions libérales (santé, juridique, conseil), commerçants de proximité, PME services aux entreprises, artisans BTP, maraîchers et horticulteurs tirant parti des sols fertiles du Val de Loire. Cadre semi-rural prisé des cadres orléanais.",
@@ -30,8 +30,8 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Denis-en-Val : formats adaptés au cabinet libéral, au commerce de proximité ou à la PME tertiaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales de Saint-Denis-en-Val ?",
-      a: "Oui, nous accompagnons les professions libérales de Saint-Denis-en-Val (médecins, avocats, consultants, kinés) sur des cas IA concrets : automatisation secrétariat, agents conversationnels patients, classification dossiers, rédaction assistée. Audit Flash {{price:audit-flash|flat}} adapté aux cabinets.",
+      a: "Oui, nous accompagnons les professions libérales de Saint-Denis-en-Val (médecins, avocats, consultants, kinés) sur des cas IA concrets : automatisation secrétariat, agents conversationnels patients, classification dossiers, rédaction assistée. Audit sur place {{price:audit-flash|flat}} adapté aux cabinets.",
     },
     {
       q: "Accompagnez-vous les PME de services de l'agglo Orléans sud ?",
@@ -61,11 +61,11 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des solutions pour le maraîchage et l'horticulture ?",
-      a: "Oui, nous accompagnons les maraîchers et horticulteurs du Val de Loire autour de Saint-Denis-en-Val. Cas IA : gestion parcellaire, prédiction récoltes, automatisation commandes et facturation, classification photos cultures. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les maraîchers et horticulteurs du Val de Loire autour de Saint-Denis-en-Val. Cas IA : gestion parcellaire, prédiction récoltes, automatisation commandes et facturation, classification photos cultures. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission sur site à Saint-Denis-en-Val ?",
-      a: "Nos consultants se déplacent à Saint-Denis-en-Val depuis Orléans (15 min) ou Paris (1h20 train + navette). Audit Flash : 4h sur site. Interventions : 1 à 5 jours selon le besoin. Frais de déplacement facturés en sus du forfait, tarifs publics transparents.",
+      a: "Nos consultants se déplacent à Saint-Denis-en-Val depuis Orléans (15 min) ou Paris (1h20 train + navette). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin. Frais de déplacement facturés en sus du forfait, tarifs publics transparents.",
     },
   ],
 };

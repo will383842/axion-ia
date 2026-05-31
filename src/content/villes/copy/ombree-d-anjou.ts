@@ -9,9 +9,9 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Ombrée d'Anjou (49), commune nouvelle de l'Anjou bleu, regroupe un vaste territoire rural de près de 9 000 habitants entre Segréen et Haut-Anjou. Axion-IA couvre les activités professionnelles du bassin : agriculture, artisanat, commerces, PME industrielles et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Ombrée d'Anjou est issue de la fusion de 7 communes déléguées dans l'Anjou bleu, territoire rural marqué par l'agriculture (polyculture-élevage, production laitière), l'artisanat du bâtiment, les PME agroalimentaires et les commerces de bourg. Ancienne activité ardoisière et minière (Pouancé).",
@@ -30,8 +30,8 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Ombrée d'Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles de l'Anjou bleu. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ombrée d'Anjou : formations pour équipes agricoles, artisanales et commerciales. Ateliers pratiques adaptés au contexte rural de l'Anjou bleu.",
@@ -53,7 +53,7 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ombrée d'Anjou  ?",
-      a: "L'Audit Flash IA à Ombrée d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA à Ombrée d'Anjou démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les exploitants laitiers de l'Anjou bleu ?",

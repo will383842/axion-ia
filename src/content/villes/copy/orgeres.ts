@@ -9,9 +9,9 @@ export const ORGERES_COPY: VilleCopy = {
   pitchEn:
     "Orgères (35), commune résidentielle au sud de Rennes en Ille-et-Vilaine, accueille un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit sur place sur mesure.",
   ecosystemFr:
     "Orgères est une commune résidentielle en croissance au sud de Rennes Métropole (Ille-et-Vilaine), desservie par l'axe routier vers Nantes. Son économie locale repose sur l'artisanat, les commerces de centre-bourg, les services aux entreprises, les professions libérales et une agriculture périurbaine active.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const ORGERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orgères : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales du sud rennais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orgères : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const ORGERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Orgères ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour les TPE orgéroises. Diagnostic complet de vos processus métier, identification des cas d'usage IA prioritaires et feuille de route chiffrée avec ROI estimé.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour les TPE orgéroises. Diagnostic complet de vos processus métier, identification des cas d'usage IA prioritaires et feuille de route chiffrée avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces de proximité ?",

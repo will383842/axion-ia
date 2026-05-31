@@ -30,8 +30,8 @@ export const SAVENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Savenay : formats adaptés au bureau tertiaire, exploitation agricole, commerce ou établissement scolaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const SAVENAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Savenay, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
+      a: "Pour les TPE artisans BTP et commerçants à Savenay, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires et services ?",

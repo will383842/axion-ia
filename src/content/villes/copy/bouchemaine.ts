@@ -9,9 +9,9 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
   pitchEn:
     "Bouchemaine (49), commune résidentielle prisée au confluent de la Maine et de la Loire, à l'ouest d'Angers, accueille plus de 6 500 habitants. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, professions libérales, commerces, artisanat et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Bouchemaine bénéficie d'un cadre exceptionnel au confluent Maine-Loire, en position résidentielle haut de gamme de l'ouest angevin. Tissu économique : professions libérales (santé, juridique, conseil), PME tertiaires, commerces de proximité, artisanat et services à la personne. Activités nautiques et de loisirs Loire.",
@@ -30,8 +30,8 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Bouchemaine : diagnostic adapté aux professions libérales, PME tertiaires et commerçants de l'ouest angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouchemaine : formations pour cabinets, PME services et commerces. Ateliers pratiques adaptés aux professionnels de l'ouest angevin.",
@@ -53,7 +53,7 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bouchemaine  ?",
-      a: "L'Audit Flash IA à Bouchemaine démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA à Bouchemaine démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Bouchemaine ?",

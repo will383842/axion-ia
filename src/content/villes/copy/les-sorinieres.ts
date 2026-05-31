@@ -30,8 +30,8 @@ export const LES_SORINIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Sorinières : diagnostic adapté aux TPE tertiaires, PME services/logistique, professions libérales et artisans de la couronne sud nantaise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA aux Sorinières : diagnostic adapté aux TPE tertiaires, PME services/logistique, professions libérales et artisans de la couronne sud nantaise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA aux Sorinières : diagnostic adapté aux TPE tertiaires, PME services/logistique, professions libérales et artisans de la couronne sud nantaise. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Sorinières : diagnostic adapté aux TPE tertiaires, PME services/logistique, professions libérales et artisans de la couronne sud nantaise. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Sorinières : formats adaptés au bureau tertiaire, entrepôt logistique, cabinet libéral ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const LES_SORINIERES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants aux Sorinières, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
+      a: "Pour les TPE artisans BTP et commerçants aux Sorinières, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",

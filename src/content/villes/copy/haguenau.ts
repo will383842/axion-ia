@@ -10,9 +10,9 @@ export const HAGUENAU_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Haguenau, deuxième ville du Bas-Rhin et quatrième d'Alsace avec 36 391 habitants (aire urbaine de 61 637). Sous-préfecture intégrée à la Communauté d'agglomération de Haguenau et à la Collectivité européenne d'Alsace, la ville s'étend sur 18 259 hectares — la commune la plus vaste d'Alsace — au cœur d'un tissu industriel et tertiaire dense. Notre cabinet IA opérationnelle se déplace sur site pour automatiser les processus métier (devis, ordres de fabrication, OCR, relances), avec un focus marqué TPE-PME et un complément ETI.",
   directAnswerFr:
-    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. William se déplace sur site depuis Paris pour conduire un Audit Flash 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
+    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. William se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
   directAnswerEn:
-    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. William se déplace sur site depuis Paris pour conduire un Audit Flash 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
+    "Axion-IA intervient à Haguenau (Bas-Rhin, Collectivité européenne d'Alsace) pour les TPE, PME et ETI industrielles et tertiaires de l'agglomération. William se déplace sur site depuis Paris pour conduire un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}. Nos automatisations sont livrées en code custom (Python, Node, n8n self-host), sans no-code propriétaire, hébergées en Europe et conformes RGPD dès le cadrage.",
   seoHook: "industrie & tertiaire alsacien",
   ecosystemFr:
     "Haguenau combine un pôle industriel historique (fabrication de produits métalliques, plasturgie, agroalimentaire, équipementiers) et un tissu tertiaire de centre-ville (commerce, services administratifs, santé). La forêt de Haguenau (13 800 hectares au sein d'un massif de 20 000 ha) et la rivière Moder structurent le territoire. La ville dessert plusieurs zones d'activités et son éco-quartier Thurot, sous-préfecture du Bas-Rhin et siège de l'agglomération.",
@@ -32,8 +32,8 @@ export const HAGUENAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Haguenau pour TPE-PME industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
-      en: "Audit Flash 4h à Haguenau pour TPE-PME industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
+      fr: "Audit sur place 4h à Haguenau pour TPE-PME industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
+      en: "Audit sur place 4h à Haguenau pour TPE-PME industrielles et tertiaires — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins automatisation chiffrés sur 90 jours.",
     },
     interventions: {
       fr: "Intervention sur site à Haguenau dès {{price:intervention-4h|flat}} : prototype OCR factures, automatisation ordres de fabrication, devis ou suivi qualité pour ateliers et bureaux d'études.",
@@ -51,7 +51,7 @@ export const HAGUENAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour un audit IA à Haguenau ?",
-      a: "L'Audit Flash 4h sur site à Haguenau démarre à {{price:audit-flash|flat}}. Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, devis signé avant tout démarrage, sans abonnement.",
+      a: "L'Audit sur place 4h sur site à Haguenau démarre à {{price:audit-flash|flat}}. Une intervention ciblée est facturée {{price:intervention-4h|flat}}, une implémentation complète à partir de {{price:impl-poc|entry}}. Tarifs publics fixes, devis signé avant tout démarrage, sans abonnement.",
     },
     {
       q: "William se déplace-t-il à Haguenau depuis Paris ?",

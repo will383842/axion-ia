@@ -11,9 +11,9 @@ export const FONTAINE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Fontaine (38600, Isère, 22 020 habitants en 2023), commune limitrophe de Grenoble dans l'agglomération grenobloise. Située entre le Drac et les falaises du Vercors, Fontaine s'organise autour de trois zones d'activités — Vouillants, Les Plans et L'Argentière — accueillant un tissu de PME industrielles, de services et de commerces. La proximité immédiate de Grenoble (2,5 km de la gare) et du pôle scientifique Presqu'île offre un terrain favorable au déploiement d'IA opérationnelle en code custom, conforme RGPD.",
   directAnswerFr:
-    "Axion-IA se déplace à Fontaine pour accompagner les TPE, PME et ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
+    "Axion-IA se déplace à Fontaine pour accompagner les TPE, PME et ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Fontaine pour accompagner les TPE, PME et ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
+    "Axion-IA se déplace à Fontaine pour accompagner les TPE, PME et ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
   seoHook: "PME industrielles & commerce gros",
   ecosystemFr:
     "Fontaine bénéficie de son intégration à la métropole grenobloise et de trois zones d'activités structurantes : Vouillants, Les Plans et L'Argentière. Le tissu local est dominé par des TPE et PME industrielles (produits métalliques, fabrication), des commerces de gros, des entreprises de construction et des services. La densité (3 267 hab/km² sur 6,74 km²) facilite les déplacements consultants. La ville est reliée à Grenoble par la ligne A du tramway (5 stations à Fontaine) et par les bus 19, 20, 50 et 53 vers les communes voisines.",
@@ -32,8 +32,8 @@ export const FONTAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Fontaine pour les PME industrielles des zones Vouillants, Les Plans et L'Argentière : cartographie des processus à automatiser, dès {{price:audit-flash|flat}}.",
-      en: "Audit Flash à Fontaine pour les PME industrielles des zones Vouillants, Les Plans et L'Argentière : cartographie des processus à automatiser, dès {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Fontaine pour les PME industrielles des zones Vouillants, Les Plans et L'Argentière : cartographie des processus à automatiser, dès {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Fontaine pour les PME industrielles des zones Vouillants, Les Plans et L'Argentière : cartographie des processus à automatiser, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention Essentielle à Fontaine pour automatiser devis, suivi de production et facturation des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const FONTAINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Fontaine (38600) ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Tarifs publics fixes, sans engagement.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Tarifs publics fixes, sans engagement.",
     },
     {
       q: "Quels délais pour intervenir à Fontaine ?",

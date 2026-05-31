@@ -30,8 +30,8 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Balme-de-Sillingy : formats adaptés au bureau PME, atelier artisan, exploitation agricole ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,15 +53,15 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires du bassin annécien nord ?",
-      a: "Oui, nous accompagnons les PME tertiaires et bureaux d'études du secteur sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
+      a: "Oui, nous accompagnons les PME tertiaires et bureaux d'études du secteur sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Tarifs audit IA à La Balme-de-Sillingy  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annécien, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, agriculture, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annécien, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, agriculture, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles du secteur ?",
-      a: "Oui, nous accompagnons les exploitants agricoles de la communauté Fier et Usses sur des cas IA adaptés : suivi troupeau par capteurs, prévision récolte, automatisation administrative PAC, gestion stocks fourrages. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les exploitants agricoles de la communauté Fier et Usses sur des cas IA adaptés : suivi troupeau par capteurs, prévision récolte, automatisation administrative PAC, gestion stocks fourrages. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à La Balme-de-Sillingy ?",

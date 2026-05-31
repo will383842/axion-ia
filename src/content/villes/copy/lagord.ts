@@ -30,8 +30,8 @@ export const LAGORD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lagord : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lagord : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const LAGORD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Lagord ?",
-      a: "L'audit Flash IA à Lagord démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires, médicaux ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à Lagord démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus tertiaires, médicaux ou artisanaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Lagord ?",

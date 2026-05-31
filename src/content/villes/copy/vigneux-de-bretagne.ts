@@ -30,8 +30,8 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vigneux-de-Bretagne : formats adaptés au bureau, au cabinet, au commerce ou à l'atelier. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires des zones d'activités ?",
-      a: "Oui, nous accompagnons les PME tertiaires des zones d'activités sur des cas IA : automatisation workflow, agents conversationnels B2B, extraction données, gestion planning. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME tertiaires des zones d'activités sur des cas IA : automatisation workflow, agents conversationnels B2B, extraction données, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
@@ -61,7 +61,7 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Vigneux-de-Bretagne  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-ouest nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-ouest nantais.",
     },
     {
       q: "Comment se déroule une intervention sur site ?",

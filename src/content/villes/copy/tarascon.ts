@@ -9,9 +9,9 @@ export const TARASCON_COPY: VilleCopy = {
   pitchEn:
     "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA opère pour entreprises et indépendants du secteur du bassin tarasconnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
   seoHook: "textile, patrimoine & agroalimentaire",
   ecosystemFr:
     "Tarascon est une cité rhodanienne au riche patrimoine (château du roi René) avec un tissu économique tourné vers le textile, l'agroalimentaire et le négoce. TPE artisans du centre ancien, PME industrielles, commerces de proximité et acteurs du tourisme patrimonial. Connexion directe Arles-Avignon.",
@@ -30,8 +30,8 @@ export const TARASCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tarascon : formats adaptés à l'atelier textile, au commerce de centre-ville et à l'entreprise agroalimentaire. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const TARASCON_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Tarascon ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME textile et agroalimentaire, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME textile et agroalimentaire, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents.",
     },
     {
       q: "Accompagnez-vous les PME textile de Tarascon ?",
@@ -61,7 +61,7 @@ export const TARASCON_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux TPE artisans de Tarascon ?",
-      a: "Absolument. L'Audit Flash à {{price:audit-flash|flat}} est conçu pour les TPE artisans et commerçants. Nous identifions les quick-wins IA adaptés à votre activité : automatisation devis, gestion planning, facturation.",
+      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les TPE artisans et commerçants. Nous identifions les quick-wins IA adaptés à votre activité : automatisation devis, gestion planning, facturation.",
     },
     {
       q: "Comment se déroule une mission IA à Tarascon ?",

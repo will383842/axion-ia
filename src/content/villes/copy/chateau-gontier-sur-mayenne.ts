@@ -30,8 +30,8 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Château-Gontier-sur-Mayenne : formations adaptées aux PME agroalimentaires, industriels, artisans, commerçants et éleveurs du sud-Mayenne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Château-Gontier-sur-Mayenne  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du sud-Mayenne. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du sud-Mayenne. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME industrielles ?",

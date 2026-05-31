@@ -9,9 +9,9 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
   pitchEn:
     "Beaumont-sur-Oise (95), commune des bords de l'Oise au nord du Val-d'Oise, forme avec Persan une unité urbaine dynamique. Tissu de TPE artisanales, PME industrielles et de services, commerces de centre-ville, professions libérales et acteurs de la santé. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants du centre-ville, PME industrielles et de services, professions libérales et professionnels de santé de l'unité urbaine Persan-Beaumont. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants du centre-ville, PME industrielles et de services, professions libérales et professionnels de santé de l'unité urbaine Persan-Beaumont. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants du centre-ville, PME industrielles et de services, professions libérales et professionnels de santé de l'unité urbaine Persan-Beaumont. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants du centre-ville, PME industrielles et de services, professions libérales et professionnels de santé de l'unité urbaine Persan-Beaumont. Audit sur place sur mesure.",
   seoHook: "santé médico-social & commerce centre-ville",
   ecosystemFr:
     "Beaumont-sur-Oise forme avec Persan un pôle urbain des bords de l'Oise. Centre hospitalier, commerces de centre-ville, TPE artisanales BTP, PME industrielles et de services, professions libérales. Gare Transilien H directe vers Paris. Dynamique de renouvellement urbain et tissu associatif dense.",
@@ -30,8 +30,8 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Beaumont-sur-Oise : diagnostic adapté aux TPE artisanales, commerces de centre-ville, PME de services, professions libérales et acteurs de la santé du nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaumont-sur-Oise : formats adaptés au cabinet médical, au commerce, à l'atelier artisan ou au bureau PME. Vos équipes repartent avec des outils IA opérationnels.",
@@ -57,7 +57,7 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Beaumont-sur-Oise ?",
-      a: "L'Audit Flash IA à Beaumont-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Beaumont-sur-Oise démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants du centre-ville ?",

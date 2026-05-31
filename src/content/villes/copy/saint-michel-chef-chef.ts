@@ -30,8 +30,8 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux TPE commerçants, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux TPE commerçants, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux TPE commerçants, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Michel-Chef-Chef : diagnostic adapté aux TPE commerçants, PME tourisme balnéaire, campings, restaurateurs et professions libérales de la Côte de Jade. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Michel-Chef-Chef : formats adaptés au camping, à l'hôtel, au restaurant, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les campings et hébergements touristiques ?",
-      a: "Oui, nous accompagnons campings et hébergements sur des cas IA pratiques : chatbot réservation multilingue, automatisation planning et check-in, agents IA avis clients, optimisation revenue management saisonnier. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons campings et hébergements sur des cas IA pratiques : chatbot réservation multilingue, automatisation planning et check-in, agents IA avis clients, optimisation revenue management saisonnier. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les restaurateurs et commerçants ?",
@@ -61,7 +61,7 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Michel-Chef-Chef  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de la Côte de Jade.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de la Côte de Jade.",
     },
     {
       q: "Intervenez-vous en haute saison touristique ?",

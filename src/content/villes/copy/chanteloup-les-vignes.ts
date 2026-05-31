@@ -9,9 +9,9 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
   pitchEn:
     "Chanteloup-les-Vignes (78), commune des bords de Seine entre Poissy et Conflans-Sainte-Honorine, compte plus de 10 800 habitants. TPE artisanat BTP, PME services et maintenance, commerces de quartier, professions libérales, restauration rapide. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit sur place sur mesure.",
   seoHook: "services maintenance & commerce quartier",
   ecosystemFr:
     "Chanteloup-les-Vignes est une commune des bords de Seine entre Poissy et Conflans-Sainte-Honorine, bénéficiant du programme de renouvellement urbain ANRU. Tissu TPE artisanat BTP, PME services et maintenance, commerces de quartier, professions libérales.",
@@ -30,8 +30,8 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chanteloup-les-Vignes : diagnostic adapté aux TPE artisans BTP, PME services et maintenance, commerçants, professions libérales, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Chanteloup-les-Vignes : diagnostic adapté aux TPE artisans BTP, PME services et maintenance, commerçants, professions libérales, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Chanteloup-les-Vignes : diagnostic adapté aux TPE artisans BTP, PME services et maintenance, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Chanteloup-les-Vignes : diagnostic adapté aux TPE artisans BTP, PME services et maintenance, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chanteloup-les-Vignes : formats adaptés chantier, bureau, commerce, cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

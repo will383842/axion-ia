@@ -9,9 +9,9 @@ export const GAREOULT_COPY: VilleCopy = {
   pitchEn:
     "Garéoult (83), commune du centre-Var dans le bassin de Brignoles, est un bourg rural à dominante agricole et résidentielle. Tissu de TPE viticulteurs Côtes-de-Provence, maraîchers, artisans, commerçants et PME services et BTP de l'arrière-pays varois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garéoult (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, maraîchers, artisans et PME des services, du commerce et du BTP du centre-Var et du bassin de Brignoles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garéoult (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, maraîchers, artisans et PME des services, du commerce et du BTP du centre-Var et du bassin de Brignoles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garéoult (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, maraîchers, artisans et PME des services, du commerce et du BTP du centre-Var et du bassin de Brignoles. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garéoult (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, maraîchers, artisans et PME des services, du commerce et du BTP du centre-Var et du bassin de Brignoles. Audit sur place sur mesure.",
   seoHook: "viticulture côtes-de-provence & agriculture",
   ecosystemFr:
     "Garéoult est un bourg rural du centre-Var, dans le bassin de Brignoles, en zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de l'arrière-pays varois, à mi-chemin entre Toulon et la Provence-Verte.",
@@ -30,8 +30,8 @@ export const GAREOULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Garéoult : ateliers pour viticulteurs, maraîchers, artisans BTP, commerçants et restaurateurs. Outils IA configurés métier réel agricole et services.",
@@ -53,7 +53,7 @@ export const GAREOULT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole AOC Côtes-de-Provence ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC, maraîchers et artisans garéoultais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC, maraîchers et artisans garéoultais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les vignerons AOC du centre-Var ?",

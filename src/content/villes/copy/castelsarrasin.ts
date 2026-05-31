@@ -9,9 +9,9 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
   pitchEn:
     "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin castelsarrasinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
   seoHook: "bassin castelsarrasinois",
   ecosystemFr:
     "Castelsarrasin (14 343 hab) est la sous-préfecture du Tarn-et-Garonne, sur le canal latéral à la Garonne. Économie diversifiée : agroalimentaire (fruits, légumes, conserveries), industrie, commerces de centre-ville, services et professions libérales. Proximité Montauban (20 min), Agen (40 min), Toulouse (1h). Zones d'activités dynamiques sur l'axe A62.",
@@ -30,8 +30,8 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelsarrasin : diagnostic adapté aux TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Castelsarrasin : diagnostic adapté aux TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Castelsarrasin : diagnostic adapté aux TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelsarrasin : diagnostic adapté aux TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castelsarrasin : formats adaptés à la PME agroalimentaire, commerce, exploitation agricole ou cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Castelsarrasin  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Castelsarrasin. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Castelsarrasin. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires ?",
@@ -61,7 +61,7 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Castelsarrasin ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks IA, agents IA prise de RDV, automatisation comptabilité, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Castelsarrasin ?",

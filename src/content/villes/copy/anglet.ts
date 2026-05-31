@@ -9,9 +9,9 @@ export const ANGLET_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Anglet, station balnéaire de la Côte basque entre Bayonne et Biarritz. Tourisme, surf et glisse, hôtellerie, commerce, BTP et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anglet auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme et la glisse de la Côte basque (hôtellerie, surf, loisirs), le commerce, le BTP et les services aux entreprises du BAB. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "surf & tourisme Côte basque",
   ecosystemFr:
     "Anglet, au coeur de l'agglomération Bayonne-Anglet-Biarritz (BAB) sur la Côte basque, conjugue tourisme balnéaire, culture surf et glisse, plages atlantiques et économie résidentielle. Son tissu de TPE et PME couvre l'hôtellerie, la restauration, le commerce, le BTP, les loisirs nautiques et les services, dynamisé par la proximité de la technopole Izarbel et de l'Université de Pau et des Pays de l'Adour.",
@@ -30,8 +30,8 @@ export const ANGLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Anglet pour hôtels, écoles de surf, commerces et acteurs du tourisme balnéaire : nous identifions les leviers (réservations, saisonnalité, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Anglet pour hôtels, écoles de surf, commerces et acteurs du tourisme balnéaire : nous identifions les leviers (réservations, saisonnalité, e-réputation, administratif) et chiffrons le ROI. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Anglet pour hôtels, écoles de surf, commerces et acteurs du tourisme balnéaire : nous identifions les leviers (réservations, saisonnalité, e-réputation, administratif) et chiffrons le ROI. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Anglet pour hôtels, écoles de surf, commerces et acteurs du tourisme balnéaire : nous identifions les leviers (réservations, saisonnalité, e-réputation, administratif) et chiffrons le ROI. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Anglet : formats adaptés à l'hôtel, à l'école de glisse, au commerce ou à l'artisan du BTP. Vos collaborateurs gèrent ensuite les outils en autonomie.",
@@ -57,11 +57,11 @@ export const ANGLET_COPY: VilleCopy = {
     },
     {
       q: "Quels gains IA pour un hôtel ou une école de surf angloye ?",
-      a: "Optimisation des réservations et de la saisonnalité, agents conversationnels multilingues pour la clientèle internationale, analyse des avis et automatisation administrative. Chaque piste est chiffrée en ROI dans l'Audit Flash.",
+      a: "Optimisation des réservations et de la saisonnalité, agents conversationnels multilingues pour la clientèle internationale, analyse des avis et automatisation administrative. Chaque piste est chiffrée en ROI dans l'Audit sur place.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Anglet ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI identifié.",
     },
     {
       q: "Intervenez-vous aussi à Bayonne et Biarritz ?",

@@ -61,11 +61,11 @@ export const LES_PENNES_MIRABEAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les acteurs logistiques de l'étang de Berre ?",
-      a: "Pour les entrepôts et PME logistiques du secteur, nous mettons en place l'automatisation du planning, du suivi des expéditions et de la gestion documentaire, après un Audit Flash priorisant les gains rapides.",
+      a: "Pour les entrepôts et PME logistiques du secteur, nous mettons en place l'automatisation du planning, du suivi des expéditions et de la gestion documentaire, après un Audit sur place priorisant les gains rapides.",
     },
     {
       q: "Comment se déroule une mission aux Pennes-Mirabeau ?",
-      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique durable.",
+      a: "Nous démarrons par un Audit sur place, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique durable.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD aux Pennes-Mirabeau ?",

@@ -30,8 +30,8 @@ export const PLEDRAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plédran : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales et commerces de proximité. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Plédran : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales et commerces de proximité. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Plédran : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales et commerces de proximité. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Plédran : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales et commerces de proximité. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plédran : formats adaptés aux PME de services, artisans BTP et professions libérales de l'agglomération briochine. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const PLEDRAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et professions libérales de Plédran ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, professions libérales et commerçants de Plédran sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning, optimisation comptabilité. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, professions libérales et commerçants de Plédran sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion planning, optimisation comptabilité. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME de l'agglomération briochine ?",
-      a: "L'audit Flash est tarifé selon vos enjeux, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit sur place est tarifé selon vos enjeux, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Plédran ?",

@@ -30,8 +30,8 @@ export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et TPE/PME de l'île d'Oléron. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et TPE/PME de l'île d'Oléron. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et TPE/PME de l'île d'Oléron. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pierre-d'Oléron : diagnostic adapté aux ostréiculteurs, hôteliers-restaurateurs, commerçants saisonniers et TPE/PME de l'île d'Oléron. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-d'Oléron : formats adaptés au parc ostréicole, à l'hôtel, au restaurant, au camping ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Saint-Pierre-d'Oléron ?",
-      a: "L'audit Flash IA à Saint-Pierre-d'Oléron démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus ostréicoles, touristiques ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à Saint-Pierre-d'Oléron démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus ostréicoles, touristiques ou commerciaux, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Oléron ?",

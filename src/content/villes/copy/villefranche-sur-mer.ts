@@ -9,9 +9,9 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Villefranche-sur-Mer (06), commune littorale limitrophe de Nice en région Provence-Alpes-Côte d'Azur, plus de 5 000 habitants à l'année. Rade mythique de la Riviera, escale croisières internationales, patrimoine Cocteau et tourisme haut de gamme. Tissu TPE artisans, PME tourisme/hôtellerie haut de gamme, commerces, restauration et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la Côte d'Azur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit sur place sur mesure.",
   seoHook: "côte d'azur",
   ecosystemFr:
     "Villefranche-sur-Mer (5 008 hab) est une commune littorale de la Riviera, limitrophe de Nice. Économie centrée sur tourisme haut de gamme (hôtellerie de luxe, yachting, croisières internationales), patrimoine culturel (chapelle Cocteau), restauration gastronomique, commerces, art et services. Proximité immédiate Nice (15 min), Monaco (20 min), Cannes (45 min). Forte saisonnalité internationale.",
@@ -30,8 +30,8 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villefranche-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villefranche-sur-Mer : formats adaptés à l'hôtel de luxe, le restaurant gastronomique, la galerie d'art, le yacht charter ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villefranche-sur-Mer  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Villefranche-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique haut de gamme ou artisanale.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Villefranche-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique haut de gamme ou artisanale.",
     },
     {
       q: "Accompagnez-vous les PME du tourisme et de l'hôtellerie de luxe ?",
@@ -61,7 +61,7 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les restaurateurs et commerçants de Villefranche ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA réservation multilingues, gestion stocks intelligente, automatisation comptabilité, fidélisation clientèle internationale augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA réservation multilingues, gestion stocks intelligente, automatisation comptabilité, fidélisation clientèle internationale augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Villefranche-sur-Mer ?",

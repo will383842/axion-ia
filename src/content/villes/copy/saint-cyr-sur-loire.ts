@@ -30,8 +30,8 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Ã  Saint-Cyr-sur-Loire : diagnostic adaptÃ© aux PME tertiaires zones commerciales, TPE artisans, professions libÃ©rales, commerces Tours MÃ©tropole nord. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
-      en: "Audit IA Ã  Saint-Cyr-sur-Loire : diagnostic adaptÃ© aux PME tertiaires zones commerciales, TPE artisans, professions libÃ©rales, commerces Tours MÃ©tropole nord. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
+      fr: "Audit IA Ã  Saint-Cyr-sur-Loire : diagnostic adaptÃ© aux PME tertiaires zones commerciales, TPE artisans, professions libÃ©rales, commerces Tours MÃ©tropole nord. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
+      en: "Audit IA Ã  Saint-Cyr-sur-Loire : diagnostic adaptÃ© aux PME tertiaires zones commerciales, TPE artisans, professions libÃ©rales, commerces Tours MÃ©tropole nord. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
     },
     interventions: {
       fr: "Interventions IA sur site Ã  Saint-Cyr-sur-Loire : formats adaptÃ©s au tertiaire, commerce, artisanat, professions libÃ©rales. Vos Ã©quipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires de Saint-Cyr-sur-Loire ?",
-      a: "Oui, automatisation CRM/ERP, classification documents, agents conversationnels internes, optimisation processus mÃ©tier. Audit Flash 490 â‚¬ HT pour dÃ©marrer.",
+      a: "Oui, automatisation CRM/ERP, classification documents, agents conversationnels internes, optimisation processus mÃ©tier. Audit sur place 1 190 â‚¬ HT pour dÃ©marrer.",
     },
     {
       q: "Quels services pour les professions libÃ©rales ?",
-      a: "Audit Flash 490 â‚¬ HT, coaching 1-to-1 990 â‚¬ HT. Gestion rendez-vous, automatisation administratif, classification documents.",
+      a: "Audit sur place 1 190 â‚¬ HT, coaching 1-to-1 990 â‚¬ HT. Gestion rendez-vous, automatisation administratif, classification documents.",
     },
     {
       q: "Comment accÃ©der Ã  Saint-Cyr-sur-Loire depuis Paris ?",

@@ -9,9 +9,9 @@ export const LA_VERRIERE_COPY: VilleCopy = {
   pitchEn:
     "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud des Yvelines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit sur place sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "La Verrière est une commune résidentielle de Saint-Quentin-en-Yvelines, bénéficiant de la dynamique économique de ce pôle majeur francilien. Tissu local : TPE artisans bâtiment, commerces de proximité, PME de services, professions libérales, prestataires tertiaires. Communes voisines : Trappes, Élancourt, Coignières, Le Mesnil-Saint-Denis, Maurepas.",
@@ -30,8 +30,8 @@ export const LA_VERRIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Verrière : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Verrière : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Verrière : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Verrière : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Verrière : formats adaptés au bureau, au commerce ou à l'atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LA_VERRIERE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Verrière  ?",
-      a: "L'Audit Flash IA à La Verrière démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à La Verrière démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME à La Verrière ?",

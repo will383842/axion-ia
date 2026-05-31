@@ -9,9 +9,9 @@ export const LOOS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Loos (59), commune de la Métropole Européenne de Lille. Adossée au pôle hospitalier régional (CHR) et à la recherche biomédicale, Loos concentre santé, services et commerces. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour les petites structures du territoire lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit Flash sur site, tarifs publics, déplacement rapide depuis Lille. Les ETI restent un cas marginal.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit sur place sur site, tarifs publics, déplacement rapide depuis Lille. Les ETI restent un cas marginal.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit Flash sur site, tarifs publics, déplacement rapide depuis Lille. Les ETI restent un cas marginal.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loos (59), dans la Métropole Européenne de Lille. Nous accompagnons en priorité les TPE puis les PME : cabinets de santé et structures paramédicales proches du CHR, professions libérales, commerces et PME de services. Audit sur place sur site, tarifs publics, déplacement rapide depuis Lille. Les ETI restent un cas marginal.",
   seoHook: "santé & recherche",
   ecosystemFr:
     "Loos est marquée par le Centre Hospitalier Régional Universitaire de Lille et son écosystème santé : laboratoires, structures paramédicales, recherche biomédicale et professions libérales gravitent autour de ce pôle. Intégrée à la Métropole Européenne de Lille, la commune mêle ce tissu médical à un commerce de proximité actif et à des PME de services, terrain favorable à des automatisations IA respectueuses des données sensibles.",
@@ -57,7 +57,7 @@ export const LOOS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Loos ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME de Loos, sans devis opaque ni engagement caché.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME de Loos, sans devis opaque ni engagement caché.",
     },
     {
       q: "Accompagnez-vous les cabinets de santé proches du CHR ?",
@@ -65,7 +65,7 @@ export const LOOS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et professions libérales ?",
-      a: "Les TPE, commerçants et professions libérales bénéficient de l'Audit Flash, d'interventions d'une journée et du coaching 1-to-1 : automatisation des tâches administratives et de la relation client.",
+      a: "Les TPE, commerçants et professions libérales bénéficient de l'Audit sur place, d'interventions d'une journée et du coaching 1-to-1 : automatisation des tâches administratives et de la relation client.",
     },
     {
       q: "Comment se déroule une mission à Loos ?",

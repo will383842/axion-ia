@@ -11,9 +11,9 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Épinay-sur-Seine (93), commune de 52 833 habitants au nord-ouest de Paris, est intégrée à Plaine Commune et à la Métropole du Grand Paris. Desservie par les tramways T8 et T11, le RER C et la ligne H du Transilien, à proximité de l'A86 et de l'A15. Tissu de TPE commerçantes, PME de services, artisans BTP et activités historiques liées à la production audiovisuelle. Axion-IA accompagne ces structures dans leurs projets d'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit Flash à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit Flash à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
   seoHook: "TPE & PME Plaine Commune nord-ouest 93",
   ecosystemFr:
     "Épinay-sur-Seine accueille des activités historiques de cinéma et télévision avec les Laboratoires Éclair (post-production, environ 400 salariés) et conserve une présence industrielle ancienne (Verreries de la gare créées en 1913). La commune fait partie de l'EPT Plaine Commune, qui structure le développement économique du territoire avec Saint-Denis et Villetaneuse. Tissu local : commerce de détail, restauration, services à la personne, BTP et logistique de proximité.",
@@ -32,8 +32,8 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -55,7 +55,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une intervention à Épinay-sur-Seine ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, Formation 4 h à partir de {{price:intervention-4h|flat}}. Implémentation et coaching 1-to-1 sur devis selon périmètre. Tarifs publics affichés, sans devis opaque.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Épinay-sur-Seine ?",

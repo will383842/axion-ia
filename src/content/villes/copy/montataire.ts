@@ -9,9 +9,9 @@ export const MONTATAIRE_COPY: VilleCopy = {
   pitchEn:
     "Montataire (60), commune industrielle de l'agglomération creilloise dans l'Oise, héritière de la métallurgie lourde reconvertie vers les services, la logistique et le BTP. Tissu TPE/PME industrie, sous-traitance, commerce, artisanat et économie sociale. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit sur place sur mesure.",
   ecosystemFr:
     "Montataire est une commune du bassin creillois, marquée par l'héritage de la métallurgie lourde (ancienne sidérurgie) reconvertie vers l'industrie légère, la sous-traitance, le BTP et la logistique. Tissu TPE/PME diversifié, commerces, artisanat, économie sociale et solidaire. Proximité Creil, Nogent-sur-Oise et Senlis.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MONTATAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montataire : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants, artisans BTP, commerces et logisticiens du bassin creillois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montataire : formats adaptés à l'atelier industriel, l'entrepôt logistique, le chantier BTP et le commerce. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const MONTATAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Montataire ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Travaillez-vous avec les entreprises industrielles reconverties ?",

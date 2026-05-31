@@ -61,11 +61,11 @@ export const SOISSONS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces du centre historique ?",
-      a: "Pour les commerces de Soissons, nous proposons des agents conversationnels pour les demandes clients, l'automatisation des relances et de la gestion des stocks, à partir d'un Audit Flash ciblé.",
+      a: "Pour les commerces de Soissons, nous proposons des agents conversationnels pour les demandes clients, l'automatisation des relances et de la gestion des stocks, à partir d'un Audit sur place ciblé.",
     },
     {
       q: "Quels délais pour un audit IA à Soissons ?",
-      a: "Un Audit Flash peut démarrer sous quelques jours après la prise de contact. Il aboutit à un plan d'action priorisé et à des recommandations concrètes adaptées à votre TPE ou PME soissonnaise.",
+      a: "Un Audit sur place peut démarrer sous quelques jours après la prise de contact. Il aboutit à un plan d'action priorisé et à des recommandations concrètes adaptées à votre TPE ou PME soissonnaise.",
     },
     {
       q: "Comment assurez-vous la conformité RGPD à Soissons ?",

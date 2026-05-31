@@ -9,9 +9,9 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
   pitchEn:
     "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "vallée vilaine",
   ecosystemFr:
     "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, TPE artisans BTP et services aux entreprises. Bords de Vilaine attractifs.",
@@ -30,8 +30,8 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Châteaubourg : diagnostic adapté aux PME agroalimentaires, TPE artisans, entreprises logistiques et services de l'est rennais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaubourg : formations adaptées aux PME industrielles et TPE artisans des zones d'activités est rennaises. Ateliers pratiques, équipes autonomes en fin de journée.",
@@ -53,7 +53,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Châteaubourg  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME des zones d'activités de Châteaubourg souhaitant identifier rapidement leurs cas d'usage IA avec ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME des zones d'activités de Châteaubourg souhaitant identifier rapidement leurs cas d'usage IA avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires de Châteaubourg ?",
@@ -61,7 +61,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les entreprises logistiques à Châteaubourg ?",
-      a: "Pour les entreprises logistiques de l'axe Rennes-Laval, nous proposons optimisation tournées, prédiction flux, automatisation documentation transport, agents IA planification. Audit Flash {{price:audit-flash|flat}} ou implémentation clé en main.",
+      a: "Pour les entreprises logistiques de l'axe Rennes-Laval, nous proposons optimisation tournées, prédiction flux, automatisation documentation transport, agents IA planification. Audit sur place {{price:audit-flash|flat}} ou implémentation clé en main.",
     },
     {
       q: "Comment se déroule une intervention sur site à Châteaubourg ?",

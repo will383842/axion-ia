@@ -30,8 +30,8 @@ export const GISORS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gisors : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le cabinet, le commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const GISORS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants gisorsiens ?",
-      a: "Pour les TPE artisans et commerçants à Gisors, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
+      a: "Pour les TPE artisans et commerçants à Gisors, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",

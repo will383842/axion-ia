@@ -9,9 +9,9 @@ export const OBERNAI_COPY: VilleCopy = {
   pitchEn:
     "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit sur place sur mesure.",
   seoHook: "viticulture domaines & brasserie boissons",
   ecosystemFr:
     "Obernai est l'une des étapes phares de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile. Tissu économique dominé par la viticulture (AOC Alsace, Riesling, Gewurztraminer), la brasserie Kronenbourg-Obernai (production majeure), l'hôtellerie-restauration et le tourisme patrimonial. TPE/PME viticoles, commerce du centre historique, artisans et professions libérales du Piémont des Vosges.",
@@ -30,8 +30,8 @@ export const OBERNAI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Obernai : formats adaptés au domaine viticole, à la brasserie, à l'hôtel-restaurant ou au commerce du centre historique. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const OBERNAI_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Obernai  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d'Obernai et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, brasserie, hôtel-restaurant ou commerce médiéval.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d'Obernai et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, brasserie, hôtel-restaurant ou commerce médiéval.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles de la Route des Vins ?",

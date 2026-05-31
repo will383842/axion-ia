@@ -30,8 +30,8 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Amand-les-Eaux : formats adaptés à l'établissement thermal, à l'artisan d'art, au commerce ou au professionnel libéral de santé. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Amand-les-Eaux  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Saint-Amand-les-Eaux, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, artisanat d'art, commerce, santé, agroalimentaire). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Saint-Amand-les-Eaux, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, artisanat d'art, commerce, santé, agroalimentaire). Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les établissements thermaux et de bien-être ?",

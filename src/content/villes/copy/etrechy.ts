@@ -9,9 +9,9 @@ export const ETRECHY_COPY: VilleCopy = {
   pitchEn:
     "Étréchy (91), commune semi-rurale de la Vallée de la Juine en Essonne, dessert le sud du département via le RER C. Résidentielle avec tissu TPE artisans, commerces de proximité, PME services, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit sur place sur mesure.",
   seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Étréchy est une commune résidentielle semi-rurale de la Vallée de la Juine, au sud de l'Essonne. Gare RER C reliant Paris et Étampes. Tissu économique de proximité : TPE artisans BTP, commerces, professions libérales, PME services, agriculture céréalière et maraîchage résiduel.",
@@ -30,8 +30,8 @@ export const ETRECHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Étréchy : formats adaptés cabinet libéral, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const ETRECHY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de proximité ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de commande, fidélisation client, marketing local.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de commande, fidélisation client, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",

@@ -65,7 +65,7 @@ export const BRON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et prestataires de l'aéroport Lyon-Bron ?",
-      a: "Audit Flash, journée de formation sur site et coaching 1-to-1. Nous adaptons les formats aux TPE locales, des commerces aux prestataires de l'aviation d'affaires.",
+      a: "Audit sur place, journée de formation sur site et coaching 1-to-1. Nous adaptons les formats aux TPE locales, des commerces aux prestataires de l'aviation d'affaires.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

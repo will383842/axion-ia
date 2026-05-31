@@ -9,9 +9,9 @@ export const PULNOY_COPY: VilleCopy = {
   pitchEn:
     "Pulnoy (54), commune résidentielle de la métropole du Grand Nancy à l'est de l'agglomération en Meurthe-et-Moselle, conjugue cadre de vie pavillonnaire et proximité immédiate des pôles d'emploi nancéiens. Tissu de TPE/PME services aux particuliers, commerce, artisanat et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pulnoy (54). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales, services aux particuliers et prestataires de services de la métropole du Grand Nancy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pulnoy (54). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales, services aux particuliers et prestataires de services de la métropole du Grand Nancy. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pulnoy (54). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales, services aux particuliers et prestataires de services de la métropole du Grand Nancy. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pulnoy (54). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales, services aux particuliers et prestataires de services de la métropole du Grand Nancy. Audit sur place sur mesure.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Pulnoy fait partie de la métropole du Grand Nancy, dans la première couronne est de l'agglomération nancéienne. Commune principalement résidentielle, elle accueille un tissu de TPE/PME de proximité : commerces, artisans BTP, professions libérales (santé, conseil) et services aux particuliers. Proximité immédiate de Nancy (10 min), Essey-lès-Nancy et Saint-Max.",
@@ -30,8 +30,8 @@ export const PULNOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pulnoy : formats adaptés au commerce, à l'artisanat, au cabinet libéral ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const PULNOY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Pulnoy  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pulnoy et du Grand Nancy, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet ou activité artisanale.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pulnoy et du Grand Nancy, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet ou activité artisanale.",
     },
     {
       q: "Accompagnez-vous les professions libérales du Grand Nancy ?",

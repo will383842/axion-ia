@@ -9,9 +9,9 @@ export const ESCAUDAIN_COPY: VilleCopy = {
   pitchEn:
     "Escaudain (59), commune du bassin minier reconverti du Nord, entre Valenciennes et Douai, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "Escaudain est une commune du bassin minier reconverti du Nord, entre Valenciennes et Douai, classée au patrimoine mondial UNESCO. Tissu TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration.",
@@ -30,8 +30,8 @@ export const ESCAUDAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Escaudain : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Escaudain : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Escaudain ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
     },
     {
       q: "Accompagnez-vous les commerces et restaurateurs ?",
@@ -61,7 +61,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et PME ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

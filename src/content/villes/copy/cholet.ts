@@ -34,8 +34,8 @@ export const CHOLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
-      en: "Audit Flash 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      fr: "Audit sur place 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
+      en: "Audit sur place 4h à Cholet pour cadrer un cas d'usage IA dans la chaussure, le textile, l'automotive ou l'agroalimentaire — dès {{price:audit-flash|flat}}, livrable PDF + plan d'action.",
     },
     interventions: {
       fr: "Intervention sur site à Cholet pour automatiser un goulot précis (devis, ordonnancement atelier, contrôle qualité, reporting) — dès {{price:intervention-4h|flat}}, code custom remis au client.",
@@ -53,11 +53,11 @@ export const CHOLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Cholet ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit Flash 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement à Cholet depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement à Cholet depuis Paris est inclus pour ces formats.",
     },
     {
       q: "Quels délais pour une intervention IA à Cholet après prise de contact ?",
-      a: "L'Audit Flash est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est généralement cadrée sous 2 à 3 semaines. Les implémentations plus lourdes (intégration ERP, automatisation atelier) s'étalent sur 4 à 8 semaines selon la complexité.",
+      a: "L'Audit sur place est planifié sous 5 à 10 jours ouvrés. Une Intervention Essentielle est généralement cadrée sous 2 à 3 semaines. Les implémentations plus lourdes (intégration ERP, automatisation atelier) s'étalent sur 4 à 8 semaines selon la complexité.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Cholet ?",

@@ -125,7 +125,7 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises et PME angevines jusqu'à une dizaine de collaborateurs — startups French Tech Angers, artisans, prestataires végétaux.",
           },
@@ -165,7 +165,7 @@ export const ANGERS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Angers ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines avec plusieurs visites sur site dans la métropole angevine. Le rythme est calé avec vous dès le brief de cadrage.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines avec plusieurs visites sur site dans la métropole angevine. Le rythme est calé avec vous dès le brief de cadrage.",
           },
           {
             q: "Avez-vous des cas clients dans la filière végétale ou l'industrie angevine ?",
@@ -947,7 +947,7 @@ export const ANGERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Angers ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est le même à Angers que partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur. Aucun supplément géographique : le tarif est le même à Angers que partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans la filière végétale angevine (Vegepolys Valley) ?",

@@ -9,9 +9,9 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Just-en-Chaussée (60), commune de 5 810 habitants dans l'Oise, est un bourg-centre du plateau picard entre Clermont et Breteuil. Carrefour routier historique, la ville concentre un tissu de TPE/PME : agriculture et agroalimentaire (grandes cultures Beauce picarde), industrie mécanique, artisanat BTP, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Just-en-Chaussée est un bourg-centre du plateau picard, carrefour routier entre Clermont-de-l'Oise, Breteuil et Montdidier. L'économie locale repose sur l'agriculture céréalière (Beauce picarde, grandes cultures), l'agroalimentaire (stockage, négoce céréales), la mécanique agricole, l'artisanat BTP et le commerce de proximité. Le bassin d'emploi s'articule avec Clermont, Maignelay-Montigny et Estrées-Saint-Denis.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Just-en-Chaussée : formats adaptés à l'exploitation agricole, au silo céréalier, à l'atelier mécanique ou au commerce. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Just-en-Chaussée  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME saint-justois : exploitants agricoles, agroalimentaires, mécaniciens, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME saint-justois : exploitants agricoles, agroalimentaires, mécaniciens, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles du plateau picard ?",

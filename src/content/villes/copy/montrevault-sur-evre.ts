@@ -9,9 +9,9 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
   pitchEn:
     "Montrevault-sur-Èvre (49), commune nouvelle au cœur des Mauges, fédère un territoire rural dynamique de plus de 15 000 habitants entre bocage angevin et vallée de l'Èvre. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, industrie locale, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Montrevault-sur-Èvre est née de la fusion de 11 communes déléguées dans les Mauges. Territoire à dominante agricole (élevage bovin, polyculture) avec un tissu d'artisanat BTP, de PME industrielles (agroalimentaire, métallurgie) et de commerces de bourg. Proximité Beaupréau-en-Mauges et Cholet.",
@@ -30,8 +30,8 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Montrevault-sur-Èvre : diagnostic adapté aux exploitants agricoles, TPE artisans et PME industrielles des Mauges. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montrevault-sur-Èvre : formations pratiques pour équipes agricoles, artisanales et industrielles. Ateliers métier adaptés au contexte rural des Mauges.",
@@ -53,11 +53,11 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Montrevault-sur-Èvre  ?",
-      a: "L'Audit Flash IA à Montrevault-sur-Èvre démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA à Montrevault-sur-Èvre démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles des Mauges ?",
-      a: "Oui, nous accompagnons les exploitants agricoles à Montrevault-sur-Èvre : IA pour traçabilité troupeaux, optimisation assolement, gestion administrative PAC, maintenance prédictive matériel. Audit Flash {{price:audit-flash|flat}} adapté aux exploitations.",
+      a: "Oui, nous accompagnons les exploitants agricoles à Montrevault-sur-Èvre : IA pour traçabilité troupeaux, optimisation assolement, gestion administrative PAC, maintenance prédictive matériel. Audit sur place {{price:audit-flash|flat}} adapté aux exploitations.",
     },
     {
       q: "Quels secteurs ciblez-vous à Montrevault-sur-Èvre ?",

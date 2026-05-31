@@ -30,8 +30,8 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Poiré-sur-Vie : formats adaptés aux artisans, PME industrielles, exploitations agricoles et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE et PME du Poiré-sur-Vie ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans BTP, PME industrielles, exploitants agricoles et commerçants.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans BTP, PME industrielles, exploitants agricoles et commerçants.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles du bocage vendéen ?",
@@ -61,7 +61,7 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Poiré-sur-Vie ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA au Poiré-sur-Vie ?",

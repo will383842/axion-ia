@@ -10,9 +10,9 @@ export const GUIPAVAS_COPY: VilleCopy = {
     "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
   seoHook: "aéroport, logistique & technopôle",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
   ecosystemFr:
     "Guipavas est la porte d'entrée aérienne de la pointe bretonne grâce à l'aéroport Brest-Bretagne (1 million de passagers/an). Les zones d'activités de Kergaradec et de la Fontaine-Margot concentrent logistique, transport, commerce de gros et sous-traitance. Le Technopôle Brest-Iroise est à proximité immédiate. Communes voisines : Brest, Plougastel-Daoulas, Gouesnou, Le Relecq-Kerhuon, Bohars.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GUIPAVAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Guipavas : diagnostic adapté aux PME logistiques, sous-traitants aéronautiques, commerces de zone et prestataires tertiaires de l'agglomération brestoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guipavas : formats adaptés à l'entrepôt, au bureau ou à la zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const GUIPAVAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guipavas  ?",
-      a: "L'Audit Flash IA à Guipavas démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Guipavas démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques à Guipavas ?",

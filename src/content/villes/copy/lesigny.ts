@@ -30,8 +30,8 @@ export const LESIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lésigny : diagnostic adapté aux TPE artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Lésigny : diagnostic adapté aux TPE artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Lésigny : diagnostic adapté aux TPE artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Lésigny : diagnostic adapté aux TPE artisanales, commerçants, PME de services et professions libérales de l'est Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lésigny : formats adaptés à l'artisan, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés pour leur métier.",
@@ -53,11 +53,11 @@ export const LESIGNY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment à Lésigny ?",
-      a: "Oui, nous accompagnons les TPE artisanales BTP de Lésigny (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisanales BTP de Lésigny (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lésigny  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic sur site à Lésigny. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic sur site à Lésigny. Pour les audits approfondis (Audit Stratégique), comptez entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon le périmètre. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de Lésigny ?",

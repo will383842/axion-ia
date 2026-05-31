@@ -9,9 +9,9 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
   pitchEn:
     "Crégy-lès-Meaux (77), commune limitrophe de Meaux en Seine-et-Marne, avec zones commerciales et tissu résidentiel dynamique. TPE commerce, PME services, artisanat BTP, restauration, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit sur place sur mesure.",
   seoHook: "commerce zones & services",
   ecosystemFr:
     "Crégy-lès-Meaux est une commune limitrophe de Meaux disposant de zones commerciales actives et d'un tissu résidentiel dynamique. TPE commerce et restauration, PME services, artisanat BTP, professions libérales.",
@@ -30,8 +30,8 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Crégy-lès-Meaux : diagnostic adapté aux TPE commerces zones commerciales, PME services, artisans BTP, restaurateurs, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crégy-lès-Meaux : formats adaptés commerce, bureau PME, chantier BTP, restaurant, cabinet libéral. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Crégy-lès-Meaux  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Meaux et Trilport ?",

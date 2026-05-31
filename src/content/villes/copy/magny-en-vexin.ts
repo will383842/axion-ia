@@ -9,9 +9,9 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
   pitchEn:
     "Magny-en-Vexin (95), bourg-centre du Vexin français dans le Val-d'Oise, joue un rôle de pôle de services et de commerces pour les communes rurales environnantes. Tissu TPE commerces et artisanat, PME agricoles et agroalimentaires, professions libérales, restauration, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-en-Vexin (95). Nous accompagnons TPE et PME : commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise nord-ouest. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-en-Vexin (95). Nous accompagnons TPE et PME : commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise nord-ouest. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-en-Vexin (95). Nous accompagnons TPE et PME : commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise nord-ouest. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-en-Vexin (95). Nous accompagnons TPE et PME : commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise nord-ouest. Audit sur place sur mesure.",
   seoHook: "commerce détail & agricoles agroalimentaires",
   ecosystemFr:
     "Magny-en-Vexin est un bourg-centre du Vexin français, pôle de services et de commerces pour les communes rurales du nord-ouest du Val-d'Oise. Tissu TPE commerces et artisanat, PME agricoles et agroalimentaires, professions libérales, restauration, services à la personne.",
@@ -30,8 +30,8 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magny-en-Vexin : formats adaptés boutique, exploitation agricole, cabinet, restaurant, bureau PME Vexin français. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",

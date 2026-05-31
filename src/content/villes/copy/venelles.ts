@@ -9,9 +9,9 @@ export const VENELLES_COPY: VilleCopy = {
   pitchEn:
     "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   seoHook: "professions libérales & artisanat services",
   ecosystemFr:
     "Venelles est une commune résidentielle dynamique à 8 km au nord d'Aix-en-Provence. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois. Zone d'activités locale (artisanat, services), commerces de proximité centre-village et tissu associatif dense.",
@@ -30,8 +30,8 @@ export const VENELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Venelles : ateliers pour équipes PME, cabinets libéraux ou artisans. Format demi-journée ou journée, outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const VENELLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Venelles  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales et PME venelloises. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic complet + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, professions libérales et PME venelloises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Venelles ?",

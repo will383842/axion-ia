@@ -30,8 +30,8 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Thibault-des-Vignes : diagnostic adapté aux enseignes commerciales, TPE artisanales, PME de négoce et professions libérales du secteur Lagny–Marne-la-Vallée. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Thibault-des-Vignes : diagnostic adapté aux enseignes commerciales, TPE artisanales, PME de négoce et professions libérales du secteur Lagny–Marne-la-Vallée. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Thibault-des-Vignes : diagnostic adapté aux enseignes commerciales, TPE artisanales, PME de négoce et professions libérales du secteur Lagny–Marne-la-Vallée. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Thibault-des-Vignes : diagnostic adapté aux enseignes commerciales, TPE artisanales, PME de négoce et professions libérales du secteur Lagny–Marne-la-Vallée. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Thibault-des-Vignes : formats adaptés au commerce, au négoce ou à la PME de services. Vos équipes repartent autonomes sur outils IA configurés pour leur métier.",
@@ -53,11 +53,11 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces de Saint-Thibault-des-Vignes ?",
-      a: "Oui, nous accompagnons les enseignes commerciales et commerçants de proximité de Saint-Thibault-des-Vignes sur leurs cas IA : gestion de stocks automatisée, agents conversationnels clients, CRM augmenté, pricing dynamique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les enseignes commerciales et commerçants de proximité de Saint-Thibault-des-Vignes sur leurs cas IA : gestion de stocks automatisée, agents conversationnels clients, CRM augmenté, pricing dynamique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Thibault-des-Vignes  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des zones commerciales de Saint-Thibault-des-Vignes, il identifie les cas d'usage IA à fort ROI. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des zones commerciales de Saint-Thibault-des-Vignes, il identifie les cas d'usage IA à fort ROI. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les PME de négoce du secteur ?",

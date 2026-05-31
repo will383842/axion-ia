@@ -10,9 +10,9 @@ export const LANDERNEAU_COPY: VilleCopy = {
     "Landerneau (29), sous-préfecture du Finistère nichée dans la vallée de l'Élorn, célèbre pour son pont habité de Rohan et le Fonds Hélène & Édouard Leclerc pour la culture. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et services aux entreprises au carrefour nord-Finistère. Axion-IA y intervient pour tous types d'activités.",
   seoHook: "agroalimentaire & commerce de centre-bourg",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit sur place sur mesure.",
   ecosystemFr:
     "Landerneau est une sous-préfecture dynamique du nord-Finistère, à la confluence de l'Élorn et de la Penfeld. Son centre-ville animé mêle commerce de détail, artisanat et services. L'agroalimentaire (laiteries, légumiers bretons) structure le bassin d'emploi. Le Fonds Leclerc pour la Culture attire un rayonnement régional. Communes voisines : Brest, Plougastel-Daoulas, Daoulas, Dirinon, La Roche-Maurice.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LANDERNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Landerneau : formats adaptés à l'atelier, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LANDERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Landerneau  ?",
-      a: "L'Audit Flash IA à Landerneau démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Landerneau démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires à Landerneau ?",

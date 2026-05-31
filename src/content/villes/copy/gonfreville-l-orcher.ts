@@ -10,9 +10,9 @@ export const GONFREVILLE_L_ORCHER_COPY: VilleCopy = {
     "Gonfreville-l'Orcher (76), commune de l'agglomeration havraise en Seine-Maritime, reunit pres de 8 920 habitants. Coeur de la zone industrielle du Havre (raffinage, petrochimie), elle accueille des TPE sous-traitantes, des PME de maintenance industrielle, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "raffinage, petrochimie & sous-traitance",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gonfreville-l'Orcher (76). Nous accompagnons les TPE, PME et sous-traitants de la zone industrielle havraise : maintenance, services, artisans, commercants et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Gonfreville-l'Orcher est au coeur de la zone industrielle du Havre, l'une des plus grandes de France (raffinage, petrochimie, chimie fine). Tissu economique domine par les sous-traitants industriels, TPE de maintenance, PME de services et commerces lies a l'activite portuaire et industrielle.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GONFREVILLE_L_ORCHER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Gonfreville-l'Orcher : diagnostic adapte aux TPE sous-traitantes, PME de maintenance et acteurs industriels de la zone havraise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Gonfreville-l'Orcher : diagnostic adapte aux TPE sous-traitantes, PME de maintenance et acteurs industriels de la zone havraise. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Gonfreville-l'Orcher : diagnostic adapte aux TPE sous-traitantes, PME de maintenance et acteurs industriels de la zone havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Gonfreville-l'Orcher : diagnostic adapte aux TPE sous-traitantes, PME de maintenance et acteurs industriels de la zone havraise. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Gonfreville-l'Orcher : formations adaptees aux sous-traitants industriels, PME de maintenance, commerces et artisans. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const GONFREVILLE_L_ORCHER_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Gonfreville ?",
-      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports HSE, planification interventions, gestion documentaire technique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les sous-traitants industriels, nous proposons : maintenance predictive IA, automatisation rapports HSE, planification interventions, gestion documentaire technique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Gonfreville-l'Orcher ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME de maintenance industrielle de la zone havraise ?",

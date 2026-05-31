@@ -9,9 +9,9 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Aurec-sur-Loire, commune du nord de la Haute-Loire nichée dans les gorges de la Loire, aux portes du bassin stéphanois. PME industrielles, sous-traitance mécanique, agriculture de montagne, artisans BTP et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons les PME industrielles et sous-traitants du nord Haute-Loire, les agriculteurs de montagne, les artisans du BTP et les commerces. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons les PME industrielles et sous-traitants du nord Haute-Loire, les agriculteurs de montagne, les artisans du BTP et les commerces. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons les PME industrielles et sous-traitants du nord Haute-Loire, les agriculteurs de montagne, les artisans du BTP et les commerces. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons les PME industrielles et sous-traitants du nord Haute-Loire, les agriculteurs de montagne, les artisans du BTP et les commerces. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "industrie & agriculture montagne",
   ecosystemFr:
     "Aurec-sur-Loire, dans le nord de la Haute-Loire au creux des gorges de la Loire, profite de la proximité immédiate du bassin industriel stéphanois (Firminy, Saint-Étienne). Son tissu mêle PME industrielles et de sous-traitance mécanique, agriculture de montagne, artisans du BTP et commerces de proximité, sur un territoire rural attractif tourné vers la vallée de la Loire.",
@@ -30,8 +30,8 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aurec-sur-Loire pour PME industrielles, agriculteurs de montagne et artisans : nous cartographions vos process (maintenance, qualité, planification, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aurec-sur-Loire pour PME industrielles, agriculteurs de montagne et artisans : nous cartographions vos process (maintenance, qualité, planification, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aurec-sur-Loire pour PME industrielles, agriculteurs de montagne et artisans : nous cartographions vos process (maintenance, qualité, planification, administratif) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aurec-sur-Loire pour PME industrielles, agriculteurs de montagne et artisans : nous cartographions vos process (maintenance, qualité, planification, administratif) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, à l'exploitation agricole ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -61,11 +61,11 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les agriculteurs de montagne ?",
-      a: "Oui, prévision de récolte, classification de photos de cultures et d'animaux, traçabilité et vente directe pour les exploitations de montagne. Chaque piste est chiffrée en ROI dans l'Audit Flash.",
+      a: "Oui, prévision de récolte, classification de photos de cultures et d'animaux, traçabilité et vente directe pour les exploitations de montagne. Chaque piste est chiffrée en ROI dans l'Audit sur place.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Aurec-sur-Loire ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tarifs publics, sans devis opaque ; les implémentations sont chiffrées au cas par cas selon le ROI.",
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",

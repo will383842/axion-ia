@@ -9,9 +9,9 @@ export const FENAIN_COPY: VilleCopy = {
   pitchEn:
     "Fenain (59), commune du bassin minier du Nord inscrit au patrimoine mondial UNESCO, conserve un héritage industriel reconverti. Tissu TPE artisans, PME logistique et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenain (59). Nous accompagnons TPE artisans, PME logistique et services, commerçants, indépendants et professions libérales de cette commune du bassin minier du Nord. Audit sur place sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Fenain est une commune du bassin minier du Nord entre Douai et Denain, inscrite dans le périmètre UNESCO du bassin minier Nord-Pas-de-Calais. L'héritage industriel minier s'est reconverti vers la logistique, les services et le BTP. Tissu dense de TPE artisans, PME logistique et services aux entreprises, commerces de proximité et professions libérales.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const FENAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fenain : formats adaptés aux entrepôts logistique, ateliers artisans BTP, commerces et cabinets. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const FENAIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Fenain  ?",
-      a: "L'audit Flash IA à Fenain démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit sur place IA à Fenain démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les PME logistique du bassin minier ?",

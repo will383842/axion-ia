@@ -30,8 +30,8 @@ export const BETTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Betton : formats adaptés aux cabinets, TPE de services, commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,11 +57,11 @@ export const BETTON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans bettonnais ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Betton sur leurs cas IA. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Betton sur leurs cas IA. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
     },
     {
       q: "Quels services pour les PME de services du nord Rennes ?",
-      a: "Pour les PME de services à Betton et nord Rennes Métropole, audit complet processus IA, implémentation outils sur mesure (RAG, agents, automatisation), formation équipes. ROI chiffré dès l'audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les PME de services à Betton et nord Rennes Métropole, audit complet processus IA, implémentation outils sur mesure (RAG, agents, automatisation), formation équipes. ROI chiffré dès l'audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Betton ?",

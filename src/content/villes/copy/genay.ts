@@ -30,8 +30,8 @@ export const GENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Genay : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME industrielles, logistiques et tertiaires du nord lyonnais. ROI quantifié, audit Flash 4h.",
-      en: "Audit IA à Genay : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME industrielles, logistiques et tertiaires du nord lyonnais. ROI quantifié, audit Flash 4h.",
+      fr: "Audit IA à Genay : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME industrielles, logistiques et tertiaires du nord lyonnais. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA à Genay : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME industrielles, logistiques et tertiaires du nord lyonnais. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Genay : formats adaptés à l'atelier, à l'entrepôt logistique, au bureau ou au commerce. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -65,7 +65,7 @@ export const GENAY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE, artisans et commerçants genaysiens ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, indépendants. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, indépendants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Comment se déroule une mission depuis Lyon ?",

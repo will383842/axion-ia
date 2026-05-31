@@ -9,9 +9,9 @@ export const TRELISSAC_COPY: VilleCopy = {
   pitchEn:
     "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit sur place sur mesure.",
   ecosystemFr:
     "Trélissac est une commune dynamique de l'est de l'agglomération de Périgueux. Importantes zones commerciales (Boulazac–Trélissac), artisanat et PME industrielles, logistique, services aux entreprises et agroalimentaire périgourdin. Axe routier vers Brive et Sarlat, porte d'entrée du Périgord Noir depuis Périgueux.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const TRELISSAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Trélissac : diagnostic adapté aux TPE/PME du commerce, de l'artisanat et de la logistique de l'agglo Périgueux est. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trélissac : formations pratiques pour commerçants, artisans et équipes logistique de l'agglomération Périgueux.",
@@ -53,7 +53,7 @@ export const TRELISSAC_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Trélissac  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les commerces des zones de Trélissac ?",

@@ -9,9 +9,9 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
   pitchEn:
     "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit sur place sur mesure.",
   seoHook: "TPE & PME Meuse",
   ecosystemFr:
     "Bar-le-Duc est préfecture de la Meuse, située au bord de l'Ornain. La ville haute Renaissance est classée et la cité est célèbre pour son savoir-faire artisanal : confitures de groseilles épépinées à la plume (Maison Dutriez). L'économie locale repose sur l'administration préfectorale, l'agroalimentaire artisanal, le commerce de centre-ville, l'artisanat BTP, le tourisme patrimonial et les services aux entreprises.",
@@ -30,8 +30,8 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bar-le-Duc : formats adaptés à l'atelier artisanal, au commerce, à l'hôtel-restaurant ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bar-le-Duc  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bar-le-Duc et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bar-le-Duc et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
     },
     {
       q: "Accompagnez-vous les artisans agroalimentaires de Bar-le-Duc ?",

@@ -65,11 +65,11 @@ export const BLOIS_COPY: VilleCopy = {
     },
     {
       q: "Aidez-vous les commerces et artisans de Blois ?",
-      a: "Oui. Audit Flash à tarif public, intervention d'une journée pour outiller l'équipe, automatisation de la relation client et des tâches administratives répétitives.",
+      a: "Oui. Audit sur place à tarif public, intervention d'une journée pour outiller l'équipe, automatisation de la relation client et des tâches administratives répétitives.",
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Blois ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME blésoises. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les TPE et PME blésoises. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Blois ?",

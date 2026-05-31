@@ -30,8 +30,8 @@ export const DOMENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Domène : formats adaptés au bureau PME, atelier industriel, cabinet professionnel. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const DOMENE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Domène (plombiers, électriciens, menuisiers) sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Domène (plombiers, électriciens, menuisiers) sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales à Domène (médecins, avocats, expert-comptables), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
+      a: "Pour les professions libérales à Domène (médecins, avocats, expert-comptables), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. RGPD strict.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",

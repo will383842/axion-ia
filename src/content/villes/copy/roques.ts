@@ -9,9 +9,9 @@ export const ROQUES_COPY: VilleCopy = {
   pitchEn:
     "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Roques est une commune résidentielle du sud de Toulouse, sur les bords de la Garonne entre Portet-sur-Garonne et Muret. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone commerciale Portet.",
@@ -30,8 +30,8 @@ export const ROQUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roques : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Roques : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Roques : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roques : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roques : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const ROQUES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Roques  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Roques ?",

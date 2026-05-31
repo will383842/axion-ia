@@ -9,9 +9,9 @@ export const LA_FERRIERE_COPY: VilleCopy = {
   pitchEn:
     "La Ferrière (85), commune périurbaine de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 400 habitants. Pôle résidentiel et économique dynamique au nord-est de la préfecture vendéenne. Tissu TPE artisans, PME industrielles et BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglomération yonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place sur mesure.",
   seoHook: "industrie & artisanat construction",
   ecosystemFr:
     "La Ferrière (5 454 hab) est une commune périurbaine de l'agglomération yonnaise (La Roche-sur-Yon Agglomération). Économie diversifiée : industrie, BTP, artisanat, agriculture, commerces et services. Proximité immédiate La Roche-sur-Yon (10 min), Nantes (1h), Cholet (45 min). Zones d'activités sur l'axe D763, bassin résidentiel attractif.",
@@ -30,8 +30,8 @@ export const LA_FERRIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Ferrière : diagnostic adapté aux TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferrière : formats adaptés à la PME industrielle, l'entreprise BTP, l'artisan ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LA_FERRIERE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Ferrière  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de La Ferrière. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou artisanal.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de La Ferrière. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou artisanal.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et BTP ?",
@@ -61,7 +61,7 @@ export const LA_FERRIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans de La Ferrière ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à La Ferrière ?",

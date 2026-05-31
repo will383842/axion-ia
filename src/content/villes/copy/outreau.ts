@@ -30,8 +30,8 @@ export const OUTREAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Outreau : formats adaptés à l'atelier artisanal, cabinet, commerce ou entreprise agroalimentaire. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const OUTREAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants d'Outreau ?",
-      a: "Pour les TPE artisans BTP et commerçants à Outreau, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et commerçants à Outreau, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Travaillez-vous avec la filière halieutique et agroalimentaire ?",

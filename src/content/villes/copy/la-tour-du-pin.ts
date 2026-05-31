@@ -30,8 +30,8 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Tour-du-Pin : formats adaptés à la sous-préfecture, atelier industriel, exploitation agricole, commerce ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans tour-du-pinois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à La Tour-du-Pin (plombiers, électriciens, menuisiers) et commerçants centre-ville sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à La Tour-du-Pin (plombiers, électriciens, menuisiers) et commerçants centre-ville sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME industrielles Nord-Isère ?",

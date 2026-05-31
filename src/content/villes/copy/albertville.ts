@@ -9,9 +9,9 @@ export const ALBERTVILLE_COPY: VilleCopy = {
   pitchEn:
     "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit sur place sur mesure.",
   seoHook: "tourisme montagne & héritage olympique",
   ecosystemFr:
     "Albertville est la sous-préfecture de Savoie et la ville olympique 1992, carrefour des quatre vallées (confluence Isère-Arly). Tissu tourisme montagne, industrie sous-traitance, administration, TPE commerces, héritage olympique. Gare TGV directe.",
@@ -30,8 +30,8 @@ export const ALBERTVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Albertville : formats adaptés station, usine sous-traitance, bureau administratif, hôtel, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",

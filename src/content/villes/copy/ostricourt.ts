@@ -9,9 +9,9 @@ export const OSTRICOURT_COPY: VilleCopy = {
   pitchEn:
     "Ostricourt (59), commune de 6 097 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), entre Douai et Lens. Tissu TPE artisans BTP et rénovation, PME sous-traitance industrielle, commerces de proximité, logistique et transport routier sur l'axe A1. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostricourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME sous-traitance industrielle et logistique, commerçants et indépendants entre Douai et Lens. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostricourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME sous-traitance industrielle et logistique, commerçants et indépendants entre Douai et Lens. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostricourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME sous-traitance industrielle et logistique, commerçants et indépendants entre Douai et Lens. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostricourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME sous-traitance industrielle et logistique, commerçants et indépendants entre Douai et Lens. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier nord-pas-de-calais",
   ecosystemFr:
     "Ostricourt est positionnée au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), entre Douai (15 min) et Lens (15 min), sur l'axe autoroutier A1 Paris-Lille. Tissu TPE artisans BTP et rénovation du parc minier, PME sous-traitance industrielle, logistique et transport routier, commerces de proximité. Reconversion économique dynamique avec zones d'activités et pôle logistique.",
@@ -30,8 +30,8 @@ export const OSTRICOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ostricourt : diagnostic adapté aux TPE artisans BTP, PME sous-traitance industrielle et logistique du bassin minier entre Douai et Lens. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Ostricourt : diagnostic adapté aux TPE artisans BTP, PME sous-traitance industrielle et logistique du bassin minier entre Douai et Lens. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Ostricourt : diagnostic adapté aux TPE artisans BTP, PME sous-traitance industrielle et logistique du bassin minier entre Douai et Lens. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Ostricourt : diagnostic adapté aux TPE artisans BTP, PME sous-traitance industrielle et logistique du bassin minier entre Douai et Lens. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ostricourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier logistique et BTP. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const OSTRICOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ostricourt  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME d'Ostricourt souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME d'Ostricourt souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les entreprises logistique et transport sur l'axe A1 ?",
@@ -61,7 +61,7 @@ export const OSTRICOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les artisans BTP du bassin minier ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Automatisation devis, classification photos chantiers, planification interventions.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Automatisation devis, classification photos chantiers, planification interventions.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Ostricourt ?",

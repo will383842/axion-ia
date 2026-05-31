@@ -65,7 +65,7 @@ export const MILLAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de Millau ?",
-      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour gérer les pics de demande touristique.",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour gérer les pics de demande touristique.",
     },
     {
       q: "Comment se passe une mission depuis Montpellier ou Rodez ?",

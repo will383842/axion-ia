@@ -30,8 +30,8 @@ export const LA_BASSEE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Bassée : formats adaptés à l'entrepôt logistique, chantier BTP, exploitation agricole, commerce. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -53,7 +53,7 @@ export const LA_BASSEE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à La Bassée ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les PME transport et logistique de La Bassée ?",

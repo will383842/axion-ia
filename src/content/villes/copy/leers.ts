@@ -30,8 +30,8 @@ export const LEERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Leers : formats adaptés à la PME textile, au commerçant transfrontalier, à l'artisan ou au sous-traitant industriel. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const LEERS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Leers  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo roubaisienne et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, commerce transfrontalier, artisanat, sous-traitance). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo roubaisienne et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, commerce transfrontalier, artisanat, sous-traitance). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les commerçants transfrontaliers franco-belges ?",

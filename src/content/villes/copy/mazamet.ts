@@ -9,9 +9,9 @@ export const MAZAMET_COPY: VilleCopy = {
   pitchEn:
     "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin mazamétain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit sur place sur mesure.",
   seoHook: "textile technique & commerce détail",
   ecosystemFr:
     "Mazamet (10 085 hab) est l'ancienne capitale mondiale du délainage, au pied de la Montagne Noire. Reconversion industrielle réussie vers le textile technique, les éco-matériaux et les services. Agglo Castres-Mazamet dynamique. Tissu TPE artisans, PME industrie-services, professions libérales, commerces. Passerelle de Mazamet et hauteurs de la Montagne Noire attirent le tourisme vert.",
@@ -30,8 +30,8 @@ export const MAZAMET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mazamet : formats adaptés à l'atelier textile, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const MAZAMET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Mazamet ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Mazamet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Mazamet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
     },
     {
       q: "L'IA peut-elle aider les PME textile à Mazamet ?",

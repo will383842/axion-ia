@@ -9,9 +9,9 @@ export const LE_PASSAGE_COPY: VilleCopy = {
   pitchEn:
     "Le Passage (47), commune de 9 326 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne sud. Ville résidentielle et commerciale, son économie repose sur un tissu de TPE artisans et commerçants, PME zones commerciales, services aux entreprises, professions libérales et santé. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Passage (47). Nous accompagnons TPE et PME de l'agglomération d'Agen : commerçants zones commerciales, artisans, professions libérales, prestataires de services et entreprises du bassin agenais sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Passage (47). Nous accompagnons TPE et PME de l'agglomération d'Agen : commerçants zones commerciales, artisans, professions libérales, prestataires de services et entreprises du bassin agenais sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Passage (47). Nous accompagnons TPE et PME de l'agglomération d'Agen : commerçants zones commerciales, artisans, professions libérales, prestataires de services et entreprises du bassin agenais sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Passage (47). Nous accompagnons TPE et PME de l'agglomération d'Agen : commerçants zones commerciales, artisans, professions libérales, prestataires de services et entreprises du bassin agenais sud. Audit sur place sur mesure.",
   ecosystemFr:
     "Le Passage est la première couronne sud de l'agglomération d'Agen, reliée par le pont-canal et les axes routiers. Commune résidentielle et commerciale, elle accueille des zones d'activité attractives, des commerces de proximité, des artisans, des professions libérales et des services de santé. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 5 min), Bon-Encontre et Boé.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LE_PASSAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Passage : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des professions libérales et des services de l'agglomération agenaise sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Passage : formats adaptés au commerce, à l'atelier, au cabinet ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_PASSAGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Passage ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME passageoises : commerçants, artisans, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME passageoises : commerçants, artisans, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les commerces du Passage ?",

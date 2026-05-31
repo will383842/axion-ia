@@ -30,8 +30,8 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lons-le-Saunier : diagnostic adapté aux TPE artisans, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Lons-le-Saunier : diagnostic adapté aux TPE artisans, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Lons-le-Saunier : diagnostic adapté aux TPE artisans, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Lons-le-Saunier : diagnostic adapté aux TPE artisans, PME agroalimentaires et fromagères du Jura, commerçants, acteurs du thermalisme et collectivités. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lons-le-Saunier : formats adaptés à l'atelier agroalimentaire, fromagerie, TPE artisan BTP ou établissement thermal. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants lédoniens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Lons-le-Saunier sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Lons-le-Saunier sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour le thermalisme et le tourisme jurassien ?",

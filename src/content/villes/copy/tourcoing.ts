@@ -51,7 +51,7 @@ export const TOURCOING_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA pour une PME basée à Tourcoing ?",
-      a: "L'Audit Flash (4h) démarre à {{price:audit-flash|flat}} — il couvre l'identification des processus automatisables et la priorisation de 3 chantiers. Pour une PME textile ou commerciale de Tourcoing, ce format suffit généralement à poser un premier plan d'action concret. Les tarifs complets sont publics sur le site.",
+      a: "L'Audit sur place (4h) démarre à {{price:audit-flash|flat}} — il couvre l'identification des processus automatisables et la priorisation de 3 chantiers. Pour une PME textile ou commerciale de Tourcoing, ce format suffit généralement à poser un premier plan d'action concret. Les tarifs complets sont publics sur le site.",
     },
     {
       q: "Axion-IA se déplace-t-il physiquement à Tourcoing ou tout est-il à distance ?",
@@ -63,7 +63,7 @@ export const TOURCOING_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour obtenir un premier résultat concret après un audit à Tourcoing ?",
-      a: "L'Audit Flash livre une cartographie priorisée en une journée de travail. La première implémentation opérationnelle suit généralement dans les semaines qui suivent, selon la complexité du processus ciblé. Nous ne promettons pas de délai chiffré universel, mais la méthode est conçue pour des cycles courts.",
+      a: "L'Audit sur place livre une cartographie priorisée en une journée de travail. La première implémentation opérationnelle suit généralement dans les semaines qui suivent, selon la complexité du processus ciblé. Nous ne promettons pas de délai chiffré universel, mais la méthode est conçue pour des cycles courts.",
     },
     {
       q: "Les données de mon entreprise tourquennoise sont-elles traitées en conformité RGPD ?",

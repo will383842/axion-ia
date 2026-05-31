@@ -30,8 +30,8 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cloyes-les-Trois-Rivières : formats adaptés aux exploitations agricoles, PME agroalimentaires, TPE artisans et commerces ruraux. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Cloyes-les-Trois-Rivières ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Cloyes-les-Trois-Rivières sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Cloyes-les-Trois-Rivières sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour le tourisme vert de la vallée du Loir ?",

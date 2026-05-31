@@ -11,9 +11,9 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Savigny-le-Temple (77176, Seine-et-Marne, 31 148 habitants en 2023), cinquième ville la plus peuplée du département et l'une des plus jeunes de France (36,2 % de moins de 20 ans). Issue du développement de la ville nouvelle de Sénart à partir des années 1970, la commune accueille des zones industrielles, logistiques et tertiaires structurées autour de la gare RER D Savigny-le-Temple-Nandy. Le tissu local est dominé à près de 79 % par les services (commerce, hôtellerie, services aux entreprises).",
   directAnswerFr:
-    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
+    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
+    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
   seoHook: "logistique Sénart & services PME",
   ecosystemFr:
     "Savigny-le-Temple est intégrée à la ville nouvelle de Sénart, ce qui en a fait un pôle logistique et tertiaire majeur du sud de l'Île-de-France depuis les années 1970 (la population est passée de 828 habitants en 1968 à plus de 31 000 aujourd'hui). Les zones d'activités locales mélangent logistique, industrie légère et services aux entreprises. Près de 79 % du tissu économique repose sur les services, en particulier le commerce de détail, l'hôtellerie-restauration et les services aux entreprises. La commune fait partie de la communauté d'agglomération Grand Paris Sud Seine-Essonne-Sénart.",
@@ -32,8 +32,8 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Savigny-le-Temple pour les TPE/PME logistiques et tertiaires de la ville nouvelle de Sénart, dès {{price:audit-flash|flat}}.",
-      en: "Audit Flash à Savigny-le-Temple pour les TPE/PME logistiques et tertiaires de la ville nouvelle de Sénart, dès {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Savigny-le-Temple pour les TPE/PME logistiques et tertiaires de la ville nouvelle de Sénart, dès {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Savigny-le-Temple pour les TPE/PME logistiques et tertiaires de la ville nouvelle de Sénart, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention Essentielle à Savigny-le-Temple pour automatiser planning, devis, facturation et relances des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA à Savigny-le-Temple (77176) ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Tarifs publics fixes, sans engagement.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Tarifs publics fixes, sans engagement.",
     },
     {
       q: "Quels délais pour intervenir à Savigny-le-Temple ?",

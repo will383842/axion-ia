@@ -65,7 +65,7 @@ const AUDIT_FR: VilleServiceCopyLocale = {
   pricing: [
     {
       sizeLabel: "TPE",
-      price: "Audit Flash",
+      price: "Audit sur place",
       detail:
         "Adapté aux structures ESS, studios indépendants, artisans et TPE de services dyonisiens jusqu'à une dizaine de collaborateurs.",
     },
@@ -105,7 +105,7 @@ const AUDIT_FR: VilleServiceCopyLocale = {
   faq: [
     {
       q: "Combien de temps dure un audit IA Axion-IA à Saint-Denis ?",
-      a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
+      a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
     },
     {
       q: "Quel ROI puis-je attendre pour une PME logistique à Saint-Denis ?",
@@ -509,7 +509,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Saint-Denis ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Saint-Denis et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique à Saint-Denis et partout en France.",
     },
     {
       q: "Pouvez-vous intervenir dans des entrepôts logistiques ou sur des chantiers Grand Paris ?",

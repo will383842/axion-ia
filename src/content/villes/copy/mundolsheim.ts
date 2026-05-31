@@ -30,8 +30,8 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mundolsheim : formats adaptés au commerce, grande distribution, PME tertiaire, restaurant, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
@@ -61,11 +61,11 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE restauration et artisans ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, yield management restauration, automatisation réservations, classification avis clients multilingue, agents conversationnels clients (FR/DE/EN), optimisation planning saisonnier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, yield management restauration, automatisation réservations, classification avis clients multilingue, agents conversationnels clients (FR/DE/EN), optimisation planning saisonnier.",
     },
     {
       q: "Quel est le tarif d'entrée pour une TPE à Mundolsheim ?",
-      a: "L'audit Flash s'adapte à votre périmètre. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place s'adapte à votre périmètre. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

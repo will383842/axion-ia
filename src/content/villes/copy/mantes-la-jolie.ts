@@ -30,8 +30,8 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mantes-la-Jolie : diagnostic des tâches automatisables pour sous-traitance automobile, mécanique, logistique de la Seine et BTP. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
-      en: "Audit IA à Mantes-la-Jolie : diagnostic des tâches automatisables pour sous-traitance automobile, mécanique, logistique de la Seine et BTP. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      fr: "Audit IA à Mantes-la-Jolie : diagnostic des tâches automatisables pour sous-traitance automobile, mécanique, logistique de la Seine et BTP. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Mantes-la-Jolie : diagnostic des tâches automatisables pour sous-traitance automobile, mécanique, logistique de la Seine et BTP. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mantes-la-Jolie : ateliers pratiques pour production, qualité, planning et administration, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mantes-la-Jolie ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME mantaises : sous-traitance automobile, mécanique, logistique, BTP et commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME mantaises : sous-traitance automobile, mécanique, logistique, BTP et commerce.",
     },
     {
       q: "Comment l'IA aide-t-elle la sous-traitance automobile ?",

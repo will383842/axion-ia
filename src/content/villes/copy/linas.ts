@@ -9,9 +9,9 @@ export const LINAS_COPY: VilleCopy = {
   pitchEn:
     "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit sur place sur mesure.",
   seoHook: "zone d'activités & services",
   ecosystemFr:
     "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, TPE artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",
@@ -30,8 +30,8 @@ export const LINAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Linas : formats adaptés entrepôt zone d'activités, atelier artisan, commerce, siège PME, bureau tertiaire Hurepoix. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const LINAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, devis et facturation automatisés par IA, gestion stocks, relances clients, coaching 1-to-1 dirigeant.",
+      a: "Audit sur place {{price:audit-flash|flat}}, devis et facturation automatisés par IA, gestion stocks, relances clients, coaching 1-to-1 dirigeant.",
     },
     {
       q: "Tarifs audit IA à Linas  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à La Ville-du-Bois et Ballainvilliers ?",

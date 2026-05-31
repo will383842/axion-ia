@@ -10,9 +10,9 @@ export const COULOGNE_COPY: VilleCopy = {
     "Coulogne (62), commune de l'agglomeration de Calais dans le Pas-de-Calais, reunit pres de 5 440 habitants. Situee aux portes de Calais, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Calais, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Coulogne jouxte Calais (5 km) au sud-est. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et petits commerces. Commune residentielle beneficiant du dynamisme calaisien et de la proximite transmanche.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const COULOGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Coulogne : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Coulogne : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Coulogne : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Coulogne : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Coulogne : formations adaptees aux commerces, bureaux tertiaires, cabinets de sante et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const COULOGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Coulogne ?",
-      a: "Pour les commercants du Calaisis, nous proposons : gestion stocks IA, agents conversationnels clients, fidelisation automatisee, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les commercants du Calaisis, nous proposons : gestion stocks IA, agents conversationnels clients, fidelisation automatisee, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Coulogne ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professionnels de sante de Coulogne ?",
-      a: "Oui, nous accompagnons medecins, pharmaciens et professionnels de sante : agenda IA, automatisation dossiers patients, agents conversationnels prise de rendez-vous. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons medecins, pharmaciens et professionnels de sante : agenda IA, automatisation dossiers patients, agents conversationnels prise de rendez-vous. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Coulogne ?",

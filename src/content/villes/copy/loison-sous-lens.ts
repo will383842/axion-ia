@@ -10,9 +10,9 @@ export const LOISON_SOUS_LENS_COPY: VilleCopy = {
     "Loison-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 170 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les TPE de services, les commerces de proximite, l'artisanat et les professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, services & proximite",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loison-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : artisans, commercants, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Loison-sous-Lens est situee dans l'agglomeration de Lens (4 km), au coeur du bassin minier. Tissu economique compose de TPE de services, commerces de proximite, artisans BTP, professions liberales et services a la personne. Commune residentielle du bassin lensois.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LOISON_SOUS_LENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Loison-sous-Lens : diagnostic adapte aux TPE de services, commercants et artisans du bassin minier lensois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Loison-sous-Lens : diagnostic adapte aux TPE de services, commercants et artisans du bassin minier lensois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Loison-sous-Lens : diagnostic adapte aux TPE de services, commercants et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Loison-sous-Lens : diagnostic adapte aux TPE de services, commercants et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Loison-sous-Lens : formations adaptees aux commerces, bureaux TPE, cabinets liberaux et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const LOISON_SOUS_LENS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE de Loison-sous-Lens ?",
-      a: "Pour les TPE du bassin lensois, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les TPE du bassin lensois, nous proposons : automatisation devis et facturation, gestion planning IA, agents conversationnels clients, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Loison-sous-Lens ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professions liberales de Loison-sous-Lens ?",

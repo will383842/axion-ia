@@ -32,8 +32,8 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Montigny-lès-Cormeilles pour les TPE et PME du Val Parisis — Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
-      en: "Audit IA sur site à Montigny-lès-Cormeilles pour les TPE et PME du Val Parisis — Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
+      fr: "Audit IA sur site à Montigny-lès-Cormeilles pour les TPE et PME du Val Parisis — Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
+      en: "Audit IA sur site à Montigny-lès-Cormeilles pour les TPE et PME du Val Parisis — Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions à Montigny-lès-Cormeilles pour automatiser les tâches répétitives des TPE et PME (relances, devis, planning) en code custom — dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA à Montigny-lès-Cormeilles ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit Flash et {{price:intervention-4h|flat}} pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Montigny-lès-Cormeilles (95370) ?",
@@ -59,7 +59,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer un projet IA à Montigny-lès-Cormeilles ?",
-      a: "Nous intervenons à Montigny-lès-Cormeilles dans un délai de 5 jours ouvrés après validation. L'Audit Flash se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
+      a: "Nous intervenons à Montigny-lès-Cormeilles dans un délai de 5 jours ouvrés après validation. L'Audit sur place se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
     },
     {
       q: "Intervenez-vous dans les communes voisines de Montigny-lès-Cormeilles ?",

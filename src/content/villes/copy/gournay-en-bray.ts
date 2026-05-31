@@ -10,9 +10,9 @@ export const GOURNAY_EN_BRAY_COPY: VilleCopy = {
     "Gournay-en-Bray (76), capitale du pays de Bray en Seine-Maritime, reunit pres de 5 720 habitants. Berceau du Petit-Suisse et du beurre normand, la ville concentre des TPE agroalimentaires, des PME commerciales, des artisans, des professions liberales et des acteurs agricoles. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agroalimentaire, fromages & pays de Bray",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gournay-en-Bray (76). Nous accompagnons les TPE, PME et independants du pays de Bray : acteurs agroalimentaires, commercants, artisans, professions liberales et exploitants agricoles. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Gournay-en-Bray est la capitale du pays de Bray, region laitiere et fromagere historique (berceau du Petit-Suisse et du beurre de Bray). Pole de services pour un bassin agricole dense : TPE agroalimentaires, commerces, artisanat, professions liberales et exploitations laitieres.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GOURNAY_EN_BRAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Gournay-en-Bray : diagnostic adapte aux TPE agroalimentaires, exploitants agricoles et commercants du pays de Bray. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Gournay-en-Bray : diagnostic adapte aux TPE agroalimentaires, exploitants agricoles et commercants du pays de Bray. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Gournay-en-Bray : diagnostic adapte aux TPE agroalimentaires, exploitants agricoles et commercants du pays de Bray. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Gournay-en-Bray : diagnostic adapte aux TPE agroalimentaires, exploitants agricoles et commercants du pays de Bray. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Gournay-en-Bray : formations adaptees aux PME agroalimentaires, commerces, exploitations laitieres et artisans du pays de Bray. Equipes autonomes.",
@@ -53,11 +53,11 @@ export const GOURNAY_EN_BRAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME agroalimentaires de Gournay-en-Bray ?",
-      a: "Pour les PME agroalimentaires, nous proposons : tracabilite IA, automatisation qualite, optimisation production laitiere, reporting, gestion stocks augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les PME agroalimentaires, nous proposons : tracabilite IA, automatisation qualite, optimisation production laitiere, reporting, gestion stocks augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Gournay-en-Bray ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du pays de Bray ?",

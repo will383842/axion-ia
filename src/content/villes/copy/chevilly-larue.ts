@@ -9,9 +9,9 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
   pitchEn:
     "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales du sud francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "TPE & PME Val-de-Marne",
   ecosystemFr:
     "Chevilly-Larue bénéficie de la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. Son tissu économique associe TPE artisans, PME logistique et agroalimentaire, commerces et professions libérales. Communes voisines : Rungis, Thiais, L'Haÿ-les-Roses, Villejuif.",
@@ -30,8 +30,8 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chevilly-Larue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chevilly-Larue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chevilly-Larue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chevilly-Larue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chevilly-Larue : formats adaptés à l'entrepôt, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Chevilly-Larue ?",
-      a: "L'Audit Flash IA à Chevilly-Larue démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Chevilly-Larue démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les PME logistique proches du MIN de Rungis ?",

@@ -9,9 +9,9 @@ export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Gennes-Val-de-Loire (49), commune nouvelle en bords de Loire classée UNESCO, réunit plus de 8 400 habitants entre patrimoine troglodytique et vignoble angevin. Axion-IA opère pour toutes les structures économiques de la commune : tourisme, viticulture, artisanat, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Gennes-Val-de-Loire (49). Nous accompagnons les TPE, PME et acteurs touristiques du Val de Loire angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Gennes-Val-de-Loire (49). Nous accompagnons les TPE, PME et acteurs touristiques du Val de Loire angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Gennes-Val-de-Loire (49). Nous accompagnons les TPE, PME et acteurs touristiques du Val de Loire angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Gennes-Val-de-Loire (49). Nous accompagnons les TPE, PME et acteurs touristiques du Val de Loire angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "tourisme hébergement & viticulture vignoble",
   ecosystemFr:
     "Gennes-Val-de-Loire est au cœur du Val de Loire UNESCO, territoire de troglodytes, de vignobles (AOC Saumur, Anjou) et de tourisme fluvial. Tissu économique : domaines viticoles, hébergements touristiques, artisanat tuffeau, commerces de bourg, agriculture et services de proximité. Site mégalithique du dolmen de Bagneux.",
@@ -30,8 +30,8 @@ export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gennes-Val-de-Loire : diagnostic adapté aux acteurs touristiques, domaines viticoles et TPE/PME du Val de Loire. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gennes-Val-de-Loire : formations pour équipes tourisme, viticulture et commerces. Ateliers pratiques adaptés au contexte Loire UNESCO.",
@@ -53,7 +53,7 @@ export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Gennes-Val-de-Loire  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Gennes-Val-de-Loire démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA à Gennes-Val-de-Loire démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les hébergeurs touristiques du Val de Loire ?",

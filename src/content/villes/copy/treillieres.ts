@@ -30,8 +30,8 @@ export const TREILLIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Treillières : formats adaptés au bureau tertiaire, cabinet libéral, atelier artisan ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const TREILLIERES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Treillières, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
+      a: "Pour les TPE artisans et commerçants à Treillières, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",

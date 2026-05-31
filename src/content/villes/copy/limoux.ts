@@ -9,9 +9,9 @@ export const LIMOUX_COPY: VilleCopy = {
   pitchEn:
     "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA collabore avec toutes les structures locales du Limouxin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit sur place sur mesure.",
   seoHook: "viticulture caves & oenotourisme tourisme",
   ecosystemFr:
     "Limoux est la sous-préfecture de l'Aude, ville médiévale de la haute vallée de l'Aude. L'économie est portée par la viticulture (Blanquette de Limoux, plus vieux brut du monde depuis 1531, Crémant de Limoux, AOC Limoux), les caves coopératives, l'oenotourisme, le carnaval historique (plus long du monde), l'artisanat et le commerce. Agriculture diversifiée (vigne, céréales, élevage).",
@@ -30,8 +30,8 @@ export const LIMOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Limoux : diagnostic adapté aux TPE artisans, PME viticoles et caves coopératives, commerçants, acteurs oenotourisme et professions libérales du Limouxin. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Limoux : formats adaptés à la cave viticole, l'exploitation agricole, le commerce, le domaine oenotouristique. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LIMOUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Limoux  ?",
-      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place est tarifé selon vos enjeux pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'oenotourisme ?",

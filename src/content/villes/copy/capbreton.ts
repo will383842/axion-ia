@@ -30,8 +30,8 @@ export const CAPBRETON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Capbreton : formations adaptées aux professionnels du port, restaurateurs, hébergeurs, commerces saisonniers et écoles de surf. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CAPBRETON_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les restaurateurs du port ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux restaurants de produits de la mer du port de Capbreton. Diagnostic gestion stocks poissonnerie, automatisation réservations, classification avis clients, optimisation carte saisonnière.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux restaurants de produits de la mer du port de Capbreton. Diagnostic gestion stocks poissonnerie, automatisation réservations, classification avis clients, optimisation carte saisonnière.",
     },
     {
       q: "Accompagnez-vous les professionnels de la pêche artisanale ?",
@@ -61,11 +61,11 @@ export const CAPBRETON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hébergeurs et écoles de surf ?",
-      a: "Pour les hébergeurs saisonniers et écoles de surf à Capbreton, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : chatbot réservation multilingue, gestion planning créneaux, automatisation communication clients, prédiction affluence.",
+      a: "Pour les hébergeurs saisonniers et écoles de surf à Capbreton, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1. Cas typiques : chatbot réservation multilingue, gestion planning créneaux, automatisation communication clients, prédiction affluence.",
     },
     {
       q: "Quel est le délai de démarrage d'une mission IA à Capbreton ?",
-      a: "Audit Flash livrable en 5 jours ouvrés après validation. Interventions sur site planifiées sous 2 semaines. Coaching 1-to-1 démarrage flexible. Adaptation au calendrier saisonnier des professionnels du tourisme.",
+      a: "Audit sur place livrable en 5 jours ouvrés après validation. Interventions sur site planifiées sous 2 semaines. Coaching 1-to-1 démarrage flexible. Adaptation au calendrier saisonnier des professionnels du tourisme.",
     },
   ],
 };

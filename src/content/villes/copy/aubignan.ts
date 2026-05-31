@@ -9,9 +9,9 @@ export const AUBIGNAN_COPY: VilleCopy = {
   pitchEn:
     "Aubignan (84), commune du Comtat Venaissin au pied du Mont Ventoux, compte près de 5 981 habitants. Vignoble AOC Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "viticulture ventoux & agriculture maraîchage",
   ecosystemFr:
     "Aubignan est un pôle agricole et viticole du Comtat Venaissin, en bordure ouest du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, coopératives agricoles. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 8 min, Avignon à 30 min.",
@@ -30,8 +30,8 @@ export const AUBIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aubignan : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Ventoux et PME agroalimentaires du Comtat. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubignan : formats adaptés aux domaines viticoles, maraîchers, PME agroalimentaires, coopératives et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Ventoux ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B, fiches Google Business et oenotourisme.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture AOC Ventoux : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B, fiches Google Business et oenotourisme.",
     },
     {
       q: "Accompagnez-vous les maraîchers et coopératives agricoles d'Aubignan ?",
@@ -61,7 +61,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Aubignan  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Aubignan ?",

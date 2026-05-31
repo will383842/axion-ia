@@ -9,9 +9,9 @@ export const PORNICHET_COPY: VilleCopy = {
   pitchEn:
     "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   seoHook: "bassin pornichétin",
   ecosystemFr:
     "Pornichet (12 800 hab) est une station balnéaire de la baie de La Baule, entre Saint-Nazaire et La Baule. Port de plaisance, thalassothérapie, hôtellerie-restauration, commerces, artisanat et professions libérales. Proximité Saint-Nazaire (10 min), La Baule (5 min), Nantes (1h). Hippodrome et casino renforcent l'attractivité touristique annuelle.",
@@ -30,8 +30,8 @@ export const PORNICHET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pornichet : diagnostic adapté aux TPE commerçants, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pornichet : diagnostic adapté aux TPE commerçants, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pornichet : diagnostic adapté aux TPE commerçants, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pornichet : diagnostic adapté aux TPE commerçants, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pornichet : formats adaptés à l'hôtellerie-restauration, commerce touristique, nautisme et artisanat de la côte d'Amour. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const PORNICHET_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pornichet  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Pornichet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Pornichet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
     },
     {
       q: "Accompagnez-vous les restaurants et hôtels de Pornichet ?",
@@ -61,7 +61,7 @@ export const PORNICHET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les acteurs nautiques de Pornichet ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion marina IA, planning locations bateaux, automatisation facturation et fidélisation plaisanciers.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion marina IA, planning locations bateaux, automatisation facturation et fidélisation plaisanciers.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Pornichet ?",

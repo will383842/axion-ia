@@ -9,9 +9,9 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
   pitchEn:
     "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de TPE viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & culture mimosa",
   ecosystemFr:
     "Bormes-les-Mimosas est une station classée tourisme et l'un des plus beaux villages fleuris de France. Économie tirée par la viticulture Côtes de Provence, la culture du mimosa (route du mimosa), le tourisme haut de gamme (port La Favière, plages, fort de Brégançon), la restauration et l'artisanat. Tissu de TPE/PME tourisme et patrimoine.",
@@ -30,8 +30,8 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bormes-les-Mimosas : ateliers pour vignerons, mimosistes, restaurateurs et hôteliers du village fleuri. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole à Bormes-les-Mimosas ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, mimosistes et hôteliers borméens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, mimosistes et hôteliers borméens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les mimosistes et horticulteurs ?",

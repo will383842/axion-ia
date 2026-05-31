@@ -9,9 +9,9 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Cambo-les-Bains (64), station thermale du Pays Basque intérieur, 6 760 habitants. Villa Arnaga (Edmond Rostand), thermalisme, tourisme culturel, TPE artisans du terroir et commerces locaux. Axion-IA y travaille avec les organisations du territoire du Pays Basque intérieur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit sur place sur mesure.",
   seoHook: "thermalisme bien-être & tourisme culturel",
   ecosystemFr:
     "Cambo-les-Bains est une station thermale du Pays Basque intérieur, 6 760 habitants. Thermes (rhumatologie, voies respiratoires), villa Arnaga (musée Rostand), tourisme culturel et bien-être. Tissu de TPE artisans du terroir basque, hébergements thermaux, commerces locaux et professions de santé.",
@@ -30,8 +30,8 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cambo-les-Bains : diagnostic adapté aux établissements thermaux, hébergeurs, artisans du terroir basque et commerçants. Optimisation parcours curistes, gestion réservations. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cambo-les-Bains : déploiement outils IA dans vos thermes, hébergements, ateliers artisanaux ou commerces. Automatisation parcours curistes et gestion saisonnière.",
@@ -57,7 +57,7 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Cambo-les-Bains ?",
-      a: "L'audit Flash IA à Cambo-les-Bains démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus thermaux, touristiques ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Cambo-les-Bains démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus thermaux, touristiques ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les hébergeurs thermaux de Cambo ?",

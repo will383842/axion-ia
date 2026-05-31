@@ -65,7 +65,7 @@ export const VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Quels services proposez-vous aux TPE et commerces valentinois ?",
-      a: "Audit Flash pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
+      a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel des dirigeants. Tous nos tarifs sont publics et transparents.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Valence ?",

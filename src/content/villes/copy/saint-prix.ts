@@ -9,9 +9,9 @@ export const SAINT_PRIX_COPY: VilleCopy = {
   pitchEn:
     "Saint-Prix (95), commune résidentielle nichée au pied de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants et associations locales. Axion-IA y travaille avec les organisations du territoire de la vallée de Montmorency.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit sur place sur mesure.",
   seoHook: "professions libérales & commerce proximité",
   ecosystemFr:
     "Saint-Prix bénéficie du cadre verdoyant de la forêt de Montmorency et d'un tissu économique résidentiel actif : TPE artisans, commerces de proximité, professions libérales, PME de conseil et services. Communes voisines : Montmorency, Saint-Leu-la-Forêt, Eaubonne, Andilly, Margency.",
@@ -30,8 +30,8 @@ export const SAINT_PRIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Prix : diagnostic adapté aux TPE artisans, PME de services, professions libérales et consultants de la vallée de Montmorency. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Prix : diagnostic adapté aux TPE artisans, PME de services, professions libérales et consultants de la vallée de Montmorency. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Prix : diagnostic adapté aux TPE artisans, PME de services, professions libérales et consultants de la vallée de Montmorency. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Prix : diagnostic adapté aux TPE artisans, PME de services, professions libérales et consultants de la vallée de Montmorency. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Prix : formats adaptés au cabinet, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const SAINT_PRIX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Prix ?",
-      a: "L'Audit Flash IA à Saint-Prix démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Saint-Prix démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Saint-Prix ?",

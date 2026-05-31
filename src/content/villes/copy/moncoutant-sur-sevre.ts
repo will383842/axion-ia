@@ -30,8 +30,8 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moncoutant-sur-Sèvre : formats adaptés à l'atelier mécanique, ligne agroalimentaire, exploitation agricole ou commerce rural. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles bocagères ?",
-      a: "Oui, nous accompagnons les exploitations agricoles bocagères (élevage bovin, polyculture) sur leurs cas IA : classification photos troupeaux, prédiction rendements, traçabilité animale, agents conversationnels vente directe, optimisation assolement. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les exploitations agricoles bocagères (élevage bovin, polyculture) sur leurs cas IA : classification photos troupeaux, prédiction rendements, traçabilité animale, agents conversationnels vente directe, optimisation assolement. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Moncoutant-sur-Sèvre, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, classification photos chantiers.",
+      a: "Pour les TPE artisans BTP et commerçants à Moncoutant-sur-Sèvre, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, classification photos chantiers.",
     },
     {
       q: "Comment se déroule une mission dans le Bocage depuis Paris ?",

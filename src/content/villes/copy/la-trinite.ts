@@ -30,8 +30,8 @@ export const LA_TRINITE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Trinité : formats adaptés au commerce, atelier artisan, cabinet ou bureau PME. Vos équipes terrain repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LA_TRINITE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans BTP de La Trinité ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de La Trinité sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de La Trinité sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les commerces et PME de la zone des Music ?",

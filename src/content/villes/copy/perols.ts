@@ -30,8 +30,8 @@ export const PEROLS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pérols : diagnostic pour TPE commerçants, PME distribution et services, artisans et professions libérales du sud Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Pérols : diagnostic pour TPE commerçants, PME distribution et services, artisans et professions libérales du sud Montpellier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Pérols : diagnostic pour TPE commerçants, PME distribution et services, artisans et professions libérales du sud Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pérols : diagnostic pour TPE commerçants, PME distribution et services, artisans et professions libérales du sud Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pérols : ateliers adaptés enseigne commerciale, PME distribution, cabinet libéral ou artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const PEROLS_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les commerces et la distribution ?",
-      a: "Oui, nous réalisons des audits IA adaptés aux enseignes commerciales et PME de distribution : optimisation stocks, automatisation commandes, chatbot client, prédiction ventes saisonnières. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, nous réalisons des audits IA adaptés aux enseignes commerciales et PME de distribution : optimisation stocks, automatisation commandes, chatbot client, prédiction ventes saisonnières. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE et artisans à Pérols ?",
-      a: "Pour les TPE et artisans à Pérols, audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning, classification photos chantier.",
+      a: "Pour les TPE et artisans à Pérols, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning, classification photos chantier.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'événementiel ?",
@@ -65,7 +65,7 @@ export const PEROLS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Pérols ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon la durée et le périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

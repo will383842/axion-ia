@@ -9,9 +9,9 @@ export const LE_TEICH_COPY: VilleCopy = {
   pitchEn:
     "Le Teich (33), commune du sud du Bassin d'Arcachon réputée pour son parc ornithologique et son écotourisme, combine activités touristiques, ostréiculture, artisanat BTP et tissu résidentiel en croissance. Axion-IA accompagne tout le tissu professionnel local du bassin sud-arcachonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "écotourisme hébergement & ostréiculture",
   ecosystemFr:
     "Le Teich est connu pour son parc ornithologique (réserve naturelle, écotourisme) au sud du Bassin d'Arcachon. Économie touristique (hébergements, activités nature), ostréiculture, tissu TPE artisanat BTP et commerces. Gare TER Le Teich sur la ligne Bordeaux-Arcachon.",
@@ -30,8 +30,8 @@ export const LE_TEICH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Teich : diagnostic pour hébergeurs écotouristiques, ostréiculteurs, TPE artisans et commerces du sud Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Teich : ateliers adaptés aux hébergeurs, ostréiculteurs et artisans. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_TEICH_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Teich ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux hébergeurs écotouristiques et TPE du Bassin d'Arcachon.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux hébergeurs écotouristiques et TPE du Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les hébergeurs touristiques au Teich ?",

@@ -30,8 +30,8 @@ export const BAYEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bayeux : formats adaptés au site touristique patrimoine, hôtel, commerce centre historique ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const BAYEUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hôteliers et restaurateurs bayeusains ?",
-      a: "Pour les hôteliers-restaurateurs de Bayeux, audit Flash {{price:audit-flash|flat}}, interventions formations, coaching 1-to-1. Cas typiques : agents IA réservation multilingues, classification avis TripAdvisor, prédiction taux d'occupation saisonnier.",
+      a: "Pour les hôteliers-restaurateurs de Bayeux, audit sur place {{price:audit-flash|flat}}, interventions formations, coaching 1-to-1. Cas typiques : agents IA réservation multilingues, classification avis TripAdvisor, prédiction taux d'occupation saisonnier.",
     },
     {
       q: "Tarifs audit IA à Bayeux  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Bayeux ?",

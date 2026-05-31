@@ -9,9 +9,9 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
   pitchEn:
     "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   seoHook: "commerce zone & tertiaires",
   ecosystemFr:
     "Essey-lès-Nancy est une commune de la Métropole du Grand Nancy (Meurthe-et-Moselle) structurée autour de la zone commerciale Saint-Sébastien. Tissu TPE/PME commerce de zone et de proximité, sociétés tertiaires, services aux entreprises, artisanat BTP, professions libérales adossés au bassin nancéien.",
@@ -30,8 +30,8 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Essey-lès-Nancy : formats adaptés au commerce de zone, bureau tertiaire, atelier BTP, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Essey-lès-Nancy  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME commerce de zone, tertiaires, artisans et professions libérales de l'est nancéien.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME commerce de zone, tertiaires, artisans et professions libérales de l'est nancéien.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone Saint-Sébastien ?",

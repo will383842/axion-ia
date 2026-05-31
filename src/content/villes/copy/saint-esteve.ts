@@ -30,8 +30,8 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Estève : formats adaptés au bureau, cabinet, commerce, atelier. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Saint-Estève, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA accueil, gestion planning, facturation automatisée.",
+      a: "Pour les commerçants et professions libérales à Saint-Estève, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA accueil, gestion planning, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à Saint-Estève ?",

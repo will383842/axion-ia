@@ -30,8 +30,8 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Étoile-sur-Rhône : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans étoiliens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Étoile-sur-Rhône, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Étoile-sur-Rhône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

@@ -10,9 +10,9 @@ export const NOYELLES_GODAULT_COPY: VilleCopy = {
     "Noyelles-Godault (62), commune du Pas-de-Calais, reunit pres de 5 990 habitants. Connue pour sa zone commerciale majeure entre Henin-Beaumont et Dourges, son economie associe PME commerciales, TPE de services, restauration et activites tertiaires liees au retail. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "zone commerciale, retail & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-Godault (62). Nous accompagnons les TPE, PME et ETI de cette zone commerciale majeure : enseignes retail, restaurateurs, prestataires de services et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Noyelles-Godault accueille l'une des plus grandes zones commerciales du bassin minier, entre Henin-Beaumont et Dourges. Tissu economique oriente commerce de detail : enseignes nationales, PME retail, TPE restauration, services tertiaires et logistique de derniere mile.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NOYELLES_GODAULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Noyelles-Godault : diagnostic adapte aux enseignes retail, PME commerciales et restaurateurs de la zone commerciale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Noyelles-Godault : diagnostic adapte aux enseignes retail, PME commerciales et restaurateurs de la zone commerciale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Noyelles-Godault : diagnostic adapte aux enseignes retail, PME commerciales et restaurateurs de la zone commerciale. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Noyelles-Godault : diagnostic adapte aux enseignes retail, PME commerciales et restaurateurs de la zone commerciale. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Noyelles-Godault : formations adaptees aux points de vente, restaurants, bureaux tertiaires et entrepots. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const NOYELLES_GODAULT_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les enseignes retail de Noyelles-Godault ?",
-      a: "Pour les enseignes commerciales, nous proposons : gestion stocks predictive IA, agents conversationnels clients, automatisation commandes fournisseurs, analyse donnees vente. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les enseignes commerciales, nous proposons : gestion stocks predictive IA, agents conversationnels clients, automatisation commandes fournisseurs, analyse donnees vente. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Noyelles-Godault ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle optimiser la gestion d'un point de vente a Noyelles-Godault ?",

@@ -9,9 +9,9 @@ export const PLERIN_COPY: VilleCopy = {
   pitchEn:
     "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit sur place sur mesure.",
   seoHook: "commerce détail & restauration activités",
   ecosystemFr:
     "Plérin est une commune littorale de l'agglomération de Saint-Brieuc, en Côtes-d'Armor. Plage Martin, port du Légué partagé avec Saint-Brieuc, zones commerciales dynamiques. Tissu économique : TPE commerces, restauration, artisanat, PME services aux entreprises, professions libérales, activités balnéaires saisonnières. Communes voisines : Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan.",
@@ -30,8 +30,8 @@ export const PLERIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plérin : diagnostic adapté aux TPE commerces, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Plérin : diagnostic adapté aux TPE commerces, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Plérin : diagnostic adapté aux TPE commerces, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plérin : diagnostic adapté aux TPE commerces, PME de services, restaurateurs et professions libérales de l'agglomération briochine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plérin : formats adaptés au commerce, au restaurant, au bureau ou en zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const PLERIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Plérin  ?",
-      a: "L'Audit Flash IA à Plérin démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Plérin démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces et restaurants à Plérin ?",

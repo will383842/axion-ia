@@ -30,8 +30,8 @@ export const PONT_L_ABBE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
-      en: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
+      fr: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
+      en: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-l'Abbé : formats adaptés au commerce de centre-ville, à l'atelier artisanal, à l'établissement touristique ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const PONT_L_ABBE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE commerçants et artisans de Pont-l'Abbé ?",
-      a: "Oui, nous accompagnons les TPE commerçants de centre-ville et artisans de Pont-l'Abbé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE commerçants de centre-ville et artisans de Pont-l'Abbé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Tarifs audit IA à Pont-l'Abbé  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Pont-l'Abbé et du Pays Bigouden. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Pont-l'Abbé et du Pays Bigouden. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Pont-l'Abbé ?",

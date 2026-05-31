@@ -65,7 +65,7 @@ export const CALAIS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour un audit IA à Calais ?",
-      a: "Un Audit Flash peut démarrer rapidement après la prise de contact et aboutit à un plan d'action priorisé, adapté aux contraintes des TPE et PME de la chaîne logistique transmanche.",
+      a: "Un Audit sur place peut démarrer rapidement après la prise de contact et aboutit à un plan d'action priorisé, adapté aux contraintes des TPE et PME de la chaîne logistique transmanche.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Calais ?",

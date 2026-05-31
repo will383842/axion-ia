@@ -9,9 +9,9 @@ export const SAUTRON_COPY: VilleCopy = {
   pitchEn:
     "Sautron (44), commune résidentielle à l'ouest de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA collabore avec toutes les structures locales du bassin nantais ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Sautron est une commune résidentielle prisée à l'ouest de Nantes Métropole. Cadre verdoyant attractif pour les professions libérales, TPE artisanales, PME tertiaires et commerces de proximité. Proximité immédiate du pôle tertiaire d'Orvault et du centre de Nantes (15 min).",
@@ -30,8 +30,8 @@ export const SAUTRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
-      en: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
+      fr: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Sautron : diagnostic adapté aux TPE, professions libérales et PME tertiaires de l'ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sautron : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes repartent avec outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAUTRON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et professions libérales de Sautron ?",
-      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sautron sur des cas IA accessibles : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisanales, professions libérales et indépendants de Sautron sur des cas IA accessibles : automatisation devis/factures, agents IA relation client, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services IA pour les PME nantaises ouest ?",
@@ -64,8 +64,8 @@ export const SAUTRON_COPY: VilleCopy = {
       a: "Nos consultants se déplacent sur site à Sautron (15 min depuis Nantes centre). Pour les missions multi-jours, hébergement local. Frais de déplacement facturés à part du forfait journée, tarifs transparents.",
     },
     {
-      q: "L'audit Flash {{price:audit-flash|flat}} est-il adapté aux indépendants ?",
-      a: "Oui, l'audit Flash {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
+      q: "L'audit sur place {{price:audit-flash|flat}} est-il adapté aux indépendants ?",
+      a: "Oui, l'audit sur place {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, nous identifions 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
     },
   ],
 };

@@ -30,8 +30,8 @@ export const PRADES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Prades : formats adaptés au cabinet, commerce, exploitation montagne, hébergement tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PRADES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Prades, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, gestion stocks, e-commerce montagne.",
+      a: "Pour les TPE artisans et commerçants à Prades, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, gestion stocks, e-commerce montagne.",
     },
     {
       q: "Comment se déroule une mission à Prades ?",

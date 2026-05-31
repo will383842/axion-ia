@@ -30,8 +30,8 @@ export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sully-sur-Loire : formats adaptés au site touristique, exploitation agricole, commerce ou PME. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants à Sully-sur-Loire ?",
-      a: "Pour les TPE artisans BTP et commerçants à Sully-sur-Loire, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Sully-sur-Loire, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission à Sully-sur-Loire ?",

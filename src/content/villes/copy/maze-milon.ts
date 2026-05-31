@@ -30,8 +30,8 @@ export const MAZE_MILON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mazé-Milon : diagnostic adapté aux TPE horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mazé-Milon : diagnostic adapté aux TPE horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mazé-Milon : diagnostic adapté aux TPE horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mazé-Milon : diagnostic adapté aux TPE horticoles, PME maraîchères, semenciers et exploitants agricoles du val d'Authion. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mazé-Milon : formations adaptées aux pépinières, exploitations maraîchères, semenciers et commerces du val d'Authion. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const MAZE_MILON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE horticole à Mazé-Milon ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE horticoles, PME maraîchères et semenciers du val d'Authion. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE horticoles, PME maraîchères et semenciers du val d'Authion. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME semencières ?",

@@ -51,7 +51,7 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Chemillé-en-Anjou ?",
-      a: "Audit Flash 4h dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Tarifs publics consultables sur notre page Pricing — aucun forfait caché.",
+      a: "Audit sur place 4h dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}, implémentation code custom dès {{price:impl-poc|entry}}. Tarifs publics consultables sur notre page Pricing — aucun forfait caché.",
     },
     {
       q: "Vos consultants se déplacent-ils dans toutes les communes déléguées de Chemillé-en-Anjou ?",
@@ -59,7 +59,7 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer un projet IA à Chemillé-en-Anjou ?",
-      a: "Audit Flash réalisable sous 5 jours ouvrés après prise de contact. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon périmètre.",
+      a: "Audit sur place réalisable sous 5 jours ouvrés après prise de contact. Intervention terrain sous 10 jours ouvrés. Implémentation code custom : 4 à 8 semaines selon périmètre.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD pour les entreprises de Chemillé-en-Anjou ?",

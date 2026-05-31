@@ -30,8 +30,8 @@ export const NIEPPE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nieppe : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, à l'usine PME, à l'artisan, au commerce, au restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const NIEPPE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Nieppe ?",
-      a: "Oui, commerçants, artisans et restaurateurs nieppois : gestion stocks, relation client, prise de réservations, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, commerçants, artisans et restaurateurs nieppois : gestion stocks, relation client, prise de réservations, automatisation comptabilité, présence en ligne. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Nieppe ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Nieppe ?",

@@ -30,8 +30,8 @@ export const VEIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Veigné : formats adaptés à l'atelier artisan, au commerce, au cabinet professionnel ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const VEIGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans à Veigné ?",
-      a: "Pour les TPE et artisans à Veigné, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
+      a: "Pour les TPE et artisans à Veigné, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme vallée de l'Indre ?",
@@ -61,7 +61,7 @@ export const VEIGNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Veigné  : quel budget prévoir ?",
-      a: "L'audit Flash propose un tarif d'entrée accessible. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
+      a: "L'audit sur place propose un tarif d'entrée accessible. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Veigné ?",

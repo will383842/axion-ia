@@ -9,9 +9,9 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Vaires-sur-Marne (77), commune de Seine-et-Marne en bord de Marne, a accueilli les épreuves olympiques d'aviron et de canoë-kayak lors des Jeux de Paris 2024 grâce à sa base nautique olympique. Tissu TPE artisans et prestataires, PME services et sport-loisirs, commerçants et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit sur place sur mesure.",
   seoHook: "sport loisirs & artisanat maintenance",
   ecosystemFr:
     "Vaires-sur-Marne est désormais reconnue internationalement grâce à sa base nautique olympique, site des épreuves d'aviron et de canoë-kayak des Jeux de Paris 2024. La commune bénéficie d'un cadre de vie attractif en bord de Marne avec un tissu de TPE artisans, PME services, acteurs sport-loisirs, commerces et professions libérales. Communes voisines : Chelles, Torcy, Noisiel, Brou-sur-Chantereine.",
@@ -30,8 +30,8 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vaires-sur-Marne : diagnostic adapté aux acteurs sport-loisirs (base olympique), TPE artisans, PME services, commerçants et professions libérales des bords de Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaires-sur-Marne : formats adaptés au centre sportif, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Vaires-sur-Marne ?",
-      a: "L'Audit Flash IA à Vaires-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Vaires-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les acteurs sport-loisirs de la base nautique ?",

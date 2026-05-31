@@ -30,8 +30,8 @@ export const MULSANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, TPE artisanales et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MULSANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME industrielles de Mulsanne ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, automatisation logistique, optimisation chaîne production.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas industrie : maintenance prédictive, contrôle qualité vision, automatisation logistique, optimisation chaîne production.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de la zone sud Le Mans ?",
@@ -61,7 +61,7 @@ export const MULSANNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mulsanne  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Mulsanne ?",

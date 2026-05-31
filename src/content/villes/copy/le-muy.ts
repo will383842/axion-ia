@@ -7,9 +7,9 @@ export const LE_MUY_COPY: VilleCopy = {
   pitchEn:
     "Le Muy (83, Var), commune du centre Var sur l'axe A8, capitale du mimosa et étape historique de la Libération de Provence, accueille TPE artisanales, PME viticoles, commerces, logistique, professions libérales et tourisme. Axion-IA y conduit ses missions auprès des entreprises locales du centre Var.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Muy (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, logistique et professions libérales du centre Var. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Muy (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, logistique et professions libérales du centre Var. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Muy (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, logistique et professions libérales du centre Var. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Muy (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, logistique et professions libérales du centre Var. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "viticulture côtes & logistique transport",
   ecosystemFr:
     "Le Muy est une commune du centre Var sur l'axe A8 Aix-Nice, traversée par l'Argens. Connue pour son mimosa (Route du Mimosa) et son histoire (Libération de Provence août 1944). Tissu de TPE artisanales, PME viticoles (Côtes de Provence), commerces, logistique, professions libérales et tourisme rural.",
@@ -28,8 +28,8 @@ export const LE_MUY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Muy : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et commerces du centre Var. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Muy : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et commerces du centre Var. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Muy : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et commerces du centre Var. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Muy : diagnostic adapté aux TPE artisanales, PME viticoles, logistique et commerces du centre Var. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Muy : formations pratiques adaptées viticulture, logistique, artisanat, commerces et tourisme. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const LE_MUY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Muy ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous la logistique et les domaines viticoles au Muy ?",

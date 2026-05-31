@@ -9,9 +9,9 @@ export const CHAMBERY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Chambéry, préfecture de la Savoie et capitale historique du duché, dans leurs projets d'intelligence artificielle. Notre cabinet d'architectes IA seniors intervient sur site auprès des PME agroalimentaires (Beaufort, Tomme, Tipiak), des sous-traitants automobiles et mécaniques de précision, des hôteliers-restaurateurs des stations alpines et des commerçants du centre historique pour auditer, déployer et former à l'IA générative avec un ROI chiffré.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit Flash sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit Flash sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne les TPE et PME de Chambéry (Savoie, 60 000 habitants) et de son bassin alpin. Nous proposons un Audit sur place sur mesure, des interventions sur site, l'implémentation de solutions IA générative et du coaching un-à-un pour dirigeants. Priorité aux TPE agroalimentaires, PME industrielles de précision, hôtellerie-restauration des stations et commerces du vieux Chambéry. Engagement ROI chiffré, conformité RGPD et AI Act, pas de devis opaque.",
   seoHook: "agroalimentaire & industrie de précision",
   ecosystemFr:
     "Chambéry concentre un tissu de TPE et PME unique en France : agroalimentaire savoyard sous IGP/AOP (Beaufort, Tomme des Bauges, Tipiak), sous-traitance automobile et mécanique de précision dans l'orbite Renault Trucks/Toyota/Volvo, Université Savoie Mont Blanc (12 000 étudiants), Institut National de l'Énergie Solaire (INES) sur le campus de Technolac, et porte d'entrée des stations alpines (Trois Vallées, Les Arcs, La Plagne, Tarentaise, Maurienne). Le cluster Grenoble-Chambéry-Annecy structure les pôles Tenerrdis (énergie) et Minalogic (microélectronique).",
@@ -30,8 +30,8 @@ export const CHAMBERY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash sur mesure à Chambéry pour TPE et PME : cartographie des cas d'usage IA chez les agroalimentaires savoyards, sous-traitants automobiles et hôteliers-restaurateurs des stations, avec ROI chiffré sur 90 jours.",
-      en: "Audit Flash sur mesure à Chambéry pour TPE et PME : cartographie des cas d'usage IA chez les agroalimentaires savoyards, sous-traitants automobiles et hôteliers-restaurateurs des stations, avec ROI chiffré sur 90 jours.",
+      fr: "Audit sur place sur mesure à Chambéry pour TPE et PME : cartographie des cas d'usage IA chez les agroalimentaires savoyards, sous-traitants automobiles et hôteliers-restaurateurs des stations, avec ROI chiffré sur 90 jours.",
+      en: "Audit sur place sur mesure à Chambéry pour TPE et PME : cartographie des cas d'usage IA chez les agroalimentaires savoyards, sous-traitants automobiles et hôteliers-restaurateurs des stations, avec ROI chiffré sur 90 jours.",
     },
     interventions: {
       fr: "Interventions sur site à Chambéry et dans son bassin alpin (Tarentaise, Maurienne, Annecy à 50 km) pour automatiser les processus administratifs, commerciaux et industriels des TPE et PME locales.",

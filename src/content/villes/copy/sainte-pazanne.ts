@@ -30,8 +30,8 @@ export const SAINTE_PAZANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Pazanne : diagnostic adapté aux TPE artisans, PME bâtiment et services, exploitations agricoles et professions libérales du Pays de Retz. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sainte-Pazanne : diagnostic adapté aux TPE artisans, PME bâtiment et services, exploitations agricoles et professions libérales du Pays de Retz. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sainte-Pazanne : diagnostic adapté aux TPE artisans, PME bâtiment et services, exploitations agricoles et professions libérales du Pays de Retz. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sainte-Pazanne : diagnostic adapté aux TPE artisans, PME bâtiment et services, exploitations agricoles et professions libérales du Pays de Retz. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Pazanne : formats adaptés au chantier, à l'exploitation, au cabinet ou au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINTE_PAZANNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME du bâtiment à Sainte-Pazanne ?",
-      a: "Oui, nous accompagnons les PME bâtiment sur des cas IA pratiques : automatisation devis et facturation, gestion planning chantiers, suivi sous-traitants, agents IA relation client. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME bâtiment sur des cas IA pratiques : automatisation devis et facturation, gestion planning chantiers, suivi sous-traitants, agents IA relation client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les professions libérales et santé ?",
@@ -61,7 +61,7 @@ export const SAINTE_PAZANNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Sainte-Pazanne  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du Pays de Retz.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du Pays de Retz.",
     },
     {
       q: "Comment se déroule une mission sur site à Sainte-Pazanne ?",

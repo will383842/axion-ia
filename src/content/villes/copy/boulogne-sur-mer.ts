@@ -69,7 +69,7 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Boulogne-sur-Mer ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME de la filière mer et du commerce. On démarre petit avec un Audit Flash à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les TPE et PME de la filière mer et du commerce. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Boulogne-sur-Mer ?",

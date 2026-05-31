@@ -9,9 +9,9 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
   pitchEn:
     "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place sur mesure.",
   seoHook: "oléiculture moulins & viticulture coteaux",
   ecosystemFr:
     "La Fare-les-Oliviers est une commune résidentielle au nord de l'étang de Berre, sur l'axe Aix-Salon (D113). Oléiculture historique (moulins, oliveraies), vignobles AOC Coteaux d'Aix, artisanat, commerces de proximité et résidents cadres travaillant à Aix, Marseille, Vitrolles, Marignane ou sur le technopôle de l'Arbois.",
@@ -30,8 +30,8 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Fare-les-Oliviers : ateliers pour moulins à huile, domaines viticoles, cabinets libéraux, commerces et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Fare-les-Oliviers  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, oléiculteurs, viticulteurs et PME farencques. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, oléiculteurs, viticulteurs et PME farencques. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les moulins à huile et oléiculteurs ?",

@@ -11,9 +11,9 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
   pitchEn:
     "Bourg-Saint-Andéol (07, Ardèche) compte 7 661 habitants (recensement 2023) sur la rive droite du Rhône, face à Pierrelatte. La commune appartient à la Communauté de communes Du Rhône aux Gorges de l'Ardèche. Son tissu économique repose sur la viticulture (côtes-du-rhône), la production d'huile d'olive, le tourisme patrimonial (église romane Saint-Andéol, sarcophage paléochrétien, réplique grotte Chauvet à proximité) et un réseau dense de TPE artisans BTP, commerçants et services aux entreprises. Axion-IA accompagne les dirigeants bourguésans dans le déploiement d'IA opérationnelle pragmatique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les TPE et PME locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit Flash dès {{price:intervention-4h|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
+    "Axion-IA est un cabinet d'architectes IA seniors basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les TPE et PME locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit sur place dès {{price:intervention-4h|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les TPE et PME locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit Flash dès {{price:intervention-4h|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
+    "Axion-IA est un cabinet d'architectes IA seniors basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les TPE et PME locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit sur place dès {{price:intervention-4h|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
   seoHook: "viticulture, oléiculture & tourisme roman sud-ardèche",
   ecosystemFr:
     "Bourg-Saint-Andéol s'inscrit dans la vallée du Rhône sud-Ardèche, à 43,74 km² et 2 600 h/an d'ensoleillement. L'économie locale combine viticulture côtes-du-rhône, oléiculture méditerranéenne, tourisme patrimonial (église romane XIIe, La Cascade pôle national arts du cirque) et un réseau de TPE artisanat BTP, commerces de proximité et services. Les communes limitrophes Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon et Saint-Montan forment un bassin d'environ 30 000 habitants où Axion-IA peut intervenir.",
@@ -31,8 +31,8 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux TPE viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit Flash {{price:intervention-4h|flat}} avec ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux TPE viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit Flash {{price:intervention-4h|flat}} avec ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux TPE viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit sur place {{price:intervention-4h|flat}} avec ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux TPE viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit sur place {{price:intervention-4h|flat}} avec ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-Saint-Andéol : formats adaptés à votre exploitation viticole, votre moulin oléicole, votre chantier BTP ou votre commerce. Format atelier 1 journée pour vos équipes terrain.",
@@ -50,7 +50,7 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Bourg-Saint-Andéol ?",
-      a: "L'Intervention Essentielle débute à {{price:intervention-4h|flat}} et l'Audit Flash à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Lyon (2h) ou Valence (1h) sont facturés en sus, de manière transparente. Tarifs publics détaillés sur notre site.",
+      a: "L'Intervention Essentielle débute à {{price:intervention-4h|flat}} et l'Audit sur place à {{price:intervention-4h|flat}}. Les frais de déplacement depuis Lyon (2h) ou Valence (1h) sont facturés en sus, de manière transparente. Tarifs publics détaillés sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Bourg-Saint-Andéol ?",

@@ -9,9 +9,9 @@ export const COURSAN_COPY: VilleCopy = {
   pitchEn:
     "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit sur place sur mesure.",
   seoHook: "viticulture vinification & négoce commerce",
   ecosystemFr:
     "Coursan est une commune viticole de l'agglomération narbonnaise, traversée par le canal de la Robine (classé UNESCO). Économie dominée par la viticulture (AOC Corbières, Coteaux de Narbonne), le négoce vinicole, les services à la personne et les commerces de proximité. Proximité immédiate de Narbonne (5 km) avec son bassin d'emploi tertiaire.",
@@ -30,8 +30,8 @@ export const COURSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Coursan : diagnostic adapté aux TPE viticoles, PME négoce, commerçants et professions libérales de l'agglo narbonnaise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coursan : formats adaptés au domaine viticole, au négoce, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const COURSAN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Coursan  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME négoce ou viticoles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME négoce ou viticoles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels formats d'intervention proposez-vous à Coursan ?",
-      a: "Audit Flash (1 jour, {{price:audit-flash|flat}}), intervention sur site (1-3 jours), implémentation IA complète, coaching 1-to-1 dirigeant. Tous formats adaptables au domaine viticole, commerce ou cabinet.",
+      a: "Audit sur place (1 jour, {{price:audit-flash|flat}}), intervention sur site (1-3 jours), implémentation IA complète, coaching 1-to-1 dirigeant. Tous formats adaptables au domaine viticole, commerce ou cabinet.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Coursan ?",

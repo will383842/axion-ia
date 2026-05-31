@@ -9,9 +9,9 @@ export const GORGES_COPY: VilleCopy = {
   pitchEn:
     "Gorges (44), commune du vignoble nantais au sud-est de Nantes, se situe au cœur de l'appellation Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, artisans, commerçants, PME agroalimentaires et industrielles, services aux entreprises du sud-est nantais. Axion-IA y intervient pour tous types d'activités du vignoble nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gorges (44). Nous accompagnons tous types d'activités : domaines viticoles muscadet, TPE artisans et commerçants, PME agroalimentaires et industrielles, professions libérales, entreprises de services du vignoble nantais et de Clisson. Audit sur place accessible.",
   seoHook: "viticulture muscadet & agroalimentaire négoce",
   ecosystemFr:
     "Gorges est une commune de plus de 5 200 habitants dans le vignoble nantais, limitrophe de Clisson. L'économie locale est structurée autour de la viticulture (Muscadet Sèvre-et-Maine, crus communaux), l'agroalimentaire, les PME industrielles de la zone de Clisson, l'artisanat BTP et les commerces. Proximité immédiate du pôle économique clissonnais.",
@@ -30,8 +30,8 @@ export const GORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
-      en: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit Flash {{price:audit-flash|flat}} pour les petites structures.",
+      fr: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit sur place {{price:audit-flash|flat}} pour les petites structures.",
+      en: "Audit IA à Gorges : diagnostic adapté aux domaines viticoles muscadet, TPE artisans, PME industrielles et commerçants du vignoble nantais. Audit sur place {{price:audit-flash|flat}} pour les petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gorges : formations viticulteurs, ateliers PME industrielles Clisson, sessions commerçants. Vos équipes repartent autonomes sur les outils IA adaptés à votre métier.",
@@ -57,7 +57,7 @@ export const GORGES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE viticole ?",
-      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux TPE viticoles et petits domaines. Il identifie les opportunités IA concrètes sur votre exploitation : traçabilité, automatisation administrative, gestion commerciale.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, parfaitement adapté aux TPE viticoles et petits domaines. Il identifie les opportunités IA concrètes sur votre exploitation : traçabilité, automatisation administrative, gestion commerciale.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de la zone de Clisson ?",

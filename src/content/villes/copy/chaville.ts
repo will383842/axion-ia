@@ -30,8 +30,8 @@ export const CHAVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chaville : diagnostic des tâches automatisables pour professions libérales, conseil, commerces et services de proximité. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
-      en: "Audit IA à Chaville : diagnostic des tâches automatisables pour professions libérales, conseil, commerces et services de proximité. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      fr: "Audit IA à Chaville : diagnostic des tâches automatisables pour professions libérales, conseil, commerces et services de proximité. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Chaville : diagnostic des tâches automatisables pour professions libérales, conseil, commerces et services de proximité. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chaville : ateliers pratiques pour cabinets, agences et commerces, afin de rendre vos équipes autonomes sur les outils IA du quotidien.",
@@ -57,7 +57,7 @@ export const CHAVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Chaville ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME chavilloises : professions libérales, conseil, commerces et services de proximité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME chavilloises : professions libérales, conseil, commerces et services de proximité.",
     },
     {
       q: "Comment l'IA aide-t-elle les professions libérales de Chaville ?",

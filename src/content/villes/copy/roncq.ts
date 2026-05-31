@@ -30,8 +30,8 @@ export const RONCQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roncq : formats adaptés à l'enseigne commerciale, au prestataire logistique, à l'artisan ou au professionnel libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const RONCQ_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Roncq  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Roncq et de la métropole lilloise nord, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, logistique, B2B transfrontalier, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Roncq et de la métropole lilloise nord, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, logistique, B2B transfrontalier, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les enseignes des zones commerciales de Roncq ?",

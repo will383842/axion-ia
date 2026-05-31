@@ -30,8 +30,8 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rueil-Malmaison : diagnostic des tâches automatisables pour conseil, ingénierie, tech, immobilier et services aux entreprises. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
-      en: "Audit IA à Rueil-Malmaison : diagnostic des tâches automatisables pour conseil, ingénierie, tech, immobilier et services aux entreprises. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      fr: "Audit IA à Rueil-Malmaison : diagnostic des tâches automatisables pour conseil, ingénierie, tech, immobilier et services aux entreprises. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Rueil-Malmaison : diagnostic des tâches automatisables pour conseil, ingénierie, tech, immobilier et services aux entreprises. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rueil-Malmaison : ateliers pratiques pour cabinets, bureaux d'études et agences, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rueil-Malmaison ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME rueilloises : conseil, ingénierie, tech, immobilier et services aux entreprises.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME rueilloises : conseil, ingénierie, tech, immobilier et services aux entreprises.",
     },
     {
       q: "Comment l'IA aide-t-elle les sociétés de conseil et d'ingénierie ?",

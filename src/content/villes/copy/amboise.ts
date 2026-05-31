@@ -30,8 +30,8 @@ export const AMBOISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Ã  Amboise : diagnostic adaptÃ© aux acteurs tourisme patrimonial (ChÃ¢teau, Clos LucÃ©), hÃ´teliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
-      en: "Audit IA Ã  Amboise : diagnostic adaptÃ© aux acteurs tourisme patrimonial (ChÃ¢teau, Clos LucÃ©), hÃ´teliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
+      fr: "Audit IA Ã  Amboise : diagnostic adaptÃ© aux acteurs tourisme patrimonial (ChÃ¢teau, Clos LucÃ©), hÃ´teliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
+      en: "Audit IA Ã  Amboise : diagnostic adaptÃ© aux acteurs tourisme patrimonial (ChÃ¢teau, Clos LucÃ©), hÃ´teliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
     },
     interventions: {
       fr: "Interventions IA sur site Ã  Amboise : formats adaptÃ©s au site patrimonial, hÃ´tellerie-restauration, domaine viticole, commerce. Vos Ã©quipes repartent autonomes.",
@@ -61,11 +61,11 @@ export const AMBOISE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les hÃ´teliers et restaurateurs ?",
-      a: "Audit Flash 490 â‚¬ HT, yield management IA, automatisation rÃ©servations, classification avis clients, optimisation planning Ã©quipes saisonniÃ¨res.",
+      a: "Audit sur place 1 190 â‚¬ HT, yield management IA, automatisation rÃ©servations, classification avis clients, optimisation planning Ã©quipes saisonniÃ¨res.",
     },
     {
       q: "Quel est le tarif d'entrÃ©e pour une TPE Ã  Amboise ?",
-      a: "L'audit Flash dÃ©marre Ã  490 â‚¬ HT. Coaching 1-to-1 Ã  partir de 990 â‚¬ HT. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place dÃ©marre Ã  1 190 â‚¬ HT. Coaching 1-to-1 Ã  partir de 990 â‚¬ HT. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

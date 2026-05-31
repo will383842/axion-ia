@@ -9,9 +9,9 @@ export const ANTIBES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME d'Antibes — yachting de Port Vauban, hôtellerie-restauration du Cap d'Antibes et de Juan-les-Pins, commerces de la vieille ville, artisans du BTP de rénovation prestige et acteurs tech proches de Sophia Antipolis — avec des architectes IA seniors qui interviennent sur site pour cadrer les bons cas d'usage et industrialiser des solutions concrètes, sans buzzword ni dépendance technique.",
   directAnswerFr:
-    "À Antibes, Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit Flash sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
+    "À Antibes, Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit sur place sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
   directAnswerEn:
-    "À Antibes, Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit Flash sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
+    "À Antibes, Axion-IA est un cabinet d'architectes IA seniors qui aide les TPE et PME locales (yachting, hôtellerie-restauration, commerce, BTP prestige, tech) à passer de l'idée au déploiement. Audit sur place sur mesure pour prioriser les cas d'usage à fort ROI, interventions terrain au siège ou en bord de Port Vauban, implémentations cadrées avec ROI chiffré et conformité RGPD. Premier rendez-vous sous quelques jours.",
   seoHook: "yachting, hôtellerie & tech",
   ecosystemFr:
     "Antibes (75 000 habitants, 2e ville des Alpes-Maritimes) conjugue Port Vauban — premier port de plaisance d'Europe avec 1 700 anneaux dont 19 dédiés aux méga-yachts — une économie touristique premium (Juan-les-Pins, Festival de Jazz, Cap d'Antibes), un tissu dense d'artisans et de commerçants en vieille ville, et un effet de débordement direct de Sophia Antipolis, premier technopôle européen IT et biotech situé à 7 km (Amadeus, SAP, ARM, IBM, Bayer).",
@@ -30,8 +30,8 @@ export const ANTIBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Antibes : un architecte senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
-      en: "Audit Flash IA à Antibes : un architecte senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
+      fr: "Audit sur place IA à Antibes : un architecte senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
+      en: "Audit sur place IA à Antibes : un architecte senior se déplace sur site (Port Vauban, vieille ville, zones Sophia) pour cartographier vos processus TPE/PME et prioriser 3 à 5 cas d'usage IA à fort ROI, sans engagement long.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Antibes pour débloquer un sujet IA précis : automatisation devis chantier BTP, traitement multilingue des demandes clients yachting, optimisation réservations hôtellerie ou tri des emails commerciaux.",
@@ -65,7 +65,7 @@ export const ANTIBES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un accompagnement IA pour une TPE d'Antibes ?",
-      a: "Les tarifs sont publics et adaptés à la taille de l'entreprise. Pour une TPE antiboise (commerce, artisan BTP, broker yachting), nous démarrons par un Audit Flash sur mesure, puis nous proposons des interventions ponctuelles ou une implémentation cadrée. Toute la grille tarifaire est consultable sur notre page tarifs publics.",
+      a: "Les tarifs sont publics et adaptés à la taille de l'entreprise. Pour une TPE antiboise (commerce, artisan BTP, broker yachting), nous démarrons par un Audit sur place sur mesure, puis nous proposons des interventions ponctuelles ou une implémentation cadrée. Toute la grille tarifaire est consultable sur notre page tarifs publics.",
     },
     {
       q: "Mon entreprise est multilingue (yachting, hôtellerie) — est-ce un problème ?",

@@ -9,9 +9,9 @@ export const DOMONT_COPY: VilleCopy = {
   pitchEn:
     "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu TPE artisans BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord du Val-d'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce centre-bourg",
   ecosystemFr:
     "Domont est une commune résidentielle du nord du Val-d'Oise, en lisière de la forêt de Montmorency, bien desservie par le Transilien H vers Paris. Son tissu économique comprend TPE artisans BTP, commerces de centre-bourg, PME de services, professions libérales et indépendants. Proximité avec Montmorency, Ezanville et Bouffémont.",
@@ -30,8 +30,8 @@ export const DOMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Domont : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Domont : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Domont : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Domont : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Domont : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const DOMONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Domont ?",
-      a: "L'Audit Flash IA à Domont démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Domont démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Domont ?",

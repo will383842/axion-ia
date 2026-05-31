@@ -30,8 +30,8 @@ export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Abrets : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants aux Abrets, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants aux Abrets, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",

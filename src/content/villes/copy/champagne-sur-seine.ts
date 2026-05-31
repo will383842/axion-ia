@@ -30,8 +30,8 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champagne-sur-Seine : diagnostic adapté aux PME industrielles, sous-traitants, TPE artisanales, commerçants et professions libérales du sud Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Champagne-sur-Seine : diagnostic adapté aux PME industrielles, sous-traitants, TPE artisanales, commerçants et professions libérales du sud Seine-et-Marne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Champagne-sur-Seine : diagnostic adapté aux PME industrielles, sous-traitants, TPE artisanales, commerçants et professions libérales du sud Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Champagne-sur-Seine : diagnostic adapté aux PME industrielles, sous-traitants, TPE artisanales, commerçants et professions libérales du sud Seine-et-Marne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champagne-sur-Seine : formats adaptés à l'atelier industriel, à la TPE artisanale ou à la PME de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,11 +53,11 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles de Champagne-sur-Seine ?",
-      a: "Oui, nous accompagnons les PME industrielles et sous-traitants de Champagne-sur-Seine sur des cas IA concrets : maintenance prédictive, contrôle qualité automatisé, planification production, suivi de flotte, reporting augmenté. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME industrielles et sous-traitants de Champagne-sur-Seine sur des cas IA concrets : maintenance prédictive, contrôle qualité automatisé, planification production, suivi de flotte, reporting augmenté. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Champagne-sur-Seine  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Seine-et-Marne et du bassin de Fontainebleau, il identifie les cas d'usage IA à fort ROI. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Seine-et-Marne et du bassin de Fontainebleau, il identifie les cas d'usage IA à fort ROI. Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les artisans du bâtiment à Champagne-sur-Seine ?",

@@ -30,8 +30,8 @@ export const FLORANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Florange : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,11 +57,11 @@ export const FLORANGE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et logisticiens locaux ?",
-      a: "Oui, commerçants et logisticiens florangeois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, optimisation tournées transfrontalières. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, commerçants et logisticiens florangeois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, optimisation tournées transfrontalières. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Florange ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Florange ?",

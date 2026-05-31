@@ -30,8 +30,8 @@ export const EZANVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ézanville : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Ézanville : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du nord Val-d'Oise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Ézanville : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Ézanville : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du nord Val-d'Oise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ézanville : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const EZANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Ézanville ?",
-      a: "L'audit Flash IA à Ézanville démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Ézanville démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME à Ézanville ?",

@@ -30,8 +30,8 @@ export const LURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lure : diagnostic adapté aux TPE/PME industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
-      en: "Audit IA à Lure : diagnostic adapté aux TPE/PME industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
+      fr: "Audit IA à Lure : diagnostic adapté aux TPE/PME industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
+      en: "Audit IA à Lure : diagnostic adapté aux TPE/PME industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lure : formats adaptés à l'atelier industriel, cabinet médical, commerce, bureau artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LURE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lure  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}, adapté aux TPE et PME du Pays de Lure. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}, adapté aux TPE et PME du Pays de Lure. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Lure ?",

@@ -30,8 +30,8 @@ export const TARARE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tarare : formats adaptés à l'atelier industriel/textile, exploitation agricole montagne, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const TARARE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans tarariens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Tarare, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Tarare, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",

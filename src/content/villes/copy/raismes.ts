@@ -9,9 +9,9 @@ export const RAISMES_COPY: VilleCopy = {
   pitchEn:
     "Raismes (59), commune de l'agglomération de Valenciennes au cœur du parc naturel régional Scarpe-Escaut, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du Valenciennois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Raismes (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du Valenciennois, parc naturel Scarpe-Escaut. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Raismes (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du Valenciennois, parc naturel Scarpe-Escaut. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Raismes (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du Valenciennois, parc naturel Scarpe-Escaut. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Raismes (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du Valenciennois, parc naturel Scarpe-Escaut. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie métallurgie & logistique routière",
   ecosystemFr:
     "Raismes est une commune de la Communauté d'agglomération Valenciennes Métropole, située au cœur du parc naturel régional Scarpe-Escaut. Tissu TPE artisans BTP, PME industrielles (métallurgie, mécanique héritage minier), logistique routière A23, écotourisme parc naturel, commerces de proximité et professions libérales. Reconversion verte du bassin minier.",
@@ -30,8 +30,8 @@ export const RAISMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Raismes : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales du Valenciennois et parc Scarpe-Escaut. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Raismes : formations adaptées TPE/PME industrielles et logistiques, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const RAISMES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Raismes  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Raismes souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Raismes souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME industrielles à Raismes ?",
@@ -61,7 +61,7 @@ export const RAISMES_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Raismes ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants du Valenciennois.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants du Valenciennois.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Raismes ?",

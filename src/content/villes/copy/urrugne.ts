@@ -9,9 +9,9 @@ export const URRUGNE_COPY: VilleCopy = {
   pitchEn:
     "Urrugne (64), commune du Pays Basque sur la corniche basque, 10 661 habitants. Frontière espagnole, agriculture basque, tourisme balnéaire, artisanat local et commerces transfrontaliers. Axion-IA y intervient pour tous types d'activités de la côte basque sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit sur place sur mesure.",
   seoHook: "agriculture basque & tourisme balnéaire",
   ecosystemFr:
     "Urrugne est une commune du Labourd sur la corniche basque, 10 661 habitants, à la frontière espagnole (Hendaye/Irún). Tissu de TPE agricoles basques, artisans (produits du terroir, piment d'Espelette), PME tourisme balnéaire, commerces transfrontaliers, hébergements saisonniers et services aux particuliers.",
@@ -30,8 +30,8 @@ export const URRUGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Urrugne : diagnostic adapté aux TPE agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Urrugne : diagnostic adapté aux TPE agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Urrugne : diagnostic adapté aux TPE agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Urrugne : diagnostic adapté aux TPE agricoles basques, producteurs terroir (piment), artisans, hébergeurs saisonniers et commerçants transfrontaliers de la corniche basque. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Urrugne : déploiement outils IA dans vos exploitations agricoles, ateliers artisanaux, hébergements ou commerces transfrontaliers. Équipes formées et autonomes.",
@@ -57,7 +57,7 @@ export const URRUGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Urrugne ?",
-      a: "L'audit Flash IA à Urrugne démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agricoles, artisanaux ou touristiques, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Urrugne démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agricoles, artisanaux ou touristiques, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les hébergeurs saisonniers d'Urrugne ?",

@@ -32,8 +32,8 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Saint-Cyr-l'École pour TPE/PME du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
-      en: "Audit Flash à Saint-Cyr-l'École pour TPE/PME du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
+      fr: "Audit sur place à Saint-Cyr-l'École pour TPE/PME du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
+      en: "Audit sur place à Saint-Cyr-l'École pour TPE/PME du commerce, des services et de la filière aéronautique : cartographie des processus, identification des tâches automatisables, plan d'action 30/60/90 jours.",
     },
     interventions: {
       fr: "Interventions ciblées à Saint-Cyr-l'École pour les commerces, prestataires de la filière aéronautique et services aux entreprises : assistants email, génération de devis, reporting hebdomadaire.",
@@ -51,7 +51,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA à Saint-Cyr-l'École ?",
-      a: "L'Audit Flash à Saint-Cyr-l'École démarre à {{price:intervention-4h|flat}} pour 4 heures sur site, livrable PDF inclus. Les interventions ciblées et accompagnements 1-à-1 démarrent également à {{price:intervention-4h|flat}}. Tarifs publics, sans devis caché.",
+      a: "L'Audit sur place à Saint-Cyr-l'École démarre à {{price:intervention-4h|flat}} pour 4 heures sur site, livrable PDF inclus. Les interventions ciblées et accompagnements 1-à-1 démarrent également à {{price:intervention-4h|flat}}. Tarifs publics, sans devis caché.",
     },
     {
       q: "Quels délais pour une intervention Axion-IA à Saint-Cyr-l'École ?",

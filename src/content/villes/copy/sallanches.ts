@@ -9,9 +9,9 @@ export const SALLANCHES_COPY: VilleCopy = {
   pitchEn:
     "Sallanches (74), ville-étape de la vallée de l'Arve face au Mont-Blanc en Haute-Savoie, concentre commerces, hôtellerie, services et TPE artisanat BTP au service du tourisme montagnard et du bassin de vie local. Axion-IA y intervient pour tous types d'activités du Pays du Mont-Blanc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit sur place sur mesure.",
   seoHook: "tourisme montagne & commerce zone",
   ecosystemFr:
     "Sallanches est la ville-centre du Pays du Mont-Blanc, face au massif. Pôle de commerces et services pour le bassin de vie (zone commerciale Sallanches-Passy), tissu hôtelier et touristique important (étape vers Chamonix, Megève, Saint-Gervais), TPE artisanat BTP (rénovation montagne), professions libérales. Proximité Cluses (20 min) et Chamonix (25 min).",
@@ -30,8 +30,8 @@ export const SALLANCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sallanches : formats adaptés aux hôtels, commerces, artisans BTP montagne. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et services.",
@@ -57,7 +57,7 @@ export const SALLANCHES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Sallanches  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE tourisme montagne comme aux PME services et artisans BTP du bassin.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE tourisme montagne comme aux PME services et artisans BTP du bassin.",
     },
     {
       q: "L'IA est-elle utile pour gérer la saisonnalité touristique ?",

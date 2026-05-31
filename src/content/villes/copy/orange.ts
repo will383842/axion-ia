@@ -9,9 +9,9 @@ export const ORANGE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Orange (84), en Vaucluse. Ville du théâtre antique romain classé UNESCO, des Chorégies et de l'arc de triomphe, Orange est aussi un carrefour logistique entre A7 et A9. Tourisme patrimonial, commerce, agriculture et transport y nourrissent un tissu de petites entreprises que nous outillons d'une IA concrète.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orange (84), en Vaucluse. Nous accompagnons en priorité les TPE puis les PME : acteurs du tourisme patrimonial autour du théâtre antique et des Chorégies, commerces, transporteurs et logisticiens du carrefour A7-A9, agriculteurs et artisans. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   seoHook: "tourisme romain & logistique",
   ecosystemFr:
     "Orange, en Vaucluse, vit au rythme de son patrimoine romain : le théâtre antique classé à l'UNESCO et l'arc de triomphe attirent un tourisme culturel amplifié l'été par le festival lyrique des Chorégies. Cette économie touristique côtoie un commerce de proximité actif, une agriculture provençale productive et, surtout, une forte fonction logistique au carrefour des autoroutes A7 et A9. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
@@ -57,7 +57,7 @@ export const ORANGE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Orange ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME orangeoises, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME orangeoises, sans devis opaque.",
     },
     {
       q: "Aidez-vous les acteurs du tourisme du théâtre antique et des Chorégies ?",

@@ -9,9 +9,9 @@ export const AUXONNE_COPY: VilleCopy = {
   pitchEn:
     "Auxonne (21), commune de Côte-d'Or sur les bords de la Saône, est marquée par son histoire militaire (jeune lieutenant Bonaparte y servit). Tissu agriculture céréalière plaine de Saône, PME industrielles, TPE artisans BTP, commerces, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit sur place sur mesure.",
   seoHook: "agriculture céréalière & industrielles",
   ecosystemFr:
     "Auxonne est positionnée sur les bords de la Saône en Côte-d'Or, à la frontière du Jura. Patrimoine militaire (caserne, statue Napoléon). Économie : agriculture céréalière plaine de Saône, PME industrielles, TPE artisanat, commerces de proximité.",
@@ -30,8 +30,8 @@ export const AUXONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auxonne : formats adaptés à l'exploitation agricole, atelier industriel, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const AUXONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Dijon ?",

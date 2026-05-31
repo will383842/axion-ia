@@ -9,9 +9,9 @@ export const FOIX_COPY: VilleCopy = {
   pitchEn:
     "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA répond aux besoins de toutes les entreprises du bassin fuxéen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit sur place sur mesure.",
   seoHook: "tourisme patrimonial & secteur public",
   ecosystemFr:
     "Foix est la préfecture de l'Ariège, ville médiévale dominée par le château des comtes de Foix (haut lieu cathare). Économie portée par le secteur public (préfecture, hôpital, administrations), le tourisme patrimonial et de montagne, l'artisanat, le commerce centre-ville et les services. Agriculture montagne (élevage bovin/ovin, fromages) dans les vallées environnantes.",
@@ -30,8 +30,8 @@ export const FOIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Foix : diagnostic adapté aux TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial et professions libérales du bassin fuxéen. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Foix : formats adaptés au site touristique, commerce, cabinet libéral, exploitation agricole. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const FOIX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Foix  ?",
-      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME tertiaire ou tourisme, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place est tarifé selon vos enjeux pour une TPE. Pour les PME tertiaire ou tourisme, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs de montagne ariégeois ?",

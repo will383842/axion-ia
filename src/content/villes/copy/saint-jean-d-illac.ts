@@ -9,9 +9,9 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Saint-Jean-d'Illac est une commune résidentielle en croissance de l'ouest bordelais, en lisière de la forêt des Landes. Tissu TPE artisanat BTP dense (construction neuve), professions libérales, commerces de proximité et services à la personne. Proximité Martignas-sur-Jalle et Cestas.",
@@ -30,8 +30,8 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-d'Illac : ateliers adaptés aux artisans, cabinets et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Jean-d'Illac  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de l'ouest bordelais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de l'ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Jean-d'Illac ?",
@@ -61,7 +61,7 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales de Saint-Jean-d'Illac : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers.",
+      a: "Pour les professions libérales de Saint-Jean-d'Illac : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers.",
     },
     {
       q: "Comment se déroule une mission à Saint-Jean-d'Illac ?",

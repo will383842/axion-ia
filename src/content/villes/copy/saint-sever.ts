@@ -30,8 +30,8 @@ export const SAINT_SEVER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Sever : diagnostic adapté aux TPE et PME agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Sever : diagnostic adapté aux TPE et PME agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Sever : diagnostic adapté aux TPE et PME agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Sever : diagnostic adapté aux TPE et PME agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Sever : formations adaptées aux ateliers agroalimentaires, exploitations d'élevage, sites touristiques patrimoine et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SAINT_SEVER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans saint-séverins ?",
-      a: "Pour les TPE commerçants et artisans à Saint-Sever, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis/factures, gestion stocks, agents IA communication clients.",
+      a: "Pour les TPE commerçants et artisans à Saint-Sever, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis/factures, gestion stocks, agents IA communication clients.",
     },
     {
       q: "Comment se déroule une mission à Saint-Sever ?",

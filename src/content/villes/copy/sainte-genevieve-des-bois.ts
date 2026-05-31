@@ -51,7 +51,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Sainte-Geneviève-des-Bois ?",
-      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à {{price:intervention-4h|flat}} pour un Audit Flash de 4 heures sur site, déplacement William depuis Paris via RER C inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à {{price:intervention-4h|flat}} pour un Audit sur place de 4 heures sur site, déplacement William depuis Paris via RER C inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Combien de temps faut-il pour une intervention IA à Sainte-Geneviève-des-Bois ?",

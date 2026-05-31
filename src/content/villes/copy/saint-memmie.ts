@@ -9,9 +9,9 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Memmie (51), commune limitrophe de Châlons-en-Champagne, bénéficie de zones commerciales et d'activités importantes. TPE commerces et services, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit sur place sur mesure.",
   seoHook: "commerce détail & distribution logistique",
   ecosystemFr:
     "Saint-Memmie est une commune résidentielle et commerciale limitrophe de Châlons-en-Champagne, chef-lieu de la Marne. Zones d'activités et commerciales dynamiques. Tissu TPE/PME : commerce, distribution, logistique, BTP, tertiaire, professions libérales.",
@@ -30,8 +30,8 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Memmie : diagnostic adapté aux TPE commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Memmie : formats adaptés commerce, entrepôt, bureau, cabinet. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_MEMMIE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Memmie  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME des zones d'activités de Saint-Memmie.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME des zones d'activités de Saint-Memmie.",
     },
     {
       q: "Travaillez-vous avec les TPE et PME distribution de Saint-Memmie ?",

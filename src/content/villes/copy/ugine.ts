@@ -30,8 +30,8 @@ export const UGINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ugine : ateliers en usine métallurgique, atelier mécanique ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure industrie et artisanat.",
@@ -61,7 +61,7 @@ export const UGINE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour les TPE artisans et commerçants d'Ugine ?",
-      a: "Pour les TPE artisans et commerçants à Ugine, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      a: "Pour les TPE artisans et commerçants à Ugine, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à Ugine ?",

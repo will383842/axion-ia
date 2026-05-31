@@ -10,9 +10,9 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
     "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants.",
   seoHook: "nucléaire, industrie & patrimoine sculptural",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Nogent-sur-Seine est une sous-préfecture de l'Aube baignée par la Seine. La centrale nucléaire EDF structure l'emploi local avec un écosystème de sous-traitants industriels et de maintenance. Le musée Camille Claudel, inauguré en 2017, rayonne culturellement. Tissu de TPE artisanales, commerces de centre-ville, exploitations céréalières de la plaine de Champagne et services aux entreprises.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nogent-sur-Seine : formats adaptés à l'industrie nucléaire, à la TPE artisanale, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Nogent-sur-Seine  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Nogent-sur-Seine, il identifie les cas d'usage IA à fort ROI pour votre activité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Nogent-sur-Seine, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {
       q: "Accompagnez-vous les sous-traitants nucléaires de Nogent-sur-Seine ?",
@@ -65,7 +65,7 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles de la plaine de Champagne ?",
-      a: "Oui, nous accompagnons les exploitants céréaliers autour de Nogent-sur-Seine : suivi parcelles IA, prédiction rendements, automatisation traçabilité, optimisation intrants. Audit Flash adapté dès {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les exploitants céréaliers autour de Nogent-sur-Seine : suivi parcelles IA, prédiction rendements, automatisation traçabilité, optimisation intrants. Audit sur place adapté dès {{price:audit-flash|flat}}.",
     },
   ],
 };

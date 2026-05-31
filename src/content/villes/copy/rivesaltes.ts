@@ -30,8 +30,8 @@ export const RIVESALTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rivesaltes : diagnostic adapté aux TPE artisans, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rivesaltes : diagnostic adapté aux TPE artisans, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rivesaltes : diagnostic adapté aux TPE artisans, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rivesaltes : diagnostic adapté aux TPE artisans, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rivesaltes : formats adaptés à la cave viticole, négoce, entrepôt, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const RIVESALTES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Rivesaltes, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Rivesaltes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Rivesaltes ?",

@@ -61,11 +61,11 @@ export const CONFLANS_SAINTE_HONORINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans du BTP de Conflans ?",
-      a: "Pour les artisans et TPE du BTP, nous automatisons la création des devis, les relances clients et le suivi des chantiers, en partant d'un Audit Flash ciblant les gains les plus immédiats.",
+      a: "Pour les artisans et TPE du BTP, nous automatisons la création des devis, les relances clients et le suivi des chantiers, en partant d'un Audit sur place ciblant les gains les plus immédiats.",
     },
     {
       q: "Comment se déroule une mission à Conflans-Sainte-Honorine ?",
-      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes, sans dépendance technique durable.",
+      a: "Nous démarrons par un Audit sur place, puis intervenons sur site ou en visio. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes, sans dépendance technique durable.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Conflans-Sainte-Honorine ?",

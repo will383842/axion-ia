@@ -9,9 +9,9 @@ export const JOUY_LE_MOUTIER_COPY: VilleCopy = {
   pitchEn:
     "Jouy-le-Moutier, commune du Val-d'Oise (95) au sein de l'agglomération Cergy-Pontoise, réunit TPE artisans du bâtiment, PME de services, commerçants de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du bassin Cergy-Pontoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
     "Jouy-le-Moutier est une commune résidentielle de l'agglomération Cergy-Pontoise (200 000 hab), bordée par l'Oise et les coteaux boisés du Vexin. Son tissu économique comprend TPE artisans BTP, commerces de quartier, PME tertiaires, professions libérales et indépendants. Proximité directe avec Cergy, Vauréal et Pontoise.",
@@ -30,8 +30,8 @@ export const JOUY_LE_MOUTIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Jouy-le-Moutier : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du bassin Cergy-Pontoise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jouy-le-Moutier : formats adaptés au cabinet, commerce ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const JOUY_LE_MOUTIER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Jouy-le-Moutier ?",
-      a: "L'Audit Flash IA à Jouy-le-Moutier démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Jouy-le-Moutier démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Jouy-le-Moutier ?",

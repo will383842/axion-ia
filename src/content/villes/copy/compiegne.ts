@@ -32,8 +32,8 @@ export const COMPIEGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Compiègne pour les TPE/PME du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
-      en: "Audit Flash à Compiègne pour les TPE/PME du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
+      fr: "Audit sur place à Compiègne pour les TPE/PME du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
+      en: "Audit sur place à Compiègne pour les TPE/PME du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
     },
     interventions: {
       fr: "Interventions ciblées à Compiègne pour les hôteliers, restaurateurs et commerçants du quartier du Château, ou pour les sous-traitants industriels de l'agglomération : assistants email, génération de devis, suivi qualité client.",
@@ -51,11 +51,11 @@ export const COMPIEGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA à Compiègne ?",
-      a: "L'Audit Flash à Compiègne démarre à {{price:intervention-4h|flat}} pour 4 heures sur site, livrable PDF inclus. Les interventions ciblées et accompagnements 1-à-1 démarrent à {{price:intervention-4h|flat}} également. Tarifs publics, sans devis caché.",
+      a: "L'Audit sur place à Compiègne démarre à {{price:intervention-4h|flat}} pour 4 heures sur site, livrable PDF inclus. Les interventions ciblées et accompagnements 1-à-1 démarrent à {{price:intervention-4h|flat}} également. Tarifs publics, sans devis caché.",
     },
     {
       q: "Quels délais pour une intervention Axion-IA à Compiègne ?",
-      a: "William se déplace à Compiègne sous 5 à 10 jours ouvrés après validation de la mission. Pour un Audit Flash, le rapport est livré sous 5 jours ouvrés après la visite sur site.",
+      a: "William se déplace à Compiègne sous 5 à 10 jours ouvrés après validation de la mission. Pour un Audit sur place, le rapport est livré sous 5 jours ouvrés après la visite sur site.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Compiègne ?",

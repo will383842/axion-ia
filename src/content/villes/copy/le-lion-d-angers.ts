@@ -30,8 +30,8 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Lion-d'Angers : formations adaptées aux exploitations agricoles, centres équestres, artisans et commerces du bassin nord-ouest angevin. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE au Lion-d'Angers ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et acteurs de la filière équine. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et acteurs de la filière équine. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous du coaching IA individuel pour les dirigeants ?",

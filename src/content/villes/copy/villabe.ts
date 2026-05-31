@@ -30,8 +30,8 @@ export const VILLABE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villabé : formats adaptés aux TPE/PME et enseignes distribution. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const VILLABE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces villabéens ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation gestion stocks, agents IA prise de RDV, optimisation planning.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation gestion stocks, agents IA prise de RDV, optimisation planning.",
     },
     {
       q: "Accompagnez-vous les PME logistique et distribution ?",

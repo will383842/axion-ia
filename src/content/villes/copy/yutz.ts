@@ -9,9 +9,9 @@ export const YUTZ_COPY: VilleCopy = {
   pitchEn:
     "Yutz (57), commune de l'agglomération de Thionville en Moselle, conjugue zones d'activités économiques dynamiques et proximité immédiate du marché transfrontalier luxembourgeois. Tissu de TPE/PME industrie, commerce, logistique, services aux entreprises et travailleurs frontaliers. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yutz (57). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans BTP, professions libérales et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yutz (57). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans BTP, professions libérales et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yutz (57). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans BTP, professions libérales et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yutz (57). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans BTP, professions libérales et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit sur place sur mesure.",
   seoHook: "agglomération portes",
   ecosystemFr:
     "Yutz fait partie de l'agglomération Portes de France-Thionville, au nord de la Moselle. La ville accueille plusieurs zones d'activités économiques (Olympe, Couronne, ZA Linkling) et bénéficie d'une situation géographique stratégique : 15 minutes du Luxembourg, axe A31 Metz-Luxembourg. Tissu économique diversifié : industrie, logistique transfrontalière, commerce, artisanat BTP et services aux travailleurs frontaliers.",
@@ -30,8 +30,8 @@ export const YUTZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Yutz : diagnostic adapté aux industriels, logisticiens, commerçants, artisans BTP et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Yutz : formats adaptés à l'usine, à l'entrepôt logistique, au commerce ou à la TPE de services frontaliers. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const YUTZ_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Yutz  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Yutz et du bassin de Thionville, il identifie les cas d'usage IA à fort ROI pour votre activité industrielle, logistique, commerciale ou de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Yutz et du bassin de Thionville, il identifie les cas d'usage IA à fort ROI pour votre activité industrielle, logistique, commerciale ou de services.",
     },
     {
       q: "Accompagnez-vous les industriels et logisticiens du bassin de Thionville ?",

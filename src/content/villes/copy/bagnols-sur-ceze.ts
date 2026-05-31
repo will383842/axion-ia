@@ -9,9 +9,9 @@ export const BAGNOLS_SUR_CEZE_COPY: VilleCopy = {
   pitchEn:
     "Bagnols-sur-Cèze (30), sous-préfecture du Gard, bénéficie de la proximité du site nucléaire de Marcoule (CEA/Orano). Tissu TPE/PME sous-traitance industrielle, commerces centre-ville, services aux entreprises, artisanat BTP et viticulture Côtes du Rhône gardoises. Axion-IA opère pour toutes les structures économiques de la commune du nord Gard.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bagnols-sur-Cèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants nucléaire Marcoule, artisans BTP, commerçants, viticulteurs Côtes du Rhône, professions libérales et services aux entreprises du nord Gard. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bagnols-sur-Cèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants nucléaire Marcoule, artisans BTP, commerçants, viticulteurs Côtes du Rhône, professions libérales et services aux entreprises du nord Gard. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bagnols-sur-Cèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants nucléaire Marcoule, artisans BTP, commerçants, viticulteurs Côtes du Rhône, professions libérales et services aux entreprises du nord Gard. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bagnols-sur-Cèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants nucléaire Marcoule, artisans BTP, commerçants, viticulteurs Côtes du Rhône, professions libérales et services aux entreprises du nord Gard. Audit sur place sur mesure.",
   seoHook: "sous-traitance industrielle & artisanat",
   ecosystemFr:
     "Bagnols-sur-Cèze est la sous-préfecture du nord Gard (~18 000 hab), adossée au site nucléaire de Marcoule (CEA, Orano). Tissu dense de TPE/PME sous-traitantes industrielles, artisanat BTP, commerces centre-ville dynamique, viticulture Côtes du Rhône gardoises, services aux entreprises et professions libérales.",
@@ -30,8 +30,8 @@ export const BAGNOLS_SUR_CEZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bagnols-sur-Cèze : diagnostic adapté aux TPE/PME sous-traitantes nucléaire, artisans BTP, commerçants et viticulteurs nord Gard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bagnols-sur-Cèze : formats adaptés aux sous-traitants industriels, commerçants et artisans. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const BAGNOLS_SUR_CEZE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bagnols-sur-Cèze  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Côtes du Rhône gardoises ?",

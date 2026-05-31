@@ -9,9 +9,9 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Pantaléon-de-Larche (19), commune du sud de l'agglomération briviste en Corrèze, à proximité de l'A20. Tissu TPE/PME artisanat, commerce de proximité, services, agriculture et BTP. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Pantaléon-de-Larche est une commune résidentielle et artisanale du sud de l'agglomération de Brive-la-Gaillarde, traversée par l'A20. Zones artisanales et d'activités, commerces de proximité, services, exploitations agricoles (noix, élevage) et BTP. Cadre de vie attractif entre vallées de la Corrèze et de la Vézère.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pantaléon-de-Larche : diagnostic adapté aux TPE/PME artisanales, commerces et exploitations agricoles du sud briviste. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pantaléon-de-Larche : formations pratiques pour artisans, commerçants et exploitants agricoles de l'agglo Brive.",
@@ -53,7 +53,7 @@ export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Pantaléon-de-Larche  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME du sud briviste. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE artisanales et PME du sud briviste. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider les artisans de Saint-Pantaléon-de-Larche ?",

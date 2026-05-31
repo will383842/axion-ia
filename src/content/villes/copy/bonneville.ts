@@ -9,9 +9,9 @@ export const BONNEVILLE_COPY: VilleCopy = {
   pitchEn:
     "Bonneville (74), sous-prefecture du Faucigny au coeur de la vallee de l'Arve, est le centre administratif d'un bassin industriel historique (decolletage, horlogerie). Tissu PME industrielles, TPE artisans, commerces et services publics. Axion-IA y intervient pour tous types d'activites de la vallee de l'Arve.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit Flash des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "decolletage horlogerie & administration",
   ecosystemFr:
     "Bonneville est la sous-prefecture de la Haute-Savoie et la capitale du Faucigny, au coeur de la vallee de l'Arve. Ce bassin industriel historique concentre des PME de decolletage et horlogerie de renommee mondiale (Cluses a 15 min). Administration departementale, commerces de centre-ville, artisanat BTP et services aux entreprises completent le tissu economique.",
@@ -30,8 +30,8 @@ export const BONNEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Bonneville : diagnostic adapte aux PME industrielles du decolletage, artisans, commercants et services du Faucigny. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Bonneville : diagnostic adapte aux PME industrielles du decolletage, artisans, commercants et services du Faucigny. ROI chiffre, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Bonneville : diagnostic adapte aux PME industrielles du decolletage, artisans, commercants et services du Faucigny. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Bonneville : diagnostic adapte aux PME industrielles du decolletage, artisans, commercants et services du Faucigny. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Bonneville : formats adaptes a l'atelier industriel, au commerce de bourg et aux services publics. Equipes autonomes sur outils IA configures metier.",
@@ -57,7 +57,7 @@ export const BONNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Bonneville ?",
-      a: "L'Audit Flash demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME industrielles de la vallee de l'Arve, nous proposons des audits approfondis adaptes aux enjeux de production et qualite du decolletage.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME industrielles de la vallee de l'Arve, nous proposons des audits approfondis adaptes aux enjeux de production et qualite du decolletage.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans du Faucigny ?",

@@ -30,8 +30,8 @@ export const COUBLEVIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux indépendants.",
-      en: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux indépendants.",
+      fr: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux indépendants.",
+      en: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux indépendants.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coublevie : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const COUBLEVIE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans coublevitains ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Coublevie sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Coublevie sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME tertiaires et commerces ?",
-      a: "Pour les PME tertiaires et commerces à Coublevie, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation workflow, classification documents.",
+      a: "Pour les PME tertiaires et commerces à Coublevie, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation workflow, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",

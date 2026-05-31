@@ -9,9 +9,9 @@ export const J_UF_COPY: VilleCopy = {
   pitchEn:
     "Jœuf (54), commune du Pays Haut en Meurthe-et-Moselle dans la vallée de l'Orne, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie, artisanat, commerce, services et frontaliers. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jœuf (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jœuf (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jœuf (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jœuf (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut et de la vallée de l'Orne en Lorraine. Audit sur place sur mesure.",
   seoHook: "industrie métallurgie & artisanat second",
   ecosystemFr:
     "Jœuf est située dans la vallée de l'Orne, au cœur du Pays Haut lorrain, ancien bassin sidérurgique reconverti. Située à 25 km de la frontière luxembourgeoise, la ville bénéficie de l'attractivité transfrontalière (travailleurs frontaliers, sous-traitance industrielle). L'économie locale repose sur l'industrie reconvertie, l'artisanat BTP, le commerce de proximité, les services et l'activité frontalière. Intégration à la Communauté de communes du Bassin de Pompey-Pays Haut.",
@@ -30,8 +30,8 @@ export const J_UF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const J_UF_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Jœuf  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Jœuf et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Jœuf et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants du Pays Haut ?",

@@ -9,9 +9,9 @@ export const EGUILLES_COPY: VilleCopy = {
   pitchEn:
     "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit sur place sur mesure.",
   seoHook: "bassin aixois",
   ecosystemFr:
     "Éguilles est un village perché typiquement provençal à 10 km au nord d'Aix-en-Provence. Population résidentielle aisée, nombreuses professions libérales (avocats, médecins, consultants), TPE indépendants (télétravail), artisans et commerces de proximité. Proximité immédiate du technopôle de l'Arbois et du pôle d'activités des Milles.",
@@ -30,8 +30,8 @@ export const EGUILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Éguilles : ateliers adaptés aux cabinets libéraux, bureaux PME ou en visio pour indépendants en télétravail. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const EGUILLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un cabinet libéral à Éguilles ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux professions libérales et TPE indépendants éguillens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Parfaitement adapté aux professions libérales et TPE indépendants éguillens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les indépendants en télétravail à Éguilles ?",

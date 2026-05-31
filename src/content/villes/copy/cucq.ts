@@ -10,9 +10,9 @@ export const CUCQ_COPY: VilleCopy = {
     "Cucq (62), commune de la Cote d'Opale dans le Pas-de-Calais, reunit pres de 5 130 habitants. Voisine du Touquet-Paris-Plage, son economie associe TPE tourisme et hotellerie, PME de services, commerces, artisanat et immobilier. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Cote Opale, Le Touquet & tourisme",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Cucq (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, agences immobilieres, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Cucq jouxte Le Touquet-Paris-Plage (3 km) sur la Cote d'Opale. Tissu economique tourne vers le tourisme haut de gamme : TPE hotellerie-restauration, agences immobilieres, commerces, artisanat et services. Aeroport du Touquet a proximite. Economie saisonniere forte.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CUCQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Cucq : diagnostic adapte aux TPE touristiques, hoteliers, agences immobilieres et commercants de la Cote d'Opale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Cucq : diagnostic adapte aux TPE touristiques, hoteliers, agences immobilieres et commercants de la Cote d'Opale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Cucq : diagnostic adapte aux TPE touristiques, hoteliers, agences immobilieres et commercants de la Cote d'Opale. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Cucq : diagnostic adapte aux TPE touristiques, hoteliers, agences immobilieres et commercants de la Cote d'Opale. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Cucq : formations adaptees aux hotels, agences immobilieres, restaurants et commerces touristiques. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const CUCQ_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les agences immobilieres de Cucq ?",
-      a: "Pour les agences immobilieres, nous proposons : estimation IA, agents conversationnels acquéreurs, automatisation annonces, CRM intelligent, scoring leads. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les agences immobilieres, nous proposons : estimation IA, agents conversationnels acquéreurs, automatisation annonces, CRM intelligent, scoring leads. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Cucq ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle aider a gerer la saisonnalite touristique a Cucq ?",

@@ -58,7 +58,7 @@ export const COUERON_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Couëron ?",
-      a: "William se déplace à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit Flash, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
+      a: "William se déplace à Couëron dans les 5 jours ouvrés après signature du devis. Pour un Audit sur place, le rendu écrit est livré sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD et AI Act à Couëron ?",

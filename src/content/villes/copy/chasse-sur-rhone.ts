@@ -30,8 +30,8 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chasse-sur-Rhône : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans chassérots ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chasse-sur-Rhône, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants à Chasse-sur-Rhône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Vienne ?",

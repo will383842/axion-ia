@@ -30,8 +30,8 @@ export const FRONTIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Frontignan : diagnostic adapté aux viticulteurs, conchyliculteurs, restaurateurs et commerçants, puis aux PME industrielles, agroalimentaires et touristiques du bassin de Thau. ROI quantifié, audit Flash 4h.",
-      en: "Audit IA à Frontignan : diagnostic adapté aux viticulteurs, conchyliculteurs, restaurateurs et commerçants, puis aux PME industrielles, agroalimentaires et touristiques du bassin de Thau. ROI quantifié, audit Flash 4h.",
+      fr: "Audit IA à Frontignan : diagnostic adapté aux viticulteurs, conchyliculteurs, restaurateurs et commerçants, puis aux PME industrielles, agroalimentaires et touristiques du bassin de Thau. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA à Frontignan : diagnostic adapté aux viticulteurs, conchyliculteurs, restaurateurs et commerçants, puis aux PME industrielles, agroalimentaires et touristiques du bassin de Thau. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Frontignan : formats adaptés au domaine viticole, à l'établissement conchylicole, au restaurant ou au commerce. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -65,7 +65,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE touristiques, restaurateurs et commerçants ?",
-      a: "Oui, les TPE sont notre priorité : restaurateurs, hôteliers, commerçants. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
+      a: "Oui, les TPE sont notre priorité : restaurateurs, hôteliers, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
     },
     {
       q: "Comment se déroule une mission depuis Montpellier ?",

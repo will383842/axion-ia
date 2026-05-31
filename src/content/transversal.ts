@@ -481,12 +481,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "L'implémentation IA est-elle adaptée aux TPE ?",
       answer:
-        "Oui. Axion-IA propose une gamme de services accessible aux TPE : l'intervention Essentielle (journée de formation) et l'audit Flash sont les formats d'entrée. Le POC d'implémentation permet de tester l'IA sur un process ciblé avant tout déploiement large.",
+        "Oui. Axion-IA propose une gamme de services accessible aux TPE : l'intervention Essentielle (journée de formation) et l'audit sur place sont les formats d'entrée. Le POC d'implémentation permet de tester l'IA sur un process ciblé avant tout déploiement large.",
     },
     en: {
       question: "Is AI implementation suitable for small businesses?",
       answer:
-        "Yes. Axion-IA offers a range accessible to small businesses: the Essential session (training day) and Flash audit are the entry-level formats. The implementation POC allows testing AI on a targeted process before any large-scale deployment.",
+        "Yes. Axion-IA offers a range accessible to small businesses: the Essential session (training day) and on-site audit are the entry-level formats. The implementation POC allows testing AI on a targeted process before any large-scale deployment.",
     },
   },
   {

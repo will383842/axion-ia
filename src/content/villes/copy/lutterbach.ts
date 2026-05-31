@@ -9,9 +9,9 @@ export const LUTTERBACH_COPY: VilleCopy = {
   pitchEn:
     "Lutterbach (68), commune de la banlieue nord-ouest de Mulhouse au sein de Mulhouse Alsace Agglomération. Tissu TPE artisanat et commerce, PME industrie et services, professions libérales, commerçants de proximité et indépendants de l'agglomération mulhousienne. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lutterbach (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie et services, professions libérales, commerçants et indépendants de l'agglomération mulhousienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lutterbach (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie et services, professions libérales, commerçants et indépendants de l'agglomération mulhousienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lutterbach (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie et services, professions libérales, commerçants et indépendants de l'agglomération mulhousienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lutterbach (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie et services, professions libérales, commerçants et indépendants de l'agglomération mulhousienne. Audit sur place sur mesure.",
   seoHook: "industrie manufacturière & artisanat commerce",
   ecosystemFr:
     "Lutterbach est une commune dynamique de la banlieue nord-ouest de Mulhouse, intégrée à Mulhouse Alsace Agglomération (m2A). Son tissu économique mêle TPE artisanat et commerce, PME industrie et services, commerces de proximité, professions libérales et entreprises du tertiaire. Proximité directe avec Mulhouse, Wittenheim, Pfastatt et Reiningue.",
@@ -30,8 +30,8 @@ export const LUTTERBACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lutterbach : diagnostic adapté aux TPE artisanat, PME industrie et services, commerces et professions libérales de l'agglomération mulhousienne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lutterbach : diagnostic adapté aux TPE artisanat, PME industrie et services, commerces et professions libérales de l'agglomération mulhousienne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lutterbach : diagnostic adapté aux TPE artisanat, PME industrie et services, commerces et professions libérales de l'agglomération mulhousienne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lutterbach : diagnostic adapté aux TPE artisanat, PME industrie et services, commerces et professions libérales de l'agglomération mulhousienne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lutterbach : formats adaptés à l'atelier, l'entreprise industrielle ou le commerce. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LUTTERBACH_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Lutterbach ?",
-      a: "L'Audit Flash IA à Lutterbach démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Lutterbach démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles à Lutterbach ?",

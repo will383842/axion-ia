@@ -65,7 +65,7 @@ export const MERIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de Mérignac-Soleil ?",
-      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la gestion des demandes.",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la gestion des demandes.",
     },
     {
       q: "Comment se passe une mission depuis Bordeaux centre ?",

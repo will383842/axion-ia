@@ -30,8 +30,8 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mont-Saint-Martin : diagnostic adapté aux TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP et professions libérales du Pays Haut. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mont-Saint-Martin : formats adaptés au commerce, à l'entrepôt logistique ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et professions libérales de Mont-Saint-Martin ?",
-      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, facturation automatique. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, facturation automatique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Mont-Saint-Martin  ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Mont-Saint-Martin et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Mont-Saint-Martin et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Mont-Saint-Martin ?",

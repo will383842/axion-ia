@@ -30,8 +30,8 @@ export const MERVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Merville : formats adaptés à l'exploitation agricole, l'unité agroalimentaire, le commerce, l'atelier artisan. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -61,7 +61,7 @@ export const MERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans mervillois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Merville, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks, marketing local.",
+      a: "Pour les TPE artisans BTP et commerçants à Merville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Béthune ?",

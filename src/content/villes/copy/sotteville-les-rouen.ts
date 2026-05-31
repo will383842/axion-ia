@@ -65,7 +65,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
     },
     {
       q: "Quels services proposez-vous aux TPE et artisans ?",
-      a: "Audit Flash pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et sans devis opaque.",
+      a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et sans devis opaque.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Sotteville-lès-Rouen ?",

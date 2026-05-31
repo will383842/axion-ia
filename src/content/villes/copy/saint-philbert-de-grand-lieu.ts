@@ -30,8 +30,8 @@ export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Philbert-de-Grand-Lieu : formats adaptés à l'exploitation maraîchère, atelier agroalimentaire, commerce ou structure tourisme nature. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Philbert-de-Grand-Lieu, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de commandes.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Philbert-de-Grand-Lieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de commandes.",
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",

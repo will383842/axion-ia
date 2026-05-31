@@ -59,7 +59,7 @@ export const SAINTES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saintes ?",
-      a: "William se déplace à Saintes dans les 5 à 7 jours ouvrés après signature du devis (distance Paris-Saintes prise en compte). L'Audit Flash débouche sur un rendu écrit sous 7 jours ouvrés post-intervention.",
+      a: "William se déplace à Saintes dans les 5 à 7 jours ouvrés après signature du devis (distance Paris-Saintes prise en compte). L'Audit sur place débouche sur un rendu écrit sous 7 jours ouvrés post-intervention.",
     },
     {
       q: "Comment Axion-IA assure-t-elle la conformité RGPD à Saintes ?",

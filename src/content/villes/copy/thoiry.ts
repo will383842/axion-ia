@@ -65,7 +65,7 @@ export const THOIRY_COPY: VilleCopy = {
     },
     {
       q: "Quels services proposez-vous aux TPE artisans et commerces ?",
-      a: "Audit Flash pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et transparents.",
+      a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et transparents.",
     },
     {
       q: "Comment se déroule une mission depuis Lyon ou Genève ?",

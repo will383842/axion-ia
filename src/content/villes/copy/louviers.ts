@@ -30,8 +30,8 @@ export const LOUVIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louviers : formats adaptés à l'usine, l'atelier agroalimentaire, le cabinet, le commerce centre-ville. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const LOUVIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans lovériens ?",
-      a: "Pour les TPE artisans à Louviers, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, classification photos, gestion facturation.",
+      a: "Pour les TPE artisans à Louviers, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, classification photos, gestion facturation.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

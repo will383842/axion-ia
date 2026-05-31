@@ -32,8 +32,8 @@ export const ECHIROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
-      en: "Audit Flash 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h sur site à Échirolles pour les TPE et PME industrielles, commerces et structures de santé : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Échirolles pour automatiser commandes, planning, reporting et qualité dans les ZA des Essarts et Sud Galaxie, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
@@ -51,7 +51,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Échirolles ?",
-      a: "Les interventions Axion-IA à Échirolles démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Échirolles démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Échirolles ?",

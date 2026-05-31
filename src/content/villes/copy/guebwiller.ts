@@ -30,8 +30,8 @@ export const GUEBWILLER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guebwiller : formats adaptés au domaine viticole, à l'hébergement patrimonial, à l'atelier industriel, au commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const GUEBWILLER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE/PME industrielles et commerces de Guebwiller ?",
-      a: "Oui, industriels, artisans et commerçants guebwillerois : traçabilité production, gestion commerciale, présence en ligne, automatisation administrative, devis et facturation. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, industriels, artisans et commerçants guebwillerois : traçabilité production, gestion commerciale, présence en ligne, automatisation administrative, devis et facturation. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Guebwiller ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Guebwiller ?",

@@ -9,9 +9,9 @@ export const BIDART_COPY: VilleCopy = {
   pitchEn:
     "Bidart (64), commune de la Côte Basque entre Biarritz et Guéthary, 7 689 habitants. Spot de surf réputé, piment d'Espelette, tourisme balnéaire haut de gamme, TPE artisans et hébergeurs saisonniers. Axion-IA répond aux besoins de toutes les entreprises de la Côte Basque.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & produits terroir",
   ecosystemFr:
     "Bidart est une commune balnéaire de 7 689 habitants sur la Côte Basque, entre Biarritz et Guéthary. Spots de surf mondialement connus (Parlementia, Pavillon Royal), filière piment d'Espelette AOP (Atelier du Piment), hébergements haut de gamme, TPE artisans du terroir, restauration et commerces saisonniers.",
@@ -30,8 +30,8 @@ export const BIDART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bidart : diagnostic adapté aux hébergeurs haut de gamme, écoles de surf, producteurs piment d'Espelette, restaurateurs et artisans de la Côte Basque. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bidart : déploiement outils IA dans vos hébergements, restaurants, ateliers ou écoles de surf. Automatisation réservations, yield management et marketing saisonnier.",
@@ -57,7 +57,7 @@ export const BIDART_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Bidart ?",
-      a: "L'audit Flash IA à Bidart démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus touristiques, de restauration ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Bidart démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus touristiques, de restauration ou artisanaux, identification gains IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les producteurs de piment d'Espelette ?",

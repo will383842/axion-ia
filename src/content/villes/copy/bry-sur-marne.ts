@@ -9,9 +9,9 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Bry-sur-Marne (94), commune des bords de Marne en Val-de-Marne, desservie par le RER A et connue pour ses studios audiovisuels et le site historique de l'INA. Tissu TPE prestataires audiovisuels, PME de services et numérique, commerçants, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "audiovisuel production & services numériques",
   ecosystemFr:
     "Bry-sur-Marne est une commune des bords de Marne connue pour ses studios audiovisuels et le site historique de l'INA. Son tissu économique associe TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerces de proximité et professions libérales. Proximité directe avec Villiers-sur-Marne, Noisy-le-Grand, Champigny-sur-Marne et Chennevières.",
@@ -30,8 +30,8 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bry-sur-Marne : diagnostic adapté aux TPE audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bry-sur-Marne : diagnostic adapté aux TPE audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bry-sur-Marne : diagnostic adapté aux TPE audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bry-sur-Marne : diagnostic adapté aux TPE audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bry-sur-Marne : formats adaptés au studio, agence, commerce ou cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Bry-sur-Marne ?",
-      a: "L'Audit Flash IA à Bry-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Bry-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les entreprises audiovisuelles à Bry-sur-Marne ?",

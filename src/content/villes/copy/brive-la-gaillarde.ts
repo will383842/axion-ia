@@ -30,8 +30,8 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brive-la-Gaillarde : diagnostic des tâches automatisables pour agroalimentaire de terroir, commerce, logistique et tourisme. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
-      en: "Audit IA à Brive-la-Gaillarde : diagnostic des tâches automatisables pour agroalimentaire de terroir, commerce, logistique et tourisme. Audit Flash dès {{price:audit-flash|flat}}, livrable priorisé.",
+      fr: "Audit IA à Brive-la-Gaillarde : diagnostic des tâches automatisables pour agroalimentaire de terroir, commerce, logistique et tourisme. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
+      en: "Audit IA à Brive-la-Gaillarde : diagnostic des tâches automatisables pour agroalimentaire de terroir, commerce, logistique et tourisme. Audit sur place dès {{price:audit-flash|flat}}, livrable priorisé.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brive-la-Gaillarde : ateliers pratiques pour ateliers de transformation, commerces et logistique, afin de rendre vos équipes autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Brive-la-Gaillarde ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME brivistes : agroalimentaire, commerce, logistique et tourisme gastronomique.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME brivistes : agroalimentaire, commerce, logistique et tourisme gastronomique.",
     },
     {
       q: "Comment l'IA aide-t-elle l'agroalimentaire de terroir ?",

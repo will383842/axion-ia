@@ -10,9 +10,9 @@ export const BEZIERS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Béziers, sous-préfecture de l'Hérault (81 545 habitants) située à 12 km de la Méditerranée, sur l'axe A9-A75. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour les acteurs locaux du tissu viticole (environ 2 000 hectares de vignes), du tourisme autour du Canal du Midi et des neuf écluses de Fonseranes, ainsi que des activités tertiaires animées par l'agglomération Béziers Méditerranée (17 communes, 131 383 habitants).",
   directAnswerFr:
-    "À Béziers, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
+    "À Béziers, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
   directAnswerEn:
-    "À Béziers, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
+    "À Béziers, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin biterrois sur des projets IA en code custom : automatisation de devis, relances clients, traitement de données viticoles, outils sur mesure pour cavistes, hôteliers, agences immobilières et artisans. Nous nous déplaçons depuis la gare de Béziers (ligne Montpellier-Perpignan) et l'aéroport Béziers Cap d'Agde, dans un rayon couvrant Agde, Colombiers, Servian, Sérignan et l'aire d'attraction de 205 841 habitants. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}.",
   seoHook: "viticulture, tourisme & Canal du Midi",
   ecosystemFr:
     "Le tissu économique biterrois s'appuie sur la viticulture (environ 2 000 hectares), l'agriculture (69,3 % de la surface communale), le tourisme patrimonial (cathédrale Saint-Nazaire, Feria d'août, écluses de Fonseranes inscrites UNESCO via le Canal du Midi) et les services aux particuliers. Béziers Méditerranée fédère 17 communes et 131 383 habitants. La formation locale repose sur l'antenne Université Paul-Valéry, l'IUT de Béziers et le CIRDOC, ce qui alimente un vivier TPE/PME en hôtellerie-restauration, commerce de détail, construction et services aux entreprises.",
@@ -31,8 +31,8 @@ export const BEZIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des TPE et PME biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
-      en: "Audit Flash IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des TPE et PME biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
+      fr: "Audit sur place IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des TPE et PME biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
+      en: "Audit sur place IA sur site à Béziers dès {{price:audit-flash|flat}} : nous analysons les processus des TPE et PME biterroises (cavistes, hôtels, agences immobilières, artisans BTP) pour identifier 3 à 5 cas d'usage à fort ROI, sans no-code.",
     },
     interventions: {
       fr: "Interventions IA à Béziers dès {{price:intervention-4h|flat}} : automatisation devis-relances pour le commerce de détail, gestion des réservations touristiques autour du Canal du Midi, outils sur mesure pour le secteur viticole. Code custom déployé chez le client.",
@@ -50,11 +50,11 @@ export const BEZIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Béziers ?",
-      a: "Les interventions IA à Béziers démarrent à {{price:intervention-4h|flat}}. L'Audit Flash débute à {{price:audit-flash|flat}} et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics et consultables en ligne, sans devis caché.",
+      a: "Les interventions IA à Béziers démarrent à {{price:intervention-4h|flat}}. L'Audit sur place débute à {{price:audit-flash|flat}} et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics et consultables en ligne, sans devis caché.",
     },
     {
       q: "Quels sont les délais pour une intervention à Béziers ?",
-      a: "William se déplace à Béziers sous 5 à 7 jours ouvrés après validation du brief. L'Audit Flash est livré en 4 heures sur site, les implémentations entre 2 et 6 semaines selon le périmètre.",
+      a: "William se déplace à Béziers sous 5 à 7 jours ouvrés après validation du brief. L'Audit sur place est livré en 4 heures sur site, les implémentations entre 2 et 6 semaines selon le périmètre.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour de Béziers ?",

@@ -9,9 +9,9 @@ export const PONTIVY_COPY: VilleCopy = {
   pitchEn:
     "Pontivy (56), sous-préfecture du Morbihan (14 640 hab), est une cité napoléonienne au croisement du canal de Nantes à Brest et du canal du Blavet. Capitale du Centre Bretagne. TPE et PME agroalimentaire, industrie, BTP, commerces de centre-ville, services administratifs, santé, tourisme fluvial. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & construction",
   ecosystemFr:
     "Pontivy est la sous-préfecture du Morbihan, capitale du Centre Bretagne, au croisement du canal de Nantes à Brest et du canal du Blavet. Cité napoléonienne (Napoléonville) au tissu TPE/PME diversifié : agroalimentaire, industrie, BTP, commerce, administration, santé, tourisme fluvial.",
@@ -30,8 +30,8 @@ export const PONTIVY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pontivy : diagnostic adapté aux TPE artisans, PME agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services de santé. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pontivy : formats adaptés site agroalimentaire, atelier industriel, chantier BTP, boutique de centre-ville. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const PONTIVY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Pontivy  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME agroalimentaire/industrie du Centre Bretagne.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME agroalimentaire/industrie du Centre Bretagne.",
     },
     {
       q: "Travaillez-vous avec les industries agroalimentaires du Centre Bretagne ?",

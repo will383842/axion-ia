@@ -30,8 +30,8 @@ export const LOUDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loudun : formats adaptés aux ateliers agroalimentaires, exploitations viticoles, administrations ou commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const LOUDUN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Loudun, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, marketing digital local.",
+      a: "Pour les TPE artisans BTP et commerçants à Loudun, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, marketing digital local.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

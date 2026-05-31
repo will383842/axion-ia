@@ -32,8 +32,8 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
-      en: "Audit Flash à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces : cartographie des tâches répétitives (devis, ordres de fabrication, suivi qualité, relances), évaluation des outils en place (ERP, Excel, GMAO) et roadmap d'automatisation 30/60/90 jours. Tarif public à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site à Saint-Chamond pour automatiser des cas concrets : génération de devis depuis Excel ou ERP, extraction de PDF fournisseurs, suivi qualité, relances clients, exports comptables. Code Python/TypeScript livré et documenté, à partir de {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Saint-Chamond ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Saint-Chamond démarre à {{price:intervention-4h|flat}}. Tous nos prix sont publics sur la page Tarifs, sans abonnement caché.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h), une intervention sur site à Saint-Chamond démarre à {{price:intervention-4h|flat}}. Tous nos prix sont publics sur la page Tarifs, sans abonnement caché.",
     },
     {
       q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
@@ -71,7 +71,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Saint-Chamond ?",
-      a: "Un Audit Flash se planifie sous 5 à 10 jours ouvrés. Une intervention sur site démarre en général sous 2 à 3 semaines après validation du devis. Les implémentations plus lourdes sont jalonnées par sprints de 2 semaines.",
+      a: "Un Audit sur place se planifie sous 5 à 10 jours ouvrés. Une intervention sur site démarre en général sous 2 à 3 semaines après validation du devis. Les implémentations plus lourdes sont jalonnées par sprints de 2 semaines.",
     },
   ],
 };

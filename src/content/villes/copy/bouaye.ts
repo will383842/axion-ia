@@ -9,9 +9,9 @@ export const BOUAYE_COPY: VilleCopy = {
   pitchEn:
     "Bouaye (44), commune du sud-ouest de Nantes Métropole en Loire-Atlantique, en bordure du lac de Grand-Lieu, mêle tissu résidentiel, TPE artisanales, commerces de proximité et PME tertiaires. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin nantais sud-ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & services aux",
   ecosystemFr:
     "Bouaye est une commune résidentielle du sud-ouest de Nantes Métropole, en bordure du lac de Grand-Lieu (réserve naturelle). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales. Proximité aéroport Nantes-Atlantique (10 min) et pôle Bouguenais.",
@@ -30,8 +30,8 @@ export const BOUAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bouaye : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du sud-ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bouaye : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes repartent avec outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BOUAYE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Bouaye ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants de Bouaye sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisanales et indépendants de Bouaye sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME du sud-ouest nantais ?",

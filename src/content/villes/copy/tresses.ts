@@ -65,7 +65,7 @@ export const TRESSES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales de Tresses ?",
-      a: "Pour les cabinets libéraux : un Audit Flash pour repérer les automatisations rapides, puis un accompagnement un-à-un. Gestion des rendez-vous, classement des dossiers et agents conversationnels pour le premier contact client.",
+      a: "Pour les cabinets libéraux : un Audit sur place pour repérer les automatisations rapides, puis un accompagnement un-à-un. Gestion des rendez-vous, classement des dossiers et agents conversationnels pour le premier contact client.",
     },
     {
       q: "Comment se déroule une mission à Tresses ?",

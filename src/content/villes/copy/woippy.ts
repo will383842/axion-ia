@@ -30,8 +30,8 @@ export const WOIPPY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Woippy : diagnostic adapté aux TPE/PME services, logistique, artisans BTP, commerces et acteurs agroalimentaires. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Woippy : diagnostic adapté aux TPE/PME services, logistique, artisans BTP, commerces et acteurs agroalimentaires. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Woippy : diagnostic adapté aux TPE/PME services, logistique, artisans BTP, commerces et acteurs agroalimentaires. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Woippy : diagnostic adapté aux TPE/PME services, logistique, artisans BTP, commerces et acteurs agroalimentaires. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Woippy : formats adaptés à l'entrepôt logistique, bureau, atelier, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const WOIPPY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans BTP ?",
-      a: "Oui, commerçants, artisans BTP et acteurs agroalimentaires de Woippy : gestion stocks, devis automatisés, relation client, présence en ligne, comptabilité. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, commerçants, artisans BTP et acteurs agroalimentaires de Woippy : gestion stocks, devis automatisés, relation client, présence en ligne, comptabilité. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Woippy ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Woippy ?",

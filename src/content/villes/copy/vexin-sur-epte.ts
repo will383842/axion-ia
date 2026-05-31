@@ -30,8 +30,8 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vexin-sur-Epte : formats adaptés à l'exploitation agricole, l'élevage, l'atelier, le commerce rural. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ruraux ?",
-      a: "Pour les TPE artisans et commerçants ruraux à Vexin-sur-Epte, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
+      a: "Pour les TPE artisans et commerçants ruraux à Vexin-sur-Epte, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Gisors ?",

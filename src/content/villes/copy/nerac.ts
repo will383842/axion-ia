@@ -9,9 +9,9 @@ export const NERAC_COPY: VilleCopy = {
   pitchEn:
     "Nérac (47), sous-préfecture du Lot-et-Garonne, est une cité historique du pays d'Albret célèbre pour son château Henri IV et ses bords de Baïse. Ville de 6 992 habitants, son économie repose sur un tissu de TPE commerçants et artisans, PME agroalimentaires et viticoles, tourisme patrimonial, professions libérales et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nérac (47). Nous accompagnons TPE et PME du pays d'Albret : acteurs du tourisme patrimonial, viticulteurs, entreprises agroalimentaires, commerçants, artisans et professions libérales du Néracais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nérac (47). Nous accompagnons TPE et PME du pays d'Albret : acteurs du tourisme patrimonial, viticulteurs, entreprises agroalimentaires, commerçants, artisans et professions libérales du Néracais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nérac (47). Nous accompagnons TPE et PME du pays d'Albret : acteurs du tourisme patrimonial, viticulteurs, entreprises agroalimentaires, commerçants, artisans et professions libérales du Néracais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nérac (47). Nous accompagnons TPE et PME du pays d'Albret : acteurs du tourisme patrimonial, viticulteurs, entreprises agroalimentaires, commerçants, artisans et professions libérales du Néracais. Audit sur place sur mesure.",
   ecosystemFr:
     "Nérac est la sous-préfecture sud du Lot-et-Garonne, cité historique du pays d'Albret au bord de la Baïse. Le château de Nérac fut la résidence de Henri IV. Son économie s'appuie sur le tourisme patrimonial (château, jardins de la Garenne, vieille ville), la viticulture (AOC Buzet à proximité), l'agroalimentaire (armagnac, foie gras, pruneaux), le commerce de centre-ville, l'artisanat et les professions libérales.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NERAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Nérac : diagnostic adapté aux TPE/PME du tourisme patrimonial, de la viticulture, de l'agroalimentaire et du commerce du pays d'Albret. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nérac : formats adaptés au domaine viticole, à l'hôtel-restaurant, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const NERAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Nérac  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME néracaises : acteurs du tourisme, viticulteurs, agroalimentaire, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME néracaises : acteurs du tourisme, viticulteurs, agroalimentaire, commerçants et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les viticulteurs et producteurs autour de Nérac ?",

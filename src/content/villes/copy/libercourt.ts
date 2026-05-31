@@ -9,9 +9,9 @@ export const LIBERCOURT_COPY: VilleCopy = {
   pitchEn:
     "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie son expertise pour toutes les organisations du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Libercourt est une commune du bassin minier sur l'axe autoroutier A1, entre Lens et Douai. Position stratégique pour la logistique (proximité plateforme Delta 3 Dourges). Tissu de TPE artisanales, commerces, PME de services et professions libérales. Gare TER desservant Lille et Douai.",
@@ -30,8 +30,8 @@ export const LIBERCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Libercourt : diagnostic adapté aux TPE artisanales, PME logistiques et professions libérales du bassin minier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Libercourt : formations pratiques adaptées à la logistique, au commerce ou au cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LIBERCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Libercourt  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider les entreprises logistiques à Libercourt ?",

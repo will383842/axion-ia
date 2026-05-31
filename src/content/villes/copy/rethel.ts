@@ -10,9 +10,9 @@ export const RETHEL_COPY: VilleCopy = {
     "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y mène ses missions auprès des organisations locales du Rethélois.",
   seoHook: "agroalimentaire & filière agricole ardennaise",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Rethel (environ 7 400 habitants) est sous-préfecture des Ardennes et carrefour de la plaine agricole champenoise. La ville est célèbre pour le boudin blanc de Rethel IGP, fleuron de son patrimoine agroalimentaire. L'économie locale repose sur l'agroalimentaire (charcuterie, transformation viande), l'agriculture céréalière, le commerce de proximité, l'artisanat et les services tertiaires. Située en bord d'Aisne, la commune bénéficie d'un axe ferroviaire Reims-Charleville stratégique.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const RETHEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rethel : diagnostic adapté aux TPE artisans, PME agroalimentaires (boudin blanc IGP), commerçants, exploitations agricoles et professions libérales du Rethélois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rethel : formations pratiques pour équipes agroalimentaires, exploitations agricoles, commerce et services du Rethélois. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -53,15 +53,15 @@ export const RETHEL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous la filière agroalimentaire boudin blanc de Rethel ?",
-      a: "Oui, nous accompagnons les charcuteries, artisans et industriels du boudin blanc IGP de Rethel avec des solutions IA adaptées : traçabilité IGP, contrôle qualité, gestion stocks, optimisation production. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les charcuteries, artisans et industriels du boudin blanc IGP de Rethel avec des solutions IA adaptées : traçabilité IGP, contrôle qualité, gestion stocks, optimisation production. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Rethel  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME rethéloises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME rethéloises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles du Rethélois ?",
-      a: "Pour les exploitations agricoles du Rethélois (céréales, grandes cultures), nous proposons : outils IA prédiction rendement, optimisation intrants, gestion documentaire PAC, automatisation reporting. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les exploitations agricoles du Rethélois (céréales, grandes cultures), nous proposons : outils IA prédiction rendement, optimisation intrants, gestion documentaire PAC, automatisation reporting. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Rethel ?",

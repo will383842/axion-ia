@@ -30,8 +30,8 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux hôteliers, restaurateurs et commerçants du thermalisme vichyssois, puis aux PME tertiaires et professions libérales. ROI mesurable, audit Flash 4h.",
-      en: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux hôteliers, restaurateurs et commerçants du thermalisme vichyssois, puis aux PME tertiaires et professions libérales. ROI mesurable, audit Flash 4h.",
+      fr: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux hôteliers, restaurateurs et commerçants du thermalisme vichyssois, puis aux PME tertiaires et professions libérales. ROI mesurable, audit sur place 4h.",
+      en: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux hôteliers, restaurateurs et commerçants du thermalisme vichyssois, puis aux PME tertiaires et professions libérales. ROI mesurable, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellerive-sur-Allier : formats adaptés à l'hôtel thermal, au restaurant, au commerce ou au bureau. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -61,7 +61,7 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerçants bellerivois ?",
-      a: "Oui, les TPE sont notre priorité : commerçants, artisans BTP, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      a: "Oui, les TPE sont notre priorité : commerçants, artisans BTP, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de l'agglomération ?",

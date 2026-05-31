@@ -32,8 +32,8 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash IA à Grande-Synthe (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
-      en: "Audit Flash IA à Grande-Synthe (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
+      fr: "Audit sur place IA à Grande-Synthe (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
+      en: "Audit sur place IA à Grande-Synthe (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
     },
     interventions: {
       fr: "Interventions à Grande-Synthe dès {{price:intervention-4h|flat}} pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
@@ -51,7 +51,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Grande-Synthe ?",
-      a: "Les interventions Axion-IA à Grande-Synthe démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit Flash 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
+      a: "Les interventions Axion-IA à Grande-Synthe démarrent à {{price:intervention-4h|flat}} (Intervention Essentielle). L'Audit sur place 4 h est à {{price:audit-flash|flat}}, l'implémentation dès {{price:impl-poc|entry}}. Tarifs publics et fixes.",
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Grande-Synthe ?",

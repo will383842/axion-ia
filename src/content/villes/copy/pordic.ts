@@ -9,9 +9,9 @@ export const PORDIC_COPY: VilleCopy = {
   pitchEn:
     "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce bourg",
   ecosystemFr:
     "Pordic est une commune littorale résidentielle de l'agglomération de Saint-Brieuc, entre Binic-Étables-sur-Mer et Saint-Brieuc. Tissu TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, hébergements touristiques et activités nautiques.",
@@ -30,8 +30,8 @@ export const PORDIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pordic : formats adaptés chantier BTP, bureau, commerce, hébergement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PORDIC_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Pordic ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation devis et métrés, gestion planning IA, suivi chantiers augmenté, facturation intelligente pour artisans et entreprises BTP.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation devis et métrés, gestion planning IA, suivi chantiers augmenté, facturation intelligente pour artisans et entreprises BTP.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme littoral ?",
@@ -61,7 +61,7 @@ export const PORDIC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME et professions libérales ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, implémentation outils IA métier, coaching 1-to-1, CRM augmenté, automatisation tâches administratives, prise de rendez-vous et secrétariat IA.",
+      a: "Audit sur place {{price:audit-flash|flat}}, implémentation outils IA métier, coaching 1-to-1, CRM augmenté, automatisation tâches administratives, prise de rendez-vous et secrétariat IA.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Rennes ?",

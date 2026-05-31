@@ -12,7 +12,7 @@
 // Conventions :
 // - Tous les montants en EUR HT.
 // - `priceMin` et `priceMax` pour les ranges, `priceFlat` pour les fixes.
-// - `formatPrice()` retourne la chaîne d'affichage cohérente (« 490 € HT »,
+// - `formatPrice()` retourne la chaîne d'affichage cohérente (« 1 190 € HT »,
 //   « 1 900 - 3 900 € HT », « dès 12 000 € HT »).
 
 /**
@@ -48,7 +48,7 @@ export interface PricingTier {
   priceFlat?: number;
   /**
    * Variante sur site quand un tier offre un split distance/présentiel
-   * (ex Audit Flash : 490 € à distance, 890 € sur site). Si présent,
+   * (legacy : split distance/site, désormais inutilisé côté audit). Si présent,
    * `priceFlat` reste le prix d'entrée (à distance).
    */
   priceFlatOnsite?: number;

@@ -30,8 +30,8 @@ export const BISCARROSSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biscarrosse : formations adaptées aux campings, hébergeurs, écoles de surf, commerces saisonniers et PME industrielles. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BISCARROSSE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les campings et hébergeurs saisonniers ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux campings, hôtels et hébergeurs saisonniers de Biscarrosse. Diagnostic automatisation réservations, gestion saisonnière, chatbot multilingue visiteurs, optimisation avis clients.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux campings, hôtels et hébergeurs saisonniers de Biscarrosse. Diagnostic automatisation réservations, gestion saisonnière, chatbot multilingue visiteurs, optimisation avis clients.",
     },
     {
       q: "Accompagnez-vous les écoles de surf et TPE nautiques ?",

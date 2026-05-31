@@ -10,9 +10,9 @@ export const GIVET_COPY: VilleCopy = {
     "Givet (08), commune frontalière à la pointe des Ardennes en bord de Meuse, est dominée par le fort de Charlemont (XVIe siècle) et bénéficie d'une position stratégique aux portes de la Belgique. TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales forment le tissu économique local. Axion-IA opère pour toutes les structures économiques de la commune de la pointe ardennaise.",
   seoHook: "industrie & commerce transfrontalier belge",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Givet (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, commerçants transfrontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Givet (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, commerçants transfrontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Givet (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, commerçants transfrontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Givet (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, commerçants transfrontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Givet (environ 6 400 habitants) est la commune la plus septentrionale des Ardennes, enclavée en Belgique sur 3 côtés. Le fort de Charlemont, citadelle Vauban édifiée par Charles Quint, domine la ville et la Meuse. L'économie locale repose sur l'industrie (papeterie, métallurgie, chimie), le commerce frontalier avec la Belgique (Dinant, Namur), le tourisme fluvial (port de plaisance Meuse), l'artisanat et les services aux frontaliers.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GIVET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Givet : diagnostic adapté aux TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Givet : diagnostic adapté aux TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Givet : diagnostic adapté aux TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Givet : diagnostic adapté aux TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Givet : formations pratiques pour équipes industrielles, commerçants frontaliers, tourisme fluvial et services de la pointe ardennaise. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -53,15 +53,15 @@ export const GIVET_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et entreprises transfrontaliers franco-belges ?",
-      a: "Oui, nous accompagnons les commerces, PME et acteurs économiques transfrontaliers de Givet avec des solutions IA bilingues FR-NL : chatbots multilingues, gestion fiscale dual, optimisation logistique frontalière. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les commerces, PME et acteurs économiques transfrontaliers de Givet avec des solutions IA bilingues FR-NL : chatbots multilingues, gestion fiscale dual, optimisation logistique frontalière. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Combien coûte un audit IA à Givet  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME givetoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME givetoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les industriels de Givet (papeterie, métallurgie, chimie) ?",
-      a: "Pour les industriels de Givet, nous proposons : maintenance prédictive lignes production, contrôle qualité visuel, optimisation flux logistique transfrontalier, gestion documentaire ICPE/Seveso. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les industriels de Givet, nous proposons : maintenance prédictive lignes production, contrôle qualité visuel, optimisation flux logistique transfrontalier, gestion documentaire ICPE/Seveso. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Givet ?",

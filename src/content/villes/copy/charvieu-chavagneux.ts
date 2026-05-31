@@ -30,8 +30,8 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Charvieu-Chavagneux : formats adaptés à l'atelier industriel, entrepôt logistique ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Charvieu-Chavagneux, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et commerçants à Charvieu-Chavagneux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",

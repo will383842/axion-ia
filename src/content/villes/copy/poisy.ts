@@ -28,8 +28,8 @@ export const POISY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Poisy : diagnostic adapté aux acteurs agricoles, PME tertiaires ouest Annecy, artisans, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Poisy : diagnostic adapté aux acteurs agricoles, PME tertiaires ouest Annecy, artisans, professions libérales. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Poisy : diagnostic adapté aux acteurs agricoles, PME tertiaires ouest Annecy, artisans, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Poisy : diagnostic adapté aux acteurs agricoles, PME tertiaires ouest Annecy, artisans, professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Poisy : formats adaptés exploitations agricoles, bureaux PME, cabinets libéraux, commerces. Vos équipes repartent autonomes sur les outils IA.",
@@ -51,7 +51,7 @@ export const POISY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Poisy  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du bassin annécien.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du bassin annécien.",
     },
     {
       q: "Accompagnez-vous les acteurs agricoles et agroalimentaires ?",
@@ -59,7 +59,7 @@ export const POISY_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales de Poisy ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, optimisation planning et workflows cabinets, automatisation tâches administratives, coaching 1-to-1 dirigeants.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, optimisation planning et workflows cabinets, automatisation tâches administratives, coaching 1-to-1 dirigeants.",
     },
     {
       q: "Proposez-vous des formations IA individuelles à Poisy ?",

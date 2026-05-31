@@ -30,8 +30,8 @@ export const QUIEVRECHAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quiévrechain : diagnostic adapté aux TPE et PME industrielles et logistiques du bassin valenciennois, prestataires transfrontaliers Hainaut franco-belge, commerçants et artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Quiévrechain : diagnostic adapté aux TPE et PME industrielles et logistiques du bassin valenciennois, prestataires transfrontaliers Hainaut franco-belge, commerçants et artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Quiévrechain : diagnostic adapté aux TPE et PME industrielles et logistiques du bassin valenciennois, prestataires transfrontaliers Hainaut franco-belge, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Quiévrechain : diagnostic adapté aux TPE et PME industrielles et logistiques du bassin valenciennois, prestataires transfrontaliers Hainaut franco-belge, commerçants et artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quiévrechain : formats adaptés à la PME industrielle-logistique, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const QUIEVRECHAIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Quiévrechain  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin valenciennois et transfrontalières Hainaut, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin valenciennois et transfrontalières Hainaut, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les prestataires transfrontaliers franco-belges ?",

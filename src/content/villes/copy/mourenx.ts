@@ -9,9 +9,9 @@ export const MOURENX_COPY: VilleCopy = {
   pitchEn:
     "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA couvre les activités professionnelles du bassin du bassin de Lacq.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit sur place sur mesure.",
   seoHook: "chimie verte & industrie",
   ecosystemFr:
     "Mourenx est une ville nouvelle de 5 695 habitants, construite dans les années 1960 pour le gisement de gaz de Lacq. En reconversion : plateforme chimie Induslacq (chimie verte, matériaux avancés, carbonates), PME industrielles sous-traitantes, TPE artisans, commerces et services de proximité.",
@@ -30,8 +30,8 @@ export const MOURENX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mourenx : diagnostic adapté aux PME industrielles du bassin de Lacq, sous-traitants chimie, TPE artisans et commerçants. Optimisation production, maintenance, sécurité. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mourenx : déploiement outils IA dans vos usines, ateliers ou bureaux. Maintenance prédictive, contrôle qualité, sécurité industrielle et optimisation processus.",
@@ -57,7 +57,7 @@ export const MOURENX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Mourenx ?",
-      a: "L'audit Flash IA à Mourenx démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus industriels, identification cas d'usage IA prioritaires (maintenance, qualité, sécurité) et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Mourenx démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus industriels, identification cas d'usage IA prioritaires (maintenance, qualité, sécurité) et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME sous-traitantes de Lacq ?",

@@ -30,8 +30,8 @@ export const PONT_A_MOUSSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-à-Mousson : formats adaptés à l'atelier industriel, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const PONT_A_MOUSSON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces de centre-ville ?",
-      a: "Oui, commerçants et artisans du centre-ville de Pont-à-Mousson : gestion stocks, relation client, automatisation comptabilité, présence en ligne. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, commerçants et artisans du centre-ville de Pont-à-Mousson : gestion stocks, relation client, automatisation comptabilité, présence en ligne. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Pont-à-Mousson ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Pont-à-Mousson ?",

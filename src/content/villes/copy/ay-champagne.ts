@@ -9,9 +9,9 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
   pitchEn:
     "Aÿ-Champagne (51), commune nouvelle au cœur de la Montagne de Reims, est un berceau historique du champagne classé UNESCO. TPE et PME viticoles, maisons de champagne, négoce et œnotourisme, artisans tonneliers et services viticoles, commerces de bourg. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit sur place sur mesure.",
   seoHook: "viticulture vinification & négoce commerce",
   ecosystemFr:
     "Aÿ-Champagne est une commune nouvelle au cœur de la Montagne de Reims, berceau historique du champagne (coteaux classés UNESCO). Tissu TPE/PME : vignerons récoltants-manipulants, maisons de champagne, négoce, œnotourisme, services viticoles, artisanat tonnelier.",
@@ -30,8 +30,8 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aÿ-Champagne : diagnostic adapté aux TPE vignerons récoltants, maisons de champagne, prestataires viticoles, acteurs œnotourisme. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aÿ-Champagne : formats adaptés chai, bureau, cave de dégustation, boutique. Vos équipes repartent autonomes sur les outils déployés.",
@@ -53,7 +53,7 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Aÿ-Champagne  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE vignerons et PME du secteur champenois.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE vignerons et PME du secteur champenois.",
     },
     {
       q: "Travaillez-vous avec les vignerons et maisons de champagne ?",

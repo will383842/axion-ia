@@ -30,8 +30,8 @@ export const CANEJAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canéjan : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME tertiaires et de services du sud bordelais. ROI quantifié, audit Flash 4h.",
-      en: "Audit IA à Canéjan : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME tertiaires et de services du sud bordelais. ROI quantifié, audit Flash 4h.",
+      fr: "Audit IA à Canéjan : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME tertiaires et de services du sud bordelais. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA à Canéjan : diagnostic adapté aux artisans BTP, commerçants et professions libérales, puis aux PME tertiaires et de services du sud bordelais. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Canéjan : formats adaptés au bureau, à l'atelier, au cabinet ou au commerce. Vos équipes repartent autonomes sur leurs outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const CANEJAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans BTP de Canéjan ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et gestion du planning.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et gestion du planning.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires du sud Bordeaux ?",

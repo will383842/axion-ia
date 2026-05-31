@@ -30,8 +30,8 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Chevrolière : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Chevrolière : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Chevrolière : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Chevrolière : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et exploitations maraîchères du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Chevrolière : formats adaptés au bureau, au cabinet, au commerce ou à l'exploitation maraîchère. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations maraîchères ?",
-      a: "Oui, nous accompagnons les exploitations maraîchères sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks et commandes, optimisation logistique récoltes, agents IA vente directe. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les exploitations maraîchères sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks et commandes, optimisation logistique récoltes, agents IA vente directe. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME tertiaires du sud nantais ?",
@@ -61,7 +61,7 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Chevrolière  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
     },
     {
       q: "Comment se déroule une mission depuis Nantes ?",

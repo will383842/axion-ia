@@ -30,8 +30,8 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, TPE artisans, commerçants centre-ville, exploitants agricoles du Perche. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, TPE artisans, commerçants centre-ville, exploitants agricoles du Perche. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, TPE artisans, commerçants centre-ville, exploitants agricoles du Perche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, TPE artisans, commerçants centre-ville, exploitants agricoles du Perche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nogent-le-Rotrou : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Nogent-le-Rotrou ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du Perche ?",

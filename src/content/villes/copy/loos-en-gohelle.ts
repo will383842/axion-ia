@@ -10,9 +10,9 @@ export const LOOS_EN_GOHELLE_COPY: VilleCopy = {
     "Loos-en-Gohelle (62), ville pionniere du developpement durable dans le Pas-de-Calais, reunit pres de 6 800 habitants. Connue pour ses terrils jumeaux inscrits au patrimoine mondial UNESCO, son economie associe TPE eco-responsables, PME innovantes, economie sociale et solidaire et services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "terrils UNESCO, innovation durable & ESS",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Loos-en-Gohelle (62). Nous accompagnons les TPE, PME et ETI de cette ville pionniere du developpement durable : acteurs ESS, entreprises eco-innovantes, artisans et services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Loos-en-Gohelle est reconnue nationalement pour sa transition ecologique (terrils jumeaux UNESCO, base 11/19). Tissu economique oriente developpement durable : PME eco-innovantes, structures ESS, TPE artisanales, commerces responsables et services. Proximite Lens (5 km) et Lievin.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LOOS_EN_GOHELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Loos-en-Gohelle : diagnostic adapte aux structures ESS, PME eco-innovantes et TPE artisanales de cette ville pionniere durable. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Loos-en-Gohelle : diagnostic adapte aux structures ESS, PME eco-innovantes et TPE artisanales de cette ville pionniere durable. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Loos-en-Gohelle : diagnostic adapte aux structures ESS, PME eco-innovantes et TPE artisanales de cette ville pionniere durable. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Loos-en-Gohelle : diagnostic adapte aux structures ESS, PME eco-innovantes et TPE artisanales de cette ville pionniere durable. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Loos-en-Gohelle : formations adaptees aux acteurs ESS, PME vertes, artisans et services. Equipes autonomes sur outils IA responsables.",
@@ -53,11 +53,11 @@ export const LOOS_EN_GOHELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les structures ESS de Loos-en-Gohelle ?",
-      a: "Pour les acteurs ESS de Loos-en-Gohelle, nous proposons : automatisation reporting impact, IA gestion subventions, agents conversationnels benevoles, mesure empreinte carbone IA. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les acteurs ESS de Loos-en-Gohelle, nous proposons : automatisation reporting impact, IA gestion subventions, agents conversationnels benevoles, mesure empreinte carbone IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Loos-en-Gohelle ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle aider la transition durable a Loos-en-Gohelle ?",

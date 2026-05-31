@@ -30,8 +30,8 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trith-Saint-Léger : formats adaptés à l'atelier industriel, au chantier, à la ligne de production, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobile et BTP trithois ?",
-      a: "Oui, nous accompagnons les sous-traitants automobile et TPE artisans BTP à Trith-Saint-Léger sur leurs cas IA : automatisation devis, suivi production, relances clients. Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      a: "Oui, nous accompagnons les sous-traitants automobile et TPE artisans BTP à Trith-Saint-Léger sur leurs cas IA : automatisation devis, suivi production, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Trith-Saint-Léger, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation clients.",
+      a: "Pour les commerçants et professions libérales à Trith-Saint-Léger, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation clients.",
     },
     {
       q: "Comment se passe une mission depuis Lille ?",

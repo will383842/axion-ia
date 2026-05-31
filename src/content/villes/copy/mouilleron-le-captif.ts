@@ -9,9 +9,9 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
   pitchEn:
     "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération yonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit sur place sur mesure.",
   seoHook: "industrie & commerce détail",
   ecosystemFr:
     "Mouilleron-le-Captif (5 273 hab) est une commune périurbaine de l'agglomération yonnaise (La Roche-sur-Yon Agglomération), au nord de la préfecture vendéenne. Économie diversifiée : industrie, services aux entreprises, BTP, commerces, événementiel (Vendéspace) et professions libérales. Proximité immédiate La Roche-sur-Yon (5 min), Nantes (55 min), Les Sables-d'Olonne (45 min).",
@@ -30,8 +30,8 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mouilleron-le-Captif : diagnostic adapté aux TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mouilleron-le-Captif : formats adaptés à la PME industrielle, le bureau d'études, l'artisan ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mouilleron-le-Captif  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Mouilleron-le-Captif. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou services.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Mouilleron-le-Captif. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou services.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et services ?",
@@ -61,7 +61,7 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants de Mouilleron-le-Captif ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : devis automatisés, agents IA prise de RDV, gestion stocks intelligente, suivi chantier, fidélisation client augmentée.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Mouilleron-le-Captif ?",

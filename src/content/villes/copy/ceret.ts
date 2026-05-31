@@ -30,8 +30,8 @@ export const CERET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Céret : formats adaptés à l'atelier d'art, exploitation fruitière, commerce, galerie, bureau. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const CERET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans d'art et commerçants ?",
-      a: "Pour les TPE artisans d'art et commerçants à Céret, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : e-commerce artisanat, agents IA, gestion stocks.",
+      a: "Pour les TPE artisans d'art et commerçants à Céret, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : e-commerce artisanat, agents IA, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Céret ?",

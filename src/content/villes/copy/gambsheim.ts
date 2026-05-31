@@ -9,9 +9,9 @@ export const GAMBSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Gambsheim (67), commune de 5 312 habitants en Bas-Rhin, est implantée sur les bords du Rhin à la frontière allemande. Connue pour sa passe à poissons unique en Europe et son écluse fluviale, elle accueille un tissu de TPE/PME tourisme fluvial, agriculture rhénane, artisanat, BTP et services. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gambsheim (67). Nous accompagnons TPE et PME du Ried Nord alsacien : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gambsheim (67). Nous accompagnons TPE et PME du Ried Nord alsacien : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gambsheim (67). Nous accompagnons TPE et PME du Ried Nord alsacien : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gambsheim (67). Nous accompagnons TPE et PME du Ried Nord alsacien : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Gambsheim est une commune rhénane du nord de l'Eurométropole de Strasbourg, marquée par son écluse sur le Rhin et sa passe à poissons (la plus grande d'Europe), attirant un tourisme nature et fluvial. L'économie locale repose sur l'agriculture (maïs, tabac, houblon), l'artisanat, le BTP, les commerces de proximité et les services aux entreprises. La proximité immédiate de l'Allemagne (Rheinau/Offenburg) favorise les échanges transfrontaliers.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GAMBSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gambsheim : diagnostic adapté aux TPE/PME tourisme fluvial, agriculture, artisanat, BTP et services du Ried Nord alsacien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gambsheim : formats adaptés à l'exploitation agricole, au site touristique, à l'atelier artisanal, au chantier BTP ou au bureau. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const GAMBSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gambsheim  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Gambsheim : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Gambsheim : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme fluvial et de l'écotourisme ?",

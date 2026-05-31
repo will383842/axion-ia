@@ -9,9 +9,9 @@ export const TRELAZE_COPY: VilleCopy = {
   pitchEn:
     "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de TPE, PME et commerces sur un bassin de plus de 16 000 habitants. Axion-IA couvre les activités professionnelles du bassin : artisanat, commerce, industrie, services et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "artisanat second & commerce détail",
   ecosystemFr:
     "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
@@ -30,8 +30,8 @@ export const TRELAZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Trélazé : diagnostic adapté aux TPE artisans, commerçants et PME du bassin est-angevin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trélazé : formations pratiques pour équipes TPE/PME, ateliers métier commerce, artisanat ou services. Vos collaborateurs repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const TRELAZE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Trélazé  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Trélazé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place IA à Trélazé démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {
       q: "Accompagnez-vous les commerces de proximité trélazéens ?",

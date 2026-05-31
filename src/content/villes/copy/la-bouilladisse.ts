@@ -9,9 +9,9 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
   pitchEn:
     "La Bouilladisse (13), commune résidentielle de l'est marseillais nichée entre Aubagne et le massif de la Sainte-Baume, accueille familles et cadres. Tissu de TPE artisans BTP, commerçants, PME services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit sur place sur mesure.",
   seoHook: "rénovation résidentielle & artisanat services",
   ecosystemFr:
     "La Bouilladisse est une commune résidentielle vallonnée de l'arrière-pays marseillais, entre Aubagne et la Sainte-Baume. Centre-village avec commerces de proximité, zones artisanales, TPE BTP (construction, rénovation) et professions libérales. Cadres et employés travaillant à Aubagne, Marseille ou Aix.",
@@ -30,8 +30,8 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Bouilladisse : diagnostic adapté aux TPE artisans BTP, commerçants et PME de services de l'est marseillais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Bouilladisse : ateliers pratiques pour artisans BTP, commerçants et équipes PME. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Bouilladisse  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME bouilladissoises. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, commerçants et PME bouilladissoises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de La Bouilladisse ?",

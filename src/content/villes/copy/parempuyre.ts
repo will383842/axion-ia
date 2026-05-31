@@ -9,9 +9,9 @@ export const PAREMPUYRE_COPY: VilleCopy = {
   pitchEn:
     "Parempuyre (33), commune entre le nord de Bordeaux Métropole et l'entrée du Médoc, allie tissu résidentiel en croissance, vignoble AOC Haut-Médoc, artisanat BTP et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du bassin nord-bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture haut-médoc & services",
   ecosystemFr:
     "Parempuyre se situe entre Bordeaux Métropole nord et le Médoc viticole. Vignoble AOC Haut-Médoc, tissu TPE artisanat BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès tramway C (terminus Blanquefort) et rocade A630.",
@@ -30,8 +30,8 @@ export const PAREMPUYRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parempuyre : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du nord Bordeaux-Médoc. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Parempuyre : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du nord Bordeaux-Médoc. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Parempuyre : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du nord Bordeaux-Médoc. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Parempuyre : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du nord Bordeaux-Médoc. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parempuyre : ateliers adaptés aux chais, ateliers BTP et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PAREMPUYRE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Parempuyre  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et artisans de Parempuyre.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et artisans de Parempuyre.",
     },
     {
       q: "Accompagnez-vous les vignerons de Parempuyre ?",
@@ -61,7 +61,7 @@ export const PAREMPUYRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP à Parempuyre ?",
-      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Parempuyre ?",

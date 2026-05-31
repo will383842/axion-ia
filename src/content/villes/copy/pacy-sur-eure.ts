@@ -30,8 +30,8 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pacy-sur-Eure : formats adaptés au commerce, à l'exploitation agricole, à l'atelier, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et professions libérales du secteur ?",
-      a: "Pour les TPE et professions libérales à Pacy-sur-Eure, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, chatbot cabinet.",
+      a: "Pour les TPE et professions libérales à Pacy-sur-Eure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation comptabilité, gestion agenda, classification documents, chatbot cabinet.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",

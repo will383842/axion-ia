@@ -10,9 +10,9 @@ export const CALONNE_RICOUART_COPY: VilleCopy = {
     "Calonne-Ricouart (62), commune du bassin minier du Pas-de-Calais, reunit pres de 5 370 habitants. Situee entre Marles-les-Mines et Divion, son economie repose sur les TPE artisanales, les PME de services, le commerce de proximite et les professions de sante. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, services & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Calonne-Ricouart (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, commercants, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Calonne-Ricouart est situee dans le bassin minier entre Marles-les-Mines (3 km) et Divion (4 km). Tissu economique compose de TPE artisanales BTP, PME de services, commerces de centre-bourg, professions de sante et services a la personne. Commune residentielle du bassin bethunois.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CALONNE_RICOUART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Calonne-Ricouart : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Calonne-Ricouart : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Calonne-Ricouart : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Calonne-Ricouart : diagnostic adapte aux TPE artisanales, commercants et professionnels de sante du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Calonne-Ricouart : formations adaptees aux ateliers artisanaux, commerces, cabinets de sante et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const CALONNE_RICOUART_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les artisans de Calonne-Ricouart ?",
-      a: "Pour les artisans du bassin minier, nous proposons : automatisation devis et facturation, planning chantiers IA, suivi client numerique, gestion stocks. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les artisans du bassin minier, nous proposons : automatisation devis et facturation, planning chantiers IA, suivi client numerique, gestion stocks. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Calonne-Ricouart ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professionnels de sante de Calonne-Ricouart ?",
-      a: "Oui, nous accompagnons medecins, pharmaciens et professionnels de sante : agenda IA, automatisation dossiers patients, agents conversationnels prise de rendez-vous. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons medecins, pharmaciens et professionnels de sante : agenda IA, automatisation dossiers patients, agents conversationnels prise de rendez-vous. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Calonne-Ricouart ?",

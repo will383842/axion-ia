@@ -10,9 +10,9 @@ export const QUETIGNY_COPY: VilleCopy = {
     "Quetigny (21), commune dynamique à l'est de Dijon, concentre un pôle commercial majeur et des zones d'activités denses. Tissu économique mixte : grande distribution, TPE/PME commerce et services, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
   seoHook: "commerce, services & zones d'activités",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Quetigny est un pôle commercial et économique majeur de l'est dijonnais. Son centre commercial et ses zones d'activités attirent un tissu dense de TPE/PME : grande distribution, commerce spécialisé, restauration, services aux entreprises, artisanat. Commune limitrophe de Chevigny-Saint-Sauveur, bien desservie par le réseau Divia et l'A39.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const QUETIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Quetigny : diagnostic adapté aux commerçants, restaurateurs, TPE/PME services et artisans du pôle commercial est-dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quetigny : formations pratiques pour commerçants, restaurateurs, prestataires B2B et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const QUETIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Quetigny  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quetignois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME quetignois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les commerçants et restaurateurs de Quetigny ?",
@@ -61,7 +61,7 @@ export const QUETIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME des zones d'activités de Quetigny ?",
-      a: "Pour les PME des zones d'activités de Quetigny, nous proposons Audit Flash {{price:audit-flash|flat}}, intervention formation équipe, implémentation sur mesure. Cas typiques : CRM augmenté, automatisation facturation, agents IA service client, gestion documentaire IA.",
+      a: "Pour les PME des zones d'activités de Quetigny, nous proposons Audit sur place {{price:audit-flash|flat}}, intervention formation équipe, implémentation sur mesure. Cas typiques : CRM augmenté, automatisation facturation, agents IA service client, gestion documentaire IA.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Quetigny ?",

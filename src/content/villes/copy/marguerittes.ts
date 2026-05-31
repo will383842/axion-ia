@@ -9,9 +9,9 @@ export const MARGUERITTES_COPY: VilleCopy = {
   pitchEn:
     "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA couvre les activités professionnelles du bassin de l'agglomération nîmoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture méditerranéenne",
   ecosystemFr:
     "Marguerittes (~8 300 hab) est une commune résidentielle et dynamique de l'agglomération nîmoise nord. Zone d'activité économique, services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture méditerranéenne (oliviers, vignes). Accès direct autoroute A9.",
@@ -30,8 +30,8 @@ export const MARGUERITTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marguerittes : formats adaptés aux entreprises de services, commerces, cabinets et artisans de l'agglomération nîmoise.",
@@ -53,7 +53,7 @@ export const MARGUERITTES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Marguerittes  : quel budget prévoir ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises de services ?",

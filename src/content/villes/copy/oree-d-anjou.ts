@@ -9,9 +9,9 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, TPE artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit sur place accessible.",
   seoHook: "vallée loire",
   ecosystemFr:
     "Orée d'Anjou est une commune nouvelle aux confins du Maine-et-Loire et de la Loire-Atlantique, face à Ancenis. L'économie locale s'appuie sur la viticulture (coteaux-d'ancenis, muscadet), le tissu industriel et logistique hérité de la vallée de la Loire, l'artisanat BTP, les commerces et les services. Patrimoine remarquable avec le belvédère de Champtoceaux et la maison natale de Joachim du Bellay à Liré.",
@@ -30,8 +30,8 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orée d'Anjou : diagnostic adapté aux domaines viticoles, PME industrielles, TPE artisans et commerçants du val de Loire Ancenis–Nantes. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orée d'Anjou : formations viticulteurs, ateliers PME industrielles, sessions artisans BTP et commerçants. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Champtoceaux ?",
-      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE et petits domaines viticoles de toutes les communes déléguées d'Orée d'Anjou (Champtoceaux, Drain, Liré, Bouzillé). Diagnostic concret avec ROI chiffré.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE et petits domaines viticoles de toutes les communes déléguées d'Orée d'Anjou (Champtoceaux, Drain, Liré, Bouzillé). Diagnostic concret avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les PME industrielles entre Ancenis et Nantes ?",

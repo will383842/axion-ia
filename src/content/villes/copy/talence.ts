@@ -9,9 +9,9 @@ export const TALENCE_COPY: VilleCopy = {
   pitchEn:
     "Talence (33), 46 338 habitants, commune limitrophe sud de Bordeaux dans le premier anneau métropolitain. Densité élevée (5 549 hab/km²), tissu tertiaire dominant à plus de 90 %, peu d'industrie. Pôle universitaire majeur : Université de Bordeaux, KEDGE Business School, ENSEIRB-MATMECA, Arts et Métiers ParisTech. Desservie par le tramway B et la gare de Talence-Médoquine (rouverte septembre 2025). Axion-IA accompagne TPE, PME de services, professions libérales et structures de l'écosystème enseignement-recherche.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Talence (Gironde, Bordeaux Métropole) auprès des TPE, PME de services tertiaires, professions libérales, artisans et structures liées au pôle universitaire. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Bordeaux centre via tramway B ou rocade. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Talence (Gironde, Bordeaux Métropole) auprès des TPE, PME de services tertiaires, professions libérales, artisans et structures liées au pôle universitaire. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Bordeaux centre via tramway B ou rocade. Code custom, pas de no-code, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes IA seniors, intervient à Talence (Gironde, Bordeaux Métropole) auprès des TPE, PME de services tertiaires, professions libérales, artisans et structures liées au pôle universitaire. Audit Flash {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Bordeaux centre via tramway B ou rocade. Code custom, pas de no-code, conformité RGPD intégrée.",
+    "Axion-IA, cabinet d'architectes IA seniors, intervient à Talence (Gironde, Bordeaux Métropole) auprès des TPE, PME de services tertiaires, professions libérales, artisans et structures liées au pôle universitaire. Audit sur place {{price:audit-flash|flat}}, interventions sur site, implémentation IA code custom et coaching 1-to-1 dirigeants. Nos consultants se déplacent depuis Bordeaux centre via tramway B ou rocade. Code custom, pas de no-code, conformité RGPD intégrée.",
   seoHook: "tertiaire universitaire & professions libérales",
   ecosystemFr:
     "Talence est intégrée à Bordeaux Métropole et constitue un pôle universitaire majeur de Nouvelle-Aquitaine. Le tissu économique est tertiaire à plus de 90 % de la population active : services aux entreprises, professions libérales (santé, juridique, conseil), commerces de proximité, restauration étudiante. Présence forte de l'enseignement supérieur (Université de Bordeaux campus sciences, KEDGE, ENSEIRB-MATMECA, Arts et Métiers ParisTech) qui structure un écosystème R&D, ingénierie et services. Industrie marginale, agriculture quasi-inexistante.",
@@ -31,8 +31,8 @@ export const TALENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Talence : diagnostic pour TPE services, professions libérales, cabinets et PME du premier anneau bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Talence : diagnostic pour TPE services, professions libérales, cabinets et PME du premier anneau bordelais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Talence : diagnostic pour TPE services, professions libérales, cabinets et PME du premier anneau bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Talence : diagnostic pour TPE services, professions libérales, cabinets et PME du premier anneau bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Talence : ateliers TPE/PME locales (cabinets libéraux, services aux entreprises, artisans). Formation équipes sur cas métier concrets, vos équipes repartent autonomes.",
@@ -50,7 +50,7 @@ export const TALENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Talence ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de {{price:intervention-4h|flat}} la demi-journée, coaching 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics consultables.",
+      a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de {{price:intervention-4h|flat}} la demi-journée, coaching 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics consultables.",
     },
     {
       q: "Axion-IA se déplace-t-il à Talence depuis Bordeaux centre ?",

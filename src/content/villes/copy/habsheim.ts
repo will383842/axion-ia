@@ -9,9 +9,9 @@ export const HABSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
   ecosystemFr:
     "Habsheim est intégrée à Mulhouse Alsace Agglomération, à la jonction de la plaine d'Alsace et du Sundgau. Son économie s'appuie sur un terroir viticole (route des vins d'Alsace, AOC pinot blanc, gewurztraminer), un tissu artisanal et industriel diffus, un aérodrome ULM-aviation légère, des commerces de proximité et des services aux entreprises. La commune profite de la dynamique économique transfrontalière de Mulhouse-Bâle.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HABSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Habsheim : formats adaptés au domaine viticole, à l'atelier artisanal, à l'usine ou au commerce. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const HABSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Habsheim  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Habsheim et du sud-est mulhousien, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, atelier artisanal, commerce ou unité de production.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Habsheim et du sud-est mulhousien, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, atelier artisanal, commerce ou unité de production.",
     },
     {
       q: "Accompagnez-vous les viticulteurs et acteurs œnotouristiques ?",

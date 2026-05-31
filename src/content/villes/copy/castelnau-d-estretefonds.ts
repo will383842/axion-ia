@@ -9,9 +9,9 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
   pitchEn:
     "Castelnau-d'Estrétefonds (31), commune du nord de Toulouse avec plus de 7 000 habitants, pôle logistique majeur (Eurocentre). Tissu TPE artisans, PME logistique et transport, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du nord de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit sur place sur mesure.",
   seoHook: "logistique entreposage & transport routier",
   ecosystemFr:
     "Castelnau-d'Estrétefonds accueille la plateforme logistique Eurocentre, l'un des plus grands pôles logistiques du sud-ouest. PME de transport et logistique, entrepôts, TPE artisans, commerces de bourg, professions libérales. Nœud autoroutier A62/A68.",
@@ -30,8 +30,8 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelnau-d'Estrétefonds : diagnostic adapté aux PME logistique Eurocentre, TPE artisans et commerçants du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castelnau-d'Estrétefonds : formats adaptés à l'entrepôt logistique, au transporteur, à l'artisan. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Castelnau-d'Estrétefonds  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistiques, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME logistiques, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider une PME logistique à Eurocentre ?",

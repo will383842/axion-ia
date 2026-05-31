@@ -9,9 +9,9 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
   pitchEn:
     "Marange-Silvange (57), commune résidentielle du Pays de l'Orne en Moselle, à proximité immédiate de Metz et de l'agglomération messine. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales du nord mosellan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Marange-Silvange est une commune résidentielle attractive du Pays de l'Orne, à 15 min de Metz. Cadre de vie prisé avec son château, à mi-chemin entre l'agglomération messine et la vallée de l'Orne. Tissu TPE artisans BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Proximité du sillon mosellan et du Luxembourg.",
@@ -30,8 +30,8 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marange-Silvange : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Pays de l'Orne et de l'agglomération messine. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Marange-Silvange : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Pays de l'Orne et de l'agglomération messine. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Marange-Silvange : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Pays de l'Orne et de l'agglomération messine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Marange-Silvange : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Pays de l'Orne et de l'agglomération messine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marange-Silvange : formations adaptées TPE/PME de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Marange-Silvange  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Marange-Silvange souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Marange-Silvange souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Marange-Silvange ?",
@@ -61,7 +61,7 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Marange-Silvange ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Marange-Silvange ?",

@@ -9,9 +9,9 @@ export const BOUCAU_COPY: VilleCopy = {
   pitchEn:
     "Boucau (64), commune de l'agglomération de Bayonne sur les bords de l'Adour, 8 968 habitants. Ancien site sidérurgique reconverti, tissu de TPE artisans, PME industrielles, commerces et activités portuaires. Axion-IA collabore avec toutes les structures locales de l'agglomération bayonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boucau (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : industrie, commerce, artisanat, activités portuaires. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boucau (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : industrie, commerce, artisanat, activités portuaires. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boucau (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : industrie, commerce, artisanat, activités portuaires. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boucau (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : industrie, commerce, artisanat, activités portuaires. Audit sur place sur mesure.",
   seoHook: "industrie reconversion & logistique portuaire",
   ecosystemFr:
     "Boucau est une commune de 8 968 habitants sur les bords de l'Adour, en agglomération bayonnaise. Ancien site des Forges de l'Adour reconverti, tissu industriel résiduel, PME logistique portuaire, TPE artisans BTP, commerces de proximité et services. Bassin d'emploi commun Bayonne-Anglet-Biarritz.",
@@ -30,8 +30,8 @@ export const BOUCAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Boucau : diagnostic adapté aux PME industrielles, TPE artisans, acteurs logistique portuaire et commerçants de l'agglomération bayonnaise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boucau : déploiement outils IA dans vos ateliers industriels, entrepôts logistiques, commerces ou bureaux. Équipes formées et autonomes.",
@@ -57,7 +57,7 @@ export const BOUCAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Boucau ?",
-      a: "L'audit Flash IA à Boucau démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus industriels, logistiques ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Boucau démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus industriels, logistiques ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les acteurs logistiques du port de Bayonne ?",

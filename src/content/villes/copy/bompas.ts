@@ -30,8 +30,8 @@ export const BOMPAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bompas : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const BOMPAS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et indépendants ?",
-      a: "Pour les commerçants et indépendants à Bompas, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA accueil, gestion planning, facturation automatisée.",
+      a: "Pour les commerçants et indépendants à Bompas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA accueil, gestion planning, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission à Bompas ?",

@@ -9,9 +9,9 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
   pitchEn:
     "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de TPE commerçantes, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit sur place sur mesure.",
   seoHook: "commerce proximité & artisanat services",
   ecosystemFr:
     "Le Pré-Saint-Gervais est la plus petite commune de France métropolitaine (0,7 km²) mais l'une des plus denses. Limitrophe de Paris (19e, 20e), des Lilas et Pantin, elle bénéficie du dynamisme du canal de l'Ourcq et de la ligne 11 du métro. Tissu dense de TPE commerces, artisans, professions libérales et PME de services. Proximité immédiate de la Villette, du bassin créatif de Pantin et du pôle tertiaire Romainville-Noisy.",
@@ -30,8 +30,8 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pré-Saint-Gervais : formations pratiques dans votre commerce, atelier ou bureau. Équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Pré-Saint-Gervais ?",
-      a: "L'Audit Flash IA au Pré-Saint-Gervais débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
+      a: "L'Audit sur place IA au Pré-Saint-Gervais débute à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
     },
     {
       q: "Travaillez-vous avec les commerçants et artisans du Pré-Saint-Gervais ?",

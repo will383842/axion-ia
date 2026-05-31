@@ -9,9 +9,9 @@ export const ARES_COPY: VilleCopy = {
   pitchEn:
     "Arès (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme familial, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA y intervient pour tous types d'activités du nord du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "tourisme hébergement & ostréiculture",
   ecosystemFr:
     "Arès est une station balnéaire familiale du nord du Bassin d'Arcachon. Tourisme (campings, locations, plages), ostréiculture (port ostréicole), commerces saisonniers, artisanat BTP et professions libérales. Réserve naturelle des prés salés.",
@@ -30,8 +30,8 @@ export const ARES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Arès : diagnostic pour hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et TPE artisans du nord Bassin d'Arcachon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arès : ateliers adaptés aux campings, hébergements, ports ostréicoles et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const ARES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Arès  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux hébergeurs et TPE du nord Bassin d'Arcachon.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux hébergeurs et TPE du nord Bassin d'Arcachon.",
     },
     {
       q: "Accompagnez-vous les campings et hébergeurs ?",

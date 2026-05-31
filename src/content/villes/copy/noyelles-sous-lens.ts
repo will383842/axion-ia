@@ -10,9 +10,9 @@ export const NOYELLES_SOUS_LENS_COPY: VilleCopy = {
     "Noyelles-sous-Lens (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 850 habitants. Situee dans l'agglomeration lensoise, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, commerce & tertiaire",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Noyelles-sous-Lens (62). Nous accompagnons les TPE, PME et ETI du bassin minier lensois : commercants, artisans, prestataires de services et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Noyelles-sous-Lens est situee dans l'agglomeration de Lens (3 km), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions liberales et activites tertiaires liees a la proximite du Louvre-Lens.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const NOYELLES_SOUS_LENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Noyelles-sous-Lens : diagnostic adapte aux TPE de services, PME commerciales et artisans du bassin minier lensois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Noyelles-sous-Lens : formations adaptees aux commerces, bureaux tertiaires, cabinets et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const NOYELLES_SOUS_LENS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Noyelles-sous-Lens ?",
-      a: "Pour les commercants du bassin lensois, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client automatisee, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les commercants du bassin lensois, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client automatisee, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Noyelles-sous-Lens ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professions liberales de Noyelles-sous-Lens ?",

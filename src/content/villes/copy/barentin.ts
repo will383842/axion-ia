@@ -10,9 +10,9 @@ export const BARENTIN_COPY: VilleCopy = {
     "Barentin (76), commune de la vallee du Commerce en Seine-Maritime, reunit plus de 12 000 habitants. Ancienne cite textile reconvertie, son economie repose sur les TPE de services, les PME industrielles et logistiques, le commerce de centre-ville et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie reconvertie, commerce & tertiaire",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Barentin est situee dans la vallee du Commerce, a 20 km au nord-ouest de Rouen. Ancienne capitale du textile normand, la ville a reussi sa reconversion vers les services, le commerce de centre-ville, la logistique et les PME industrielles diversifiees. Acces rapide A150 vers Rouen et Le Havre.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BARENTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Barentin : diagnostic adapte aux TPE de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Barentin : diagnostic adapte aux TPE de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Barentin : diagnostic adapte aux TPE de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Barentin : diagnostic adapte aux TPE de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Barentin : formations adaptees aux commerces, PME industrielles, cabinets et ateliers artisanaux de la vallee du Commerce. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const BARENTIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Barentin ?",
-      a: "Pour les commercants de Barentin, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client automatisee, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les commercants de Barentin, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client automatisee, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Barentin ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de Barentin ?",

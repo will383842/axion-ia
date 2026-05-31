@@ -30,8 +30,8 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Val-de-Reuil : formats adaptés au site pharmaceutique, à l'entrepôt logistique, à l'atelier, au commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans de Val-de-Reuil ?",
-      a: "Pour les TPE et artisans à Val-de-Reuil, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, classification photos chantier, facturation.",
+      a: "Pour les TPE et artisans à Val-de-Reuil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, classification photos chantier, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

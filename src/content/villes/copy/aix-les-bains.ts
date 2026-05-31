@@ -65,7 +65,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professionnels du bien-être et de la santé ?",
-      a: "Audit Flash, journée de formation sur site et coaching 1-to-1. Agents de prise de RDV, classification de dossiers, RGPD strict pour cabinets et acteurs du bien-être.",
+      a: "Audit sur place, journée de formation sur site et coaching 1-to-1. Agents de prise de RDV, classification de dossiers, RGPD strict pour cabinets et acteurs du bien-être.",
     },
     {
       q: "Comment se passe une mission à Aix-les-Bains ?",

@@ -9,9 +9,9 @@ export const WISSOUS_COPY: VilleCopy = {
   pitchEn:
     "Wissous (91), commune de l'Essonne aux portes de l'aéroport Paris-Orly, conjugue tradition maraîchère et zone d'activités économiques. Serres historiques, logistique aéroportuaire, TPE artisans, PME transport et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissous (91). Nous accompagnons TPE et PME : entreprises logistiques proches d'Orly, exploitants de serres maraîchères, artisans BTP, commerces de proximité, PME transport et services aux entreprises de la zone d'activités. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissous (91). Nous accompagnons TPE et PME : entreprises logistiques proches d'Orly, exploitants de serres maraîchères, artisans BTP, commerces de proximité, PME transport et services aux entreprises de la zone d'activités. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissous (91). Nous accompagnons TPE et PME : entreprises logistiques proches d'Orly, exploitants de serres maraîchères, artisans BTP, commerces de proximité, PME transport et services aux entreprises de la zone d'activités. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissous (91). Nous accompagnons TPE et PME : entreprises logistiques proches d'Orly, exploitants de serres maraîchères, artisans BTP, commerces de proximité, PME transport et services aux entreprises de la zone d'activités. Audit sur place sur mesure.",
   seoHook: "logistique transport & maraîchage serres",
   ecosystemFr:
     "Wissous est une commune résidentielle et économique de l'Essonne, limitrophe de l'aéroport Paris-Orly. Tradition maraîchère sous serres (fraises, tomates), zone d'activités logistiques et tertiaires. TPE artisans, PME transport et logistique aéroportuaire, commerces de proximité, professions libérales.",
@@ -30,8 +30,8 @@ export const WISSOUS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wissous : formats adaptés entrepôt logistique, exploitation maraîchère, bureau zone d'activités, PME transport. Vos collaborateurs sont autonomes ensuite.",
@@ -61,7 +61,7 @@ export const WISSOUS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, suivi chantier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, suivi chantier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Massy ?",

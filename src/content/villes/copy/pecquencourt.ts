@@ -9,9 +9,9 @@ export const PECQUENCOURT_COPY: VilleCopy = {
   pitchEn:
     "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier nord-pas-de-calais",
   ecosystemFr:
     "Pecquencourt est située dans le bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans BTP et rénovation du patrimoine minier, PME industrie et sous-traitance, commerces de proximité, services aux entreprises. Reconversion économique post-minière avec développement de zones d'activités et éco-quartiers.",
@@ -30,8 +30,8 @@ export const PECQUENCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pecquencourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier industrie et BTP. Vos équipes maîtrisent les outils déployés.",
@@ -53,7 +53,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pecquencourt  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Pecquencourt souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Pecquencourt souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du bassin minier de Douai ?",
@@ -61,7 +61,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les PME industrielles à Pecquencourt ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Contrôle qualité par vision, prédiction maintenance, optimisation production.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Contrôle qualité par vision, prédiction maintenance, optimisation production.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Pecquencourt ?",

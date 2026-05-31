@@ -30,8 +30,8 @@ export const DIGNE_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Digne-les-Bains : diagnostic adapté aux TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles et commerçants de la préfecture. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Digne-les-Bains : diagnostic adapté aux TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles et commerçants de la préfecture. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Digne-les-Bains : diagnostic adapté aux TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles et commerçants de la préfecture. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Digne-les-Bains : diagnostic adapté aux TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles et commerçants de la préfecture. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Digne-les-Bains : formats adaptés aux établissements thermaux, hébergements touristiques, exploitations lavande ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const DIGNE_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Digne-les-Bains  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, commerçants et PME dignoises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, commerçants et PME dignoises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Digne-les-Bains ?",

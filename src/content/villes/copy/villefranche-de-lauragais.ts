@@ -9,9 +9,9 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   pitchEn:
     "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit sur place dès {{price:audit-flash|flat}}, code custom souverain, jamais no-code.",
   seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",
@@ -30,8 +30,8 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Lauragais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Lauragais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villefranche-de-Lauragais : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villefranche-de-Lauragais : formats adaptés à l'exploitation agroalimentaire, au commerce, à l'artisan. Vos équipes repartent autonomes.",
@@ -57,7 +57,7 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Villefranche-de-Lauragais : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou exploitations céréalières du Lauragais, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit sur place démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME agroalimentaires ou exploitations céréalières du Lauragais, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Comment Axion-IA gère-t-il la conformité RGPD à Villefranche-de-Lauragais ?",

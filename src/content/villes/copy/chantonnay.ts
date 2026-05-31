@@ -30,8 +30,8 @@ export const CHANTONNAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chantonnay : formats adaptés aux PME industrielles, exploitations agricoles, artisans BTP et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const CHANTONNAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les exploitations agricoles de Chantonnay ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion élevage prédictive, optimisation parcellaire, traçabilité, automatisation stocks et facturation.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion élevage prédictive, optimisation parcellaire, traçabilité, automatisation stocks et facturation.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du bocage ?",
@@ -61,7 +61,7 @@ export const CHANTONNAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Chantonnay  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Chantonnay ?",

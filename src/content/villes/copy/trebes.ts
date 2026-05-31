@@ -9,9 +9,9 @@ export const TREBES_COPY: VilleCopy = {
   pitchEn:
     "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit sur place sur mesure.",
   seoHook: "viticulture minervois & tourisme fluvial",
   ecosystemFr:
     "Trèbes est une commune de l'agglomération de Carcassonne, traversée par le canal du Midi (classé UNESCO) et la rivière Aude. Économie viticole (AOC Minervois, Cabardès), tourisme fluvial sur le canal du Midi, TPE artisans BTP, PME agroalimentaires, commerces de proximité, hôtellerie-restauration liée au tourisme carcassonnais.",
@@ -30,8 +30,8 @@ export const TREBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trèbes : formats adaptés au domaine viticole, à la base nautique canal du Midi, au commerce ou à l'atelier artisan. Vos équipes maîtrisent les outils déployés.",
@@ -57,7 +57,7 @@ export const TREBES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Trèbes  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME viticoles ou agroalimentaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME viticoles ou agroalimentaires, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme fluvial ?",

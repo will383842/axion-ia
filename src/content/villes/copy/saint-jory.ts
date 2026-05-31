@@ -9,9 +9,9 @@ export const SAINT_JORY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jory (31), commune des bords de Garonne au nord de Toulouse, plus de 8 600 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Saint-Jory est une commune des bords de Garonne au nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces de centre-bourg, professions libérales. Proximité Castelnau-d'Estrétefonds et de l'axe A62.",
@@ -30,8 +30,8 @@ export const SAINT_JORY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jory : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jory : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jory : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jory : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jory : formats adaptés à l'artisan, au commerce, à la PME logistique. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const SAINT_JORY_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Jory  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Jory ?",

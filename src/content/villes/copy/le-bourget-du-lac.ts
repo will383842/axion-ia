@@ -9,9 +9,9 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
   pitchEn:
     "Le Bourget-du-Lac (73), commune savoyarde sur les rives du lac du Bourget, accueille le campus de l'Université Savoie-Mont-Blanc et le technopôle Technolac, pôle de startups et R&D. Tissu recherche universitaire, TPE/PME innovantes, tourisme lacustre, commerces et services. Axion-IA répond aux besoins de toutes les entreprises du bassin Chambérien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget-du-Lac (73). Nous accompagnons TPE et PME : startups Technolac, laboratoires R&D universitaires, acteurs du tourisme lacustre, commerçants, artisans et professions libérales du bassin Chambérien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget-du-Lac (73). Nous accompagnons TPE et PME : startups Technolac, laboratoires R&D universitaires, acteurs du tourisme lacustre, commerçants, artisans et professions libérales du bassin Chambérien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget-du-Lac (73). Nous accompagnons TPE et PME : startups Technolac, laboratoires R&D universitaires, acteurs du tourisme lacustre, commerçants, artisans et professions libérales du bassin Chambérien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget-du-Lac (73). Nous accompagnons TPE et PME : startups Technolac, laboratoires R&D universitaires, acteurs du tourisme lacustre, commerçants, artisans et professions libérales du bassin Chambérien. Audit sur place sur mesure.",
   seoHook: "recherche université & startups r&d",
   ecosystemFr:
     "Le Bourget-du-Lac est un pôle universitaire et technologique majeur en Savoie. Le campus Savoie-Mont-Blanc (~14 000 étudiants) et le technopôle Technolac (~250 entreprises, startups deeptech, labos CNRS) concentrent recherche et innovation. Le lac du Bourget, plus grand lac naturel de France, alimente un tourisme lacustre significatif. Proximité directe de Chambéry et Aix-les-Bains.",
@@ -30,8 +30,8 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Bourget-du-Lac : diagnostic adapté aux startups Technolac, labos R&D, PME innovantes et TPE commerces du bassin lac du Bourget. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Bourget-du-Lac : formats adaptés aux équipes R&D, startups deeptech, TPE tourisme lacustre. Vos collaborateurs repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Bourget-du-Lac ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Frais de déplacement facturés à part du forfait pour les missions multi-jours.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme lacustre ?",

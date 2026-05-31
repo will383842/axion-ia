@@ -9,9 +9,9 @@ export const LAUNAGUET_COPY: VilleCopy = {
   pitchEn:
     "Launaguet (31), commune résidentielle du nord de Toulouse avec plus de 9 100 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "professions libérales & artisanat",
   ecosystemFr:
     "Launaguet est une commune résidentielle du nord immédiat de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone Borderouge et du métro ligne B.",
@@ -30,8 +30,8 @@ export const LAUNAGUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Launaguet : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Launaguet : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Launaguet : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Launaguet : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Launaguet : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const LAUNAGUET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Launaguet  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Launaguet ?",

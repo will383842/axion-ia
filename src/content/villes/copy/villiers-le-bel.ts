@@ -31,8 +31,8 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit Flash dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
-      en: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit Flash dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      fr: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit sur place dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
+      en: "Audit IA à Villiers-le-Bel : diagnostic processus TPE commerce, artisans BTP et PME services / logistique de Roissy Pays de France. Audit sur place dès {{price:audit-flash|flat}}, livrable sous 5 jours.",
     },
     interventions: {
       fr: "Intervention IA sur site à Villiers-le-Bel : automatisation devis-facture, relances, classification documents et workflows pour TPE/PME commerce, BTP et services nord-franciliens. Dès {{price:intervention-4h|flat}}.",
@@ -54,7 +54,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Villiers-le-Bel ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Villiers-le-Bel ?",

@@ -65,7 +65,7 @@ export const ABLON_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et petites PME tertiaires ?",
-      a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit Flash qui identifie les usages les plus rentables pour votre activité.",
+      a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit sur place qui identifie les usages les plus rentables pour votre activité.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Orly ?",

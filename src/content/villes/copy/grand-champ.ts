@@ -30,8 +30,8 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
-      en: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      fr: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grand-Champ : formats adaptés à l'exploitation agricole, à l'atelier artisanal ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -57,11 +57,11 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces de Grand-Champ ?",
-      a: "Oui, nous accompagnons TPE artisans et commerces de Grand-Champ sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons TPE artisans et commerces de Grand-Champ sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Tarifs audit IA à Grand-Champ  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Grand-Champ et de l'arrière-pays vannetais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Grand-Champ et de l'arrière-pays vannetais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Grand-Champ ?",

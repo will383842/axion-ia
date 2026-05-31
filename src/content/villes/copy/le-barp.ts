@@ -9,9 +9,9 @@ export const LE_BARP_COPY: VilleCopy = {
   pitchEn:
     "Le Barp (33), commune de la forêt landaise au sud de Bordeaux, combine activités liées au site CEA/CESTA (défense, laser), exploitation forestière, artisanat BTP et commerces. Axion-IA répond aux besoins de toutes les entreprises du sud bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barp (33). Nous accompagnons TPE et PME du sud bordelais : sous-traitants défense/tech, entreprises forestières, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barp (33). Nous accompagnons TPE et PME du sud bordelais : sous-traitants défense/tech, entreprises forestières, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barp (33). Nous accompagnons TPE et PME du sud bordelais : sous-traitants défense/tech, entreprises forestières, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barp (33). Nous accompagnons TPE et PME du sud bordelais : sous-traitants défense/tech, entreprises forestières, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "massif landaise",
   ecosystemFr:
     "Le Barp accueille le site CEA/CESTA (Centre d'Études Scientifiques et Techniques d'Aquitaine, laser Mégajoule). En forêt landaise, la commune combine sous-traitance défense/tech, exploitation forestière, artisanat BTP et commerces. Accès A63 vers Bordeaux et Bayonne.",
@@ -30,8 +30,8 @@ export const LE_BARP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Barp : diagnostic pour sous-traitants défense, entreprises forestières, TPE artisans et commerces du sud bordelais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Barp : diagnostic pour sous-traitants défense, entreprises forestières, TPE artisans et commerces du sud bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Barp : diagnostic pour sous-traitants défense, entreprises forestières, TPE artisans et commerces du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Barp : diagnostic pour sous-traitants défense, entreprises forestières, TPE artisans et commerces du sud bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Barp : ateliers adaptés aux PME tech/défense, entreprises forestières et artisans. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LE_BARP_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Barp ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux PME tech/défense et TPE artisans du sud bordelais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux PME tech/défense et TPE artisans du sud bordelais.",
     },
     {
       q: "Accompagnez-vous les sous-traitants défense ?",
@@ -61,7 +61,7 @@ export const LE_BARP_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning.",
+      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning.",
     },
     {
       q: "Comment se déroule une mission au Barp ?",

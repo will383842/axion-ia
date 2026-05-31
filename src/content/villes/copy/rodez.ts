@@ -9,9 +9,9 @@ export const RODEZ_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Rodez (12), préfecture de l'Aveyron. Ville du musée Soulages et de la cathédrale de grès rose, Rodez vit de l'agroalimentaire (RAGT semences), du commerce, de la santé et du tourisme culturel. Nous y apportons une IA concrète et utile aux petites structures du plateau aveyronnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les TPE puis les PME : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les TPE puis les PME : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les TPE puis les PME : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit Flash sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rodez (12), en Aveyron. Nous accompagnons en priorité les TPE puis les PME : acteurs de l'agroalimentaire et des semences (filière RAGT), commerces, professions de santé, artisans et structures touristiques liées au musée Soulages. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
   seoHook: "agroalimentaire & semences",
   ecosystemFr:
     "Rodez, capitale de l'Aveyron, mêle patrimoine et économie productive : autour de la cathédrale de grès rose et du musée Soulages, dédié à Pierre Soulages né dans la ville, gravite un tourisme culturel actif. L'agroalimentaire structure le bassin, porté par la filière semencière RAGT, aux côtés du commerce, de la santé et d'un artisanat dense. Ce tissu de TPE et PME est un terrain idéal pour des automatisations IA pragmatiques.",
@@ -57,7 +57,7 @@ export const RODEZ_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Rodez ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME aveyronnaises, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME aveyronnaises, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous l'agroalimentaire et la filière semencière ?",

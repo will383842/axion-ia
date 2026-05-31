@@ -9,9 +9,9 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
   pitchEn:
     "Ballancourt-sur-Essonne (91), commune résidentielle semi-rurale de la vallée de l'Essonne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit sur place sur mesure.",
   seoHook: "services & agriculture locale",
   ecosystemFr:
     "Ballancourt-sur-Essonne est une commune résidentielle semi-rurale de la vallée de l'Essonne, entre Mennecy et La Ferté-Alais. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale.",
@@ -30,8 +30,8 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ballancourt-sur-Essonne : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ballancourt-sur-Essonne : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, exploitation agricole. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ballancourt  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {
       q: "Intervenez-vous aussi à Mennecy et La Ferté-Alais ?",

@@ -30,8 +30,8 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Haute-Goulaine : diagnostic adapté aux TPE viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Haute-Goulaine : diagnostic adapté aux TPE viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Haute-Goulaine : diagnostic adapté aux TPE viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Haute-Goulaine : diagnostic adapté aux TPE viticulteurs, PME tertiaires, commerçants et professions libérales de l'est nantais viticole. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Haute-Goulaine : formats adaptés au domaine viticole, au bureau, au commerce ou au restaurant. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les domaines viticoles du Muscadet ?",
-      a: "Oui, nous accompagnons les domaines viticoles sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks et commandes export, agents IA relation client, optimisation œnotourisme. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les domaines viticoles sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks et commandes export, agents IA relation client, optimisation œnotourisme. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME tertiaires ?",
@@ -61,7 +61,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Haute-Goulaine  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de l'est nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de l'est nantais.",
     },
     {
       q: "Intervenez-vous dans les domaines viticoles sur site ?",

@@ -9,9 +9,9 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   pitchEn:
     "Le Puy-Sainte-Réparade (13), commune viticole de la vallée de la Durance au nord d'Aix-en-Provence, conjugue domaines AOC Coteaux d'Aix prestigieux, agriculture, TPE artisans, PME tertiaires et professions libérales. Bassin résidentiel haut de gamme. Axion-IA accompagne tout le tissu professionnel local de la vallée de la Durance.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-Sainte-Réparade (13). Nous accompagnons TPE artisans, viticulteurs AOC, PME tertiaires, exploitations agricoles et professions libérales de la vallée de la Durance. Audit sur place sur mesure.",
   seoHook: "viticulture AOC & PME vallée Durance",
   ecosystemFr:
     "Le Puy-Sainte-Réparade s'étend dans la vallée de la Durance au nord d'Aix-en-Provence. Économie locale dominée par les domaines viticoles AOC Coteaux d'Aix-en-Provence (dont des propriétés prestigieuses), l'agriculture, l'oléiculture, les TPE artisans, les PME tertiaires et les professions libérales. Cadre rural de qualité, attractif pour cadres et résidences haut de gamme.",
@@ -30,8 +30,8 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Puy-Sainte-Réparade : diagnostic adapté aux domaines viticoles AOC, exploitations agricoles, TPE artisans et PME tertiaires de la vallée de la Durance. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Puy-Sainte-Réparade : ateliers pour domaines viticoles, cabinets libéraux, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Puy-Sainte-Réparade ?",
-      a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, TPE artisans, PME tertiaires et professions libérales locales. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles, TPE artisans, PME tertiaires et professions libérales locales. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC du Puy-Sainte-Réparade ?",
@@ -61,7 +61,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les professions libérales et PME tertiaires locales ?",
-      a: "Absolument. Cas IA pour PME tertiaires et libéraux : automatisation gestion cabinet, CRM intelligent, agents conversationnels, rédaction assistée, analyse documentaire. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Absolument. Cas IA pour PME tertiaires et libéraux : automatisation gestion cabinet, CRM intelligent, agents conversationnels, rédaction assistée, analyse documentaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA au Puy-Sainte-Réparade ?",

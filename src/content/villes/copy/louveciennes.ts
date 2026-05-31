@@ -9,9 +9,9 @@ export const LOUVECIENNES_COPY: VilleCopy = {
   pitchEn:
     "Louveciennes (78), commune résidentielle de prestige des Yvelines, entre Bougival et Marly-le-Roi, célèbre pour son aqueduc historique et son patrimoine impressionniste (Pissarro, Sisley). Tissu de TPE artisans, professions libérales haut de gamme, PME tertiaires, consultants et commerces de proximité. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit sur place sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Louveciennes est une commune résidentielle haut de gamme de l'ouest des Yvelines, entre Bougival et Marly-le-Roi. Aqueduc historique de Louveciennes et patrimoine impressionniste (Pissarro, Sisley). Tissu économique : professions libérales (juridique, santé, patrimoine), PME tertiaires et cabinets conseil, TPE artisans, commerces de village, consultants indépendants. Communes voisines : Bougival, Marly-le-Roi, Le Pecq, La Celle-Saint-Cloud, Vaucresson.",
@@ -30,8 +30,8 @@ export const LOUVECIENNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Louveciennes : diagnostic adapté aux professions libérales, PME tertiaires, consultants et TPE artisans de l'ouest parisien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louveciennes : formats adaptés au cabinet, au bureau ou en visio. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LOUVECIENNES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Louveciennes ?",
-      a: "L'Audit Flash IA à Louveciennes démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Louveciennes démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Louveciennes ?",

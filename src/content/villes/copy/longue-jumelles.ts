@@ -9,9 +9,9 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
   pitchEn:
     "Longué-Jumelles (49), bourg-centre du Baugeois en Val de Loire, compte plus de 6 500 habitants dans un territoire agricole et commerçant. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, commerces de bourg, PME agroalimentaires et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Longué-Jumelles est un bourg commercial et agricole du Baugeois, en position de carrefour entre Angers, Saumur et La Flèche. Agriculture céréalière, cultures spécialisées (champignonnières, semences), PME agroalimentaires, artisanat et commerces de centre-bourg. Champignonnières troglodytiques emblématiques.",
@@ -30,8 +30,8 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longué-Jumelles : formations pour équipes agricoles, agroalimentaires et commerciales. Ateliers pratiques adaptés au contexte Baugeois.",
@@ -53,11 +53,11 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Longué-Jumelles  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Longué-Jumelles démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit sur place IA à Longué-Jumelles démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les champignonnistes troglodytiques ?",
-      a: "Oui, nous accompagnons les champignonnistes à Longué-Jumelles : IA pour gestion hygrométrie et température caves, traçabilité production, automatisation commandes, prédiction rendements. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les champignonnistes à Longué-Jumelles : IA pour gestion hygrométrie et température caves, traçabilité production, automatisation commandes, prédiction rendements. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels secteurs ciblez-vous à Longué-Jumelles ?",

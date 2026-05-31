@@ -122,7 +122,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises et cabinets aixois jusqu'à une dizaine de collaborateurs (conseil, juridique, santé, artisans du numérique).",
           },
@@ -162,7 +162,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Aix-en-Provence ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est défini lors du brief de cadrage initial en fonction de votre agenda et de la complexité de votre organisation.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est défini lors du brief de cadrage initial en fonction de votre agenda et de la complexité de votre organisation.",
           },
           {
             q: "Quel ROI peut-on attendre pour une PME industrielle du bassin Aix-Marseille ?",
@@ -944,7 +944,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Aix-en-Provence ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Aix-en-Provence et dans le bassin (Marignane, Vitrolles, Rousset).",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Aix-en-Provence et dans le bassin (Marignane, Vitrolles, Rousset).",
     },
     {
       q: "Axion-IA intervient-il dans les entreprises aérospatiales et industrielles du bassin Aix-Marseille ?",

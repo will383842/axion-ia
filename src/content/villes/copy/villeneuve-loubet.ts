@@ -30,8 +30,8 @@ export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-Loubet : formats adaptés aux hébergements balnéaires, restaurants, cabinets ou commerces littoraux. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Villeneuve-Loubet  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME villeneuvoises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME villeneuvoises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Villeneuve-Loubet ?",

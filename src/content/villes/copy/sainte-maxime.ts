@@ -30,8 +30,8 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Maxime : diagnostic adapté aux TPE hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sainte-Maxime : diagnostic adapté aux TPE hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sainte-Maxime : diagnostic adapté aux TPE hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sainte-Maxime : diagnostic adapté aux TPE hôtellerie-restauration, commerces, plaisance et artisans du golfe de Saint-Tropez. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sainte-Maxime : formats adaptés aux hôtels, restaurants, commerces, plaisance et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hôtels et restaurants de Sainte-Maxime ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas hôtellerie-restauration : gestion réservations, yield saisonnier haut de gamme, fidélisation clientèle premium, marketing local et international.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas hôtellerie-restauration : gestion réservations, yield saisonnier haut de gamme, fidélisation clientèle premium, marketing local et international.",
     },
     {
       q: "Accompagnez-vous les professionnels de la plaisance et du port de Sainte-Maxime ?",
@@ -61,7 +61,7 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Sainte-Maxime  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Sainte-Maxime ?",

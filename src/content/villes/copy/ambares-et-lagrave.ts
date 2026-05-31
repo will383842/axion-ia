@@ -9,9 +9,9 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
   pitchEn:
     "Ambarès-et-Lagrave (33), commune au nord de Bordeaux Métropole, combine tissu industriel historique (chimie, logistique portuaire) et développement résidentiel. Axion-IA opère sur l'ensemble des activités professionnelles locales : TPE artisans, PME industrielles, commerces, professions libérales et entreprises de services du nord-bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambarès-et-Lagrave (33). Nous accompagnons TPE et PME du nord Bordeaux : industries chimiques et logistiques, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambarès-et-Lagrave (33). Nous accompagnons TPE et PME du nord Bordeaux : industries chimiques et logistiques, artisans BTP, commerçants, PME de services et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambarès-et-Lagrave (33). Nous accompagnons TPE et PME du nord Bordeaux : industries chimiques et logistiques, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambarès-et-Lagrave (33). Nous accompagnons TPE et PME du nord Bordeaux : industries chimiques et logistiques, artisans BTP, commerçants, PME de services et professions libérales. Audit sur place sur mesure.",
   seoHook: "industrie chimique & services aux",
   ecosystemFr:
     "Ambarès-et-Lagrave fait partie de Bordeaux Métropole nord. Zone industrielle historique (chimie, logistique, port autonome de Bordeaux), tissu PME diversifié et développement résidentiel récent. Accès direct à la rocade A630 et à la voie ferrée Bordeaux–Paris.",
@@ -30,8 +30,8 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ambarès-et-Lagrave : diagnostic pour PME industrielles (chimie, logistique), TPE artisans BTP, commerces et professions libérales du nord-bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambarès-et-Lagrave : ateliers adaptés aux process industriels, artisanat et commerce. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Ambarès-et-Lagrave  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du nord Bordeaux.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles et TPE artisans du nord Bordeaux.",
     },
     {
       q: "Travaillez-vous avec les industries chimiques et logistiques ?",
@@ -61,7 +61,7 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans à Ambarès-et-Lagrave ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Ambarès-et-Lagrave : automatisation devis, agents IA prise de RDV, gestion planning, classification photos chantier. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Ambarès-et-Lagrave : automatisation devis, agents IA prise de RDV, gestion planning, classification photos chantier. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se passe une mission sur site à Ambarès-et-Lagrave ?",

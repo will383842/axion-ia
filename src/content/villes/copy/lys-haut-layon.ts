@@ -9,9 +9,9 @@ export const LYS_HAUT_LAYON_COPY: VilleCopy = {
   pitchEn:
     "Lys-Haut-Layon (49), commune nouvelle au cœur du vignoble des coteaux du Layon, rassemble près de 7 750 habitants en territoire viticole AOC renommé. Axion-IA opère pour entreprises et indépendants du secteur : viticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Lys-Haut-Layon (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans des coteaux du Layon dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Lys-Haut-Layon (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans des coteaux du Layon dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Lys-Haut-Layon (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans des coteaux du Layon dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Lys-Haut-Layon (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans des coteaux du Layon dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "viticulture vignoble & tourisme œnotourisme",
   ecosystemFr:
     "Lys-Haut-Layon est le cœur viticole des coteaux du Layon (AOC Coteaux du Layon, Bonnezeaux, Quarts de Chaume). Domaines viticoles familiaux, œnotourisme, hébergements de charme, artisanat local et commerces de bourg. Agriculture diversifiée (arboriculture, maraîchage) en complément du vignoble.",
@@ -30,8 +30,8 @@ export const LYS_HAUT_LAYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lys-Haut-Layon : diagnostic adapté aux domaines viticoles, hébergeurs touristiques et TPE/PME des coteaux du Layon. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lys-Haut-Layon : formations pour équipes viticoles, touristiques et commerciales. Ateliers métier adaptés au vignoble du Layon.",
@@ -53,7 +53,7 @@ export const LYS_HAUT_LAYON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lys-Haut-Layon  ?",
-      a: "L'Audit Flash IA à Lys-Haut-Layon démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
+      a: "L'Audit sur place IA à Lys-Haut-Layon démarre à {{price:audit-flash|flat}} pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les vignerons des coteaux du Layon ?",

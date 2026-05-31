@@ -30,8 +30,8 @@ export const SCIONZIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Scionzier : formats adaptés à l'atelier de décolletage, l'usine de micromécanique ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const SCIONZIER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Scionzier ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME de Scionzier. Diagnostic complet des opportunités IA dans votre activité (décolletage, artisanat, commerce), ROI chiffré et plan d'action concret sous 5 jours ouvrés.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}, adapté aux TPE et PME de Scionzier. Diagnostic complet des opportunités IA dans votre activité (décolletage, artisanat, commerce), ROI chiffré et plan d'action concret sous 5 jours ouvrés.",
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels de la vallée de l'Arve ?",

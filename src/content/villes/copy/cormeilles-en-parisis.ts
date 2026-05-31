@@ -51,7 +51,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Cormeilles-en-Parisis ?",
-      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:intervention-4h|flat}} pour un Audit Flash de 4 heures sur site, déplacement William depuis Paris inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:intervention-4h|flat}} pour un Audit sur place de 4 heures sur site, déplacement William depuis Paris inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Quels sont les délais pour une intervention IA à Cormeilles-en-Parisis ?",

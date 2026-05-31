@@ -30,8 +30,8 @@ export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verneuil-sur-Seine : formats adaptés au cabinet libéral, commerce, atelier artisan ou PME tertiaire. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants vernoliens ?",
-      a: "Oui, nous accompagnons les artisans BTP et commerçants à Verneuil-sur-Seine sur des cas IA concrets : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks, fidélisation client. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP et commerçants à Verneuil-sur-Seine sur des cas IA concrets : automatisation devis, agents IA prise de RDV, classification photos chantier, gestion stocks, fidélisation client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Verneuil-sur-Seine ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Verneuil-sur-Seine. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone boucle de Seine.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME à Verneuil-sur-Seine. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action. Frais de déplacement inclus zone boucle de Seine.",
     },
     {
       q: "Intervenez-vous aussi à Poissy et Les Mureaux ?",

@@ -30,8 +30,8 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Souffelweyersheim : formats adaptés à l'entrepôt logistique, bureau, chantier ou commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et services tertiaires ?",
-      a: "Oui, les artisans BTP, services aux entreprises et commerçants de Souffelweyersheim bénéficient de l'audit Flash {{price:audit-flash|flat}} et d'interventions sur site adaptées. Automatisation devis, relances, gestion clients, prospection.",
+      a: "Oui, les artisans BTP, services aux entreprises et commerçants de Souffelweyersheim bénéficient de l'audit sur place {{price:audit-flash|flat}} et d'interventions sur site adaptées. Automatisation devis, relances, gestion clients, prospection.",
     },
     {
       q: "Quels tarifs pour un audit IA à Souffelweyersheim ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Souffelweyersheim ?",

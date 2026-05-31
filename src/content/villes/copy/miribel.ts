@@ -30,8 +30,8 @@ export const MIRIBEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Miribel : formats adaptés au bureau, atelier, site loisirs, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const MIRIBEL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

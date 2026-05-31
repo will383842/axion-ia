@@ -51,7 +51,7 @@ export const ARRAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs des audits IA à Arras ?",
-      a: "Les audits IA à Arras commencent à partir de {{price:intervention-4h|flat}} pour un Audit Flash. Tous nos tarifs sont publics et consultables sur axion-ia.com.",
+      a: "Les audits IA à Arras commencent à partir de {{price:intervention-4h|flat}} pour un Audit sur place. Tous nos tarifs sont publics et consultables sur axion-ia.com.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes voisines d'Arras ?",

@@ -114,7 +114,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, bureaux d'études, PME sous-traitantes ou agences IT toulousaines jusqu'à une dizaine de collaborateurs.",
           },
@@ -154,7 +154,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Toulouse ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage.",
           },
           {
             q: "Gérez-vous les contraintes de confidentialité de l'industrie aérospatiale ?",

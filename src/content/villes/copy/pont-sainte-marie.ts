@@ -10,9 +10,9 @@ export const PONT_SAINTE_MARIE_COPY: VilleCopy = {
     "Pont-Sainte-Marie (10), commune de l'agglomération troyenne dans l'Aube, est réputée pour ses magasins d'usine et ses zones commerciales de marques. Tissu de TPE commerciales, PME distribution et logistique, services aux entreprises et artisans. Axion-IA y intervient pour tous types d'activités.",
   seoHook: "magasins d'usine, commerce & logistique",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Sainte-Marie (10). Nous accompagnons TPE et PME de l'agglo troyenne : enseignes de marques, commerces de détail, PME logistique et distribution, artisans et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Sainte-Marie (10). Nous accompagnons TPE et PME de l'agglo troyenne : enseignes de marques, commerces de détail, PME logistique et distribution, artisans et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Sainte-Marie (10). Nous accompagnons TPE et PME de l'agglo troyenne : enseignes de marques, commerces de détail, PME logistique et distribution, artisans et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Sainte-Marie (10). Nous accompagnons TPE et PME de l'agglo troyenne : enseignes de marques, commerces de détail, PME logistique et distribution, artisans et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Pont-Sainte-Marie fait partie de l'agglomération de Troyes dans l'Aube. La commune est un pôle commercial majeur grâce à ses magasins d'usine et centres de marques, héritage de la tradition textile troyenne. L'économie locale repose sur le commerce de détail et de gros, la distribution, la logistique, les services aux entreprises et l'artisanat. Troyes centre à 5 min.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PONT_SAINTE_MARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pont-Sainte-Marie : diagnostic adapté aux enseignes de marques, commerces de détail, PME logistique/distribution et TPE artisanales de l'agglo troyenne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Sainte-Marie : formats adaptés au commerce de marques, à la PME logistique, à la TPE artisanale ou au prestataire de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const PONT_SAINTE_MARIE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pont-Sainte-Marie  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pont-Sainte-Marie et de l'agglo troyenne, il identifie les cas d'usage IA à fort ROI.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Pont-Sainte-Marie et de l'agglo troyenne, il identifie les cas d'usage IA à fort ROI.",
     },
     {
       q: "Accompagnez-vous les magasins d'usine et enseignes de marques ?",

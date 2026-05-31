@@ -30,8 +30,8 @@ export const DECHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dechy : formats adaptés à l'atelier BTP, l'entrepôt logistique ou le cabinet. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,11 +57,11 @@ export const DECHY_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans BTP de Dechy ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et rénovation à Dechy sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et rénovation à Dechy sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services IA pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales de Dechy, nous proposons audit Flash {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation agenda, gestion documents) et coaching 1-to-1 dirigeants.",
+      a: "Pour les commerçants et professions libérales de Dechy, nous proposons audit sur place {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation agenda, gestion documents) et coaching 1-to-1 dirigeants.",
     },
     {
       q: "Comment se passe une mission depuis Lille ou Paris ?",

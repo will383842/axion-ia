@@ -9,9 +9,9 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
   pitchEn:
     "Saint-Aubin-de-Médoc (33), commune résidentielle du nord-ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales, commerces et activités équestres. Axion-IA y intervient pour tous types d'activités de l'entrée du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit sur place sur mesure.",
   seoHook: "services personne & activités équestres",
   ecosystemFr:
     "Saint-Aubin-de-Médoc est une commune résidentielle prisée du nord-ouest bordelais, en lisière de forêt. Tissu TPE artisanat BTP dense, professions libérales, commerces de proximité, activités équestres et services à la personne. Proximité Le Taillan-Médoc et Saint-Médard-en-Jalles.",
@@ -30,8 +30,8 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Aubin-de-Médoc : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services du nord-ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Aubin-de-Médoc : ateliers adaptés aux artisans, cabinets et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Aubin-de-Médoc  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales du nord-ouest bordelais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales du nord-ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Aubin-de-Médoc ?",
@@ -61,7 +61,7 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers, agents conversationnels.",
+      a: "Pour les professions libérales : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation gestion RDV, classification dossiers, agents conversationnels.",
     },
     {
       q: "Comment se déroule une mission à Saint-Aubin-de-Médoc ?",

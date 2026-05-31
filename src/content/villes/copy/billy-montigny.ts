@@ -9,9 +9,9 @@ export const BILLY_MONTIGNY_COPY: VilleCopy = {
   pitchEn:
     "Billy-Montigny (62), commune du bassin minier lensois dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Billy-Montigny est une commune résidentielle du bassin minier au sud de Lens, entre Montigny-en-Gohelle et Courrières. Tissu de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière tournée vers les activités résidentielles.",
@@ -30,8 +30,8 @@ export const BILLY_MONTIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Billy-Montigny : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Billy-Montigny : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Billy-Montigny : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Billy-Montigny : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Billy-Montigny : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BILLY_MONTIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Billy-Montigny  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans de Billy-Montigny ?",

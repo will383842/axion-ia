@@ -30,8 +30,8 @@ export const LE_MENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, TPE artisans et commerces du centre Bretagne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
-      en: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, TPE artisans et commerces du centre Bretagne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
+      fr: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, TPE artisans et commerces du centre Bretagne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
+      en: "Audit IA au Mené : diagnostic adapté aux PME agroalimentaires, coopératives agricoles, TPE artisans et commerces du centre Bretagne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos process industriels.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mené : formats adaptés à l'atelier agroalimentaire, la coopérative agricole ou le commerce de bourg. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const LE_MENE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et exploitants agricoles du Mené ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, exploitants agricoles et commerçants du Mené sur des cas IA pratiques : automatisation devis, gestion de troupeau assistée, agents IA prise de rendez-vous, optimisation planning saisonnier. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP, exploitants agricoles et commerçants du Mené sur des cas IA pratiques : automatisation devis, gestion de troupeau assistée, agents IA prise de rendez-vous, optimisation planning saisonnier. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME du centre Bretagne ?",
-      a: "L'audit Flash débute selon la taille de votre activité, accessible aux TPE. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit sur place débute selon la taille de votre activité, accessible aux TPE. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA au Mené ?",

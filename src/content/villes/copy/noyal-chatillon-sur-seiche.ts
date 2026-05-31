@@ -9,9 +9,9 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
   pitchEn:
     "Noyal-Châtillon-sur-Seiche (35), commune périurbaine au sud de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole et de la vallée de la Seiche. TPE et PME tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales, hébergeurs et restaurateurs, sous-traitants industriels rennais. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit sur place sur mesure.",
   seoHook: "services tertiaires & artisanat bâtiment",
   ecosystemFr:
     "Noyal-Châtillon-sur-Seiche est une commune périurbaine au sud de Rennes, en Ille-et-Vilaine, traversée par la vallée de la Seiche. Tissu TPE/PME : tertiaire de proximité, artisanat du bâtiment, commerces et services, sous-traitance industrielle rennaise, hébergement et restauration, professions libérales.",
@@ -30,8 +30,8 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noyal-Châtillon-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, sous-traitants industriels, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Noyal-Châtillon-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, sous-traitants industriels, professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Noyal-Châtillon-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, sous-traitants industriels, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noyal-Châtillon-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, sous-traitants industriels, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noyal-Châtillon-sur-Seiche : formats adaptés bureau tertiaire, chantier artisan, commerce de proximité, atelier sous-traitance ou cabinet libéral. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Noyal-Châtillon-sur-Seiche  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE tertiaires, artisans et commerces de proximité du sud rennais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE tertiaires, artisans et commerces de proximité du sud rennais.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants industriels rennais ?",

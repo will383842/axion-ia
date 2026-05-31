@@ -9,9 +9,9 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
   pitchEn:
     "Châtenay-Malabry (92, Hauts-de-Seine), 35 825 habitants, commune résidentielle au sud de Paris à 10 km. Ancienne implantation de l'École Centrale Paris (transférée à Saclay en 2018) reconvertie en éco-quartier LaVallée. Siège de l'Agence Française de Lutte contre le Dopage (AFLD). Cité-jardin de la Butte-Rouge (4 000 logements sociaux, patrimoine remarquable). Desservie par le tramway T10 depuis 2023. Axion-IA accompagne TPE, PME et professions libérales locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit Flash à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit sur place à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit Flash à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenay-Malabry (92). Nous accompagnons les TPE, PME, professions libérales et commerces de la commune et des villes limitrophes (Antony, Sceaux, Clamart, Le Plessis-Robinson) avec des audits IA, interventions sur site et coaching 1-to-1. Audit sur place à {{price:audit-flash|flat}}, interventions sur devis. Code custom, pas no-code.",
   seoHook: "TPE/PME résidentielles & professions libérales sud Paris",
   ecosystemFr:
     "Tissu économique de Châtenay-Malabry dominé par les services aux entreprises, professions libérales (santé, conseil), commerces de proximité du centre-ville et de la rue Jean Longuet, artisanat et BTP. Présence institutionnelle forte (AFLD, CREPS Île-de-France). L'éco-quartier LaVallée (ex-Centrale) ouvre une nouvelle dynamique tertiaire. Proximité du pôle d'affaires d'Antony et du plateau de Saclay.",
@@ -30,8 +30,8 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
-      en: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit Flash {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      fr: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Châtenay-Malabry : diagnostic pour TPE, PME, professions libérales et commerces du sud des Hauts-de-Seine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtenay-Malabry : ateliers adaptés cabinet libéral, PME services, artisan ou commerce. Équipes formées et autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Châtenay-Malabry ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon le périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Les interventions sur site et le coaching 1-to-1 sont sur devis selon le périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Châtenay-Malabry ?",
-      a: "Oui, nous accompagnons cabinets médicaux, conseils et professions libérales : automatisation plannings, classification dossiers, agents IA réponse patient. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons cabinets médicaux, conseils et professions libérales : automatisation plannings, classification dossiers, agents IA réponse patient. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD à Châtenay-Malabry ?",
@@ -65,7 +65,7 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Châtenay-Malabry ?",
-      a: "Audit Flash livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 semaines. Implémentations selon périmètre, généralement 4 à 8 semaines.",
+      a: "Audit sur place livré sous 5 jours ouvrés. Interventions sur site planifiables sous 2 semaines. Implémentations selon périmètre, généralement 4 à 8 semaines.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Châtenay-Malabry ?",

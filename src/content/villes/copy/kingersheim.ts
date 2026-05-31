@@ -30,8 +30,8 @@ export const KINGERSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Kingersheim : formats adaptés au point de vente, l'entrepôt, l'atelier industriel, le bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const KINGERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les industriels et artisans de Kingersheim ?",
-      a: "Oui, industriels, sous-traitants et artisans kingersheimois : traçabilité production, workflow atelier, gestion commerciale, présence en ligne, automatisation administrative. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, industriels, sous-traitants et artisans kingersheimois : traçabilité production, workflow atelier, gestion commerciale, présence en ligne, automatisation administrative. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Kingersheim ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Kingersheim ?",

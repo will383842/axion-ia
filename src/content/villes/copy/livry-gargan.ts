@@ -10,9 +10,9 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Livry-Gargan, commune de 47 228 habitants en Seine-Saint-Denis (93) située à environ 15 km au nord-est de Paris. Cabinet IA francophone basé en France, nous intervenons sur site auprès des commerces de la RN3, artisans du BTP, professionnels de santé libéraux et structures de services du nord-est francilien. Notre approche développe du code custom — pas de no-code générique — pour les Livryens patrons de très petites entreprises, entre canal de l'Ourcq et hauteurs de l'Aulnoye.",
   directAnswerFr:
-    "Axion-IA se déplace à Livry-Gargan pour accompagner les TPE et PME du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit Flash à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
+    "Axion-IA se déplace à Livry-Gargan pour accompagner les TPE et PME du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
   directAnswerEn:
-    "Axion-IA se déplace à Livry-Gargan pour accompagner les TPE et PME du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit Flash à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
+    "Axion-IA se déplace à Livry-Gargan pour accompagner les TPE et PME du nord-est francilien dans l'adoption de l'intelligence artificielle. Nous priorisons les TPE et PME locales — commerces, artisans du BTP, cabinets de santé libéraux, structures de services le long de la RN3 — avant les rares ETI. Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, sessions un-à-un dirigeant sur devis. Tarifs publics consultables, sans surcoût Seine-Saint-Denis.",
   seoHook: "TPE PME RN3 : commerce, BTP, santé, services",
   ecosystemFr:
     "Livry-Gargan structure un tissu de TPE et PME le long de la route nationale 3 axe Paris–Meaux, avec une zone d'activité Poudrerie-Hochailles et un commerce de proximité dense. La commune compte 47 228 habitants en 2023 et appartient à la Seine-Saint-Denis (département 93) en Île-de-France. Le bassin économique local est marqué par les services, le commerce de détail, le BTP et un héritage industriel ancien (carrières de gypse historiques). Les Livryens patrons de TPE évoluent dans un environnement périurbain bien desservi.",
@@ -31,8 +31,8 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash sur site à Livry-Gargan pour cartographier les tâches automatisables des TPE et PME livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
-      en: "Audit Flash sur site à Livry-Gargan pour cartographier les tâches automatisables des TPE et PME livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
+      fr: "Audit sur place sur site à Livry-Gargan pour cartographier les tâches automatisables des TPE et PME livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
+      en: "Audit sur place sur site à Livry-Gargan pour cartographier les tâches automatisables des TPE et PME livryennes : gestion devis et factures, prise de RDV cabinets santé, suivi commercial pour artisans du BTP.",
     },
     interventions: {
       fr: "Intervention ponctuelle à Livry-Gargan pour déployer un outil IA ciblé chez un commerçant de la RN3, un artisan ou un cabinet libéral, avec déplacement direct sur site sans recours au no-code.",
@@ -50,7 +50,7 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une mission à Livry-Gargan ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés, sans surcoût géographique pour la Seine-Saint-Denis.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}}, intervention sur site à partir de {{price:intervention-4h|flat}}, session un-à-un dirigeant sur devis. Tarifs publics affichés, sans surcoût géographique pour la Seine-Saint-Denis.",
     },
     {
       q: "Sous quel délai Axion-IA peut intervenir à Livry-Gargan ?",

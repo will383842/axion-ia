@@ -30,8 +30,8 @@ export const MIMIZAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mimizan : formations adaptées aux campings, hébergeurs, industrie papetière, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const MIMIZAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les campings et hébergeurs saisonniers ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} adapté aux campings et hébergeurs de Mimizan-Plage. Chatbot réservation multilingue, gestion saisonnalité, automatisation check-in/check-out, prédiction taux d'occupation, classification avis clients.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} adapté aux campings et hébergeurs de Mimizan-Plage. Chatbot réservation multilingue, gestion saisonnalité, automatisation check-in/check-out, prédiction taux d'occupation, classification avis clients.",
     },
     {
       q: "Quels services pour les commerçants et artisans mimizannais ?",
-      a: "Pour les TPE commerçants et artisans à Mimizan, audit Flash {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks saisonniers, agents IA communication, facturation automatisée.",
+      a: "Pour les TPE commerçants et artisans à Mimizan, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks saisonniers, agents IA communication, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission depuis Bordeaux ?",

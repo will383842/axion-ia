@@ -30,8 +30,8 @@ export const FOURMIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fourmies : formats adaptés à l'atelier plasturgie, l'usine agroalimentaire, le chantier BTP ou le commerce de l'Avesnois. Vos équipes maîtrisent les outils déployés.",
@@ -57,7 +57,7 @@ export const FOURMIES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Fourmies  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'Avesnois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'Avesnois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour la plasturgie à Fourmies ?",

@@ -30,8 +30,8 @@ export const BISCHHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bischheim : formats adaptés à l'atelier industriel, l'entrepôt logistique, le chantier BTP, le commerce, l'agence, le bureau. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const BISCHHEIM_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Bischheim ?",
-      a: "Oui, commerçants et artisans bischheimois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, agents conversationnels bilingues FR/DE. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, commerçants et artisans bischheimois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, agents conversationnels bilingues FR/DE. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Bischheim ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Bischheim ?",

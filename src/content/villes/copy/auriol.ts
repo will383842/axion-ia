@@ -9,9 +9,9 @@ export const AURIOL_COPY: VilleCopy = {
   pitchEn:
     "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. TPE artisans viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre les activités professionnelles du bassin de la haute vallée de l'Huveaune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit sur place sur mesure, sans engagement.",
   seoHook: "vignoble, artisanat & vallée Huveaune",
   ecosystemFr:
     "Auriol est une commune de la haute vallée de l'Huveaune, entre Marseille et le massif de la Sainte-Baume. Économie locale autour du vignoble provençal, de l'artisanat et des services. TPE viticulteurs, artisans du bâtiment, commerces de village, professions libérales et prestataires résidentiels.",
@@ -30,8 +30,8 @@ export const AURIOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auriol : diagnostic adapté aux TPE viticulteurs, artisans, PME de services de la vallée de l'Huveaune et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auriol : formats adaptés au domaine viticole, à l'atelier artisan et au cabinet. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const AURIOL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Auriol ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services et domaines viticoles, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services et domaines viticoles, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
     },
     {
       q: "L'IA est-elle utile pour les viticulteurs d'Auriol ?",
-      a: "Oui, l'IA aide les viticulteurs : traçabilité parcellaire automatisée, gestion cave, optimisation planning vendanges, facturation et suivi clients, analyse prédictive rendements. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, l'IA aide les viticulteurs : traçabilité parcellaire automatisée, gestion cave, optimisation planning vendanges, facturation et suivi clients, analyse prédictive rendements. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants d'Auriol ?",

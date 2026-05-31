@@ -10,9 +10,9 @@ export const SCAER_COPY: VilleCopy = {
     "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants du centre Finistère.",
   seoHook: "agroalimentaire, forêt & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Scaër est une commune étendue du centre Finistère, adossée à l'un des plus grands massifs forestiers de Bretagne. L'économie locale repose sur l'agroalimentaire (volaille, produits laitiers), l'agriculture, la filière bois, l'artisanat BTP et le commerce de proximité. Le bourg joue un rôle de pôle de services pour les communes rurales environnantes du Poher et de la Cornouaille intérieure.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SCAER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Scaër : diagnostic adapté aux TPE agricoles, PME agroalimentaires, artisans BTP et exploitants forestiers du centre Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Scaër : formations pratiques pour équipes agroalimentaires, exploitants agricoles et artisans. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const SCAER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Scaër  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME scaëroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME scaëroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les agriculteurs et artisans de Scaër ?",
-      a: "Pour les exploitants agricoles et artisans, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : suivi parcellaire IA, automatisation devis BTP, gestion planning saisonnier et stocks augmentés.",
+      a: "Pour les exploitants agricoles et artisans, nous proposons : Audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : suivi parcellaire IA, automatisation devis BTP, gestion planning saisonnier et stocks augmentés.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Scaër ?",

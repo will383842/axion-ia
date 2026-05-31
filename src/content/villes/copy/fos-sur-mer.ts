@@ -9,9 +9,9 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Fos-sur-Mer (13) est l'un des plus grands pôles industrialo-portuaires d'Europe avec le Grand Port Maritime de Marseille-Fos, la sidérurgie (ArcelorMittal voisine), la pétrochimie et la logistique conteneurs. TPE artisans, sous-traitants industriels, PME logistiques, transporteurs et commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit sur place sur mesure.",
   seoHook: "logistique portuaire & sidérurgie pétrochimie",
   ecosystemFr:
     "Fos-sur-Mer accueille le bassin ouest du Grand Port Maritime de Marseille (Fos2XL, terminaux conteneurs, terminaux pétroliers, GNL). Sidérurgie (haut-fourneau ArcelorMittal), pétrochimie, raffineries, logistique conteneurs, transport routier et ferroviaire. Tissu de TPE artisans, sous-traitants industriels et PME de services portuaires.",
@@ -30,8 +30,8 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fos-sur-Mer : ateliers pour équipes logistiques portuaires, sous-traitants industriels, transporteurs et PME locales. Outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Fos-sur-Mer  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques et sous-traitants industriels fosséens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques et sous-traitants industriels fosséens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les transporteurs et logisticiens du port de Fos ?",

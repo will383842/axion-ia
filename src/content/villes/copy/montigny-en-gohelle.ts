@@ -9,9 +9,9 @@ export const MONTIGNY_EN_GOHELLE_COPY: VilleCopy = {
   pitchEn:
     "Montigny-en-Gohelle (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers le résidentiel et les services. TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Montigny-en-Gohelle est une commune résidentielle du bassin minier au sud de Lens. Économie reconvertie vers les services, le commerce de proximité, l'artisanat BTP et les professions libérales. Proximité du Louvre-Lens dynamise le tissu économique local.",
@@ -30,8 +30,8 @@ export const MONTIGNY_EN_GOHELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montigny-en-Gohelle : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montigny-en-Gohelle : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montigny-en-Gohelle : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montigny-en-Gohelle : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montigny-en-Gohelle : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const MONTIGNY_EN_GOHELLE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Montigny-en-Gohelle  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les commerces de Montigny-en-Gohelle ?",

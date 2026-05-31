@@ -9,9 +9,9 @@ export const ECOUEN_COPY: VilleCopy = {
   pitchEn:
     "Écouen (95), commune du Val-d'Oise connue pour son château Renaissance abritant le Musée national de la Renaissance, à 19 km au nord de Paris. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives. Axion-IA accompagne tout le tissu professionnel local du nord valdoisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Écouen (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives du nord du Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Écouen (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives du nord du Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Écouen (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives du nord du Val-d'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Écouen (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives du nord du Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "tourisme culturel & commerce proximité",
   ecosystemFr:
     "Écouen rayonne grâce à son château Renaissance et son Musée national, attirant un flux touristique culturel régulier. Son tissu économique associe TPE artisans, commerces, professions libérales, PME de services et acteurs du patrimoine. Communes voisines : Villiers-le-Bel, Sarcelles, Ézanville, Saint-Brice-sous-Forêt, Piscop.",
@@ -30,8 +30,8 @@ export const ECOUEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Écouen : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme culturel du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Écouen : formats adaptés au commerce, au cabinet ou à l'office de tourisme. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const ECOUEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Écouen ?",
-      a: "L'Audit Flash IA à Écouen démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Écouen démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme culturel à Écouen ?",

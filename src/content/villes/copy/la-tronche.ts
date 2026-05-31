@@ -30,8 +30,8 @@ export const LA_TRONCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Tronche : diagnostic adapté aux structures hospitalières, professions médicales, PME santé du bassin grenoblois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à La Tronche : diagnostic adapté aux structures hospitalières, professions médicales, PME santé du bassin grenoblois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à La Tronche : diagnostic adapté aux structures hospitalières, professions médicales, PME santé du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à La Tronche : diagnostic adapté aux structures hospitalières, professions médicales, PME santé du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Tronche : formats adaptés à l'environnement hospitalier (avec exigences RGPD-santé), cabinet médical ou PME santé. Vos équipes soignantes repartent autonomes.",

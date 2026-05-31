@@ -30,8 +30,8 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Marcel-lès-Valence : formats adaptés au bureau tertiaire, zone d'activités, exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -61,7 +61,7 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans saint-marcellois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Marcel-lès-Valence, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Marcel-lès-Valence, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Lyon ?",

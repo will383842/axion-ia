@@ -30,8 +30,8 @@ export const CHASSIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chassieu : formats adaptés au parc expo, entrepôt, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHASSIEU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chassieu, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      a: "Pour les TPE artisans BTP et commerçants à Chassieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

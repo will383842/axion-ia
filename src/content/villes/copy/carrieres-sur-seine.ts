@@ -9,9 +9,9 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Carrières-sur-Seine (78), commune résidentielle des Yvelines à 6 km de Paris, ancien site de carrières de pierre devenu quartier prisé en bord de Seine. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, immobilier, restauration. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit sur place sur mesure.",
   seoHook: "commerce détail & services conseil",
   ecosystemFr:
     "Carrières-sur-Seine est une commune résidentielle des Yvelines à 6 km de Paris, en bord de Seine, connue pour ses anciennes carrières de pierre calcaire reconverties. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, immobilier, restauration.",
@@ -30,8 +30,8 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carrières-sur-Seine : formats adaptés boutique, bureau conseil, cabinet, agence immobilière, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et agences immobilières ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA estimation, gestion mandats, CRM acquéreurs, vitrines augmentées.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA estimation, gestion mandats, CRM acquéreurs, vitrines augmentées.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",

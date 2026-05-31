@@ -30,8 +30,8 @@ export const ROSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rosheim : formats adaptés au domaine viticole, cave coopérative, hôtellerie-restauration, commerce local. Vos collaborateurs sont autonomes ensuite.",
@@ -61,11 +61,11 @@ export const ROSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans-vignerons ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, automatisation administrative (déclarations CVI), classification photos parcelles, agents conversationnels clients, optimisation planning saisonnier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, automatisation administrative (déclarations CVI), classification photos parcelles, agents conversationnels clients, optimisation planning saisonnier.",
     },
     {
       q: "Quel est le tarif d'entrée pour une TPE à Rosheim ?",
-      a: "L'audit Flash débute selon la taille de votre activité. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place débute selon la taille de votre activité. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

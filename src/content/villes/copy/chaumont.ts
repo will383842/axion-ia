@@ -34,8 +34,8 @@ export const CHAUMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit Flash dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Chaumont — cartographie des processus chronophages (devis, facturation, planning, relance client) chez les TPE/PME du centre-ville, des zones Plein'Est ou Dame Huguenotte. Audit sur place dès {{price:audit-flash|flat}}, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Intervention sur site à Chaumont — William se déplace pour cadrer, prototyper et déployer un agent IA opérationnel (extraction de devis, OCR factures fournisseurs, reporting comptable). Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -53,7 +53,7 @@ export const CHAUMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Chaumont ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à Chaumont, livré sous 5 jours ouvrés. Les forfaits Intervention démarrent à {{price:intervention-4h|flat}} et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à Chaumont, livré sous 5 jours ouvrés. Les forfaits Intervention démarrent à {{price:intervention-4h|flat}} et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics.",
     },
     {
       q: "William se déplace-t-il vraiment à Chaumont depuis Paris ?",
@@ -61,7 +61,7 @@ export const CHAUMONT_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Chaumont ?",
-      a: "Une Intervention Essentielle est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit Flash est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité.",
+      a: "Une Intervention Essentielle est planifiée sous 5 à 10 jours ouvrés après validation du devis. L'Audit sur place est livré sous 5 jours. Les implémentations complètes s'étalent sur 4 à 8 semaines selon la complexité.",
     },
     {
       q: "Quels secteurs économiques chaumontais ciblez-vous en priorité ?",

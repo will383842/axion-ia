@@ -10,9 +10,9 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Montigny-lès-Metz (21 718 habitants, Moselle), deuxième commune de l'Eurométropole de Metz située à moins de 2 km du centre messin. Notre cabinet code des solutions IA sur mesure (pas de no-code) pour les commerçants, artisans et professions libérales de la commune, ainsi que pour les PME du tertiaire et du BTP du bassin lorrain.",
   directAnswerFr:
-    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit Flash 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
+    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit sur place 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
   directAnswerEn:
-    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit Flash 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
+    "Axion-IA se déplace à Montigny-lès-Metz (57950) pour auditer et automatiser les processus des TPE et PME locales : devis, facturation, relances clients, planning. La commune compte près de 500 commerces dont une majorité indépendants (taux de vacance commerciale de 8,4 %, 155 entreprises créées en 2018) et héberge le siège du groupe BTP Demathieu Bard. Notre Audit sur place 4 h démarre à {{price:audit-flash|flat}}, les interventions à {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés depuis notre couverture nationale.",
   seoHook: "commerce de proximité, BTP & tertiaire messin",
   ecosystemFr:
     "Montigny-lès-Metz est un grand centre urbain résidentiel et commerçant intégré à l'unité urbaine de Metz (42 communes, plus de 510 000 emplois dans la zone d'emploi). Le tissu local est dominé par le commerce de détail, les services aux particuliers (santé, restauration, coiffure) et les artisans du bâtiment, avec une activité tertiaire dense alimentée par la proximité immédiate du centre de Metz. Le siège du groupe Demathieu Bard (BTP, près de 3 000 collaborateurs nationalement) ancre la place industrielle locale.",
@@ -50,7 +50,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Montigny-lès-Metz ?",
-      a: "L'Audit Flash 4 h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne.",
+      a: "L'Audit sur place 4 h démarre à {{price:audit-flash|flat}}, la Formation 4 h à {{price:intervention-4h|flat}} et l'implémentation sur mesure à {{price:impl-poc|entry}}. Tous nos tarifs publics sont consultables en ligne.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Montigny-lès-Metz ?",

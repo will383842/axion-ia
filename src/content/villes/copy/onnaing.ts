@@ -30,8 +30,8 @@ export const ONNAING_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Onnaing : formats adaptés au sous-traitant auto, à l'équipementier, au logisticien industriel ou au prestataire B2B. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const ONNAING_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Onnaing  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pôle automobile valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (sous-traitance auto, équipement, logistique, services industriels). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pôle automobile valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (sous-traitance auto, équipement, logistique, services industriels). Tarifs publics, sans engagement.",
     },
     {
       q: "L'IA est-elle utile pour la logistique industrielle just-in-time ?",

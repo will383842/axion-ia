@@ -9,9 +9,9 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit sur place sur mesure.",
   seoHook: "logistique distribution & commerce gros",
   ecosystemFr:
     "Saint-Apollinaire est positionnée au nord-est immédiat de Dijon, en première couronne. Zones d'activités Cap Nord (logistique, distribution, services). Économie : PME logistique, commerce de gros, TPE artisans, services aux entreprises, résidentiel familial périurbain.",
@@ -30,8 +30,8 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Apollinaire : formats adaptés à l'entrepôt logistique, plateforme distribution, atelier, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et services apollinairois ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Dijon ?",

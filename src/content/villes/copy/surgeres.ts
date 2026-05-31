@@ -30,8 +30,8 @@ export const SURGERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, TPE artisans et commerces du bassin de Surgères. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, TPE artisans et commerces du bassin de Surgères. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, TPE artisans et commerces du bassin de Surgères. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, TPE artisans et commerces du bassin de Surgères. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Surgères : formats adaptés à la laiterie, à la coopérative, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SURGERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Surgères ?",
-      a: "L'audit Flash IA à Surgères démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, laitiers ou agricoles, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à Surgères démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, laitiers ou agricoles, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Surgères ?",

@@ -30,8 +30,8 @@ export const AMBILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambilly : formats adaptés commerce, bureau PME tertiaire, cabinet libéral ou prestataire logistique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,11 +57,11 @@ export const AMBILLY_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Ambilly ?",
-      a: "L'audit Flash propose un tarif d'entrée accessible (4 heures). Pour les PME tertiaires du Grand Genève avec enjeux transfrontaliers complexes, nous proposons des audits approfondis sur devis adapté.",
+      a: "L'audit sur place propose un tarif d'entrée accessible (4 heures). Pour les PME tertiaires du Grand Genève avec enjeux transfrontaliers complexes, nous proposons des audits approfondis sur devis adapté.",
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents, chatbot clientèle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents, chatbot clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Genève ?",

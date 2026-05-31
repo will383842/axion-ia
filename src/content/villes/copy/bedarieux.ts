@@ -30,8 +30,8 @@ export const BEDARIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bédarieux : diagnostic pour TPE commerçants, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bédarieux : diagnostic pour TPE commerçants, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bédarieux : diagnostic pour TPE commerçants, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bédarieux : diagnostic pour TPE commerçants, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bédarieux : ateliers adaptés commerce, atelier artisan, hébergement touristique ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const BEDARIEUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des audits IA pour les acteurs du tourisme nature ?",
-      a: "Oui, audits IA pour hébergements, activités outdoor, gîtes Voie Verte : chatbot réservation multilingue, automatisation planning, gestion avis en ligne, optimisation saisonnalité. Audit Flash à {{price:audit-flash|flat}}.",
+      a: "Oui, audits IA pour hébergements, activités outdoor, gîtes Voie Verte : chatbot réservation multilingue, automatisation planning, gestion avis en ligne, optimisation saisonnalité. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les artisans et commerçants ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, formation et coaching 1-to-1. Cas typiques : automatisation devis, chatbot client, gestion stocks, planification interventions.",
+      a: "Audit sur place {{price:audit-flash|flat}}, formation et coaching 1-to-1. Cas typiques : automatisation devis, chatbot client, gestion stocks, planification interventions.",
     },
     {
       q: "Accompagnez-vous les services publics ?",
@@ -65,7 +65,7 @@ export const BEDARIEUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Bédarieux ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Interventions et coaching sur devis. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Interventions et coaching sur devis. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

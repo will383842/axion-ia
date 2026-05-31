@@ -30,8 +30,8 @@ export const ESVRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Esvres : formats adaptés à l'atelier artisan, au commerce, à l'exploitation agricole ou au cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const ESVRES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans esvriens ?",
-      a: "Pour les TPE et artisans à Esvres, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
+      a: "Pour les TPE et artisans à Esvres, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis BTP, agents IA prise de RDV, gestion planning chantiers, classification photos. Adapté aux petites structures.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles à Esvres ?",
@@ -61,7 +61,7 @@ export const ESVRES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Esvres  ?",
-      a: "L'audit Flash est tarifé selon vos enjeux. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
+      a: "L'audit sur place est tarifé selon vos enjeux. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Esvres ?",

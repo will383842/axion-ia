@@ -9,9 +9,9 @@ export const PARTHENAY_COPY: VilleCopy = {
   pitchEn:
     "Parthenay (79), sous-préfecture des Deux-Sèvres, 10 140 habitants. Cité médiévale remarquable, capitale du jeu (FLIP, festival ludique international), tissu de TPE artisans, PME agroalimentaires et commerces. Axion-IA y déploie son expertise pour toutes les organisations de la Gâtine parthenaisienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parthenay (79). Nous accompagnons TPE, PME et artisans de la Gâtine : agriculture, agroalimentaire, artisanat, tourisme médiéval, commerces. Audit sur place sur mesure.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Parthenay est sous-préfecture des Deux-Sèvres, 10 140 habitants, cité médiévale (quartier Saint-Jacques, porte de l'Horloge). Capitale du jeu (FLIP, festival ludique). Tissu de TPE agricoles (élevage bovin parthenaise), PME agroalimentaires, artisans, commerces de centre-ville et tourisme patrimonial.",
@@ -30,8 +30,8 @@ export const PARTHENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Parthenay : diagnostic adapté aux TPE agricoles (élevage parthenaise), PME agroalimentaires, artisans et commerçants de la Gâtine. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parthenay : déploiement outils IA dans vos exploitations, ateliers ou commerces. Gestion troupeau, traçabilité production et marketing patrimonial.",
@@ -57,7 +57,7 @@ export const PARTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Parthenay ?",
-      a: "L'audit Flash IA à Parthenay démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agricoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Parthenay démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus agricoles, agroalimentaires ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme à Parthenay ?",

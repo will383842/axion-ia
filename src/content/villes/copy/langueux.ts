@@ -9,9 +9,9 @@ export const LANGUEUX_COPY: VilleCopy = {
   pitchEn:
     "Langueux (22), commune de l'agglomération de Saint-Brieuc en Côtes-d'Armor, concentre d'importantes zones d'activités commerciales et artisanales (ZA des Châtelets, ZA du Plateau). TPE artisans, PME commerciales, services aux entreprises, logistique, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit sur place sur mesure.",
   seoHook: "commerce zones & artisanat",
   ecosystemFr:
     "Langueux est un pôle commercial majeur de l'agglomération de Saint-Brieuc (Côtes-d'Armor), avec plusieurs zones d'activités (ZA des Châtelets, ZA du Plateau) regroupant grandes enseignes, commerces, artisans, services aux entreprises et logistique. Proximité immédiate du centre-ville de Saint-Brieuc.",
@@ -30,8 +30,8 @@ export const LANGUEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langueux : formats adaptés commerce, entrepôt, bureau, restaurant. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const LANGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et PME de services ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents conversationnels pour artisans et PME de services.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation devis, gestion planning IA, CRM simplifié, facturation intelligente, agents conversationnels pour artisans et PME de services.",
     },
     {
       q: "Quels services pour la logistique et distribution ?",

@@ -9,9 +9,9 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Denis-de-Pile (33), commune résidentielle du Libournais, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin libournais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
   seoHook: "viticulture & services",
   ecosystemFr:
     "Saint-Denis-de-Pile est une commune résidentielle du Libournais en croissance. Vignoble bordelais (proximité Pomerol, Lalande-de-Pomerol), tissu TPE artisanat BTP dense, commerces de proximité et professions libérales. Gare TER, accès A89 vers Bordeaux.",
@@ -30,8 +30,8 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Denis-de-Pile : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales du Libournais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Denis-de-Pile : ateliers adaptés aux chais, ateliers BTP et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Denis-de-Pile  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et TPE artisans du Libournais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux vignerons et TPE artisans du Libournais.",
     },
     {
       q: "Accompagnez-vous les vignerons du Libournais ?",
@@ -61,7 +61,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning.",
+      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning.",
     },
     {
       q: "Comment se déroule une mission à Saint-Denis-de-Pile ?",

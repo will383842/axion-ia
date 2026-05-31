@@ -11,9 +11,9 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-d'Ascq, commune du Nord de 62 868 habitants et deuxième plus grande de la métropole lilloise par sa superficie (27,46 km²), accueille plus de 2 500 entreprises dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. La ville compte 23 zones d'activité, dont le Parc scientifique de la Haute-Borne (200 hectares), ainsi qu'une Cité scientifique de 150 hectares hébergeant environ 50 000 étudiants. Axion-IA accompagne en priorité les TPE et PME locales dans l'intégration concrète de l'IA opérationnelle.",
   directAnswerFr:
-    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des TPE et PME des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit Flash 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
+    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des TPE et PME des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
   directAnswerEn:
-    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des TPE et PME des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit Flash 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
+    "À Villeneuve-d'Ascq, Axion-IA intervient sur site auprès des TPE et PME des 23 zones d'activité de la commune, en particulier le Parc scientifique de la Haute-Borne (200 hectares) et la Cité scientifique. La ville rassemble plus de 2 500 entreprises, dont les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code.",
   seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Villeneuve-d'Ascq concentre l'un des écosystèmes économiques les plus denses des Hauts-de-France : 23 zones d'activité, le Parc scientifique de la Haute-Borne (200 hectares), une Cité scientifique de 150 hectares, et les sièges de Bonduelle, Decathlon, Cofidis et 3 Suisses. La ville accueille environ 50 000 étudiants et héberge l'École centrale de Lille ainsi que l'IMT Nord Europe. Elle est reliée à Lille en 10 minutes par le métro VAL.",
@@ -33,8 +33,8 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit Flash à Villeneuve-d'Ascq permet aux TPE et PME du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
-      en: "Réaliser un audit Flash à Villeneuve-d'Ascq permet aux TPE et PME du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
+      fr: "Réaliser un audit sur place à Villeneuve-d'Ascq permet aux TPE et PME du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit sur place à Villeneuve-d'Ascq permet aux TPE et PME du Parc scientifique de la Haute-Borne et des 23 zones d'activité d'identifier rapidement les opportunités d'automatisation. À partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Villeneuve-d'Ascq pour automatiser les flux administratifs et commerciaux des PME du tissu local — éditeurs, e-commerçants, sous-traitants de Bonduelle, Decathlon, Cofidis.",
@@ -52,7 +52,7 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Villeneuve-d'Ascq ?",
-      a: "L'Audit Flash 4 heures à Villeneuve-d'Ascq démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Tarifs publics complets sur notre page tarifs.",
+      a: "L'Audit sur place 4 heures à Villeneuve-d'Ascq démarre à {{price:audit-flash|flat}}. Les interventions ciblées sur site commencent à {{price:intervention-4h|flat}}. Tarifs publics complets sur notre page tarifs.",
     },
     {
       q: "Comment William se déplace-t-il à Villeneuve-d'Ascq ?",
@@ -60,7 +60,7 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour un audit IA à Villeneuve-d'Ascq ?",
-      a: "William intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit Flash remis sous 7 jours après la visite sur site.",
+      a: "William intervient généralement sous 5 jours ouvrés après validation du brief. Rapport d'audit sur place remis sous 7 jours après la visite sur site.",
     },
     {
       q: "Quelles communes voisines de Villeneuve-d'Ascq couvrez-vous ?",

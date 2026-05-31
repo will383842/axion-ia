@@ -30,8 +30,8 @@ export const MEYLAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, TPE artisans et professions libérales du bassin grenoblois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, TPE artisans et professions libérales du bassin grenoblois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, TPE artisans et professions libérales du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, TPE artisans et professions libérales du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Meylan : formats adaptés aux ingénieurs Inovallée et équipes tech, ou aux PME tertiaires. Vos équipes R&D, commerciales et back-office repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const MEYLAN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et professions libérales meylanaises ?",
-      a: "Oui, nous accompagnons les TPE artisans et professions libérales à Meylan (médecins, avocats, expert-comptables) sur des cas IA accessibles : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans et professions libérales à Meylan (médecins, avocats, expert-comptables) sur des cas IA accessibles : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME logiciel et SaaS meylanaises ?",

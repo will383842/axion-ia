@@ -10,9 +10,9 @@ export const CANCALE_COPY: VilleCopy = {
     "Cancale (35), commune emblématique de la Côte d'Émeraude peuplée de 5 672 habitants, est mondialement réputée pour ses huîtres plates sauvages et son port de pêche. TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants, artisans et professions libérales animent son économie. Axion-IA opère pour toutes les structures économiques de la commune du nord-Ille-et-Vilaine littoral.",
   seoHook: "ostréiculture, pêche & tourisme Côte d'Émeraude",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Cancale est l'une des places fortes de l'ostréiculture française, célèbre pour ses huîtres plates sauvages issues de bancs naturels et ses huîtres creuses d'élevage. La commune combine activité maritime (pêche, ostréiculture, conchyliculture), tourisme balnéaire et gastronomique (restaurants étoilés, hôtellerie, créperies), commerce, artisanat et services aux résidents de la Côte d'Émeraude.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CANCALE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cancale : diagnostic adapté aux TPE/PME ostréicoles, restaurateurs, hôteliers et commerçants de la Côte d'Émeraude. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
-      en: "Audit IA à Cancale : diagnostic adapté aux TPE/PME ostréicoles, restaurateurs, hôteliers et commerçants de la Côte d'Émeraude. ROI chiffré, Audit Flash {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      fr: "Audit IA à Cancale : diagnostic adapté aux TPE/PME ostréicoles, restaurateurs, hôteliers et commerçants de la Côte d'Émeraude. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      en: "Audit IA à Cancale : diagnostic adapté aux TPE/PME ostréicoles, restaurateurs, hôteliers et commerçants de la Côte d'Émeraude. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cancale : formations adaptées aux équipes ostréicoles, restaurateurs, hôteliers et TPE locales. Vos collaborateurs repartent autonomes sur les outils IA configurés métier maritime et touristique.",
@@ -53,7 +53,7 @@ export const CANCALE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Cancale  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME ostréicoles, restaurateurs, hôteliers et commerçants cancalais, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME ostréicoles, restaurateurs, hôteliers et commerçants cancalais, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs et pêcheurs de Cancale ?",
@@ -61,7 +61,7 @@ export const CANCALE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les restaurateurs et hôteliers de Cancale ?",
-      a: "Pour les restaurateurs et hôteliers cancalais, nous proposons : Audit Flash {{price:audit-flash|flat}}, formation IA 1 journée, coaching 1-to-1. Cas typiques : agents IA réservation, gestion yield management, automatisation menus, fidélisation clients, présence en ligne et traduction multilingue.",
+      a: "Pour les restaurateurs et hôteliers cancalais, nous proposons : Audit sur place {{price:audit-flash|flat}}, formation IA 1 journée, coaching 1-to-1. Cas typiques : agents IA réservation, gestion yield management, automatisation menus, fidélisation clients, présence en ligne et traduction multilingue.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Cancale ?",

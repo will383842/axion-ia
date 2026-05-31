@@ -9,9 +9,9 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   pitchEn:
     "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit sur place sur mesure.",
   seoHook: "maraîchage horticulture & artisanat second",
   ecosystemFr:
     "Saulx-les-Chartreux est une commune résidentielle de l'Essonne, au sud de Longjumeau, connue pour son maraîchage historique (cresson, légumes). Proximité immédiate de la N20 et de Massy. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales.",
@@ -30,8 +30,8 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saulx-les-Chartreux : formats adaptés exploitation maraîchère, atelier artisan, cabinet libéral ou bureau PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et commerces ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion RDV, CRM patients/clients, conformité RGPD, fidélisation, marketing local.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion RDV, CRM patients/clients, conformité RGPD, fidélisation, marketing local.",
     },
     {
       q: "Comment se passe une mission depuis Massy ou Paris ?",

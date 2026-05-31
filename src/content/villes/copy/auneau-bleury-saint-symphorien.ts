@@ -30,8 +30,8 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auneau-Bleury-Saint-Symphorien : formats adaptés à l'exploitation céréalière, atelier agroalimentaire, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Auneau-Bleury-Saint-Symphorien ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et exploitants agricoles. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et exploitants agricoles. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans de la commune nouvelle ?",

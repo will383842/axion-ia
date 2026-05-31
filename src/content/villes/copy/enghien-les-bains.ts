@@ -9,9 +9,9 @@ export const ENGHIEN_LES_BAINS_COPY: VilleCopy = {
   pitchEn:
     "Enghien-les-Bains (95), unique station thermale d'Île-de-France, est connue pour son casino, son lac et ses établissements de bien-être. Tissu de TPE commerçantes, PME hôtellerie-restauration, professions libérales, prestataires événementiels et services de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Enghien-les-Bains (95). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants du centre-ville, professions libérales, prestataires événementiels et établissements de bien-être de la station thermale. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Enghien-les-Bains (95). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants du centre-ville, professions libérales, prestataires événementiels et établissements de bien-être de la station thermale. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Enghien-les-Bains (95). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants du centre-ville, professions libérales, prestataires événementiels et établissements de bien-être de la station thermale. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Enghien-les-Bains (95). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants du centre-ville, professions libérales, prestataires événementiels et établissements de bien-être de la station thermale. Audit sur place sur mesure.",
   seoHook: "station thermale",
   ecosystemFr:
     "Enghien-les-Bains est la seule station thermale d'Île-de-France, structurée autour du lac, du casino Barrière et des thermes. Économie tertiaire orientée tourisme, hôtellerie-restauration, bien-être, événementiel et commerce de centre-ville. TPE artisanales, PME de services et professions libérales. Proximité Paris Nord (15 min Gare du Nord).",
@@ -30,8 +30,8 @@ export const ENGHIEN_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Enghien-les-Bains : diagnostic adapté aux TPE commerçantes, PME hôtellerie-restauration, prestataires événementiels et professions libérales de la station thermale. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Enghien-les-Bains : formats adaptés hôtel, restaurant, commerce, cabinet libéral ou espace événementiel. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -57,7 +57,7 @@ export const ENGHIEN_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Enghien-les-Bains ?",
-      a: "L'Audit Flash IA à Enghien-les-Bains démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Enghien-les-Bains démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les acteurs du thermalisme et du bien-être ?",

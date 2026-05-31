@@ -30,8 +30,8 @@ export const LE_POINCONNET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au PoinÃ§onnet : diagnostic adaptÃ© aux TPE artisans, commerces, PME services, professions libÃ©rales du bassin castelroussin. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
-      en: "Audit IA au PoinÃ§onnet : diagnostic adaptÃ© aux TPE artisans, commerces, PME services, professions libÃ©rales du bassin castelroussin. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
+      fr: "Audit IA au PoinÃ§onnet : diagnostic adaptÃ© aux TPE artisans, commerces, PME services, professions libÃ©rales du bassin castelroussin. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
+      en: "Audit IA au PoinÃ§onnet : diagnostic adaptÃ© aux TPE artisans, commerces, PME services, professions libÃ©rales du bassin castelroussin. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
     },
     interventions: {
       fr: "Interventions IA sur site au PoinÃ§onnet : formats adaptÃ©s Ã  l'artisanat, commerce, services aux entreprises, professions libÃ©rales. Vos Ã©quipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const LE_POINCONNET_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP du PoinÃ§onnet ?",
-      a: "Oui, automatisation devis/facturation, planification chantiers, suivi clients, gestion stocks matÃ©riaux. Audit Flash 490 â‚¬ HT pour dÃ©marrer.",
+      a: "Oui, automatisation devis/facturation, planification chantiers, suivi clients, gestion stocks matÃ©riaux. Audit sur place 1 190 â‚¬ HT pour dÃ©marrer.",
     },
     {
       q: "Accompagnez-vous les professions libÃ©rales santÃ© ?",
@@ -61,11 +61,11 @@ export const LE_POINCONNET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de proximitÃ© ?",
-      a: "Audit Flash 490 â‚¬ HT, intervention 1 journÃ©e formation, coaching 1-to-1. Agents conversationnels, gestion stocks, fidÃ©lisation clients.",
+      a: "Audit sur place 1 190 â‚¬ HT, intervention 1 journÃ©e formation, coaching 1-to-1. Agents conversationnels, gestion stocks, fidÃ©lisation clients.",
     },
     {
       q: "Quel est le tarif d'entrÃ©e pour une TPE au PoinÃ§onnet ?",
-      a: "L'audit Flash dÃ©marre Ã  490 â‚¬ HT. Coaching 1-to-1 Ã  partir de 990 â‚¬ HT. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place dÃ©marre Ã  1 190 â‚¬ HT. Coaching 1-to-1 Ã  partir de 990 â‚¬ HT. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

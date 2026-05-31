@@ -9,9 +9,9 @@ export const LEFOREST_COPY: VilleCopy = {
   pitchEn:
     "Leforest (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leforest (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leforest (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leforest (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leforest (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Leforest est une commune résidentielle du bassin minier entre Hénin-Beaumont et Douai. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et de proximité.",
@@ -30,8 +30,8 @@ export const LEFOREST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Leforest : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Leforest : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Leforest : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Leforest : diagnostic adapté aux TPE artisanales, commerçants et professions libérales du bassin minier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Leforest : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LEFOREST_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Leforest  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans de Leforest ?",

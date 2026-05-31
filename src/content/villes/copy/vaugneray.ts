@@ -30,8 +30,8 @@ export const VAUGNERAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaugneray : formats adaptés au bureau, exploitation agricole, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const VAUGNERAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Vaugneray, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Pour les TPE artisans BTP et commerçants à Vaugneray, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

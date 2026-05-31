@@ -10,9 +10,9 @@ export const MAROMME_COPY: VilleCopy = {
     "Maromme (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 11 000 habitants. Ville residentielle et commercante au nord de Rouen, elle accueille des TPE de services, des PME commerciales, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "commerce, services & agglo Rouen",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Maromme (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Maromme fait partie de la Metropole Rouen Normandie (~500 000 hab), en rive droite de la Seine. Tissu economique de proximite : commerces de centre-ville, TPE de services, artisanat, professions liberales et PME tertiaires. Acces direct tramway T1 vers Rouen centre.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const MAROMME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Maromme : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Maromme : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Maromme : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Maromme : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Maromme : formations adaptees aux commerces, cabinets, ateliers et PME tertiaires de l'agglomeration rouennaise. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const MAROMME_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commercants de Maromme ?",
-      a: "Pour les commercants de Maromme, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee, analyse ventes. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les commercants de Maromme, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee, analyse ventes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Maromme ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les professions liberales de Maromme ?",

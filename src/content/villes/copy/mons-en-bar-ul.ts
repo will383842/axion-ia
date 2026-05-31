@@ -65,7 +65,7 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et artisans de Mons-en-Barœul ?",
-      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la prise de rendez-vous.",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et la prise de rendez-vous.",
     },
     {
       q: "Comment se passe une mission depuis Lille centre ?",

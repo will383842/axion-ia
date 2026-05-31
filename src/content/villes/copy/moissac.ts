@@ -9,9 +9,9 @@ export const MOISSAC_COPY: VilleCopy = {
   pitchEn:
     "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y travaille avec les organisations du territoire du Moissagais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place sur mesure.",
   seoHook: "TPE & PME Tarn-et-Garonne",
   ecosystemFr:
     "Moissac (13 419 hab) est une cité d'art UNESCO du Tarn-et-Garonne, célèbre pour son abbaye romane et le chasselas AOP. Économie structurée autour de l'arboriculture fruitière (chasselas, prune, pomme), du tourisme patrimonial et de Compostelle, des commerces et services. Sur le canal latéral à la Garonne et le Tarn. Proximité Castelsarrasin (10 min), Montauban (30 min).",
@@ -30,8 +30,8 @@ export const MOISSAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Moissac : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moissac : formats adaptés à l'exploitation fruitière, commerce de centre-ville, hébergement tourisme ou cabinet libéral. Vos équipes repartent autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const MOISSAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Moissac  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Moissac. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité locale.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Moissac. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité locale.",
     },
     {
       q: "L'IA peut-elle aider la filière chasselas AOP ?",

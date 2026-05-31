@@ -9,9 +9,9 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
   pitchEn:
     "Machecoul-Saint-Même (44), commune nouvelle de Loire-Atlantique aux portes du marais breton vendéen, conjugue agroalimentaire, artisanat, commerces de centre-bourg et PME de services. Axion-IA opère pour entreprises et indépendants du secteur du sud Loire-Atlantique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & artisanat",
   ecosystemFr:
     "Machecoul-Saint-Même est une commune nouvelle (fusion 2019) aux portes du marais breton vendéen. Pôle agroalimentaire (industrie laitière, conserves), artisanat, commerces de centre-bourg, PME services et professions libérales. Carrefour entre Nantes (50 min) et la côte atlantique.",
@@ -30,8 +30,8 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Machecoul-Saint-Même : formats courts adaptés usine agroalimentaire, atelier artisan, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA.",

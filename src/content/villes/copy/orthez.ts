@@ -9,9 +9,9 @@ export const ORTHEZ_COPY: VilleCopy = {
   pitchEn:
     "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de TPE artisans, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA collabore avec toutes les structures locales du Béarn des Gaves.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & commerce centre-ville",
   ecosystemFr:
     "Orthez est sous-préfecture du Béarn sur le gave de Pau, 10 881 habitants. Ancien fief de Gaston Fébus, ville historique avec un tissu de PME agroalimentaires (filière maïs, élevage, salaisons), TPE artisans, commerces de centre-ville, services de santé (centre hospitalier) et proximité du bassin industriel de Lacq.",
@@ -30,8 +30,8 @@ export const ORTHEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Orthez : diagnostic adapté aux PME agroalimentaires béarnaises, TPE artisans, commerçants et professionnels de santé du Béarn des Gaves. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orthez : formation et déploiement outils IA dans vos exploitations, ateliers, commerces ou établissements de santé. Équipes autonomes sur outils configurés métier.",
@@ -57,7 +57,7 @@ export const ORTHEZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Orthez ?",
-      a: "L'audit Flash IA à Orthez démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, artisanaux ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Orthez démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus agroalimentaires, artisanaux ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les commerçants d'Orthez ?",

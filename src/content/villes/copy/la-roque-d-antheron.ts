@@ -9,9 +9,9 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
   pitchEn:
     "La Roque-d'Anthéron (13), commune de la vallée de la Durance célèbre pour son Festival international de piano et l'abbaye cistercienne de Silvacane, conjugue patrimoine, tourisme culturel et tissu de TPE artisans, PME services, restauration et commerces de proximité. Bassin d'emploi tourné vers Aix, Salon et Pertuis. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit sur place sur mesure.",
   seoHook: "tourisme culturel & restauration événementiel",
   ecosystemFr:
     "La Roque-d'Anthéron est positionnée dans la vallée de la Durance, au nord d'Aix-en-Provence, et tire son rayonnement du Festival international de piano (juillet-août, plus de 80 000 spectateurs) et de l'abbaye cistercienne de Silvacane. Tissu économique de TPE tourisme culturel (hébergements, restauration, locations saisonnières), artisans, PME services tertiaires, viticulture des Coteaux d'Aix, commerces de proximité et professions libérales. Saisonnalité forte autour du festival.",
@@ -30,8 +30,8 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Roque-d'Anthéron : ateliers pour équipes tourisme, restauration, événementiel festival et TPE locales. Outils IA configurés métier réel, dans vos locaux.",
@@ -53,7 +53,7 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à La Roque-d'Anthéron  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, hébergeurs et commerces roquassiers. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, hébergeurs et commerces roquassiers. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les hébergeurs et restaurateurs pendant le Festival international de piano ?",

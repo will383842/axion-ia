@@ -114,7 +114,7 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, artisans et petites structures du Gard jusqu'à une dizaine de collaborateurs.",
           },
@@ -154,7 +154,7 @@ export const NIMES_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Nîmes ?",
-            a: "La durée varie selon le niveau retenu. Un Audit Flash couvre une journée sur site, un Audit Stratégique ETI s'étale sur plusieurs semaines (kick-off, entretiens, restitution). Le rythme exact est calé lors du brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu. Un Audit sur place couvre une journée sur site, un Audit Stratégique ETI s'étale sur plusieurs semaines (kick-off, entretiens, restitution). Le rythme exact est calé lors du brief de cadrage initial.",
           },
           {
             q: "Quels secteurs nîmois bénéficient le plus d'un audit IA ?",
@@ -936,7 +936,7 @@ export const NIMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nîmes ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France. Frais de déplacement et hébergement facturés séparément.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Nîmes que partout en France. Frais de déplacement et hébergement facturés séparément.",
     },
     {
       q: "Quels secteurs nîmois sont les plus concernés par l'IA ?",
@@ -952,7 +952,7 @@ export const NIMES_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA peut-il intervenir pour des entreprises liées au tourisme ou à la Féria de Nîmes ?",
-      a: "Oui. Le tissu touristique et événementiel nîmois (hôtels, restaurants, prestataires Féria, musées, agences événementielles) bénéficie de cas IA concrets : gestion des réservations, communication clients, analyse de feedback, automatisation des emails. L'Audit Flash est particulièrement adapté aux TPE de ce secteur.",
+      a: "Oui. Le tissu touristique et événementiel nîmois (hôtels, restaurants, prestataires Féria, musées, agences événementielles) bénéficie de cas IA concrets : gestion des réservations, communication clients, analyse de feedback, automatisation des emails. L'Audit sur place est particulièrement adapté aux TPE de ce secteur.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Nîmes ?",

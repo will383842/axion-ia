@@ -9,9 +9,9 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
   pitchEn:
     "La Chapelle-Saint-Luc (10), commune résidentielle de 13 000 habitants au cœur de l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de proximité, artisans, restauration, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit sur place sur mesure.",
   seoHook: "santé professions & artisanat bâtiment",
   ecosystemFr:
     "La Chapelle-Saint-Luc est une commune résidentielle de l'agglo Troyes, dotée d'un tissu économique de proximité. TPE/PME diversifiées : services, commerces, artisanat, restauration, professions libérales, santé, sous-traitance industrielle au sein du bassin troyen.",
@@ -30,8 +30,8 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Chapelle-Saint-Luc : diagnostic adapté aux TPE artisanales, PME services, commerces, professions libérales, santé, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Chapelle-Saint-Luc : formats adaptés bureau PME, cabinet libéral, commerce, atelier artisan. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à La Chapelle-Saint-Luc  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME services de l'agglo Troyes.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME services de l'agglo Troyes.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets santé ?",

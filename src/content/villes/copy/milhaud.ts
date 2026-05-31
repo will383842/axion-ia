@@ -9,9 +9,9 @@ export const MILHAUD_COPY: VilleCopy = {
   pitchEn:
     "Milhaud (30), commune résidentielle de l'agglomération nîmoise sud. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération nîmoise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Milhaud (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Milhaud (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Milhaud (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Milhaud (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise sud. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture méditerranéenne",
   ecosystemFr:
     "Milhaud (~6 300 hab) est une commune résidentielle de l'agglomération nîmoise sud, en croissance démographique. Services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture méditerranéenne. Accès facile à Nîmes (10 min) et zones d'activité sud.",
@@ -30,8 +30,8 @@ export const MILHAUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Milhaud : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'agglo nîmoise sud. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Milhaud : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'agglo nîmoise sud. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Milhaud : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'agglo nîmoise sud. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Milhaud : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'agglo nîmoise sud. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Milhaud : formats adaptés aux entreprises de services, commerces, cabinets et artisans de l'agglomération nîmoise sud.",
@@ -53,7 +53,7 @@ export const MILHAUD_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Milhaud  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises de services ?",

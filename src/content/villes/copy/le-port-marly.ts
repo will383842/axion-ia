@@ -9,9 +9,9 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
   pitchEn:
     "Le Port-Marly (78), commune des Yvelines en bord de Seine face à la forêt de Saint-Germain-en-Laye, entre Marly-le-Roi et Louveciennes. Tissu de TPE artisans et commerçants, PME de services, professions libérales, activités nautiques et restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Port-Marly (78). Nous accompagnons TPE et PME : artisans et commerçants du centre-ville, PME de services boucle de Seine, professions libérales, activités nautiques et restaurateurs des bords de Seine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Port-Marly (78). Nous accompagnons TPE et PME : artisans et commerçants du centre-ville, PME de services boucle de Seine, professions libérales, activités nautiques et restaurateurs des bords de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Port-Marly (78). Nous accompagnons TPE et PME : artisans et commerçants du centre-ville, PME de services boucle de Seine, professions libérales, activités nautiques et restaurateurs des bords de Seine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Port-Marly (78). Nous accompagnons TPE et PME : artisans et commerçants du centre-ville, PME de services boucle de Seine, professions libérales, activités nautiques et restaurateurs des bords de Seine. Audit sur place sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Le Port-Marly est une commune résidentielle des Yvelines en bord de Seine, face à la forêt de Saint-Germain-en-Laye. Cadre prisé entre Marly-le-Roi et Louveciennes. Tissu économique : TPE artisans et commerçants, PME de services, professions libérales, activités liées au fleuve, restauration. Communes voisines : Marly-le-Roi, Louveciennes, Saint-Germain-en-Laye, Bougival.",
@@ -30,8 +30,8 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Port-Marly : diagnostic adapté aux TPE artisans, PME de services, professions libérales et restaurateurs des bords de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Port-Marly : formats adaptés commerce, bureau, cabinet ou restaurant. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Port-Marly ?",
-      a: "L'Audit Flash IA au Port-Marly démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA au Port-Marly démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et commerçants au Port-Marly ?",

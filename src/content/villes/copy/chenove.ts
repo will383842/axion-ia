@@ -10,9 +10,9 @@ export const CHENOVE_COPY: VilleCopy = {
     "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération dijonnaise.",
   seoHook: "commerce, artisanat & viticulture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit Flash sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Chenôve est la deuxième ville de Dijon Métropole, positionnée au sud immédiat de Dijon au pied de la Côte de Nuits. Tissu économique dominé par le commerce de proximité, l'artisanat, les services aux entreprises, la logistique périurbaine et un héritage viticole notable (ancienne cuverie des ducs de Bourgogne, proximité Marsannay-la-Côte).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CHENOVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chenôve : diagnostic adapté aux TPE commerçants, artisans BTP, PME logistique et acteurs viticoles du sud dijonnais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chenôve : formations pratiques pour commerçants, artisans, logisticiens et viticulteurs. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CHENOVE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Chenôve  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME chenevelières, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME chenevelières, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les acteurs viticoles autour de Chenôve ?",
@@ -61,7 +61,7 @@ export const CHENOVE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les commerçants et artisans de Chenôve ?",
-      a: "Pour les commerçants et artisans cheneveliers, nous proposons : Audit Flash {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation devis BTP, gestion planning et stocks augmentés.",
+      a: "Pour les commerçants et artisans cheneveliers, nous proposons : Audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation devis BTP, gestion planning et stocks augmentés.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Chenôve ?",

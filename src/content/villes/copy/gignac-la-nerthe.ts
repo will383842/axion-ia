@@ -9,9 +9,9 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
   pitchEn:
     "Gignac-la-Nerthe (13), commune résidentielle au sud de l'étang de Berre dans les Bouches-du-Rhône, bénéficie de la proximité de Martigues et de l'axe Marseille-Fos. TPE artisans, PME services, commerces de village et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du sud de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit sur place sur mesure, sans engagement.",
   seoHook: "résidentiel & services étang de Berre sud",
   ecosystemFr:
     "Gignac-la-Nerthe est une commune résidentielle au sud de l'étang de Berre, entre Martigues et l'autoroute A55 vers Marseille. Économie locale de proximité : TPE artisans, commerçants, professions libérales, PME services et prestataires résidentiels. Accès rapide au bassin industriel de Fos.",
@@ -30,8 +30,8 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gignac-la-Nerthe : diagnostic adapté aux TPE artisans, PME de services du sud étang de Berre et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gignac-la-Nerthe : diagnostic adapté aux TPE artisans, PME de services du sud étang de Berre et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gignac-la-Nerthe : diagnostic adapté aux TPE artisans, PME de services du sud étang de Berre et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gignac-la-Nerthe : diagnostic adapté aux TPE artisans, PME de services du sud étang de Berre et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gignac-la-Nerthe : formats adaptés à l'atelier artisan, au cabinet et au commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Gignac-la-Nerthe ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME de services, l'audit Stratégique approfondi est disponible. Tarifs publics et transparents, sans engagement.",
     },
     {
       q: "Accompagnez-vous les artisans de Gignac-la-Nerthe ?",
@@ -61,7 +61,7 @@ export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux commerçants de Gignac-la-Nerthe ?",
-      a: "Absolument. Cas IA pour commerçants : gestion stocks intelligente, agents IA fidélisation client, comptabilité simplifiée, prise de commande automatisée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Absolument. Cas IA pour commerçants : gestion stocks intelligente, agents IA fidélisation client, comptabilité simplifiée, prise de commande automatisée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission IA à Gignac-la-Nerthe ?",

@@ -9,9 +9,9 @@ export const DELLE_COPY: VilleCopy = {
   pitchEn:
     "Delle (90), deuxième ville du Territoire de Belfort à la frontière suisse (canton du Jura), est un pôle industriel et transfrontalier au cœur de l'Aire urbaine Belfort-Montbéliard. TPE artisanat et services, PME industrielles et sous-traitance, commerces de centre-bourg, professions libérales, prestataires transfrontaliers. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit sur place sur mesure.",
   seoHook: "artisanat & industrielles sous-traitance",
   ecosystemFr:
     "Delle est la deuxième ville du Territoire de Belfort après Belfort, située à la frontière suisse (canton du Jura) avec une agglomération transfrontalière. Tissu TPE artisanat et services, PME industrielles et sous-traitance (Aire urbaine Belfort-Montbéliard, ferroviaire, automobile, énergie), commerce de centre-bourg, professions libérales, prestataires transfrontaliers.",
@@ -30,8 +30,8 @@ export const DELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Delle : diagnostic adapté aux TPE artisans, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants centre-bourg, professions libérales, prestataires transfrontaliers. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Delle : formats adaptés atelier industriel, commerce, cabinet, bureau, contexte transfrontalier. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const DELLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitance ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, automatisation production et qualité, maintenance prédictive, gestion stocks et logistique, reporting commercial, optimisation cycles production pour donneurs d'ordre Aire urbaine Belfort-Montbéliard.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation production et qualité, maintenance prédictive, gestion stocks et logistique, reporting commercial, optimisation cycles production pour donneurs d'ordre Aire urbaine Belfort-Montbéliard.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants ?",
@@ -61,7 +61,7 @@ export const DELLE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les prestataires transfrontaliers ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, outils relation client multilingue FR/DE, gestion devis et facturation transfrontalière, automatisation reporting, optimisation cycles commerciaux Suisse-France.",
+      a: "Audit sur place {{price:audit-flash|flat}}, outils relation client multilingue FR/DE, gestion devis et facturation transfrontalière, automatisation reporting, optimisation cycles commerciaux Suisse-France.",
     },
     {
       q: "Comment se déroule une mission depuis Belfort ou Bâle ?",

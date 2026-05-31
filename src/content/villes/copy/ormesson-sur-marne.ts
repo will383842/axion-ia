@@ -9,9 +9,9 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Ormesson-sur-Marne (94), commune résidentielle verdoyante des bords de Marne, allie cadre de vie privilégié et tissu économique de proximité. TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
   seoHook: "services artisanat & conseil",
   ecosystemFr:
     "Ormesson-sur-Marne est une commune résidentielle verdoyante des bords de Marne, entre Sucy-en-Brie et Noiseau. Tissu TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier.",
@@ -30,8 +30,8 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux TPE services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux TPE services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux TPE services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux TPE services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ormesson-sur-Marne : formats adaptés cabinet, commerce, bureau, agence. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE et artisans d'Ormesson-sur-Marne ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
     },
     {
       q: "Accompagnez-vous les cabinets conseil et professions libérales ?",
@@ -61,7 +61,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et agences immobilières ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

@@ -9,9 +9,9 @@ export const GARONS_COPY: VilleCopy = {
   pitchEn:
     "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA accompagne entreprises et indépendants de la zone aéroport / agglo Nîmes sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit sur place sur mesure.",
   seoHook: "agglomération nîmes",
   ecosystemFr:
     "Garons (~5 400 hab) accueille l'aéroport Nîmes-Alès-Camargue-Cévennes (ancienne base aéronavale). Logistique aéroportuaire, services aux entreprises, viticulture Costières de Nîmes, artisanat BTP et commerces. Zone d'activité dynamique portée par l'aéroport et la proximité de Nîmes (10 min).",
@@ -30,8 +30,8 @@ export const GARONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Garons : diagnostic adapté aux TPE/PME logistique aéroportuaire, services aux entreprises, viticulteurs Costières et artisans BTP. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Garons : formats adaptés aux entreprises logistique, services, caves viticoles et artisans de la zone aéroport Nîmes.",
@@ -57,7 +57,7 @@ export const GARONS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Garons  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Costières ?",

@@ -9,9 +9,9 @@ export const PORNIC_COPY: VilleCopy = {
   pitchEn:
     "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit sur place sur mesure.",
   seoHook: "bassin pornicais",
   ecosystemFr:
     "Pornic (18 745 hab) est une station balnéaire réputée de la Côte de Jade, en Loire-Atlantique. Port de plaisance et de pêche, thalassothérapie, commerces touristiques, artisanat, ostréiculture et agriculture périurbaine. Proximité Nantes (50 min), Saint-Nazaire (35 min). Destination touristique majeure du littoral atlantique sud-Loire.",
@@ -30,8 +30,8 @@ export const PORNIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pornic : diagnostic adapté aux TPE commerçants, PME hôtelières, restaurateurs, artisans et professions libérales de la station balnéaire de la Côte de Jade. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pornic : formats adaptés à l'hôtellerie-restauration, commerce touristique, thalasso et artisanat littoral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const PORNIC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pornic  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Pornic. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Pornic. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants de Pornic ?",
@@ -61,7 +61,7 @@ export const PORNIC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants de Pornic ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, fidélisation client, agents conversationnels, automatisation comptabilité.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks saisonniers IA, fidélisation client, agents conversationnels, automatisation comptabilité.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Pornic ?",

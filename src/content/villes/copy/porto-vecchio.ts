@@ -30,8 +30,8 @@ export const PORTO_VECCHIO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Porto-Vecchio : diagnostic adapté aux TPE/PME tourisme prestige, hôtellerie haut de gamme, nautisme, commerces saisonniers et agences immobilières du sud-est corse. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Porto-Vecchio : diagnostic adapté aux TPE/PME tourisme prestige, hôtellerie haut de gamme, nautisme, commerces saisonniers et agences immobilières du sud-est corse. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Porto-Vecchio : diagnostic adapté aux TPE/PME tourisme prestige, hôtellerie haut de gamme, nautisme, commerces saisonniers et agences immobilières du sud-est corse. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Porto-Vecchio : diagnostic adapté aux TPE/PME tourisme prestige, hôtellerie haut de gamme, nautisme, commerces saisonniers et agences immobilières du sud-est corse. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Porto-Vecchio : formats adaptés à l'hôtel, restaurant, port de plaisance, agence immobilière ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const PORTO_VECCHIO_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE commerçants et artisans à Porto-Vecchio ?",
-      a: "Pour les TPE commerçants saisonniers et artisans BTP à Porto-Vecchio, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonnier, prévision affluence.",
+      a: "Pour les TPE commerçants saisonniers et artisans BTP à Porto-Vecchio, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonnier, prévision affluence.",
     },
     {
       q: "Comment se passe une mission en Corse depuis le continent ?",

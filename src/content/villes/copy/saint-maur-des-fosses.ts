@@ -32,8 +32,8 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
-      en: "Audit Flash 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
@@ -51,7 +51,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Saint-Maur-des-Fossés ?",
-      a: "Les interventions Axion-IA à Saint-Maur-des-Fossés démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous les tarifs publics figurent sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Saint-Maur-des-Fossés démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous les tarifs publics figurent sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Saint-Maur-des-Fossés ?",

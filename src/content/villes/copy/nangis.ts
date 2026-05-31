@@ -9,9 +9,9 @@ export const NANGIS_COPY: VilleCopy = {
   pitchEn:
     "Nangis (77), bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal avec zones d'activités. Tissu TPE agriculteurs et artisans, PME agroalimentaire, commerces de centre-bourg, transporteurs et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit sur place sur mesure.",
   seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Nangis est un bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal doté de zones d'activités économiques. Son tissu associe exploitations agricoles, artisans, PME agroalimentaires, commerces de centre-bourg et transporteurs. Proximité avec Provins, Melun, Fontainebleau et Montereau-Fault-Yonne.",
@@ -30,8 +30,8 @@ export const NANGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nangis : diagnostic adapté aux TPE agricoles, artisans, PME agroalimentaires, commerçants et transporteurs de la Brie seine-et-marnaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Nangis : diagnostic adapté aux TPE agricoles, artisans, PME agroalimentaires, commerçants et transporteurs de la Brie seine-et-marnaise. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Nangis : diagnostic adapté aux TPE agricoles, artisans, PME agroalimentaires, commerçants et transporteurs de la Brie seine-et-marnaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nangis : diagnostic adapté aux TPE agricoles, artisans, PME agroalimentaires, commerçants et transporteurs de la Brie seine-et-marnaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nangis : formats adaptés exploitation agricole, atelier artisan, PME agroalimentaire ou commerce. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const NANGIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Nangis ?",
-      a: "L'Audit Flash IA à Nangis démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Nangis démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles en Brie ?",

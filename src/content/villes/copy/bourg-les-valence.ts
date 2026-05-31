@@ -30,8 +30,8 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-lès-Valence : formats adaptés à l'atelier industriel, commerce, exploitation agricole. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Bourg-lès-Valence, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Bourg-lès-Valence, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",

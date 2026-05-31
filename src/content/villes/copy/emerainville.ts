@@ -9,9 +9,9 @@ export const EMERAINVILLE_COPY: VilleCopy = {
   pitchEn:
     "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit sur place sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",
@@ -30,8 +30,8 @@ export const EMERAINVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Émerainville : diagnostic adapté aux PME logistique, prestataires de services, commerçants et artisans BTP des zones d'activités. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Émerainville : formats adaptés entrepôt logistique, bureau tertiaire, commerce et atelier artisan. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const EMERAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Émerainville  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME des zones d'activités d'Émerainville, nous proposons des audits approfondis adaptés aux enjeux logistique et services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME des zones d'activités d'Émerainville, nous proposons des audits approfondis adaptés aux enjeux logistique et services.",
     },
     {
       q: "Travaillez-vous avec les entreprises logistique et transport ?",

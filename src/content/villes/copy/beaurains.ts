@@ -10,9 +10,9 @@ export const BEAURAINS_COPY: VilleCopy = {
     "Beaurains (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 560 habitants. Situee au sud d'Arras avec ses zones d'activites, son economie associe PME tertiaires, TPE de services, commerces, artisanat et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras sud, tertiaire & zones d'activites",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Beaurains est situee au sud d'Arras (3 km) avec des zones d'activites economiques dynamiques. Tissu economique compose de PME tertiaires, TPE de services, commerces, artisans BTP et activites logistiques. Commune bien desservie par l'autoroute A1.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BEAURAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et TPE de services de l'agglomeration arrageoise sud. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et TPE de services de l'agglomeration arrageoise sud. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et TPE de services de l'agglomeration arrageoise sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et TPE de services de l'agglomeration arrageoise sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Beaurains : formations adaptees aux bureaux en zones d'activites, commerces, ateliers artisanaux et entrepots. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const BEAURAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME en zones d'activites de Beaurains ?",
-      a: "Pour les PME en zones d'activites, nous proposons : automatisation administrative, CRM intelligent, agents conversationnels B2B, gestion logistique IA. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les PME en zones d'activites, nous proposons : automatisation administrative, CRM intelligent, agents conversationnels B2B, gestion logistique IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Beaurains ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les commercants de Beaurains ?",
-      a: "Oui, nous accompagnons les commercants de l'Arrageois : gestion stocks IA, agents conversationnels clients, fidelisation automatisee, comptabilite augmentee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les commercants de l'Arrageois : gestion stocks IA, agents conversationnels clients, fidelisation automatisee, comptabilite augmentee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Beaurains ?",

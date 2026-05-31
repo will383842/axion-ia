@@ -7,9 +7,9 @@ export const SAINT_CYR_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cyr-sur-Mer (83, Var), station balnéaire de la baie des Lecques au cœur du vignoble AOC Bandol, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y conduit ses missions auprès des entreprises locales de l'Ouest varois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "viticulture bandol & hôtellerie restauration",
   ecosystemFr:
     "Saint-Cyr-sur-Mer est une station balnéaire de la baie des Lecques entre Bandol et La Ciotat, au cœur du vignoble AOC Bandol. Tissu de TPE viticoles, PME hôtellerie-restauration, commerces touristiques, professions libérales, activités nautiques (port des Lecques) et résidences secondaires.",
@@ -28,8 +28,8 @@ export const SAINT_CYR_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Cyr-sur-Mer : diagnostic adapté aux TPE viticoles AOC Bandol, PME hôtellerie-restauration et commerces touristiques de l'Ouest varois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Cyr-sur-Mer : diagnostic adapté aux TPE viticoles AOC Bandol, PME hôtellerie-restauration et commerces touristiques de l'Ouest varois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Cyr-sur-Mer : diagnostic adapté aux TPE viticoles AOC Bandol, PME hôtellerie-restauration et commerces touristiques de l'Ouest varois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Cyr-sur-Mer : diagnostic adapté aux TPE viticoles AOC Bandol, PME hôtellerie-restauration et commerces touristiques de l'Ouest varois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Cyr-sur-Mer : formations pratiques adaptées viticulture, œnotourisme, hôtellerie-restauration et commerces. Équipes autonomes outils IA métier.",
@@ -51,7 +51,7 @@ export const SAINT_CYR_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Cyr-sur-Mer  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME hôtellerie varoises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE viticoles et PME hôtellerie varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Bandol et l'œnotourisme à Saint-Cyr-sur-Mer ?",

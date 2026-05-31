@@ -30,8 +30,8 @@ export const DINARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dinard : formats adaptés à l'hôtel, restaurant, commerce touristique, agence immobilière ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,15 +53,15 @@ export const DINARD_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs de Dinard ?",
-      a: "Oui, nous accompagnons les TPE/PME hôtellerie-restauration de la Côte d'Émeraude : agents conversationnels réservation, revenue management saisonnier, gestion avis en ligne, CRM client tourisme. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE/PME hôtellerie-restauration de la Côte d'Émeraude : agents conversationnels réservation, revenue management saisonnier, gestion avis en ligne, CRM client tourisme. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Dinard  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du littoral dinardais, il identifie les cas d'usage IA à fort ROI pour votre activité (tourisme, hôtellerie, commerce, immobilier). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du littoral dinardais, il identifie les cas d'usage IA à fort ROI pour votre activité (tourisme, hôtellerie, commerce, immobilier). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les agences immobilières de Dinard ?",
-      a: "Oui, nous accompagnons les agences immobilières de villégiature dinardaises sur leurs cas IA : automatisation back-office, agents conversationnels acquéreurs, estimation bien augmentée, CRM client. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les agences immobilières de villégiature dinardaises sur leurs cas IA : automatisation back-office, agents conversationnels acquéreurs, estimation bien augmentée, CRM client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Dinard ?",

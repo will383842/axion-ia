@@ -9,9 +9,9 @@ export const MONTEUX_COPY: VilleCopy = {
   pitchEn:
     "Monteux (84), commune de la plaine du Comtat Venaissin, conjugue tradition agricole maraîchère, pôle de loisirs (Provence Spectacle, Wave Island) et tissu artisanal dynamique. TPE artisans et maraîchers, PME agroalimentaires, commerces de proximité et acteurs touristiques. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monteux (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, commerces et acteurs touristiques du Comtat Venaissin. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchère & artisanat",
   ecosystemFr:
     "Monteux est positionnée au cœur de la plaine du Comtat Venaissin, entre Avignon et Carpentras. Son activité économique repose sur le maraîchage (melon, tomate, fraise), les TPE artisans (BTP, agroalimentaire), les PME de transformation et négoce agricole, le tourisme évènementiel (Provence Spectacle, base Wave Island) et les commerces de proximité. Bassin d'emploi rattaché à l'agglomération du Grand Avignon.",
@@ -30,8 +30,8 @@ export const MONTEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Monteux : ateliers pour équipes TPE/PME agricoles, transformateurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
@@ -53,7 +53,7 @@ export const MONTEUX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Monteux  ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE maraîchers, PME agroalimentaires, artisans et commerces montiliens. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE maraîchers, PME agroalimentaires, artisans et commerces montiliens. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les maraîchers et l'agroalimentaire local ?",

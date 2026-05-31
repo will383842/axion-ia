@@ -9,9 +9,9 @@ export const THANN_COPY: VilleCopy = {
   pitchEn:
     "Thann (68), sous-préfecture du Haut-Rhin, est connue pour sa collégiale Saint-Thiébaut et son vignoble grand cru Rangen, le plus méridional d'Alsace. Tissu de TPE/PME en industrie chimique et mécanique, viticulture, tourisme patrimonial, artisanat et services. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit sur place sur mesure.",
   seoHook: "industrie chimique & viticulture domaines",
   ecosystemFr:
     "Thann, sous-préfecture du Haut-Rhin, est située à l'entrée de la vallée de la Thur, au pied des Vosges. La ville accueille des sites industriels historiques (Cristel pour la cuisine, ex-DuPont/Thann Chemicals pour la chimie du dioxyde de titane), un patrimoine viticole remarquable avec le grand cru Rangen, et un tourisme patrimonial autour de la collégiale Saint-Thiébaut. Tissu complet TPE/PME : industrie, viticulture, artisanat BTP, commerce et services.",
@@ -30,8 +30,8 @@ export const THANN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Thann : diagnostic adapté aux industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans et commerçants de la vallée de la Thur. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thann : formats adaptés au site industriel, au domaine viticole, à l'hôtel patrimonial ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const THANN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Thann  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Thann et du sud du vignoble alsacien, il identifie les cas d'usage IA à fort ROI pour votre site industriel, domaine viticole, hôtel ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Thann et du sud du vignoble alsacien, il identifie les cas d'usage IA à fort ROI pour votre site industriel, domaine viticole, hôtel ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et domaines viticoles de Thann ?",

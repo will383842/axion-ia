@@ -30,8 +30,8 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites exploitations.",
-      en: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible aux petites exploitations.",
+      fr: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux petites exploitations.",
+      en: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux petites exploitations.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plonéour-Lanvern : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire ou le commerce rural. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants plonéouristes ?",
-      a: "Pour les TPE artisans BTP et commerçants à Plonéour-Lanvern, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
+      a: "Pour les TPE artisans BTP et commerçants à Plonéour-Lanvern, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
     },
     {
       q: "Comment se passe une mission depuis Quimper ou Brest ?",

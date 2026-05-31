@@ -30,8 +30,8 @@ export const FEYZIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Feyzin : formats adaptés aux sous-traitants industriels (exigences sécurité Seveso), atelier, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const FEYZIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Feyzin, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      a: "Pour les TPE artisans BTP et commerçants à Feyzin, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

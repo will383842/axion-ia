@@ -9,9 +9,9 @@ export const AVALLON_COPY: VilleCopy = {
   pitchEn:
     "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit sur place sur mesure.",
   seoHook: "TPE & PME Yonne",
   ecosystemFr:
     "Avallon est sous-préfecture de l'Yonne, cité médiévale perchée sur un éperon rocheux à la porte nord du parc naturel régional du Morvan. Tissu TPE hôtellerie-restauration, artisanat et commerce de centre-bourg, PME agroalimentaires et viticoles (Chablisien tout proche), professions libérales, prestataires tourisme vert.",
@@ -30,8 +30,8 @@ export const AVALLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avallon : formats adaptés hôtel, restaurant, commerce, cabinet, exploitation viticole. Vos collaborateurs sont autonomes ensuite.",
@@ -53,7 +53,7 @@ export const AVALLON_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les hôteliers et restaurateurs du Morvan ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, outils relation client multilingue.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, outils relation client multilingue.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants du centre-bourg ?",
@@ -61,7 +61,7 @@ export const AVALLON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME agroalimentaires et viticoles ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
+      a: "Audit sur place {{price:audit-flash|flat}}, automatisation traçabilité, outils viticulture, gestion stocks et logistique, reporting commercial, optimisation cycles production.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Dijon ?",

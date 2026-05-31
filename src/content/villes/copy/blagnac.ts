@@ -61,11 +61,11 @@ export const BLAGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les bureaux d'études aéronautiques ?",
-      a: "Pour les bureaux d'études et PME d'ingénierie de Blagnac, nous mettons en place l'automatisation des devis, la production documentaire technique et le suivi de projet, après un Audit Flash priorisant les gains rapides.",
+      a: "Pour les bureaux d'études et PME d'ingénierie de Blagnac, nous mettons en place l'automatisation des devis, la production documentaire technique et le suivi de projet, après un Audit sur place priorisant les gains rapides.",
     },
     {
       q: "Comment se déroule une mission à Blagnac ?",
-      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes, sans dépendance technique durable.",
+      a: "Nous démarrons par un Audit sur place, puis intervenons sur site ou en visio. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes, sans dépendance technique durable.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Blagnac ?",

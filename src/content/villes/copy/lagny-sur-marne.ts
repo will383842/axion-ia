@@ -31,8 +31,8 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
-      en: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit Flash dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
+      fr: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit sur place dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
+      en: "Audit IA à Lagny-sur-Marne : diagnostic des processus TPE commerce, services et PME tertiaires/industrielles de Marne et Gondoire. Audit sur place dès {{price:audit-flash|flat}}, restitution opérationnelle sous 5 jours.",
     },
     interventions: {
       fr: "Intervention IA sur site à Lagny-sur-Marne : automatisation devis-facture, relances, classification documents pour TPE/PME commerce, construction, transports et services de la vallée de la Marne. Dès {{price:intervention-4h|flat}}.",
@@ -54,7 +54,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Lagny-sur-Marne ?",
-      a: "Audit Flash dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
+      a: "Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation et coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Grille publique sur axion-ia.com/tarifs. Frais de mission en sus depuis Paris.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Lagny-sur-Marne ?",

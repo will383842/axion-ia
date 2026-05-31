@@ -30,8 +30,8 @@ export const RIANTEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Riantec : formats adaptés à l'exploitation ostréicole, atelier nautique, commerce ou hébergement littoral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const RIANTEC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants riantécois ?",
-      a: "Pour les TPE artisans pêche, conchyliculture et commerçants à Riantec, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks marée.",
+      a: "Pour les TPE artisans pêche, conchyliculture et commerçants à Riantec, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks marée.",
     },
     {
       q: "Accompagnez-vous les PME nautiques du bassin de Lorient ?",

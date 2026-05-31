@@ -9,9 +9,9 @@ export const BIGUGLIA_COPY: VilleCopy = {
   pitchEn:
     "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit sur place sur mesure.",
   seoHook: "commerces services & agriculture plaine",
   ecosystemFr:
     "Biguglia est la 5e commune la plus peuplée de Corse, banlieue sud de Bastia. Étang de Biguglia classé réserve naturelle. Tissu commercial et services agglo bastiaise, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire Costa Serena.",
@@ -30,8 +30,8 @@ export const BIGUGLIA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biguglia : formats adaptés commerce agglo Bastia, atelier artisan, exploitation agricole plaine orientale, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et exploitants agricoles ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis le continent ?",

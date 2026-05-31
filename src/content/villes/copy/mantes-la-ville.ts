@@ -30,8 +30,8 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mantes-la-Ville : formats adaptés à l'atelier industriel, au commerce ou au bureau. Vos équipes terrain et back-office repartent autonomes sur des outils IA opérationnels.",
@@ -57,11 +57,11 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du Mantois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Mantes-la-Ville (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Mantes-la-Ville (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales mantevillois, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents IA fidélité client, automatisation gestion RDV, transcription consultations, classification dossiers. RGPD strict.",
+      a: "Pour les commerçants et professions libérales mantevillois, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents IA fidélité client, automatisation gestion RDV, transcription consultations, classification dossiers. RGPD strict.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

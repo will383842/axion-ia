@@ -30,8 +30,8 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ferrière-la-Grande : formats adaptés à l'atelier industriel, l'usine mécanique ou le commerce. Vos équipes repartent avec des outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Ferrière-la-Grande ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et services à Ferrière-la-Grande sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion planning, facturation. Audit Flash {{price:audit-flash|flat}} adapté aux artisans.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et services à Ferrière-la-Grande sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion planning, facturation. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Y a-t-il des opportunités transfrontalières avec la Belgique ?",

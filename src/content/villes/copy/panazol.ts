@@ -30,8 +30,8 @@ export const PANAZOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Panazol : formats adaptés au commerce, cabinet libéral, bureau tertiaire ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const PANAZOL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Panazol ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Panazol. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Panazol. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone commerciale Panazol ?",
@@ -61,7 +61,7 @@ export const PANAZOL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales panazolaises ?",
-      a: "Pour les professions libérales à Panazol (médecins, avocats, experts-comptables), audit Flash {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation secrétariat, classification documents, synthèse dossiers, agents IA.",
+      a: "Pour les professions libérales à Panazol (médecins, avocats, experts-comptables), audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation secrétariat, classification documents, synthèse dossiers, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Limoges centre ?",

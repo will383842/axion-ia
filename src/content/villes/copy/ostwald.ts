@@ -30,8 +30,8 @@ export const OSTWALD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ostwald : formats adaptés au bureau, cabinet, commerce, chantier. Vos équipes repartent autonomes.",
@@ -53,11 +53,11 @@ export const OSTWALD_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises de services et le numérique ?",
-      a: "Oui, nous accompagnons les TPE/PME services, conseil et numérique d'Ostwald et de l'agglo strasbourgeoise : automatisation processus, IA métier, CRM intelligent, agents conversationnels. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE/PME services, conseil et numérique d'Ostwald et de l'agglo strasbourgeoise : automatisation processus, IA métier, CRM intelligent, agents conversationnels. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Ostwald ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

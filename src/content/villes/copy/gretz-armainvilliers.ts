@@ -9,9 +9,9 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
   pitchEn:
     "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gretz-Armainvilliers (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gretz-Armainvilliers (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gretz-Armainvilliers (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gretz-Armainvilliers (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Gretz-Armainvilliers est une commune résidentielle de l'est de la Seine-et-Marne, en lisière de la forêt d'Armainvilliers. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité avec Tournan-en-Brie, Ozoir-la-Ferrière, Pontault-Combault et Roissy-en-Brie.",
@@ -30,8 +30,8 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gretz-Armainvilliers : formats adaptés au cabinet, commerce ou atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Gretz-Armainvilliers ?",
-      a: "L'Audit Flash IA à Gretz-Armainvilliers démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Gretz-Armainvilliers démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans à Gretz-Armainvilliers ?",

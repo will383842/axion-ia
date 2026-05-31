@@ -9,9 +9,9 @@ export const BEDARRIDES_COPY: VilleCopy = {
   pitchEn:
     "Bédarrides (84), commune de la vallée de l'Ouvèze proche de Châteauneuf-du-Pape, compte près de 5 671 habitants. Vignoble AOC Châteauneuf-du-Pape et Côtes-du-Rhône, agriculture, tissu de TPE artisanales, domaines viticoles prestigieux, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit sur place sur mesure.",
   seoHook: "vallée ouvèze",
   ecosystemFr:
     "Bédarrides est un pôle viticole et agricole de la vallée de l'Ouvèze, à proximité immédiate de Châteauneuf-du-Pape. Vignoble AOC Châteauneuf-du-Pape (cru prestigieux), Côtes-du-Rhône, oenotourisme international. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Orange à 15 min, Avignon à 20 min, A7 directe.",
@@ -30,8 +30,8 @@ export const BEDARRIDES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bédarrides : diagnostic adapté aux TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape, PME agroalimentaires et hébergements oenotouristiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bédarrides : diagnostic adapté aux TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape, PME agroalimentaires et hébergements oenotouristiques. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bédarrides : diagnostic adapté aux TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape, PME agroalimentaires et hébergements oenotouristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bédarrides : diagnostic adapté aux TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape, PME agroalimentaires et hébergements oenotouristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bédarrides : formats adaptés aux domaines viticoles Châteauneuf-du-Pape, hébergements oenotouristiques, PME agroalimentaires et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const BEDARRIDES_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Châteauneuf-du-Pape ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Châteauneuf-du-Pape : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export, fiches Google Business multilingues et oenotourisme international.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Châteauneuf-du-Pape : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export, fiches Google Business multilingues et oenotourisme international.",
     },
     {
       q: "Accompagnez-vous les hébergements oenotouristiques de la vallée de l'Ouvèze ?",
@@ -61,7 +61,7 @@ export const BEDARRIDES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Bédarrides  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Bédarrides ?",

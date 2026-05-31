@@ -30,8 +30,8 @@ export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-le-Vinoux : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales du bassin grenoblois nord-ouest. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Martin-le-Vinoux : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales du bassin grenoblois nord-ouest. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Martin-le-Vinoux : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales du bassin grenoblois nord-ouest. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Martin-le-Vinoux : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales du bassin grenoblois nord-ouest. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-le-Vinoux : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Martin-le-Vinoux sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Martin-le-Vinoux sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les professions libérales ?",
-      a: "Pour les professions libérales à Saint-Martin-le-Vinoux (médecins, avocats, expert-comptables), audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA respectueux du secret professionnel : agents conversationnels patients/clients, gestion RDV, transcription. RGPD strict.",
+      a: "Pour les professions libérales à Saint-Martin-le-Vinoux (médecins, avocats, expert-comptables), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA respectueux du secret professionnel : agents conversationnels patients/clients, gestion RDV, transcription. RGPD strict.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",

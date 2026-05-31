@@ -30,8 +30,8 @@ export const SEVREMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sèvremont : formats adaptés aux exploitations agricoles, PME industrielles, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SEVREMONT_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les exploitations agricoles de Sèvremont ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion élevage prédictive, optimisation parcellaire, traçabilité, automatisation facturation.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas agriculture : gestion élevage prédictive, optimisation parcellaire, traçabilité, automatisation facturation.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bocage ?",
@@ -61,7 +61,7 @@ export const SEVREMONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sèvremont  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Sèvremont ?",

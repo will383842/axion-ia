@@ -9,9 +9,9 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Bonneuil-sur-Marne (94), commune du Val-de-Marne, accueille le port fluvial de Bonneuil, deuxième port fluvial d'Île-de-France, et une vaste zone industrielle et logistique. TPE artisans, PME transport et logistique, entreprises BTP, commerces, services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "transport logistique & matériaux construction",
   ecosystemFr:
     "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
@@ -30,8 +30,8 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bonneuil-sur-Marne : formats adaptés entrepôt, plateforme logistique, chantier BTP, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Bonneuil-sur-Marne ?",
-      a: "L'audit Flash IA à Bonneuil-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Bonneuil-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et PME BTP ?",

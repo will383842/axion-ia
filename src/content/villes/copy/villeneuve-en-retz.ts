@@ -9,9 +9,9 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, regroupe Bourgneuf-en-Retz et plusieurs communes entre Pornic et Machecoul. Tissu de TPE artisanales, commerçants, exploitations agricoles et ostréicoles, PME touristiques littorales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit Flash accessible.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit sur place accessible.",
   seoHook: "pays de retz",
   ecosystemFr:
     "Villeneuve-en-Retz est une commune nouvelle de plus de 5 100 habitants dans le Pays de Retz, née de la fusion de Bourgneuf-en-Retz, Fresnay-en-Retz et Chéméré. L'économie locale repose sur l'ostréiculture (baie de Bourgneuf), l'agriculture (maraîchage, élevage), le tourisme littoral saisonnier, l'artisanat BTP et les commerces de proximité.",
@@ -30,8 +30,8 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-en-Retz : diagnostic adapté aux exploitations ostréicoles, TPE artisans, commerçants et PME touristiques du Pays de Retz. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-en-Retz : formations ostréiculteurs, artisans, commerçants et hébergeurs touristiques du littoral. Vos équipes repartent autonomes sur les outils IA.",
@@ -57,7 +57,7 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE touristique du Pays de Retz ?",
-      a: "L'Audit Flash 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE touristiques et hébergeurs saisonniers. Il identifie les opportunités IA : automatisation réservations, communication multilingue, yield management, optimisation référencement local.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux TPE touristiques et hébergeurs saisonniers. Il identifie les opportunités IA : automatisation réservations, communication multilingue, yield management, optimisation référencement local.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants de Villeneuve-en-Retz ?",

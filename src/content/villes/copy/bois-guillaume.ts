@@ -9,9 +9,9 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
   pitchEn:
     "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA collabore avec toutes les structures locales de l'agglo rouennaise nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit sur place sur mesure.",
   seoHook: "tertiaire, professions libérales & santé",
   ecosystemFr:
     "Bois-Guillaume est une commune résidentielle prisée au nord de Rouen, membre de la Métropole Rouen Normandie. Forte concentration de professions libérales, cabinets médicaux, PME tertiaires et de services, commerces de proximité.",
@@ -30,8 +30,8 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bois-Guillaume : formats adaptés au cabinet, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME tertiaires bois-guillaumaises ?",
-      a: "Oui, nous accompagnons les PME tertiaires et de services de Bois-Guillaume sur des cas IA : CRM intelligent, agents conversationnels, automatisation workflow, classification documents. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME tertiaires et de services de Bois-Guillaume sur des cas IA : CRM intelligent, agents conversationnels, automatisation workflow, classification documents. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Bois-Guillaume ?",
-      a: "L'audit Flash est tarifé selon vos enjeux pour les TPE et professions libérales. Pour les PME tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place est tarifé selon vos enjeux pour les TPE et professions libérales. Pour les PME tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

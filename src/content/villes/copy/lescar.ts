@@ -9,9 +9,9 @@ export const LESCAR_COPY: VilleCopy = {
   pitchEn:
     "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, TPE artisans, PME services et commerces de périphérie urbaine. Axion-IA collabore avec toutes les structures locales de l'agglomération paloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit sur place sur mesure.",
   seoHook: "commerce grande & restauration",
   ecosystemFr:
     "Lescar est une commune de l'agglomération paloise, 9 455 habitants, ancienne cité épiscopale (cathédrale Notre-Dame, XIIe siècle). Zones commerciales dynamiques (Lescar-Soleil, retail), TPE artisans BTP, PME services aux entreprises, restauration et commerces de proximité. Bassin d'emploi commun avec Pau.",
@@ -30,8 +30,8 @@ export const LESCAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lescar : diagnostic adapté aux commerces de la zone Lescar-Soleil, PME services, TPE artisans et restaurateurs de l'agglomération paloise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lescar : déploiement outils IA dans vos surfaces commerciales, bureaux ou ateliers. Automatisation gestion stocks, prévisions ventes, planning équipes.",
@@ -57,7 +57,7 @@ export const LESCAR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Lescar ?",
-      a: "L'audit Flash IA à Lescar démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus commerciaux ou de services, identification gains IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à Lescar démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus commerciaux ou de services, identification gains IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Accompagnez-vous les PME de services à Lescar ?",

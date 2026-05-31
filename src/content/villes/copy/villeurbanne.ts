@@ -85,7 +85,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villeurbanne ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Villeurbanne et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Villeurbanne et partout en France.",
     },
     {
       q: "Quels secteurs sont prioritaires à Villeurbanne pour une mission IA ?",
@@ -153,7 +153,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Audit Flash",
+            price: "Audit sur place",
             detail:
               "Adapté aux indépendants, micro-entreprises IT et cabinets villeurbannais jusqu'à une dizaine de collaborateurs — Gratte-Ciel, Charpennes, Cusset.",
           },
@@ -193,7 +193,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure un audit IA Axion-IA à Villeurbanne ?",
-            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
+            a: "La durée varie selon le niveau retenu : un Audit sur place se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons le rythme avec vous dès le brief de cadrage initial.",
           },
           {
             q: "Quel ROI puis-je attendre pour une ETI industrielle à Villeurbanne ?",

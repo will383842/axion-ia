@@ -30,8 +30,8 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roche-la-Molière : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les indépendants rochois ?",
-      a: "Pour les indépendants et professions libérales à Roche-la-Molière, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
+      a: "Pour les indépendants et professions libérales à Roche-la-Molière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

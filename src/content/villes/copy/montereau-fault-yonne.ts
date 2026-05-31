@@ -9,9 +9,9 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
   pitchEn:
     "Montereau-Fault-Yonne (77, Seine-et-Marne), 22 279 habitants, 14e ville du département, au confluent de la Seine et de l'Yonne. Port industriel de 33 hectares, héritage faïence et sidérurgie (SAM, Soletanche Bachy), TPE artisanat, PME industrielles et commerces. Axion-IA accompagne le tissu TPE/PME du Pays de Montereau et du sud Seine-et-Marne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les TPE, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit Flash {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les TPE, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les TPE, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit Flash {{price:audit-flash|flat}}, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montereau-Fault-Yonne (77). Nous accompagnons en priorité les TPE, puis les PME et ETI du Pays de Montereau : artisans BTP, PME industrielles et logistique du port, commerces et restauration, services aux entreprises. Audit sur place {{price:audit-flash|flat}}, tarifs publics.",
   seoHook: "industrie & logistique fluviale sud Seine-et-Marne",
   ecosystemFr:
     "Montereau-Fault-Yonne est un pôle industriel et logistique du sud Seine-et-Marne, au confluent Seine-Yonne. Tissu économique structuré autour du port industriel de 33 hectares (transport fluvial, vrac, conteneurs), des PME industrielles héritières des manufactures de faïence Creil-Montereau et de la sidérurgie (SAM, Soletanche Bachy), des artisans BTP, commerces de centre-ville et services aux entreprises. Ville haute (Surville) et ville basse (centre, gare, parc) complémentaires.",
@@ -30,8 +30,8 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montereau-Fault-Yonne : diagnostic pour TPE artisans, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Montereau-Fault-Yonne : diagnostic pour TPE artisans, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Montereau-Fault-Yonne : diagnostic pour TPE artisans, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Montereau-Fault-Yonne : diagnostic pour TPE artisans, PME industrielles et logistiques du port, commerces de centre-ville et services aux entreprises. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montereau-Fault-Yonne : ateliers et déploiement outils IA dans vos locaux industriels, au port fluvial ou en boutique. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Montereau-Fault-Yonne ?",
-      a: "L'Audit Flash IA à Montereau-Fault-Yonne démarre à {{price:audit-flash|flat}}. Diagnostic vos processus industriels, logistiques ou commerciaux, cas d'usage IA prioritaires et plan d'action ROI chiffré. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place IA à Montereau-Fault-Yonne démarre à {{price:audit-flash|flat}}. Diagnostic vos processus industriels, logistiques ou commerciaux, cas d'usage IA prioritaires et plan d'action ROI chiffré. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Montereau-Fault-Yonne ?",

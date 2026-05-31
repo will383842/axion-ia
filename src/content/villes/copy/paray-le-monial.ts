@@ -9,9 +9,9 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   pitchEn:
     "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu TPE artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-le-Monial (71). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-le-Monial (71). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-le-Monial (71). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-le-Monial (71). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit sur place sur mesure.",
   ecosystemFr:
     "Paray-le-Monial est la cité du Sacré-Cœur en Charolais-Brionnais, célèbre pour sa basilique romane et son pèlerinage international attirant des visiteurs du monde entier. Tissu TPE commerce et artisanat, tourisme religieux et culturel, hébergement, restauration, PME tertiaires.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paray-le-Monial : formats adaptés commerce, hébergement pèlerins, site religieux, restaurant. Vos équipes repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hébergeurs et restaurateurs parodiens ?",
-      a: "Oui, automatisation réservations, gestion avis clients, yield management saisonnier (pics pèlerinage), CRM fidélisation. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
+      a: "Oui, automatisation réservations, gestion avis clients, yield management saisonnier (pics pèlerinage), CRM fidélisation. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Quels services pour les TPE commerçants de Paray-le-Monial ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation devis, CRM commerçants centre-ville.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",

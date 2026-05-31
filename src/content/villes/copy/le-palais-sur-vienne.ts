@@ -9,9 +9,9 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
   pitchEn:
     "Le Palais-sur-Vienne (87), commune de l'agglomération de Limoges en Haute-Vienne, bénéficie de la dynamique économique du pôle limougeaud. Tissu TPE artisans, PME industrielles porcelaine et luxe, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la première couronne nord de Limoges.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit sur place sur mesure.",
   seoHook: "industrie porcelaine & professions libérales",
   ecosystemFr:
     "Le Palais-sur-Vienne est une commune résidentielle et économique de la première couronne nord de Limoges. Tissu TPE artisans BTP, PME industrielles héritières de la tradition porcelaine et luxe limougeaude, commerces centre-bourg, professions libérales. Zones d'activités connectées au pôle Limoges Métropole.",
@@ -30,8 +30,8 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Palais-sur-Vienne : diagnostic adapté aux TPE artisans, PME industrielles porcelaine, commerçants et professions libérales de l'agglo Limoges nord. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA au Palais-sur-Vienne : diagnostic adapté aux TPE artisans, PME industrielles porcelaine, commerçants et professions libérales de l'agglo Limoges nord. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Palais-sur-Vienne : diagnostic adapté aux TPE artisans, PME industrielles porcelaine, commerçants et professions libérales de l'agglo Limoges nord. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Palais-sur-Vienne : diagnostic adapté aux TPE artisans, PME industrielles porcelaine, commerçants et professions libérales de l'agglo Limoges nord. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Palais-sur-Vienne : formats adaptés à l'atelier industriel, commerce, cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Palais-sur-Vienne ?",
-      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME industrielles, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place propose un tarif d'entrée accessible pour une TPE. Pour les PME industrielles, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles porcelaine et luxe ?",

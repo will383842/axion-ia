@@ -30,8 +30,8 @@ export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montval-sur-Loir : formats adaptés aux domaines viticoles, exploitations agricoles, TPE artisanales et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les TPE et PME de Montval-sur-Loir ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux TPE artisans, PME agricoles et commerces de la commune nouvelle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux TPE artisans, PME agricoles et commerces de la commune nouvelle.",
     },
     {
       q: "Tarifs audit IA à Montval-sur-Loir  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Montval-sur-Loir ?",

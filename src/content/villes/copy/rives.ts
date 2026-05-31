@@ -30,8 +30,8 @@ export const RIVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rives : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const RIVES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans rivois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Rives sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Rives sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Pour les commerces et professions libérales à Rives, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents IA fidélité client, automatisation gestion RDV, classification dossiers.",
+      a: "Pour les commerces et professions libérales à Rives, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents IA fidélité client, automatisation gestion RDV, classification dossiers.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",

@@ -9,9 +9,9 @@ export const AGDE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA déploie ses architectes IA seniors à Agde (28 000 habitants, Hérault), capitale balnéaire avec le Cap d'Agde — première station touristique de Méditerranée française après Marseille (250 000 lits l'été). Nous accompagnons en priorité les TPE et PME du tourisme, de la conchyliculture de Thau, de la viticulture languedocienne et du commerce de proximité dans l'adoption pragmatique de l'IA.",
   directAnswerFr:
-    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les TPE et PME locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos architectes seniors démarrent par un Audit Flash sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
+    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les TPE et PME locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos architectes seniors démarrent par un Audit sur place sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les TPE et PME locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos architectes seniors démarrent par un Audit Flash sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
+    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les TPE et PME locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos architectes seniors démarrent par un Audit sur place sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
   seoHook: "tourisme balnéaire & conchyliculture Thau",
   ecosystemFr:
     "Agde concentre une économie balnéaire dense autour du Cap d'Agde (port de plaisance de 3 000 anneaux, plage naturiste de 1,4 km — la plus grande d'Europe, hôtellerie de plein air massive) et du Grau d'Agde (pêche méditerranéenne). Les TPE et PME structurent quatre filières clés : hôtellerie-restauration saisonnière, conchyliculture et ostréiculture de l'étang de Thau (Bouzigues, Mèze à proximité), viticulture AOC Languedoc / Picpoul-de-Pinet / Côtes-de-Thau, et commerce de proximité plus BTP de rénovation résidentielle. Le patrimoine (cathédrale fortifiée Saint-Étienne, Musée Agathois) ajoute un levier tourisme culturel hors saison à valoriser via l'IA.",
@@ -30,8 +30,8 @@ export const AGDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash sur mesure à Agde : cartographie des cas d'usage IA prioritaires pour hôtels, campings, caves viticoles, conchyliculteurs de Thau et commerces du Cap d'Agde, avec ROI chiffré sur un cycle saisonnier complet.",
-      en: "Audit Flash sur mesure à Agde : cartographie des cas d'usage IA prioritaires pour hôtels, campings, caves viticoles, conchyliculteurs de Thau et commerces du Cap d'Agde, avec ROI chiffré sur un cycle saisonnier complet.",
+      fr: "Audit sur place sur mesure à Agde : cartographie des cas d'usage IA prioritaires pour hôtels, campings, caves viticoles, conchyliculteurs de Thau et commerces du Cap d'Agde, avec ROI chiffré sur un cycle saisonnier complet.",
+      en: "Audit sur place sur mesure à Agde : cartographie des cas d'usage IA prioritaires pour hôtels, campings, caves viticoles, conchyliculteurs de Thau et commerces du Cap d'Agde, avec ROI chiffré sur un cycle saisonnier complet.",
     },
     interventions: {
       fr: "Interventions ciblées à Agde sur les goulots saisonniers : yield management hôtelier, prévision de stock restauration, automatisation des déclarations sanitaires conchylicoles, suivi des cuves et stocks de cave, relances clients et avis multilingues.",
@@ -69,7 +69,7 @@ export const AGDE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'une intervention IA pour une TPE ou PME à Agde ?",
-      a: "Nous démarrons toujours par un Audit Flash sur mesure, dimensionné selon votre taille (TPE indépendante, PME multi-sites, négoce viticole, groupe hôtelier) et vos enjeux saisonniers. Le devis est public et le ROI est chiffré dès la restitution. Les rares ETI du littoral héraultais sont accompagnées en complément des TPE et PME prioritaires.",
+      a: "Nous démarrons toujours par un Audit sur place sur mesure, dimensionné selon votre taille (TPE indépendante, PME multi-sites, négoce viticole, groupe hôtelier) et vos enjeux saisonniers. Le devis est public et le ROI est chiffré dès la restitution. Les rares ETI du littoral héraultais sont accompagnées en complément des TPE et PME prioritaires.",
     },
     {
       q: "Sous quel délai pouvez-vous démarrer une mission à Agde ou au Cap d'Agde ?",

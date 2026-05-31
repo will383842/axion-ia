@@ -9,9 +9,9 @@ export const GRAULHET_COPY: VilleCopy = {
   pitchEn:
     "Graulhet (81), cité historique du cuir et de la mégisserie sur les bords du Dadou, plus de 13 000 habitants. Tissu TPE artisans cuir, PME industrielles en reconversion, commerces, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin graulhétois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Graulhet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin graulhétois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Graulhet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin graulhétois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Graulhet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin graulhétois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Graulhet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin graulhétois. Audit sur place sur mesure.",
   seoHook: "industrie cuir & artisanat métiers",
   ecosystemFr:
     "Graulhet (13 129 hab) est la cité historique du cuir et de la mégisserie en France, sur les bords du Dadou. Reconversion économique en cours : filière cuir résiduelle, PME industrie-services, artisanat, commerces et économie sociale. Située entre Albi (30 min), Castres (30 min) et Toulouse (1h via A68). Zone d'activités de la Courtinière.",
@@ -30,8 +30,8 @@ export const GRAULHET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Graulhet : diagnostic adapté aux TPE artisans cuir, PME industrielles en reconversion, commerçants et professions libérales du bassin du Dadou. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Graulhet : formats adaptés à l'atelier artisan, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const GRAULHET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Graulhet ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Graulhet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Graulhet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier.",
     },
     {
       q: "L'IA peut-elle aider les entreprises du cuir à Graulhet ?",

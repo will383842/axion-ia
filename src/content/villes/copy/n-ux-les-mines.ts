@@ -30,8 +30,8 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nœux-les-Mines : formats adaptés à l'atelier BTP, l'usine reconvertie, le commerce, la structure de loisirs. Vos équipes repartent autonomes sur les outils IA.",
@@ -53,7 +53,7 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Nœux-les-Mines sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP de Nœux-les-Mines sur leurs cas IA : automatisation devis et factures, agents IA prise de RDV, classification photos chantiers, suivi planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme sportif et loisirs ?",
@@ -61,7 +61,7 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et professions libérales ?",
-      a: "Pour les commerçants et professions libérales à Nœux-les-Mines, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
+      a: "Pour les commerçants et professions libérales à Nœux-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA conversationnels, automatisation RDV, fidélisation.",
     },
     {
       q: "Comment se passe une mission à Nœux-les-Mines depuis Lille ?",

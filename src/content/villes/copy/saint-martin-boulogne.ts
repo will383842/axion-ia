@@ -9,9 +9,9 @@ export const SAINT_MARTIN_BOULOGNE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Martin-Boulogne (62), commune de l'agglomération boulonnaise dans le Pas-de-Calais, concentre un tissu de TPE commerciales, PME de services, professions libérales et activités tertiaires péri-urbaines. Axion-IA opère pour toutes les structures économiques de la commune du Boulonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-Boulogne (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales, artisans et entreprises tertiaires de l'agglomération boulonnaise. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-Boulogne (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales, artisans et entreprises tertiaires de l'agglomération boulonnaise. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-Boulogne (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales, artisans et entreprises tertiaires de l'agglomération boulonnaise. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-Boulogne (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales, artisans et entreprises tertiaires de l'agglomération boulonnaise. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Saint-Martin-Boulogne fait partie de l'agglomération de Boulogne-sur-Mer, premier port de pêche de France. La commune concentre zones commerciales, services aux entreprises, professions libérales et PME tertiaires desservant le bassin boulonnais. TPE artisans BTP et commerces alimentent l'économie résidentielle.",
@@ -30,8 +30,8 @@ export const SAINT_MARTIN_BOULOGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-Boulogne : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du Boulonnais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Martin-Boulogne : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du Boulonnais. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Martin-Boulogne : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du Boulonnais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Martin-Boulogne : diagnostic adapté aux TPE commerciales, PME de services et professions libérales du Boulonnais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-Boulogne : formations pratiques adaptées au commerce, cabinet ou bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_MARTIN_BOULOGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Martin-Boulogne  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin boulonnais. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin boulonnais. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les commerces de Saint-Martin-Boulogne ?",

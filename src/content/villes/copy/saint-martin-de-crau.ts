@@ -9,9 +9,9 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
   pitchEn:
     "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. TPE exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y déploie son expertise pour toutes les organisations du bassin craurais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons TPE exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons TPE exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons TPE exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit Flash sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons TPE exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit sur place sur mesure, sans engagement.",
   seoHook: "agriculture, foin AOC & logistique",
   ecosystemFr:
     "Saint-Martin-de-Crau est le coeur de la plaine de la Crau, territoire agricole unique (foin de Crau AOC, élevage ovin). Développement récent de zones logistiques (entrepôts, transport). TPE exploitants agricoles, PME agroalimentaire, prestataires logistiques et commerces de bourg. Proximité Arles et Salon-de-Provence.",
@@ -30,8 +30,8 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-de-Crau : diagnostic adapté aux exploitants agricoles, PME agroalimentaire et entreprises logistiques de la plaine de la Crau. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Martin-de-Crau : diagnostic adapté aux exploitants agricoles, PME agroalimentaire et entreprises logistiques de la plaine de la Crau. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Martin-de-Crau : diagnostic adapté aux exploitants agricoles, PME agroalimentaire et entreprises logistiques de la plaine de la Crau. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Martin-de-Crau : diagnostic adapté aux exploitants agricoles, PME agroalimentaire et entreprises logistiques de la plaine de la Crau. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-de-Crau : formats adaptés à l'exploitation agricole, l'entrepôt logistique et le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -53,11 +53,11 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Saint-Martin-de-Crau ?",
-      a: "L'Audit Flash de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME agroalimentaire et logistique, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place de 4 heures est proposé à {{price:audit-flash|flat}}. Pour les PME agroalimentaire et logistique, l'audit Stratégique approfondi est disponible. Tarifs publics, sans engagement.",
     },
     {
       q: "L'IA est-elle utile pour les exploitants agricoles de la Crau ?",
-      a: "Oui, l'IA aide les exploitants agricoles : traçabilité foin AOC automatisée, optimisation planning irrigation, gestion troupeaux, facturation automatique, analyse prédictive rendements. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, l'IA aide les exploitants agricoles : traçabilité foin AOC automatisée, optimisation planning irrigation, gestion troupeaux, facturation automatique, analyse prédictive rendements. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de Saint-Martin-de-Crau ?",

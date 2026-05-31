@@ -9,9 +9,9 @@ export const SAINT_JUERY_COPY: VilleCopy = {
   pitchEn:
     "Saint-Juéry (81), commune industrielle de l'agglomération d'Albi sur le Tarn, plus de 6 500 habitants. Héritage métallurgique (Saut de Sabo), tissu TPE artisans, PME industrielles et de services, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglo albigeoise est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Juéry (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération d'Albi. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Juéry (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération d'Albi. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Juéry (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération d'Albi. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Juéry (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération d'Albi. Audit sur place sur mesure.",
   seoHook: "métallurgie mécanique & commerce détail",
   ecosystemFr:
     "Saint-Juéry (6 564 hab) est une commune industrielle de l'agglomération d'Albi, connue pour le site métallurgique du Saut de Sabo (musée du patrimoine industriel). Économie diversifiée : PME métallurgie-mécanique, TPE artisans, commerces, services aux entreprises. Proximité immédiate Albi (5 min). Zones d'activités accueillant sous-traitants et PME tertiaires.",
@@ -30,8 +30,8 @@ export const SAINT_JUERY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Juéry : diagnostic adapté aux TPE artisans, PME métallurgie et industrielles, commerçants et professions libérales de l'agglo d'Albi. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Juéry : formats adaptés à l'atelier mécanique, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -53,7 +53,7 @@ export const SAINT_JUERY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Saint-Juéry ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE. Pour les PME industrielles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des processus de production. Tarifs publics.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE. Pour les PME industrielles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des processus de production. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle optimiser la production métallurgique ?",

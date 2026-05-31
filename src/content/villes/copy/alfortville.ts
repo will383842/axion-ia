@@ -32,8 +32,8 @@ export const ALFORTVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
-      en: "Audit Flash 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h sur site à Alfortville pour les TPE et PME : cartographie des processus commerce/restauration/BTP et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions ponctuelles à Alfortville pour automatiser devis, relances, facturation et reporting des PME locales, dès {{price:intervention-4h|flat}}, déplacement équipe sous 5 jours ouvrés.",
@@ -51,7 +51,7 @@ export const ALFORTVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'une intervention IA à Alfortville ?",
-      a: "Les interventions Axion-IA à Alfortville démarrent à {{price:intervention-4h|flat}}, l'Audit Flash 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
+      a: "Les interventions Axion-IA à Alfortville démarrent à {{price:intervention-4h|flat}}, l'Audit sur place 4h à {{price:audit-flash|flat}}, et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics sur axion-ia.com.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Alfortville ?",

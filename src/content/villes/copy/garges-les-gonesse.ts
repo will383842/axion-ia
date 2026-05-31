@@ -32,8 +32,8 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA sur site à Garges-lès-Gonesse pour les TPE et PME du commerce et de la logistique péri-aéroportuaire — Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions à Garges-lès-Gonesse pour automatiser relances, devis et suivi logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA à Garges-lès-Gonesse ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit Flash et {{price:intervention-4h|flat}} pour une Intervention Essentielle à Garges-lès-Gonesse. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une Intervention Essentielle à Garges-lès-Gonesse. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}.",
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Garges-lès-Gonesse (95140) ?",
@@ -59,7 +59,7 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer un projet IA à Garges-lès-Gonesse ?",
-      a: "Nous intervenons à Garges-lès-Gonesse dans un délai de 5 jours ouvrés après validation. L'Audit Flash se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
+      a: "Nous intervenons à Garges-lès-Gonesse dans un délai de 5 jours ouvrés après validation. L'Audit sur place se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
     },
     {
       q: "Intervenez-vous dans les communes voisines de Garges-lès-Gonesse ?",

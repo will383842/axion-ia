@@ -32,8 +32,8 @@ export const MONTFERMEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montfermeil : diagnostic priorisé TPE (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
-      en: "Audit IA à Montfermeil : diagnostic priorisé TPE (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit Flash {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      fr: "Audit IA à Montfermeil : diagnostic priorisé TPE (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      en: "Audit IA à Montfermeil : diagnostic priorisé TPE (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montfermeil : ateliers adaptés au format de votre TPE/PME — commerce, atelier artisan, cabinet libéral, structure santé ou action sociale. Équipes formées et autonomes après une journée. Accès facile T4 (3 stations).",
@@ -55,11 +55,11 @@ export const MONTFERMEIL_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une mission IA à Montfermeil ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics affichés sur le site.",
+      a: "Audit sur place {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics affichés sur le site.",
     },
     {
       q: "Quels délais d'intervention sur Montfermeil ?",
-      a: "Audit Flash : créneau sous 5 à 10 jours ouvrés. Interventions terrain : planification à 2-3 semaines. Implémentation code custom : démarrage sous 3-4 semaines selon périmètre.",
+      a: "Audit sur place : créneau sous 5 à 10 jours ouvrés. Interventions terrain : planification à 2-3 semaines. Implémentation code custom : démarrage sous 3-4 semaines selon périmètre.",
     },
     {
       q: "Accompagnez-vous les structures de santé et d'action sociale de Montfermeil ?",
@@ -67,7 +67,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et artisans BTP montfermeillois ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, formation et coaching 1-to-1. Cas typiques : automatisation devis BTP, classification photos chantier, chatbot client commerces, gestion des avis en ligne, planification interventions.",
+      a: "Audit sur place {{price:audit-flash|flat}}, formation et coaching 1-to-1. Cas typiques : automatisation devis BTP, classification photos chantier, chatbot client commerces, gestion des avis en ligne, planification interventions.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Montfermeil ?",

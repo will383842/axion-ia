@@ -9,9 +9,9 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
   pitchEn:
     "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit sur place sur mesure.",
   seoHook: "bijouterie travail & industrielles tertiaires",
   ecosystemFr:
     "Saint-Amand-Montrond est la sous-préfecture du Cher, historiquement capitale de la bijouterie et du travail de l'or en France. Tissu de TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerces centre-ville, services publics sous-préfectoraux. Bords du Cher, proximité Bourges.",
@@ -30,8 +30,8 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Amand-Montrond : formats adaptés aux bijoutiers, artisans d'art, PME industrielles, commerçants. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et commerçants centre-ville ?",
-      a: "Oui, pour les TPE et commerçants de Saint-Amand-Montrond : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, marketing local IA.",
+      a: "Oui, pour les TPE et commerçants de Saint-Amand-Montrond : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, marketing local IA.",
     },
     {
       q: "Comment se déroule une mission à Saint-Amand-Montrond ?",

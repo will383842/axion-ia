@@ -9,9 +9,9 @@ export const H_NHEIM_COPY: VilleCopy = {
   pitchEn:
     "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit sur place sur mesure.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Hœnheim fait partie de l'Eurométropole de Strasbourg, dans la première couronne nord de l'agglomération. Tissu mixte résidentiel-commercial : commerces de proximité, zone commerciale Hœnheim-Bischheim, artisans BTP, professions libérales (santé, conseil) et services aux entreprises. Terminus ligne B du tramway strasbourgeois — atout connectivité majeur pour les TPE/PME locales.",
@@ -30,8 +30,8 @@ export const H_NHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Hœnheim : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de l'Eurométropole de Strasbourg. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hœnheim : formats adaptés au commerce, au cabinet libéral, à l'artisanat ou à la PME de services tertiaires. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const H_NHEIM_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Hœnheim  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hœnheim et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet libéral, activité artisanale ou PME de services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Hœnheim et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet libéral, activité artisanale ou PME de services.",
     },
     {
       q: "Accompagnez-vous les professions libérales de l'Eurométropole ?",

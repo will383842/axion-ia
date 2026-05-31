@@ -30,8 +30,8 @@ export const BORGO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Borgo : formats adaptés à l'entrepôt logistique, commerce, atelier BTP ou bureau tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const BORGO_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans BTP à Borgo ?",
-      a: "Pour les TPE artisans BTP à Borgo et plaine orientale, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion planning.",
+      a: "Pour les TPE artisans BTP à Borgo et plaine orientale, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion planning.",
     },
     {
       q: "Comment se passe une mission en Corse depuis le continent ?",

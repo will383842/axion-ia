@@ -9,9 +9,9 @@ export const BISCHWILLER_COPY: VilleCopy = {
   pitchEn:
     "Bischwiller (67), ville industrielle du Nord Alsace dans le Bas-Rhin, conjugue héritage textile et drap militaire, mécanique de précision et tissu économique manufacturier diversifié. TPE/PME industrielles, sous-traitance automobile, commerces, artisans et services rayonnent entre Strasbourg et Haguenau. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit sur place sur mesure.",
   seoHook: "industrie textile & sous-traitance automobile",
   ecosystemFr:
     "Bischwiller est un pôle industriel historique du Nord Alsace, marqué par son passé textile (drap militaire, lainages) reconverti vers la mécanique de précision, la sous-traitance automobile et la métallurgie. Tissu de TPE/PME manufacturières, ZA active, commerces de centre-ville, artisans BTP et professions libérales. Proximité immédiate de Haguenau (15 min) et Strasbourg (30 min).",
@@ -30,8 +30,8 @@ export const BISCHWILLER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bischwiller : diagnostic adapté aux industriels textile-mécanique, sous-traitants automobile, artisans et commerçants du Nord Alsace. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bischwiller : formats adaptés à l'atelier industriel, à la PME mécanique, au sous-traitant automobile ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BISCHWILLER_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Bischwiller  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bischwiller et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, PME mécanique, sous-traitance ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bischwiller et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre atelier industriel, PME mécanique, sous-traitance ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et sous-traitants automobile du Nord Alsace ?",

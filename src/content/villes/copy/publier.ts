@@ -30,8 +30,8 @@ export const PUBLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Publier : formats adaptés à l'hôtellerie, au thermalisme, aux prestataires touristiques et commerces lacustres. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const PUBLIER_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour l'hôtellerie-restauration du Léman ?",
-      a: "Pour l'hôtellerie-restauration à Publier et rives du Léman, nous proposons audit Flash {{price:audit-flash|flat}}, intervention formation pratique, implémentation sur mesure. Cas typiques : yield management IA, chatbot réservation, automatisation avis clients, gestion stocks cuisine intelligente.",
+      a: "Pour l'hôtellerie-restauration à Publier et rives du Léman, nous proposons audit sur place {{price:audit-flash|flat}}, intervention formation pratique, implémentation sur mesure. Cas typiques : yield management IA, chatbot réservation, automatisation avis clients, gestion stocks cuisine intelligente.",
     },
     {
       q: "Tarifs audit IA à Publier  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, tourisme, hôtellerie, commerce). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, tourisme, hôtellerie, commerce). Tarifs publics, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Publier depuis Genève ?",

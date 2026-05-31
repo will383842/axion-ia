@@ -9,9 +9,9 @@ export const CROZON_COPY: VilleCopy = {
   pitchEn:
     "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit Flash à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit sur place à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit Flash à",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit sur place à",
   seoHook: "tourisme nature & hébergement restauration",
   ecosystemFr:
     "Crozon est la commune principale de la presqu'île de Crozon, au cœur du Parc naturel régional d'Armorique. Destination touristique majeure du Finistère: plages (Pen-Hat, Morgat, l'Aber), sentier GR34, pointe de Pen-Hir, grottes marines de Morgat. Économie marquée par le tourisme nature et balnéaire, les activités nautiques, l'artisanat, le commerce saisonnier et les services.",
@@ -30,8 +30,8 @@ export const CROZON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crozon : formats adaptés à l'hébergement touristique, au commerce saisonnier, à l'activité nautique ou à l'atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const CROZON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants saisonniers ?",
-      a: "Pour les TPE artisans BTP et commerçants saisonniers à Crozon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE artisans BTP et commerçants saisonniers à Crozon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les activités nautiques de la presqu'île ?",

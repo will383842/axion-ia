@@ -10,9 +10,9 @@ export const WIMEREUX_COPY: VilleCopy = {
     "Wimereux (62), station balneaire de la Cote d'Opale dans le Pas-de-Calais, reunit pres de 6 260 habitants. Situee entre Boulogne-sur-Mer et Ambleteuse, son economie associe TPE tourisme et hotellerie, PME de services, commerces saisonniers, professions de sante et artisanat. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Cote Opale, tourisme & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Wimereux (62). Nous accompagnons les TPE, PME et ETI de la Cote d'Opale : hoteliers, restaurateurs, commercants saisonniers, professions de sante et artisans. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Wimereux est une station balneaire de la Cote d'Opale entre Boulogne-sur-Mer (5 km) et le cap Gris-Nez. Tissu economique saisonnier : TPE hotellerie-restauration, commerces touristiques, PME de services, professions liberales de sante et artisanat. Economie dopee par le tourisme littoral.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const WIMEREUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Wimereux : diagnostic adapte aux TPE touristiques, hoteliers, restaurateurs et commercants saisonniers de la Cote d'Opale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Wimereux : diagnostic adapte aux TPE touristiques, hoteliers, restaurateurs et commercants saisonniers de la Cote d'Opale. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Wimereux : diagnostic adapte aux TPE touristiques, hoteliers, restaurateurs et commercants saisonniers de la Cote d'Opale. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Wimereux : diagnostic adapte aux TPE touristiques, hoteliers, restaurateurs et commercants saisonniers de la Cote d'Opale. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Wimereux : formations adaptees aux hotels, restaurants, commerces saisonniers et cabinets de sante. Equipes autonomes sur outils IA.",
@@ -53,11 +53,11 @@ export const WIMEREUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les hoteliers de Wimereux ?",
-      a: "Pour les hoteliers de la Cote d'Opale, nous proposons : revenue management IA, agents conversationnels reservation, automatisation check-in, gestion avis clients IA. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les hoteliers de la Cote d'Opale, nous proposons : revenue management IA, agents conversationnels reservation, automatisation check-in, gestion avis clients IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Wimereux ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "L'IA peut-elle aider a gerer la saisonnalite a Wimereux ?",

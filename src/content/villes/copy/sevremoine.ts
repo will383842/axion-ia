@@ -32,8 +32,8 @@ export const SEVREMOINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention IA à Sèvremoine ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit Flash et {{price:intervention-4h|flat}} pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place et {{price:intervention-4h|flat}} pour une Intervention Essentielle. L'implémentation et l'accompagnement un-à-un débutent à {{price:intervention-dirigeants|flat}}, sans frais cachés.",
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Sèvremoine (Maine-et-Loire) ?",
@@ -59,7 +59,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer un projet IA à Sèvremoine ?",
-      a: "Nous intervenons à Sèvremoine dans un délai de 5 jours ouvrés après validation. L'Audit Flash se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
+      a: "Nous intervenons à Sèvremoine dans un délai de 5 jours ouvrés après validation. L'Audit sur place se déroule sur une demi-journée, l'implémentation s'étale typiquement sur 4 à 8 semaines.",
     },
     {
       q: "Intervenez-vous dans les communes voisines de Sèvremoine ?",

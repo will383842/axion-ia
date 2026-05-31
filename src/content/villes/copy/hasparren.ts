@@ -9,9 +9,9 @@ export const HASPARREN_COPY: VilleCopy = {
   pitchEn:
     "Hasparren (64), commune du Labourd intérieur en Pays Basque, 7 626 habitants. Capitale historique du cuir et de la chaussure basque, tissu de TPE artisans, PME industrielles (cuir, textile), agriculture et commerces. Axion-IA répond aux besoins de toutes les entreprises du Labourd intérieur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit sur place sur mesure.",
   seoHook: "cuir chaussure & agriculture basque",
   ecosystemFr:
     "Hasparren est la capitale historique du cuir et de la chaussure au Pays Basque, 7 626 habitants. Filière cuir artisanale encore active, PME textile/maroquinerie, TPE agricoles (élevage, brebis laitières), agroalimentaire basque (fromage Ossau-Iraty), commerces de bourg et artisanat d'art. À 25 min de Bayonne.",
@@ -30,8 +30,8 @@ export const HASPARREN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hasparren : diagnostic adapté aux ateliers cuir/chaussure, TPE agricoles basques, PME agroalimentaires (fromage Ossau-Iraty) et commerçants du Labourd intérieur. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hasparren : déploiement outils IA dans vos ateliers cuir, exploitations agricoles, fromageries ou commerces. Équipes formées et autonomes sur outils configurés métier.",
@@ -57,7 +57,7 @@ export const HASPARREN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à Hasparren ?",
-      a: "L'audit Flash IA à Hasparren démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus artisanaux, agricoles ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
+      a: "L'audit sur place IA à Hasparren démarre à {{price:audit-flash|flat}}. Diagnostic de vos processus artisanaux, agricoles ou commerciaux, identification cas d'usage IA prioritaires et plan d'action ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les éleveurs et fromagers basques de Hasparren ?",

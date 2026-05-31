@@ -30,8 +30,8 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nueil-les-Aubiers : formats adaptés à l'atelier industriel, l'exploitation agricole, le commerce ou le bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -57,7 +57,7 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",
-      a: "Oui, nous accompagnons les exploitations agricoles du bocage (élevage bovin, polyculture) sur des cas IA : prédiction rendements, optimisation alimentaire troupeaux, agents IA gestion administrative, classification documents PAC. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les exploitations agricoles du bocage (élevage bovin, polyculture) sur des cas IA : prédiction rendements, optimisation alimentaire troupeaux, agents IA gestion administrative, classification documents PAC. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",

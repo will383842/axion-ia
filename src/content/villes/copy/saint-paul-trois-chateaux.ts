@@ -30,8 +30,8 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Paul-Trois-Châteaux : formats adaptés à l'exploitation viticole, trufficole, atelier industriel. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -61,7 +61,7 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants tricastins ?",
-      a: "Pour les TPE artisans BTP et commerçants à Saint-Paul-Trois-Châteaux, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Saint-Paul-Trois-Châteaux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

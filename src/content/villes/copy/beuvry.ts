@@ -9,9 +9,9 @@ export const BEUVRY_COPY: VilleCopy = {
   pitchEn:
     "Beuvry (62), commune du bassin minier entre Béthune et Lens dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Beuvry est une commune résidentielle du bassin minier située entre Béthune et Lens. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Canal d'Aire traversant la commune, zones pavillonnaires et activités péri-urbaines.",
@@ -30,8 +30,8 @@ export const BEUVRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Beuvry : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier béthuno-lensois. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beuvry : formations pratiques adaptées au commerce, artisanat ou cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const BEUVRY_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Beuvry  : quel budget prévoir ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Beuvry ?",

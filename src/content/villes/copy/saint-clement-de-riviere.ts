@@ -30,8 +30,8 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Clément-de-Rivière : formats adaptés aux cabinets conseil, structures de santé, PME ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,7 +57,7 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et PME tertiaires saint-clémentoises ?",
-      a: "Pour les TPE et PME tertiaires à Saint-Clément-de-Rivière, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation reporting, agents IA relation client, classification emails, gestion documentaire.",
+      a: "Pour les TPE et PME tertiaires à Saint-Clément-de-Rivière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation reporting, agents IA relation client, classification emails, gestion documentaire.",
     },
     {
       q: "Accompagnez-vous le secteur viticole Pic Saint-Loup ?",

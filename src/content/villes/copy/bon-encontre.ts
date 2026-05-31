@@ -9,9 +9,9 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
   pitchEn:
     "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit sur place sur mesure.",
   ecosystemFr:
     "Bon-Encontre est un faubourg est de l'agglomération d'Agen, commune résidentielle et dynamique. Son économie s'appuie sur les commerces de proximité, l'artisanat, les professions libérales (santé, conseil), les services aux entreprises et quelques zones d'activité. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 5 min), Le Passage et Boé.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bon-Encontre : diagnostic adapté aux TPE/PME artisans, commerçants, professions libérales et services de l'agglomération agenaise est. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bon-Encontre : formats adaptés à l'atelier, au commerce, au cabinet ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bon-Encontre  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bon-Encontre : artisans, commerçants, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Bon-Encontre : artisans, commerçants, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les artisans de Bon-Encontre ?",

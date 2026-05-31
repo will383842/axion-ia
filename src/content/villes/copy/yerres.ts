@@ -65,7 +65,7 @@ export const YERRES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales de Yerres ?",
-      a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit Flash qui identifie les usages les plus rentables pour votre cabinet.",
+      a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit sur place qui identifie les usages les plus rentables pour votre cabinet.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

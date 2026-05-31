@@ -30,8 +30,8 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, TPE artisans et services de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, TPE artisans et services de l'agglomération GrandAngoulême. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, TPE artisans et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, TPE artisans et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Isle-d'Espagnac : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif pour un audit IA à L'Isle-d'Espagnac ?",
-      a: "L'audit Flash IA à L'Isle-d'Espagnac démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus commerciaux, logistiques ou tertiaires, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
+      a: "L'audit sur place IA à L'Isle-d'Espagnac démarre à {{price:audit-flash|flat}}. Diagnostic complet de vos processus commerciaux, logistiques ou tertiaires, identification des cas d'usage IA prioritaires, ROI chiffré et plan d'action concret.",
     },
     {
       q: "Comment se déroule une mission IA sur site à L'Isle-d'Espagnac ?",

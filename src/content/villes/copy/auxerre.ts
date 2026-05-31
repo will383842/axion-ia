@@ -33,8 +33,8 @@ export const AUXERRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit Flash 4 h).",
-      en: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit Flash 4 h).",
+      fr: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit sur place 4 h).",
+      en: "Audit IA à Auxerre pour TPE et PME locales — cartographie des processus automatisables dans le commerce, l'administration ou la viticulture, dès {{price:audit-flash|flat}} (Audit sur place 4 h).",
     },
     interventions: {
       fr: "Intervention sur site à Auxerre pour automatiser tâches répétitives (devis, relances, comptes-rendus, reporting) — Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -52,7 +52,7 @@ export const AUXERRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'un audit IA à Auxerre ?",
-      a: "Les audits IA à Auxerre démarrent à {{price:audit-flash|flat}} pour un Audit Flash de 4 heures sur site, puis l'Audit Ciblé à partir de {{price:audit-cible|entry}} pour un périmètre plus large. Tarifs publics affichés, sans devis caché.",
+      a: "Les audits IA à Auxerre démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, puis l'Audit Ciblé à partir de {{price:audit-cible|entry}} pour un périmètre plus large. Tarifs publics affichés, sans devis caché.",
     },
     {
       q: "William se déplace-t-il à Auxerre depuis Paris ?",

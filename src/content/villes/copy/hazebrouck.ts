@@ -11,9 +11,9 @@ export const HAZEBROUCK_COPY: VilleCopy = {
   pitchEn:
     "Hazebrouck (59, Nord) est une sous-préfecture de Flandre française d'environ 22 000 habitants, située à 35 km de Lille et Dunkerque, à 15 km de la frontière belge. Sa gare TGV (1h50 de Paris-Nord) en fait un nœud ferroviaire majeur du Nord-Pas-de-Calais. Tissu local : santé (Centre hospitalier), commerces de centre-ville, héritage textile reconverti en PME services. Axion-IA accompagne TPE artisans, commerçants et PME flamandes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit Flash {{price:intervention-4h|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit sur place {{price:intervention-4h|flat}}, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit Flash {{price:intervention-4h|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit sur place {{price:intervention-4h|flat}}, code custom, conformité RGPD intégrée.",
   seoHook: "TPE & PME Flandre française",
   ecosystemFr:
     "Hazebrouck est le 7e nœud ferroviaire du Nord-Pas-de-Calais et capitale économique du Houtland flamand. Le tissu mêle héritage textile reconverti en PME services, secteur santé porté par le Centre hospitalier d'Hazebrouck, commerce de centre-ville autour de l'église Saint-Éloi (clocher de 1512), agriculture flamande et logistique liée à la gare. Axes A25 et A26 à 15-20 km, frontière belge à 15 km : zone d'influence transfrontalière.",
@@ -32,8 +32,8 @@ export const HAZEBROUCK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit Flash {{price:intervention-4h|flat}}.",
-      en: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit Flash {{price:intervention-4h|flat}}.",
+      fr: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit sur place {{price:intervention-4h|flat}}.",
+      en: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit sur place {{price:intervention-4h|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hazebrouck : ateliers adaptés à la PME services, au cabinet médical ou à l'artisan flamand. Vos équipes repartent autonomes.",
@@ -55,7 +55,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Hazebrouck ?",
-      a: "L'Audit Flash démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME services ou structures de santé, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit sur place démarre à {{price:intervention-4h|flat}} pour une TPE. Pour les PME services ou structures de santé, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Quels délais pour une intervention à Hazebrouck ?",

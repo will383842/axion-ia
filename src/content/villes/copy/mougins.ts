@@ -30,8 +30,8 @@ export const MOUGINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mougins : diagnostic adapté aux TPE artisans, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Mougins : diagnostic adapté aux TPE artisans, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit Flash dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Mougins : diagnostic adapté aux TPE artisans, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Mougins : diagnostic adapté aux TPE artisans, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mougins : formats adaptés aux startups tech, restaurants gastronomiques, hôtels ou commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const MOUGINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Mougins  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, startups tech et PME mouginoises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, startups tech et PME mouginoises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Mougins ?",

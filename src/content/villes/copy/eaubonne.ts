@@ -30,8 +30,8 @@ export const EAUBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eaubonne : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME industrielles, professions de santé, ESS. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Eaubonne : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME industrielles, professions de santé, ESS. ROI chiffré pragmatique, audit Flash {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Eaubonne : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME industrielles, professions de santé, ESS. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Eaubonne : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME industrielles, professions de santé, ESS. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eaubonne : formats adaptés à tous métiers. Vos équipes terrain (ouvriers BTP, commerciaux, soignants), back-office et direction repartent avec outils IA configurés métier réel.",
@@ -53,7 +53,7 @@ export const EAUBONNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerçants ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Eaubonne (plombiers, électriciens, menuisiers, peintres) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier (avant/après), gestion stocks. Audit Flash {{price:audit-flash|flat}} adapté.",
+      a: "Oui, nous accompagnons les TPE artisans BTP à Eaubonne (plombiers, électriciens, menuisiers, peintres) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier (avant/après), gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Travaillez-vous avec l'hôpital Simone-Veil et professions de santé ?",
@@ -65,7 +65,7 @@ export const EAUBONNE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats pour les associations et ESS ?",
-      a: "Pour les associations et structures ESS à Eaubonne, nous proposons des formats adaptés à votre budget : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation bénévoles/salariés, agents IA pour bénéficiaires. RGPD strict, hébergement UE, code restant votre propriété.",
+      a: "Pour les associations et structures ESS à Eaubonne, nous proposons des formats adaptés à votre budget : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation bénévoles/salariés, agents IA pour bénéficiaires. RGPD strict, hébergement UE, code restant votre propriété.",
     },
   ],
 };

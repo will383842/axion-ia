@@ -9,9 +9,9 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
   pitchEn:
     "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit sur place sur mesure.",
   seoHook: "agglomération nancy",
   ecosystemFr:
     "Champigneulles est situé en première couronne nord de Nancy, sur l'axe Nancy-Metz. La ville est connue pour sa brasserie historique (Brasseries de Champigneulles, l'une des plus grandes de France) et ses zones d'activités industrielles et logistiques. L'économie locale repose sur l'industrie agroalimentaire, la logistique, l'artisanat BTP, le commerce et les services. Intégration à la Métropole du Grand Nancy.",
@@ -30,8 +30,8 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champigneulles : formats adaptés à l'industrie, à la PME logistique, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Champigneulles  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Champigneulles et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre industrie, atelier ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Champigneulles et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre industrie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et logisticiens de Champigneulles ?",

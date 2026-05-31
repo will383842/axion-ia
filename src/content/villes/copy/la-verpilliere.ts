@@ -30,8 +30,8 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
-      en: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      fr: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
+      en: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Verpillière : formats adaptés à l'entrepôt logistique aéroportuaire, atelier industriel ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans verpilliérois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à La Verpillière sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à La Verpillière sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels services pour les PME industrielles CAPI ?",

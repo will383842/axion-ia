@@ -30,8 +30,8 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rives-du-Loir-en-Anjou : formations adaptées aux exploitations agricoles, viticoles, artisans et commerces du bassin du Loir. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rives-du-Loir-en-Anjou  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et viticulteurs du bassin du Loir. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et viticulteurs du bassin du Loir. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME agricoles ?",

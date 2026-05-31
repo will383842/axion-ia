@@ -9,9 +9,9 @@ export const LE_ROVE_COPY: VilleCopy = {
   pitchEn:
     "Le Rove (13), commune de la Côte Bleue à l'ouest de Marseille, conjugue calanques préservées (Niolon, La Vesse), élevage caprin traditionnel (chèvre du Rove, brousse AOP) et tissu de TPE tourisme, restauration, plaisance et commerces de proximité. Cadre nature aux portes de Marseille. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rove (13). Nous accompagnons TPE tourisme et restauration, PME services, éleveurs de chèvres du Rove, plaisanciers et commerces de proximité de la Côte Bleue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rove (13). Nous accompagnons TPE tourisme et restauration, PME services, éleveurs de chèvres du Rove, plaisanciers et commerces de proximité de la Côte Bleue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rove (13). Nous accompagnons TPE tourisme et restauration, PME services, éleveurs de chèvres du Rove, plaisanciers et commerces de proximité de la Côte Bleue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rove (13). Nous accompagnons TPE tourisme et restauration, PME services, éleveurs de chèvres du Rove, plaisanciers et commerces de proximité de la Côte Bleue. Audit sur place sur mesure.",
   seoHook: "tourisme restauration & élevage caprin",
   ecosystemFr:
     "Le Rove est positionnée à l'ouest immédiat de Marseille, sur la Côte Bleue, avec ses calanques (Niolon, La Vesse, L'Erevine) et son identité agricole forte (chèvre du Rove, brousse du Rove AOP, fromage de tradition provençale). Tissu économique de TPE tourisme (locations saisonnières, restauration), élevage caprin et fromageries artisanales, plaisance et clubs de plongée, PME services, commerces de proximité et viticulture côtière.",
@@ -30,8 +30,8 @@ export const LE_ROVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Rove : ateliers pour équipes tourisme, restauration, élevage, plaisance et TPE locales. Outils IA configurés métier réel, dans vos locaux ou à Marseille.",
@@ -53,7 +53,7 @@ export const LE_ROVE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Rove ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, éleveurs caprins et commerces rovenains. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, éleveurs caprins et commerces rovenains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les éleveurs de chèvre du Rove et fromageries artisanales ?",

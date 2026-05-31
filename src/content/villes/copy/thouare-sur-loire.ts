@@ -30,8 +30,8 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thouaré-sur-Loire : formats adaptés au bureau tertiaire, entrepôt logistique, exploitation viticole ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et professions libérales ?",
-      a: "Pour les TPE tertiaires et professions libérales à Thouaré-sur-Loire, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation administratif, agents IA prise de RDV, classification dossiers.",
+      a: "Pour les TPE tertiaires et professions libérales à Thouaré-sur-Loire, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation administratif, agents IA prise de RDV, classification dossiers.",
     },
     {
       q: "Comment se passe une mission depuis Nantes centre ?",

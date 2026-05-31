@@ -11,9 +11,9 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
   pitchEn:
     "Combs-la-Ville (23 350 habitants, 77380), commune de Seine-et-Marne intégrée à la Communauté d'agglomération Grand Paris Sud Seine Essonne Sénart, est desservie par la gare RER D Combs-la-Ville – Quincy à environ 28 km au sud-est de Paris. Axion-IA, cabinet d'IA pour TPE et PME francophones, se déplace sur place pour automatiser devis, relances, comptes-rendus ou suivi client. Notre code est custom (pas de no-code) et adapté au tissu local : commerces de proximité, artisans BTP du plateau de Brie, PME industrielles des zones d'activités proches du Carré Sénart, professions agricoles (céréales et oléagineux occupent 46 % du foncier communal).",
   directAnswerFr:
-    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les TPE et PME locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
+    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les TPE et PME locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les TPE et PME locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit Flash dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
+    "Axion-IA intervient à Combs-la-Ville (77380, Seine-et-Marne, agglomération Grand Paris Sud Seine Essonne Sénart) pour les TPE et PME locales : artisans BTP, commerces de proximité, PME logistiques proches de la Francilienne (RN 104, sorties 24-25), exploitations agricoles du plateau de Brie. Nous déployons des automatisations sur mesure (code custom, pas de no-code) pour traiter devis, factures, relances clients ou tableaux de bord. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention sur site dès {{price:intervention-4h|flat}}. Déplacement depuis la gare RER D Combs-la-Ville – Quincy sous 5 jours ouvrés.",
   seoHook: "TPE/PME Seine-et-Marne & plateau de Brie",
   ecosystemFr:
     "Combs-la-Ville appartient à l'agglomération Grand Paris Sud Seine Essonne Sénart et bénéficie de la proximité immédiate de pôles d'activité majeurs : Lieusaint, Moissy-Cramayel et le Carré Sénart au sud, Brie-Comte-Robert à l'est, Quincy-sous-Sénart à l'ouest. Le tissu économique mêle commerces de centre-ville, artisanat BTP, logistique sur la Francilienne (RN 104) et exploitations céréalières du plateau de Brie. Forêt de Sénart à l'ouest et vallée de l'Yerres au nord encadrent la commune.",
@@ -32,8 +32,8 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash sur site à Combs-la-Ville pour cartographier les processus automatisables (devis, relances, planning) — dès {{price:audit-flash|flat}}.",
-      en: "Audit Flash sur site à Combs-la-Ville pour cartographier les processus automatisables (devis, relances, planning) — dès {{price:audit-flash|flat}}.",
+      fr: "Audit sur place sur site à Combs-la-Ville pour cartographier les processus automatisables (devis, relances, planning) — dès {{price:audit-flash|flat}}.",
+      en: "Audit sur place sur site à Combs-la-Ville pour cartographier les processus automatisables (devis, relances, planning) — dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Combs-la-Ville pour les TPE et PME du plateau de Brie (BTP, commerce, logistique) — dès {{price:intervention-4h|flat}}.",
@@ -51,7 +51,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Combs-la-Ville ?",
-      a: "Audit Flash à partir de {{price:audit-flash|flat}} (4 heures sur site), intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:impl-poc|entry}}. Tarifs publics consultables sur axion-ia.com/tarifs.",
+      a: "Audit sur place à partir de {{price:audit-flash|flat}} (4 heures sur site), intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:impl-poc|entry}}. Tarifs publics consultables sur axion-ia.com/tarifs.",
     },
     {
       q: "Quels délais pour intervenir à Combs-la-Ville ?",

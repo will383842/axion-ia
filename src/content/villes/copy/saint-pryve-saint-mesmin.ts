@@ -30,8 +30,8 @@ export const SAINT_PRYVE_SAINT_MESMIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pryvé-Saint-Mesmin : formats adaptés au cabinet libéral, commerce, PME tertiaire ou atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const SAINT_PRYVE_SAINT_MESMIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants à Saint-Pryvé ?",
-      a: "Pour les TPE artisans et commerçants à Saint-Pryvé-Saint-Mesmin, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      a: "Pour les TPE artisans et commerçants à Saint-Pryvé-Saint-Mesmin, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se passe une mission à Saint-Pryvé-Saint-Mesmin ?",

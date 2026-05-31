@@ -30,8 +30,8 @@ export const MOIRANS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moirans : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const MOIRANS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants moirannais ?",
-      a: "Pour les TPE artisans BTP et commerçants à Moirans, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et commerçants à Moirans, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",

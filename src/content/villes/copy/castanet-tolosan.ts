@@ -9,9 +9,9 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
   pitchEn:
     "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA répond aux besoins de toutes les entreprises du Sicoval.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit sur place sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Castanet-Tolosan est le siège de la communauté d'agglomération du Sicoval. Commune résidentielle et commerçante du sud-est de Toulouse, traversée par le canal du Midi. TPE artisans, PME de services, cabinets de professions libérales, commerces de centre-ville, quelques entreprises technologiques liées au pôle spatial toulousain.",
@@ -30,8 +30,8 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castanet-Tolosan : formats adaptés au cabinet libéral, au commerce de centre-ville, à la PME de services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Castanet-Tolosan  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA à Castanet-Tolosan ?",

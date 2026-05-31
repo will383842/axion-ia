@@ -9,9 +9,9 @@ export const BELIN_BELIET_COPY: VilleCopy = {
   pitchEn:
     "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud Bordeaux et de la vallée de la Leyre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit sur place sur mesure.",
   seoHook: "exploitation forestière & commerce bourg",
   ecosystemFr:
     "Belin-Béliet se situe en coeur de forêt landaise, à la jonction A63/A65. Exploitation forestière (pin maritime), artisanat BTP, commerces de bourg, tourisme nature (Leyre, canoë) et services à la personne. Noeud autoroutier vers Bordeaux, Bayonne et Pau.",
@@ -30,8 +30,8 @@ export const BELIN_BELIET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Belin-Béliet : diagnostic pour entreprises forestières, TPE artisans BTP, commerçants et prestataires tourisme nature. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Belin-Béliet : ateliers adaptés aux entreprises forestières, artisans et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Belin-Béliet  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux entreprises forestières et TPE artisans de la vallée de la Leyre.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux entreprises forestières et TPE artisans de la vallée de la Leyre.",
     },
     {
       q: "Accompagnez-vous les entreprises forestières ?",
@@ -61,7 +61,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission à Belin-Béliet ?",

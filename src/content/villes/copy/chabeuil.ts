@@ -30,8 +30,8 @@ export const CHABEUIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chabeuil : formats adaptés à l'école de pilotage, bureau tertiaire, exploitation agricole, atelier artisan. Vos équipes repartent autonomes sur outils IA.",
@@ -61,7 +61,7 @@ export const CHABEUIL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chabeuil, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
+      a: "Pour les TPE artisans BTP et commerçants à Chabeuil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",

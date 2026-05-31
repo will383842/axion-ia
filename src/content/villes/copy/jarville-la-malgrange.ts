@@ -30,8 +30,8 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jarville-la-Malgrange : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et professions libérales de Jarville-la-Malgrange ?",
-      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Jarville-la-Malgrange  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Jarville-la-Malgrange et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Jarville-la-Malgrange et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Jarville-la-Malgrange ?",

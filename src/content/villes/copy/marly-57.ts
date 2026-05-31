@@ -30,8 +30,8 @@ export const MARLY_57_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly (57) : diagnostic adapté aux TPE commerces, artisans, PME tertiaires Metz Métropole sud, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Marly (57) : diagnostic adapté aux TPE commerces, artisans, PME tertiaires Metz Métropole sud, professions libérales. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Marly (57) : diagnostic adapté aux TPE commerces, artisans, PME tertiaires Metz Métropole sud, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marly (57) : diagnostic adapté aux TPE commerces, artisans, PME tertiaires Metz Métropole sud, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marly (57) : formats adaptés au commerce, atelier artisan, cabinet libéral, bureau tertiaire. Vos équipes repartent autonomes sur outils IA quotidiens.",

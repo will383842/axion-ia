@@ -9,9 +9,9 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
   pitchEn:
     "Saint-Doulchard (18), commune de l'agglomération de Bourges nord dans le Cher, concentre zones d'activités commerciales et tertiaires. TPE artisans, PME tertiaires, grandes surfaces, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit sur place sur mesure.",
   seoHook: "zones d'activités & tertiaires services",
   ecosystemFr:
     "Saint-Doulchard est la principale commune périurbaine nord de Bourges, avec des zones d'activités commerciales et tertiaires majeures. Tissu de TPE artisans, PME tertiaires et de services, grandes surfaces, logistique, professions libérales. Dynamique agglo Bourges Plus.",
@@ -30,8 +30,8 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Doulchard : formats adaptés aux PME tertiaires, commerçants zones d'activités, artisans, logisticiens. Vos équipes repartent autonomes sur outils IA.",
@@ -57,7 +57,7 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans du Cher ?",
-      a: "Pour les TPE artisans à Saint-Doulchard et agglo Bourges : audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
+      a: "Pour les TPE artisans à Saint-Doulchard et agglo Bourges : audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, gestion stocks.",
     },
     {
       q: "Accompagnez-vous les acteurs de la logistique ?",

@@ -9,9 +9,9 @@ export const PARMAIN_COPY: VilleCopy = {
   pitchEn:
     "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Parmain est une commune résidentielle verdoyante des bords de l'Oise, voisine de L'Isle-Adam, appréciée pour son cadre de vie boisé et sa qualité de vie. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
@@ -30,8 +30,8 @@ export const PARMAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parmain : formats adaptés boutique, cabinet, restaurant, bureau PME bords de l'Oise. Vos équipes maîtrisent les outils déployés.",
@@ -61,7 +61,7 @@ export const PARMAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",

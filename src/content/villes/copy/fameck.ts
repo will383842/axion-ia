@@ -30,8 +30,8 @@ export const FAMECK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fameck : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
@@ -57,11 +57,11 @@ export const FAMECK_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les frontaliers et entrepreneurs vers le Luxembourg ?",
-      a: "Oui, nombreux frontaliers et entrepreneurs fameckois travaillant avec le Luxembourg : automatisation administrative transfrontalière, gestion multilingue, conformité, outils collaboratifs. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nombreux frontaliers et entrepreneurs fameckois travaillant avec le Luxembourg : automatisation administrative transfrontalière, gestion multilingue, conformité, outils collaboratifs. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Fameck ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Fameck ?",

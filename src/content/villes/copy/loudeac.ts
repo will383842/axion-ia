@@ -9,9 +9,9 @@ export const LOUDEAC_COPY: VilleCopy = {
   pitchEn:
     "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y mène ses missions auprès des organisations locales du pays de Loudéac.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & agriculture filières",
   ecosystemFr:
     "Loudéac est la ville-centre du Centre Bretagne, pôle agroalimentaire majeur des Côtes-d'Armor spécialisé dans les filières porcine et avicole. Hippodrome de Loudéac réputé, marché agricole historique. Tissu économique : PME agroalimentaires, TPE artisans, exploitants agricoles, commerces de centre-bourg, professions libérales. Communes voisines : La Motte, Hémonstoir, Saint-Barnabé, Trévé, Grâce-Uzel.",
@@ -30,8 +30,8 @@ export const LOUDEAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, TPE artisans, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, TPE artisans, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, TPE artisans, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, TPE artisans, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loudéac : formats adaptés à l'usine agroalimentaire, à l'exploitation agricole, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LOUDEAC_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Loudéac  : quel budget prévoir ?",
-      a: "L'Audit Flash IA à Loudéac démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Loudéac démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises agroalimentaires à Loudéac ?",

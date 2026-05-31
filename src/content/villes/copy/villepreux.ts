@@ -9,9 +9,9 @@ export const VILLEPREUX_COPY: VilleCopy = {
   pitchEn:
     "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit sur place sur mesure.",
   seoHook: "artisanat & services aux",
   ecosystemFr:
     "Villepreux est située dans la plaine de Versailles, à proximité du Technocentre Renault de Guyancourt et du technopôle Saint-Quentin-en-Yvelines. Tissu TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales.",
@@ -30,8 +30,8 @@ export const VILLEPREUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villepreux : formats adaptés chantier, bureau, commerce, cabinet, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const VILLEPREUX_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

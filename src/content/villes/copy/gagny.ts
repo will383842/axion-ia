@@ -33,8 +33,8 @@ export const GAGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gagny pour TPE et PME locales — identification des processus automatisables (devis, factures, planning, relance clients), Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Gagny pour commerces, artisans BTP et restaurateurs — Formation 4 h dès {{price:intervention-4h|flat}}, avec déplacement William depuis Paris.",
@@ -52,7 +52,7 @@ export const GAGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour une intervention IA à Gagny ?",
-      a: "Nos interventions IA à Gagny démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, et à {{price:audit-flash|flat}} pour un Audit Flash. Tarifs publics, sans devis caché.",
+      a: "Nos interventions IA à Gagny démarrent à {{price:intervention-4h|flat}} pour l'Intervention Essentielle, et à {{price:audit-flash|flat}} pour un Audit sur place. Tarifs publics, sans devis caché.",
     },
     {
       q: "Combien de temps avant une intervention à Gagny ?",

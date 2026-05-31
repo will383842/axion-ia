@@ -30,8 +30,8 @@ export const THONES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thônes : formats adaptés à la fromagerie, l'hôtel-restaurant, le commerce de bourg ou l'artisan montagnard. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const THONES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Thônes  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des Aravis, il identifie les cas d'usage IA à fort ROI pour votre activité (fromagerie, tourisme, commerce, hôtellerie, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME des Aravis, il identifie les cas d'usage IA à fort ROI pour votre activité (fromagerie, tourisme, commerce, hôtellerie, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour le tourisme de montagne à Thônes ?",

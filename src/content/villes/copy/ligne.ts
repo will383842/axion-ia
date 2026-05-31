@@ -30,8 +30,8 @@ export const LIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ligné : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services et professions libérales du nord-est nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ligné : formats adaptés à l'exploitation, au bureau, au commerce ou au cabinet. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LIGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles ?",
-      a: "Oui, nous accompagnons les exploitations agricoles de Ligné sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks, optimisation logistique, agents IA vente directe. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les exploitations agricoles de Ligné sur des cas IA pratiques : automatisation suivi parcellaire, gestion stocks, optimisation logistique, agents IA vente directe. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
@@ -61,7 +61,7 @@ export const LIGNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ligné  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
     },
     {
       q: "Comment se déroule une intervention depuis Nantes ?",

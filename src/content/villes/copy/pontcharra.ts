@@ -30,8 +30,8 @@ export const PONTCHARRA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pontcharra : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants du Grésivaudan / Combe de Savoie. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Pontcharra : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants du Grésivaudan / Combe de Savoie. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Pontcharra : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants du Grésivaudan / Combe de Savoie. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Pontcharra : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants du Grésivaudan / Combe de Savoie. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pontcharra : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou site touristique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const PONTCHARRA_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et agriculteurs ?",
-      a: "Pour les TPE artisans BTP et agriculteurs à Pontcharra, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation. Cas typiques : automatisation devis, classification photos cultures/chantier, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et agriculteurs à Pontcharra, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation. Cas typiques : automatisation devis, classification photos cultures/chantier, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",

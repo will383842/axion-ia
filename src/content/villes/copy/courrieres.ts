@@ -9,9 +9,9 @@ export const COURRIERES_COPY: VilleCopy = {
   pitchEn:
     "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Courrières est une commune du bassin minier entre Lens et Hénin-Beaumont, marquée par la catastrophe minière de 1906. Économie reconvertie vers les services, le commerce de proximité, l'artisanat BTP et les professions libérales. Tissu résidentiel avec TPE et PME de services.",
@@ -30,8 +30,8 @@ export const COURRIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courrières : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Courrières : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Courrières : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Courrières : diagnostic adapté aux TPE artisanales, PME de services et professions libérales du bassin minier lensois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courrières : formations pratiques adaptées au commerce, à l'artisanat ou au cabinet. Équipes autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const COURRIERES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Courrières  ?",
-      a: "L'Audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les artisans de Courrières ?",

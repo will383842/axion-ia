@@ -9,9 +9,9 @@ export const MENNECY_COPY: VilleCopy = {
   pitchEn:
     "Mennecy (91), commune résidentielle du sud de l'Essonne bordée par le Parc de Villeroy, mêle cadre verdoyant et dynamisme économique local. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mennecy est une commune résidentielle du sud de l'Essonne, réputée pour le Parc de Villeroy et son cadre de vie verdoyant. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
@@ -30,8 +30,8 @@ export const MENNECY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mennecy : formats adaptés boutique, cabinet, restaurant, bureau PME. Vos équipes repartent autonomes.",
@@ -61,7 +61,7 @@ export const MENNECY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
       q: "Comment se passe une mission depuis Évry ou Paris ?",

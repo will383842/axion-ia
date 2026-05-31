@@ -61,11 +61,11 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les bureaux d'études et PME d'ingénierie ?",
-      a: "Pour les bureaux d'études et PME d'ingénierie de Champs-sur-Marne, nous automatisons les devis, le suivi de projet et la production documentaire technique, après un Audit Flash priorisant les gains rapides.",
+      a: "Pour les bureaux d'études et PME d'ingénierie de Champs-sur-Marne, nous automatisons les devis, le suivi de projet et la production documentaire technique, après un Audit sur place priorisant les gains rapides.",
     },
     {
       q: "Comment se déroule une mission à Champs-sur-Marne ?",
-      a: "Nous démarrons par un Audit Flash, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique durable.",
+      a: "Nous démarrons par un Audit sur place, puis intervenons sur site ou en visio. Chaque mission donne lieu à des livrables documentés et à une montée en autonomie de vos équipes, sans dépendance technique durable.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Champs-sur-Marne ?",

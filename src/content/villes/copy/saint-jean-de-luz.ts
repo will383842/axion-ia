@@ -9,9 +9,9 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Jean-de-Luz est un port de pêche historique et une station balnéaire emblématique de la Côte Basque. La maison Louis XIV rappelle le mariage royal de 1660. Son économie s'appuie sur le tourisme (plage, patrimoine, gastronomie), l'hôtellerie-restauration haut de gamme, le port de pêche (thon, anchois, sardine), le commerce de centre-ville (boutiques basques, artisanat), les professions libérales et les services. Le bassin d'emploi s'étend à Ciboure, Hendaye et au BAB.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Jean-de-Luz : diagnostic adapté aux TPE/PME tourisme, hôtellerie-restauration, pêche, commerce et artisanat de la Côte Basque. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Luz : formats adaptés à l'hôtel, au restaurant, à la criée, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Luz  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME luziennes : hôteliers-restaurateurs, commerçants, professionnels de la pêche, artisans basques et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME luziennes : hôteliers-restaurateurs, commerçants, professionnels de la pêche, artisans basques et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les professionnels de la pêche à Saint-Jean-de-Luz ?",

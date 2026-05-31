@@ -10,9 +10,9 @@ export const LAVENTIE_COPY: VilleCopy = {
     "Laventie (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit pres de 5 040 habitants. Situee entre Bethune et La Bassee, son economie associe agriculture, TPE artisanales, PME de services, commerces de centre-bourg et petites industries. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Flandre artesienne, agriculture & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Laventie est situee en Flandre artesienne entre Bethune (15 km) et La Bassee (8 km). Tissu economique rural dynamique : agriculture (polyculture, elevage), TPE artisanales BTP, PME de services, commerces de centre-bourg et petites industries agroalimentaires.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LAVENTIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, TPE artisanales et commercants de la Flandre artesienne. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, TPE artisanales et commercants de la Flandre artesienne. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, TPE artisanales et commercants de la Flandre artesienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, TPE artisanales et commercants de la Flandre artesienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Laventie : formations adaptees aux exploitations agricoles, ateliers artisanaux, commerces et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const LAVENTIE_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les agriculteurs de Laventie ?",
-      a: "Pour les agriculteurs de Flandre artesienne, nous proposons : IA predictive rendements, gestion parcellaire automatisee, optimisation elevage, agents conversationnels cooperatives. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les agriculteurs de Flandre artesienne, nous proposons : IA predictive rendements, gestion parcellaire automatisee, optimisation elevage, agents conversationnels cooperatives. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Laventie ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Laventie ?",
-      a: "Oui, nous accompagnons les artisans BTP : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Laventie ?",

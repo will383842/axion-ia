@@ -9,9 +9,9 @@ export const FONTENILLES_COPY: VilleCopy = {
   pitchEn:
     "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y déploie son expertise pour toutes les organisations de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture céréales",
   ecosystemFr:
     "Fontenilles est une commune en forte croissance démographique de l'ouest de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, exploitations agricoles céréalières. Cadre semi-rural prisé.",
@@ -30,8 +30,8 @@ export const FONTENILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenilles : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontenilles : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'ouest Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontenilles : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontenilles : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontenilles : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
@@ -57,7 +57,7 @@ export const FONTENILLES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fontenilles  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Fontenilles ?",

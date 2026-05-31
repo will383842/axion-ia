@@ -9,9 +9,9 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
   pitchEn:
     "Aigues-Mortes (30), cité médiévale fortifiée au cœur de la Camargue gardoise, haut lieu touristique et patrimonial. Tissu TPE/PME tourisme, hôtellerie-restauration, salins du Midi, viticulture sable, commerces artisanaux et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune de la Camargue gardoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit sur place sur mesure.",
   seoHook: "TPE & PME Gard",
   ecosystemFr:
     "Aigues-Mortes (~8 700 hab) est une cité médiévale fortifiée emblématique de la Camargue gardoise. Tourisme patrimonial majeur (remparts, Tour de Constance), salins du Midi, viticulture des sables (vin des sables), hôtellerie-restauration, commerces artisanaux et agritourisme camarguais.",
@@ -30,8 +30,8 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aigues-Mortes : diagnostic adapté aux TPE/PME tourisme, hôteliers-restaurateurs, viticulteurs des sables et commerçants artisanaux Camargue. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aigues-Mortes : formats adaptés aux hôtels, restaurants, caves viticoles, boutiques artisanales et structures touristiques Camargue.",
@@ -57,7 +57,7 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Aigues-Mortes  ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs des sables ?",

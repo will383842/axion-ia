@@ -30,8 +30,8 @@ export const COUZEIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Couzeix : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude nord-ouest. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Couzeix : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude nord-ouest. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Couzeix : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude nord-ouest. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Couzeix : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude nord-ouest. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Couzeix : formats adaptés à l'atelier BTP, bureau tertiaire, cabinet libéral ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const COUZEIX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Couzeix ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de Couzeix. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Couzeix. Il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un plan d'action priorisé avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de l'agglo Limoges ?",

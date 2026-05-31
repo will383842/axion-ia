@@ -61,7 +61,7 @@ export const VERSAILLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les très petites entreprises et professions libérales ?",
-      a: "Les TPE et professions libérales sont notre priorité à Versailles : cabinets, commerces, agences. Nous démarrons par un audit Flash qui chiffre le retour sur investissement, puis déployons des outils simples et durables.",
+      a: "Les TPE et professions libérales sont notre priorité à Versailles : cabinets, commerces, agences. Nous démarrons par un audit sur place qui chiffre le retour sur investissement, puis déployons des outils simples et durables.",
     },
     {
       q: "Quels usages IA pour les agences évènementielles de Versailles ?",

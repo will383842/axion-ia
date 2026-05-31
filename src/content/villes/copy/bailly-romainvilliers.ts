@@ -9,9 +9,9 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
   pitchEn:
     "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit sur place sur mesure.",
   seoHook: "commerce & hôtellerie-restauration",
   ecosystemFr:
     "Bailly-Romainvilliers est au coeur du Val d'Europe (Marne-la-Vallée secteur IV), pôle commercial et tertiaire majeur d'Île-de-France. Centre commercial international La Vallée Village, proximité Disneyland Paris, quartiers résidentiels en croissance. TPE et PME commerce, hôtellerie-restauration, immobilier, services aux entreprises et activités tertiaires.",
@@ -30,8 +30,8 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bailly-Romainvilliers : diagnostic adapté aux commerçants Val d'Europe, hôteliers, agences immobilières et prestataires de services. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bailly-Romainvilliers : formats adaptés boutique, hôtel, agence immobilière et bureau tertiaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Bailly-Romainvilliers  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME du Val d'Europe, nous proposons des audits approfondis adaptés aux enjeux commerce, hôtellerie et services.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME du Val d'Europe, nous proposons des audits approfondis adaptés aux enjeux commerce, hôtellerie et services.",
     },
     {
       q: "Travaillez-vous avec les commerçants du Val d'Europe ?",

@@ -30,8 +30,8 @@ export const WAMBRECHIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wambrechies : formats adaptés au cabinet conseil, à l'étude libérale, au commerce ou à l'atelier artisanal. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const WAMBRECHIES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Wambrechies  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord lillois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord lillois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les prestataires B2B de la MEL ?",

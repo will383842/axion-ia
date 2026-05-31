@@ -9,9 +9,9 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
   pitchEn:
     "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit sur place sur mesure.",
   ecosystemFr:
     "Wervicq-Sud est une commune frontalière des bords de la Lys, face à Wervik en Belgique (Flandre occidentale). Héritage textile (industrie du lin et du tabac) reconverti vers les services, la logistique transfrontalière et l'artisanat. Position stratégique sur l'axe Lille-Comines-Ypres. Tissu TPE artisans, PME services, commerces et professions libérales.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Wervicq-Sud : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'axe Lys-Comines. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wervicq-Sud : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Wervicq-Sud  ?",
-      a: "L'audit Flash IA à Wervicq-Sud démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
+      a: "L'audit sur place IA à Wervicq-Sud démarre à {{price:audit-flash|flat}}. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières à Wervicq-Sud ?",

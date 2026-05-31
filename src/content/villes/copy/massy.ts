@@ -65,7 +65,7 @@ export const MASSY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et services de Massy ?",
-      a: "Audit Flash pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client B2B.",
+      a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage concret, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client B2B.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou le plateau de Saclay ?",

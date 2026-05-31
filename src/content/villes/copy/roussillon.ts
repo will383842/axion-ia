@@ -30,8 +30,8 @@ export const ROUSSILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roussillon : formats adaptés à l'atelier industriel, exploitation agricole ou commerce. Vos équipes (ouvriers, agriculteurs, commerçants) repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et artisans roussillonnais ?",
-      a: "Pour les TPE artisans BTP et commerçants à Roussillon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et commerçants à Roussillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

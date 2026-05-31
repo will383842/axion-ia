@@ -9,9 +9,9 @@ export const COURTRY_COPY: VilleCopy = {
   pitchEn:
     "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Courtry est une commune résidentielle du nord-ouest de la Seine-et-Marne, entre Meaux et l'aéroport Roissy-CDG. Le tissu économique repose sur des TPE et PME : artisanat BTP, commerces de proximité, services à la personne, professions libérales. Accès N3 et proximité A104 (Francilienne).",
@@ -30,8 +30,8 @@ export const COURTRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Courtry : diagnostic adapté aux artisans BTP, commerçants, prestataires services à la personne et professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courtry : formats adaptés atelier artisan, commerce, cabinet libéral et bureau de services. Vos équipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const COURTRY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Courtry  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Courtry, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services de proximité.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Courtry, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services de proximité.",
     },
     {
       q: "Travaillez-vous avec les artisans et entreprises BTP ?",

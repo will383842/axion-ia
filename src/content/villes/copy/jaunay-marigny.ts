@@ -30,8 +30,8 @@ export const JAUNAY_MARIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jaunay-Marigny : diagnostic adapté aux PME tech/numérique de la technopole Futuroscope, acteurs tourisme/hôtellerie, TPE artisans et commerçants. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Jaunay-Marigny : diagnostic adapté aux PME tech/numérique de la technopole Futuroscope, acteurs tourisme/hôtellerie, TPE artisans et commerçants. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Jaunay-Marigny : diagnostic adapté aux PME tech/numérique de la technopole Futuroscope, acteurs tourisme/hôtellerie, TPE artisans et commerçants. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Jaunay-Marigny : diagnostic adapté aux PME tech/numérique de la technopole Futuroscope, acteurs tourisme/hôtellerie, TPE artisans et commerçants. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jaunay-Marigny : formats adaptés aux équipes tech de la technopole, hôteliers, restaurateurs ou commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -61,7 +61,7 @@ export const JAUNAY_MARIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Jaunay-Marigny, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
+      a: "Pour les TPE artisans et commerçants à Jaunay-Marigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

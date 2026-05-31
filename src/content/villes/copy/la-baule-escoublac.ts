@@ -9,9 +9,9 @@ export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
   pitchEn:
     "La Baule-Escoublac (44), station balnéaire de prestige avec sa plage de 12 km, près de 17 000 habitants. Hôtellerie haut de gamme, thalassothérapie, commerces de luxe, immobilier, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et immobilières. Axion-IA couvre les activités professionnelles du bassin du bassin baulois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   seoHook: "hôtellerie haut & immobilier gestion",
   ecosystemFr:
     "La Baule-Escoublac (16 912 hab) est l'une des plus prestigieuses stations balnéaires de France, avec sa plage de 12 km en baie de La Baule. Hôtellerie haut de gamme, thalassothérapie, immobilier de standing, commerces, événementiel et professions libérales. Proximité Saint-Nazaire (15 min), Nantes (1h10). Pôle touristique majeur de la côte d'Amour.",
@@ -30,8 +30,8 @@ export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Baule-Escoublac : diagnostic adapté aux TPE commerçants, PME hôtelières haut de gamme, agences immobilières et professions libérales de la station balnéaire de prestige. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Baule-Escoublac : diagnostic adapté aux TPE commerçants, PME hôtelières haut de gamme, agences immobilières et professions libérales de la station balnéaire de prestige. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Baule-Escoublac : diagnostic adapté aux TPE commerçants, PME hôtelières haut de gamme, agences immobilières et professions libérales de la station balnéaire de prestige. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Baule-Escoublac : diagnostic adapté aux TPE commerçants, PME hôtelières haut de gamme, agences immobilières et professions libérales de la station balnéaire de prestige. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Baule-Escoublac : formats adaptés à l'hôtellerie de luxe, immobilier, thalassothérapie et commerce haut de gamme. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à La Baule  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE de La Baule-Escoublac. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de La Baule-Escoublac. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les hôtels haut de gamme de La Baule ?",
@@ -61,7 +61,7 @@ export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les agences immobilières de La Baule ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : estimation immobilière IA, scoring acquéreurs, automatisation relances, agents conversationnels prospects et CRM augmenté.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Cas typiques : estimation immobilière IA, scoring acquéreurs, automatisation relances, agents conversationnels prospects et CRM augmenté.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à La Baule ?",

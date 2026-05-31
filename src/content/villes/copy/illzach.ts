@@ -9,9 +9,9 @@ export const ILLZACH_COPY: VilleCopy = {
   pitchEn:
     "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération nord mulhousienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "proche mulhouse",
   ecosystemFr:
     "Illzach est une commune industrielle majeure de Mulhouse Alsace Agglomération (m2A), située au nord de Mulhouse avec d'importantes zones d'activités (zone Île Napoléon notamment). Tissu TPE artisans BTP, PME industrielles (sous-traitance automobile, mécanique, logistique), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants. Position stratégique sur l'axe rhénan.",
@@ -30,8 +30,8 @@ export const ILLZACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Illzach : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales des zones d'activités nord de Mulhouse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Illzach : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales des zones d'activités nord de Mulhouse. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Illzach : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales des zones d'activités nord de Mulhouse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Illzach : diagnostic adapté aux TPE artisans, PME industrielles et logistiques, commerçants et professions libérales des zones d'activités nord de Mulhouse. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Illzach : formations adaptées TPE/PME industrielles, logistiques et de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
@@ -53,7 +53,7 @@ export const ILLZACH_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Illzach  ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME d'Illzach souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME d'Illzach souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les PME industrielles automobiles à Illzach ?",
@@ -61,7 +61,7 @@ export const ILLZACH_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention pour les TPE à Illzach ?",
-      a: "Nous proposons audit Flash 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans, commerçants et professions libérales des zones d'activités.",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans, commerçants et professions libérales des zones d'activités.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Illzach ?",

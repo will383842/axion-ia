@@ -30,8 +30,8 @@ export const GUICHEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
-      en: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      fr: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guichen : formats adaptés aux TPE artisans BTP, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const GUICHEN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerçants de Guichen ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Guichen sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning saisonnier. Audit Flash {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Guichen sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning saisonnier. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
     },
     {
       q: "Quels tarifs pour une TPE ou PME à Guichen ?",
-      a: "L'audit Flash est tarifé selon vos enjeux, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit sur place est tarifé selon vos enjeux, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Guichen ?",

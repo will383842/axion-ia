@@ -9,9 +9,9 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
   pitchEn:
     "Ensuès-la-Redonne (13), commune de la Côte Bleue entre Marseille et Martigues, conjugue port de pêche traditionnel, calanques préservées et tissu de TPE tourisme, PME services et commerces de proximité. Port de la Redonne, criques, viticulture côtière et résidences secondaires. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit sur place sur mesure.",
   seoHook: "tourisme restauration & plaisance activités",
   ecosystemFr:
     "Ensuès-la-Redonne est positionnée sur la Côte Bleue, entre Marseille et Martigues, avec ses calanques (Méjean, La Redonne, Niolon à proximité) et son port de pêche traditionnel. Tissu économique de TPE tourisme (locations saisonnières, restauration de bord de mer), pêche artisanale, plaisance et activités nautiques, viticulture AOC Côtes-de-Provence, PME services et commerces de proximité.",
@@ -30,8 +30,8 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ensuès-la-Redonne : diagnostic adapté aux TPE tourisme, restaurateurs, acteurs nautiques, PME services et commerces de la Côte Bleue. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ensuès-la-Redonne : ateliers pour équipes tourisme, restauration, plaisance et TPE locales. Outils IA configurés métier réel, dans vos locaux ou à Carry.",
@@ -53,7 +53,7 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Ensuès-la-Redonne  : quel budget prévoir ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, plaisanciers et commerces de la Côte Bleue. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE tourisme, restaurateurs, plaisanciers et commerces de la Côte Bleue. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les locations saisonnières et la restauration de bord de mer ?",

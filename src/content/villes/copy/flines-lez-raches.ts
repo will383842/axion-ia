@@ -30,8 +30,8 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Flines-lez-Râches : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Flines-lez-Râches  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la Pévèle et du Douaisis, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services B2B). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la Pévèle et du Douaisis, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services B2B). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de la Pévèle ?",

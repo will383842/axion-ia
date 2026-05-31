@@ -30,8 +30,8 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longpont-sur-Orge : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces longpontais ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",

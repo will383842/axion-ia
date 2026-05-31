@@ -30,8 +30,8 @@ export const PLUVIGNER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pluvigner : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP, hébergements touristiques et cabinets du pays d'Auray. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -57,7 +57,7 @@ export const PLUVIGNER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pluvigner  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays d'Auray, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, BTP, tourisme, libéral). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du pays d'Auray, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, BTP, tourisme, libéral). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les entreprises touristiques du pays d'Auray ?",

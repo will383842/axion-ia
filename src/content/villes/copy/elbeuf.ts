@@ -9,9 +9,9 @@ export const ELBEUF_COPY: VilleCopy = {
   pitchEn:
     "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
   seoHook: "industrie reconvertie & boucle de Seine",
   ecosystemFr:
     "Elbeuf est dans la boucle de Seine, membre de la Métropole Rouen Normandie. Ancienne capitale du drap reconvertie vers l'industrie légère et les services. Tissu TPE artisans, PME industrielles, commerces de centre-ville et professions libérales.",
@@ -30,8 +30,8 @@ export const ELBEUF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Elbeuf : formats adaptés à l'atelier, bureau PME, commerce. Vos équipes de la boucle de Seine repartent autonomes sur outils IA.",
@@ -57,11 +57,11 @@ export const ELBEUF_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans elbeuviens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Elbeuf sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Elbeuf sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Elbeuf ?",
-      a: "L'audit Flash débute selon la taille de votre activité pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

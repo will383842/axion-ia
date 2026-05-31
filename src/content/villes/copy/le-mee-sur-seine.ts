@@ -9,9 +9,9 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit sur place sur mesure.",
   seoHook: "commerce détail & tertiaire services",
   ecosystemFr:
     "Le Mée-sur-Seine fait partie de l'agglomération melunaise, pôle administratif et économique du sud Seine-et-Marne en bord de Seine. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique.",
@@ -30,8 +30,8 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site au Mée-sur-Seine : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -61,7 +61,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et restaurateurs ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
       q: "Comment se passe une mission depuis Melun ou Paris ?",

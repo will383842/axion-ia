@@ -30,8 +30,8 @@ export const MONDELANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mondelange : formats adaptés à l''atelier industriel, entrepôt logistique, chantier BTP, bureau ou commerce. Vos équipes repartent autonomes.",
@@ -57,11 +57,11 @@ export const MONDELANGE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les frontaliers luxembourgeois ?",
-      a: "Oui, nombreux frontaliers et entrepreneurs mondelangeois travaillant avec le Luxembourg : automatisation administrative transfrontalière, gestion multilingue FR/DE/EN, conformité, outils collaboratifs. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nombreux frontaliers et entrepreneurs mondelangeois travaillant avec le Luxembourg : automatisation administrative transfrontalière, gestion multilingue FR/DE/EN, conformité, outils collaboratifs. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Mondelange ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Comment se passe une mission à Mondelange ?",

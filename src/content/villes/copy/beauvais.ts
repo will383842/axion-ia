@@ -30,8 +30,8 @@ export const BEAUVAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beauvais : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit Flash 4h.",
-      en: "Audit IA à Beauvais : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit Flash 4h.",
+      fr: "Audit IA à Beauvais : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA à Beauvais : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beauvais : formats adaptés à l'atelier, au commerce, au cabinet ou à l'entrepôt logistique. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -57,7 +57,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE et artisans beauvaisiens ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis, gestion du planning, réponse client.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis, gestion du planning, réponse client.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Beauvais ?",

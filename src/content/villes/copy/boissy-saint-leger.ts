@@ -9,9 +9,9 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
   pitchEn:
     "Boissy-Saint-Léger (94), commune résidentielle de l'est du Val-de-Marne, est le terminus de la branche sud du RER A. Tissu TPE artisans, PME services, commerces de centre-ville, professions libérales, prestataires santé et éducation. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "commerce centre-ville & professions libérales",
   ecosystemFr:
     "Boissy-Saint-Léger est une commune résidentielle de l'est du Val-de-Marne, terminus du RER A branche Boissy. Tissu économique de proximité : commerces de centre-ville, TPE artisans BTP et maintenance, professions libérales, cabinets de santé, PME de services aux entreprises.",
@@ -30,8 +30,8 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Boissy-Saint-Léger : diagnostic adapté aux commerces de centre-ville, professions libérales, TPE artisans, cabinets de santé, PME de services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boissy-Saint-Léger : formats adaptés commerce, cabinet, atelier artisan, bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -57,11 +57,11 @@ export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Boissy-Saint-Léger ?",
-      a: "L'audit Flash IA à Boissy-Saint-Léger démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Boissy-Saint-Léger démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Quels services pour les commerces de centre-ville ?",
-      a: "CRM augmenté, gestion stocks prédictive, fidélisation client IA, automatisation commandes fournisseurs, présence digitale optimisée. Audit Flash {{price:audit-flash|flat}} pour identifier vos priorités.",
+      a: "CRM augmenté, gestion stocks prédictive, fidélisation client IA, automatisation commandes fournisseurs, présence digitale optimisée. Audit sur place {{price:audit-flash|flat}} pour identifier vos priorités.",
     },
     {
       q: "Comment se déroule un coaching 1-to-1 à Boissy-Saint-Léger ?",

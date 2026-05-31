@@ -9,9 +9,9 @@ export const FENOUILLET_COPY: VilleCopy = {
   pitchEn:
     "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat",
   ecosystemFr:
     "Fenouillet est une commune commerçante du nord de Toulouse, avec une zone commerciale importante. Tissu TPE artisans, PME commerciales et de services, professions libérales. Proximité d'Aucamville et de l'axe A62.",
@@ -30,8 +30,8 @@ export const FENOUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fenouillet : formats adaptés au commerce, à l'artisan, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const FENOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fenouillet  : quel budget prévoir ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME commerciales, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Fenouillet ?",

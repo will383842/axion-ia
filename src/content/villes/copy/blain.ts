@@ -30,8 +30,8 @@ export const BLAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blain : formats adaptés à la scierie, exploitation agricole, commerce ou site touristique canal Nantes-Brest. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const BLAIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et agriculteurs ?",
-      a: "Pour les TPE artisans BTP et agriculteurs à Blain, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion stocks et planning.",
+      a: "Pour les TPE artisans BTP et agriculteurs à Blain, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",

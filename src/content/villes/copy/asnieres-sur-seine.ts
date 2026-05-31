@@ -55,7 +55,7 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs d'un audit IA pour une PME basée à Asnières-sur-Seine ?",
-      a: "L'Audit Flash (4h sur site) démarre à {{price:audit-flash|flat}}. Pour une PME avec plusieurs processus à cartographier, un audit approfondi est disponible — tarifs publics consultables sur axion-ia.fr. Les interventions collectives démarrent à {{price:intervention-4h|flat}}, les implémentations à {{price:impl-poc|entry}}.",
+      a: "L'Audit sur place (4h sur site) démarre à {{price:audit-flash|flat}}. Pour une PME avec plusieurs processus à cartographier, un audit approfondi est disponible — tarifs publics consultables sur axion-ia.fr. Les interventions collectives démarrent à {{price:intervention-4h|flat}}, les implémentations à {{price:impl-poc|entry}}.",
     },
     {
       q: "Nos équipes sont réparties entre Asnières-sur-Seine et Clichy — comment gérez-vous les interventions multi-sites ?",
@@ -67,7 +67,7 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "En tant que dirigeant d'une TPE asniéroise, quel format d'accompagnement me correspond le mieux ?",
-      a: "Pour une TPE, le point d'entrée le plus efficace est l'Audit Flash à {{price:audit-flash|flat}} : il identifie en 4h le premier outil IA rentable à déployer. Si vous souhaitez un cadrage stratégique individuel, le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}}. Les deux formats sont disponibles sur site à Asnières-sur-Seine.",
+      a: "Pour une TPE, le point d'entrée le plus efficace est l'Audit sur place à {{price:audit-flash|flat}} : il identifie en 4h le premier outil IA rentable à déployer. Si vous souhaitez un cadrage stratégique individuel, le 1-to-1 dirigeant démarre à {{price:intervention-dirigeants|flat}}. Les deux formats sont disponibles sur site à Asnières-sur-Seine.",
     },
     {
       q: "Axion-IA propose-t-il des formats adaptés aux secteurs commerce et services financiers présents à Asnières-sur-Seine ?",

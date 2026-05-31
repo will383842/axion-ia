@@ -30,8 +30,8 @@ export const CEBAZAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cébazat : formats adaptés aux bureaux tertiaires, ateliers artisans, commerces ou sociétés de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const CEBAZAT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerces de Cébazat ?",
-      a: "Pour les TPE artisans et commerçants à Cébazat, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
+      a: "Pour les TPE artisans et commerçants à Cébazat, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",

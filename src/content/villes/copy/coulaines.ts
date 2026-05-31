@@ -30,8 +30,8 @@ export const COULAINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coulaines : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord de l'agglomération mancelle. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Coulaines : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord de l'agglomération mancelle. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Coulaines : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Coulaines : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coulaines : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau nord. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -57,7 +57,7 @@ export const COULAINES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Coulaines ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, commerçants et professions libérales du bassin manceau. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, commerçants et professions libérales du bassin manceau. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les petites PME tertiaires ?",

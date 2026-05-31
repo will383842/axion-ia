@@ -30,8 +30,8 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Ã  Saint-Avertin : diagnostic adaptÃ© aux PME tertiaires conseil, professions libÃ©rales santÃ©/juridique, TPE artisans, commerces Tours sud. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
-      en: "Audit IA Ã  Saint-Avertin : diagnostic adaptÃ© aux PME tertiaires conseil, professions libÃ©rales santÃ©/juridique, TPE artisans, commerces Tours sud. ROI chiffrÃ©, audit Flash 490 â‚¬ HT.",
+      fr: "Audit IA Ã  Saint-Avertin : diagnostic adaptÃ© aux PME tertiaires conseil, professions libÃ©rales santÃ©/juridique, TPE artisans, commerces Tours sud. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
+      en: "Audit IA Ã  Saint-Avertin : diagnostic adaptÃ© aux PME tertiaires conseil, professions libÃ©rales santÃ©/juridique, TPE artisans, commerces Tours sud. ROI chiffrÃ©, audit sur place 1 190 â‚¬ HT.",
     },
     interventions: {
       fr: "Interventions IA sur site Ã  Saint-Avertin : formats adaptÃ©s aux cabinets conseil, professions libÃ©rales, artisanat, commerce. Vos Ã©quipes repartent autonomes.",
@@ -53,7 +53,7 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les cabinets conseil et professions libÃ©rales ?",
-      a: "Oui, automatisation CRM, classification documents juridiques/mÃ©dicaux, gestion rendez-vous, optimisation processus cabinet. Audit Flash 490 â‚¬ HT.",
+      a: "Oui, automatisation CRM, classification documents juridiques/mÃ©dicaux, gestion rendez-vous, optimisation processus cabinet. Audit sur place 1 190 â‚¬ HT.",
     },
     {
       q: "Accompagnez-vous les TPE artisans de Saint-Avertin ?",
@@ -61,7 +61,7 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces de proximitÃ© ?",
-      a: "Audit Flash 490 â‚¬ HT, coaching 1-to-1 990 â‚¬ HT. Agents conversationnels, gestion stocks, fidÃ©lisation clients, automatisation commandes.",
+      a: "Audit sur place 1 190 â‚¬ HT, coaching 1-to-1 990 â‚¬ HT. Agents conversationnels, gestion stocks, fidÃ©lisation clients, automatisation commandes.",
     },
     {
       q: "Comment accÃ©der Ã  Saint-Avertin depuis Paris ?",

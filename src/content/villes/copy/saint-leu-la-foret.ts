@@ -9,9 +9,9 @@ export const SAINT_LEU_LA_FORET_COPY: VilleCopy = {
   pitchEn:
     "Saint-Leu-la-Forêt, commune résidentielle boisée du Val-d'Oise (95) en vallée de Montmorency, 20 km au nord de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales de la vallée de Montmorency.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit sur place sur mesure.",
   seoHook: "commerce centre-ville & artisanat rénovation",
   ecosystemFr:
     "Saint-Leu-la-Forêt est une commune résidentielle verdoyante en forêt de Montmorency, intégrée à la CA Val Parisis. Son tissu économique repose sur les commerces de centre-ville, TPE artisanales, cabinets de professions libérales, PME de services et indépendants. Proximité directe avec Taverny, Eaubonne et Ermont.",
@@ -30,8 +30,8 @@ export const SAINT_LEU_LA_FORET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Leu-la-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de Montmorency. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Leu-la-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de Montmorency. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Leu-la-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de Montmorency. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Leu-la-Forêt : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de Montmorency. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Leu-la-Forêt : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const SAINT_LEU_LA_FORET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Leu-la-Forêt ?",
-      a: "L'Audit Flash IA à Saint-Leu-la-Forêt démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Saint-Leu-la-Forêt démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerçants de Saint-Leu-la-Forêt ?",

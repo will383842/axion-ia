@@ -10,9 +10,9 @@ export const GRENAY_COPY: VilleCopy = {
     "Grenay (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 640 habitants. Situee entre Lens et Bethune le long de l'A21, son economie repose sur les TPE de services, les PME commerciales, l'artisanat et la logistique de proximite. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, logistique & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit Flash a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grenay (62). Nous accompagnons les TPE, PME et ETI du bassin minier entre Lens et Bethune : artisans, commercants, logisticiens et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Grenay est situee sur l'axe Lens-Bethune (A21), au coeur du bassin minier. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, activites logistiques et de transport. Zone d'activites beneficiant de la desserte autoroutiere A21/A26.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GRENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Grenay : diagnostic adapte aux TPE de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA a Grenay : diagnostic adapte aux TPE de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Grenay : diagnostic adapte aux TPE de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Grenay : diagnostic adapte aux TPE de services, PME commerciales et logisticiens du bassin minier Lens-Bethune. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Grenay : formations adaptees aux entrepots logistiques, commerces, ateliers artisanaux et bureaux PME. Equipes autonomes sur outils IA.",
@@ -53,15 +53,15 @@ export const GRENAY_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les entreprises de transport a Grenay ?",
-      a: "Pour les PME transport et logistique de Grenay, nous proposons : optimisation tournees IA, gestion flotte predictive, automatisation documents transport, agents conversationnels clients. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Pour les PME transport et logistique de Grenay, nous proposons : optimisation tournees IA, gestion flotte predictive, automatisation documents transport, agents conversationnels clients. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Grenay ?",
-      a: "L'audit Flash demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+      a: "L'audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Grenay ?",
-      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les artisans BTP du bassin minier : automatisation devis, planning chantiers IA, suivi client numerique, facturation automatisee. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Grenay ?",

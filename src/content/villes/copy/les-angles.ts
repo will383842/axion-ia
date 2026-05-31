@@ -9,9 +9,9 @@ export const LES_ANGLES_COPY: VilleCopy = {
   pitchEn:
     "Les Angles (30), commune résidentielle du Gard face à Avignon, intégrée au Grand Avignon. Tissu TPE/PME services aux entreprises, professions libérales, commerces zone commerciale, artisanat et restauration. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Avignon rive droite.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Angles (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants zone commerciale, artisans et restaurateurs du Grand Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Angles (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants zone commerciale, artisans et restaurateurs du Grand Avignon. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Angles (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants zone commerciale, artisans et restaurateurs du Grand Avignon. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Angles (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants zone commerciale, artisans et restaurateurs du Grand Avignon. Audit sur place sur mesure.",
   seoHook: "commerce zone & restauration",
   ecosystemFr:
     "Les Angles (~8 900 hab) est une commune résidentielle du Grand Avignon rive droite (Gard). Zone commerciale dynamique (Carrefour, enseignes), professions libérales, services aux entreprises, artisanat et restauration. Proximité immédiate d'Avignon (5 min) et du bassin d'emploi vauclusien.",
@@ -30,8 +30,8 @@ export const LES_ANGLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Angles : diagnostic adapté aux TPE/PME de services, professions libérales, commerçants et restaurateurs du Grand Avignon. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Angles : formats adaptés aux cabinets, commerces, restaurants et entreprises de services Grand Avignon rive droite.",
@@ -53,7 +53,7 @@ export const LES_ANGLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA aux Angles ?",
-      a: "L'Audit Flash commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place commence à {{price:audit-flash|flat}}. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone commerciale ?",

@@ -9,9 +9,9 @@ export const CHENNEVIERES_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Chennevières-sur-Marne (94), commune des bords de Marne dans l'est du Val-de-Marne, entre Champigny-sur-Marne et Ormesson-sur-Marne. Tissu TPE artisans, PME de services et commerce, professions libérales, indépendants et prestataires. Axion-IA y travaille avec les organisations du territoire de l'est Val-de-Marnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chennevières-sur-Marne (94). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services et commerce, professions libérales, indépendants et prestataires des bords de Marne est. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chennevières-sur-Marne (94). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services et commerce, professions libérales, indépendants et prestataires des bords de Marne est. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chennevières-sur-Marne (94). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services et commerce, professions libérales, indépendants et prestataires des bords de Marne est. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chennevières-sur-Marne (94). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services et commerce, professions libérales, indépendants et prestataires des bords de Marne est. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Chennevières-sur-Marne est une commune résidentielle des bords de Marne dans l'est du Val-de-Marne. Son tissu économique associe TPE artisans du bâtiment, PME de services et commerce, professions libérales et prestataires. Proximité directe avec Champigny-sur-Marne, Le Plessis-Trévise, Ormesson-sur-Marne et Bry-sur-Marne.",
@@ -30,8 +30,8 @@ export const CHENNEVIERES_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chennevières-sur-Marne : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales des bords de Marne est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chennevières-sur-Marne : formats adaptés au cabinet, commerce ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const CHENNEVIERES_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Chennevières-sur-Marne ?",
-      a: "L'Audit Flash IA à Chennevières-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Chennevières-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans à Chennevières-sur-Marne ?",

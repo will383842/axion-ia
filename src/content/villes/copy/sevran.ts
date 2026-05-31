@@ -9,9 +9,9 @@ export const SEVRAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME de Sevran (93), dans l'est de la Seine-Saint-Denis. Héritière de la poudrerie nationale reconvertie en parc, la ville mêle commerce, artisanat, logistique et services de proximité. Nous y déployons une IA opérationnelle et abordable pour les petites structures du nord-est francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sevran (93), en Seine-Saint-Denis. Nous accompagnons en priorité les TPE puis les PME de l'est parisien : commerces, artisans, transporteurs et logisticiens, professions libérales et PME de services. Audit Flash sur site, tarifs publics, déplacement rapide depuis Paris et Roissy. Les ETI restent un cas marginal.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sevran (93), en Seine-Saint-Denis. Nous accompagnons en priorité les TPE puis les PME de l'est parisien : commerces, artisans, transporteurs et logisticiens, professions libérales et PME de services. Audit sur place sur site, tarifs publics, déplacement rapide depuis Paris et Roissy. Les ETI restent un cas marginal.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sevran (93), en Seine-Saint-Denis. Nous accompagnons en priorité les TPE puis les PME de l'est parisien : commerces, artisans, transporteurs et logisticiens, professions libérales et PME de services. Audit Flash sur site, tarifs publics, déplacement rapide depuis Paris et Roissy. Les ETI restent un cas marginal.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sevran (93), en Seine-Saint-Denis. Nous accompagnons en priorité les TPE puis les PME de l'est parisien : commerces, artisans, transporteurs et logisticiens, professions libérales et PME de services. Audit sur place sur site, tarifs publics, déplacement rapide depuis Paris et Roissy. Les ETI restent un cas marginal.",
   seoHook: "commerce & logistique",
   ecosystemFr:
     "Sevran, dans l'est de la Seine-Saint-Denis, s'est reconstruite autour du parc de la poudrerie nationale, ancien site industriel devenu espace naturel. Le tissu économique mêle commerce de proximité, artisanat, transport et logistique tirés par la proximité de Roissy, et un réseau dense de TPE et PME de services. Bien connectée au RER B et au Grand Paris Express, la commune offre un terrain favorable à des automatisations IA simples et utiles.",
@@ -57,7 +57,7 @@ export const SEVRAN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Sevran ?",
-      a: "L'Audit Flash démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME sevranaises, sans devis opaque ni engagement caché.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME sevranaises, sans devis opaque ni engagement caché.",
     },
     {
       q: "Accompagnez-vous les transporteurs et logisticiens proches de Roissy ?",
@@ -65,7 +65,7 @@ export const SEVRAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerces et artisans de Sevran ?",
-      a: "Les commerces et artisans bénéficient de l'Audit Flash, d'interventions d'une journée et du coaching 1-to-1 : automatisation des devis, relances clients et présence en ligne.",
+      a: "Les commerces et artisans bénéficient de l'Audit sur place, d'interventions d'une journée et du coaching 1-to-1 : automatisation des devis, relances clients et présence en ligne.",
     },
     {
       q: "Comment se déroule une mission à Sevran ?",

@@ -9,9 +9,9 @@ export const AGEN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Agen, capitale du pruneau et pôle agroalimentaire du Lot-et-Garonne. Coopératives fruitières, conserveries, transformation agroalimentaire, négoce et commerces : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Agen auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'agroalimentaire local (pruneau, fruits, conserve), le négoce agricole, le commerce et les services. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site : vos équipes restent autonomes, aucun verrou technologique.",
   seoHook: "pruneau & agroalimentaire",
   ecosystemFr:
     "Agen est le coeur de la filière pruneau d'Agen (IGP) et un bassin agroalimentaire majeur du Sud-Ouest, structuré autour de l'Agropole, technopole dédié aux industries alimentaires. Coopératives fruitières, conserveries, négoce agricole, logistique fraîche et commerce dynamisent un tissu de TPE et PME que la gare LGV reliera bientôt mieux à Bordeaux et Toulouse.",
@@ -30,8 +30,8 @@ export const AGEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Agen pour conserveries, coopératives fruitières et négoces agroalimentaires : nous cartographions vos processus (prévision de récolte, contrôle qualité, traçabilité, administratif) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Agen : formats adaptés à l'atelier de transformation, à la coopérative ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -57,11 +57,11 @@ export const AGEN_COPY: VilleCopy = {
     },
     {
       q: "Quels gains IA pour une conserverie ou coopérative agenaise ?",
-      a: "Contrôle qualité visuel des fruits, prévision de récolte et de demande, traçabilité IGP automatisée et réduction des tâches administratives. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
+      a: "Contrôle qualité visuel des fruits, prévision de récolte et de demande, traçabilité IGP automatisée et réduction des tâches administratives. Chaque piste est chiffrée en ROI dans l'Audit sur place avant toute implémentation.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Agen ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}}. Tous nos tarifs sont publics et sans devis opaque. Nous chiffrons ensuite chaque chantier d'implémentation au cas par cas selon le ROI identifié.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}}. Tous nos tarifs sont publics et sans devis opaque. Nous chiffrons ensuite chaque chantier d'implémentation au cas par cas selon le ROI identifié.",
     },
     {
       q: "Intervenez-vous autour d'Agen, à Boé ou Le Passage ?",

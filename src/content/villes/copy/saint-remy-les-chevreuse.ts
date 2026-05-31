@@ -30,8 +30,8 @@ export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rémy-lès-Chevreuse : diagnostic adapté aux TPE conseil, professions libérales, PME tertiaires et indépendants de la vallée de Chevreuse. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Saint-Rémy-lès-Chevreuse : diagnostic adapté aux TPE conseil, professions libérales, PME tertiaires et indépendants de la vallée de Chevreuse. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Saint-Rémy-lès-Chevreuse : diagnostic adapté aux TPE conseil, professions libérales, PME tertiaires et indépendants de la vallée de Chevreuse. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Rémy-lès-Chevreuse : diagnostic adapté aux TPE conseil, professions libérales, PME tertiaires et indépendants de la vallée de Chevreuse. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Rémy-lès-Chevreuse : formats adaptés aux consultants, PME tertiaires et professions libérales du sud Yvelines. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,7 +57,7 @@ export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Rémy-lès-Chevreuse  : quel budget prévoir ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de Chevreuse, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, santé, juridique, commerce). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de Chevreuse, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, santé, juridique, commerce). Tarifs publics.",
     },
     {
       q: "Intervenez-vous aussi sur le plateau de Saclay ?",

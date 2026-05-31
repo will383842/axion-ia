@@ -9,9 +9,9 @@ export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit sur place sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Villennes-sur-Seine est une commune résidentielle verdoyante en bord de Seine, appréciée pour son cadre de vie entre eau et forêt. Tissu local : TPE artisans, commerces de village, PME de services, professions libérales, activités liées à l'immobilier et aux loisirs nautiques. Communes voisines : Poissy, Médan, Orgeval, Verneuil-sur-Seine, Triel-sur-Seine.",
@@ -30,8 +30,8 @@ export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villennes-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la boucle de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villennes-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la boucle de Seine. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villennes-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la boucle de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villennes-sur-Seine : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales de la boucle de Seine. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villennes-sur-Seine : formats adaptés au cabinet, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villennes-sur-Seine  ?",
-      a: "L'Audit Flash IA à Villennes-sur-Seine démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Villennes-sur-Seine démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Villennes-sur-Seine ?",

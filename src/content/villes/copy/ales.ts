@@ -9,9 +9,9 @@ export const ALES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes IA seniors, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit Flash sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "industrie & Cévennes",
   ecosystemFr:
     "Alès, ancien coeur du bassin houiller cévenol, s'est reconvertie en pôle industriel et technologique appuyé par l'École des Mines d'Alès (IMT Mines Alès) et le parc scientifique de l'Arche. Le tissu mêle PME industrielles et de sous-traitance, BTP, mécanique, plasturgie, commerce et tourisme vert au pied des Cévennes, avec un fort besoin de modernisation des process.",
@@ -30,8 +30,8 @@ export const ALES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit Flash sur mesure dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Alès pour PME industrielles, sous-traitants et acteurs du BTP : nous cartographions vos process (maintenance, contrôle qualité, planification, devis) et chiffrons un ROI réaliste. Audit sur place sur mesure dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Alès : formats adaptés à l'atelier industriel, au chantier ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
@@ -57,11 +57,11 @@ export const ALES_COPY: VilleCopy = {
     },
     {
       q: "Quels gains IA pour un sous-traitant ou industriel alésien ?",
-      a: "Maintenance prédictive des machines, contrôle qualité visuel, optimisation de planning et chiffrage automatisé des devis. Chaque piste est chiffrée en ROI dans l'Audit Flash avant toute implémentation.",
+      a: "Maintenance prédictive des machines, contrôle qualité visuel, optimisation de planning et chiffrage automatisé des devis. Chaque piste est chiffrée en ROI dans l'Audit sur place avant toute implémentation.",
     },
     {
       q: "Quel est le tarif d'une intervention IA à Alès ?",
-      a: "L'Audit Flash sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et sans devis opaque ; chaque chantier d'implémentation est ensuite chiffré selon le ROI.",
+      a: "L'Audit sur place sur mesure démarre à {{price:audit-flash|flat}} et la Formation 4 h à {{price:intervention-4h|flat}}. Tous nos tarifs sont publics et sans devis opaque ; chaque chantier d'implémentation est ensuite chiffré selon le ROI.",
     },
     {
       q: "Intervenez-vous dans les Cévennes autour d'Alès ?",

@@ -10,9 +10,9 @@ export const LANNION_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA se déplace à Lannion, sous-préfecture des Côtes-d'Armor de 20 315 habitants et capitale historique du Trégor. Pôle télécoms et photonique français, Lannion accueille Orange Labs (ex-CNET), Nokia et plus de cent PME-PMI dans la technopole Anticipa, le pôle de compétitivité Images et Réseaux ainsi que le cluster Photonics Bretagne. Nous y accompagnons en priorité les TPE et PME des télécoms, de l'optique, de l'agroalimentaire et des industries marines, avec du code custom adapté à leurs outils métiers.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des TPE et PME présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit Flash démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
+    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des TPE et PME présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des TPE et PME présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit Flash démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
+    "Axion-IA est un cabinet IA qui intervient à Lannion (Côtes-d'Armor, 20 315 habitants), au cœur de Lannion-Trégor Communauté. Nous auditons, intervenons et implémentons sur site auprès des TPE et PME présentes dans la technopole Anticipa (plus de 100 PME-PMI), autour d'Orange Labs et de Nokia, et dans les filières photonique (Photonics Bretagne), images et réseaux, agroalimentaire et industries marines. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions code custom à {{price:intervention-4h|flat}}, avec déplacement sous 5 jours ouvrés.",
   seoHook: "TPE & PME · télécoms, photonique, agroalimentaire",
   ecosystemFr:
     "Lannion est un écosystème technologique unique en Bretagne : Orange Labs (héritier du CNET), Nokia, la technopole Anticipa et son vivier de plus de cent PME-PMI, le pôle de compétitivité Images et Réseaux et le cluster Photonics Bretagne y cohabitent avec 95 entreprises TIC, 20 sociétés d'optique-photonique et 31 acteurs des industries marines. La ville est aussi point d'atterrage des câbles sous-marins APOLLO et WASACE Nord.",
@@ -32,8 +32,8 @@ export const LANNION_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit Flash chez les TPE et PME de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
-      en: "Audit Flash chez les TPE et PME de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
+      fr: "Audit sur place chez les TPE et PME de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
+      en: "Audit sur place chez les TPE et PME de la technopole Anticipa et du tissu lannionnais dès {{price:audit-flash|flat}} : cartographie des process et plan d'automatisation priorisé.",
     },
     interventions: {
       fr: "Intervention sur site à Lannion dès {{price:intervention-4h|flat}} : automatisation des tâches administratives, devis, relances et reportings pour les TPE/PME télécoms, photonique et agroalimentaire.",
@@ -51,7 +51,7 @@ export const LANNION_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Lannion ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (4 h sur site). Les interventions de développement code custom démarrent à {{price:intervention-4h|flat}}. Les sessions un-à-un dirigeants débutent à {{price:intervention-dirigeants|flat}}. Grille publiée sur axion-ia.com.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 h sur site). Les interventions de développement code custom démarrent à {{price:intervention-4h|flat}}. Les sessions un-à-un dirigeants débutent à {{price:intervention-dirigeants|flat}}. Grille publiée sur axion-ia.com.",
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Lannion ?",

@@ -30,8 +30,8 @@ export const SEICHAMPS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Seichamps : formats adaptés au commerce, au cabinet, à l'atelier, au bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const SEICHAMPS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
-      a: "Oui, professions libérales et acteurs de santé seichampois : prise de rendez-vous en ligne, relation patient, automatisation administrative, présence digitale. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, professions libérales et acteurs de santé seichampois : prise de rendez-vous en ligne, relation patient, automatisation administrative, présence digitale. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Seichamps ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Seichamps ?",

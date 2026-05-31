@@ -30,8 +30,8 @@ export const NANDY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nandy : formats adaptés au commerce, cabinet libéral, TPE ou PME tertiaire du pôle de Sénart. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const NANDY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Nandy  ?",
-      a: "L'audit Flash Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglomération Grand Paris Sud, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglomération Grand Paris Sud, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les TPE artisans à Nandy ?",

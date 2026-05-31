@@ -31,8 +31,8 @@ export const GANNAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gannat : diagnostic priorisé TPE (commerces de proximité, artisans BTP, professions libérales) puis PME (exploitations agricoles grandes cultures Limagne, élevages, services tertiaires des trois ZAC A719). Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Gannat : diagnostic priorisé TPE (commerces de proximité, artisans BTP, professions libérales) puis PME (exploitations agricoles grandes cultures Limagne, élevages, services tertiaires des trois ZAC A719). Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Gannat : diagnostic priorisé TPE (commerces de proximité, artisans BTP, professions libérales) puis PME (exploitations agricoles grandes cultures Limagne, élevages, services tertiaires des trois ZAC A719). Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gannat : diagnostic priorisé TPE (commerces de proximité, artisans BTP, professions libérales) puis PME (exploitations agricoles grandes cultures Limagne, élevages, services tertiaires des trois ZAC A719). Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gannat : formats adaptés à votre TPE/PME — exploitation agricole, atelier artisan, bureau ZAC A719, commerce de centre-bourg. Équipes formées et autonomes après une journée.",
@@ -54,11 +54,11 @@ export const GANNAT_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une mission IA à Gannat ?",
-      a: "Audit Flash {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics affichés.",
+      a: "Audit sur place {{price:audit-flash|flat}} (4 h diagnostic + ROI chiffré). Intervention sur site dès {{price:intervention-4h|flat}} par journée. Coaching 1-to-1 dès {{price:intervention-4h|flat}} par séance. Tarifs publics affichés.",
     },
     {
       q: "Quels délais d'intervention sur Gannat ?",
-      a: "Audit Flash : créneau sous 5 à 10 jours ouvrés. Interventions terrain : planification à 2-3 semaines. Implémentation code custom : démarrage sous 3-4 semaines selon périmètre.",
+      a: "Audit sur place : créneau sous 5 à 10 jours ouvrés. Interventions terrain : planification à 2-3 semaines. Implémentation code custom : démarrage sous 3-4 semaines selon périmètre.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles Limagne et les éleveurs ?",
@@ -66,7 +66,7 @@ export const GANNAT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerces des trois zones commerciales A719 ?",
-      a: "Oui, audit Flash {{price:audit-flash|flat}} puis automatisation : chatbot client, gestion des stocks, optimisation tarification, gestion des avis en ligne, classification de documents. Cible TPE commerces puis PME services tertiaires.",
+      a: "Oui, audit sur place {{price:audit-flash|flat}} puis automatisation : chatbot client, gestion des stocks, optimisation tarification, gestion des avis en ligne, classification de documents. Cible TPE commerces puis PME services tertiaires.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Gannat ?",

@@ -9,9 +9,9 @@ export const NOISIEL_COPY: VilleCopy = {
   pitchEn:
     "Noisiel (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, abrite un tissu économique dynamique porté par la Cité Descartes (pôle recherche et innovation) et les zones d'activités tertiaires. TPE/PME de services, conseil, numérique, commerce et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisiel (77). Nous accompagnons TPE et PME : entreprises tertiaires et numériques du pôle Marne-la-Vallée, commerces, prestataires de services, professions libérales et indépendants du bassin Noisiel-Torcy-Champs-sur-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisiel (77). Nous accompagnons TPE et PME : entreprises tertiaires et numériques du pôle Marne-la-Vallée, commerces, prestataires de services, professions libérales et indépendants du bassin Noisiel-Torcy-Champs-sur-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisiel (77). Nous accompagnons TPE et PME : entreprises tertiaires et numériques du pôle Marne-la-Vallée, commerces, prestataires de services, professions libérales et indépendants du bassin Noisiel-Torcy-Champs-sur-Marne. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisiel (77). Nous accompagnons TPE et PME : entreprises tertiaires et numériques du pôle Marne-la-Vallée, commerces, prestataires de services, professions libérales et indépendants du bassin Noisiel-Torcy-Champs-sur-Marne. Audit sur place sur mesure.",
   seoHook: "services aux & numérique développement",
   ecosystemFr:
     "Noisiel est un pôle tertiaire de Marne-la-Vallée, à proximité de la Cité Descartes (recherche, innovation, université) et du centre commercial Bay 1. Tissu TPE/PME services aux entreprises, conseil, numérique, commerce, restauration. Patrimoine industriel historique (ancienne chocolaterie Menier, classée monument historique).",
@@ -30,8 +30,8 @@ export const NOISIEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit Flash {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Noisiel : diagnostic adapté aux TPE/PME tertiaires, numériques, commerçants et professions libérales du pôle Marne-la-Vallée. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noisiel : formats adaptés bureau tertiaire, espace coworking, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const NOISIEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à Noisiel ?",
-      a: "L'audit Flash IA à Noisiel démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'audit sur place IA à Noisiel démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les entreprises numériques de Noisiel ?",
@@ -61,7 +61,7 @@ export const NOISIEL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et PME de Noisiel ?",
-      a: "Audit Flash {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, CRM intelligent, gestion documentaire, facturation assistée.",
+      a: "Audit sur place {{price:audit-flash|flat}}, intervention sur site demi-journée ou journée, coaching 1-to-1, implémentation IA métier. Cas typiques : automatisation devis, CRM intelligent, gestion documentaire, facturation assistée.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Noisiel ?",

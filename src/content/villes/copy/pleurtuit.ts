@@ -9,9 +9,9 @@ export const PLEURTUIT_COPY: VilleCopy = {
   pitchEn:
     "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA opère sur l'ensemble des activités professionnelles locales de la Côte d'Émeraude.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "tourisme hôtellerie-restauration & artisanat",
   ecosystemFr:
     "Pleurtuit bénéficie de sa position stratégique sur la Côte d'Émeraude entre Saint-Malo (10 min) et Dinan (15 min), avec l'aéroport Dinard-Bretagne sur son territoire. Économie tournée vers le tourisme, l'hôtellerie-restauration, le commerce, l'artisanat BTP, les services aéroportuaires et les activités nautiques. Tissu TPE/PME dynamique porté par l'attractivité balnéaire.",
@@ -30,8 +30,8 @@ export const PLEURTUIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Pleurtuit : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, commerçants et entreprises de la zone aéroportuaire Côte d'Émeraude. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pleurtuit : formations adaptées aux professionnels du tourisme, hôteliers, commerçants et artisans de la Côte d'Émeraude. Ateliers pratiques outils IA métier.",
@@ -53,7 +53,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Pleurtuit  : quel budget prévoir ?",
-      a: "L'Audit Flash IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de la Côte d'Émeraude souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de la Côte d'Émeraude souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme à Pleurtuit ?",
@@ -61,7 +61,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans à Pleurtuit ?",
-      a: "Pour les TPE artisans BTP et commerçants de Pleurtuit, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning chantiers.",
+      a: "Pour les TPE artisans BTP et commerçants de Pleurtuit, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning chantiers.",
     },
     {
       q: "L'aéroport Dinard-Bretagne facilite-t-il vos déplacements ?",

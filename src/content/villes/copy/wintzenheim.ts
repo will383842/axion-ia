@@ -9,9 +9,9 @@ export const WINTZENHEIM_COPY: VilleCopy = {
   pitchEn:
     "Wintzenheim (68), commune de la première couronne ouest de Colmar dans le Haut-Rhin, est porte d'entrée du vignoble alsacien (grand cru Hengst) sur la Route des Vins. Tissu de TPE/PME en viticulture, œnotourisme, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wintzenheim (68). Nous accompagnons TPE et PME : domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans, commerçants et prestataires de services de l'agglomération colmarienne et de la Route des Vins. Audit sur place sur mesure.",
   seoHook: "vignoble alsacien",
   ecosystemFr:
     "Wintzenheim s'inscrit en première couronne ouest de Colmar, au sein de Colmar Agglomération. Porte d'entrée du vignoble alsacien sur la Route des Vins, la commune accueille le grand cru Hengst, plusieurs domaines viticoles et coopératives. Économie locale tirée par la viticulture, l'œnotourisme, l'hôtellerie-restauration, l'artisanat BTP et les services de proximité. Proximité immédiate du tissu industriel et tertiaire colmarien.",
@@ -30,8 +30,8 @@ export const WINTZENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wintzenheim : formats adaptés au domaine viticole, à l'hôtel-restaurant, à la TPE œnotouristique ou à l'artisan local. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -53,7 +53,7 @@ export const WINTZENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Wintzenheim  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wintzenheim et de la Route des Vins, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, hôtel, restaurant ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wintzenheim et de la Route des Vins, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, hôtel, restaurant ou commerce.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles et œnotouristiques de Wintzenheim ?",

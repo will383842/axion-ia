@@ -65,7 +65,7 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Nogent-sur-Oise ?",
-      a: "Nous commençons par un Audit Flash pour cibler les automatisations rentables, puis nous intervenons sur site. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes.",
+      a: "Nous commençons par un Audit sur place pour cibler les automatisations rentables, puis nous intervenons sur site. Chaque mission s'accompagne de livrables documentés et d'une montée en autonomie de vos équipes.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Nogent-sur-Oise ?",

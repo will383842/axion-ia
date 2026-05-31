@@ -9,9 +9,9 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
   pitchEn:
     "Boulazac Isle Manoire (24), commune nouvelle de l'agglomération de Périgueux en Dordogne. Pôle commercial, zones d'activités, artisanat et services. Tissu TPE/PME commerce, logistique, BTP, agroalimentaire périgourdin et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boulazac Isle Manoire (24). Nous accompagnons TPE/PME du commerce, de la logistique, du BTP, de l'agroalimentaire périgourdin et des services de l'agglo Périgueux. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boulazac Isle Manoire (24). Nous accompagnons TPE/PME du commerce, de la logistique, du BTP, de l'agroalimentaire périgourdin et des services de l'agglo Périgueux. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boulazac Isle Manoire (24). Nous accompagnons TPE/PME du commerce, de la logistique, du BTP, de l'agroalimentaire périgourdin et des services de l'agglo Périgueux. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boulazac Isle Manoire (24). Nous accompagnons TPE/PME du commerce, de la logistique, du BTP, de l'agroalimentaire périgourdin et des services de l'agglo Périgueux. Audit sur place sur mesure.",
   ecosystemFr:
     "Boulazac Isle Manoire est une commune nouvelle issue de la fusion de Boulazac et Atur, dans l'agglomération de Périgueux. Zones commerciales et d'activités dynamiques, artisanat BTP, logistique, agroalimentaire périgourdin (foie gras, noix, fraises) et professions libérales. Salle de spectacles Le Palio (basket, culture).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Boulazac Isle Manoire : diagnostic adapté aux TPE/PME du commerce, du BTP, de l'agroalimentaire et de la logistique périgourdine. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boulazac Isle Manoire : formations pratiques pour commerçants, artisans BTP, professionnels agroalimentaire et gérants PME.",
@@ -53,7 +53,7 @@ export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Boulazac Isle Manoire  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {
       q: "L'IA peut-elle aider l'agroalimentaire périgourdin ?",

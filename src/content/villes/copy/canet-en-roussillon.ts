@@ -30,8 +30,8 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Canet-en-Roussillon : formats adaptés à l'hôtel, restaurant, commerce saisonnier, port de plaisance. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerces saisonniers ?",
-      a: "Pour les TPE et commerces saisonniers à Canet-en-Roussillon, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks saisonniers, agents IA prise de commandes.",
+      a: "Pour les TPE et commerces saisonniers à Canet-en-Roussillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks saisonniers, agents IA prise de commandes.",
     },
     {
       q: "Comment se déroule une mission à Canet-en-Roussillon ?",

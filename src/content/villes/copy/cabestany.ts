@@ -30,8 +30,8 @@ export const CABESTANY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cabestany : formats adaptés au commerce, bureau, cabinet, atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const CABESTANY_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et PME ?",
-      a: "Pour les TPE artisans et PME à Cabestany, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, CRM augmenté, facturation automatisée, agents IA.",
+      a: "Pour les TPE artisans et PME à Cabestany, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, CRM augmenté, facturation automatisée, agents IA.",
     },
     {
       q: "Comment se déroule une mission à Cabestany ?",

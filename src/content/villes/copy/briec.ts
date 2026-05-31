@@ -30,8 +30,8 @@ export const BRIEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites exploitations.",
-      en: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. Audit Flash {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites exploitations.",
+      fr: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites exploitations.",
+      en: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites exploitations.",
     },
     interventions: {
       fr: "Interventions IA sur site à Briec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -61,7 +61,7 @@ export const BRIEC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants briécois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Briec, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
+      a: "Pour les TPE artisans BTP et commerçants à Briec, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
     },
     {
       q: "Comment se passe une mission depuis Quimper ?",

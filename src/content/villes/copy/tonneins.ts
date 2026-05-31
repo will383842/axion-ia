@@ -9,9 +9,9 @@ export const TONNEINS_COPY: VilleCopy = {
   pitchEn:
     "Tonneins (47), commune de 9 459 habitants dans le Lot-et-Garonne, est une ville historique des bords de Garonne, héritière d'une longue tradition manufacturière liée au tabac. Son économie actuelle repose sur un tissu de TPE artisans et commerçants, PME industrie et agroalimentaire, services de proximité et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonneins (47). Nous accompagnons TPE et PME des bords de Garonne : artisans, commerçants, entreprises agroalimentaires, industriels, professions libérales et services de proximité du bassin tonneinquais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonneins (47). Nous accompagnons TPE et PME des bords de Garonne : artisans, commerçants, entreprises agroalimentaires, industriels, professions libérales et services de proximité du bassin tonneinquais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonneins (47). Nous accompagnons TPE et PME des bords de Garonne : artisans, commerçants, entreprises agroalimentaires, industriels, professions libérales et services de proximité du bassin tonneinquais. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonneins (47). Nous accompagnons TPE et PME des bords de Garonne : artisans, commerçants, entreprises agroalimentaires, industriels, professions libérales et services de proximité du bassin tonneinquais. Audit sur place sur mesure.",
   ecosystemFr:
     "Tonneins est une commune des bords de Garonne dans le Lot-et-Garonne, héritière d'une longue tradition manufacturière (manufacture royale de tabac au XVIIe siècle). Aujourd'hui, son économie s'appuie sur l'industrie (zones d'activité), l'agroalimentaire (fruits et légumes du Val de Garonne), le commerce de proximité, l'artisanat et les services. Le bassin d'emploi s'articule avec Marmande (15 min) et Agen (30 min).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const TONNEINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Tonneins : diagnostic adapté aux TPE/PME industrielles, agroalimentaires, commerçants et artisans du Val de Garonne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tonneins : formats adaptés à l'usine, l'atelier, le commerce ou le bureau. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const TONNEINS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Tonneins  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME tonneinquaises : industriels, entreprises agroalimentaires, commerçants, artisans et professions libérales. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME tonneinquaises : industriels, entreprises agroalimentaires, commerçants, artisans et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les industries à Tonneins ?",

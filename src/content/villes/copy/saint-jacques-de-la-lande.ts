@@ -30,8 +30,8 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jacques-de-la-Lande : formats adaptés aux équipes logistiques, services, commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -61,7 +61,7 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants jacquolandins ?",
-      a: "Pour les TPE, artisans et commerçants à Saint-Jacques-de-la-Lande, audit Flash {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      a: "Pour les TPE, artisans et commerçants à Saint-Jacques-de-la-Lande, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment accéder à vos consultants depuis Saint-Jacques ?",

@@ -9,9 +9,9 @@ export const LE_CASTELLET_COPY: VilleCopy = {
   pitchEn:
     "Le Castellet (83), village perché du sud-Var, est mondialement reconnu pour le circuit Paul Ricard (sports mécaniques) et son vignoble AOC Bandol. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, artisans et PME tourisme, sports mécaniques et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit sur place sur mesure.",
   seoHook: "viticulture bandol & sports mécaniques",
   ecosystemFr:
     "Le Castellet est un village perché provençal du sud-Var, célèbre pour son circuit Paul Ricard (sports mécaniques, événements internationaux F1, Grand Prix) et son vignoble AOC Bandol prestigieux. Tourisme premium, viticulture renommée, hôtellerie haut de gamme, restauration. Tissu de TPE/PME tourisme, viticulture et services aux événements.",
@@ -30,8 +30,8 @@ export const LE_CASTELLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Castellet : ateliers pour viticulteurs Bandol, hôteliers, restaurateurs et prestataires événementiels. Outils IA configurés métier réel premium.",
@@ -53,7 +53,7 @@ export const LE_CASTELLET_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole AOC Bandol ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC Bandol, hôtels et restaurants castellans. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux domaines viticoles AOC Bandol, hôtels et restaurants castellans. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Bandol ?",

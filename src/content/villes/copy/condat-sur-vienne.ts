@@ -9,9 +9,9 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
   pitchEn:
     "Condat-sur-Vienne (87), commune de l'agglomération sud de Limoges en Haute-Vienne, au confluent de la Vienne et de la Briance. Tissu TPE artisans, PME zones d'activités, commerces, professions libérales, agriculture périurbaine. Axion-IA y intervient pour tous types d'activités de la couronne sud limougeaude.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condat-sur-Vienne (87). Nous accompagnons TPE artisans, PME des zones d'activités sud Limoges, commerçants, professions libérales et exploitants agricoles périurbains. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condat-sur-Vienne (87). Nous accompagnons TPE artisans, PME des zones d'activités sud Limoges, commerçants, professions libérales et exploitants agricoles périurbains. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condat-sur-Vienne (87). Nous accompagnons TPE artisans, PME des zones d'activités sud Limoges, commerçants, professions libérales et exploitants agricoles périurbains. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condat-sur-Vienne (87). Nous accompagnons TPE artisans, PME des zones d'activités sud Limoges, commerçants, professions libérales et exploitants agricoles périurbains. Audit sur place sur mesure.",
   seoHook: "commerce grande & services aux",
   ecosystemFr:
     "Condat-sur-Vienne est située au confluent de la Vienne et de la Briance, en couronne sud de Limoges Métropole. Zones d'activités commerciales et artisanales dynamiques, TPE BTP, PME services aux entreprises, commerces, agriculture périurbaine. Proximité autoroute A20 (sortie Condat) favorise la logistique et le transport.",
@@ -30,8 +30,8 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Condat-sur-Vienne : diagnostic adapté aux TPE artisans, PME des zones d'activités, commerçants et professions libérales de la couronne sud Limoges. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Condat-sur-Vienne : formats adaptés au commerce, à l'atelier artisanal, au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,7 +57,7 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Condat-sur-Vienne  ?",
-      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME des zones d'activités, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place propose un tarif d'entrée accessible pour une TPE. Pour les PME des zones d'activités, un audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Accompagnez-vous les entreprises des zones d'activités sud Limoges ?",

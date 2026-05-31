@@ -9,9 +9,9 @@ export const MAULE_COPY: VilleCopy = {
   pitchEn:
     "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA répond aux besoins des activités professionnelles présentes de la vallée de la Mauldre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit sur place sur mesure.",
   seoHook: "agriculture viticulture & commerce proximité",
   ecosystemFr:
     "Maule est un bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Commune au patrimoine architectural remarquable (église romane, lavoir) et au tissu agricole vivant. Économie locale : TPE artisans, commerces de centre-bourg, PME agricoles et viticoles, professions libérales, hébergements ruraux et services de proximité. Communes voisines : Épône, Nézel, Bazemont, Herbeville, Mareil-sur-Mauldre, Montainville.",
@@ -30,8 +30,8 @@ export const MAULE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maule : diagnostic adapté aux TPE artisans, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à Maule : diagnostic adapté aux TPE artisans, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Maule : diagnostic adapté aux TPE artisans, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Maule : diagnostic adapté aux TPE artisans, PME agricoles et de services, commerces et professions libérales de la vallée de la Mauldre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maule : formats adaptés à l'exploitation, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const MAULE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Maule  ?",
-      a: "L'Audit Flash IA à Maule démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à Maule démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles à Maule ?",

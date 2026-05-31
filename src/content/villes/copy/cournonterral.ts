@@ -30,8 +30,8 @@ export const COURNONTERRAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit Flash dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Cournonterral : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME viticoles AOC Languedoc. Cartographie des processus, cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cournonterral : ateliers adaptés au commerce de proximité, à l'artisan BTP, au cabinet libéral, au domaine viticole ou à la cave coopérative. Équipes formées et autonomes sur outils IA métier.",
@@ -53,11 +53,11 @@ export const COURNONTERRAL_COPY: VilleCopy = {
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Cournonterral ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (diagnostic 2 jours). L'Intervention Essentielle démarre à {{price:intervention-4h|flat}}. Le coaching 1-to-1 démarre à {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
       q: "Quels délais pour une implémentation IA à Cournonterral ?",
-      a: "Audit Flash : 2 jours ouvrés. Intervention sur site : sous 2 semaines. Implémentation custom (automatisation devis, chatbot, agents IA) : 4 à 8 semaines selon le périmètre, avec livraison incrémentale validée.",
+      a: "Audit sur place : 2 jours ouvrés. Intervention sur site : sous 2 semaines. Implémentation custom (automatisation devis, chatbot, agents IA) : 4 à 8 semaines selon le périmètre, avec livraison incrémentale validée.",
     },
     {
       q: "Vos solutions IA sont-elles conformes RGPD pour les TPE/PME de Cournonterral ?",
@@ -65,7 +65,7 @@ export const COURNONTERRAL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs et la cave coopérative AOC Languedoc ?",
-      a: "Oui. Cas d'usage IA viticoles : automatisation suivi parcelles, relation client export, prédiction vendanges, classification d'avis, marketing digital. Format Audit Flash {{price:audit-flash|flat}} ou intervention sur mesure.",
+      a: "Oui. Cas d'usage IA viticoles : automatisation suivi parcelles, relation client export, prédiction vendanges, classification d'avis, marketing digital. Format Audit sur place {{price:audit-flash|flat}} ou intervention sur mesure.",
     },
   ],
 };

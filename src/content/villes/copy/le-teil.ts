@@ -30,8 +30,8 @@ export const LE_TEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Teil : diagnostic adapté aux artisans BTP, agriculteurs et commerçants, puis aux PME industrielles (matériaux, carrières) et de services du sud-Ardèche. ROI quantifié, audit Flash 4h.",
-      en: "Audit IA au Teil : diagnostic adapté aux artisans BTP, agriculteurs et commerçants, puis aux PME industrielles (matériaux, carrières) et de services du sud-Ardèche. ROI quantifié, audit Flash 4h.",
+      fr: "Audit IA au Teil : diagnostic adapté aux artisans BTP, agriculteurs et commerçants, puis aux PME industrielles (matériaux, carrières) et de services du sud-Ardèche. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA au Teil : diagnostic adapté aux artisans BTP, agriculteurs et commerçants, puis aux PME industrielles (matériaux, carrières) et de services du sud-Ardèche. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site au Teil : formats adaptés à l'atelier industriel, à l'exploitation agricole, au commerce ou au bureau. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -65,7 +65,7 @@ export const LE_TEIL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les TPE, artisans et commerçants teillois ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit Flash {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Comment se déroule une mission depuis Lyon ou Valence ?",

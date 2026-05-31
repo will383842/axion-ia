@@ -9,9 +9,9 @@ export const CLUSES_COPY: VilleCopy = {
   pitchEn:
     "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée de l'Arve.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit sur place sur mesure.",
   seoHook: "vallée arve",
   ecosystemFr:
     "Cluses est le coeur historique du décolletage mondial (vallée de l'Arve, ~800 entreprises spécialisées). Sous-traitance de précision pour l'horlogerie suisse, l'aéronautique, l'automobile et le médical. Le CETIM (Centre Technique des Industries Mécaniques) y opère un pôle R&D. 4e ville de Haute-Savoie, entre Annecy et Chamonix, à 50 min de Genève.",
@@ -30,8 +30,8 @@ export const CLUSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit Flash {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cluses : formats adaptés à l'atelier d'usinage, au bureau d'études, à la TPE commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés industriel.",
@@ -57,7 +57,7 @@ export const CLUSES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Cluses  ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles vallée de l'Arve comme aux TPE artisans et commerçants.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME industrielles vallée de l'Arve comme aux TPE artisans et commerçants.",
     },
     {
       q: "L'IA peut-elle améliorer le contrôle qualité en décolletage ?",

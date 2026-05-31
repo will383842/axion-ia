@@ -30,8 +30,8 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moulins-lès-Metz : formats adaptés au bureau tertiaire, cabinet, atelier, chantier BTP, commerce ou restaurant. Vos collaborateurs sont autonomes ensuite.",
@@ -57,11 +57,11 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerces ?",
-      a: "Oui, artisans BTP, commerçants et restaurateurs de l''agglomération messine : automatisation devis, gestion réservations, agents conversationnels, marketing local. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, artisans BTP, commerçants et restaurateurs de l''agglomération messine : automatisation devis, gestion réservations, agents conversationnels, marketing local. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Moulins-lès-Metz ?",
-      a: "Audit Flash {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Comment se passe une mission à Moulins-lès-Metz ?",

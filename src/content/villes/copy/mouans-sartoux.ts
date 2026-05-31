@@ -30,8 +30,8 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouans-Sartoux : diagnostic adapté aux TPE agriculture bio, artisans, commerçants équitables et PME services du bassin Grasse-Cannes. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
-      en: "Audit IA à Mouans-Sartoux : diagnostic adapté aux TPE agriculture bio, artisans, commerçants équitables et PME services du bassin Grasse-Cannes. ROI chiffré, audit Flash {{price:audit-flash|flat}} accessible aux petites structures.",
+      fr: "Audit IA à Mouans-Sartoux : diagnostic adapté aux TPE agriculture bio, artisans, commerçants équitables et PME services du bassin Grasse-Cannes. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible aux petites structures.",
+      en: "Audit IA à Mouans-Sartoux : diagnostic adapté aux TPE agriculture bio, artisans, commerçants équitables et PME services du bassin Grasse-Cannes. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mouans-Sartoux : formats adaptés à l'exploitation agricole, atelier artisan, commerce ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -53,7 +53,7 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les TPE agriculture bio et circuits courts ?",
-      a: "Oui, nous accompagnons les TPE agriculture bio de Mouans-Sartoux sur leurs cas IA : traçabilité parcelles et récoltes, automatisation commandes circuits courts, agents IA gestion clientèle, prévision rendements. Audit Flash {{price:audit-flash|flat}} pour démarrer.",
+      a: "Oui, nous accompagnons les TPE agriculture bio de Mouans-Sartoux sur leurs cas IA : traçabilité parcelles et récoltes, automatisation commandes circuits courts, agents IA gestion clientèle, prévision rendements. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants équitables ?",

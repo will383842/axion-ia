@@ -31,8 +31,8 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
-      en: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit Flash dès {{price:audit-flash|flat}} (4 h).",
+      fr: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
       fr: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -50,7 +50,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs d'Axion-IA pour une intervention à Roissy-en-Brie ?",
-      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit Flash (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
+      a: "Nos tarifs publics commencent à {{price:audit-flash|flat}} pour un Audit sur place (4 h sur site), {{price:intervention-4h|flat}} pour une Intervention Essentielle et {{price:intervention-dirigeants|flat}} pour une implémentation ou une session un-à-un. Devis personnalisé sous 48 h.",
     },
     {
       q: "William se déplace-t-il vraiment à Roissy-en-Brie ?",

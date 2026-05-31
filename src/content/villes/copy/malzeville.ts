@@ -30,8 +30,8 @@ export const MALZEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit Flash à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Malzéville : formats adaptés au bureau tertiaire, au commerce de proximité ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -57,11 +57,11 @@ export const MALZEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales et artisans de Malzéville ?",
-      a: "Oui, nous accompagnons les professions libérales et artisans BTP sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les professions libérales et artisans BTP sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Tarifs audit IA à Malzéville  : quel budget prévoir ?",
-      a: "L'audit Flash IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Malzéville et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Malzéville et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se déroule une mission IA à Malzéville ?",

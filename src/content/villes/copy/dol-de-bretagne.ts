@@ -9,9 +9,9 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
   pitchEn:
     "Dol-de-Bretagne (35), cité médiévale d'Ille-et-Vilaine célèbre pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol, conjugue tourisme patrimonial, artisanat, commerces de centre-ville historique, agriculture maraîchère et PME de services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Dol-de-Bretagne est une cité médiévale d'Ille-et-Vilaine entre Rennes et Saint-Malo, reconnue pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol. Son économie mêle tourisme patrimonial, hôtellerie-restauration, commerces du centre historique, artisanat, agriculture maraîchère fertile et PME de services aux entreprises.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dol-de-Bretagne : formations pratiques pour hôteliers, restaurateurs, commerçants, artisans et exploitants agricoles. Vos équipes repartent autonomes sur outils IA métier.",
@@ -53,7 +53,7 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel-restaurant à Dol ?",
-      a: "L'Audit Flash démarre à {{price:audit-flash|flat}}. Pour l'hôtellerie-restauration doloise, il couvre l'analyse des process réservation, channel management, gestion des avis en ligne et optimisation du yield.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Pour l'hôtellerie-restauration doloise, il couvre l'analyse des process réservation, channel management, gestion des avis en ligne et optimisation du yield.",
     },
     {
       q: "Accompagnez-vous les commerces du centre historique ?",

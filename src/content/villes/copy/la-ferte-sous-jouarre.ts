@@ -9,9 +9,9 @@ export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
   pitchEn:
     "La Ferté-sous-Jouarre, commune de Seine-et-Marne (77) à la confluence de la Marne et du Petit Morin, 65 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-bourg, PME agroalimentaires et industrielles, professions libérales et indépendants. Axion-IA couvre les activités professionnelles du bassin du bassin fertois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit Flash sur mesure.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit sur place sur mesure.",
   seoHook: "commerce centre-bourg & artisanat rénovation",
   ecosystemFr:
     "La Ferté-sous-Jouarre est une commune historique à la confluence de la Marne et du Petit Morin, connue pour ses meulières. Son tissu économique repose sur les commerces de centre-bourg, TPE artisanales, PME agroalimentaires, petite industrie et professions libérales. Proximité avec Jouarre, Saâcy-sur-Marne et Château-Thierry. Pôle de centralité du nord-est seine-et-marnais.",
@@ -30,8 +30,8 @@ export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit Flash {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Ferté-sous-Jouarre : diagnostic adapté aux TPE artisans, commerçants, PME agroalimentaires et professions libérales du bassin fertois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ferté-sous-Jouarre : formats adaptés au commerce, atelier artisan ou PME agroalimentaire. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -53,7 +53,7 @@ export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA à La Ferté-sous-Jouarre ?",
-      a: "L'Audit Flash IA à La Ferté-sous-Jouarre démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
+      a: "L'Audit sur place IA à La Ferté-sous-Jouarre démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de La Ferté-sous-Jouarre ?",
