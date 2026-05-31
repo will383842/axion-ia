@@ -86,10 +86,10 @@ export function AuditAudience({ isFr }: AuditAudienceProps): ReactNode {
   return (
     <Section
       tone="canvas"
-      eyebrow={isFr ? "À qui ça s'adresse" : "Who it's for"}
-      title={isFr ? "Un audit complet, quelle que soit" : "A complete audit, whatever"}
-      titleEm={isFr ? "votre taille" : "your size"}
-      titleTail="."
+      eyebrow={isFr ? "Par taille d'entreprise" : "By company size"}
+      title={isFr ? "À qui s'adressent" : "Who are"}
+      titleEm={isFr ? "nos audits" : "our audits for"}
+      titleTail=" ?"
       description={
         isFr
           ? "Quelle que soit votre taille, on audite votre entreprise en détail — tout en présentiel. On vient chez vous, on observe le réel, on repart avec un plan."
