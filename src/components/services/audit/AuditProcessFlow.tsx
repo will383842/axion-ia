@@ -57,20 +57,17 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
         ))}
       </ul>
 
-      {/* Aperçu 01 → 08 + CTA « Voir la méthodologie détaillée » sur la même ligne */}
-      <div className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-8">
-        <ol className="flex list-none flex-wrap items-center justify-center gap-2 p-0">
-          {stepNumbers.map((n, i) => (
-            <li key={n} className="flex items-center gap-2">
-              {i > 0 ? <span aria-hidden="true" className="bg-terracotta/30 h-px w-4" /> : null}
-              <span className="border-terracotta/40 text-terracotta-deep bg-paper flex h-9 w-9 items-center justify-center rounded-full border text-[12.5px] font-bold tabular-nums">
-                {n}
-              </span>
-            </li>
-          ))}
-        </ol>
-        <AuditMethodologyDialog isFr={isFr} />
-      </div>
+      {/* Aperçu 01 → 08 */}
+      <ol className="mt-10 flex list-none flex-wrap items-center justify-center gap-2 p-0">
+        {stepNumbers.map((n, i) => (
+          <li key={n} className="flex items-center gap-2">
+            {i > 0 ? <span aria-hidden="true" className="bg-terracotta/30 h-px w-4" /> : null}
+            <span className="border-terracotta/40 text-terracotta-deep bg-paper flex h-9 w-9 items-center justify-center rounded-full border text-[12.5px] font-bold tabular-nums">
+              {n}
+            </span>
+          </li>
+        ))}
+      </ol>
 
       {/* Visuel illustré de la méthodologie — quasi pleine largeur, sans cadre
           (le fond blanc de l'image se fond dans la section paper). `unoptimized`
@@ -96,6 +93,11 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
             : "The 8 steps of the Axion-IA AI audit methodology, from scoping to lasting adoption."}
         </figcaption>
       </figure>
+
+      {/* CTA d'ouverture de la popup détaillée — sous l'image */}
+      <div className="mt-8 flex justify-center">
+        <AuditMethodologyDialog isFr={isFr} />
+      </div>
 
       {/* Adaptabilité — chaque audit est calibré */}
       <p className="text-fg-muted mx-auto mt-12 max-w-2xl text-center text-sm leading-relaxed">
