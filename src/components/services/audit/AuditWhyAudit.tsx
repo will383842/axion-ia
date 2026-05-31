@@ -106,18 +106,19 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
   return (
     <Section
       tone="canvas"
+      className="py-16 sm:py-20 lg:py-24"
       eyebrow={isFr ? "Audit IA · la référence française" : "AI audit · the French benchmark"}
       title={isFr ? "L'IA, tout le monde en parle." : "Everyone talks about AI."}
       titleEm={isFr ? "Nous, on la rend rentable" : "We make it pay off"}
       titleTail="."
       description={
         isFr
-          ? "Foncer sans diagnostic, c'est payer pour apprendre. Notre audit transforme le flou en plan : les bons usages, chiffrés et sécurisés, avant le premier euro engagé."
-          : "Diving in without a diagnosis means paying to learn. Our audit turns the fog into a plan: the right use cases, costed and secured, before the first euro is committed."
+          ? "Foncer sans diagnostic, c'est payer pour apprendre. Nos audits transforment le flou en plan : les bons usages, chiffrés et sécurisés, avant le premier euro engagé."
+          : "Diving in without a diagnosis means paying to learn. Our audits turn the fog into a plan: the right use cases, costed and secured, before the first euro is committed."
       }
     >
       {/* Bande de preuves — positionnement leader, visuel */}
-      <ul className="mb-10 flex list-none flex-wrap justify-center gap-3 p-0">
+      <ul className="mb-8 flex list-none flex-wrap justify-center gap-3 p-0">
         {proofs.map((p) => {
           const Icon = p.icon;
           return (
@@ -205,7 +206,7 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
 
       {/* Spécialistes de toute la chaîne IA — l'audit comme point d'entrée.
           On est sur la page audit : « Audit » est l'étape mise en avant. */}
-      <div className="bg-mocha-rich text-mocha-fg shadow-card mt-10 rounded-3xl px-7 py-9 text-center sm:px-10">
+      <div className="bg-mocha-rich text-mocha-fg shadow-card mt-8 rounded-3xl px-7 py-7 text-center sm:px-10">
         {/* La chaîne IA — Audit surligné */}
         <ul className="mb-6 flex list-none flex-wrap items-center justify-center gap-2.5 p-0">
           {[

@@ -189,14 +189,15 @@ export default async function AuditHub({ params }: Props) {
       {/* 1. HERO value-first — sans prix (best practice 2026) */}
       <AuditHero isFr={isFr} />
 
-      {/* 2. PROMESSE — bloc value-prop juste sous le hero (Will 2026-05-31) :
-          « Faites auditer votre entreprise et révélez tout ce que l'IA peut
-          réellement vous apporter. » */}
-      <AuditValueProp isFr={isFr} />
-
-      {/* 3. PAR OÙ COMMENCER — blocs visuels : risques de se lancer sans audit
-          vs les 4 questions que l'audit tranche (Will 2026-05-31, non verbeux). */}
+      {/* 2. POURQUOI UN AUDIT — « L'IA, tout le monde en parle. Nous, on la rend
+          rentable. » Contraste visuel (foncer ❌ vs méthode Axion-IA ✅) +
+          posture spécialiste de toute la chaîne IA. Remonté juste sous le hero
+          (Will 2026-05-31). */}
       <AuditWhyAudit isFr={isFr} />
+
+      {/* 3. PROMESSE — bloc value-prop « Faites auditer votre entreprise et
+          révélez tout ce que l'IA peut réellement vous apporter. » */}
+      <AuditValueProp isFr={isFr} />
 
       {/* 4. Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />
