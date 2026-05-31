@@ -1,64 +1,82 @@
 /**
- * AuditAudience — « À qui s'adressent les audits » : une card par taille
+ * AuditAudience — « À qui s'adressent les audits » : 3 cards par taille
  * d'entreprise (Server Component).
  *
- * Refonte 2026-05-31 (Will) — section visuelle en cards cliquables, placée
- * après le bandeau contact. Réutilise la SSOT `AUDIT_BY_SIZE` (labels, badges
- * tier+prix via helpers pricing, chemins tier) ; les descriptions de card sont
- * courtes et SANS prix en prose (le prix vit dans le badge SSOT → price-gate
- * OK). Emphase TPE/PME (feedback Will 2026-05-27).
+ * Refonte 2026-05-31 (Will) — 3 cards sur une ligne : TPE/artisans-commerçants,
+ * PME, ETI & grandes entreprises. Message : un audit DÉTAILLÉ et complet de
+ * l'entreprise (pas « 1-2 automatisations »). Tout en présentiel. TPE = audit
+ * complet de l'entreprise en une journée sur place ; PME / ETI / grandes
+ * entreprises = sur devis. Aucun prix en prose (price-gate OK).
  *
  * Zéro JS. FR canonique — EN = miroir (locale 301→FR, règle Will 2026-05-16).
  */
 
 import type { ReactNode } from "react";
-import { Sparkles, Building, Building2, Network, ArrowRight, type LucideIcon } from "lucide-react";
+import { Store, Building, Building2, ArrowRight, type LucideIcon } from "lucide-react";
 import { Section } from "@/components/layout/Section";
-import { Link } from "@/i18n/navigation";
-import { AUDIT_BY_SIZE, type AuditSizeSegment } from "@/content/audit-taxonomy";
+import { Cta } from "@/components/marketing/Cta";
 
-const ICONS: Record<string, LucideIcon> = {
-  Sparkles,
-  Building,
-  Building2,
-  Network,
-};
+interface AudienceCard {
+  readonly icon: LucideIcon;
+  readonly labelFr: string;
+  readonly labelEn: string;
+  readonly badgeFr: string;
+  readonly badgeEn: string;
+  readonly descFr: string;
+  readonly descEn: string;
+  readonly ctaHref: string;
+  readonly ctaFr: string;
+  readonly ctaEn: string;
+  readonly track: string;
+}
 
-// Libellés de card (TPE élargie aux artisans/commerçants — demande Will) +
-// accroches courtes sans prix (le prix est porté par le badge SSOT).
-const CARD_COPY: Record<
-  AuditSizeSegment,
-  { labelFr: string; labelEn: string; descFr: string; descEn: string }
-> = {
-  tpe: {
+const CARDS: ReadonlyArray<AudienceCard> = [
+  {
+    icon: Store,
     labelFr: "TPE, artisans & commerçants",
     labelEn: "Small businesses, artisans & retailers",
+    badgeFr: "1 journée complète · sur place",
+    badgeEn: "1 full day · on site",
     descFr:
-      "Peu de temps, pas de DSI : on cible 1 ou 2 automatisations qui vous libèrent des heures, vite.",
-    descEn: "Little time, no IT team: we target 1 or 2 automations that free up hours, fast.",
+      "On audite votre entreprise de fond en comble, en une journée complète sur place. On cartographie chaque activité pour révéler tout ce que l'IA peut y changer — concret, sans jargon, prêt à exécuter.",
+    descEn:
+      "We audit your whole business in depth, in one full day on site. We map every activity to reveal everything AI can change — concrete, jargon-free, ready to execute.",
+    ctaHref: "/appel",
+    ctaFr: "Réserver l'audit",
+    ctaEn: "Book the audit",
+    track: "audit_audience_tpe",
   },
-  pme: {
+  {
+    icon: Building,
     labelFr: "PME",
     labelEn: "SME",
+    badgeFr: "Sur devis",
+    badgeEn: "On quote",
     descFr:
-      "Vous grandissez, les process craquent : on priorise les chantiers IA service par service.",
+      "Audit détaillé de toute l'organisation, service par service. On cartographie chaque process et on chiffre les opportunités IA, des quick wins aux chantiers structurants.",
     descEn:
-      "You're growing and processes strain: we prioritise AI projects department by department.",
+      "A detailed audit of the whole organisation, department by department. We map every process and cost the AI opportunities, from quick wins to structural projects.",
+    ctaHref: "/contact",
+    ctaFr: "Demander un devis",
+    ctaEn: "Request a quote",
+    track: "audit_audience_pme",
   },
-  eti: {
-    labelFr: "ETI",
-    labelEn: "Mid-cap",
-    descFr: "Multi-sites, multi-métiers : audit transverse et gouvernance IA conforme à l'AI Act.",
-    descEn: "Multi-site, multi-business: a transverse audit and AI Act-compliant governance.",
-  },
-  "grande-entreprise": {
-    labelFr: "Grande entreprise",
-    labelEn: "Enterprise",
+  {
+    icon: Building2,
+    labelFr: "ETI & grandes entreprises",
+    labelEn: "Mid-caps & large enterprises",
+    badgeFr: "Sur devis",
+    badgeEn: "On quote",
     descFr:
-      "Échelle groupe, conformité, souveraineté : audit profond et livrables prêts pour le board.",
-    descEn: "Group scale, compliance, sovereignty: a deep audit and board-ready deliverables.",
+      "Audit transverse multi-sites et multi-métiers, gouvernance IA conforme à l'AI Act et livrables prêts pour le board. Calibré à l'échelle de votre groupe.",
+    descEn:
+      "A transverse, multi-site and multi-business audit, AI Act-compliant governance and board-ready deliverables. Calibrated to your group's scale.",
+    ctaHref: "/contact",
+    ctaFr: "Demander un devis",
+    ctaEn: "Request a quote",
+    track: "audit_audience_eti",
   },
-};
+];
 
 export interface AuditAudienceProps {
   readonly isFr: boolean;
@@ -69,47 +87,48 @@ export function AuditAudience({ isFr }: AuditAudienceProps): ReactNode {
     <Section
       tone="canvas"
       eyebrow={isFr ? "À qui ça s'adresse" : "Who it's for"}
-      title={isFr ? "Un audit pour chaque" : "An audit for every"}
-      titleEm={isFr ? "taille d'entreprise" : "company size"}
+      title={isFr ? "Un audit complet, quelle que soit" : "A complete audit, whatever"}
+      titleEm={isFr ? "votre taille" : "your size"}
       titleTail="."
       description={
         isFr
-          ? "De l'artisan à la grande entreprise, on calibre l'audit à votre taille, votre budget et vos enjeux. TPE et PME en premier — c'est là que l'IA change le quotidien le plus vite."
-          : "From the local artisan to the large group, we calibrate the audit to your size, budget and stakes. Small businesses and SMEs first — that's where AI changes daily work the fastest."
+          ? "Quelle que soit votre taille, on audite votre entreprise en détail — tout en présentiel. On vient chez vous, on observe le réel, on repart avec un plan."
+          : "Whatever your size, we audit your company in detail — fully on site. We come to you, observe the reality, and leave with a plan."
       }
     >
-      <ul className="grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-        {AUDIT_BY_SIZE.map((seg) => {
-          const Icon = ICONS[seg.iconName] ?? Sparkles;
-          const copy = CARD_COPY[seg.id];
+      <ul className="grid list-none gap-6 p-0 md:grid-cols-3">
+        {CARDS.map((c) => {
+          const Icon = c.icon;
           return (
-            <li key={seg.id}>
-              <Link
-                href={(isFr ? seg.pathFr : seg.pathEn) as never}
-                data-cta-tracking="audit_audience_size"
-                data-source-segment={seg.id}
-                className="group bg-paper border-border shadow-subtle hover:border-terracotta/50 hover:shadow-card focus-visible:ring-terracotta flex h-full flex-col rounded-2xl border p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <span className="bg-terracotta-soft text-terracotta-deep mb-4 flex h-12 w-12 items-center justify-center rounded-xl">
-                  <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
-                </span>
-                <h3 className="text-fg text-[16px] leading-snug font-semibold tracking-tight">
-                  {isFr ? copy.labelFr : copy.labelEn}
-                </h3>
-                <p className="text-fg-soft mt-2 flex-1 text-[13.5px] leading-relaxed">
-                  {isFr ? copy.descFr : copy.descEn}
-                </p>
-                <span className="border-terracotta/30 bg-terracotta-soft/40 text-terracotta-deep mt-4 inline-flex w-fit items-center rounded-full border px-3 py-1 text-[12px] font-semibold">
-                  {isFr ? seg.badgeFr : seg.badgeEn}
-                </span>
-                <span className="text-terracotta-deep mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold">
-                  {isFr ? "Voir cet audit" : "See this audit"}
-                  <ArrowRight
-                    aria-hidden="true"
-                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
-                  />
-                </span>
-              </Link>
+            <li key={c.track} className="h-full">
+              <article className="group border-border bg-paper shadow-subtle hover:border-terracotta/50 hover:shadow-card flex h-full flex-col overflow-hidden rounded-3xl border transition">
+                {/* Liseré d'accent en tête */}
+                <span aria-hidden="true" className="bg-terracotta block h-1.5 w-full" />
+                <div className="flex flex-1 flex-col p-7">
+                  <span className="bg-terracotta-soft text-terracotta-deep mb-5 flex h-14 w-14 items-center justify-center rounded-2xl">
+                    <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.75} />
+                  </span>
+                  <h3 className="text-fg text-xl leading-snug font-semibold tracking-tight">
+                    {isFr ? c.labelFr : c.labelEn}
+                  </h3>
+                  <span className="border-terracotta/30 bg-terracotta-soft/40 text-terracotta-deep mt-3 inline-flex w-fit items-center rounded-full border px-3 py-1 text-[12px] font-semibold">
+                    {isFr ? c.badgeFr : c.badgeEn}
+                  </span>
+                  <p className="text-fg-soft mt-4 flex-1 text-[14.5px] leading-relaxed">
+                    {isFr ? c.descFr : c.descEn}
+                  </p>
+                  <Cta
+                    href={c.ctaHref}
+                    variant="terracotta"
+                    shape="pill"
+                    className="mt-6 w-fit"
+                    track={c.track}
+                  >
+                    {isFr ? c.ctaFr : c.ctaEn}
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  </Cta>
+                </div>
+              </article>
             </li>
           );
         })}
