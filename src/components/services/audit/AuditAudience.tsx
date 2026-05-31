@@ -78,7 +78,7 @@ const CARDS: ReadonlyArray<AudienceCard> = [
     detailHref: "/audit/flash",
     preReserveFr: "Pré-réserver l'audit (1 jour)",
     preReserveEn: "Pre-book the audit (1 day)",
-    preReserveHref: "/audit/flash",
+    preReserveHref: "/reserver",
   },
   {
     segment: "PME",
@@ -135,13 +135,16 @@ function CardCtas({ card, isFr }: { card: AudienceCard; isFr: boolean }): ReactN
         </Cta>
       ) : null}
 
-      {/* Contact — réserver un appel / nous écrire (les 3 cartes) */}
+      {/* Contact — réserver un appel / nous écrire (les 3 cartes).
+          Couleurs alignées sur les CTAs du header (Will 2026-05-31) :
+          « Réserver un appel » = bleu primary ; « Nous écrire » = ivoire +
+          terracotta. */}
       <div className="grid grid-cols-2 gap-2.5">
         <Cta
           href="/appel"
-          variant="outline"
+          variant="primary"
           size="sm"
-          className="border-terracotta/40 text-terracotta-deep w-full"
+          className="bg-primary text-primary-fg hover:bg-primary-hover w-full"
           track={`audit-audience-call-${card.segment.toLowerCase()}`}
         >
           <Phone aria-hidden="true" className="h-3.5 w-3.5" />
@@ -151,7 +154,7 @@ function CardCtas({ card, isFr }: { card: AudienceCard; isFr: boolean }): ReactN
           href="/contact"
           variant="outline"
           size="sm"
-          className="border-terracotta/40 text-terracotta-deep w-full"
+          className="bg-paper text-terracotta hover:bg-paper/95 w-full"
           track={`audit-audience-contact-${card.segment.toLowerCase()}`}
         >
           <Mail aria-hidden="true" className="h-3.5 w-3.5" />
