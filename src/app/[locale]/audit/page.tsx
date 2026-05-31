@@ -6,17 +6,14 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import {
-  WhyAxionIA,
-  SignatureCard,
-  BeyondAuditBlock,
-} from "@/components/sections/AuditConversionBlocks";
+import { SignatureCard, BeyondAuditBlock } from "@/components/sections/AuditConversionBlocks";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { AuditHero } from "@/components/services/audit/AuditHero";
 import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
 import { AuditAudience } from "@/components/services/audit/AuditAudience";
+import { AuditWhyChooseUs } from "@/components/services/audit/AuditWhyChooseUs";
 import { AuditBenefits } from "@/components/services/audit/AuditBenefits";
 import { AuditProcessFlow } from "@/components/services/audit/AuditProcessFlow";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
@@ -239,6 +236,11 @@ export default async function AuditHub({ params }: Props) {
           entreprise). */}
       <AuditAudience isFr={isFr} />
 
+      {/* POURQUOI NOUS CHOISIR — posture premium : toute la chaîne IA de bout en
+          bout (formation → implémentation), vrai code source vs rafistolage,
+          architectes seniors, de l'audit au cadrage des agents (Will 2026-05-31). */}
+      <AuditWhyChooseUs isFr={isFr} />
+
       {/* Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />
 
@@ -248,11 +250,9 @@ export default async function AuditHub({ params }: Props) {
       {/* QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
       <AuditMaturityLevels isFr={isFr} />
 
-      {/* POURQUOI AXION-IA — « 5 raisons concrètes de nous choisir » */}
-      <WhyAxionIA isFr={isFr} />
-
       {/* LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis). L'offre
-          apparaît dès que le prospect est convaincu, après les raisons. */}
+          apparaît dès que le prospect est convaincu. La posture « pourquoi nous »
+          est portée par AuditWhyChooseUs (remontée après l'audience). */}
       <AuditFormatsCards isFr={isFr} />
 
       {/* COUVERTURE NATIONALE — « L'audit IA disponible partout en France » (pSEO) */}
