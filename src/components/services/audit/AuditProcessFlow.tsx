@@ -69,8 +69,9 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
         ))}
       </ol>
 
-      {/* Visuel illustré de la méthodologie — juste sous l'aperçu */}
-      <figure className="border-border shadow-card m-0 mx-auto mt-8 w-full max-w-4xl overflow-hidden rounded-2xl border">
+      {/* Visuel illustré de la méthodologie — quasi pleine largeur (le padding
+          du Container = la petite marge gauche/droite). */}
+      <figure className="border-border shadow-card m-0 mt-8 w-full overflow-hidden rounded-2xl border">
         <Image
           src="/illustrations/methodologie-audit-ia-8-etapes-v2.webp"
           alt={
@@ -82,7 +83,7 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
           height={793}
           loading="lazy"
           decoding="async"
-          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 900px"
+          sizes="(max-width: 1520px) 92vw, 1456px"
           className="h-auto w-full"
           quality={80}
         />
