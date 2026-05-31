@@ -127,58 +127,60 @@ export function AuditMethodologyDialog({ isFr }: AuditMethodologyDialogProps): R
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-h-[88vh] max-w-5xl overflow-y-auto rounded-2xl p-6 sm:p-8">
-        <div className="pr-10">
-          <p className="text-terracotta-deep mb-2 text-[12px] font-bold tracking-[0.18em] uppercase">
-            {isFr ? "Notre méthodologie d'audit" : "Our audit methodology"}
-          </p>
-          <DialogTitle
-            className="text-fg text-[clamp(1.5rem,3.5vw,2.25rem)] leading-tight font-semibold tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            {isFr ? "Un audit IA rigoureux, " : "A rigorous AI audit, "}
-            <span className="text-terracotta italic">{isFr ? "en 8 étapes" : "in 8 steps"}</span>
-          </DialogTitle>
-          <DialogDescription className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
-            {isFr
-              ? "Du cadrage terrain à l'adoption dans la durée — voici exactement ce qu'il se passe à chaque étape, et ce que vous obtenez à la clé."
-              : "From field scoping to lasting adoption — here is exactly what happens at each step, and what you get."}
-          </DialogDescription>
-        </div>
+      <DialogContent className="max-w-5xl overflow-hidden rounded-2xl p-0">
+        <div className="max-h-[88vh] overflow-y-auto p-6 sm:p-8">
+          <div className="pr-10">
+            <p className="text-terracotta-deep mb-2 text-[12px] font-bold tracking-[0.18em] uppercase">
+              {isFr ? "Notre méthodologie d'audit" : "Our audit methodology"}
+            </p>
+            <DialogTitle
+              className="text-fg text-[clamp(1.5rem,3.5vw,2.25rem)] leading-tight font-semibold tracking-tight"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {isFr ? "Un audit IA rigoureux, " : "A rigorous AI audit, "}
+              <span className="text-terracotta italic">{isFr ? "en 8 étapes" : "in 8 steps"}</span>
+            </DialogTitle>
+            <DialogDescription className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
+              {isFr
+                ? "Du cadrage terrain à l'adoption dans la durée — voici exactement ce qu'il se passe à chaque étape, et ce que vous obtenez à la clé."
+                : "From field scoping to lasting adoption — here is exactly what happens at each step, and what you get."}
+            </DialogDescription>
+          </div>
 
-        {/* Grille 2 colonnes de cartes visuelles */}
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {steps.map((s) => {
-            const Icon = s.icon;
-            return (
-              <article
-                key={s.n}
-                className="bg-paper border-border shadow-subtle hover:border-terracotta/50 relative overflow-hidden rounded-2xl border p-5 transition-colors"
-              >
-                {/* Filigrane numéro */}
-                <span
-                  aria-hidden="true"
-                  className="text-terracotta/10 absolute -top-5 -right-1 text-[5.5rem] leading-none font-bold tabular-nums"
-                  style={{ fontFamily: "var(--font-serif)" }}
+          {/* Grille 2 colonnes de cartes visuelles */}
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {steps.map((s) => {
+              const Icon = s.icon;
+              return (
+                <article
+                  key={s.n}
+                  className="bg-paper border-border shadow-subtle hover:border-terracotta/50 relative overflow-hidden rounded-2xl border p-5 transition-colors"
                 >
-                  {s.n}
-                </span>
-                <div className="relative">
-                  <span className="bg-terracotta text-mocha-fg mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl">
-                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
+                  {/* Filigrane numéro */}
+                  <span
+                    aria-hidden="true"
+                    className="text-terracotta/10 absolute -top-5 -right-1 text-[5.5rem] leading-none font-bold tabular-nums"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {s.n}
                   </span>
-                  <h3 className="text-fg text-[16px] leading-snug font-semibold tracking-tight">
-                    <span className="text-terracotta-deep tabular-nums">{s.n}.</span> {s.title}
-                  </h3>
-                  <p className="text-fg-soft mt-2 text-[13.5px] leading-relaxed">{s.desc}</p>
-                  <p className="text-terracotta-deep bg-terracotta-soft/50 mt-3.5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold">
-                    <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
-                    {s.deliverable}
-                  </p>
-                </div>
-              </article>
-            );
-          })}
+                  <div className="relative">
+                    <span className="bg-terracotta text-mocha-fg mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                      <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
+                    </span>
+                    <h3 className="text-fg text-[16px] leading-snug font-semibold tracking-tight">
+                      <span className="text-terracotta-deep tabular-nums">{s.n}.</span> {s.title}
+                    </h3>
+                    <p className="text-fg-soft mt-2 text-[13.5px] leading-relaxed">{s.desc}</p>
+                    <p className="text-terracotta-deep bg-terracotta-soft/50 mt-3.5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold">
+                      <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
+                      {s.deliverable}
+                    </p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -104,21 +104,82 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
   ];
 
   return (
-    <Section
-      tone="canvas"
-      className="py-16 sm:py-20 lg:py-24"
-      eyebrow={isFr ? "Audit IA · la référence française" : "AI audit · the French benchmark"}
-      title={isFr ? "L'IA, tout le monde en parle." : "Everyone talks about AI."}
-      titleEm={isFr ? "Nous, on la rend rentable" : "We make it pay off"}
-      titleTail="."
-      description={
-        isFr
-          ? "Foncer sans diagnostic, c'est payer pour apprendre. Nos audits transforment le flou en plan : les bons usages, chiffrés et sécurisés, avant le premier euro engagé."
-          : "Diving in without a diagnosis means paying to learn. Our audits turn the fog into a plan: the right use cases, costed and secured, before the first euro is committed."
-      }
-    >
+    <Section tone="canvas" className="py-16 sm:py-20 lg:py-24">
+      {/* Ligne du haut — titre à gauche, bandeau « chaîne IA » à droite
+          (gain de hauteur, Will 2026-05-31). */}
+      <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+        {/* Titre */}
+        <div>
+          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            />
+            {isFr ? "Audit IA · la référence française" : "AI audit · the French benchmark"}
+          </p>
+          <h2 className="text-fg mt-5 text-[clamp(1.9rem,3.4vw,3rem)] leading-[1.05] font-semibold tracking-tight">
+            {isFr ? "L'IA, tout le monde en parle." : "Everyone talks about AI."}
+            <span
+              className="text-terracotta mx-2 italic"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {isFr ? "Nous, on la rend rentable" : "We make it pay off"}
+            </span>
+            .
+          </h2>
+          <p className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
+            {isFr
+              ? "Foncer sans diagnostic, c'est payer pour apprendre. Nos audits transforment le flou en plan : les bons usages, chiffrés et sécurisés, avant le premier euro engagé."
+              : "Diving in without a diagnosis means paying to learn. Our audits turn the fog into a plan: the right use cases, costed and secured, before the first euro is committed."}
+          </p>
+        </div>
+
+        {/* Bandeau chaîne IA — l'audit comme point d'entrée (à droite du titre) */}
+        <div className="bg-mocha-rich text-mocha-fg shadow-card rounded-3xl px-6 py-7 text-center sm:px-8">
+          <ul className="mb-5 flex list-none flex-wrap items-center justify-center gap-2.5 p-0">
+            {[
+              { label: isFr ? "Formation" : "Training", active: false },
+              { label: "Audit", active: true },
+              { label: isFr ? "Intégration" : "Integration", active: false },
+            ].map((step, i) => (
+              <li key={step.label} className="flex items-center gap-2.5">
+                {i > 0 ? (
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="text-mocha-fg/40 h-4 w-4"
+                    strokeWidth={2}
+                  />
+                ) : null}
+                <span
+                  className={
+                    step.active
+                      ? "bg-terracotta text-mocha-fg rounded-full px-4 py-1.5 text-[13px] font-bold tracking-wide"
+                      : "border-mocha-fg/25 text-mocha-fg/80 rounded-full border px-4 py-1.5 text-[13px] font-semibold"
+                  }
+                >
+                  {step.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p
+            className="text-[clamp(1.1rem,2vw,1.45rem)] leading-snug font-medium"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {isFr
+              ? "De la formation à l'intégration, nous maîtrisons toute la chaîne de l'IA. "
+              : "From training to integration, we master the entire AI chain. "}
+            <span className="text-terracotta-soft italic">
+              {isFr
+                ? "Et tout commence ici, par un audit à votre échelle — du diagnostic ciblé sur un besoin précis à l'analyse globale de toute l'entreprise."
+                : "And it all starts here, with an audit at your scale — from a focused diagnosis on a single need to a company-wide deep dive."}
+            </span>
+          </p>
+        </div>
+      </div>
+
       {/* Bande de preuves — positionnement leader, visuel */}
-      <ul className="mb-8 flex list-none flex-wrap justify-center gap-3 p-0">
+      <ul className="mt-12 mb-8 flex list-none flex-wrap justify-center gap-3 p-0">
         {proofs.map((p) => {
           const Icon = p.icon;
           return (
@@ -202,51 +263,6 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
             })}
           </ul>
         </div>
-      </div>
-
-      {/* Spécialistes de toute la chaîne IA — l'audit comme point d'entrée.
-          On est sur la page audit : « Audit » est l'étape mise en avant. */}
-      <div className="bg-mocha-rich text-mocha-fg shadow-card mx-auto mt-8 max-w-4xl rounded-3xl px-6 py-6 text-center sm:px-8">
-        {/* La chaîne IA — Audit surligné */}
-        <ul className="mb-6 flex list-none flex-wrap items-center justify-center gap-2.5 p-0">
-          {[
-            { label: isFr ? "Formation" : "Training", active: false },
-            { label: "Audit", active: true },
-            { label: isFr ? "Intégration" : "Integration", active: false },
-          ].map((step, i) => (
-            <li key={step.label} className="flex items-center gap-2.5">
-              {i > 0 ? (
-                <ArrowRight
-                  aria-hidden="true"
-                  className="text-mocha-fg/40 h-4 w-4"
-                  strokeWidth={2}
-                />
-              ) : null}
-              <span
-                className={
-                  step.active
-                    ? "bg-terracotta text-mocha-fg rounded-full px-4 py-1.5 text-[13px] font-bold tracking-wide"
-                    : "border-mocha-fg/25 text-mocha-fg/80 rounded-full border px-4 py-1.5 text-[13px] font-semibold"
-                }
-              >
-                {step.label}
-              </span>
-            </li>
-          ))}
-        </ul>
-        <p
-          className="mx-auto max-w-3xl text-[clamp(1.15rem,2.2vw,1.6rem)] leading-snug font-medium"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          {isFr
-            ? "De la formation à l'intégration, nous maîtrisons toute la chaîne de l'IA. "
-            : "From training to integration, we master the entire AI chain. "}
-          <span className="text-terracotta-soft italic">
-            {isFr
-              ? "Et tout commence ici, par un audit à votre échelle — du diagnostic ciblé sur un besoin précis à l'analyse globale de toute l'entreprise."
-              : "And it all starts here, with an audit at your scale — from a focused diagnosis on a single need to a company-wide deep dive."}
-          </span>
-        </p>
       </div>
     </Section>
   );
