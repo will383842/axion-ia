@@ -24,6 +24,7 @@ import {
   MapPin,
   ScrollText,
   Workflow,
+  ArrowRight,
   type LucideIcon,
 } from "lucide-react";
 import { Section } from "@/components/layout/Section";
@@ -202,19 +203,47 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
         </div>
       </div>
 
-      {/* Claim de leadership — la sensation « les meilleurs en France » */}
-      <div className="bg-mocha-rich text-mocha-fg shadow-card mt-10 rounded-3xl px-7 py-8 text-center sm:px-10">
+      {/* Spécialistes de toute la chaîne IA — l'audit comme point d'entrée.
+          On est sur la page audit : « Audit » est l'étape mise en avant. */}
+      <div className="bg-mocha-rich text-mocha-fg shadow-card mt-10 rounded-3xl px-7 py-9 text-center sm:px-10">
+        {/* La chaîne IA — Audit surligné */}
+        <ul className="mb-6 flex list-none flex-wrap items-center justify-center gap-2.5 p-0">
+          {[
+            { label: isFr ? "Formation" : "Training", active: false },
+            { label: "Audit", active: true },
+            { label: isFr ? "Intégration" : "Integration", active: false },
+          ].map((step, i) => (
+            <li key={step.label} className="flex items-center gap-2.5">
+              {i > 0 ? (
+                <ArrowRight
+                  aria-hidden="true"
+                  className="text-mocha-fg/40 h-4 w-4"
+                  strokeWidth={2}
+                />
+              ) : null}
+              <span
+                className={
+                  step.active
+                    ? "bg-terracotta text-mocha-fg rounded-full px-4 py-1.5 text-[13px] font-bold tracking-wide"
+                    : "border-mocha-fg/25 text-mocha-fg/80 rounded-full border px-4 py-1.5 text-[13px] font-semibold"
+                }
+              >
+                {step.label}
+              </span>
+            </li>
+          ))}
+        </ul>
         <p
           className="mx-auto max-w-3xl text-[clamp(1.15rem,2.2vw,1.6rem)] leading-snug font-medium"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           {isFr
-            ? "On ne fait que ça — de la TPE à l'ETI, partout en France. "
-            : "It's all we do — from micro-business to mid-cap, across France. "}
+            ? "De la formation à l'intégration, nous maîtrisons toute la chaîne de l'IA. "
+            : "From training to integration, we master the entire AI chain. "}
           <span className="text-terracotta-soft italic">
             {isFr
-              ? "Personne ne cartographie votre potentiel IA aussi loin."
-              : "No one maps your AI potential this far."}
+              ? "Et tout commence ici, par un audit — d'une journée à plusieurs semaines, taillé sur votre besoin."
+              : "And it all starts here, with an audit — from one day to several weeks, tailored to your need."}
           </span>
         </p>
       </div>
