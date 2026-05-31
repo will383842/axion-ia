@@ -1,32 +1,34 @@
 /**
- * AuditWhyAudit — « Par où commencer ? » : le pourquoi de l'audit, en blocs
- * visuels et scannables (Server Component).
+ * AuditWhyAudit — « Pourquoi commencer par un audit », en contraste visuel.
  *
- * Refonte 2026-05-31 (Will) — message clé : tout le monde parle d'IA, peu
- * savent par où démarrer. Se lancer sans diagnostic = tests à l'aveugle,
- * données exposées, budget sans visibilité. L'audit tranche les bonnes
- * questions (process / usages / gains / risques), objective les opportunités
- * et sécurise les décisions avant le moindre euro investi.
+ * Refonte 2026-05-31 (Will) — message : foncer sans diagnostic coûte cher ;
+ * l'audit Axion-IA transforme le flou en plan rentable. Posture assumée de
+ * référence française. Rendu très visuel : bande de preuves, opposition
+ * « foncer tête baissée » ❌ vs « la méthode Axion-IA » ✅ (carte mise en
+ * avant), claim de leadership. Écriture propre à Axion-IA (pas de paraphrase
+ * du marché).
  *
- * Rendu en petits blocs (contraste « sans audit » → « ce que l'audit
- * tranche »), pas en pavé verbeux. Server Component pur, zéro JS (budget Web
- * Vitals). FR canonique — EN = miroir (locale 301→FR, règle Will 2026-05-16).
+ * Server Component pur, zéro JS (budget Web Vitals). FR canonique — EN =
+ * miroir (locale 301→FR, règle Will 2026-05-16).
  */
 
 import type { ReactNode } from "react";
 import {
-  FlaskConical,
-  ShieldAlert,
-  Wallet,
+  X,
+  Check,
+  Target,
+  Filter,
+  Coins,
+  Lock,
+  Cpu,
+  MapPin,
+  ScrollText,
   Workflow,
-  Sparkles,
-  Gauge,
-  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 
-interface Block {
+interface Row {
   readonly icon: LucideIcon;
   readonly title: string;
   readonly sub: string;
@@ -37,139 +39,185 @@ export interface AuditWhyAuditProps {
 }
 
 export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
-  // « Se lancer sans audit » — les 3 risques, ton sobre/neutre.
-  const risks: ReadonlyArray<Block> = [
+  // Bande de preuves — positionnement défendable, sans chiffres inventés.
+  const proofs: ReadonlyArray<{ icon: LucideIcon; label: string }> = [
+    { icon: Cpu, label: isFr ? "100 % dédié à l'IA" : "100% AI-focused" },
+    { icon: MapPin, label: isFr ? "Partout en France" : "Across France" },
+    { icon: ScrollText, label: isFr ? "Conforme AI Act 2026" : "AI Act 2026 ready" },
+    { icon: Workflow, label: isFr ? "Du diagnostic à l'exécution" : "From diagnosis to delivery" },
+  ];
+
+  // « Foncer tête baissée » — le coût de l'impasse (voix Axion-IA).
+  const risks: ReadonlyArray<Pick<Row, "title" | "sub">> = [
     {
-      icon: FlaskConical,
-      title: isFr ? "Tester à l'aveugle" : "Testing blind",
+      title: isFr ? "Des mois de bricolage" : "Months of tinkering",
       sub: isFr
-        ? "Multiplier les essais coûteux, sans cap ni priorité."
-        : "Multiplying costly trials, with no direction or priority.",
+        ? "Essais sans fin, budget qui file, aucun cap."
+        : "Endless trials, budget bleeding, no direction.",
     },
     {
-      icon: ShieldAlert,
-      title: isFr ? "Exposer vos données" : "Exposing your data",
+      title: isFr ? "Vos données exposées" : "Your data exposed",
       sub: isFr
-        ? "Brancher des outils IA sans cadrer la sécurité."
-        : "Plugging in AI tools without framing security.",
+        ? "Des outils branchés sans le moindre garde-fou."
+        : "Tools plugged in with zero guardrails.",
     },
     {
-      icon: Wallet,
-      title: isFr ? "Investir sans visibilité" : "Investing blind",
+      title: isFr ? "Un ROI au doigt mouillé" : "A finger-in-the-air ROI",
       sub: isFr
-        ? "Dépenser sans savoir ce que ça rapporte vraiment."
-        : "Spending without knowing the real return.",
+        ? "On investit en espérant. Jamais en sachant."
+        : "You invest hoping. Never knowing.",
     },
   ];
 
-  // « Ce que l'audit tranche » — les 4 questions, ton terracotta (positif).
-  const questions: ReadonlyArray<Block> = [
+  // « La méthode Axion-IA » — ce qu'on verrouille (voix Axion-IA, pas le
+  // découpage du marché).
+  const wins: ReadonlyArray<Row> = [
     {
-      icon: Workflow,
-      title: isFr ? "Quels process ?" : "Which processes?",
+      icon: Target,
+      title: isFr ? "Vos vrais leviers" : "Your real levers",
       sub: isFr
-        ? "Ceux qui gagnent vraiment à passer à l'IA."
-        : "The ones that truly benefit from AI.",
+        ? "Les process où l'IA déplace l'aiguille — pas les gadgets."
+        : "The processes where AI moves the needle — not gadgets.",
     },
     {
-      icon: Sparkles,
-      title: isFr ? "Quels usages ?" : "Which use cases?",
+      icon: Filter,
+      title: isFr ? "Le tri des usages" : "Use cases, filtered",
       sub: isFr
-        ? "Ceux qui collent à votre organisation, pas à la hype."
-        : "The ones that fit your organisation, not the hype.",
+        ? "Ce qui colle à votre métier, la hype écartée."
+        : "What fits your business, hype removed.",
     },
     {
-      icon: Gauge,
-      title: isFr ? "Quels gains ?" : "Which gains?",
+      icon: Coins,
+      title: isFr ? "Des euros, pas des promesses" : "Euros, not promises",
       sub: isFr
-        ? "Mesurables et chiffrés — pas des promesses."
-        : "Measurable and quantified — not promises.",
+        ? "Chaque gain estimé, en heures et en cash."
+        : "Each gain estimated, in hours and in cash.",
     },
     {
-      icon: ShieldCheck,
-      title: isFr ? "Quels risques ?" : "Which risks?",
+      icon: Lock,
+      title: isFr ? "Risques verrouillés" : "Risks locked down",
       sub: isFr
-        ? "Identifiés et maîtrisés avant de vous lancer."
-        : "Identified and controlled before you start.",
+        ? "Données, conformité, dépendances : cadrés d'entrée."
+        : "Data, compliance, dependencies: framed upfront.",
     },
   ];
 
   return (
     <Section
       tone="canvas"
-      eyebrow={isFr ? "Par où commencer" : "Where to start"}
-      title={isFr ? "Tout le monde parle d'IA." : "Everyone talks about AI."}
-      titleEm={isFr ? "Peu savent par où démarrer" : "Few know where to begin"}
+      eyebrow={isFr ? "Audit IA · la référence française" : "AI audit · the French benchmark"}
+      title={isFr ? "L'IA, tout le monde en parle." : "Everyone talks about AI."}
+      titleEm={isFr ? "Nous, on la rend rentable" : "We make it pay off"}
       titleTail="."
       description={
         isFr
-          ? "Se lancer sans diagnostic, c'est avancer dans le flou. L'audit pose les bonnes questions, objective les opportunités et sécurise vos décisions — avant le moindre euro investi."
-          : "Diving in without a diagnosis means moving in a fog. The audit asks the right questions, objectifies opportunities and secures your decisions — before a single euro is spent."
+          ? "Foncer sans diagnostic, c'est payer pour apprendre. Notre audit transforme le flou en plan : les bons usages, chiffrés et sécurisés, avant le premier euro engagé."
+          : "Diving in without a diagnosis means paying to learn. Our audit turns the fog into a plan: the right use cases, costed and secured, before the first euro is committed."
       }
     >
-      {/* Cluster 1 — « Se lancer sans audit » : panneau sobre, 3 risques */}
-      <div className="bg-sand border-border-strong/40 rounded-3xl border p-6 sm:p-8">
-        <p className="text-fg-muted mb-5 text-[12px] font-bold tracking-[0.16em] uppercase">
-          <span
-            aria-hidden="true"
-            className="bg-fg-muted/60 mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
-          />
-          {isFr ? "Se lancer sans audit" : "Starting without an audit"}
-        </p>
-        <ul className="grid list-none gap-5 p-0 sm:grid-cols-3 lg:gap-6">
-          {risks.map((r) => {
-            const Icon = r.icon;
-            return (
+      {/* Bande de preuves — positionnement leader, visuel */}
+      <ul className="mb-10 flex list-none flex-wrap justify-center gap-3 p-0">
+        {proofs.map((p) => {
+          const Icon = p.icon;
+          return (
+            <li
+              key={p.label}
+              className="border-terracotta/30 bg-terracotta-soft/40 text-terracotta-deep inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold"
+            >
+              <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={2} />
+              {p.label}
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Opposition visuelle — « foncer » ❌ vs « Axion-IA » ✅ */}
+      <div className="relative grid gap-6 lg:grid-cols-2 lg:gap-10">
+        {/* Badge VS centré (desktop) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center lg:flex"
+        >
+          <span className="bg-fg text-bg shadow-card flex h-14 w-14 items-center justify-center rounded-full text-sm font-black tracking-wide">
+            VS
+          </span>
+        </div>
+
+        {/* Colonne FROIDE — foncer tête baissée */}
+        <div className="bg-sand border-border-strong/40 rounded-3xl border p-7 sm:p-8">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="bg-bg border-border text-fg-muted flex h-11 w-11 items-center justify-center rounded-2xl border">
+              <X aria-hidden="true" className="h-6 w-6" strokeWidth={2.5} />
+            </span>
+            <p className="text-fg-muted text-[13px] font-bold tracking-[0.16em] uppercase">
+              {isFr ? "Foncer tête baissée" : "Diving in head first"}
+            </p>
+          </div>
+          <ul className="list-none space-y-4 p-0">
+            {risks.map((r) => (
               <li key={r.title} className="flex items-start gap-3">
-                <span className="bg-bg border-border text-fg-muted flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border">
-                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
-                </span>
+                <X
+                  aria-hidden="true"
+                  className="text-fg-muted mt-0.5 h-4 w-4 shrink-0"
+                  strokeWidth={2.5}
+                />
                 <div className="min-w-0">
                   <p className="text-fg text-[15px] leading-tight font-semibold">{r.title}</p>
-                  <p className="text-fg-soft mt-1 text-[13px] leading-snug">{r.sub}</p>
+                  <p className="text-fg-soft mt-0.5 text-[13px] leading-snug">{r.sub}</p>
                 </div>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ul>
+        </div>
+
+        {/* Colonne CHAUDE — la méthode Axion-IA (mise en avant) */}
+        <div className="border-terracotta bg-paper shadow-card relative rounded-3xl border-2 p-7 sm:p-8">
+          <span className="bg-terracotta text-mocha-fg absolute -top-3 right-6 rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.14em] uppercase">
+            {isFr ? "La méthode Axion-IA" : "The Axion-IA method"}
+          </span>
+          <div className="mb-6 flex items-center gap-3">
+            <span className="bg-terracotta-soft text-terracotta-deep flex h-11 w-11 items-center justify-center rounded-2xl">
+              <Check aria-hidden="true" className="h-6 w-6" strokeWidth={2.5} />
+            </span>
+            <p className="text-terracotta-deep text-[13px] font-bold tracking-[0.16em] uppercase">
+              {isFr ? "Commencer par l'audit" : "Start with the audit"}
+            </p>
+          </div>
+          <ul className="grid list-none gap-4 p-0 sm:grid-cols-2">
+            {wins.map((w) => {
+              const Icon = w.icon;
+              return (
+                <li key={w.title} className="flex items-start gap-3">
+                  <span className="bg-terracotta-soft text-terracotta-deep flex h-9 w-9 shrink-0 items-center justify-center rounded-xl">
+                    <Icon aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={2} />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-fg text-[14.5px] leading-tight font-semibold">{w.title}</p>
+                    <p className="text-fg-soft mt-0.5 text-[12.5px] leading-snug">{w.sub}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
 
-      {/* Cluster 2 — « Ce que l'audit tranche » : 4 cartes terracotta */}
-      <div className="mt-8">
-        <p className="text-terracotta-deep mb-5 text-[12px] font-bold tracking-[0.16em] uppercase">
-          <span
-            aria-hidden="true"
-            className="bg-terracotta mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle"
-          />
-          {isFr ? "Ce que l'audit tranche" : "What the audit settles"}
+      {/* Claim de leadership — la sensation « les meilleurs en France » */}
+      <div className="bg-mocha-rich text-mocha-fg shadow-card mt-10 rounded-3xl px-7 py-8 text-center sm:px-10">
+        <p
+          className="mx-auto max-w-3xl text-[clamp(1.15rem,2.2vw,1.6rem)] leading-snug font-medium"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          {isFr
+            ? "On ne fait que ça — de la TPE à l'ETI, partout en France. "
+            : "It's all we do — from micro-business to mid-cap, across France. "}
+          <span className="text-terracotta-soft italic">
+            {isFr
+              ? "Personne ne cartographie votre potentiel IA aussi loin."
+              : "No one maps your AI potential this far."}
+          </span>
         </p>
-        <ul className="grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-          {questions.map((q) => {
-            const Icon = q.icon;
-            return (
-              <li
-                key={q.title}
-                className="bg-paper border-border shadow-subtle hover:border-terracotta/50 flex h-full flex-col rounded-2xl border p-5 transition-colors"
-              >
-                <span className="bg-terracotta-soft text-terracotta-deep mb-3 flex h-11 w-11 items-center justify-center rounded-xl">
-                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
-                </span>
-                <p className="text-fg text-[15.5px] leading-tight font-semibold tracking-tight">
-                  {q.title}
-                </p>
-                <p className="text-fg-soft mt-1.5 text-[13.5px] leading-snug">{q.sub}</p>
-              </li>
-            );
-          })}
-        </ul>
       </div>
-
-      {/* Clôture — la trajectoire en quelques semaines (sans pavé) */}
-      <p className="text-fg-muted mx-auto mt-8 max-w-2xl text-center text-sm leading-relaxed">
-        {isFr
-          ? "En quelques semaines : cas d'usage prioritaires identifiés, valeur chiffrée, et une trajectoire IA réaliste alignée sur vos équipes, vos données et vos enjeux."
-          : "Within weeks: priority use cases identified, value quantified, and a realistic AI trajectory aligned with your teams, your data and your stakes."}
-      </p>
     </Section>
   );
 }
