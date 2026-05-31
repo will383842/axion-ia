@@ -14,6 +14,7 @@ import {
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { AuditHero } from "@/components/services/audit/AuditHero";
+import { AuditValueProp } from "@/components/services/audit/AuditValueProp";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
 import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards";
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
@@ -179,54 +180,68 @@ export default async function AuditHub({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
+      {/* Ordre des sections refondu 2026-05-31 (Will) — narration value-first :
+          hero → promesse → pourquoi maintenant → démarche → livrable → champ
+          des possibles → maturité → pourquoi nous → couverture, puis offre +
+          réassurance + FAQ + CTA. */}
+
       {/* 1. HERO value-first — sans prix (best practice 2026) */}
       <AuditHero isFr={isFr} />
 
-      {/* 2. Barre de réassurance sous le hero (confidentialité/NDA, RGPD, sans engagement) */}
+      {/* 2. PROMESSE — bloc value-prop juste sous le hero (Will 2026-05-31) :
+          « Faites auditer votre entreprise et révélez tout ce que l'IA peut
+          réellement vous apporter. » */}
+      <AuditValueProp isFr={isFr} />
+
+      {/* 3. Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />
 
-      {/* 3. TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
+      {/* 4. POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
+      <AuditWhyNow isFr={isFr} />
+
+      {/* 5. COMMENT ÇA MARCHE — « Notre démarche en 4 étapes » */}
+      <AuditMethodology isFr={isFr} />
+
+      {/* 6. LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
+      <AuditDeliverable isFr={isFr} />
+
+      {/* 7. TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
           Le prospect s'y reconnaît en 5 s ; l'audit détermine ce qui s'applique à lui. */}
       <AuditCapabilitiesMap isFr={isFr} />
 
-      {/* 4. POURQUOI MAINTENANT — bande compacte urgence + quick wins (brief §10) */}
-      <AuditWhyNow isFr={isFr} />
-
-      {/* 5. LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis), style 1-to-1 */}
-      <AuditFormatsCards isFr={isFr} />
-
-      {/* 5. QUEL NIVEAU POUR VOUS — qualificateur maturité IA (anti-fear) */}
+      {/* 8. QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
       <AuditMaturityLevels isFr={isFr} />
 
-      {/* 6. COMMENT ÇA MARCHE — méthodologie */}
-      <AuditMethodology isFr={isFr} />
-
-      {/* 7. LE LIVRABLE — rapport + cartographie + roadmap 1→24 mois + chiffrage (brief §8) */}
-      <AuditDeliverable isFr={isFr} />
-
-      {/* 8. POURQUOI AXION-IA + signature fondateur (légitimité humaine) */}
+      {/* 9. POURQUOI AXION-IA — « 5 raisons concrètes de nous choisir » */}
       <WhyAxionIA isFr={isFr} />
-      <SignatureCard isFr={isFr} />
 
-      {/* 9. COUVERTURE NATIONALE (pSEO villes/régions) */}
+      {/* 10. LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis).
+          Remonté ici (Will 2026-05-31) : l'offre apparaît dès que le prospect
+          est convaincu, juste après les raisons de choisir Axion-IA. */}
+      <AuditFormatsCards isFr={isFr} />
+
+      {/* 11. COUVERTURE NATIONALE — « L'audit IA disponible partout en France » (pSEO) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="L'audit IA"
         serviceLabelEn="AI audit"
         serviceSlug="audit"
-        tone="paper"
+        tone="sand"
       />
 
-      {/* 10. FAQ (unique) */}
+      {/* 12. SIGNATURE FONDATEUR (légitimité humaine) */}
+      <SignatureCard isFr={isFr} />
+
+      {/* 13. FAQ (unique) */}
       <AuditFaq isFr={isFr} />
 
-      {/* 11. PONT AUDIT → IMPLÉMENTATION (upsell, sans engagement) */}
+      {/* 14. PONT AUDIT → IMPLÉMENTATION (upsell, sans engagement) */}
       <BeyondAuditBlock isFr={isFr} />
 
       {/* CONNAISSANCES LIÉES — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="audit" />
 
-      {/* 12. CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
+      {/* 15. CTA FINAL bifurqué — Réserver un appel / Nous écrire */}
       <AuditCtaBlock isFr={isFr} />
 
       {/* STICKY CTA MOBILE */}
