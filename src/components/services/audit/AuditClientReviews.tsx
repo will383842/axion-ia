@@ -1,111 +1,199 @@
+/**
+ * AuditClientReviews — section « avis clients » avec note 5 étoiles + portrait,
+ * placée juste après AuditRealisations.
+ *
+ * Refonte 2026-05-31 (Will) — preuve sociale réaliste, sans inventer de nom de
+ * société ou de marque : prénom + initiale, fonction et secteur uniquement.
+ * Couvre TPE / PME / ETI.
+ *
+ * Portraits : photos Unsplash (free tier, décision Will 2026-05-31). Compliance
+ * Unsplash (cf. docs/content-gen/UNSPLASH-COMPLIANCE.md) : download tracké à
+ * l'import + crédit photographe visible (footer, liens UTM source=axion-ia).
+ * Fichiers : public/images/reviews/avis-<slug>.webp (crop visage 256px).
+ *
+ * Server Component pur, zéro JS. Design tokens uniquement (pas de hex). FR
+ * canonique — EN = miroir (locale 301→FR).
+ */
+
+import type { ReactNode } from "react";
 import Image from "next/image";
+import { Section } from "@/components/layout/Section";
 
-type Review = {
-  quote: string;
-  author: string;
-  role: string;
-  avatar: string;
-};
+interface Review {
+  readonly quoteFr: string;
+  readonly quoteEn: string;
+  readonly author: string;
+  readonly roleFr: string;
+  readonly roleEn: string;
+  /** Portrait Unsplash (crop visage) sous public/images/reviews/. */
+  readonly avatar: string;
+  /** Crédit Unsplash obligatoire — nom du photographe. */
+  readonly photographer: string;
+  /** Profil Unsplash du photographe (lien de crédit). */
+  readonly photographerUrl: string;
+}
 
-// Avis réalistes, sans aucun nom de société ou de marque.
-// Prénom + initiale, fonction et secteur — couvrant TPE / PME / ETI.
-const REVIEWS: Review[] = [
+// 6 avis — 2 TPE, 2 PME, 2 ETI. Aucun nom de marque ni de société.
+const REVIEWS: ReadonlyArray<Review> = [
   {
-    quote:
+    quoteFr:
       "L'audit a révélé des automatisations qu'on n'imaginait même pas. En trois mois, on a divisé par deux le temps passé sur la saisie.",
+    quoteEn:
+      "The audit revealed automations we hadn't even imagined. In three months we halved the time spent on data entry.",
     author: "Catherine M.",
-    role: "Dirigeante, cabinet d'expertise comptable",
-    avatar: "/images/home/avatar-1.webp",
+    roleFr: "Dirigeante, cabinet d'expertise comptable",
+    roleEn: "Director, accounting firm",
+    avatar: "/images/reviews/avis-catherine.webp",
+    photographer: "Craig Tidball",
+    photographerUrl: "https://unsplash.com/@devonshiremedia",
   },
   {
-    quote:
-      "Une équipe qui parle notre langage, pas du jargon technique. Le déploiement s'est fait sans accroc et l'équipe a adhéré tout de suite.",
-    author: "Thomas R.",
-    role: "Directeur, PME industrielle",
-    avatar: "/images/home/avatar-2.webp",
-  },
-  {
-    quote:
-      "Enfin un partenaire IA qui pense ROI avant la techno. Chaque euro investi a été tracé et justifié.",
-    author: "Sophie L.",
-    role: "Responsable transformation, groupe ETI",
-    avatar: "/images/home/avatar-3.webp",
-  },
-  {
-    quote:
-      "Le diagnostic était d'une précision redoutable. On savait exactement par où commencer et pourquoi.",
+    quoteFr:
+      "Une équipe qui parle enfin notre langage, pas du jargon. Le déploiement s'est fait sans accroc et l'équipe a adhéré tout de suite.",
+    quoteEn:
+      "A team that finally speaks our language, no jargon. The rollout went smoothly and the team bought in right away.",
     author: "Marc D.",
-    role: "Gérant, artisan du bâtiment",
-    avatar: "/images/home/avatar-4.webp",
+    roleFr: "Gérant, artisan du bâtiment",
+    roleEn: "Owner, construction craftsman",
+    avatar: "/images/reviews/avis-marc.webp",
+    photographer: "Sergey Mikheev",
+    photographerUrl: "https://unsplash.com/@exegii",
   },
   {
-    quote:
-      "Du concret, du mesurable, du livré. Trois mots qui résument bien la collaboration.",
+    quoteFr:
+      "Du concret, du mesurable, du livré. Chaque euro investi a été tracé et justifié — exactement ce qu'on attendait.",
+    quoteEn:
+      "Concrete, measurable, delivered. Every euro invested was tracked and justified — exactly what we expected.",
+    author: "Thomas R.",
+    roleFr: "Directeur, PME industrielle",
+    roleEn: "Director, industrial SME",
+    avatar: "/images/reviews/avis-thomas.webp",
+    photographer: "Filip Rankovic Grobgaard",
+    photographerUrl: "https://unsplash.com/@filipgrobgaard",
+  },
+  {
+    quoteFr:
+      "Notre service client tourne désormais 24/7 sans surcoût d'équipe. Le temps de première réponse est tombé sous les deux minutes.",
+    quoteEn:
+      "Our customer service now runs 24/7 with no extra headcount. First-response time dropped below two minutes.",
     author: "Nadia B.",
-    role: "Fondatrice, e-commerce",
-    avatar: "/images/home/avatar-5.webp",
+    roleFr: "Fondatrice, e-commerce",
+    roleEn: "Founder, e-commerce",
+    avatar: "/images/reviews/avis-nadia.webp",
+    photographer: "Julia Potter",
+    photographerUrl: "https://unsplash.com/@juliapotter",
   },
   {
-    quote:
-      "On a gagné en sérénité. L'IA tourne, on suit les indicateurs, et le support reste disponible.",
+    quoteFr:
+      "Enfin un partenaire IA qui pense ROI avant la techno. La roadmap était claire, priorisée, et tenue dans les délais.",
+    quoteEn:
+      "Finally an AI partner that thinks ROI before tech. The roadmap was clear, prioritised and delivered on time.",
+    author: "Sophie L.",
+    roleFr: "Responsable transformation, groupe ETI",
+    roleEn: "Transformation lead, mid-cap group",
+    avatar: "/images/reviews/avis-sophie.webp",
+    photographer: "Abenezer Shewaga",
+    photographerUrl: "https://unsplash.com/@abenezer_shewaga",
+  },
+  {
+    quoteFr:
+      "Sur un groupe multi-sites, ils ont su cadrer le périmètre sans nous noyer. On a gagné en sérénité autant qu'en performance.",
+    quoteEn:
+      "Across a multi-site group, they scoped the work without overwhelming us. We gained as much in peace of mind as in performance.",
     author: "Julien P.",
-    role: "Co-fondateur, startup SaaS",
-    avatar: "/images/home/avatar-6.webp",
+    roleFr: "Directeur des opérations, ETI multi-sites",
+    roleEn: "Operations director, multi-site mid-cap",
+    avatar: "/images/reviews/avis-julien.webp",
+    photographer: "Makeen M. Alaa",
+    photographerUrl: "https://unsplash.com/@muhmedelbank",
   },
 ];
 
-export function AuditClientReviews() {
-  return (
-    <section aria-labelledby="audit-reviews-title" className="bg-[#f7f3ee] py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#b06a4f]">
-            Ils nous font confiance
-          </p>
-          <h2
-            id="audit-reviews-title"
-            className="mt-4 text-3xl font-semibold tracking-tight text-[#2d2521] sm:text-4xl"
-          >
-            Des résultats concrets, pas des promesses.
-          </h2>
-        </div>
+const UTM = "?utm_source=axion-ia&utm_medium=referral";
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {REVIEWS.map((item) => (
-            <figure
-              key={item.author}
-              className="flex flex-col rounded-2xl border border-[#e7ddd2] bg-white p-8"
-            >
-              <div className="flex gap-1 text-[#e0a458]" aria-hidden="true">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <svg key={i} viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
-                    <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.8L10 14.77l-5.2 2.74.99-5.8-4.21-4.1 5.82-.85L10 1.5z" />
-                  </svg>
-                ))}
+function Stars({ isFr }: { isFr: boolean }): ReactNode {
+  return (
+    <div
+      className="text-terracotta flex gap-0.5"
+      role="img"
+      aria-label={isFr ? "Note : 5 étoiles sur 5" : "Rating: 5 out of 5 stars"}
+    >
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg key={i} aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+          <path d="M10 1.5l2.6 5.27 5.82.85-4.21 4.1.99 5.8L10 14.77l-5.2 2.74.99-5.8-4.21-4.1 5.82-.85L10 1.5z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+export function AuditClientReviews({ isFr }: { isFr: boolean }): ReactNode {
+  return (
+    <Section
+      tone="sand"
+      eyebrow={isFr ? "Ils nous font confiance" : "Trusted by"}
+      title={isFr ? "Des résultats concrets," : "Real results,"}
+      titleEm={isFr ? "pas des promesses" : "not promises"}
+      titleTail="."
+    >
+      <ul className="grid list-none gap-6 p-0 md:grid-cols-2 lg:grid-cols-3">
+        {REVIEWS.map((item) => (
+          <li
+            key={item.author}
+            className="border-border bg-paper shadow-subtle flex flex-col rounded-2xl border p-7"
+          >
+            <Stars isFr={isFr} />
+            <blockquote className="text-fg mt-5 flex-1 text-[15px] leading-relaxed">
+              «&nbsp;{isFr ? item.quoteFr : item.quoteEn}&nbsp;»
+            </blockquote>
+            <div className="mt-6 flex items-center gap-3">
+              <Image
+                src={item.avatar}
+                alt={item.author}
+                width={44}
+                height={44}
+                loading="lazy"
+                decoding="async"
+                sizes="44px"
+                className="bg-terracotta-soft h-11 w-11 flex-shrink-0 rounded-full object-cover"
+              />
+              <div className="min-w-0">
+                <p className="text-fg text-[14px] font-semibold">{item.author}</p>
+                <p className="text-fg-muted text-[13px]">{isFr ? item.roleFr : item.roleEn}</p>
               </div>
-              <blockquote className="mt-5 flex-1 text-base leading-relaxed text-[#4a3f37]">
-                «&nbsp;{item.quote}&nbsp;»
-              </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3">
-                <Image
-                  src={item.avatar}
-                  alt={item.author}
-                  width={48}
-                  height={48}
-                  className="h-12 w-12 rounded-full object-cover"
-                  loading="lazy"
-                />
-                <div>
-                  <div className="text-sm font-semibold text-[#2d2521]">
-                    {item.author}
-                  </div>
-                  <div className="text-sm text-[#6b5d52]">{item.role}</div>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* Crédit Unsplash obligatoire (CGU API §6) — photographes + lien
+            Unsplash, UTM source=axion-ia. cf. docs/content-gen/UNSPLASH-COMPLIANCE.md */}
+      <p className="text-fg-muted mt-10 text-center text-[12px] leading-relaxed">
+        {isFr ? "Portraits : " : "Portraits: "}
+        {REVIEWS.map((r, i) => (
+          <span key={r.author}>
+            {i > 0 ? ", " : ""}
+            <a
+              href={`${r.photographerUrl}${UTM}`}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="hover:text-fg underline underline-offset-2"
+            >
+              {r.photographer}
+            </a>
+          </span>
+        ))}
+        {isFr ? " sur " : " on "}
+        <a
+          href={`https://unsplash.com${UTM}`}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          className="hover:text-fg underline underline-offset-2"
+        >
+          Unsplash
+        </a>
+        .
+      </p>
+    </Section>
   );
 }

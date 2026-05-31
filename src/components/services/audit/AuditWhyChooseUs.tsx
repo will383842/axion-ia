@@ -79,8 +79,8 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
     {
       labelFr: "Développement",
       labelEn: "Development",
-      descFr: "Du vrai code source, maîtrisé",
-      descEn: "Real source code, fully owned",
+      descFr: "Développement sur-mesure, maîtrisé",
+      descEn: "Bespoke development, fully owned",
       strong: true,
     },
     {
@@ -109,12 +109,12 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
     },
     {
       icon: Code2,
-      titleFr: "Du vrai code source, pas du rafistolage",
-      titleEn: "Real source code, not duct tape",
+      titleFr: "Des solutions sur-mesure et pérennes",
+      titleEn: "Bespoke, production-grade software",
       bodyFr:
-        "Des solutions développées sur-mesure et maîtrisées ligne par ligne — pas des connecteurs no-code grand public assemblés à la va-vite, qui cèdent au premier imprévu.",
+        "Des solutions développées sur-mesure et maîtrisées de bout en bout — robustes et durables, là où les connecteurs no-code grand public montrent vite leurs limites.",
       bodyEn:
-        "Bespoke solutions we own line by line — not mass-market no-code connectors patched together in a hurry that break at the first edge case.",
+        "Bespoke solutions we own end to end — robust and durable, where mass-market no-code connectors quickly hit their limits.",
     },
     {
       icon: Award,
@@ -179,16 +179,18 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                   <>
                     La première plateforme à couvrir{" "}
                     <span className="font-bold">toute la chaîne IA & automatisation</span> de bout
-                    en bout — avec du <span className="font-bold">vrai code source</span>, pas des
-                    applications rafistolées. Avec des interventions{" "}
+                    en bout — avec des{" "}
+                    <span className="font-bold">solutions développées sur-mesure</span>, robustes et
+                    pérennes. Avec des interventions{" "}
                     <span className="font-bold">partout en France</span>.
                   </>
                 ) : (
                   <>
                     The first platform covering the{" "}
                     <span className="font-bold">entire AI &amp; automation chain</span> end to end —
-                    with <span className="font-bold">real source code</span>, not duct-taped apps.
-                    With on-site work <span className="font-bold">across France</span>.
+                    with <span className="font-bold">bespoke, production-grade software</span>,
+                    robust and durable. With on-site work{" "}
+                    <span className="font-bold">across France</span>.
                   </>
                 )}
               </span>
@@ -275,13 +277,13 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
             ? [
                 { icon: MapPin, label: "Présentiel partout en France" },
                 { icon: Award, label: "Architectes & experts seniors" },
-                { icon: Code2, label: "Code source maîtrisé, pas de boîte noire" },
+                { icon: Code2, label: "Solutions sur-mesure, pas de boîte noire" },
                 { icon: ShieldCheck, label: "Conforme RGPD & AI Act 2026" },
               ]
             : [
                 { icon: MapPin, label: "On-site across France" },
                 { icon: Award, label: "Senior architects & experts" },
-                { icon: Code2, label: "Owned source code, no black box" },
+                { icon: Code2, label: "Bespoke software, no black box" },
                 { icon: ShieldCheck, label: "GDPR & AI Act 2026 compliant" },
               ]
           ).map((b) => {

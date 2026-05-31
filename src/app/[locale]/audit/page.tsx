@@ -6,7 +6,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { SignatureCard, BeyondAuditBlock } from "@/components/sections/AuditConversionBlocks";
+import { BeyondAuditBlock } from "@/components/sections/AuditConversionBlocks";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { AuditHero } from "@/components/services/audit/AuditHero";
@@ -14,13 +14,13 @@ import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
 import { AuditAudience } from "@/components/services/audit/AuditAudience";
 import { AuditWhyChooseUs } from "@/components/services/audit/AuditWhyChooseUs";
+import { AuditRealisations } from "@/components/services/audit/AuditRealisations";
+import { AuditClientReviews } from "@/components/services/audit/AuditClientReviews";
 import { AuditBenefits } from "@/components/services/audit/AuditBenefits";
 import { AuditProcessFlow } from "@/components/services/audit/AuditProcessFlow";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
-import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards";
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
-import { AuditMaturityLevels } from "@/components/services/audit/AuditMaturityLevels";
 import { AuditWhyNow } from "@/components/services/audit/AuditWhyNow";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
@@ -241,19 +241,24 @@ export default async function AuditHub({ params }: Props) {
           architectes seniors, de l'audit au cadrage des agents (Will 2026-05-31). */}
       <AuditWhyChooseUs isFr={isFr} />
 
+      {/* RÉALISATIONS — 8 projets diversifiés (TPE/PME/ETI) en marquee défilant,
+          non cliquables, juste après le pitch « toute la chaîne IA » (Will
+          2026-05-31). Aucun nom de société/marque : secteur + résultat mesurable. */}
+      <AuditRealisations isFr={isFr} />
+
+      {/* BANDEAU CONTACT — après les réalisations, conversion « Réserver un appel /
+          Nous écrire » (calqué bandeau bas de home, Will 2026-05-31). */}
+      <AuditContactBand isFr={isFr} />
+
+      {/* AVIS CLIENTS — preuve sociale (5 étoiles + avatar), réaliste sans
+          inventer de marque (prénom + initiale + fonction). (Will 2026-05-31) */}
+      <AuditClientReviews isFr={isFr} />
+
       {/* Barre de réassurance (confidentialité/NDA, RGPD, AI Act, pure-play) */}
       <AuditTrustPills isFr={isFr} />
 
       {/* POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
       <AuditWhyNow isFr={isFr} />
-
-      {/* QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
-      <AuditMaturityLevels isFr={isFr} />
-
-      {/* LES FORMATS — 2 cartes (Flash priced / Audit complet sur devis). L'offre
-          apparaît dès que le prospect est convaincu. La posture « pourquoi nous »
-          est portée par AuditWhyChooseUs (remontée après l'audience). */}
-      <AuditFormatsCards isFr={isFr} />
 
       {/* COUVERTURE NATIONALE — « L'audit IA disponible partout en France » (pSEO) */}
       <LocalCoverageSection
@@ -263,9 +268,6 @@ export default async function AuditHub({ params }: Props) {
         serviceSlug="audit"
         tone="sand"
       />
-
-      {/* SIGNATURE FONDATEUR (légitimité humaine) */}
-      <SignatureCard isFr={isFr} />
 
       {/* FAQ (unique) */}
       <AuditFaq isFr={isFr} />
