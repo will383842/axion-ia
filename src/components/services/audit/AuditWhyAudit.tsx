@@ -117,7 +117,7 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
             />
             {isFr ? "Audit IA · la référence française" : "AI audit · the French benchmark"}
           </p>
-          <h2 className="text-fg mt-5 text-[clamp(1.9rem,3.4vw,3rem)] leading-[1.05] font-semibold tracking-tight">
+          <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
             {isFr ? "L'IA, tout le monde en parle." : "Everyone talks about AI."}
             <span
               className="text-terracotta mx-2 italic"

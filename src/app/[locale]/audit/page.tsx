@@ -25,7 +25,6 @@ import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
 import { AuditMaturityLevels } from "@/components/services/audit/AuditMaturityLevels";
 import { AuditWhyNow } from "@/components/services/audit/AuditWhyNow";
-import { AuditDeliverable } from "@/components/services/audit/AuditDeliverable";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
@@ -170,6 +169,18 @@ export default async function AuditHub({ params }: Props) {
         height: 793,
         encodingFormat: "image/webp",
       },
+      {
+        src: "/illustrations/audit-segments-entreprise-v2.webp",
+        name: isFr
+          ? "Audit IA en entreprise par taille — TPE, PME, ETI & grandes entreprises"
+          : "Enterprise AI audit by company size — small business, SME, mid-cap & large enterprise",
+        alt: isFr
+          ? "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil."
+          : "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile.",
+        width: 1536,
+        height: 1024,
+        encodingFormat: "image/webp",
+      },
     ],
   });
 
@@ -233,9 +244,6 @@ export default async function AuditHub({ params }: Props) {
 
       {/* POURQUOI MAINTENANT — « Le bon moment, c'est maintenant » (brief §10) */}
       <AuditWhyNow isFr={isFr} />
-
-      {/* LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
-      <AuditDeliverable isFr={isFr} />
 
       {/* QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
       <AuditMaturityLevels isFr={isFr} />
