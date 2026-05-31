@@ -78,8 +78,8 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
               ? "Méthodologie d'audit IA Axion-IA en 8 étapes illustrées : 01 cadrage de la mission et des objectifs, 02 entretiens métier et qualification, 03 consolidation et analyse approfondie, 04 pré-évaluation et filtrage des options, 05 évaluation et recommandations chiffrées (ROI), 06 restitution et feuille de route IA, 07 mise en œuvre des recommandations, 08 adoption, formation et pilotage dans la durée — chaque étape avec son livrable."
               : "Axion-IA AI audit methodology in 8 illustrated steps: 01 mission and objectives scoping, 02 business interviews and qualification, 03 consolidation and deep analysis, 04 pre-assessment and option filtering, 05 evaluation and costed recommendations (ROI), 06 read-out and AI roadmap, 07 implementing the recommendations, 08 adoption, training and long-term steering — each step with its deliverable."
           }
-          width={1774}
-          height={887}
+          width={1983}
+          height={793}
           loading="lazy"
           decoding="async"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 900px"
