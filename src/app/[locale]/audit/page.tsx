@@ -17,6 +17,7 @@ import { AuditHero } from "@/components/services/audit/AuditHero";
 import { AuditValueProp } from "@/components/services/audit/AuditValueProp";
 import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
+import { AuditAudience } from "@/components/services/audit/AuditAudience";
 import { AuditProcessFlow } from "@/components/services/audit/AuditProcessFlow";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
@@ -218,6 +219,10 @@ export default async function AuditHub({ params }: Props) {
       {/* BANDEAU TERRACOTTA CONTACT — orientation vers le bon niveau d'audit
           (adapté du bandeau /un-a-un). */}
       <AuditContactBand isFr={isFr} />
+
+      {/* À QUI ÇA S'ADRESSE — cards par taille (TPE/artisans, PME, ETI, grande
+          entreprise), après le bandeau orange (Will 2026-05-31). */}
+      <AuditAudience isFr={isFr} />
 
       {/* PROMESSE — bloc value-prop « Faites auditer votre entreprise et révélez
           tout ce que l'IA peut réellement vous apporter. » */}
