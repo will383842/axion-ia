@@ -16,6 +16,7 @@
  */
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { Store, Building, Building2, Clock, ArrowRight, type LucideIcon } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
@@ -115,19 +116,54 @@ export function AuditAudience({ isFr }: AuditAudienceProps): ReactNode {
   ];
 
   return (
-    <Section
-      tone="canvas"
-      eyebrow={isFr ? "Par taille d'entreprise" : "By company size"}
-      title={isFr ? "À qui s'adressent" : "Who are"}
-      titleEm={isFr ? "nos audits IA" : "our AI audits for"}
-      titleTail=" ?"
-      description={
-        isFr
-          ? "Quelle que soit votre taille, on audite votre entreprise en détail, avec rigueur et minutie — tout en présentiel. La durée et le périmètre de l'audit IA s'adaptent : d'une journée pour une TPE à plusieurs mois pour un groupe."
-          : "Whatever your size, we audit your company in detail, rigorously and meticulously — fully on site. The AI audit's duration and scope adapt: from one day for a micro-business to several months for a group."
-      }
-    >
-      <ul className="grid list-none gap-6 p-0 md:grid-cols-3">
+    <Section tone="canvas" className="py-16 sm:py-20 lg:py-24">
+      {/* Header 2 colonnes — H2 grande taille à gauche, image des profils d'audit
+          IA par taille à droite (Will 2026-05-31). */}
+      <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+        <div>
+          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            />
+            {isFr ? "Par taille d'entreprise" : "By company size"}
+          </p>
+          <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+            {isFr ? "À qui s'adressent" : "Who are"}
+            <span
+              className="text-terracotta mx-2 italic"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {isFr ? "nos audits IA" : "our AI audits for"}
+            </span>
+            {isFr ? " ?" : "?"}
+          </h2>
+          <p className="text-fg-soft mt-6 max-w-xl text-lg leading-relaxed">
+            {isFr
+              ? "Quelle que soit votre taille, on audite votre entreprise en détail, avec rigueur et minutie — tout en présentiel. La durée et le périmètre de l'audit IA s'adaptent : d'une journée pour une TPE à plusieurs mois pour un groupe."
+              : "Whatever your size, we audit your company in detail, rigorously and meticulously — fully on site. The AI audit's duration and scope adapt: from one day for a micro-business to several months for a group."}
+          </p>
+        </div>
+
+        <figure className="border-border shadow-card m-0 overflow-hidden rounded-2xl border">
+          <Image
+            src="/illustrations/audit-segments-entreprise-v2.webp"
+            alt={
+              isFr
+                ? "Audit IA en entreprise Axion-IA par taille : TPE, artisans et commerçants (1 journée sur site), PME (de 2 jours à plusieurs semaines), ETI et grandes entreprises (multi-sites, accompagnement long terme) — durée, prix et périmètre adaptés à chaque profil."
+                : "Axion-IA enterprise AI audit by company size: small businesses, artisans and retailers (1 on-site day), SMEs (2 days to several weeks), mid-caps and large enterprises (multi-site, long-term support) — duration, price and scope tailored to each profile."
+            }
+            width={1536}
+            height={1024}
+            loading="lazy"
+            decoding="async"
+            unoptimized
+            className="h-auto w-full"
+          />
+        </figure>
+      </div>
+
+      <ul className="mt-14 grid list-none gap-6 p-0 md:grid-cols-3">
         {cards.map((c) => {
           const Icon = c.icon;
           return (
