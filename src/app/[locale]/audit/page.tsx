@@ -158,6 +158,18 @@ export default async function AuditHub({ params }: Props) {
         height: 1000,
         encodingFormat: "image/avif",
       },
+      {
+        src: "/illustrations/methodologie-audit-ia-8-etapes.webp",
+        name: isFr
+          ? "Méthodologie d'audit IA Axion-IA en 8 étapes"
+          : "Axion-IA AI audit methodology in 8 steps",
+        alt: isFr
+          ? "Méthodologie d'audit IA Axion-IA en 8 étapes illustrées : cadrage, entretiens métier, consolidation et analyse, filtrage des options, évaluation et recommandations chiffrées (ROI), restitution et feuille de route, mise en œuvre, adoption et pilotage dans la durée — chaque étape avec son livrable."
+          : "Axion-IA AI audit methodology in 8 illustrated steps: scoping, business interviews, consolidation and analysis, option filtering, evaluation and costed recommendations (ROI), read-out and roadmap, implementation, adoption and long-term steering — each step with its deliverable.",
+        width: 1774,
+        height: 887,
+        encodingFormat: "image/webp",
+      },
     ],
   });
 
@@ -190,17 +202,17 @@ export default async function AuditHub({ params }: Props) {
       {/* HERO value-first — sans prix (best practice 2026) */}
       <AuditHero isFr={isFr} />
 
+      {/* PREUVE SOCIALE — bandeau logos clients défilant, juste après le hero
+          (Will 2026-05-31). */}
+      <ClientLogosMarqueeBand isFr={isFr} />
+
       {/* POURQUOI UN AUDIT — « L'IA, tout le monde en parle. Nous, on la rend
           rentable. » Contraste visuel (foncer ❌ vs méthode Axion-IA ✅) +
           posture spécialiste de toute la chaîne IA. */}
       <AuditWhyAudit isFr={isFr} />
 
-      {/* PREUVE SOCIALE — bandeau logos clients en défilement une ligne, avant la
-          méthodologie (Will 2026-05-31). */}
-      <ClientLogosMarqueeBand isFr={isFr} />
-
-      {/* MÉTHODOLOGIE — accroche compacte + CTA « Voir la méthodologie » qui ouvre
-          la popup des 8 étapes (Will 2026-05-31). */}
+      {/* MÉTHODOLOGIE — accroche compacte + visuel 8 étapes + CTA popup
+          (Will 2026-05-31). */}
       <AuditProcessFlow isFr={isFr} />
 
       {/* BANDEAU TERRACOTTA CONTACT — orientation vers le bon niveau d'audit

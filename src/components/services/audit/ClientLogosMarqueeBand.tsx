@@ -48,7 +48,7 @@ export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): R
           className="case-marquee-track flex w-max items-center gap-8 motion-reduce:animate-none sm:gap-10"
           style={
             {
-              "--marquee-duration": "45s",
+              "--marquee-duration": "65s",
               animation: "caseScrollX var(--marquee-duration) linear infinite",
             } as CSSProperties
           }
@@ -61,7 +61,7 @@ export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): R
                 // Slot de taille fixe → tous les logos occupent la même
                 // emprise visuelle (object-contain centre + max-h/max-w bornés),
                 // quel que soit leur ratio natif (monogramme vs wordmark large).
-                className="flex h-12 w-[132px] shrink-0 items-center justify-center sm:w-[150px]"
+                className="flex h-14 w-[152px] shrink-0 items-center justify-center sm:w-[176px]"
                 aria-hidden={isClone ? "true" : undefined}
               >
                 <Image
@@ -71,8 +71,8 @@ export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): R
                   height={logo.height ?? 60}
                   loading="lazy"
                   decoding="async"
-                  sizes="150px"
-                  className="max-h-7 max-w-[110px] object-contain opacity-70 transition-opacity duration-200 hover:opacity-100 sm:max-h-8 sm:max-w-[125px]"
+                  sizes="176px"
+                  className="max-h-9 max-w-[132px] object-contain opacity-70 transition-opacity duration-200 hover:opacity-100 sm:max-h-10 sm:max-w-[150px]"
                   data-client={logo.slug}
                 />
               </li>

@@ -1,16 +1,18 @@
 /**
- * AuditProcessFlow — accroche « méthodologie » compacte + CTA vers la popup.
+ * AuditProcessFlow — accroche « méthodologie » compacte + visuel 8 étapes + CTA
+ * vers la popup détaillée.
  *
  * Refonte 2026-05-31 (Will) — pour ne pas surcharger la page, le détail des
- * 8 étapes vit dans une popup (AuditMethodologyDialog). Cette section ne garde
- * qu'une intro rassurante, des chips de réassurance et un CTA « Voir la
- * méthodologie détaillée ». Écriture propre à Axion-IA (anti-plagiat).
+ * 8 étapes vit dans une popup (AuditMethodologyDialog). Cette section garde une
+ * intro rassurante, des chips, un aperçu 01 → 08, le visuel illustré de la
+ * méthodologie, puis le CTA d'ouverture. Écriture propre à Axion-IA.
  *
  * Server Component (le seul morceau client = le bouton/dialog importé). FR
  * canonique — EN = miroir (locale 301→FR, règle Will 2026-05-16).
  */
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { Section } from "@/components/layout/Section";
 import { AuditMethodologyDialog } from "@/components/services/audit/AuditMethodologyDialog";
 
@@ -39,8 +41,8 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
       titleTail="."
       description={
         isFr
-          ? "Avant de parler d'outils, de Claude ou de ChatGPT, on comprend comment votre entreprise fonctionne vraiment. Un travail de terrain mené avec vos dirigeants et vos équipes — méthodique, du premier cadrage jusqu'à l'adoption dans la durée."
-          : "Before talking tools, Claude or ChatGPT, we understand how your company really works. Field work conducted with your leadership and your teams — methodical, from the first scoping through to lasting adoption."
+          ? "Avant de parler d'outils, de Claude, de ChatGPT ou de tout autre LLM, on comprend comment votre entreprise fonctionne vraiment. Un travail de terrain mené avec vos dirigeants et vos équipes — méthodique, du premier cadrage jusqu'à l'adoption dans la durée."
+          : "Before talking tools, Claude, ChatGPT or any other LLM, we understand how your company really works. Field work conducted with your leadership and your teams — methodical, from the first scoping through to lasting adoption."
       }
     >
       {/* Chips de réassurance — sans durée chiffrée */}
@@ -55,27 +57,50 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
         ))}
       </ul>
 
-      {/* Aperçu 01 → 08 + CTA d'ouverture de la popup */}
-      <div className="mt-10 flex flex-col items-center gap-7">
-        <ol className="flex list-none flex-wrap items-center justify-center gap-2 p-0">
-          {stepNumbers.map((n, i) => (
-            <li key={n} className="flex items-center gap-2">
-              {i > 0 ? <span aria-hidden="true" className="bg-terracotta/30 h-px w-4" /> : null}
-              <span className="border-terracotta/40 text-terracotta-deep bg-paper flex h-9 w-9 items-center justify-center rounded-full border text-[12.5px] font-bold tabular-nums">
-                {n}
-              </span>
-            </li>
-          ))}
-        </ol>
+      {/* Aperçu 01 → 08 */}
+      <ol className="mt-10 flex list-none flex-wrap items-center justify-center gap-2 p-0">
+        {stepNumbers.map((n, i) => (
+          <li key={n} className="flex items-center gap-2">
+            {i > 0 ? <span aria-hidden="true" className="bg-terracotta/30 h-px w-4" /> : null}
+            <span className="border-terracotta/40 text-terracotta-deep bg-paper flex h-9 w-9 items-center justify-center rounded-full border text-[12.5px] font-bold tabular-nums">
+              {n}
+            </span>
+          </li>
+        ))}
+      </ol>
 
-        <div className="flex flex-col items-center gap-3 text-center">
-          <AuditMethodologyDialog isFr={isFr} />
-          <p className="text-fg-muted text-[13px]">
-            {isFr
-              ? "8 étapes, du cadrage terrain à l'adoption — chacune avec son livrable."
-              : "8 steps, from field scoping to adoption — each with its deliverable."}
-          </p>
-        </div>
+      {/* Visuel illustré de la méthodologie — juste sous l'aperçu */}
+      <figure className="border-border shadow-card m-0 mx-auto mt-8 w-full max-w-4xl overflow-hidden rounded-2xl border">
+        <Image
+          src="/illustrations/methodologie-audit-ia-8-etapes.webp"
+          alt={
+            isFr
+              ? "Méthodologie d'audit IA Axion-IA en 8 étapes illustrées : 01 cadrage de la mission et des objectifs, 02 entretiens métier et qualification, 03 consolidation et analyse approfondie, 04 pré-évaluation et filtrage des options, 05 évaluation et recommandations chiffrées (ROI), 06 restitution et feuille de route IA, 07 mise en œuvre des recommandations, 08 adoption, formation et pilotage dans la durée — chaque étape avec son livrable."
+              : "Axion-IA AI audit methodology in 8 illustrated steps: 01 mission and objectives scoping, 02 business interviews and qualification, 03 consolidation and deep analysis, 04 pre-assessment and option filtering, 05 evaluation and costed recommendations (ROI), 06 read-out and AI roadmap, 07 implementing the recommendations, 08 adoption, training and long-term steering — each step with its deliverable."
+          }
+          width={1774}
+          height={887}
+          loading="lazy"
+          decoding="async"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 900px"
+          className="h-auto w-full"
+          quality={80}
+        />
+        <figcaption className="sr-only">
+          {isFr
+            ? "Les 8 étapes de la méthodologie d'audit IA Axion-IA, du cadrage à l'adoption dans la durée."
+            : "The 8 steps of the Axion-IA AI audit methodology, from scoping to lasting adoption."}
+        </figcaption>
+      </figure>
+
+      {/* CTA d'ouverture de la popup détaillée */}
+      <div className="mt-8 flex flex-col items-center gap-3 text-center">
+        <AuditMethodologyDialog isFr={isFr} />
+        <p className="text-fg-muted text-[13px]">
+          {isFr
+            ? "8 étapes, du cadrage terrain à l'adoption — chacune avec son livrable."
+            : "8 steps, from field scoping to adoption — each with its deliverable."}
+        </p>
       </div>
 
       {/* Adaptabilité — chaque audit est calibré */}
