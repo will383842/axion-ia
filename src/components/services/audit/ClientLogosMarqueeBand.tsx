@@ -25,12 +25,8 @@ export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): R
   return (
     <section
       aria-label={isFr ? "Nos clients" : "Our clients"}
-      className="bg-paper border-border border-y py-10 sm:py-12"
+      className="bg-paper border-border border-y py-9 sm:py-10"
     >
-      <p className="text-fg-muted mb-7 text-center text-[12px] font-semibold tracking-[0.16em] uppercase">
-        {isFr ? "Ils nous font confiance" : "They trust us"}
-      </p>
-
       <div
         className="group relative overflow-hidden"
         aria-roledescription="marquee"
@@ -49,7 +45,7 @@ export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): R
         />
 
         <ul
-          className="case-marquee-track flex w-max items-center gap-12 motion-reduce:animate-none sm:gap-16"
+          className="case-marquee-track flex w-max items-center gap-8 motion-reduce:animate-none sm:gap-10"
           style={
             {
               "--marquee-duration": "45s",
@@ -62,7 +58,10 @@ export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): R
             return (
               <li
                 key={`${logo.slug}-${idx}`}
-                className="flex h-12 shrink-0 items-center justify-center"
+                // Slot de taille fixe → tous les logos occupent la même
+                // emprise visuelle (object-contain centre + max-h/max-w bornés),
+                // quel que soit leur ratio natif (monogramme vs wordmark large).
+                className="flex h-12 w-[132px] shrink-0 items-center justify-center sm:w-[150px]"
                 aria-hidden={isClone ? "true" : undefined}
               >
                 <Image
@@ -72,8 +71,8 @@ export function ClientLogosMarqueeBand({ isFr }: ClientLogosMarqueeBandProps): R
                   height={logo.height ?? 60}
                   loading="lazy"
                   decoding="async"
-                  sizes="180px"
-                  className="max-h-9 w-auto object-contain opacity-70 transition-opacity duration-200 hover:opacity-100 sm:max-h-11"
+                  sizes="150px"
+                  className="max-h-7 max-w-[110px] object-contain opacity-70 transition-opacity duration-200 hover:opacity-100 sm:max-h-8 sm:max-w-[125px]"
                   data-client={logo.slug}
                 />
               </li>

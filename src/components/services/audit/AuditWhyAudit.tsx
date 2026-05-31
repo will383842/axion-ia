@@ -134,7 +134,7 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
       </ul>
 
       {/* Opposition visuelle — « foncer » ❌ vs « Axion-IA » ✅ */}
-      <div className="relative grid gap-6 lg:grid-cols-2 lg:gap-10">
+      <div className="relative mx-auto grid max-w-4xl gap-5 lg:grid-cols-2 lg:gap-6">
         {/* Badge VS centré (desktop) */}
         <div
           aria-hidden="true"
@@ -146,9 +146,9 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
         </div>
 
         {/* Colonne FROIDE — foncer tête baissée */}
-        <div className="bg-sand border-border-strong/40 rounded-3xl border p-7 sm:p-8">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="bg-bg border-border text-fg-muted flex h-11 w-11 items-center justify-center rounded-2xl border">
+        <div className="bg-sand border-border-strong/40 rounded-3xl border p-5 sm:p-6">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="bg-bg border-border text-fg-muted flex h-10 w-10 items-center justify-center rounded-2xl border">
               <X aria-hidden="true" className="h-6 w-6" strokeWidth={2.5} />
             </span>
             <p className="text-fg-muted text-[13px] font-bold tracking-[0.16em] uppercase">
@@ -173,12 +173,12 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
         </div>
 
         {/* Colonne CHAUDE — la méthode Axion-IA (mise en avant) */}
-        <div className="border-terracotta bg-paper shadow-card relative rounded-3xl border-2 p-7 sm:p-8">
+        <div className="border-terracotta bg-paper shadow-card relative rounded-3xl border-2 p-5 sm:p-6">
           <span className="bg-terracotta text-mocha-fg absolute -top-3 right-6 rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.14em] uppercase">
             {isFr ? "La méthode Axion-IA" : "The Axion-IA method"}
           </span>
-          <div className="mb-6 flex items-center gap-3">
-            <span className="bg-terracotta-soft text-terracotta-deep flex h-11 w-11 items-center justify-center rounded-2xl">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="bg-terracotta-soft text-terracotta-deep flex h-10 w-10 items-center justify-center rounded-2xl">
               <Check aria-hidden="true" className="h-6 w-6" strokeWidth={2.5} />
             </span>
             <p className="text-terracotta-deep text-[13px] font-bold tracking-[0.16em] uppercase">
@@ -206,7 +206,7 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
 
       {/* Spécialistes de toute la chaîne IA — l'audit comme point d'entrée.
           On est sur la page audit : « Audit » est l'étape mise en avant. */}
-      <div className="bg-mocha-rich text-mocha-fg shadow-card mt-8 rounded-3xl px-7 py-7 text-center sm:px-10">
+      <div className="bg-mocha-rich text-mocha-fg shadow-card mx-auto mt-8 max-w-4xl rounded-3xl px-6 py-6 text-center sm:px-8">
         {/* La chaîne IA — Audit surligné */}
         <ul className="mb-6 flex list-none flex-wrap items-center justify-center gap-2.5 p-0">
           {[
