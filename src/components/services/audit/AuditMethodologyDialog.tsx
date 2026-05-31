@@ -23,7 +23,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 interface Step {
   readonly n: string;
@@ -38,61 +37,61 @@ export interface AuditMethodologyDialogProps {
 }
 
 export function AuditMethodologyDialog({ isFr }: AuditMethodologyDialogProps): ReactNode {
+  // Titres en voix « on » (Axion-IA) et descriptions librement reformulées —
+  // volontairement distincts des intitulés génériques du marché (anti-plagiat).
   const steps: ReadonlyArray<Step> = [
     {
       n: "01",
       icon: Compass,
-      title: isFr ? "Cadrage de la mission et des objectifs" : "Mission and objectives scoping",
+      title: isFr ? "On cadre la mission avec vous" : "We scope the mission with you",
       desc: isFr
-        ? "On démarre par un cadrage précis avec vos dirigeants : contexte de l'entreprise, organisation, clients, fournisseurs et contraintes métier. On aligne les objectifs, on clarifie les attentes et on définit ensemble un périmètre réaliste — les processus à analyser en priorité selon leur potentiel de valeur. Échanges sécurisés par NDA."
-        : "We start with precise scoping with your leadership: company context, organisation, clients, suppliers and business constraints. We align objectives, clarify expectations and define a realistic scope together — the processes to analyse first by value potential. Exchanges secured by NDA.",
+        ? "Premier temps fort avec vos dirigeants : on s'imprègne de votre activité, de votre organisation et de vos contraintes, puis on aligne précisément ce que l'audit doit vous apporter. Ensemble, on choisit les processus prioritaires — ceux où l'IA peut vraiment peser. Le tout sous NDA."
+        : "First key moment with your leadership: we soak up your business, your organisation and your constraints, then pin down exactly what the audit must deliver. Together we pick the priority processes — those where AI can truly move the needle. All under NDA.",
       deliverable: isFr ? "Périmètre & objectifs validés" : "Scope & objectives validated",
     },
     {
       n: "02",
       icon: Users,
-      title: isFr ? "Entretiens métier et qualification" : "Business interviews and qualification",
+      title: isFr ? "On va sur le terrain" : "We go into the field",
       desc: isFr
-        ? "Entretiens ciblés avec les directions et les collaborateurs concernés, dans vos locaux ou à distance. On comprend les pratiques actuelles, les contraintes opérationnelles et les points de friction concrets, en s'appuyant sur vos process, vos tâches clés et vos outils en place. Une base factuelle et partagée, avant toute recommandation."
-        : "Targeted interviews with the departments and people involved, on site or remotely. We grasp current practices, operational constraints and concrete friction points, drawing on your processes, key tasks and existing tools. A factual, shared baseline before any recommendation.",
+        ? "On rencontre les directions et les collaborateurs qui font tourner l'entreprise, chez vous ou en visio. On regarde comment ça se passe vraiment : gestes métier, irritants du quotidien, outils réellement utilisés. De quoi obtenir une photo fidèle et partagée, loin des slides."
+        : "We meet the managers and the people who run the company day to day, on site or by video. We watch how things really work: hands-on tasks, daily irritants, the tools actually used — for a faithful, shared picture, far from slideware.",
       deliverable: isFr ? "Cartographie des usages & frictions" : "Map of uses & friction points",
     },
     {
       n: "03",
       icon: Search,
-      title: isFr ? "Consolidation et analyse approfondie" : "Consolidation and deep analysis",
+      title: isFr ? "On consolide et on analyse" : "We consolidate and analyse",
       desc: isFr
-        ? "À partir du terrain, on mène une recherche approfondie : veille structurée sur les technologies disponibles, retours d'expérience comparables, analyse de cas d'usage proches dans votre secteur. On fait émerger des pistes crédibles, réalistes et adaptées à vos contraintes métier et techniques."
-        : "From the field, we run thorough research: structured tech scanning, comparable feedback, analysis of similar use cases in your sector. We surface credible, realistic leads fit to your business and technical constraints.",
+        ? "On prend de la hauteur sur la matière collectée : panorama des technologies du moment, comparaison avec ce qui marche ailleurs, étude de situations proches de la vôtre. On en sort une série de pistes solides, réalistes au regard de vos contraintes métier et techniques."
+        : "We step back from the collected material: a scan of today's technologies, comparison with what works elsewhere, study of situations close to yours. Out comes a set of solid leads, realistic against your business and technical constraints.",
       deliverable: isFr ? "Pistes IA qualifiées" : "Qualified AI leads",
     },
     {
       n: "04",
       icon: ListFilter,
-      title: isFr
-        ? "Pré-évaluation et filtrage des options"
-        : "Pre-assessment and option filtering",
+      title: isFr ? "On filtre les options" : "We filter the options",
       desc: isFr
-        ? "Chaque piste est confrontée à la réalité du terrain : limites, contraintes spécifiques, risques de mise en œuvre. On priorise selon l'impact potentiel et la faisabilité, on écarte rapidement ce qui est trop complexe, trop coûteux ou peu adapté, et on aboutit à une sélection restreinte d'options à fort potentiel."
-        : "Each lead is tested against reality: limits, specific constraints, implementation risks. We prioritise by potential impact and feasibility, quickly drop what is too complex, too costly or poorly suited, and reach a shortlist of high-potential options.",
+        ? "Chaque piste passe le test du réel : ce qu'elle exige, ses limites, ses risques. On garde celles qui combinent impact fort et faisabilité, on écarte sans détour ce qui est trop lourd, trop cher ou hors-sujet. Résultat : une short-list resserrée et défendable."
+        : "Every lead faces the reality test: what it requires, its limits, its risks. We keep those that pair strong impact with feasibility, and bluntly drop what is too heavy, too costly or off-topic. The result: a tight, defensible shortlist.",
       deliverable: isFr ? "Short-list priorisée" : "Prioritised shortlist",
     },
     {
       n: "05",
       icon: Scale,
-      title: isFr ? "Évaluation et recommandations" : "Evaluation and recommendations",
+      title: isFr ? "On évalue et on chiffre" : "We assess and we cost",
       desc: isFr
-        ? "Les options retenues sont évaluées en détail : faisabilité technique et opérationnelle, performances attendues, coûts associés et valeur ajoutée pour chaque département concerné. On formule des recommandations claires, argumentées et comparables, avec une estimation du retour sur investissement et des conditions de succès."
-        : "Shortlisted options are evaluated in detail: technical and operational feasibility, expected performance, costs and added value per department. We deliver clear, argued, comparable recommendations, with an ROI estimate and success conditions.",
+        ? "Pour les finalistes, on entre dans le concret : faisabilité technique, performance attendue, coûts, valeur pour chaque service concerné. On vous remet des recommandations comparables et argumentées, avec un ordre de grandeur de ROI et les conditions à réunir pour réussir."
+        : "For the finalists, we get concrete: technical feasibility, expected performance, costs, value for each department involved. You get comparable, argued recommendations, with a ballpark ROI and the conditions to meet for success.",
       deliverable: isFr ? "Recommandations chiffrées (ROI)" : "Costed recommendations (ROI)",
     },
     {
       n: "06",
       icon: MapIcon,
-      title: isFr ? "Restitution et feuille de route IA" : "Read-out and AI roadmap",
+      title: isFr ? "On restitue et on trace la route" : "We report and map the route",
       desc: isFr
-        ? "L'audit débouche sur des livrables directement exploitables : un rapport structuré (constats, hypothèses, risques, recommandations) et une cartographie des opportunités IA présentées par département, avec préconisations d'outils et de technologies. On formalise une feuille de route claire — priorités, calendrier, ressources et premières actions à engager."
-        : "The audit yields directly usable deliverables: a structured report (findings, assumptions, risks, recommendations) and a per-department map of AI opportunities, with tool and technology guidance. We formalise a clear roadmap — priorities, timeline, resources and first actions to launch.",
+        ? "Place aux livrables : un rapport structuré (ce qu'on a vu, nos hypothèses, les risques, nos recommandations) et une cartographie des opportunités IA service par service, outils et technos conseillés à l'appui. Puis une feuille de route limpide : par quoi commencer, quand, avec quelles ressources."
+        : "Now the deliverables: a structured report (what we saw, our assumptions, the risks, our recommendations) and a department-by-department map of AI opportunities, with suggested tools and tech. Then a crisp roadmap: where to start, when, with which resources.",
       deliverable: isFr
         ? "Rapport + cartographie + roadmap priorisée"
         : "Report + map + prioritised roadmap",
@@ -100,21 +99,19 @@ export function AuditMethodologyDialog({ isFr }: AuditMethodologyDialogProps): R
     {
       n: "07",
       icon: Rocket,
-      title: isFr ? "Mise en œuvre des recommandations" : "Implementing the recommendations",
+      title: isFr ? "On met en œuvre, par étapes" : "We implement, step by step",
       desc: isFr
-        ? "Si vous le souhaitez, la même équipe transforme les recommandations en réalisations concrètes. Les solutions sont conçues et intégrées progressivement, selon les priorités identifiées, dans vos outils et vos produits existants — sans big bang, avec un focus sur l'efficacité opérationnelle."
-        : "If you wish, the same team turns the recommendations into concrete results. Solutions are designed and integrated step by step, by identified priority, into your existing tools and products — no big bang, with a focus on operational efficiency.",
+        ? "Si vous le voulez, on ne s'arrête pas au PDF : la même équipe construit. On déploie les solutions par paliers, dans l'ordre des priorités, en s'intégrant à vos outils existants — sans tout casser, en visant des résultats utiles dès les premières semaines."
+        : "If you want, we don't stop at the PDF: the same team builds. We roll out solutions in stages, in priority order, fitting into your existing tools — no big bang, aiming for useful results within the first weeks.",
       deliverable: isFr ? "Solutions intégrées, par priorité" : "Solutions integrated, by priority",
     },
     {
       n: "08",
       icon: TrendingUp,
-      title: isFr
-        ? "Adoption, formation et pilotage dans la durée"
-        : "Adoption, training and long-term steering",
+      title: isFr ? "On ancre dans la durée" : "We anchor it for the long run",
       desc: isFr
-        ? "On embarque vos collaborateurs par la formation et l'accompagnement au changement, pour une adoption réelle et pas seulement des outils déployés. Un plan de gouvernance et une trajectoire à 3 ans — principes, organisation et KPIs — pilotent la valeur créée, mesurent les résultats et préparent les prochaines étapes."
-        : "We bring your teams on board through training and change support, for real adoption — not just deployed tools. A governance plan and a 3-year trajectory — principles, organisation and KPIs — steer the value created, measure results and prepare the next steps.",
+        ? "Une techno adoptée vaut mieux qu'une techno déployée : on forme vos équipes et on accompagne le changement. On pose une gouvernance et une trajectoire à 3 ans — rôles, principes, KPIs — pour mesurer la valeur, ajuster en continu et préparer la suite."
+        : "An adopted technology beats a deployed one: we train your teams and support the change. We set up governance and a 3-year trajectory — roles, principles, KPIs — to measure value, adjust continuously and prepare what comes next.",
       deliverable: isFr
         ? "Adoption, KPIs & trajectoire 3 ans"
         : "Adoption, KPIs & 3-year trajectory",
@@ -130,64 +127,59 @@ export function AuditMethodologyDialog({ isFr }: AuditMethodologyDialogProps): R
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto rounded-2xl">
-        <DialogTitle
-          className="text-fg pr-10 text-[clamp(1.4rem,3vw,2rem)] leading-tight font-semibold tracking-tight"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          {isFr ? "Un audit IA rigoureux, " : "A rigorous AI audit, "}
-          <span className="text-terracotta italic">{isFr ? "en 8 étapes" : "in 8 steps"}</span>
-        </DialogTitle>
-        <DialogDescription className="text-fg-soft text-[14.5px] leading-relaxed">
-          {isFr
-            ? "Du cadrage terrain à l'adoption dans la durée — voici exactement ce qu'il se passe à chaque étape, et ce que vous obtenez."
-            : "From field scoping to lasting adoption — here is exactly what happens at each step, and what you get."}
-        </DialogDescription>
+      <DialogContent className="max-h-[88vh] max-w-5xl overflow-y-auto rounded-2xl p-6 sm:p-8">
+        <div className="pr-10">
+          <p className="text-terracotta-deep mb-2 text-[12px] font-bold tracking-[0.18em] uppercase">
+            {isFr ? "Notre méthodologie d'audit" : "Our audit methodology"}
+          </p>
+          <DialogTitle
+            className="text-fg text-[clamp(1.5rem,3.5vw,2.25rem)] leading-tight font-semibold tracking-tight"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {isFr ? "Un audit IA rigoureux, " : "A rigorous AI audit, "}
+            <span className="text-terracotta italic">{isFr ? "en 8 étapes" : "in 8 steps"}</span>
+          </DialogTitle>
+          <DialogDescription className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
+            {isFr
+              ? "Du cadrage terrain à l'adoption dans la durée — voici exactement ce qu'il se passe à chaque étape, et ce que vous obtenez à la clé."
+              : "From field scoping to lasting adoption — here is exactly what happens at each step, and what you get."}
+          </DialogDescription>
+        </div>
 
-        <ol className="mt-2 list-none p-0">
-          {steps.map((s, i) => {
+        {/* Grille 2 colonnes de cartes visuelles */}
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {steps.map((s) => {
             const Icon = s.icon;
-            const last = i === steps.length - 1;
             return (
-              <li key={s.n} className="grid grid-cols-[auto_minmax(0,1fr)] gap-4">
-                {/* Rail : nœud numéroté + connecteur vertical */}
-                <div className="flex flex-col items-center">
-                  <div className="bg-terracotta text-mocha-fg flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
-                    <span
-                      className="text-[15px] font-bold tabular-nums"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {s.n}
-                    </span>
-                  </div>
-                  {!last ? (
-                    <span
-                      aria-hidden="true"
-                      className="bg-terracotta/25 my-1.5 w-0.5 flex-1 rounded-full"
-                    />
-                  ) : null}
-                </div>
-
-                {/* Contenu */}
-                <div className={cn("pb-7", last && "pb-0")}>
-                  <div className="mb-1.5 flex items-center gap-2.5">
-                    <span className="bg-terracotta-soft text-terracotta-deep flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
-                      <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={1.75} />
-                    </span>
-                    <h3 className="text-fg text-[15.5px] leading-snug font-semibold tracking-tight">
-                      {s.title}
-                    </h3>
-                  </div>
-                  <p className="text-fg-soft text-[13.5px] leading-relaxed">{s.desc}</p>
-                  <p className="text-terracotta-deep bg-terracotta-soft/50 mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold">
+              <article
+                key={s.n}
+                className="bg-paper border-border shadow-subtle hover:border-terracotta/50 relative overflow-hidden rounded-2xl border p-5 transition-colors"
+              >
+                {/* Filigrane numéro */}
+                <span
+                  aria-hidden="true"
+                  className="text-terracotta/10 absolute -top-5 -right-1 text-[5.5rem] leading-none font-bold tabular-nums"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {s.n}
+                </span>
+                <div className="relative">
+                  <span className="bg-terracotta text-mocha-fg mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl">
+                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
+                  </span>
+                  <h3 className="text-fg text-[16px] leading-snug font-semibold tracking-tight">
+                    <span className="text-terracotta-deep tabular-nums">{s.n}.</span> {s.title}
+                  </h3>
+                  <p className="text-fg-soft mt-2 text-[13.5px] leading-relaxed">{s.desc}</p>
+                  <p className="text-terracotta-deep bg-terracotta-soft/50 mt-3.5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold">
                     <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
                     {s.deliverable}
                   </p>
                 </div>
-              </li>
+              </article>
             );
           })}
-        </ol>
+        </div>
       </DialogContent>
     </Dialog>
   );

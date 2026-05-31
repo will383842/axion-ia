@@ -18,6 +18,7 @@ import { AuditValueProp } from "@/components/services/audit/AuditValueProp";
 import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
 import { AuditProcessFlow } from "@/components/services/audit/AuditProcessFlow";
+import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
 import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards";
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
@@ -194,8 +195,12 @@ export default async function AuditHub({ params }: Props) {
           posture spécialiste de toute la chaîne IA. */}
       <AuditWhyAudit isFr={isFr} />
 
-      {/* DÉROULÉ DE L'AUDIT — flow 01→04 sur une ligne (cadrage → entretiens →
-          analyse → filtrage). Concis et visuel. Avant le bandeau contact. */}
+      {/* PREUVE SOCIALE — bandeau logos clients en défilement une ligne, avant la
+          méthodologie (Will 2026-05-31). */}
+      <ClientLogosMarqueeBand isFr={isFr} />
+
+      {/* MÉTHODOLOGIE — accroche compacte + CTA « Voir la méthodologie » qui ouvre
+          la popup des 8 étapes (Will 2026-05-31). */}
       <AuditProcessFlow isFr={isFr} />
 
       {/* BANDEAU TERRACOTTA CONTACT — orientation vers le bon niveau d'audit
