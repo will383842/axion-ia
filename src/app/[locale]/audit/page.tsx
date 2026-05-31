@@ -159,7 +159,7 @@ export default async function AuditHub({ params }: Props) {
         encodingFormat: "image/avif",
       },
       {
-        src: "/illustrations/methodologie-audit-ia-8-etapes.webp",
+        src: "/illustrations/methodologie-audit-ia-8-etapes-v2.webp",
         name: isFr
           ? "Méthodologie d'audit IA Axion-IA en 8 étapes"
           : "Axion-IA AI audit methodology in 8 steps",
