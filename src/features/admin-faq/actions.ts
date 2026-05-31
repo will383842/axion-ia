@@ -13,6 +13,27 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
+import { SITE_URL } from "@/lib/seo";
+import { enqueueIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
+
+/**
+ * Fix audit FAQ 2026-05-31 (axes G1/G3) : l'admin FAQ ne pingait jamais IndexNow
+ * (ni à la publication, ni à l'archivage). On câble ici le lifecycle complet :
+ * publish/update → ping `publish` ; archivage → ping `delete` (URL_DELETED).
+ * Fire-and-forget (le helper n'échoue jamais). FR uniquement (EN désactivé).
+ */
+async function pingFaqIndexing(slug: string, event: "publish" | "delete"): Promise<void> {
+  try {
+    await enqueueIndexingForUrls({
+      entityId: `faq-${slug}`,
+      urls: [`${SITE_URL}/fr/faq/${slug}`],
+      origin: "manual",
+      lifecycleEvent: event,
+    });
+  } catch {
+    // jamais bloquant sur une action admin
+  }
+}
 import type { FAQCategory, PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -195,6 +216,14 @@ export async function upsertFAQAction(
     revalidatePath(adminPath("fr", "faq"));
     revalidatePath("/fr/faq");
     revalidatePath("/en/faq");
+    revalidatePath(`/fr/faq/${parsed.data.slug}`);
+    // Lifecycle indexation (fix audit FAQ 2026-05-31) : publié → ping publish,
+    // archivé via upsert → ping delete (URL_DELETED).
+    if (parsed.data.status === "published") {
+      await pingFaqIndexing(parsed.data.slug, "publish");
+    } else if (parsed.data.status === "archived") {
+      await pingFaqIndexing(parsed.data.slug, "delete");
+    }
     return { ok: true, id: faq.id, created };
   } catch (err) {
     const msg = err instanceof Error ? err.message : "internal";
@@ -225,7 +254,7 @@ export async function archiveFAQAction(
   const parsed = deleteSchema.safeParse({ id: formData.get("id") });
   if (!parsed.success) return { ok: false, error: "ID invalide." };
 
-  await prisma.$transaction([
+  const [archived] = await prisma.$transaction([
     prisma.fAQ.update({ where: { id: parsed.data.id }, data: { status: "archived" } }),
     prisma.activityLog.create({
       data: {
@@ -240,5 +269,10 @@ export async function archiveFAQAction(
   revalidatePath(adminPath("fr", "faq"));
   revalidatePath("/fr/faq");
   revalidatePath("/en/faq");
+  // Dé-indexation propre (fix audit FAQ 2026-05-31, axe G3) : URL_DELETED.
+  if (archived?.slug) {
+    revalidatePath(`/fr/faq/${archived.slug}`);
+    await pingFaqIndexing(archived.slug, "delete");
+  }
   return { ok: true };
 }

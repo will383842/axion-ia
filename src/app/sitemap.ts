@@ -24,6 +24,8 @@ import {
   buildKnowledgeSitemapChunk,
   countKnowledgePublicEntries,
 } from "@/server/exporters/knowledge-sitemap";
+import { listFaqs, isFaqItemIndexable } from "@/lib/knowledge/readers";
+import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
 import { listGlossaryTermSlugs } from "@/content/glossary-extension";
@@ -376,7 +378,7 @@ export default async function sitemap(props: {
     case "blog":
       return filterEnIfDisabled(await buildBlogSitemap(now));
     case "faq":
-      return filterEnIfDisabled(buildFaqSitemap(now));
+      return filterEnIfDisabled(await buildFaqSitemap(now));
     case "help":
       return filterEnIfDisabled(buildHelpSitemap(now));
     case "cas-concrets":
@@ -642,20 +644,42 @@ function buildHelpSitemap(now: Date): MetadataRoute.Sitemap {
  * Q/R post-process auto § 29 (commit S6.1 `a2f9638`).
  *
  * V1 = FAQ legacy `getAllFaqIds()` depuis `@/content/transversal.ts`.
- * V1.5+ = Q/R DB-generated tier_1_indexable seulement (filtre Prisma).
+ * Fix audit FAQ 2026-05-31 (axe A3) : on ajoute les Q/R DB réellement indexables
+ * (Track A éditorial + Track B promu tier-1) via `listIndexableFaqSlugs()`
+ * (DB-safe, try/catch → legacy seul si DB down). Dédup par slug avec le legacy.
  */
-function buildFaqSitemap(now: Date): MetadataRoute.Sitemap {
-  return buildDynamic(
-    [
-      {
-        fr: "/faq/:slug",
-        slugs: getAllFaqIds(),
-        changeFrequency: "monthly",
-        priority: 0.7,
-      },
-    ],
-    now,
+async function buildFaqSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
+  const faqs = await listFaqs();
+  const indexable = faqs.filter(isFaqItemIndexable);
+  const slugs = Array.from(new Set([...getAllFaqIds(), ...indexable.map((f) => f.slug)]));
+
+  // Hubs thématiques (axe C1) : index `/faq/par-thematique` + catégories avec
+  // ≥ 3 Q/A indexables (les thin sortent noindex, donc hors sitemap — doctrine
+  // « tier-1 only » du sitemap, anti-doorway HCU).
+  const countByCat = new Map<string, number>();
+  for (const f of indexable) countByCat.set(f.category, (countByCat.get(f.category) ?? 0) + 1);
+  const catSlugs = FAQ_CATEGORIES.filter((c) => (countByCat.get(c.slug) ?? 0) >= 3).map(
+    (c) => c.slug,
   );
+
+  return [
+    ...buildDynamic([{ fr: "/faq/:slug", slugs, changeFrequency: "monthly", priority: 0.7 }], now),
+    ...buildDynamic(
+      [{ fr: "/faq/par-thematique", slugs: [""], changeFrequency: "weekly", priority: 0.6 }],
+      now,
+    ),
+    ...buildDynamic(
+      [
+        {
+          fr: "/faq/par-thematique/:slug",
+          slugs: catSlugs,
+          changeFrequency: "monthly",
+          priority: 0.5,
+        },
+      ],
+      now,
+    ),
+  ];
 }
 
 // NB : `buildNewsSitemap` retiré 2026-05-15 (audit Sitemap+IndexNow §4.1.3 P0-3).

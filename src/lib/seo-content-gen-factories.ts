@@ -269,6 +269,12 @@ export interface QAPageJsonLdInput {
   readonly parentArticleUrl?: string;
   readonly upvoteCount?: number;
   readonly speakableCssSelectors?: ReadonlyArray<string>;
+  /**
+   * Q/R générée par le content-gen (Track B) → ajoute le flag AI Act art. 50
+   * machine-readable (`aiGenerated` + `additionalType` + `disambiguatingDescription`
+   * + `usageInfo` + `creator`), aligné `buildArticleBase`. Fix audit FAQ 2026-05-31.
+   */
+  readonly aiGenerated?: boolean;
 }
 
 export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unknown> {
@@ -286,6 +292,17 @@ export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unkn
     '[data-aeo="tldr"]',
   ];
   const dateModifiedIso = new Date(input.dateModified ?? input.publishedAt).toISOString();
+  // AI Act art. 50 — flag machine-readable forward-compat Schema.org draft 2026,
+  // ajouté seulement pour les Q/R générées (Track B). Aligné `buildArticleBase`.
+  const aiActFields = input.aiGenerated
+    ? {
+        aiGenerated: true,
+        additionalType: "https://schema.org/AIGeneratedContent",
+        disambiguatingDescription: input.locale === "fr" ? AI_DISCLAIMER_FR : AI_DISCLAIMER_EN,
+        usageInfo: `${SITE_URL}/${input.locale}/equipe/manon`,
+        creator: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
+      }
+    : {};
   return {
     "@context": "https://schema.org",
     "@type": "QAPage",
@@ -294,6 +311,7 @@ export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unkn
     inLanguage: input.locale === "fr" ? "fr-FR" : "en-US",
     datePublished: new Date(input.publishedAt).toISOString(),
     dateModified: dateModifiedIso,
+    ...aiActFields,
     mainEntity: {
       "@type": "Question",
       name: input.question,

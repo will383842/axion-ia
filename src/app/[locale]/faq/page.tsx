@@ -141,6 +141,9 @@ export default async function FaqPage({ params }: Props) {
                   {isFr ? "Toutes les questions" : "All questions"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
+                <Cta href={`/${locale}/faq/par-thematique`} variant="outline" size="lg">
+                  {isFr ? "Par thématique" : "By topic"}
+                </Cta>
                 <Cta href={`/${locale}/faq/feed.xml`} variant="outline" size="lg">
                   {isFr ? "S'abonner RSS" : "Subscribe RSS"}
                 </Cta>
