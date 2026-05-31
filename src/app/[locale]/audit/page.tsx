@@ -68,8 +68,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: titleStr,
       description:
         loc === "fr"
-          ? "Le diagnostic qui fait passer votre entreprise à l'IA : on cartographie partout où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé. Audit Flash 1 journée pour TPE et petites PME ; sur devis pour PME, ETI et grande entreprise."
-          : "The diagnosis that moves your company to AI: we map everywhere AI saves you time and money, and you leave with a costed, prioritised action plan. 1-day Flash audit for small businesses and small SMEs; on quote for SME, mid-cap and large enterprise.",
+          ? "Le diagnostic qui fait passer votre entreprise à l'IA : on cartographie partout où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé. Audit sur place 1 journée complète pour TPE, artisans et commerçants ; sur devis pour PME, ETI et grande entreprise."
+          : "The diagnosis that moves your company to AI: we map everywhere AI saves you time and money, and you leave with a costed, prioritised action plan. 1-day on-site audit for small businesses, artisans and retailers; on quote for SME, mid-cap and large enterprise.",
     }),
     title: { absolute: titleStr },
   };
@@ -117,8 +117,8 @@ export default async function AuditHub({ params }: Props) {
       {
         name: isFr ? "Niveau d'audit calibré" : "Calibrated audit tier",
         text: isFr
-          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Flash (TPE), Ciblé (PME), Stratégique PME ou Stratégique ETI. Devis transparent sous 48 h ouvrées."
-          : "We recommend the optimal AI audit tier based on your size: Flash (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote within 48 business hours.",
+          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Audit sur place (TPE), Ciblé (PME), Stratégique PME ou Stratégique ETI. Devis transparent sous 48 h ouvrées."
+          : "We recommend the optimal AI audit tier based on your size: On-site audit (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote within 48 business hours.",
       },
       {
         name: isFr ? "Kick-off et restitution" : "Kick-off and read-out",
@@ -141,8 +141,8 @@ export default async function AuditHub({ params }: Props) {
           ? "Équipe Axion-IA — audit IA stratégique pour entreprises"
           : "Axion-IA team — strategic AI audit for companies",
         alt: isFr
-          ? "Équipe Axion-IA en session de cadrage audit IA — cabinet IA opérationnel français pour TPE, PME, ETI et grandes entreprises. Audit Flash, Ciblé, Stratégique PME et ETI."
-          : "Axion-IA team in AI audit scoping session — French operational AI consultancy for SMEs, mid-caps and large enterprises. Flash, Targeted, Strategic SME and mid-cap audits.",
+          ? "Équipe Axion-IA en session de cadrage audit IA — cabinet IA opérationnel français pour TPE, PME, ETI et grandes entreprises. Audit sur place, Ciblé, Stratégique PME et ETI."
+          : "Axion-IA team in AI audit scoping session — French operational AI consultancy for SMEs, mid-caps and large enterprises. On-site, Targeted, Strategic SME and mid-cap audits.",
         width: 1961,
         height: 802,
         encodingFormat: "image/avif",

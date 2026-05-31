@@ -2,7 +2,7 @@
 //
 // Refonte hub /audit (Will 2026-05-12) :
 //   /audit               → hub 2 AXES (Par taille / Par situation)
-//   /audit/flash         → 2 sous-tiers : distance 490 € / sur site 890 € (calendrier)
+//   /audit/flash         → audit présentiel · 1 journée complète · 1190 € HT (Will 2026-05-31)
 //   /audit/cible         → 3 sous-tiers : Solo 1900 / Standard 2900 / Avancé 3900
 //   /audit/strategique-pme → 2 sous-tiers : 20-50 / 50-250 salariés
 //   /audit/strategique-eti → 1 sous-tier (12k+) extensible
@@ -72,16 +72,16 @@ export const AUDIT_BY_SIZE: ReadonlyArray<AuditSizeOption> = [
     labelFr: "TPE · indépendant·e",
     labelEn: "Small business · independent",
     taglineFr:
-      "1 à 19 salariés. Budget contenu, besoin clair, décision rapide. Diagnostic flash pour identifier 1 zone d'usage IA prioritaire — en distanciel ou sur site.",
+      "1 à 19 salariés. Budget maîtrisé, besoin clair. On audite toute l'entreprise en une journée complète sur place pour révéler tout ce que l'IA peut y changer.",
     taglineEn:
-      "1 to 19 staff. Tight budget, clear need, quick decision. Flash diagnosis to identify 1 priority AI use case — remote or on site.",
+      "1 to 19 staff. Controlled budget, clear need. We audit the whole company in one full day on site to reveal everything AI can change.",
     tier: "audit-flash",
     pathFr: "/audit/flash",
     pathEn: "/audit/flash",
     iconName: "Sparkles",
     accent: "terracotta",
-    badgeFr: `Flash · dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`,
-    badgeEn: `Flash · from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`,
+    badgeFr: `Sur place · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`,
+    badgeEn: `On site · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`,
   },
   {
     id: "pme",
@@ -155,15 +155,15 @@ export const AUDIT_BY_SITUATION: ReadonlyArray<AuditSituationOption> = [
     id: "urgence",
     labelFr: "Je veux comprendre vite",
     labelEn: "I want to understand fast",
-    taglineFr: `Vous voulez savoir si l'IA peut vraiment vous aider — sans engagement long. Diagnostic flash en distanciel (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}) ou journée terrain sur site (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "fr", { compact: true })}). Livrables et recommandations sous 48 h.`,
-    taglineEn: `You want to know if AI can really help — without long commitment. Remote flash diagnosis (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}) or on-site field day (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "en", { compact: true })}). Deliverables and recommendations within 48 h.`,
+    taglineFr: `Vous voulez savoir si l'IA peut vraiment vous aider — sans engagement long. Audit complet de votre entreprise en une journée complète sur place (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}). Livrables et recommandations sous 48 h.`,
+    taglineEn: `You want to know if AI can really help — without long commitment. A complete on-site audit of your company in one full day (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}). Deliverables and recommendations within 48 h.`,
     tier: "audit-flash",
     pathFr: "/audit/flash",
     pathEn: "/audit/flash",
     iconName: "Zap",
     accent: "terracotta",
-    badgeFr: `Flash · 48 h · ${getTierById(AUDIT_TIERS, "audit-flash").priceFlat!} / ${getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!} €`,
-    badgeEn: `Flash · 48 h · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} / ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "en", { compact: true })}`,
+    badgeFr: `Sur place · 48 h · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}`,
+    badgeEn: `On site · 48 h · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`,
   },
   {
     id: "premier-audit",
@@ -238,10 +238,10 @@ export const AUDIT_TIERS_META: ReadonlyArray<AuditTierMeta> = [
     id: "audit-flash",
     pathFr: "/audit/flash",
     pathEn: "/audit/flash",
-    labelFr: "Audit Flash",
-    labelEn: "Flash audit",
-    taglineFr: `Diagnostic rapide pour TPE / indépendant·e — 1 zone d'usage, à distance (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}) ou sur site (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "fr", { compact: true })} · réservation calendrier).`,
-    taglineEn: `Quick diagnosis for small business / independent — 1 use area, remote (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}) or on site (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!, "en", { compact: true })} · calendar booking).`,
+    labelFr: "Audit sur place",
+    labelEn: "On-site audit",
+    taglineFr: `Audit complet de l'entreprise pour TPE, artisan ou commerçant — une journée complète sur place (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} · réservation calendrier).`,
+    taglineEn: `Complete company audit for a small business, artisan or retailer — one full day on site (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} · calendar booking).`,
     audienceSizes: ["tpe"],
     accent: "terracotta",
     hasCalendarSlot: true,

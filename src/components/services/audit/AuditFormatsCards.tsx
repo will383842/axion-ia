@@ -6,12 +6,12 @@
  * le modèle sur-devis). Calqué sur le pattern 2 cartes de `/un-a-un` et
  * `/interventions/collectives` :
  *
- *   1. Audit Flash       → 1 journée, prix fixe (TPE + petites PME)
- *   2. Audit complet     → PME / ETI / grande entreprise, SUR DEVIS
+ *   1. Audit sur place    → 1 journée complète, prix fixe (TPE/artisans/commerçants)
+ *   2. Audit complet      → PME / ETI / grande entreprise, SUR DEVIS
  *
- * Prix Flash dérivé de la SSOT pricing.ts (audit-flash : 490 distance /
- * 890 sur site). L'audit complet est volontairement « sur devis » — un vrai
- * audit sérieux dépend de la taille et de l'ampleur.
+ * Prix dérivé de la SSOT pricing.ts (audit-flash : 1190 € HT présentiel, 1
+ * journée — Will 2026-05-31, suppression du 490 € distanciel). L'audit complet
+ * est volontairement « sur devis » — un vrai audit dépend de la taille.
  *
  * Server Component pur, zéro JS. FR canonique — EN = miroir (locale 301→FR).
  */
@@ -40,19 +40,18 @@ export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
   void _isFr; // EN = miroir FR (toggle conservé pour parité d'API avec autres composants).
 
   const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
-  const flashRemote = formatAmount(flashTier.priceFlat!, "fr", { compact: true });
-  const flashOnsite = formatAmount(flashTier.priceFlatOnsite!, "fr", { compact: true });
+  const onsitePrice = formatAmount(flashTier.priceFlat!, "fr", { compact: true });
 
   const cards: ReadonlyArray<FormatCard> = [
     {
       href: "/audit/flash",
       icon: Zap,
-      eyebrow: "TPE & petites PME",
-      title: "Audit Flash",
+      eyebrow: "TPE, artisans & commerçants",
+      title: "Audit sur place",
       tagline:
-        "1 journée pour repérer vos premières automatisations rentables. À distance ou sur site, recommandations chiffrées à la clé.",
-      meta: `1 journée · ${flashRemote} à distance / ${flashOnsite} sur site`,
-      cta: "Découvrir l'Audit Flash",
+        "On audite toute votre entreprise en une journée complète sur site, pour révéler tout ce que l'IA peut y changer. Recommandations chiffrées à la clé.",
+      meta: `1 journée complète · sur place · ${onsitePrice}`,
+      cta: "Découvrir l'audit sur place",
     },
     {
       href: "/appel",

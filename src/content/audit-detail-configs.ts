@@ -43,7 +43,6 @@ const subTierPrice = (tiers: ReadonlyArray<PricingSubTier>, id: string): number 
 
 // Raccourcis prix dérivés de la SSOT pricing.ts (priceFlat des sous-tiers).
 // Toute modification de tarif se fait dans pricing.ts — ces constantes suivent.
-const PRICE_FLASH_DISTANCE = subTierPrice(AUDIT_FLASH_SUB_TIERS, "audit-flash-distance");
 const PRICE_FLASH_ONSITE = subTierPrice(AUDIT_FLASH_SUB_TIERS, "audit-flash-onsite");
 const PRICE_CIBLE_SOLO = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-solo");
 const PRICE_CIBLE_STANDARD = subTierPrice(AUDIT_CIBLE_SUB_TIERS, "audit-cible-standard");
@@ -131,7 +130,8 @@ export interface AuditDetailConfig {
 }
 
 // ============================================================================
-// FLASH — 2 sous-tiers : distance 490 € / sur site 890 € (calendrier)
+// AUDIT SUR PLACE (TPE/artisans/commerçants) — 1 journée complète sur site,
+// 1190 € HT présentiel (Will 2026-05-31 : suppression du 490 € distanciel).
 // ============================================================================
 
 const FLASH_BENEFITS: ReadonlyArray<AuditBenefit> = [
@@ -182,13 +182,13 @@ const FLASH_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
     descriptionEn: "You describe your context, we lock the priority use area.",
   },
   {
-    time: "J+1 à J+5",
-    titleFr: "Diagnostic (distance ou sur site)",
-    titleEn: "Diagnosis (remote or on site)",
+    time: "Jour de l'audit",
+    titleFr: "Diagnostic sur site",
+    titleEn: "On-site diagnosis",
     descriptionFr:
-      "Distance : 2 sessions visio (2 h chacune) sur vos cas. Sur site : 1 journée complète 9 h-17 h dans vos locaux avec démos terrain.",
+      "1 journée complète 9 h-17 h dans vos locaux : observation terrain, démos IA sur vos vrais cas avec votre équipe, cartographie de toute l'activité.",
     descriptionEn:
-      "Remote: 2 video sessions (2 h each) on your cases. On site: 1 full day 9 a.m.-5 p.m. on your premises with field demos.",
+      "1 full day 9 a.m.-5 p.m. on your premises: field observation, AI demos on your real cases with your team, mapping of the whole activity.",
   },
   {
     time: "J+7 max",
@@ -201,10 +201,10 @@ const FLASH_SCHEDULE: ReadonlyArray<AuditScheduleItem> = [
 
 const FLASH_FAQ: ReadonlyArray<AuditFaq> = [
   {
-    qFr: `Pourquoi 2 prix (${formatAmount(PRICE_FLASH_DISTANCE, "fr", { compact: true })} distance / ${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })} sur site) ?`,
-    qEn: `Why 2 prices (${formatAmount(PRICE_FLASH_DISTANCE, "en", { compact: true })} remote / ${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })} on site)?`,
-    aFr: "Sur site = 1 journée complète dans vos locaux, démos avec votre équipe, observation terrain. Distance = 2 sessions visio (2 h chacune) sur vos cas. Mêmes livrables, mais l'immersion sur site permet de capter ce qui ne s'écrit pas (frictions équipe, outils legacy, processus oraux).",
-    aEn: "On site = full day on your premises, demos with your team, field observation. Remote = 2 video sessions (2 h each) on your cases. Same deliverables, but on-site immersion captures what isn't written down (team friction, legacy tools, oral processes).",
+    qFr: "Pourquoi l'audit se fait-il sur place ?",
+    qEn: "Why is the audit done on site?",
+    aFr: "Une journée complète dans vos locaux permet de capter ce qui ne s'écrit pas : frictions d'équipe, outils en place, processus oraux. On voit l'IA opérer sur vos vrais cas, avec vos équipes — c'est ce qui rend le plan réellement actionnable.",
+    aEn: "A full day on your premises captures what isn't written down: team friction, existing tools, oral processes. We see AI operate on your real cases, with your teams — that's what makes the plan truly actionable.",
   },
   {
     qFr: "Pour qui est-ce vraiment fait ?",
@@ -213,8 +213,8 @@ const FLASH_FAQ: ReadonlyArray<AuditFaq> = [
     aEn: `Small businesses (1-19 staff), independents, freelancers. If you have 20+ staff and multiple departments concerned, the Targeted audit (€${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE}) or Strategic SME (€${PRICE_PME_20_50}-${PRICE_PME_50_250}) is better calibrated.`,
   },
   {
-    qFr: "Que se passe-t-il après l'audit Flash ?",
-    qEn: "What happens after the Flash audit?",
+    qFr: "Que se passe-t-il après l'audit ?",
+    qEn: "What happens after the audit?",
     aFr: "Vous repartez avec un plan actionnable directement par vos soins. Si vous voulez aller plus loin, on bascule vers une intervention équipe (formation) ou une implémentation IA (module Implémentation). Pas d'engagement caché — vous décidez en autonomie.",
     aEn: "You leave with a plan actionable by yourself. To go further, we switch to a team session (training) or AI implementation (Implementation module). No hidden commitment — you decide in autonomy.",
   },
@@ -222,27 +222,11 @@ const FLASH_FAQ: ReadonlyArray<AuditFaq> = [
 
 const FLASH_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
   {
-    subTierId: "audit-flash-distance",
-    labelFr: "Flash distance",
-    labelEn: "Flash remote",
-    rangeFr: "1 zone d'usage · à distance",
-    rangeEn: "1 use area · remote",
-    priceLabelFr: formatAmount(PRICE_FLASH_DISTANCE, "fr"),
-    priceLabelEn: formatAmount(PRICE_FLASH_DISTANCE, "en", { compact: true }),
-    bodyFr:
-      "2 sessions visio (2 h chacune). Idéal si vous êtes indépendant·e, dans un bureau partagé, ou si votre besoin est très ciblé. Démarrage sous 7 jours ouvrés.",
-    bodyEn:
-      "2 video sessions (2 h each). Ideal if you're independent, in a shared office, or if your need is very targeted. Start within 7 business days.",
-    ctaType: "contact",
-    contactObject: "audit-flash-distance",
-    isFeatured: true,
-  },
-  {
     subTierId: "audit-flash-onsite",
-    labelFr: "Flash terrain",
-    labelEn: "Flash on site",
-    rangeFr: "Sur site · 1 jour",
-    rangeEn: "On site · 1 day",
+    labelFr: "Audit sur place · 1 journée",
+    labelEn: "On-site audit · 1 day",
+    rangeFr: "Toute l'entreprise · sur site",
+    rangeEn: "Whole company · on site",
     priceLabelFr: formatAmount(PRICE_FLASH_ONSITE, "fr"),
     priceLabelEn: formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true }),
     bodyFr:
@@ -644,12 +628,12 @@ const ETI_SUB_TIERS: ReadonlyArray<AuditSubTierCard> = [
 export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
   "audit-flash": {
     tier: "audit-flash",
-    titleFr: "Audit Flash",
-    titleEn: "Flash audit",
-    titleEmFr: "1 zone d'usage · 48 h",
-    titleEmEn: "1 use area · 48 h",
-    promiseFr: `Diagnostic IA rapide pour TPE / indépendant·e. On cartographie 1 zone d'usage prioritaire (rédaction, support, reporting, recherche…), on teste l'IA en live sur vos vrais cas, on livre un plan d'action sous 48 h. À distance (${formatAmount(PRICE_FLASH_DISTANCE, "fr", { compact: true })}) ou sur site avec réservation calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
-    promiseEn: `Quick AI diagnosis for small business / independent. We map 1 priority use area (writing, support, reporting, research…), test AI live on your real cases, deliver an action plan within 48 h. Remote (${formatAmount(PRICE_FLASH_DISTANCE, "en", { compact: true })}) or on site with calendar booking (${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })}).`,
+    titleFr: "Audit IA sur place",
+    titleEn: "On-site AI audit",
+    titleEmFr: "1 journée complète · sur site",
+    titleEmEn: "1 full day · on site",
+    promiseFr: `Audit IA complet pour TPE, artisan ou commerçant. Une journée complète sur place : on cartographie toute votre activité, on teste l'IA en live sur vos vrais cas, et on livre un plan d'action chiffré sous 48 h. Réservation directe au calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
+    promiseEn: `Complete AI audit for a small business, artisan or retailer. One full day on site: we map your entire activity, test AI live on your real cases, and deliver a costed action plan within 48 h. Direct calendar booking (${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })}).`,
     chipsFr: ["Plan sous 48 h", "Démos live · vos cas", "Confidentialité totale"],
     chipsEn: ["48-h plan", "Live demos · your cases", "Total confidentiality"],
     benefits: FLASH_BENEFITS,
@@ -657,13 +641,13 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     scheduleEyebrowFr: "Déroulé type · 7 jours",
     scheduleEyebrowEn: "Standard flow · 7 days",
     scheduleDescriptionFr:
-      "De la prise de contact au livrable, voici comment se déroule un audit Flash — quel que soit le sous-tier choisi.",
+      "De la prise de contact au livrable, voici comment se déroule un audit sur place.",
     scheduleDescriptionEn:
-      "From first contact to deliverable, here's how a Flash audit unfolds — whichever sub-tier you choose.",
+      "From first contact to deliverable, here's how an on-site audit unfolds.",
     subTiers: FLASH_SUB_TIERS,
     faq: FLASH_FAQ,
-    ctaPrimaryLabelFr: "Choisir un format Flash",
-    ctaPrimaryLabelEn: "Choose a Flash format",
+    ctaPrimaryLabelFr: "Réserver l'audit sur place",
+    ctaPrimaryLabelEn: "Book the on-site audit",
   },
   "audit-cible": {
     tier: "audit-cible",

@@ -13,10 +13,10 @@ import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 const TIER = "audit-flash" as const;
 
-// SSOT prix — dérivé de pricing.ts (audit-flash : priceFlat 490, priceFlatOnsite 890).
+// SSOT prix — dérivé de pricing.ts (audit-flash : 1190 € HT présentiel, 1 journée
+// complète sur site — Will 2026-05-31, suppression du 490 € distanciel).
 const FLASH_TIER = getTierById(AUDIT_TIERS, "audit-flash");
-const FLASH_DISTANCE = FLASH_TIER.priceFlat ?? 0;
-const FLASH_ONSITE = FLASH_TIER.priceFlatOnsite ?? 0;
+const FLASH_ONSITE = FLASH_TIER.priceFlat ?? 0;
 
 export const revalidate = 3600;
 
@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/audit/flash",
     title: isFr
-      ? `Audit Flash IA · ${formatAmount(FLASH_DISTANCE, "fr", { compact: true })} distance / ${formatAmount(FLASH_ONSITE, "fr", { compact: true })} sur site · Axion-IA`
-      : `Flash AI audit · ${formatAmount(FLASH_DISTANCE, "en", { compact: true })} remote / ${formatAmount(FLASH_ONSITE, "en", { compact: true })} on site · Axion-IA`,
+      ? `Audit IA sur place · ${formatAmount(FLASH_ONSITE, "fr", { compact: true })} · 1 journée complète · Axion-IA`
+      : `On-site AI audit · ${formatAmount(FLASH_ONSITE, "en", { compact: true })} · 1 full day · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/flash", en: "/audit/flash" },
   });
@@ -59,8 +59,8 @@ export default async function AuditFlashPage({ params }: Props) {
           ? "Équipe Axion-IA — audit Flash IA TPE et PME"
           : "Axion-IA team — Flash AI audit for small businesses and SMEs",
         alt: isFr
-          ? `Équipe Axion-IA en session d'audit Flash IA — cabinet IA opérationnel français accompagnant TPE et PME en 1 demi-journée, à distance ${formatAmount(FLASH_DISTANCE, "fr", { compact: true })} ou sur site ${formatAmount(FLASH_ONSITE, "fr", { compact: true })}, cartographie IA, ROI rapide.`
-          : `Axion-IA team in Flash AI audit session — French operational AI consultancy supporting small businesses and SMEs in half a day, remote ${formatAmount(FLASH_DISTANCE, "en", { compact: true })} or on site ${formatAmount(FLASH_ONSITE, "en", { compact: true })}, AI mapping, quick ROI.`,
+          ? `Équipe Axion-IA en session d'audit IA sur place — cabinet IA opérationnel français accompagnant TPE, artisans et commerçants en une journée complète sur site (${formatAmount(FLASH_ONSITE, "fr", { compact: true })}), cartographie IA, ROI rapide.`
+          : `Axion-IA team in an on-site AI audit session — French operational AI consultancy supporting small businesses, artisans and retailers in one full day on site (${formatAmount(FLASH_ONSITE, "en", { compact: true })}), AI mapping, quick ROI.`,
         width: 1961,
         height: 802,
         encodingFormat: "image/avif",

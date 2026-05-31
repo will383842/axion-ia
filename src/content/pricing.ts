@@ -102,24 +102,17 @@ export const INTERVENTION_FEES_NOTE = {
 // AUDIT IA — 4 niveaux pyramide
 // ============================================================================
 
-/** Sous-tiers Audit Flash — split distance / sur site (Sprint 14.10.5). */
+/** Audit TPE présentiel — 1 journée complète sur site (Will 2026-05-31 :
+    suppression du 490 € distanciel, prix de référence unique 1190 € HT). */
 export const AUDIT_FLASH_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
-    id: "audit-flash-distance",
-    labelFr: "Flash distance",
-    labelEn: "Flash remote",
-    rangeFr: "1 zone d'usage · à distance",
-    rangeEn: "1 area · remote",
-    priceFlat: 490,
-    isFeatured: true,
-  },
-  {
     id: "audit-flash-onsite",
-    labelFr: "Flash terrain",
-    labelEn: "Flash on site",
-    rangeFr: "Sur site · 1 jour",
-    rangeEn: "On site · 1 day",
-    priceFlat: 890,
+    labelFr: "Audit sur place · 1 journée",
+    labelEn: "On-site audit · 1 day",
+    rangeFr: "Toute l'entreprise · sur site",
+    rangeEn: "Whole company · on site",
+    priceFlat: 1190,
+    isFeatured: true,
   },
 ];
 
@@ -189,15 +182,14 @@ export const AUDIT_STRATEGIQUE_ETI_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   {
     id: "audit-flash",
-    labelFr: "Audit Flash",
-    labelEn: "Flash audit",
-    priceFlat: 490,
-    // Sprint 14.10.5 — split distance / sur site (Will 2026-05-08).
-    // 490 € à distance · 890 € sur site (jour terrain).
-    priceFlatOnsite: 890,
+    labelFr: "Audit sur place",
+    labelEn: "On-site audit",
+    // Will 2026-05-31 — présentiel uniquement, 1 journée complète sur site.
+    // Suppression du 490 € distanciel ; 1190 € HT devient le prix de référence.
+    priceFlat: 1190,
     subTiers: AUDIT_FLASH_SUB_TIERS,
-    descriptionFr: "Diagnostic rapide adapté aux petites structures.",
-    descriptionEn: "Quick diagnosis tailored to small structures.",
+    descriptionFr: "Audit complet de l'entreprise en une journée sur place.",
+    descriptionEn: "Complete on-site company audit in one day.",
     audienceSizes: ["tpe"],
   },
   {

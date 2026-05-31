@@ -72,11 +72,12 @@ const APPROFONDIE_PRICE_TAG_EN = `Starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`
 // Prix fixes dérivés de pricing.ts pour les formats bookables direct (SSOT).
 // Sprint pricing-SSOT : suppression des montants € hardcodés dans les labels
 // et previews des cards calendrier au profit de dérivations.
-// - Audit Flash terrain : tier `audit-flash` champ `priceFlatOnsite` (890 €).
+// - Audit sur place : tier `audit-flash` champ `priceFlat` (1190 € — présentiel,
+//   Will 2026-05-31, suppression du 490 € distanciel).
 // - Gagner du temps : tier `intervention-temps` (990 €).
 // - Démarrage IA Express / Atelier IA ciblé : tier `intervention-4h` (590 €).
 // - Formation Claude : tier `intervention-claude` (990 €).
-const AUDIT_FLASH_ONSITE_PRICE_EUR = getTierById(AUDIT_TIERS, "audit-flash").priceFlatOnsite!;
+const AUDIT_FLASH_ONSITE_PRICE_EUR = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
 const GAGNER_DU_TEMPS_PRICE_EUR = getTierById(INTERVENTION_TIERS, "intervention-temps").priceFlat!;
 const INTERVENTION_4H_PRICE_EUR = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
 const INTERVENTION_CLAUDE_PRICE_EUR = getTierById(
