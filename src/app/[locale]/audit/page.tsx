@@ -54,8 +54,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const titleStr =
     loc === "fr"
-      ? "Audit IA en entreprise · cartographie & plan d'action chiffré · Axion-IA"
-      : "Enterprise AI audit · mapping & costed action plan · Axion-IA";
+      ? "Audit IA en entreprise · plan d'action chiffré · Axion-IA"
+      : "Enterprise AI audit · costed action plan · Axion-IA";
   return {
     ...buildProductMetadata({
       locale,
@@ -63,8 +63,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: titleStr,
       description:
         loc === "fr"
-          ? "L'audit IA en entreprise rigoureux, complet et minutieux — la référence française. On cartographie en détail partout où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé. Audit IA sur place, 1 journée complète pour TPE, artisans et commerçants ; sur devis pour PME, ETI et grandes entreprises. Partout en France."
-          : "The rigorous, complete and meticulous enterprise AI audit — the French benchmark. We map in detail everywhere AI saves you time and money, and you leave with a costed, prioritised action plan. On-site AI audit, 1 full day for small businesses, artisans and retailers; on quote for SMEs, mid-caps and large enterprises. Across France.",
+          ? "Audit IA en entreprise partout en France : on cartographie où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé."
+          : "Enterprise AI audit across France: we map where AI saves you time and money, and you leave with a costed, prioritised action plan.",
     }),
     title: { absolute: titleStr },
   };

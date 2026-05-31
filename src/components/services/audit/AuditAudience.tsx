@@ -20,7 +20,6 @@
  */
 
 import type { ReactNode } from "react";
-import Image from "next/image";
 import { ArrowRight, CalendarCheck, Phone, Mail } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
@@ -35,9 +34,6 @@ interface AudienceCard {
   readonly titleEn: string;
   readonly bodyFr: string;
   readonly bodyEn: string;
-  readonly image: string;
-  readonly imageAltFr: string;
-  readonly imageAltEn: string;
   /** Métadonnée prix/format affichée au-dessus des CTAs. */
   readonly metaFr: string;
   readonly metaEn: string;
@@ -70,9 +66,6 @@ const CARDS: ReadonlyArray<AudienceCard> = [
       "Vous portez l'entreprise au quotidien. On identifie 3 à 5 automatisations qui vous libèrent du temps dès la première semaine — devis, relances, administratif.",
     bodyEn:
       "You carry the business day to day. We pinpoint 3 to 5 automations that free up your time from week one — quotes, follow-ups, admin.",
-    image: "/images/axion-ia-audit-ia-solutions-artisans-commercants-tpe-pme-eti-banniere.webp",
-    imageAltFr: "Audit IA pour TPE, artisans et commerçants",
-    imageAltEn: "AI audit for small businesses, artisans and retailers",
     metaFr: `1 journée sur place · ${FLASH_PRICE}`,
     metaEn: `1 full day on site · ${FLASH_PRICE}`,
     detailHref: "/audit/tpe-1-jour",
@@ -90,10 +83,6 @@ const CARDS: ReadonlyArray<AudienceCard> = [
       "Vous avez déjà testé quelques outils IA. On structure ce qui marche, on élimine le superflu, et on chiffre les prochains chantiers prioritaires.",
     bodyEn:
       "You've already tried a few AI tools. We structure what works, cut the fluff, and cost the next priority projects.",
-    image:
-      "/images/axion-ia-automatisation-ia-benefices-concrets-mesurables-durables-banniere.webp",
-    imageAltFr: "Audit IA pour PME",
-    imageAltEn: "AI audit for SMEs",
     metaFr: `À partir de ${ENTRY_PRICE} · sur devis`,
     metaEn: `From ${ENTRY_PRICE} · on quote`,
     detailHref: "/audit/strategique-pme",
@@ -108,10 +97,6 @@ const CARDS: ReadonlyArray<AudienceCard> = [
       "Vous pilotez des enjeux multi-sites. On cartographie l'ensemble, on priorise par ROI, et on cadre la gouvernance IA (AI Act, RGPD, conduite du changement).",
     bodyEn:
       "You steer multi-site challenges. We map everything, prioritise by ROI, and frame AI governance (AI Act, GDPR, change management).",
-    image:
-      "/images/axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere.webp",
-    imageAltFr: "Audit IA pour ETI et grandes entreprises",
-    imageAltEn: "AI audit for mid-caps and large enterprises",
     metaFr: `À partir de ${ENTRY_PRICE} · sur devis`,
     metaEn: `From ${ENTRY_PRICE} · on quote`,
     detailHref: "/audit/strategique-eti",
@@ -193,16 +178,7 @@ export function AuditAudience({ isFr }: { isFr: boolean }): ReactNode {
             key={card.segment}
             className="border-border bg-paper shadow-subtle flex flex-col overflow-hidden rounded-2xl border"
           >
-            <div className="relative aspect-[16/10] overflow-hidden">
-              <Image
-                src={card.image}
-                alt={isFr ? card.imageAltFr : card.imageAltEn}
-                fill
-                loading="lazy"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover"
-              />
-            </div>
+            <span aria-hidden="true" className="bg-terracotta block h-1.5 w-full shrink-0" />
             <div className="flex flex-1 flex-col p-6">
               <span className="text-terracotta-deep text-[12px] font-bold tracking-wide uppercase">
                 {isFr ? card.sizeFr : card.sizeEn}
