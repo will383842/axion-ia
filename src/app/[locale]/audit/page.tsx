@@ -18,13 +18,13 @@ import { AuditValueProp } from "@/components/services/audit/AuditValueProp";
 import { AuditWhyAudit } from "@/components/services/audit/AuditWhyAudit";
 import { AuditContactBand } from "@/components/services/audit/AuditContactBand";
 import { AuditAudience } from "@/components/services/audit/AuditAudience";
+import { AuditBenefits } from "@/components/services/audit/AuditBenefits";
 import { AuditProcessFlow } from "@/components/services/audit/AuditProcessFlow";
 import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosMarqueeBand";
 import { AuditTrustPills } from "@/components/services/audit/AuditTrustPills";
 import { AuditFormatsCards } from "@/components/services/audit/AuditFormatsCards";
 import { AuditFaq } from "@/components/services/audit/AuditFaq";
 import { AuditMaturityLevels } from "@/components/services/audit/AuditMaturityLevels";
-import { AuditCapabilitiesMap } from "@/components/services/audit/AuditCapabilitiesMap";
 import { AuditWhyNow } from "@/components/services/audit/AuditWhyNow";
 import { AuditDeliverable } from "@/components/services/audit/AuditDeliverable";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
@@ -224,6 +224,11 @@ export default async function AuditHub({ params }: Props) {
           entreprise), après le bandeau orange (Will 2026-05-31). */}
       <AuditAudience isFr={isFr} />
 
+      {/* CE QU'UN AUDIT VOUS APPORTE — 5 bénéfices concrets + CTA popup « tout ce
+          que l'IA peut apporter » (champ des possibles par fonction, monté DOM
+          pour le SEO/AEO). Remplace l'ancienne carte capacités inline (Will 2026-05-31). */}
+      <AuditBenefits isFr={isFr} />
+
       {/* PROMESSE — bloc value-prop « Faites auditer votre entreprise et révélez
           tout ce que l'IA peut réellement vous apporter. » */}
       <AuditValueProp isFr={isFr} />
@@ -236,10 +241,6 @@ export default async function AuditHub({ params }: Props) {
 
       {/* LE LIVRABLE — « Vous repartez avec un plan, pas une discussion » (brief §8) */}
       <AuditDeliverable isFr={isFr} />
-
-      {/* TOUT CE QUE L'IA PEUT APPORTER — carte exhaustive par fonction (brief §2).
-          Le prospect s'y reconnaît en 5 s ; l'audit détermine ce qui s'applique à lui. */}
-      <AuditCapabilitiesMap isFr={isFr} />
 
       {/* QUEL NIVEAU POUR VOUS — « De zéro IA à équipes IA-fluentes » (anti-fear) */}
       <AuditMaturityLevels isFr={isFr} />
