@@ -284,7 +284,7 @@ export default async function StackIaPage({ params }: Props) {
                     : `Start with the Essential · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
-                <Cta href="/audit/flash" variant="outline" size="lg">
+                <Cta href="/audit/tpe-1-jour" variant="outline" size="lg">
                   {isFr ? "Auditer ma stack actuelle" : "Audit my current stack"}
                 </Cta>
               </div>
@@ -804,7 +804,7 @@ export default async function StackIaPage({ params }: Props) {
         }
         cta={
           <>
-            <Cta href="/audit/flash" size="lg">
+            <Cta href="/audit/tpe-1-jour" size="lg">
               {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>

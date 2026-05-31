@@ -6,14 +6,14 @@
  * chacune : un visuel, le profil, ce que l'IA change, et des CTAs d'action.
  *
  * CTAs (Will 2026-05-31) :
- *   - TPE : « Pré-réserver l'audit (1 jour) » (→ /audit/flash) en action
+ *   - TPE : « Pré-réserver l'audit (1 jour) » (→ /audit/tpe-1-jour) en action
  *     principale + « Réserver un appel » (/appel) et « Nous écrire » (/contact)
  *     pour ceux qui préfèrent des renseignements complémentaires. Prix dérivé
  *     SSOT pricing.ts (audit-flash 1190 €).
  *   - PME & ETI/grandes : pas de « devis » — on invite à entrer en contact
  *     (« Réserver un appel » + « Nous écrire »).
  *   - Les 3 : « Plus d'infos sur le déroulement » → page détail du tier
- *     (/audit/flash, /audit/strategique-pme, /audit/strategique-eti).
+ *     (/audit/tpe-1-jour, /audit/strategique-pme, /audit/strategique-eti).
  *
  * Server Component pur, zéro JS. Prix via SSOT (jamais en dur). FR canonique —
  * EN = miroir (locale 301→FR, règle Will 2026-05-16).
@@ -75,7 +75,7 @@ const CARDS: ReadonlyArray<AudienceCard> = [
     imageAltEn: "AI audit for small businesses, artisans and retailers",
     metaFr: `1 journée sur place · ${FLASH_PRICE}`,
     metaEn: `1 full day on site · ${FLASH_PRICE}`,
-    detailHref: "/audit/flash",
+    detailHref: "/audit/tpe-1-jour",
     preReserveFr: "Pré-réserver l'audit (1 jour)",
     preReserveEn: "Pre-book the audit (1 day)",
     preReserveHref: "/reserver",

@@ -113,7 +113,7 @@ export const routing = defineRouting({
 
     // Module 2 — Audit & optimisation (pyramide 4 niveaux 2026-05-07)
     "/audit": { fr: "/audit", en: "/audit" },
-    "/audit/flash": { fr: "/audit/flash", en: "/audit/flash" },
+    "/audit/tpe-1-jour": { fr: "/audit/tpe-1-jour", en: "/audit/tpe-1-jour" },
     // Sprint 14.10.8 (Will 2026-05-12) — /audit/cible remplace /audit/process.
     // Slug aligné sur pricing.ts AUDIT_TIERS id "audit-cible".
     // Le slug legacy /audit/process est géré via 301 dans next.config.ts
@@ -317,7 +317,7 @@ export const routing = defineRouting({
     // pSEO services × villes (Sprint 14.10.1) — ranking #1 sur « audit IA <ville> »,
     // « formation IA <ville> », « implémentation IA <ville> ». Pattern aligné sur
     // l'existant `/implementation/par-fonction/[slug]` pour éviter collisions URL
-    // avec les sous-pages services dédiées (/audit/flash, /interventions/essentielle).
+    // avec les sous-pages services dédiées (/audit/tpe-1-jour, /interventions/essentielle).
     "/audit/par-ville/[ville]": {
       fr: "/audit/par-ville/[ville]",
       en: "/audit/by-city/[ville]",

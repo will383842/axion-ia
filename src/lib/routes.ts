@@ -46,7 +46,7 @@ export const ROUTES = {
 
   // Module 2 — Audit (Sprint 14.10.8 : auditProcess → auditCible)
   audit: "/audit",
-  auditFlash: "/audit/flash",
+  auditFlash: "/audit/tpe-1-jour",
   auditCible: "/audit/cible",
   auditStrategiquePme: "/audit/strategique-pme",
   auditStrategiqueEti: "/audit/strategique-eti",

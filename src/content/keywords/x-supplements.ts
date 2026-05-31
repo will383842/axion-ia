@@ -159,7 +159,7 @@ export const KW_SUPPLEMENTS_X: KeywordSeed[] = [
         "Ce que vous avez en main après un audit IA Flash",
       ],
     },
-    urlCible: "/fr/audit/tpe",
+    urlCible: "/fr/audit/tpe-1-jour",
     canonicalParent: "/fr/audit",
     source: "manuel",
     note: "Positionnement P3 accessible pour audit × TPE — lier vers audit/flash",

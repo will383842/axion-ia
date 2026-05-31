@@ -573,7 +573,7 @@ export default async function StackToolPage({ params }: Props) {
         }
         cta={
           <>
-            <Cta href="/audit/flash" size="lg">
+            <Cta href="/audit/tpe-1-jour" size="lg">
               {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>

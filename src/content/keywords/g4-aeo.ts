@@ -77,7 +77,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
     urlCible: "/fr/faq/duree-audit-ia",
     canonicalParent: "/fr/audit",
     source: "manuel",
-    note: "QAPage schema + HowTo eligible. Lier vers /fr/audit/flash et /fr/audit/strategique-pme.",
+    note: "QAPage schema + HowTo eligible. Lier vers /fr/audit/tpe-1-jour et /fr/audit/strategique-pme.",
   },
 
   {
@@ -1523,7 +1523,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
     urlCible: "/fr/faq/maturite-ia-entreprise",
     canonicalParent: "/fr/audit",
     source: "manuel",
-    note: "QAPage schema. Entrée de funnel qualification. Lier vers /fr/audit/flash.",
+    note: "QAPage schema. Entrée de funnel qualification. Lier vers /fr/audit/tpe-1-jour.",
   },
 
   {

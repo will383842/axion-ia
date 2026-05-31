@@ -44,7 +44,7 @@ export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
 
   const cards: ReadonlyArray<FormatCard> = [
     {
-      href: "/audit/flash",
+      href: "/audit/tpe-1-jour",
       icon: Zap,
       eyebrow: "TPE, artisans & commerçants",
       title: "Audit sur place",

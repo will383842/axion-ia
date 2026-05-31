@@ -39,7 +39,7 @@ describe("Phase 13 A/B meta — isUrlEligible patterns", () => {
 
   it("AB6: pattern exact → match URL identique uniquement", () => {
     expect(isUrlEligible("/audit", ["/audit"])).toBe(true);
-    expect(isUrlEligible("/audit/flash", ["/audit"])).toBe(false);
+    expect(isUrlEligible("/audit/tpe-1-jour", ["/audit"])).toBe(false);
   });
 
   it("AB7: pattern string vide dans array = wildcard global", () => {

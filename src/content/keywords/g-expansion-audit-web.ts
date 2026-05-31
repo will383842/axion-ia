@@ -208,7 +208,7 @@ const AUDIT_TYPES: KeywordSeed[] = [
     cible: "tpe",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/audit/flash",
+    urlCible: "/fr/audit/tpe-1-jour",
   }),
   s({
     keyword: "audit approfondi IA 360 entreprise PME",

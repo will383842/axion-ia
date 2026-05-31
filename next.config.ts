@@ -186,6 +186,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:locale(fr|en)/audit/flash",
+        destination: "/:locale/audit/tpe-1-jour",
+        permanent: true,
+      },
+      {
         source: "/:locale(fr|en)/audit/process",
         destination: "/:locale/audit/cible",
         permanent: true,

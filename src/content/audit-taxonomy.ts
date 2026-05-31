@@ -2,7 +2,7 @@
 //
 // Refonte hub /audit (Will 2026-05-12) :
 //   /audit               → hub 2 AXES (Par taille / Par situation)
-//   /audit/flash         → audit présentiel · 1 journée complète · 1190 € HT (Will 2026-05-31)
+//   /audit/tpe-1-jour         → audit présentiel · 1 journée complète · 1190 € HT (Will 2026-05-31)
 //   /audit/cible         → 3 sous-tiers : Solo 1900 / Standard 2900 / Avancé 3900
 //   /audit/strategique-pme → 2 sous-tiers : 20-50 / 50-250 salariés
 //   /audit/strategique-eti → 1 sous-tier (12k+) extensible
@@ -76,8 +76,8 @@ export const AUDIT_BY_SIZE: ReadonlyArray<AuditSizeOption> = [
     taglineEn:
       "1 to 19 staff. Controlled budget, clear need. We audit the whole company in one full day on site to reveal everything AI can change.",
     tier: "audit-flash",
-    pathFr: "/audit/flash",
-    pathEn: "/audit/flash",
+    pathFr: "/audit/tpe-1-jour",
+    pathEn: "/audit/tpe-1-jour",
     iconName: "Sparkles",
     accent: "terracotta",
     badgeFr: `Sur place · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`,
@@ -158,8 +158,8 @@ export const AUDIT_BY_SITUATION: ReadonlyArray<AuditSituationOption> = [
     taglineFr: `Vous voulez savoir si l'IA peut vraiment vous aider — sans engagement long. Audit complet de votre entreprise en une journée complète sur place (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}). Livrables et recommandations sous 48 h.`,
     taglineEn: `You want to know if AI can really help — without long commitment. A complete on-site audit of your company in one full day (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}). Deliverables and recommendations within 48 h.`,
     tier: "audit-flash",
-    pathFr: "/audit/flash",
-    pathEn: "/audit/flash",
+    pathFr: "/audit/tpe-1-jour",
+    pathEn: "/audit/tpe-1-jour",
     iconName: "Zap",
     accent: "terracotta",
     badgeFr: `Sur place · 48 h · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}`,
@@ -236,8 +236,8 @@ export interface AuditTierMeta {
 export const AUDIT_TIERS_META: ReadonlyArray<AuditTierMeta> = [
   {
     id: "audit-flash",
-    pathFr: "/audit/flash",
-    pathEn: "/audit/flash",
+    pathFr: "/audit/tpe-1-jour",
+    pathEn: "/audit/tpe-1-jour",
     labelFr: "Audit sur place",
     labelEn: "On-site audit",
     taglineFr: `Audit complet de l'entreprise pour TPE, artisan ou commerçant — une journée complète sur place (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} · réservation calendrier).`,

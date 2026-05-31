@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = locale === "fr";
   return buildProductMetadata({
     locale,
-    path: "/audit/flash",
+    path: "/audit/tpe-1-jour",
     title: isFr
       ? `Audit IA sur place · ${formatAmount(FLASH_ONSITE, "fr", { compact: true })} · 1 journée complète · Axion-IA`
       : `On-site AI audit · ${formatAmount(FLASH_ONSITE, "en", { compact: true })} · 1 full day · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
-    alternates: { fr: "/audit/flash", en: "/audit/flash" },
+    alternates: { fr: "/audit/tpe-1-jour", en: "/audit/tpe-1-jour" },
   });
 }
 

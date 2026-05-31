@@ -985,7 +985,7 @@ const AUDIT_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/audit/tpe",
+    urlCible: "/fr/audit/tpe-1-jour",
   }),
   s({
     keyword: "diagnostic IA indépendant freelance",
@@ -994,7 +994,7 @@ const AUDIT_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/tpe",
+    urlCible: "/fr/audit/tpe-1-jour",
   }),
   s({
     keyword: "audit IA petite entreprise tarif abordable",
@@ -1003,7 +1003,7 @@ const AUDIT_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 1,
     niveau: 3,
-    urlCible: "/fr/audit/tpe",
+    urlCible: "/fr/audit/tpe-1-jour",
   }),
   s({
     keyword: "est-ce que l'IA peut vraiment aider une petite entreprise ?",
@@ -1012,7 +1012,7 @@ const AUDIT_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/tpe",
+    urlCible: "/fr/audit/tpe-1-jour",
   }),
   s({
     keyword: "audit IA pour artisan prix et durée",
@@ -1021,7 +1021,7 @@ const AUDIT_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/tpe",
+    urlCible: "/fr/audit/tpe-1-jour",
   }),
   s({
     keyword: "avantages audit IA pour TPE gain de temps",
@@ -1030,7 +1030,7 @@ const AUDIT_TPE: KeywordSeed[] = [
     cible: "tpe",
     priorite: 2,
     niveau: 3,
-    urlCible: "/fr/audit/tpe",
+    urlCible: "/fr/audit/tpe-1-jour",
   }),
 ];
 
