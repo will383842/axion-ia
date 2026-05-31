@@ -61,7 +61,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME du bassin Évry-Corbeil ?",
-      a: "Pour les PME du bassin Évry-Corbeil, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les PME du bassin Évry-Corbeil, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",

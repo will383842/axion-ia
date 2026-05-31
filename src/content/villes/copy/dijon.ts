@@ -26,8 +26,8 @@ export const DIJON_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Dijon : nous cartographions les process automatisables dans votre organisation et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille, du cabinet dijonnais à l'ETI industrielle de Côte-d'Or.",
-      en: "Operational AI audit in Dijon: we map automatable processes in your organisation and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size, from a Dijon practice to a Côte-d'Or industrial mid-cap.",
+      fr: "Audit IA opérationnel à Dijon : nous cartographions les process automatisables dans votre organisation et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, du cabinet dijonnais à l'ETI industrielle de Côte-d'Or.",
+      en: "Operational AI audit in Dijon: we map automatable processes in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size, from a Dijon practice to a Côte-d'Or industrial mid-cap.",
     },
     interventions: {
       fr: "Interventions IA à Dijon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
@@ -80,7 +80,7 @@ export const DIJON_COPY: VilleCopy = {
     // ────────────────────────────────────────────────────────────
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Dijon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE artisanales dijonnaises aux sièges industriels de Côte-d'Or (URGO, Amora) et aux cabinets de la Burgundy School of Business. Intervention sur site dans la métropole dijonnaise et dans tout le bassin bourguignon.",
+        hero: "L'audit IA Axion-IA à Dijon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales dijonnaises aux sièges industriels de Côte-d'Or (URGO, Amora) et aux cabinets de la Burgundy School of Business. Intervention sur site dans la métropole dijonnaise et dans tout le bassin bourguignon.",
         whyHere: [
           "Dijon est une capitale French Tech labellisée 2023 (~450 organisations membres) avec un tissu PME/ETI dense sur des secteurs où l'IA génère un ROI démontrable : agroalimentaire, viticulture, santé, logistique.",
           "Le pôle agroalimentaire bourguignon — Vitagora, ToasterLab, Institut Agro Dijon, INRAE BFC — constitue un terrain d'audit IA particulièrement fertile : traçabilité, contrôle qualité, optimisation formulations, qualification leads B2B.",
@@ -186,7 +186,7 @@ export const DIJON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Dijon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from artisan Dijon micro-businesses to Côte-d'Or industrial HQs (URGO, Amora) and Burgundy School of Business practices. On-site engagement across the Dijon metropolitan area and the Burgundy basin.",
+        hero: "Axion-IA's AI audit in Dijon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from artisan Dijon micro-businesses to Côte-d'Or industrial HQs (URGO, Amora) and Burgundy School of Business practices. On-site engagement across the Dijon metropolitan area and the Burgundy basin.",
         whyHere: [
           "Dijon is a 2023-labelled French Tech capital (~450 member organisations) with a dense SME/mid-cap fabric in sectors where AI delivers demonstrable ROI: agri-food, viticulture, healthcare, logistics.",
           "The Burgundy agri-food hub — Vitagora, ToasterLab, Institut Agro Dijon, INRAE BFC — is particularly fertile ground for AI audits: traceability, quality control, formula optimisation, B2B lead qualification.",
@@ -225,7 +225,7 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Dijon freelancers, artisans, practices and small metropolitan structures up to about ten staff.",
           },
@@ -251,7 +251,7 @@ export const DIJON_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "The Flash audit was a trigger: in one day we identified three automatable workflows in our admin management. The deliverable was costed, not theoretical. We could prioritise without hesitation.",
+              "The Sur place audit was a trigger: in one day we identified three automatable workflows in our admin management. The deliverable was costed, not theoretical. We could prioritise without hesitation.",
             role: "Managing Director",
             companyProfile: "Consulting firm, Dijon metropolitan area, SME",
           },
@@ -265,7 +265,7 @@ export const DIJON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Dijon?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several days spread according to your organisation. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several days spread according to your organisation. We agree on the cadence at the framing brief.",
           },
           {
             q: "Which Dijon sectors benefit most from an AI audit?",

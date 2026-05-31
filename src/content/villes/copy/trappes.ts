@@ -30,8 +30,8 @@ export const TRAPPES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trappes : diagnostic spécialement adapté aux industriels automobiles, sous-traitants SQY et opérateurs logistiques. ROI chiffré sur production et back-office. 4 niveaux du Flash à Stratégique.",
-      en: "Audit IA à Trappes : diagnostic spécialement adapté aux industriels automobiles, sous-traitants SQY et opérateurs logistiques. ROI chiffré sur production et back-office. 4 niveaux du Flash à Stratégique.",
+      fr: "Audit IA à Trappes : diagnostic spécialement adapté aux industriels automobiles, sous-traitants SQY et opérateurs logistiques. ROI chiffré sur production et back-office. 4 niveaux du Sur place à Stratégique.",
+      en: "Audit IA à Trappes : diagnostic spécialement adapté aux industriels automobiles, sous-traitants SQY et opérateurs logistiques. ROI chiffré sur production et back-office. 4 niveaux du Sur place à Stratégique.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trappes : formats sur 1 à plusieurs journées dans vos ateliers ou bureaux. Spécialisation industrie automobile, défense, logistique. Couverture SQY et Versailles.",

@@ -32,8 +32,8 @@ export const VILLEURBANNE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Villeurbanne (69100) : nous cartographions ce qui peut être automatisé dans votre entreprise villeurbannaise et chiffrons le ROI. Du cabinet IT Gratte-Ciel à l'ETI industrielle campus Doua, 4 niveaux du Flash au Stratégique ETI selon votre taille.",
-      en: "Operational AI audit in Villeurbanne (69100): we map what can be automated at your company and quantify the ROI. From IT firms around Gratte-Ciel to industrial mid-caps at campus Doua, 4 tiers from Flash to Mid-cap Strategic.",
+      fr: "Audit IA opérationnel à Villeurbanne (69100) : nous cartographions ce qui peut être automatisé dans votre entreprise villeurbannaise et chiffrons le ROI. Du cabinet IT Gratte-Ciel à l'ETI industrielle campus Doua, 4 niveaux du Sur place au Stratégique ETI selon votre taille.",
+      en: "Operational AI audit in Villeurbanne (69100): we map what can be automated at your company and quantify the ROI. From IT firms around Gratte-Ciel to industrial mid-caps at campus Doua, 4 tiers from Sur place to Mid-cap Strategic.",
     },
     interventions: {
       fr: "Interventions IA à Villeurbanne : formats sur site d'une à plusieurs journées. Vos collaborateurs repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — IT, R&D, industrie, services. Frais de logement, repas et forfait trajet en sus.",
@@ -114,7 +114,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Villeurbanne (69100) cartographie ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE IT du quartier Gratte-Ciel aux ETI industrielles du campus LyonTech-La Doua et aux grands groupes comme FORVIA MATERI'ACT. Villeurbanne est notre terrain d'intervention à part entière — distinctement de Lyon.",
+        hero: "L'audit IA Axion-IA à Villeurbanne (69100) cartographie ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE IT du quartier Gratte-Ciel aux ETI industrielles du campus LyonTech-La Doua et aux grands groupes comme FORVIA MATERI'ACT. Villeurbanne est notre terrain d'intervention à part entière — distinctement de Lyon.",
         whyHere: [
           "Villeurbanne concentre un écosystème IT et ingénierie unique en France : campus LyonTech-La Doua (INSA Lyon, CPE Lyon, UCBL, ENSSIB, IUT Lyon 1, CNRS, Inria) — 25 000 étudiants et chercheurs — génère une demande d'audits IA à haute valeur technique.",
           "Tissu B2B villeurbannais sectorisé : IT et numérique (993 établissements section J), activités spécialisées et scientifiques (4 172 établissements sections M+N), industrie matériaux (FORVIA MATERI'ACT), conseil et intégration ERP (TVH Consulting).",
@@ -220,7 +220,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Villeurbanne (69100) maps what can be automated at your company and quantifies the ROI. Four tiers from Flash to Mid-cap Strategic cover every size, from IT micro-businesses around Gratte-Ciel to industrial mid-caps at LyonTech-La Doua campus and large groups such as FORVIA MATERI'ACT. Villeurbanne is our standalone engagement territory — not a Lyon satellite.",
+        hero: "Axion-IA's AI audit in Villeurbanne (69100) maps what can be automated at your company and quantifies the ROI. Four tiers from Sur place to Mid-cap Strategic cover every size, from IT micro-businesses around Gratte-Ciel to industrial mid-caps at LyonTech-La Doua campus and large groups such as FORVIA MATERI'ACT. Villeurbanne is our standalone engagement territory — not a Lyon satellite.",
         whyHere: [
           "Villeurbanne hosts a unique French IT and engineering ecosystem: LyonTech-La Doua campus (INSA Lyon, CPE Lyon, UCBL, ENSSIB, IUT Lyon 1, CNRS, Inria) — 25,000 students and researchers — generating high-value-technical AI audit demand.",
           "Villeurbanne B2B fabric by sector: IT and digital (993 establishments, section J), specialised scientific activities (4,172 establishments, sections M+N), materials industry (FORVIA MATERI'ACT), consulting and ERP integration (TVH Consulting).",
@@ -259,7 +259,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Villeurbanne freelancers, IT micro-firms and practices up to about ten staff — Gratte-Ciel, Charpennes, Cusset.",
           },
@@ -299,7 +299,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Villeurbanne?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for an industrial mid-cap in Villeurbanne?",

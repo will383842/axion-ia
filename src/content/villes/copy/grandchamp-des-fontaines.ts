@@ -57,7 +57,7 @@ export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants, nous proposons audit IA (Flash {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA prise de RDV, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
+      a: "Pour les TPE artisans et commerçants, nous proposons audit IA (Sur place {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA prise de RDV, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
     },
     {
       q: "Combien coûte un audit IA à Grandchamp-des-Fontaines  ?",

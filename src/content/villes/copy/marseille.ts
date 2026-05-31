@@ -25,8 +25,8 @@ export const MARSEILLE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Marseille : nous identifions vos cas d'automatisation sur site et chiffrons le ROI. Quatre niveaux du Flash au Stratégique ETI selon votre taille — maritime, logistique, biotech ou services.",
-      en: "Operational AI audit in Marseille: we identify your automation cases on site and quantify the ROI. Four tiers from Flash to Mid-cap Strategic depending on your size — maritime, logistics, biotech or services.",
+      fr: "Audit IA opérationnel à Marseille : nous identifions vos cas d'automatisation sur site et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI selon votre taille — maritime, logistique, biotech ou services.",
+      en: "Operational AI audit in Marseille: we identify your automation cases on site and quantify the ROI. Four tiers from Sur place to Mid-cap Strategic depending on your size — maritime, logistics, biotech or services.",
     },
     interventions: {
       fr: "Interventions IA à Marseille : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier — maritime, logistique, santé/biotech, services B2B ou industrie navale.",
@@ -73,7 +73,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation marseillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du commerce marseillais aux grands groupes logistiques du Vieux-Port ou du quartier Joliette.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation marseillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du commerce marseillais aux grands groupes logistiques du Vieux-Port ou du quartier Joliette.",
         whyHere: [
           "Marseille est l'un de nos pôles d'intervention prioritaires sur la façade méditerranéenne : transport maritime, logistique portuaire, santé/biotech et services sont nos secteurs de prédilection dans la métropole.",
           "Le tissu économique marseillais concentre des profils B2B atypiques à fort potentiel IA : opérateurs logistiques multi-modaux (export, dédouanement, TMS), ETI industrielles Château-Gombert, cabinets de santé Luminy, directions IA des filiales CMA CGM.",
@@ -179,7 +179,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la Région Sud ou par vos équipes en interne, sans contrat de suivi obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated in your Marseille organization and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Marseille commerce micro-businesses to large logistics groups at the Vieux-Port or Joliette district.",
+        hero: "Axion-IA's AI audit maps what can be automated in your Marseille organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Marseille commerce micro-businesses to large logistics groups at the Vieux-Port or Joliette district.",
         whyHere: [
           "Marseille is one of our priority hubs on the Mediterranean coast: maritime transport, port logistics, health/biotech and services are our core sectors in the metro area.",
           "Marseille's business fabric concentrates atypical B2B profiles with high AI potential: multimodal logistics operators (exports, customs, TMS), industrial Château-Gombert mid-caps, Luminy health practices, AI teams at CMA CGM subsidiaries.",
@@ -218,7 +218,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Marseille freelancers, traders, agencies or practices up to about ten staff.",
           },
@@ -258,7 +258,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Marseille?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief, taking into account your port or logistics operational constraints.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief, taking into account your port or logistics operational constraints.",
           },
           {
             q: "What ROI can I expect for a Marseille transport SME?",
@@ -935,7 +935,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Marseille ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations marseillaises — Flash pour les TPE du Panier ou commerces de proximité, Ciblé pour les PME de la Joliette et services portuaires, Stratégique PME pour les cabinets santé Luminy et services Euroméditerranée, Stratégique ETI pour les opérateurs maritimes du Grand Port, filiales CMA CGM et industriels Château-Gombert. La grille appliquée à Marseille est strictement identique à celle de Paris ou Lyon — pas de pondération régionale.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations marseillaises — Sur place pour les TPE du Panier ou commerces de proximité, Ciblé pour les PME de la Joliette et services portuaires, Stratégique PME pour les cabinets santé Luminy et services Euroméditerranée, Stratégique ETI pour les opérateurs maritimes du Grand Port, filiales CMA CGM et industriels Château-Gombert. La grille appliquée à Marseille est strictement identique à celle de Paris ou Lyon — pas de pondération régionale.",
     },
     {
       q: "Avez-vous des cas clients à Marseille ou dans la métropole Aix-Marseille ?",

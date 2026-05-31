@@ -31,8 +31,8 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Flash à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
-      en: "Audit IA Flash à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
+      fr: "Audit IA Sur place à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
+      en: "Audit IA Sur place à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
     },
     interventions: {
       fr: "Interventions à Saint-Jean-de-Braye dès {{price:intervention-4h|flat}} : automatisation de la facturation, planning, support client et reporting pour TPE et PME du tissu orléanais.",

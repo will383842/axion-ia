@@ -31,8 +31,8 @@ export const BORDEAUX_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Bordeaux : nous cartographions ce qui peut être automatisé chez vous — de la chaîne logistique aéronautique aux processus de négoce viticole — et chiffrons le ROI à 12-24 mois. 4 niveaux du Flash au Stratégique ETI selon votre taille.",
-      en: "Operational AI audit in Bordeaux: we map what can be automated at your company — from aerospace supply-chain to wine-trade processes — and quantify the 12-24 month ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size.",
+      fr: "Audit IA opérationnel à Bordeaux : nous cartographions ce qui peut être automatisé chez vous — de la chaîne logistique aéronautique aux processus de négoce viticole — et chiffrons le ROI à 12-24 mois. 4 niveaux du Sur place au Stratégique ETI selon votre taille.",
+      en: "Operational AI audit in Bordeaux: we map what can be automated at your company — from aerospace supply-chain to wine-trade processes — and quantify the 12-24 month ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
       fr: "Interventions IA à Bordeaux : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
@@ -81,7 +81,7 @@ export const BORDEAUX_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Bordeaux cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. De la TPE viticole au groupe aéronautique de la Métropole, quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles. Restitution toujours en présentiel dans vos locaux bordelais, livrable PDF chiffré remis en main propre.",
+        hero: "L'audit IA Axion-IA à Bordeaux cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. De la TPE viticole au groupe aéronautique de la Métropole, quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles. Restitution toujours en présentiel dans vos locaux bordelais, livrable PDF chiffré remis en main propre.",
         whyHere: [
           "Bordeaux est un pôle d'intervention Axion-IA en croissance rapide : aéronautique-défense, négoce viticole et numérique représentent trois verticalités majeures de nos missions dans la Métropole.",
           "Le tissu B2B bordelais est dense et diversifié : sous-traitants Aerospace Valley (Dassault, Thales, Safran), négociants en vins, cabinets d'expertise et de conseil, éditeurs logiciels (Cité Numérique Bègles, H7), groupes de santé (campus Carreire).",
@@ -187,7 +187,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour sur nos missions bordelaises).",
       },
       en: {
-        hero: "Axion-IA's AI audit in Bordeaux maps what can be automated at your organisation and quantifies the 12-24 month return on investment. From a wine-estate micro-business to a metropolitan aerospace group, four tiers from Flash to Mid-cap Strategic cover every size. Read-out always in person at your Bordeaux offices, costed PDF deliverable handed over face to face.",
+        hero: "Axion-IA's AI audit in Bordeaux maps what can be automated at your organisation and quantifies the 12-24 month return on investment. From a wine-estate micro-business to a metropolitan aerospace group, four tiers from Sur place to Mid-cap Strategic cover every size. Read-out always in person at your Bordeaux offices, costed PDF deliverable handed over face to face.",
         whyHere: [
           "Bordeaux is a fast-growing Axion-IA engagement hub: aerospace-defence, wine trade and digital represent three major verticals of our Métropole missions.",
           "Bordeaux's B2B fabric is dense and diversified: Aerospace Valley sub-contractors (Dassault, Thales, Safran), wine merchants, accounting and consulting firms, software publishers (Cité Numérique Bègles, H7), health groups (Carreire campus).",
@@ -226,7 +226,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to family wine estates, small merchants, Bordeaux practices or digital micro-firms up to about ten staff.",
           },
@@ -266,7 +266,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Bordeaux?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief, factoring in your operational constraints (harvest periods, aerospace production cycles, etc.).",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief, factoring in your operational constraints (harvest periods, aerospace production cycles, etc.).",
           },
           {
             q: "Can you audit industrial sites subject to high confidentiality constraints?",

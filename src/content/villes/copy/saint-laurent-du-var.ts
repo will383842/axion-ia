@@ -61,7 +61,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention proposez-vous à Saint-Laurent ?",
-      a: "À Saint-Laurent-du-Var, nous proposons les 5 formats Axion-IA : audit IA (Flash à Stratégique), interventions sur site (formations équipes terrain et back-office), implémentation, coaching 1-to-1 dirigeants, et développement de plateformes web/SaaS IA sur mesure.",
+      a: "À Saint-Laurent-du-Var, nous proposons les 5 formats Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (formations équipes terrain et back-office), implémentation, coaching 1-to-1 dirigeants, et développement de plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une intervention sur la Côte d'Azur ?",

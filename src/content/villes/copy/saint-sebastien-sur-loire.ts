@@ -57,11 +57,11 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME nantaises ?",
-      a: "Pour les PME tertiaires de Nantes Métropole, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics, pas de devis opaque.",
+      a: "Pour les PME tertiaires de Nantes Métropole, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Saint-Sébastien. Frais de déplacement (TGV, repas, hébergement si multi-jours) facturés à part du forfait journée. Pour les TPE/PME, le forfait Flash reste accessible.",
+      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Saint-Sébastien. Frais de déplacement (TGV, repas, hébergement si multi-jours) facturés à part du forfait journée. Pour les TPE/PME, le forfait Sur place reste accessible.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets ?",

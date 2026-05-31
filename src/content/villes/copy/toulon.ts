@@ -24,8 +24,8 @@ export const TOULON_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Toulon : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés pour les TPE du Var comme pour les grands donneurs d'ordres de la défense maritime.",
-      en: "Operational AI audit in Toulon: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated for Var micro-businesses as well as large maritime-defence primes.",
+      fr: "Audit IA opérationnel à Toulon : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les TPE du Var comme pour les grands donneurs d'ordres de la défense maritime.",
+      en: "Operational AI audit in Toulon: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Var micro-businesses as well as large maritime-defence primes.",
     },
     interventions: {
       fr: "Interventions IA à Toulon : sessions sur site d'une à plusieurs journées. Vos équipes repartent avec des outils IA installés et configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
@@ -74,7 +74,7 @@ export const TOULON_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Toulon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles : TPE du centre-ville et de La Garde, PME de services aux entreprises, ETI industrielles de La Seyne-sur-Mer, jusqu'aux grands comptes de la défense maritime. Le tissu économique toulonnais est singulier en France — défense, mer, numérique embarqué — et nos audits en tiennent compte dans chaque diagnostic.",
+        hero: "L'audit IA Axion-IA à Toulon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles : TPE du centre-ville et de La Garde, PME de services aux entreprises, ETI industrielles de La Seyne-sur-Mer, jusqu'aux grands comptes de la défense maritime. Le tissu économique toulonnais est singulier en France — défense, mer, numérique embarqué — et nos audits en tiennent compte dans chaque diagnostic.",
         whyHere: [
           "Toulon est l'un de nos pôles d'intervention en région PACA : nos consultants se déplacent dans toute l'agglomération TPM (Toulon Provence Méditerranée) et dans les communes du Var (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules).",
           "Le tissu industriel toulonnais est unique en France : Naval Group, Thales Underwater Systems, CNIM, Marine nationale — nous maîtrisons les contraintes spécifiques de confidentialité, souveraineté des données et processus métier de la défense maritime.",
@@ -180,7 +180,7 @@ export const TOULON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Pour les secteurs sensibles (défense, maritime industrielle), possibilité de déploiement IA sur infra souveraine chez vous. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Toulon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size: city-centre micro-businesses, professional services SMEs, industrial mid-caps from La Seyne-sur-Mer, through to large maritime-defence accounts. Toulon's economic fabric is unique in France — defence, sea, embedded digital — and our audits reflect that in every diagnosis.",
+        hero: "Axion-IA's AI audit in Toulon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size: city-centre micro-businesses, professional services SMEs, industrial mid-caps from La Seyne-sur-Mer, through to large maritime-defence accounts. Toulon's economic fabric is unique in France — defence, sea, embedded digital — and our audits reflect that in every diagnosis.",
         whyHere: [
           "Toulon is one of our key engagement hubs in the PACA region: our consultants travel across the entire TPM agglomeration (Toulon Provence Méditerranée) and the Var communes (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules).",
           "Toulon's industrial fabric is unique in France: Naval Group, Thales Underwater Systems, CNIM, Marine nationale — we understand the specific confidentiality, data sovereignty and business-process constraints of maritime defence.",
@@ -219,7 +219,7 @@ export const TOULON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Toulon independents, tradespeople, practices and small retail up to about ten staff.",
           },
@@ -259,7 +259,7 @@ export const TOULON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Toulon?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
           },
           {
             q: "Can you audit companies subject to defence confidentiality constraints?",

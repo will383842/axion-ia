@@ -32,8 +32,8 @@ export const MARTIGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Nos audits IA flash à Martigues ciblent les TPE et PME sous-traitantes de la pétrochimie, de la maintenance industrielle et du commerce des trois quartiers historiques.",
-      en: "Nos audits IA flash à Martigues ciblent les TPE et PME sous-traitantes de la pétrochimie, de la maintenance industrielle et du commerce des trois quartiers historiques.",
+      fr: "Nos audits IA sur place à Martigues ciblent les TPE et PME sous-traitantes de la pétrochimie, de la maintenance industrielle et du commerce des trois quartiers historiques.",
+      en: "Nos audits IA sur place à Martigues ciblent les TPE et PME sous-traitantes de la pétrochimie, de la maintenance industrielle et du commerce des trois quartiers historiques.",
     },
     interventions: {
       fr: "Nous intervenons sur site à Martigues et autour (Port-de-Bouc, Saint-Mitre-les-Remparts, Châteauneuf-les-Martigues) pour automatiser bons de commande, planning d'intervention et reporting client des PME locales.",

@@ -61,7 +61,7 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME industrielles Nord-Isère ?",
-      a: "Pour les PME industrielles du Bas-Dauphiné, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site (atelier production), implémentation IA (prédiction maintenance, contrôle qualité par vision), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les PME industrielles du Bas-Dauphiné, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (atelier production), implémentation IA (prédiction maintenance, contrôle qualité par vision), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une mission depuis Lyon, Grenoble ou Chambéry ?",

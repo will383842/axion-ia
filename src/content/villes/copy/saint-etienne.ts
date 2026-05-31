@@ -32,8 +32,8 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Saint-Étienne : nous cartographions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, adaptés à l'industrie manufacturière, au textile médical, au design et aux services B2B stéphanois.",
-      en: "Operational AI audit in Saint-Étienne: we map what can be automated in your structure and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, tailored to manufacturing, medical textiles, design and B2B services in the Loire.",
+      fr: "Audit IA opérationnel à Saint-Étienne : nous cartographions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, adaptés à l'industrie manufacturière, au textile médical, au design et aux services B2B stéphanois.",
+      en: "Operational AI audit in Saint-Étienne: we map what can be automated in your structure and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, tailored to manufacturing, medical textiles, design and B2B services in the Loire.",
     },
     interventions: {
       fr: "Interventions IA à Saint-Étienne : formats sur site d'une à plusieurs journées pour vos équipes. Vos collaborateurs repartent avec des outils IA configurés pour leur métier — industrie, design, commerce ou santé. Frais de logement, repas et forfait trajet en sus.",
@@ -83,7 +83,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure stéphanoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles — des TPE artisanales et PME industrielles de la Loire aux ETI et grandes entreprises sièges (Casino Guichard-Perrachon, Thuasne, Aubert & Duval).",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure stéphanoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles — des TPE artisanales et PME industrielles de la Loire aux ETI et grandes entreprises sièges (Casino Guichard-Perrachon, Thuasne, Aubert & Duval).",
         whyHere: [
           "Saint-Étienne concentre un tissu industriel reconverti unique en France : mécanique de précision, textile médical, design industriel — autant de workflows répétitifs à fort potentiel d'automatisation IA.",
           "Le quartier Châteaucreux (pôle tertiaire gare TGV) et le Technopôle (Cité du Design / Manufacture) accueillent des ETI et PME B2B qui bénéficient directement de cas IA opérationnels.",
@@ -189,7 +189,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais déclenchée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated in your Saint-Étienne structure and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size — from Loire micro-businesses and industrial SMEs to large-enterprise HQs (Casino Guichard-Perrachon, Thuasne, Aubert & Duval).",
+        hero: "Axion-IA's AI audit maps what can be automated in your Saint-Étienne structure and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size — from Loire micro-businesses and industrial SMEs to large-enterprise HQs (Casino Guichard-Perrachon, Thuasne, Aubert & Duval).",
         whyHere: [
           "Saint-Étienne hosts a reconverted industrial fabric unique in France: precision mechanics, medical textiles, industrial design — all sectors with repetitive workflows at high AI automation potential.",
           "The Châteaucreux district (TGV business hub) and the Technopôle (Cité du Design / Manufacture) host B2B mid-caps and SMEs that directly benefit from operational AI use cases.",
@@ -228,7 +228,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Saint-Étienne artisans, micro-firms and small structures up to about ten staff.",
           },
@@ -268,7 +268,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Saint-Étienne?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
           },
           {
             q: "Which Saint-Étienne sectors are priority for an AI audit?",

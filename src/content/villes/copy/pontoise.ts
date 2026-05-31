@@ -61,7 +61,7 @@ export const PONTOISE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME tertiaires de Cergy-Pontoise ?",
-      a: "Pour les PME tertiaires de Cergy-Pontoise, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site (formations équipes), implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les PME tertiaires de Cergy-Pontoise, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (formations équipes), implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Quels formats pour les services publics et hôpitaux ?",

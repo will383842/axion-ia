@@ -52,7 +52,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Dunkerque ?",
-      a: "Nos interventions essentielles débutent à {{price:intervention-4h|flat}}, les audits flash à {{price:audit-flash|flat}} et les sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Les tarifs publics sont consultables sur notre site.",
+      a: "Nos interventions essentielles débutent à {{price:intervention-4h|flat}}, les audits sur place à {{price:audit-flash|flat}} et les sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Les tarifs publics sont consultables sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA se déplace-t-il à Dunkerque ?",

@@ -29,8 +29,8 @@ export const METZ_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opÃ©rationnel Ã  Metz : nous cartographions ce qui peut Ãªtre automatisÃ© dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au StratÃ©gique ETI, des TPE messines aux ETI industrielles automobile et sidÃ©rurgiques de l'EuromÃ©tropole.",
-      en: "Operational AI audit in Metz: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Metz micro-businesses to automotive and steel industrial mid-caps in the EuromÃ©tropole.",
+      fr: "Audit IA opÃ©rationnel Ã  Metz : nous cartographions ce qui peut Ãªtre automatisÃ© dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au StratÃ©gique ETI, des TPE messines aux ETI industrielles automobile et sidÃ©rurgiques de l'EuromÃ©tropole.",
+      en: "Operational AI audit in Metz: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Metz micro-businesses to automotive and steel industrial mid-caps in the EuromÃ©tropole.",
     },
     interventions: {
       fr: "Interventions IA Ã  Metz : formats sur site d'une Ã  plusieurs journÃ©es selon vos Ã©quipes. Vos collaborateurs repartent autonomes sur des outils IA installÃ©s sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -81,7 +81,7 @@ export const METZ_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut Ãªtre automatisÃ© dans votre entreprise messine et chiffre le retour sur investissement Ã  12-24 mois. Quatre niveaux du Flash au StratÃ©gique ETI couvrent toutes les tailles, des TPE du centre de Metz aux ETI industrielles de TrÃ©mery et aux directions IA des siÃ¨ges bancaires de l'EuromÃ©tropole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut Ãªtre automatisÃ© dans votre entreprise messine et chiffre le retour sur investissement Ã  12-24 mois. Quatre niveaux du Sur place au StratÃ©gique ETI couvrent toutes les tailles, des TPE du centre de Metz aux ETI industrielles de TrÃ©mery et aux directions IA des siÃ¨ges bancaires de l'EuromÃ©tropole.",
         whyHere: [
           "Metz est un pÃ´le d'intervention clÃ© pour Axion-IA en Grand Est : le tissu B2B EuromÃ©tropole gÃ©nÃ¨re une demande croissante d'audits IA opÃ©rationnels.",
           "Tissu sectoriel sur-reprÃ©sentÃ© chez nos clients messins : industrie automobile et matÃ©riaux (Stellantis TrÃ©mery, Materalia), banque/finance (BPCE, Caisse d'Ã‰pargne Grand Est), IT/numÃ©rique (TechnopÃ´le, BLIIIDA), services publics (prÃ©fecture Moselle, UniversitÃ© de Lorraine).",
@@ -187,7 +187,7 @@ export const METZ_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les dÃ©lais convenus Ã  la signature. ConformitÃ© RGPD, hÃ©bergement donnÃ©es en UE par dÃ©faut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exÃ©cutable avec n'importe quel prestataire ou en interne. Si aprÃ¨s la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursÃ© intÃ©gralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Metz business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Metz micro-businesses to large automotive and banking mid-caps across the EuromÃ©tropole.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Metz business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Metz micro-businesses to large automotive and banking mid-caps across the EuromÃ©tropole.",
         whyHere: [
           "Metz is a key Axion-IA engagement hub in Grand Est: the EuromÃ©tropole B2B ecosystem generates growing operational AI audit demand.",
           "Metz B2B fabric over-represented in our cases: automotive and materials industry (Stellantis TrÃ©mery, Materalia), banking/finance (BPCE, Caisse d'Ã‰pargne Grand Est), IT/digital (TechnopÃ´le startups, BLIIIDA), public services and higher education.",
@@ -226,7 +226,7 @@ export const METZ_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Metz freelancers and practices up to about ten staff â€” city centre, ÃŽle du Saulcy, Pontiffroy.",
           },
@@ -266,7 +266,7 @@ export const METZ_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Metz?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for an EuromÃ©tropole industrial mid-cap?",

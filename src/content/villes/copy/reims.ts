@@ -28,8 +28,8 @@ export const REIMS_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Reims : nous identifions ce qui peut être automatisé dans votre maison de Champagne, votre PME agroalimentaire ou votre ETI tertiaire et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille.",
-      en: "Operational AI audit in Reims: we identify what can be automated in your Champagne house, agri-food SME or services mid-cap and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size.",
+      fr: "Audit IA opérationnel à Reims : nous identifions ce qui peut être automatisé dans votre maison de Champagne, votre PME agroalimentaire ou votre ETI tertiaire et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille.",
+      en: "Operational AI audit in Reims: we identify what can be automated in your Champagne house, agri-food SME or services mid-cap and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
       fr: "Interventions IA à Reims : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -78,7 +78,7 @@ export const REIMS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE artisanales du Grand Reims aux grandes maisons de Champagne cotées en bourse ou filiales LVMH. Reims, capitale du Champagne à 45 minutes de Paris en TGV, est un marché B2B à haut potentiel IA — agroalimentaire de prestige, bioéconomie industrielle, tertiaire académique — que nous connaissons en profondeur.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales du Grand Reims aux grandes maisons de Champagne cotées en bourse ou filiales LVMH. Reims, capitale du Champagne à 45 minutes de Paris en TGV, est un marché B2B à haut potentiel IA — agroalimentaire de prestige, bioéconomie industrielle, tertiaire académique — que nous connaissons en profondeur.",
         whyHere: [
           "Reims concentre des secteurs à forte valeur ajoutée — Champagne, agroalimentaire, bioéconomie, enseignement supérieur — où l'IA opérationnelle génère des gains mesurables : traçabilité, génération de documents export, qualification commerciale internationale.",
           "Les grandes maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) ont des équipes commerciales, export, marketing et RH éligibles à des cas IA structurés — comptes-rendus de dégustation, traduction multilingue automatique, qualification de leads B2B internationaux.",
@@ -184,7 +184,7 @@ export const REIMS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, 45 minutes from Paris by TGV, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, 45 minutes from Paris by TGV, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
         whyHere: [
           "Reims concentrates high-value sectors — Champagne, agri-food, bioeconomy, higher education — where operational AI delivers measurable gains: traceability, export document generation, international commercial qualification.",
           "Major Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) have commercial, export, marketing and HR teams eligible for structured AI use cases — tasting notes, automatic multilingual translation, international B2B lead qualification.",
@@ -223,7 +223,7 @@ export const REIMS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Grand Reims freelancers, craftspeople, winegrowers, small trading companies or service providers up to about ten staff.",
           },
@@ -263,7 +263,7 @@ export const REIMS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Reims?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. The cadence is agreed at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. The cadence is agreed at the framing brief.",
           },
           {
             q: "Which Reims sectors are top priorities for an AI audit?",

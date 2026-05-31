@@ -29,8 +29,8 @@ export const ORLEANS_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Orléans : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille, du laboratoire pharmaceutique de Saint-Jean-de-Braye au centre de R&D cosmétique d'Ormes.",
-      en: "Operational AI audit in Orléans: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Saint-Jean-de-Braye pharma labs to Ormes cosmetics R&D centres.",
+      fr: "Audit IA opérationnel à Orléans : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, du laboratoire pharmaceutique de Saint-Jean-de-Braye au centre de R&D cosmétique d'Ormes.",
+      en: "Operational AI audit in Orléans: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Saint-Jean-de-Braye pharma labs to Ormes cosmetics R&D centres.",
     },
     interventions: {
       fr: "Interventions IA à Orléans : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -78,7 +78,7 @@ export const ORLEANS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise orléanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI cosmétiques et pharmaceutiques de l'agglomération, en passant par les directions IA des groupes implantés à Ormes et Saint-Jean-de-Braye.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise orléanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI cosmétiques et pharmaceutiques de l'agglomération, en passant par les directions IA des groupes implantés à Ormes et Saint-Jean-de-Braye.",
         whyHere: [
           "Orléans concentre un tissu B2B rare en région : cosmétique-parfumerie Cosmetic Valley (Shiseido R&D Ormes), pharmaceutique CDMO (Famar Saint-Jean-de-Braye, Servier Gidy), industrie agro-machinisme (John Deere France siège Ormes) — autant de secteurs à fort potentiel d'automatisation IA.",
           "Le BRGM national (La Source), l'INRAE Centre Val de Loire et le CNRS Orléans forment un pôle scientifique de premier plan : nos audits s'adaptent aux processus de documentation et analyse de données propres à la recherche publique.",
@@ -184,7 +184,7 @@ export const ORLEANS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Orléans business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Orléans micro-businesses to large cosmetics and pharmaceutical mid-caps in the agglomération and AI leadership at major group HQs in Ormes.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Orléans business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Orléans micro-businesses to large cosmetics and pharmaceutical mid-caps in the agglomération and AI leadership at major group HQs in Ormes.",
         whyHere: [
           "Orléans concentrates a rare regional B2B fabric: Cosmetic Valley cosmetics-perfume (Shiseido R&D Ormes), pharmaceutical CDMO (Famar Saint-Jean-de-Braye, Servier Gidy), agri-machinery (John Deere France HQ Ormes) — all sectors with high AI automation potential.",
           "The national BRGM (La Source), INRAE Centre Val de Loire and CNRS Orléans form a leading scientific hub: our audits adapt to documentation and data analysis processes specific to public research.",
@@ -223,7 +223,7 @@ export const ORLEANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Orléans freelancers, micro-firms and practices up to about ten staff — city centre, Olivet, La Source.",
           },
@@ -263,7 +263,7 @@ export const ORLEANS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Orléans?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a pharma or cosmetics mid-cap in Orléans?",

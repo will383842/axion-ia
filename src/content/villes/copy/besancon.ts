@@ -27,8 +27,8 @@ export const BESANCON_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Besançon : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille, du cabinet bisontain à l'ETI microtechnique ou médicale de la technopôle TEMIS.",
-      en: "Operational AI audit in Besançon: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Besançon practices to precision-tech or medical mid-caps at the TEMIS technopole.",
+      fr: "Audit IA opérationnel à Besançon : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, du cabinet bisontain à l'ETI microtechnique ou médicale de la technopôle TEMIS.",
+      en: "Operational AI audit in Besançon: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Besançon practices to precision-tech or medical mid-caps at the TEMIS technopole.",
     },
     interventions: {
       fr: "Interventions IA à Besançon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -107,7 +107,7 @@ export const BESANCON_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise bisontine et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du centre historique aux ETI microtechniques et médicales de la technopôle TEMIS et aux PME du bassin Grand Besançon.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise bisontine et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre historique aux ETI microtechniques et médicales de la technopôle TEMIS et aux PME du bassin Grand Besançon.",
         whyHere: [
           "Besançon est la capitale française des microtechniques de précision : le tissu B2B bisontin (TEMIS Innovation, TEMIS Santé, PMT Phase V) génère une forte demande d'audits IA sur les processus de précision — documentation technique, contrôle qualité, R&D.",
           "Tissu sectorisé caractéristique de nos clients bisontins : microtechniques et mécatronique (TEMIS Innovation, ENSMM), dispositifs médicaux (TEMIS Santé, ISIFC, CHRU), horlogerie et joaillerie (Maty, Yema), services aux entreprises (Châteaufarine) et industrie Trépillot.",
@@ -213,7 +213,7 @@ export const BESANCON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Besançon business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Besançon micro-businesses to precision-tech and medical mid-caps at the TEMIS technopole and Grand Besançon basin SMEs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Besançon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Besançon micro-businesses to precision-tech and medical mid-caps at the TEMIS technopole and Grand Besançon basin SMEs.",
         whyHere: [
           "Besançon is France's capital of precision microtechnologies: the Besançon B2B fabric (TEMIS Innovation, TEMIS Santé, PMT Phase V) drives strong AI audit demand on precision processes — technical documentation, quality control, R&D.",
           "Sector fabric characteristic of our Besançon clients: microtechnologies and mechatronics (TEMIS Innovation, ENSMM), medical devices (TEMIS Santé, ISIFC, CHRU), watchmaking and jewellery (Maty, Yema), business services (Châteaufarine) and Trépillot industry.",
@@ -252,7 +252,7 @@ export const BESANCON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Besançon freelancers, micro-firms and small practices up to about ten staff — historic centre, Planoise, Montrapon.",
           },
@@ -292,7 +292,7 @@ export const BESANCON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Besançon?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a precision-tech mid-cap in Besançon?",

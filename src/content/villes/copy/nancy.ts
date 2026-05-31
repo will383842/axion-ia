@@ -29,8 +29,8 @@ export const NANCY_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Nancy : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés pour les TPE du centre-ville, les ETI industrielles du bassin lorrain et les organisations de santé du Brabois.",
-      en: "Operational AI audit in Nancy: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated for Nancy city-centre micro-businesses, Lorraine basin industrial mid-caps and Brabois health organisations.",
+      fr: "Audit IA opérationnel à Nancy : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les TPE du centre-ville, les ETI industrielles du bassin lorrain et les organisations de santé du Brabois.",
+      en: "Operational AI audit in Nancy: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Nancy city-centre micro-businesses, Lorraine basin industrial mid-caps and Brabois health organisations.",
     },
     interventions: {
       fr: "Interventions IA à Nancy : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, adaptés à leur contexte — industrie, santé, recherche, tertiaire. Frais de logement, repas et forfait trajet en sus.",
@@ -80,7 +80,7 @@ export const NANCY_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation nancéienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI industrielles du bassin lorrain et aux directions des organisations de santé du Technopôle Brabois.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation nancéienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI industrielles du bassin lorrain et aux directions des organisations de santé du Technopôle Brabois.",
         whyHere: [
           "Nancy est un carrefour B2B singulier : tissu académique et de recherche dense (Université de Lorraine, Mines Nancy, Inria, CHRU) coexistant avec une industrie lorraine robuste (Saint-Gobain PAM, Materalia) — chaque type d'organisation a ses cas IA propres que nous maîtrisons.",
           "Pôle santé-recherche Brabois de rang national : CHRU, robotique chirurgicale, Inria Nancy Grand Est, CNRS Centre-Est, INRAE Grand Est-Nancy — secteur R&D intense où l'IA accélère la gestion documentaire, l'analyse de données cliniques et la veille réglementaire.",
@@ -186,7 +186,7 @@ export const NANCY_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Nancy organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Nancy micro-businesses to Lorraine basin industrial mid-caps and Brabois Technopole health organisations.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Nancy organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Nancy micro-businesses to Lorraine basin industrial mid-caps and Brabois Technopole health organisations.",
         whyHere: [
           "Nancy is a distinctive B2B junction: dense academic and research fabric (Université de Lorraine, Mines Nancy, Inria, CHRU) coexisting with robust Lorraine industry (Saint-Gobain PAM, Materalia) — each type of organisation has its own AI use cases we master.",
           "National-level Brabois health-research hub: CHRU, surgical robotics, Inria Nancy Grand Est, CNRS Centre-Est, INRAE Grand Est-Nancy — R&D-intensive sector where AI accelerates document management, clinical data analysis and regulatory monitoring.",
@@ -225,7 +225,7 @@ export const NANCY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Nancy freelancers, micro-firms and small structures — city centre, Charles III district, Rives de Meurthe.",
           },
@@ -265,7 +265,7 @@ export const NANCY_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Nancy?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a Lorraine basin industrial mid-cap?",

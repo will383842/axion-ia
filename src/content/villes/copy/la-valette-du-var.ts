@@ -6,9 +6,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les TPE et PME locales — commerces, services, professions libérales, artisans — avec du code custom et des audits flash, sans no-code, en déplaçant ses consultants sur site.",
+    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les TPE et PME locales — commerces, services, professions libérales, artisans — avec du code custom et des audits sur place, sans no-code, en déplaçant ses consultants sur site.",
   pitchEn:
-    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les TPE et PME locales — commerces, services, professions libérales, artisans — avec du code custom et des audits flash, sans no-code, en déplaçant ses consultants sur site.",
+    "Axion-IA intervient à La Valette-du-Var, commune de 23 719 habitants du département du Var (région Provence-Alpes-Côte d'Azur), située à 8 km de Toulon dans son agglomération immédiate. Densément peuplée (1 530 hab/km²), elle abrite la ZAC Valgora, parc tertiaire majeur du département rassemblant une centaine d'entreprises de services, ainsi que plus de 200 commerces et structures de services de proximité. Notre cabinet IA accompagne les TPE et PME locales — commerces, services, professions libérales, artisans — avec du code custom et des audits sur place, sans no-code, en déplaçant ses consultants sur site.",
   directAnswerFr:
     "À La Valette-du-Var, Axion-IA propose aux TPE et PME des audits IA dès {{price:audit-flash|flat}}, des interventions terrain dès {{price:intervention-4h|flat}} et des implémentations code custom dès {{price:impl-poc|entry}}. Nous nous déplaçons sur la ZAC Valgora (~100 entreprises tertiaires) et les zones commerciales autour de l'Avenue de l'Université, et accompagnons aussi les structures de Toulon, La Garde, La Farlède et Le Revest-les-Eaux. Spécialisés sur les flux administratifs, devis, facturation et SAV des commerces et services locaux.",
   directAnswerEn:
@@ -32,8 +32,8 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA flash 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la ZAC Valgora et commerces locaux.",
-      en: "Audit IA flash 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la ZAC Valgora et commerces locaux.",
+      fr: "Audit IA sur place 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la ZAC Valgora et commerces locaux.",
+      en: "Audit IA sur place 4h à La Valette-du-Var dès {{price:audit-flash|flat}} — cartographie des automatisations pour TPE/PME de la ZAC Valgora et commerces locaux.",
     },
     interventions: {
       fr: "Intervention sur site à La Valette-du-Var dès {{price:intervention-4h|flat}} — déplacement consultant ZAC Valgora, centre-ville, et zones commerciales limitrophes (Toulon, La Garde).",

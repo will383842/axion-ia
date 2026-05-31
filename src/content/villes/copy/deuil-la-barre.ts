@@ -31,8 +31,8 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Flash sur site à Deuil-la-Barre ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
-      en: "Audit IA Flash sur site à Deuil-la-Barre ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
+      fr: "Audit IA Sur place sur site à Deuil-la-Barre ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
+      en: "Audit IA Sur place sur site à Deuil-la-Barre ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
     },
     interventions: {
       fr: "Interventions à Deuil-la-Barre dès {{price:intervention-4h|flat}} : automatisation de la facturation, prise de rendez-vous et relances pour TPE et PME du commerce, de la restauration et des professions libérales.",

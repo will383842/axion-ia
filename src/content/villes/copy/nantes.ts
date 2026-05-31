@@ -33,8 +33,8 @@ export const NANTES_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Nantes : nous cartographions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés pour l'industrie, le numérique, l'agroalimentaire et les services nantais.",
-      en: "Operational AI audit in Nantes: we map what can be automated in your organisation and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated for Nantes industry, digital, agri-food and services.",
+      fr: "Audit IA opérationnel à Nantes : nous cartographions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour l'industrie, le numérique, l'agroalimentaire et les services nantais.",
+      en: "Operational AI audit in Nantes: we map what can be automated in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Nantes industry, digital, agri-food and services.",
     },
     interventions: {
       fr: "Interventions IA à Nantes : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -234,7 +234,7 @@ export const NANTES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Nantes freelancers, micro-firms and practices up to about ten staff — craftspeople, retailers, agencies.",
           },
@@ -274,7 +274,7 @@ export const NANTES_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Nantes?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the initial framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the initial framing brief.",
           },
           {
             q: "What ROI can I expect for a Nantes SME?",

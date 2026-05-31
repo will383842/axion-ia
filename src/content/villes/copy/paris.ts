@@ -34,8 +34,8 @@ export const PARIS_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Paris : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille et votre ambition.",
-      en: "Operational AI audit in Paris: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size and ambition.",
+      fr: "Audit IA opérationnel à Paris : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille et votre ambition.",
+      en: "Operational AI audit in Paris: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size and ambition.",
     },
     interventions: {
       fr: "Interventions IA à Paris : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — finance, conseil, tech, médias, luxe ou tourisme premium.",
@@ -86,7 +86,7 @@ export const PARIS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
         whyHere: [
           "Paris est notre premier pôle d'intervention : la majorité de nos audits y sont déclenchés.",
           "Tissu B2B parisien sur-représenté chez nos clients : cabinets d'expertise comptable, family offices, asset managers, conseil 8e/9e/16e, scale-ups Sentier-République, maisons de mode Marais.",
@@ -194,7 +194,7 @@ export const PARIS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est exécutable par vos équipes en interne ou par tout prestataire de votre choix — pas de verrou Axion-IA, pas de prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions parisiennes).",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
         whyHere: [
           "Paris is our top engagement hub: most of our audits originate there.",
           "Paris B2B fabric over-represented in our cases: accounting firms, family offices, asset managers, 8th/9th/16th consulting, Sentier-République scale-ups, Marais fashion houses.",
@@ -233,7 +233,7 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail: "Suited to Paris freelancers, micro-firms and practices up to about ten staff.",
           },
           {
@@ -271,7 +271,7 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Paris?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a Paris SME?",
@@ -944,7 +944,7 @@ export const PARIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Paris ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations parisiennes — Flash pour les TPE indépendantes du 9e ou du Sentier, Ciblé pour les PME du 8e/16e, Stratégique PME pour les cabinets de conseil et finance, Stratégique ETI pour La Défense et les groupes du CAC 40. Tarifs identiques en intra-muros et en première couronne — aucune majoration spécifique à l'Île-de-France.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations parisiennes — Sur place pour les TPE indépendantes du 9e ou du Sentier, Ciblé pour les PME du 8e/16e, Stratégique PME pour les cabinets de conseil et finance, Stratégique ETI pour La Défense et les groupes du CAC 40. Tarifs identiques en intra-muros et en première couronne — aucune majoration spécifique à l'Île-de-France.",
     },
     {
       q: "Avez-vous des cas clients à Paris ?",

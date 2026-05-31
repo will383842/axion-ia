@@ -58,7 +58,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA au Grand-Quevilly ?",
-      a: "Délai indicatif de 5 jours ouvrés après validation de la mission, selon nos disponibilités. Les audits Flash peuvent souvent être planifiés plus rapidement.",
+      a: "Délai indicatif de 5 jours ouvrés après validation de la mission, selon nos disponibilités. Les audits Sur place peuvent souvent être planifiés plus rapidement.",
     },
     {
       q: "Vous déplacez-vous dans les communes proches comme Rouen, Petit-Quevilly ou Sotteville-lès-Rouen ?",

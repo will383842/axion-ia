@@ -29,8 +29,8 @@ export const LYON_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Lyon : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille, du cabinet lyonnais à l'ETI industrielle de la Vallée de la Chimie.",
-      en: "Operational AI audit in Lyon: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Lyon practices to industrial mid-caps in the Vallée de la Chimie.",
+      fr: "Audit IA opérationnel à Lyon : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, du cabinet lyonnais à l'ETI industrielle de la Vallée de la Chimie.",
+      en: "Operational AI audit in Lyon: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Lyon practices to industrial mid-caps in the Vallée de la Chimie.",
     },
     interventions: {
       fr: "Interventions IA à Lyon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — chimie industrielle, biotech, banque Part-Dieu, équipementiers ou services tertiaires.",
@@ -80,7 +80,7 @@ export const LYON_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lyonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du Vieux-Lyon aux ETI industrielles de la Vallée de la Chimie et aux directions IA des sièges Part-Dieu.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lyonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du Vieux-Lyon aux ETI industrielles de la Vallée de la Chimie et aux directions IA des sièges Part-Dieu.",
         whyHere: [
           "Lyon est notre deuxième pôle d'intervention après Paris : l'écosystème B2B lyonnais (Part-Dieu, Gerland, Confluence, Villeurbanne) génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B sectorisé sur-représenté chez nos clients lyonnais : industrie chimique et pharmaceutique (Vallée de la Chimie, Gerland), banque/assurance Part-Dieu, PME numériques Villeurbanne et Vaise, cabinets conseil Presqu'île.",
@@ -186,7 +186,7 @@ export const LYON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout intégrateur de la French Tech Lyon-Auvergne-Rhône-Alpes ou par vos équipes en interne, sans contrat de prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Lyon business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Lyon micro-businesses to large industrial mid-caps in the Vallée de la Chimie and AI leadership at Part-Dieu HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Lyon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Lyon micro-businesses to large industrial mid-caps in the Vallée de la Chimie and AI leadership at Part-Dieu HQs.",
         whyHere: [
           "Lyon is our second top engagement hub after Paris: the sectorised Lyon B2B ecosystem (Part-Dieu, Gerland, Confluence, Villeurbanne) drives strong operational AI audit demand.",
           "Lyon B2B fabric over-represented in our cases: chemical and pharmaceutical industry (Vallée de la Chimie, Gerland), banking/insurance at Part-Dieu, digital SMEs in Villeurbanne and Vaise, consulting firms in Presqu'île.",
@@ -225,7 +225,7 @@ export const LYON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Lyon freelancers, micro-firms and practices up to about ten staff — Presqu'île, Vieux Lyon, Caluire.",
           },
@@ -265,7 +265,7 @@ export const LYON_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Lyon?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for an industrial mid-cap in Lyon?",
@@ -939,7 +939,7 @@ export const LYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lyon ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Flash pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille — aucune pondération régionale ni surcoût Auvergne-Rhône-Alpes.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Sur place pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille — aucune pondération régionale ni surcoût Auvergne-Rhône-Alpes.",
     },
     {
       q: "Avez-vous des cas clients dans la Métropole de Lyon ?",

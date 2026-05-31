@@ -58,7 +58,7 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels formats d'intervention proposez-vous à Châlons ?",
-      a: "À Châlons-en-Champagne, nous proposons les 5 formats Axion-IA : audit IA (Flash à Stratégique selon la taille), interventions sur site (demi-journée à 2 jours), implémentation, coaching 1-to-1 dirigeants, et développement de plateformes web/SaaS IA sur mesure.",
+      a: "À Châlons-en-Champagne, nous proposons les 5 formats Axion-IA : audit IA (Sur place à Stratégique selon la taille), interventions sur site (demi-journée à 2 jours), implémentation, coaching 1-to-1 dirigeants, et développement de plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Travaillez-vous avec les services préfectoraux et administrations ?",

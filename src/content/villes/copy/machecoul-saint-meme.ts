@@ -57,7 +57,7 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans du sud 44 ?",
-      a: "Pour les TPE artisans de Machecoul-Saint-Même, nous proposons audit IA Flash ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés aux petites structures rurales.",
+      a: "Pour les TPE artisans de Machecoul-Saint-Même, nous proposons audit IA Sur place ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés aux petites structures rurales.",
     },
     {
       q: "L'IA est-elle adaptée aux activités rurales et agricoles ?",

@@ -57,7 +57,7 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME herblaysiennes ?",
-      a: "Pour les PME tertiaires d'Herblay, nous proposons les 5 services Axion-IA : audit IA (Flash {{price:audit-flash|compact}} à Stratégique selon taille), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les PME tertiaires d'Herblay, nous proposons les 5 services Axion-IA : audit IA (Sur place {{price:audit-flash|compact}} à Stratégique selon taille), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une intervention pour un cabinet professionnel ?",

@@ -30,8 +30,8 @@ export const STAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Stains : diagnostic adapté aux TPE/PME franciliennes et structures ESS. 4 niveaux du Flash au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
-      en: "Audit IA à Stains : diagnostic adapté aux TPE/PME franciliennes et structures ESS. 4 niveaux du Flash au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
+      fr: "Audit IA à Stains : diagnostic adapté aux TPE/PME franciliennes et structures ESS. 4 niveaux du Sur place au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
+      en: "Audit IA à Stains : diagnostic adapté aux TPE/PME franciliennes et structures ESS. 4 niveaux du Sur place au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
     },
     interventions: {
       fr: "Interventions IA sur site à Stains : formats demi-journée à 2 jours dans vos locaux ou en visio. Vos collaborateurs repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel.",
@@ -57,7 +57,7 @@ export const STAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels services Axion-IA propose-t-il à Stains ?",
-      a: "5 services à Stains : audit IA (Flash à Stratégique), interventions sur site (formations équipes), implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et développement de plateformes web/SaaS IA sur mesure.",
+      a: "5 services à Stains : audit IA (Sur place à Stratégique), interventions sur site (formations équipes), implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et développement de plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Les structures de l'ESS peuvent-elles bénéficier de vos services ?",

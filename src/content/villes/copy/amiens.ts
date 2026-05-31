@@ -26,8 +26,8 @@ export const AMIENS_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Amiens : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille — de l'artisan TPE aux grands sites industriels P&G et Valeo.",
-      en: "Operational AI audit in Amiens: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size — from micro-businesses to large industrial sites like P&G and Valeo.",
+      fr: "Audit IA opérationnel à Amiens : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille — de l'artisan TPE aux grands sites industriels P&G et Valeo.",
+      en: "Operational AI audit in Amiens: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size — from micro-businesses to large industrial sites like P&G and Valeo.",
     },
     interventions: {
       fr: "Interventions IA à Amiens : formats sur site d'une à plusieurs journées selon vos équipes, adaptés au tissu industriel et tertiaire amiénois. Vos collaborateurs repartent avec des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -78,7 +78,7 @@ export const AMIENS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE artisanales du bassin amiénois aux sites industriels de grande envergure comme P&G ou Valeo Embrayages.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales du bassin amiénois aux sites industriels de grande envergure comme P&G ou Valeo Embrayages.",
         whyHere: [
           "Amiens est une place industrielle de premier plan : P&G y opère son 2e site mondial (Ariel/Dash/Lenor), Valeo y dirige son centre mondial des transmissions hybrides — des grands comptes où l'IA de production et l'automatisation qualité ont un ROI massif.",
           "Le tissu PME/ETI amiénois est dense et varié : distributeurs, prestataires de services industriels, cabinets conseils, sous-traitants aéronautiques en périphérie — autant de structures qui bénéficient d'un audit ciblé sur leurs processus métier.",
@@ -184,7 +184,7 @@ export const AMIENS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Amiens micro-businesses and craft firms to large industrial sites such as P&G or Valeo Embrayages.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Amiens micro-businesses and craft firms to large industrial sites such as P&G or Valeo Embrayages.",
         whyHere: [
           "Amiens is a top-tier industrial hub: P&G operates its 2nd global plant here (Ariel/Dash/Lenor), Valeo runs its world centre for hybrid transmissions — large accounts where production AI and quality automation deliver massive ROI.",
           "The Amiens SME/mid-cap fabric is dense and varied: distributors, industrial service providers, consulting firms, aeronautics sub-contractors nearby — all structures that benefit from a targeted process audit.",
@@ -223,7 +223,7 @@ export const AMIENS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Amiens craft businesses, freelancers and small structures up to about ten staff — trade, services, design bureaux.",
           },
@@ -263,7 +263,7 @@ export const AMIENS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Amiens?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
           },
           {
             q: "Is your method adapted to Amiens' industrial companies?",

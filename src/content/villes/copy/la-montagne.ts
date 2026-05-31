@@ -57,7 +57,7 @@ export const LA_MONTAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE et commerçants ?",
-      a: "Pour les TPE et commerçants de La Montagne, nous proposons audit IA (Flash {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
+      a: "Pour les TPE et commerçants de La Montagne, nous proposons audit IA (Sur place {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Montagne  ?",

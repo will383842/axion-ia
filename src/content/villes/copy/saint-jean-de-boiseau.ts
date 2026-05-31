@@ -57,7 +57,7 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants, nous proposons audit IA (Flash {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA sur mesure.",
+      a: "Pour les TPE artisans et commerçants, nous proposons audit IA (Sur place {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Jean-de-Boiseau  ?",

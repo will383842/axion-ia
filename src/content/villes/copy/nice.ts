@@ -29,8 +29,8 @@ export const NICE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Nice : nous identifions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés de la TPE niçoise aux ETI et grandes entreprises de la Côte d'Azur.",
-      en: "Operational AI audit in Nice: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated from Nice micro-businesses to Côte d'Azur mid-caps and large enterprises.",
+      fr: "Audit IA opérationnel à Nice : nous identifions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés de la TPE niçoise aux ETI et grandes entreprises de la Côte d'Azur.",
+      en: "Operational AI audit in Nice: we identify what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated from Nice micro-businesses to Côte d'Azur mid-caps and large enterprises.",
     },
     interventions: {
       fr: "Interventions IA à Nice : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — tourisme d'affaires, hôtellerie premium, tech Sophia, santé/biotech ou services.",
@@ -78,7 +78,7 @@ export const NICE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles : TPE et PME du Vieux-Nice ou du quartier d'affaires Grand Arénas, ETI hôtelières et de services de la Côte d'Azur, sièges régionaux du bassin Sophia Antipolis.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles : TPE et PME du Vieux-Nice ou du quartier d'affaires Grand Arénas, ETI hôtelières et de services de la Côte d'Azur, sièges régionaux du bassin Sophia Antipolis.",
         whyHere: [
           "Nice et sa métropole concentrent un tissu B2B dense : 16 327 établissements actifs, du petit commerce de la vieille ville aux centres R&D mondiaux d'Amadeus IT et d'IBM.",
           "Le bassin Sophia Antipolis — à 20 km de Nice — héberge le 1er technopôle européen avec Amadeus, IBM, SAP, Accenture, EURECOM : autant de directions IA que nous accompagnons régulièrement.",
@@ -184,7 +184,7 @@ export const NICE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la French Tech Côte d'Azur ou par vos équipes en interne, sans prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais déclenchée à ce jour sur nos missions azuréennes).",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size: Nice and Grand Arénas micro-businesses and SMEs, Côte d'Azur hospitality and services mid-caps, Sophia Antipolis regional R&D headquarters.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size: Nice and Grand Arénas micro-businesses and SMEs, Côte d'Azur hospitality and services mid-caps, Sophia Antipolis regional R&D headquarters.",
         whyHere: [
           "Nice and its metro area hold a dense B2B fabric: 16,327 active businesses, from Old Town shops to the worldwide R&D centres of Amadeus IT and IBM.",
           "The Sophia Antipolis basin — 20 km from Nice — hosts Europe's leading tech park with Amadeus, IBM, SAP, Accenture, EURECOM: AI leadership we engage with regularly.",
@@ -223,7 +223,7 @@ export const NICE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail: "Suited to Nice freelancers, micro-firms and practices up to about ten staff.",
           },
           {
@@ -262,7 +262,7 @@ export const NICE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Nice?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several days spread over a few weeks. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several days spread over a few weeks. We agree on the cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a Nice SME?",
@@ -936,7 +936,7 @@ export const NICE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nice ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Flash pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Sur place pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
     },
     {
       q: "Intervenez-vous à Sophia Antipolis depuis Nice ?",

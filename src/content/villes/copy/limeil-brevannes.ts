@@ -31,8 +31,8 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Flash à Limeil-Brévannes ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
-      en: "Audit IA Flash à Limeil-Brévannes ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
+      fr: "Audit IA Sur place à Limeil-Brévannes ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
+      en: "Audit IA Sur place à Limeil-Brévannes ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour PME industrielles (sous-traitants Sodern, Philips, Ommic SAS), commerces et établissements médico-sociaux du bassin.",
     },
     interventions: {
       fr: "Interventions à Limeil-Brévannes dès {{price:intervention-4h|flat}} : automatisation de la gestion administrative, planification, reporting et workflows pour TPE et PME de services, santé et industrie.",

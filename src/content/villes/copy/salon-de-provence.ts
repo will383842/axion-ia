@@ -32,8 +32,8 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Nos audits IA flash à Salon-de-Provence ciblent les TPE et PME tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
-      en: "Nos audits IA flash à Salon-de-Provence ciblent les TPE et PME tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
+      fr: "Nos audits IA sur place à Salon-de-Provence ciblent les TPE et PME tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
+      en: "Nos audits IA sur place à Salon-de-Provence ciblent les TPE et PME tertiaires (88 % du tissu local) : commerce, services aux entreprises, artisanat du bâtiment.",
     },
     interventions: {
       fr: "Nous intervenons sur site à Salon-de-Provence et dans les communes voisines (Pélissanne, Grans, Lançon-Provence, Eyguières) pour automatiser devis, facturation et reporting des PME locales.",

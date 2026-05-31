@@ -57,7 +57,7 @@ export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et commerçants du vignoble ?",
-      a: "Pour les artisans et commerçants du vignoble nantais, nous proposons audit IA Flash ({{price:audit-flash|flat}}), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants. Tarifs publics et transparents.",
+      a: "Pour les artisans et commerçants du vignoble nantais, nous proposons audit IA Sur place ({{price:audit-flash|flat}}), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants. Tarifs publics et transparents.",
     },
     {
       q: "Comment se déroule une mission au Loroux-Bottereau ?",

@@ -57,7 +57,7 @@ export const BOUAYE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME du sud-ouest nantais ?",
-      a: "Pour les PME tertiaires du sud-ouest nantais, nous proposons audit IA (Flash à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
+      a: "Pour les PME tertiaires du sud-ouest nantais, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
       q: "Comment se passe le déplacement à Bouaye ?",

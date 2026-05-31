@@ -29,8 +29,8 @@ export const PERPIGNAN_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Perpignan : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille, de la TPE négoce Saint-Charles à l'ETI agroalimentaire ou énergétique de Tecnosud.",
-      en: "Operational AI audit in Perpignan: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Saint-Charles trading micro-businesses to agri-food or energy mid-caps at Tecnosud.",
+      fr: "Audit IA opérationnel à Perpignan : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, de la TPE négoce Saint-Charles à l'ETI agroalimentaire ou énergétique de Tecnosud.",
+      en: "Operational AI audit in Perpignan: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Saint-Charles trading micro-businesses to agri-food or energy mid-caps at Tecnosud.",
     },
     interventions: {
       fr: "Interventions IA à Perpignan : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -109,7 +109,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise perpignanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du négoce Saint-Charles aux ETI agroalimentaires d'Agrosud et aux directions transformation des groupes implantés dans la Métropole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise perpignanaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du négoce Saint-Charles aux ETI agroalimentaires d'Agrosud et aux directions transformation des groupes implantés dans la Métropole.",
         whyHere: [
           "Perpignan concentre un tissu B2B sectorisé unique en France : logistique et négoce fruits-légumes (Saint-Charles International, 1er centre européen), agroalimentaire (Cémoi, Conserves France), énergies renouvelables (Tecnosud, DERBI-CEMATER) et viticulture Roussillon — autant de verticales à fort potentiel d'automatisation IA.",
           "Nos consultants se déplacent sur l'ensemble de la Perpignan Méditerranée Métropole : Saint-Charles, Tecnosud, Polygone Nord, centre-ville, Agrosud, Saint-Estève, Cabestany, Rivesaltes et communes proches.",
@@ -215,7 +215,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Perpignan business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Saint-Charles trading micro-businesses to Agrosud agri-food mid-caps and large enterprise transformation leadership across the Métropole.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Perpignan business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Saint-Charles trading micro-businesses to Agrosud agri-food mid-caps and large enterprise transformation leadership across the Métropole.",
         whyHere: [
           "Perpignan hosts a uniquely sectorised B2B fabric: fruit-vegetable logistics and trading (Saint-Charles International, Europe's no.1), agri-food (Cémoi, Conserves France), renewables (Tecnosud, DERBI-CEMATER) and Roussillon viticulture — all high-potential AI automation verticals.",
           "Our consultants travel across Perpignan Méditerranée Métropole: Saint-Charles, Tecnosud, Polygone Nord, city centre, Agrosud, Saint-Estève, Cabestany, Rivesaltes and surrounding communes.",
@@ -254,7 +254,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Perpignan freelancers, small traders and micro-firms up to about ten staff — Saint-Charles, Roussillon wine estates, city centre.",
           },
@@ -294,7 +294,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Perpignan?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a logistics or agri-food mid-cap in Perpignan?",

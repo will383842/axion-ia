@@ -28,8 +28,8 @@ export const ROUEN_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Rouen : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille, du cabinet rouennais à l'ETI industrielle de la Métropole Seine.",
-      en: "Operational AI audit in Rouen: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Rouen practices to industrial mid-caps across the Seine Métropole.",
+      fr: "Audit IA opérationnel à Rouen : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille, du cabinet rouennais à l'ETI industrielle de la Métropole Seine.",
+      en: "Operational AI audit in Rouen: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Rouen practices to industrial mid-caps across the Seine Métropole.",
     },
     interventions: {
       fr: "Interventions IA à Rouen : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -106,7 +106,7 @@ export const ROUEN_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise rouennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du centre historique aux ETI industrielles du Madrillet et aux sièges du Plateau de la Vatine.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise rouennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre historique aux ETI industrielles du Madrillet et aux sièges du Plateau de la Vatine.",
         whyHere: [
           "Rouen concentre des secteurs fortement demandeurs d'IA opérationnelle : logistique portuaire (HAROPA, Nov@log), industrie chimique et automobile (Renault Cléon, Safran Nacelles, Lubrizol), pharmaceutique (Janssen-Cilag), assurance (Matmut) et numérique (Madrillet, Vatine).",
           "Tissu B2B sectorisé sur-représenté chez nos clients rouennais : PME industrielles Petit-Quevilly, ETI logistiques axe Seine, cabinets conseil Vatine, startups deep-tech Madrillet et éditeurs numériques.",
@@ -212,7 +212,7 @@ export const ROUEN_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Rouen business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Rouen micro-businesses to large industrial mid-caps at the Madrillet and tertiary HQs on the Plateau de la Vatine.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Rouen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rouen micro-businesses to large industrial mid-caps at the Madrillet and tertiary HQs on the Plateau de la Vatine.",
         whyHere: [
           "Rouen concentrates sectors with strong operational AI demand: port logistics (HAROPA, Nov@log), chemical and automotive industry (Renault Cléon, Safran Nacelles, Lubrizol), pharma (Janssen-Cilag), insurance (Matmut) and digital (Madrillet, Vatine).",
           "Rouen B2B fabric over-represented in our cases: industrial SMEs in Petit-Quevilly, logistics mid-caps on the Seine axis, consulting firms at Vatine, deep-tech startups at Madrillet and digital publishers.",
@@ -251,7 +251,7 @@ export const ROUEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Rouen freelancers, micro-firms and practices up to about ten staff — historic centre, Rive Droite, Bois-Guillaume.",
           },
@@ -291,7 +291,7 @@ export const ROUEN_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Rouen?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for an industrial mid-cap in Rouen?",

@@ -30,8 +30,8 @@ export const CREIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Creil : diagnostic adapté aux industriels aéronautiques et logistiques du sud-Oise. ROI chiffré sur production, supply chain, back-office. 4 niveaux du Flash au Stratégique ETI.",
-      en: "Audit IA à Creil : diagnostic adapté aux industriels aéronautiques et logistiques du sud-Oise. ROI chiffré sur production, supply chain, back-office. 4 niveaux du Flash au Stratégique ETI.",
+      fr: "Audit IA à Creil : diagnostic adapté aux industriels aéronautiques et logistiques du sud-Oise. ROI chiffré sur production, supply chain, back-office. 4 niveaux du Sur place au Stratégique ETI.",
+      en: "Audit IA à Creil : diagnostic adapté aux industriels aéronautiques et logistiques du sud-Oise. ROI chiffré sur production, supply chain, back-office. 4 niveaux du Sur place au Stratégique ETI.",
     },
     interventions: {
       fr: "Interventions IA sur site à Creil : formats sur 1 à plusieurs journées, adaptés aux ateliers industriels et plateformes logistiques. Vos équipes terrain et back-office repartent autonomes.",

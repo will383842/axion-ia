@@ -57,7 +57,7 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME du nord-ouest nantais ?",
-      a: "Pour les PME tertiaires du nord-ouest nantais, nous proposons audit IA (Flash à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
+      a: "Pour les PME tertiaires du nord-ouest nantais, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
       q: "La gare TER facilite-t-elle vos interventions ?",

@@ -25,8 +25,8 @@ export const NIMES_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Nîmes : nous cartographions ce qui peut être automatisé dans votre organisation gardoise et chiffrons le ROI. Du Flash TPE au Stratégique ETI, quatre niveaux couvrent tous les profils.",
-      en: "Operational AI audit in Nîmes: we map what can be automated in your Gard organisation and quantify the ROI. From Flash micro-business to Mid-cap Strategic, four tiers cover every profile.",
+      fr: "Audit IA opérationnel à Nîmes : nous cartographions ce qui peut être automatisé dans votre organisation gardoise et chiffrons le ROI. Du Sur place TPE au Stratégique ETI, quatre niveaux couvrent tous les profils.",
+      en: "Operational AI audit in Nîmes: we map what can be automated in your Gard organisation and quantify the ROI. From Sur place micro-business to Mid-cap Strategic, four tiers cover every profile.",
     },
     interventions: {
       fr: "Interventions IA à Nîmes : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
@@ -75,7 +75,7 @@ export const NIMES_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Nîmes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux — du Flash TPE à l'Audit Stratégique ETI — couvrent toutes les tailles d'entreprise gardoise, des indépendants du centre-ville aux PME du Parc Georges Besse en passant par les ETI de services aux entreprises.",
+        hero: "L'audit IA Axion-IA à Nîmes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux — du Sur place TPE à l'Audit Stratégique ETI — couvrent toutes les tailles d'entreprise gardoise, des indépendants du centre-ville aux PME du Parc Georges Besse en passant par les ETI de services aux entreprises.",
         whyHere: [
           "Nîmes est une ville de tissu B2B dense : TPE et PME du commerce, de la logistique et des services aux entreprises constituent l'essentiel de nos cas locaux.",
           "La présence de BRL Groupe (siège social) et des filières agroalimentaires (Royal Canin Aimargues, Perrier Vergèze) crée des besoins réels en automatisation documentaire et en pilotage de données opérationnelles.",
@@ -181,7 +181,7 @@ export const NIMES_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour sur nos missions).",
       },
       en: {
-        hero: "Axion-IA's AI audit in Nîmes maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers — from Flash micro-business to Mid-cap Strategic — cover every size of Gard company, from independent professionals to Parc Georges Besse SMEs and business-services mid-caps.",
+        hero: "Axion-IA's AI audit in Nîmes maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers — from Sur place micro-business to Mid-cap Strategic — cover every size of Gard company, from independent professionals to Parc Georges Besse SMEs and business-services mid-caps.",
         whyHere: [
           "Nîmes has a dense B2B fabric: micro-businesses and SMEs in trade, logistics and business services make up the core of our local cases.",
           "The presence of BRL Groupe (HQ) and agri-food supply chains (Royal Canin Aimargues, Perrier Vergèze) creates real demand for document automation and operational data management.",
@@ -220,7 +220,7 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Gard independents, tradespeople and small structures up to about ten staff.",
           },
@@ -260,7 +260,7 @@ export const NIMES_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Nîmes?",
-            a: "Duration varies by tier. A Flash audit covers one on-site day; a Mid-cap Strategic audit spans several weeks (kick-off, interviews, read-out). The exact rhythm is agreed at the initial framing brief.",
+            a: "Duration varies by tier. A Sur place audit covers one on-site day; a Mid-cap Strategic audit spans several weeks (kick-off, interviews, read-out). The exact rhythm is agreed at the initial framing brief.",
           },
           {
             q: "Which Nîmes sectors benefit most from an AI audit?",

@@ -52,7 +52,7 @@ export const LUNEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Lunel ?",
-      a: "Nos audits flash débutent à {{price:audit-flash|flat}}, nos interventions essentielles à {{price:intervention-4h|flat}} et nos sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur notre site.",
+      a: "Nos audits sur place débutent à {{price:audit-flash|flat}}, nos interventions essentielles à {{price:intervention-4h|flat}} et nos sessions 1-to-1 à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Lunel ?",

@@ -52,7 +52,7 @@ export const ALBI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Albi ?",
-      a: "Nos audits flash débutent à {{price:audit-flash|flat}} et nos interventions essentielles à partir de {{price:intervention-4h|flat}}. Les sessions 1-to-1 démarrent à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur notre site.",
+      a: "Nos audits sur place débutent à {{price:audit-flash|flat}} et nos interventions essentielles à partir de {{price:intervention-4h|flat}}. Les sessions 1-to-1 démarrent à {{price:intervention-dirigeants|flat}}. Tarifs publics consultables sur notre site.",
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Albi ?",

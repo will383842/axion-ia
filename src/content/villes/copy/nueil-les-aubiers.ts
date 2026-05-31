@@ -61,7 +61,7 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants de Nueil-les-Aubiers, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les TPE artisans et commerçants de Nueil-les-Aubiers, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une mission dans le nord Deux-Sèvres ?",

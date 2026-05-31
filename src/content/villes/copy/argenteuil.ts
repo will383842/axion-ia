@@ -31,8 +31,8 @@ export const ARGENTEUIL_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Argenteuil : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. Du Flash pour un artisan ou commerçant argentin au Stratégique ETI pour une PME de services ou un acteur BTP du Val-d'Oise.",
-      en: "Operational AI audit in Argenteuil: we map what can be automated at your business and quantify the ROI. From Flash for a local trader to Mid-cap Strategic for a services SME or Val-d'Oise construction firm.",
+      fr: "Audit IA opérationnel à Argenteuil : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. Du Sur place pour un artisan ou commerçant argentin au Stratégique ETI pour une PME de services ou un acteur BTP du Val-d'Oise.",
+      en: "Operational AI audit in Argenteuil: we map what can be automated at your business and quantify the ROI. From Sur place for a local trader to Mid-cap Strategic for a services SME or Val-d'Oise construction firm.",
     },
     interventions: {
       fr: "Interventions IA à Argenteuil : formats sur site d'une à plusieurs journées. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -109,7 +109,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise argenteuillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des commerçants et artisans du Val-d'Oise aux PME du BTP, des services et de la logistique implantées dans le bassin Seine–Saint-Lazare.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise argenteuillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des commerçants et artisans du Val-d'Oise aux PME du BTP, des services et de la logistique implantées dans le bassin Seine–Saint-Lazare.",
         whyHere: [
           "Argenteuil est la 3e ville d'Île-de-France hors Paris (9 045 établissements actifs, 2 690 créations par an) : tissu PME dense et diversifié qui représente exactement le profil où l'IA opérationnelle délivre le ROI le plus rapide.",
           "Tissu B2B local sur-représenté chez nos clients : commerce de gros et distribution, BTP et construction (23,6 % des établissements), services aux entreprises et TPE de services qui ont besoin d'automatiser pour rester compétitifs.",
@@ -215,7 +215,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Argenteuil business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Val-d'Oise traders and craftspeople to construction, services and logistics SMEs in the Seine–Saint-Lazare basin.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Argenteuil business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Val-d'Oise traders and craftspeople to construction, services and logistics SMEs in the Seine–Saint-Lazare basin.",
         whyHere: [
           "Argenteuil is Île-de-France's 3rd largest city outside Paris (9,045 active businesses, 2,690 creations per year): a dense, diverse SME fabric that is precisely the profile where operational AI delivers the fastest ROI.",
           "Local B2B fabric over-represented in our cases: wholesale commerce and distribution, BTP and construction (23.6% of businesses), business services and micro-firms that need to automate to stay competitive.",
@@ -254,7 +254,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Argenteuil traders, craftspeople, freelancers and practices up to about ten staff — local commerce, services micro-firms, sole traders.",
           },
@@ -294,7 +294,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Argenteuil?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a construction SME in Argenteuil?",

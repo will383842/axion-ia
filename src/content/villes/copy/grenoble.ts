@@ -77,7 +77,7 @@ export const GRENOBLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Grenoble cartographie précisément ce qui peut être automatisé dans vos processus — qu'il s'agisse de R&D documentaire chez une spin-off CEA-Leti, de planification de production chez un équipementier industriel ou de qualification de leads chez un éditeur logiciel d'Inovallée — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI s'adaptent à toutes les tailles, des TPE deeptech aux directions IA des grands groupes grenoblois.",
+        hero: "L'audit IA Axion-IA à Grenoble cartographie précisément ce qui peut être automatisé dans vos processus — qu'il s'agisse de R&D documentaire chez une spin-off CEA-Leti, de planification de production chez un équipementier industriel ou de qualification de leads chez un éditeur logiciel d'Inovallée — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI s'adaptent à toutes les tailles, des TPE deeptech aux directions IA des grands groupes grenoblois.",
         whyHere: [
           "Grenoble est le premier pôle deeptech de province en France : nos audits y adressent des cas d'usage uniques à forte densité R&D (automatisation de la veille brevets, traitement de rapports d'analyse, génération de documentation technique).",
           "Tissu industriel sur-représenté chez nos clients grenoblois : sous-traitants semi-conducteurs (bassin Crolles), fournisseurs Schneider Electric, startups Minalogic, PME électronique et mécatronique.",
@@ -183,7 +183,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions grenobloises).",
       },
       en: {
-        hero: "Axion-IA's AI audit in Grenoble precisely maps what can be automated in your processes — whether documentary R&D at a CEA-Leti spin-off, production planning at an industrial equipment manufacturer or lead qualification at an Inovallée software editor — and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from deep-tech micro-businesses to large industrial group AI leadership.",
+        hero: "Axion-IA's AI audit in Grenoble precisely maps what can be automated in your processes — whether documentary R&D at a CEA-Leti spin-off, production planning at an industrial equipment manufacturer or lead qualification at an Inovallée software editor — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from deep-tech micro-businesses to large industrial group AI leadership.",
         whyHere: [
           "Grenoble is France's leading provincial deep-tech hub: our audits address unique high-R&D-density use cases (patent intelligence automation, analysis report processing, technical documentation generation).",
           "Industrial fabric over-represented in our Grenoble cases: semiconductor sub-contractors (Crolles basin), Schneider Electric suppliers, Minalogic start-ups, electronics and mechatronics SMEs.",
@@ -222,7 +222,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to spin-offs, Minalogic start-ups and independents in the Grenoble basin up to about ten staff.",
           },
@@ -262,11 +262,11 @@ export const GRENOBLE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Grenoble?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the initial framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the initial framing brief.",
           },
           {
             q: "Do you work with Grenoble deep-tech spin-offs and start-ups?",
-            a: "Yes. We regularly support spin-offs from CEA-Leti, CNRS and UGA, French Tech in the Alps start-ups and Minalogic ventures. The Flash audit is calibrated for these high-potential structures.",
+            a: "Yes. We regularly support spin-offs from CEA-Leti, CNRS and UGA, French Tech in the Alps start-ups and Minalogic ventures. The Sur place audit is calibrated for these high-potential structures.",
           },
           {
             q: "Does my technical data stay confidential during the audit?",

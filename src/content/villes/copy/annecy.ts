@@ -84,7 +84,7 @@ export const ANNECY_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE artisanales savoyardes aux sites industriels des grands groupes implantés dans le bassin annécien.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales savoyardes aux sites industriels des grands groupes implantés dans le bassin annécien.",
         whyHere: [
           "Le tissu industriel d'Annecy est en forte demande d'IA : automatisation qualité, optimisation logistique, R&D accélérée chez les équipementiers outdoor et les sous-traitants de précision.",
           "Nos consultants maîtrisent les enjeux spécifiques du secteur outdoor/montagne (cycles de développement produit, gestion saisonnière, contraintes normes EN/ISO) et de la mécanique de précision (traçabilité, contrôle qualité, maintenance prédictive).",
@@ -190,7 +190,7 @@ export const ANNECY_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Savoie artisanal micro-businesses to large-group industrial sites across the Annecy basin.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Savoie artisanal micro-businesses to large-group industrial sites across the Annecy basin.",
         whyHere: [
           "Annecy's industrial fabric has strong AI demand: quality automation, logistics optimization, accelerated R&D at outdoor equipment makers and precision sub-contractors.",
           "Our consultants know the specific challenges of the outdoor/mountain sector (product development cycles, seasonal management, EN/ISO standards) and precision engineering (traceability, quality control, predictive maintenance).",
@@ -229,7 +229,7 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to craftspeople, freelancers, industrial and commercial micro-businesses in the Annecy basin up to about ten staff.",
           },
@@ -269,7 +269,7 @@ export const ANNECY_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Annecy?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. The cadence is set at the framing brief according to your availability and organization.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. The cadence is set at the framing brief according to your availability and organization.",
           },
           {
             q: "What value does an audit bring for an Annecy industrial SME?",

@@ -32,8 +32,8 @@ export const ARMENTIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Nos audits IA flash à Armentières ciblent en priorité les TPE et PME du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
-      en: "Nos audits IA flash à Armentières ciblent en priorité les TPE et PME du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
+      fr: "Nos audits IA sur place à Armentières ciblent en priorité les TPE et PME du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
+      en: "Nos audits IA sur place à Armentières ciblent en priorité les TPE et PME du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
     },
     interventions: {
       fr: "Nous intervenons sur site à Armentières et dans les communes voisines (Houplines, Nieppe, Erquinghem-Lys) pour automatiser facturation, devis, reporting et suivi commercial des PME locales.",

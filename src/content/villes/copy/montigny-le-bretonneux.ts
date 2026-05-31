@@ -30,8 +30,8 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montigny : diagnostic adapté aux scale-ups tech et sièges d'entreprises tertiaires SQY. ROI chiffré sur back-office, CRM, support client. 4 niveaux du Flash à Stratégique ETI.",
-      en: "Audit IA à Montigny : diagnostic adapté aux scale-ups tech et sièges d'entreprises tertiaires SQY. ROI chiffré sur back-office, CRM, support client. 4 niveaux du Flash à Stratégique ETI.",
+      fr: "Audit IA à Montigny : diagnostic adapté aux scale-ups tech et sièges d'entreprises tertiaires SQY. ROI chiffré sur back-office, CRM, support client. 4 niveaux du Sur place à Stratégique ETI.",
+      en: "Audit IA à Montigny : diagnostic adapté aux scale-ups tech et sièges d'entreprises tertiaires SQY. ROI chiffré sur back-office, CRM, support client. 4 niveaux du Sur place à Stratégique ETI.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montigny : sessions sur 1 à plusieurs journées dans vos bureaux SQY. Vos équipes tech, commerciales et back-office repartent autonomes sur des outils IA configurés métier.",

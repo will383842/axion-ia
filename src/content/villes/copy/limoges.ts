@@ -28,8 +28,8 @@ export const LIMOGES_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Limoges : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. Du Flash adapté aux TPE artisanales au Stratégique ETI pour les grandes directions de Legrand ou les manufactures de porcelaine.",
-      en: "Operational AI audit in Limoges: we map what can be automated at your company and quantify the ROI. From Flash suited to artisan micro-firms to Mid-cap Strategic for large Legrand divisions or porcelain manufacturers.",
+      fr: "Audit IA opérationnel à Limoges : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. Du Sur place adapté aux TPE artisanales au Stratégique ETI pour les grandes directions de Legrand ou les manufactures de porcelaine.",
+      en: "Operational AI audit in Limoges: we map what can be automated at your company and quantify the ROI. From Sur place suited to artisan micro-firms to Mid-cap Strategic for large Legrand divisions or porcelain manufacturers.",
     },
     interventions: {
       fr: "Interventions IA à Limoges : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -107,7 +107,7 @@ export const LIMOGES_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise limougeaude et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE artisanales de la porcelaine aux directions IA du siège Legrand en passant par les PME d'ESTER Technopole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise limougeaude et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales de la porcelaine aux directions IA du siège Legrand en passant par les PME d'ESTER Technopole.",
         whyHere: [
           "Limoges concentre un écosystème industriel rare en France : siège mondial Legrand (CAC 40), capitale mondiale de la porcelaine IGP, pôle céramique technique ESTER — des cas d'usage IA opérationnels spécifiques que nos consultants maîtrisent.",
           "Tissu B2B sectorisé sur-représenté chez nos clients : industrie électrique et domotique (Legrand et sous-traitants), manufactures porcelaine (Bernardaud, Haviland, Royal Limoges), céramique technique (ESTER), agroalimentaire (Madrange, filières Limousin).",
@@ -213,7 +213,7 @@ export const LIMOGES_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Limoges business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from artisan porcelain micro-firms to large Legrand AI divisions and ESTER Technopole SMEs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Limoges business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from artisan porcelain micro-firms to large Legrand AI divisions and ESTER Technopole SMEs.",
         whyHere: [
           "Limoges hosts a rare industrial ecosystem in France: Legrand global HQ (CAC 40), world capital of protected GI porcelain, ESTER technical ceramics hub — specific operational AI use cases our consultants master.",
           "Limoges B2B fabric over-represented in our cases: electrical and smart-building industry (Legrand and sub-contractors), porcelain manufacturers (Bernardaud, Haviland, Royal Limoges), technical ceramics (ESTER), agri-food (Madrange, Limousin supply chains).",
@@ -252,7 +252,7 @@ export const LIMOGES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Limoges freelancers, artisan ceramicists, family manufacturers and small practices up to about ten staff.",
           },
@@ -292,7 +292,7 @@ export const LIMOGES_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Limoges?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for an industrial mid-cap in Limoges?",

@@ -61,7 +61,7 @@ export const ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME du Hurepoix ?",
-      a: "Audit IA (Flash {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
+      a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Évry ?",

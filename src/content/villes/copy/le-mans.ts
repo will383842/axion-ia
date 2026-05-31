@@ -33,8 +33,8 @@ export const LE_MANS_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel au Mans : nous cartographions vos workflows automatisables et chiffrons le ROI. Quatre niveaux du Flash au Stratégique ETI, calibrés pour la PME sarthoise comme pour les ETI assurance et mobilité du bassin.",
-      en: "Operational AI audit in Le Mans: we map your automatable workflows and quantify the ROI. Four tiers from Flash to Mid-cap Strategic, calibrated for local SMEs as well as insurance and mobility mid-caps in the basin.",
+      fr: "Audit IA opérationnel au Mans : nous cartographions vos workflows automatisables et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI, calibrés pour la PME sarthoise comme pour les ETI assurance et mobilité du bassin.",
+      en: "Operational AI audit in Le Mans: we map your automatable workflows and quantify the ROI. Four tiers from Sur place to Mid-cap Strategic, calibrated for local SMEs as well as insurance and mobility mid-caps in the basin.",
     },
     interventions: {
       fr: "Interventions IA au Mans : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent avec des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -82,7 +82,7 @@ export const LE_MANS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA au Mans cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE sartoises aux ETI assurance et mobilité dont le bassin manceau est le siège historique.",
+        hero: "L'audit IA Axion-IA au Mans cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE sartoises aux ETI assurance et mobilité dont le bassin manceau est le siège historique.",
         whyHere: [
           "Le Mans concentre deux écosystèmes B2B à fort potentiel IA : l'assurance (MMA/Covéa, courtiers, mutuelles) et l'industrie automobile/mobilité (Renault ACI, fournisseurs ACO, iD4CAR), deux secteurs dans lesquels la lecture de documents, la qualification de sinistres et la gestion de données industrielles sont des cas d'usage IA immédiats.",
           "Le tissu de PME et ETI de services (transports, logistique, conseil, distribution) représente le gros des 11 301 établissements actifs — périmètre idéal pour l'Audit Ciblé ou Stratégique PME.",
@@ -188,7 +188,7 @@ export const LE_MANS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause disponible, jamais activée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's AI audit in Le Mans maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from local Sarthe micro-firms to insurance and mobility mid-caps headquartered in the Le Mans basin.",
+        hero: "Axion-IA's AI audit in Le Mans maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from local Sarthe micro-firms to insurance and mobility mid-caps headquartered in the Le Mans basin.",
         whyHere: [
           "Le Mans concentrates two B2B ecosystems with strong AI potential: insurance (MMA/Covéa, brokers, mutual insurers) and automotive/mobility manufacturing (Renault ACI, ACO suppliers, iD4CAR cluster) — both sectors where document reading, claim qualification and industrial data management are immediate AI use cases.",
           "The SME and mid-cap services fabric (transport, logistics, consulting, distribution) accounts for the bulk of the 11,301 active businesses — ideal scope for a Targeted or SME Strategic Audit.",
@@ -227,7 +227,7 @@ export const LE_MANS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Sarthe freelancers, micro-firms and practices up to about ten staff (artisans, liberal professions, small traders).",
           },
@@ -267,7 +267,7 @@ export const LE_MANS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Le Mans?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. The precise rhythm is agreed with you at the initial framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. The precise rhythm is agreed with you at the initial framing brief.",
           },
           {
             q: "Which Le Mans sectors do you know best?",

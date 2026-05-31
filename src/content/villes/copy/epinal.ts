@@ -60,7 +60,7 @@ export const EPINAL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai d'intervention d'Axion-IA à Épinal ?",
-      a: "William et l'équipe Axion-IA se déplacent sur site à Épinal sous 5 jours ouvrés en moyenne après validation du devis, et plus rapidement pour les Audits Flash de 4 heures.",
+      a: "William et l'équipe Axion-IA se déplacent sur site à Épinal sous 5 jours ouvrés en moyenne après validation du devis, et plus rapidement pour les Audits Sur place de 4 heures.",
     },
     {
       q: "Comment Axion-IA assure la conformité RGPD à Épinal ?",

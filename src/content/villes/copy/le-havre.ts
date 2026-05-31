@@ -31,8 +31,8 @@ export const LE_HAVRE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel au Havre : nous identifions les automatisations rentables dans votre organisation — supply chain, production, maintenance prédictive, documentation — et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille.",
-      en: "Operational AI audit in Le Havre: we identify profitable automations in your organisation — supply chain, production, predictive maintenance, documentation — and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size.",
+      fr: "Audit IA opérationnel au Havre : nous identifions les automatisations rentables dans votre organisation — supply chain, production, maintenance prédictive, documentation — et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille.",
+      en: "Operational AI audit in Le Havre: we identify profitable automations in your organisation — supply chain, production, predictive maintenance, documentation — and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
       fr: "Interventions IA au Havre : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -82,7 +82,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA au Havre cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du commerce havrais aux grandes entreprises industrielles de la Zone Industrialo-Portuaire (ZIP). Le tissu économique havrais — logistique maritime, pétrochimie, aéronautique, automobile — présente des opportunités IA spécifiques : automatisation documentaire portuaire, maintenance prédictive, optimisation supply chain. Notre diagnostic les quantifie pour vous.",
+        hero: "L'audit IA Axion-IA au Havre cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du commerce havrais aux grandes entreprises industrielles de la Zone Industrialo-Portuaire (ZIP). Le tissu économique havrais — logistique maritime, pétrochimie, aéronautique, automobile — présente des opportunités IA spécifiques : automatisation documentaire portuaire, maintenance prédictive, optimisation supply chain. Notre diagnostic les quantifie pour vous.",
         whyHere: [
           "Le Havre concentre un tissu industriel B2B rare en France : logistique maritime (HAROPA Port, CMA CGM), pétrochimie (TotalEnergies, Yara, Chevron Oronite), aéronautique (Safran Nacelles), automobile (Renault Sandouville), emballage (Sidel) — autant de secteurs où l'IA apporte des gains mesurables sur documentation, maintenance prédictive et optimisation de flux.",
           "Nov@log, unique pôle de compétitivité logistique en France, est basé au Havre. Ses 152 membres TPE/PME/ETI sont précisément le cœur de cible de nos audits IA : automatisation des processus logistiques, traitement documentaire portuaire, optimisation TMS.",
@@ -188,7 +188,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour sur nos missions Normandie).",
       },
       en: {
-        hero: "Axion-IA's AI audit in Le Havre maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Le Havre micro-businesses to large industrial enterprises in the Port Industrial Zone (ZIP). Le Havre's economic fabric — maritime logistics, petrochemicals, aeronautics, automotive — presents specific AI opportunities: port document automation, predictive maintenance, supply chain optimisation. Our diagnosis quantifies these for you.",
+        hero: "Axion-IA's AI audit in Le Havre maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Le Havre micro-businesses to large industrial enterprises in the Port Industrial Zone (ZIP). Le Havre's economic fabric — maritime logistics, petrochemicals, aeronautics, automotive — presents specific AI opportunities: port document automation, predictive maintenance, supply chain optimisation. Our diagnosis quantifies these for you.",
         whyHere: [
           "Le Havre hosts a rare B2B industrial fabric: maritime logistics (HAROPA Port, CMA CGM), petrochemicals (TotalEnergies, Yara, Chevron Oronite), aeronautics (Safran Nacelles), automotive (Renault Sandouville), packaging (Sidel) — sectors where AI delivers measurable gains on documentation, predictive maintenance and flow optimisation.",
           "Nov@log, France's only dedicated logistics competitiveness cluster, is headquartered in Le Havre. Its 152 SME/mid-cap members are precisely the core target of our AI audits: logistics process automation, port document processing, TMS optimisation.",
@@ -227,7 +227,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Le Havre freelancers, micro-firms and small traders up to about ten staff.",
           },
@@ -267,7 +267,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Le Havre?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief, without imposing a preset schedule.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief, without imposing a preset schedule.",
           },
           {
             q: "What ROI to expect for a Le Havre logistics SME?",

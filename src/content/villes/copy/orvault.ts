@@ -57,7 +57,7 @@ export const ORVAULT_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME des zones d'activités Ar Mor et Atlantis ?",
-      a: "Pour les PME tertiaires des parcs d'activités d'Orvault, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les PME tertiaires des parcs d'activités d'Orvault, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Travaillez-vous avec les cabinets professionnels ?",

@@ -32,8 +32,8 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Clermont-Ferrand : nous identifions les workflows automatisables dans votre structure clermontoise et chiffrons le ROI — industrie, agroalimentaire, services ou recherche. 4 niveaux du Flash au Stratégique ETI selon votre taille.",
-      en: "Operational AI audit in Clermont-Ferrand: we map automatable workflows in your Auvergne organisation and quantify the ROI — manufacturing, agri-food, services or research. 4 tiers from Flash to Mid-cap Strategic.",
+      fr: "Audit IA opérationnel à Clermont-Ferrand : nous identifions les workflows automatisables dans votre structure clermontoise et chiffrons le ROI — industrie, agroalimentaire, services ou recherche. 4 niveaux du Sur place au Stratégique ETI selon votre taille.",
+      en: "Operational AI audit in Clermont-Ferrand: we map automatable workflows in your Auvergne organisation and quantify the ROI — manufacturing, agri-food, services or research. 4 tiers from Sur place to Mid-cap Strategic.",
     },
     interventions: {
       fr: "Interventions IA à Clermont-Ferrand : formats sur site d'une à plusieurs journées, de vos locaux du Technopôle La Pardieu aux sites industriels du bassin. Vos équipes repartent autonomes sur des outils IA installés. Frais de logement, repas et forfait trajet en sus.",
@@ -85,7 +85,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation clermontoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles — du sous-traitant TPE du bassin Michelin aux ETI agroalimentaires du Puy-de-Dôme, en passant par les structures de services, de santé et de recherche présentes sur le Technopôle La Pardieu et le campus des Cézeaux.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation clermontoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles — du sous-traitant TPE du bassin Michelin aux ETI agroalimentaires du Puy-de-Dôme, en passant par les structures de services, de santé et de recherche présentes sur le Technopôle La Pardieu et le campus des Cézeaux.",
         whyHere: [
           "Clermont-Ferrand concentre une industrie manufacturière structurante sans équivalent hors Île-de-France : siège Michelin (CAC 40), Limagrain, Auvergne Aéronautique, filière agro AOP — autant de donneurs d'ordres et sous-traitants pour lesquels l'IA représente un levier de compétitivité concret.",
           "L'écosystème universitaire (UCA, ISIMA, Sigma Clermont) produit chaque année des jeunes ingénieurs IA — les PME et ETI locales ont besoin d'un audit structuré pour canaliser ces ressources vers des cas d'usage à ROI démontré.",
@@ -191,7 +191,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable mais jamais activée à ce jour).",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated in your Clermont-Ferrand organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size — from TPE sub-contractors in the Michelin basin to Puy-de-Dôme agri-food mid-caps and research-intensive structures on Technopôle La Pardieu.",
+        hero: "Axion-IA's AI audit maps what can be automated in your Clermont-Ferrand organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size — from TPE sub-contractors in the Michelin basin to Puy-de-Dôme agri-food mid-caps and research-intensive structures on Technopôle La Pardieu.",
         whyHere: [
           "Clermont-Ferrand hosts a manufacturing fabric unmatched outside Île-de-France: Michelin HQ (CAC 40), Limagrain, Auvergne Aéronautique, AOP agri-food chains — prime clients and sub-contractors for whom AI is a concrete competitiveness lever.",
           "The university ecosystem (UCA, ISIMA, Sigma Clermont) trains AI engineers every year; local SMEs and mid-caps need a structured audit to channel those skills toward ROI-proven use cases.",
@@ -230,7 +230,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to TPE sub-contractors, professional practices, craftspeople and freelancers in the Clermont basin up to about ten staff.",
           },
@@ -270,7 +270,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Clermont-Ferrand?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several days or weeks. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several days or weeks. We agree on the cadence at the framing brief.",
           },
           {
             q: "Does my industrial data stay confidential?",

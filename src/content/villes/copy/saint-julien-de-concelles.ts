@@ -61,7 +61,7 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME agroalimentaires ?",
-      a: "Pour les PME agroalimentaires de Saint-Julien-de-Concelles, nous proposons audit IA (Flash à Stratégique), interventions sur site, implémentation IA (traçabilité, qualité, logistique), coaching 1-to-1 et plateformes web/SaaS IA. Tarifs publics.",
+      a: "Pour les PME agroalimentaires de Saint-Julien-de-Concelles, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (traçabilité, qualité, logistique), coaching 1-to-1 et plateformes web/SaaS IA. Tarifs publics.",
     },
     {
       q: "Comment se passe une mission sur une exploitation ?",

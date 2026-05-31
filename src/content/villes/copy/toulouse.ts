@@ -27,8 +27,8 @@ export const TOULOUSE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Toulouse : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés pour les structures aérospatiales, IT et agroalimentaires toulousaines.",
-      en: "Operational AI audit in Toulouse: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated for Toulouse aerospace, IT and agri-food companies.",
+      fr: "Audit IA opérationnel à Toulouse : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les structures aérospatiales, IT et agroalimentaires toulousaines.",
+      en: "Operational AI audit in Toulouse: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Toulouse aerospace, IT and agri-food companies.",
     },
     interventions: {
       fr: "Interventions IA à Toulouse : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — aéronautique sous-traitance Blagnac, IoT Labège, agro-industriel ou tech Toulouse centre.",
@@ -75,7 +75,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE toulousaines aux divisions des grands groupes aérospatiaux du bassin.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE toulousaines aux divisions des grands groupes aérospatiaux du bassin.",
         whyHere: [
           "Toulouse est la capitale européenne de l'aérospatiale : nos consultants connaissent les processus PLM, documentation technique et cycles de conformité qui caractérisent les acteurs de l'Aerospace Valley.",
           "Tissu numérique dense — French Tech Toulouse, IoT Valley à Labège, startups ESA BIC Sud France : nous auditons aussi bien les scale-ups IA émergentes que les sous-traitants Tier 1 et Tier 2 de la chaîne aéronautique.",
@@ -181,7 +181,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, option infra locale pour données sensibles aérospatiales. Le plan d'action remis est portable — exécutable par tout intégrateur de l'Aerospace Valley ou par vos équipes en interne, sans contrat de prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Toulouse micro-businesses to large aerospace group divisions in the greater basin.",
+        hero: "Axion-IA's AI audit maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Toulouse micro-businesses to large aerospace group divisions in the greater basin.",
         whyHere: [
           "Toulouse is the European aerospace capital: our consultants understand PLM processes, technical documentation and compliance cycles specific to Aerospace Valley players.",
           "Dense digital fabric — French Tech Toulouse, IoT Valley at Labège, ESA BIC Sud France startups: we audit emerging AI scale-ups as well as Tier 1 and Tier 2 aerospace sub-contractors.",
@@ -220,7 +220,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Toulouse freelancers, engineering offices, small sub-contractors or IT agencies up to about ten staff.",
           },
@@ -260,7 +260,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Toulouse?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
           },
           {
             q: "Do you handle aerospace industry confidentiality constraints?",
@@ -936,7 +936,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Toulouse ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations toulousaines — Flash pour les TPE de la ville rose ou bureaux d'études indépendants, Ciblé pour les PME sous-traitantes Aerospace Valley et services Toulouse centre, Stratégique PME pour les scale-ups French Tech Toulouse et acteurs agro-industriels, Stratégique ETI pour les opérateurs Aerospace Valley (Airbus, ATR, Thales) et grandes filiales Blagnac/Colomiers. La grille appliquée à Toulouse est strictement identique à celle de Paris ou Lyon — aucune pondération Occitanie.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations toulousaines — Sur place pour les TPE de la ville rose ou bureaux d'études indépendants, Ciblé pour les PME sous-traitantes Aerospace Valley et services Toulouse centre, Stratégique PME pour les scale-ups French Tech Toulouse et acteurs agro-industriels, Stratégique ETI pour les opérateurs Aerospace Valley (Airbus, ATR, Thales) et grandes filiales Blagnac/Colomiers. La grille appliquée à Toulouse est strictement identique à celle de Paris ou Lyon — aucune pondération Occitanie.",
     },
     {
       q: "Avez-vous des références dans l'industrie aérospatiale toulousaine ?",

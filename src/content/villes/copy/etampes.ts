@@ -32,8 +32,8 @@ export const ETAMPES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Nos audits IA flash à Étampes ciblent en priorité les TPE et PME du commerce de détail, de l'artisanat et de la logistique RN20, secteurs représentatifs du bassin sud-Essonne.",
-      en: "Nos audits IA flash à Étampes ciblent en priorité les TPE et PME du commerce de détail, de l'artisanat et de la logistique RN20, secteurs représentatifs du bassin sud-Essonne.",
+      fr: "Nos audits IA sur place à Étampes ciblent en priorité les TPE et PME du commerce de détail, de l'artisanat et de la logistique RN20, secteurs représentatifs du bassin sud-Essonne.",
+      en: "Nos audits IA sur place à Étampes ciblent en priorité les TPE et PME du commerce de détail, de l'artisanat et de la logistique RN20, secteurs représentatifs du bassin sud-Essonne.",
     },
     interventions: {
       fr: "Nous intervenons sur site à Étampes et alentours (La Ferté-Alais, Dourdan, Guillerval) pour automatiser devis, facturation, suivi client et reporting des TPE/PME locales.",

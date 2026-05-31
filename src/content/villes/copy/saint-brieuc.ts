@@ -58,7 +58,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saint-Brieuc ?",
-      a: "Délai indicatif de 5 jours ouvrés après validation de la mission, selon nos disponibilités. Audits Flash souvent planifiables plus rapidement.",
+      a: "Délai indicatif de 5 jours ouvrés après validation de la mission, selon nos disponibilités. Audits Sur place souvent planifiables plus rapidement.",
     },
     {
       q: "Vous déplacez-vous dans les communes proches comme Plérin, Ploufragan, Langueux ou Trégueux ?",

@@ -61,7 +61,7 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les PME industrielles CAPI ?",
-      a: "Pour les PME industrielles et manufacturières de la CAPI, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site, implémentation IA (prédiction maintenance, automatisations production), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
+      a: "Pour les PME industrielles et manufacturières de la CAPI, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (prédiction maintenance, automatisations production), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",

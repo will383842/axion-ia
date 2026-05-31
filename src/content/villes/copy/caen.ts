@@ -28,8 +28,8 @@ export const CAEN_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Caen : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, des TPE caennaises aux ETI industrielles du bassin (NXP, Bosch, Renault Trucks).",
-      en: "Operational AI audit in Caen: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Caen micro-businesses to industrial mid-caps across the Caen la Mer area (NXP, Bosch, Renault Trucks).",
+      fr: "Audit IA opérationnel à Caen : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, des TPE caennaises aux ETI industrielles du bassin (NXP, Bosch, Renault Trucks).",
+      en: "Operational AI audit in Caen: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Caen micro-businesses to industrial mid-caps across the Caen la Mer area (NXP, Bosch, Renault Trucks).",
     },
     interventions: {
       fr: "Interventions IA à Caen : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -108,7 +108,7 @@ export const CAEN_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise caennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE de l'hypercentre aux ETI industrielles du bassin — NXP Semiconductors, Robert Bosch, Renault Trucks — et aux directions recherche du plateau Nord.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise caennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE de l'hypercentre aux ETI industrielles du bassin — NXP Semiconductors, Robert Bosch, Renault Trucks — et aux directions recherche du plateau Nord.",
         whyHere: [
           "Caen concentre un tissu B2B industriel et technologique dense : semi-conducteurs (NXP Colombelles), électronique automobile (Bosch Mondeville), mobilités électriques (Renault Trucks Blainville) et services numériques (EffiScience) génèrent une demande forte d'audits IA opérationnels.",
           "Le campus plateau Nord (UCN, ENSICAEN, GANIL, GREYC IA/cybersécurité) produit un écosystème recherche-industrie propice aux déploiements IA avancés — nos audits s'ancrent dans cette réalité locale.",
@@ -214,7 +214,7 @@ export const CAEN_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Caen business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Caen micro-businesses to large industrial mid-caps across the Caen la Mer area — NXP Semiconductors, Robert Bosch, Renault Trucks — and research leadership on Plateau Nord.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Caen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Caen micro-businesses to large industrial mid-caps across the Caen la Mer area — NXP Semiconductors, Robert Bosch, Renault Trucks — and research leadership on Plateau Nord.",
         whyHere: [
           "Caen concentrates a dense industrial and tech B2B fabric: semiconductors (NXP Colombelles), automotive electronics (Bosch Mondeville), electric vehicles (Renault Trucks Blainville) and digital services (EffiScience) drive strong operational AI audit demand.",
           "Plateau Nord campus (UCN, ENSICAEN, GANIL, GREYC AI/cybersecurity) produces a research-industry ecosystem conducive to advanced AI deployments — our audits are grounded in this local reality.",
@@ -253,7 +253,7 @@ export const CAEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Caen freelancers, micro-firms and practices up to about ten staff — city centre, residential districts, ZAC Presqu'île.",
           },
@@ -293,7 +293,7 @@ export const CAEN_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Caen?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for an industrial mid-cap in Caen?",

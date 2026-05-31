@@ -28,8 +28,8 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Boulogne-Billancourt : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, du cabinet boulonnais au grand groupe du Trapèze ou du Quai du Point-du-Jour.",
-      en: "Operational AI audit in Boulogne-Billancourt: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Boulogne practices to large groups at Trapèze or Quai du Point-du-Jour.",
+      fr: "Audit IA opérationnel à Boulogne-Billancourt : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, du cabinet boulonnais au grand groupe du Trapèze ou du Quai du Point-du-Jour.",
+      en: "Operational AI audit in Boulogne-Billancourt: we map what can be automated at your company and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, from Boulogne practices to large groups at Trapèze or Quai du Point-du-Jour.",
     },
     interventions: {
       fr: "Interventions IA à Boulogne-Billancourt : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
@@ -80,7 +80,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise boulonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux directions IA des sièges du Trapèze, de TF1 et de Renault Group.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise boulonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux directions IA des sièges du Trapèze, de TF1 et de Renault Group.",
         whyHere: [
           "Boulogne-Billancourt est l'un de nos principaux terrains d'intervention en proche couronne parisienne : la concentration de sièges de grands groupes (Renault, TF1, Boursorama) et de PME conseil génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B très sectorisé dans nos missions boulonnaises : grands groupes du Trapèze et du Quai du Point-du-Jour, PME conseil et services informatiques, startups et scale-ups numériques, cabinets de conseil proches Paris 15e/16e.",
@@ -186,7 +186,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Boulogne-Billancourt business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Boulogne micro-businesses to large-enterprise AI leadership at Trapèze, TF1 and Renault Group HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Boulogne-Billancourt business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Boulogne micro-businesses to large-enterprise AI leadership at Trapèze, TF1 and Renault Group HQs.",
         whyHere: [
           "Boulogne-Billancourt is one of our main engagement hubs in the Paris inner ring: the concentration of large-group HQs (Renault, TF1, Boursorama) and consulting SMEs drives strong operational AI audit demand.",
           "Very sectorised B2B fabric in our Boulogne missions: Trapèze and Quai du Point-du-Jour large groups, consulting and IT services SMEs, digital startups, consulting firms close to Paris 15th/16th.",
@@ -225,7 +225,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to Boulogne freelancers, micro-firms and practices up to about ten staff — town centre, residential districts, Pont-de-Sèvres.",
           },
@@ -265,7 +265,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Boulogne-Billancourt?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on cadence at the framing brief.",
           },
           {
             q: "What ROI can I expect for a mid-cap at Trapèze or Quai du Point-du-Jour?",

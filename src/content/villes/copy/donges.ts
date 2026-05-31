@@ -57,7 +57,7 @@ export const DONGES_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans de Donges ?",
-      a: "Pour les TPE artisans de Donges, nous proposons audit IA Flash ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés artisans et commerçants.",
+      a: "Pour les TPE artisans de Donges, nous proposons audit IA Sur place ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1. Formats courts adaptés artisans et commerçants.",
     },
     {
       q: "L'IA est-elle adaptée au secteur industriel estuarien ?",

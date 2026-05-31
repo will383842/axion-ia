@@ -61,7 +61,7 @@ export const LAMBERSART_COPY: VilleCopy = {
     },
     {
       q: "Quels formats pour les PME tertiaires de la MEL ?",
-      a: "Pour les PME tertiaires de la MEL, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site (formations équipes), implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
+      a: "Pour les PME tertiaires de la MEL, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (formations équipes), implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
       q: "Comment se passe une intervention depuis Paris ?",

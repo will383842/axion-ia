@@ -61,7 +61,7 @@ export const DOURDAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les professions libérales et PME ?",
-      a: "Audit IA (Flash {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
+      a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

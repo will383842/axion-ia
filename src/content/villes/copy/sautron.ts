@@ -57,7 +57,7 @@ export const SAUTRON_COPY: VilleCopy = {
     },
     {
       q: "Quels services IA pour les PME nantaises ouest ?",
-      a: "Pour les PME tertiaires de l'ouest nantais, nous proposons les 5 services Axion-IA : audit IA (Flash à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
+      a: "Pour les PME tertiaires de l'ouest nantais, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure. Tarifs publics.",
     },
     {
       q: "Comment se déroule une mission à Sautron ?",

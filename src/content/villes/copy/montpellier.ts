@@ -26,8 +26,8 @@ export const MONTPELLIER_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Montpellier : nous cartographions vos processus automatisables et chiffrons le ROI à 12-24 mois. 4 niveaux du Flash au Stratégique ETI, calibrés pour les TPE tech du Cap Omega, les PME santé d'Euromédecine et les ETI industrielles de l'Hérault.",
-      en: "Operational AI audit in Montpellier: we map your automatable processes and quantify the 12-24 month ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated for Cap Omega tech micro-businesses, Euromédecine health SMEs and Hérault industrial mid-caps.",
+      fr: "Audit IA opérationnel à Montpellier : nous cartographions vos processus automatisables et chiffrons le ROI à 12-24 mois. 4 niveaux du Sur place au Stratégique ETI, calibrés pour les TPE tech du Cap Omega, les PME santé d'Euromédecine et les ETI industrielles de l'Hérault.",
+      en: "Operational AI audit in Montpellier: we map your automatable processes and quantify the 12-24 month ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated for Cap Omega tech micro-businesses, Euromédecine health SMEs and Hérault industrial mid-caps.",
     },
     interventions: {
       fr: "Interventions IA à Montpellier : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier réel. Frais de logement, repas et forfait trajet en sus.",
@@ -226,7 +226,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to freelancers, micro-firms and digital startups at Cap Omega or Cap Alpha up to about ten staff.",
           },
@@ -266,7 +266,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Montpellier?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the initial framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the initial framing brief.",
           },
           {
             q: "Do you handle healthcare-specific constraints (HDS, patient data)?",

@@ -57,7 +57,7 @@ export const TRIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les TPE artisans de Trignac ?",
-      a: "Pour les TPE artisans de Trignac, nous proposons audit IA Flash ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1 dirigeants. Formats courts adaptés aux petites structures.",
+      a: "Pour les TPE artisans de Trignac, nous proposons audit IA Sur place ({{price:audit-flash|flat}}), interventions sur site (demi-journée à 2 jours), implémentation IA et coaching 1-to-1 dirigeants. Formats courts adaptés aux petites structures.",
     },
     {
       q: "L'IA est-elle utile pour les commerces et la distribution ?",

@@ -34,8 +34,8 @@ export const ANGERS_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Angers : nous identifions vos cas d'usage prioritaires — filière végétale, industrie, tertiaire, agroalimentaire — et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille.",
-      en: "Operational AI audit in Angers: we identify your priority use cases — plant industry, manufacturing, services, agri-food — and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size.",
+      fr: "Audit IA opérationnel à Angers : nous identifions vos cas d'usage prioritaires — filière végétale, industrie, tertiaire, agroalimentaire — et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI selon votre taille.",
+      en: "Operational AI audit in Angers: we identify your priority use cases — plant industry, manufacturing, services, agri-food — and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic depending on your size.",
     },
     interventions: {
       fr: "Interventions IA à Angers : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes avec des outils IA configurés pour leur travail réel. Frais de logement, repas et forfait trajet en sus.",
@@ -86,7 +86,7 @@ export const ANGERS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Angers cartographie ce qui peut être automatisé dans votre organisation — qu'il s'agisse d'une ETI de la filière végétale, d'une PME industrielle ou d'une TPE du tertiaire — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles d'entreprise de la métropole angevine.",
+        hero: "L'audit IA Axion-IA à Angers cartographie ce qui peut être automatisé dans votre organisation — qu'il s'agisse d'une ETI de la filière végétale, d'une PME industrielle ou d'une TPE du tertiaire — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles d'entreprise de la métropole angevine.",
         whyHere: [
           "Angers est un pôle industriel et agroalimentaire majeur du Grand Ouest : filière végétale, industrie automobile (Scania), informatique haute performance (Eviden/Atos), défense (Thales), spiritueux (Cointreau). Nos audits adressent ces secteurs avec des cas d'usage IA spécifiques à chacun.",
           "Le tissu PME/ETI angevin est dense et sous-exploite encore l'IA opérationnelle : sous-traitants industriels, prestataires de services végétaux, cabinets de conseil Maine-et-Loire, acteurs du négoce de vins Anjou. Axion-IA y intervient directement sur site.",
@@ -192,7 +192,7 @@ export const ANGERS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Angers maps what can be automated in your organization — whether you're a plant-industry mid-cap, an industrial SME or a services micro-business — and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every business size in the Angers metropolitan area.",
+        hero: "Axion-IA's AI audit in Angers maps what can be automated in your organization — whether you're a plant-industry mid-cap, an industrial SME or a services micro-business — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every business size in the Angers metropolitan area.",
         whyHere: [
           "Angers is a major industrial and agri-food hub in western France: plant industry, automotive (Scania), high-performance computing (Eviden/Atos), defence (Thales), spirits (Cointreau). Our audits address these sectors with AI use cases specific to each.",
           "The Angers SME/mid-cap fabric is dense and still under-exploits operational AI: industrial subcontractors, plant-sector service providers, Maine-et-Loire consulting firms, Anjou wine trade players. Axion-IA intervenes directly on site.",
@@ -231,7 +231,7 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Flash audit",
+            price: "Sur place audit",
             detail:
               "Suited to freelancers, micro-firms and small Angers businesses up to about ten staff — French Tech Angers startups, craft producers, plant-sector service providers.",
           },
@@ -271,7 +271,7 @@ export const ANGERS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an Axion-IA AI audit take in Angers?",
-            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks with multiple on-site visits in the Angers metropolitan area. The cadence is agreed at the framing brief.",
+            a: "Duration varies by tier: a Sur place audit runs over a day, a Mid-cap Strategic audit spans several weeks with multiple on-site visits in the Angers metropolitan area. The cadence is agreed at the framing brief.",
           },
           {
             q: "Do you have client cases in the plant industry or Angers manufacturing sector?",
