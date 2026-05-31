@@ -75,14 +75,14 @@ export function AuditProcessFlow({ isFr }: AuditProcessFlowProps): ReactNode {
           vide. Image déjà rognée (1975×569) pour coller aux numéros. */}
       <figure className="m-0 mt-2 w-full">
         <Image
-          src="/illustrations/methodologie-audit-ia-8-etapes-v4.webp"
+          src="/illustrations/methodologie-audit-ia-8-etapes-v5.webp"
           alt={
             isFr
               ? "Méthodologie d'audit IA Axion-IA en 8 étapes illustrées : 01 cadrage de la mission et des objectifs, 02 entretiens métier et qualification, 03 consolidation et analyse approfondie, 04 pré-évaluation et filtrage des options, 05 évaluation et recommandations chiffrées (ROI), 06 restitution et feuille de route IA, 07 mise en œuvre des recommandations, 08 adoption, formation et pilotage dans la durée — chaque étape avec son livrable."
               : "Axion-IA AI audit methodology in 8 illustrated steps: 01 mission and objectives scoping, 02 business interviews and qualification, 03 consolidation and deep analysis, 04 pre-assessment and option filtering, 05 evaluation and costed recommendations (ROI), 06 read-out and AI roadmap, 07 implementing the recommendations, 08 adoption, training and long-term steering — each step with its deliverable."
           }
-          width={1975}
-          height={569}
+          width={1983}
+          height={793}
           loading="lazy"
           decoding="async"
           sizes="(max-width: 1520px) 92vw, 1456px"
