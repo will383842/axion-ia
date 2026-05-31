@@ -243,8 +243,8 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
             : "From training to integration, we master the entire AI chain. "}
           <span className="text-terracotta-soft italic">
             {isFr
-              ? "Et tout commence ici, par un audit — d'une journée à plusieurs semaines, taillé sur votre besoin."
-              : "And it all starts here, with an audit — from one day to several weeks, tailored to your need."}
+              ? "Et tout commence ici, par un audit à votre échelle — du diagnostic ciblé sur un besoin précis à l'analyse globale de toute l'entreprise."
+              : "And it all starts here, with an audit at your scale — from a focused diagnosis on a single need to a company-wide deep dive."}
           </span>
         </p>
       </div>
