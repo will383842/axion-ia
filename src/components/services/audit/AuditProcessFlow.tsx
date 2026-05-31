@@ -3,8 +3,8 @@
  * (Server Component).
  *
  * Refonte 2026-05-31 (Will) — section « rassurante » : montrer que nos audits
- * sont complets, méthodiques et très professionnels. 7 étapes (01 cadrage →
- * 07 mise en œuvre), chacune avec une description substantielle + un livrable
+ * sont complets, méthodiques et très professionnels. 8 étapes (01 cadrage →
+ * 08 adoption & pilotage), chacune avec une description substantielle + un livrable
  * concret (« à la clé »). Travail de terrain mené avec dirigeants ET
  * collaborateurs. Pas de durée chiffrée (variable selon l'entreprise).
  * Écriture propre à Axion-IA (pas de paraphrase du marché, pas de témoignage
