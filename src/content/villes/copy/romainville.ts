@@ -57,7 +57,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps pour démarrer une intervention IA à Romainville ?",
-      a: "Nous démarrons sous 5 à 10 jours ouvrés selon la complexité. Un audit flash sur site peut être lancé en moins d'une semaine. Pour les urgences opérationnelles (incident, deadline), nous activons un mode pompier avec déplacement sous 48 à 72 heures.",
+      a: "Nous démarrons sous 5 à 10 jours ouvrés selon la complexité. Un audit sur place sur site peut être lancé en moins d'une semaine. Pour les urgences opérationnelles (incident, deadline), nous activons un mode pompier avec déplacement sous 48 à 72 heures.",
     },
     {
       q: "Vos interventions sont-elles compatibles avec les exigences RGPD et AI Act dans la pharma ?",
